@@ -1,0 +1,20 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="FunkTermMono/Application.vb">
+    <Files>
+      <File FileName="../FunkProgMono/FunkProgMono/FunkProgMono.vbproj" Line="12" Column="38" />
+      <File FileName="FunkTermMono/FunkTermMono.vbproj" Line="2" Column="50" />
+      <File FileName="../FunkProgMono/FunkProgMono/FunkProgMono.vbproj" Line="12" Column="38" />
+      <File FileName="../FunkProgMono/FunkProgMono/FunkProgMono.vbproj" Line="24" Column="29" />
+      <File FileName="FunkTermMono/Application.vb" Line="65" Column="1" />
+      <File FileName="FunkTermMono/FunkTermMono.vbproj" Line="19" Column="29" />
+      <File FileName="FunkTermMono/AssemblyInfo.vb" Line="1" Column="1" />
+      <File FileName="FunkTermMono/FunkenSlip.vb" Line="51" Column="44" />
+      <File FileName="FunkTermMono/slip.vb" Line="64" Column="1" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
