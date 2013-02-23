@@ -357,10 +357,10 @@ LOAD /opt/avr8-gnu-toolchain-linux_x86_64/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a
  *(.debug_frame)
  .debug_frame   0x0000000000000000       0x84 ./obj/avr/atmega328p/gcc/bootloader.c.o
 
-.debug_str      0x0000000000000000      0x216
+.debug_str      0x0000000000000000      0x208
  *(.debug_str)
- .debug_str     0x0000000000000000      0x216 ./obj/avr/atmega328p/gcc/bootloader.c.o
-                                        0x258 (size before relaxing)
+ .debug_str     0x0000000000000000      0x208 ./obj/avr/atmega328p/gcc/bootloader.c.o
+                                        0x24a (size before relaxing)
 
 .debug_loc      0x0000000000000000      0x516
  *(.debug_loc)

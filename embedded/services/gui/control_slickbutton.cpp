@@ -12,11 +12,10 @@ Copyright (c) 2012 Funkenstein Software Consulting, all rights reserved.
 See license.txt for more information
 ===========================================================================*/
 /*!
-	\file control_slickbutton.cpp
-	\brief GUI Button Control Implementation, but prettier.
+	\file control_button.cpp
+	\brief GUI Button Control Implementation
 
-	Basic pushbutton control with an up/down state, and special flashy
-	effects and Mark3 visual style.
+	Basic pushbutton control with an up/down state.
 */
 
 #include "control_slickbutton.h"
@@ -180,6 +179,11 @@ GuiReturn_t SlickButtonControl::ProcessEvent( GuiEvent_t *pstEvent_ )
                 m_ucTimeout--;
                 if (!m_ucTimeout)
                 {
+                    if (m_pfCallback)
+                    {
+                        m_pfCallback(m_pvCallbackData);
+                    }
+
                     SetAcceptFocus(true);
                 }
             }
@@ -203,10 +207,7 @@ GuiReturn_t SlickButtonControl::ProcessEvent( GuiEvent_t *pstEvent_ )
                     //SetAcceptFocus(false);
                     //GetParentWindow()->SetFocus(NULL);
                     SetStale();
-                    if (m_pfCallback)
-                    {
-                        m_pfCallback(m_pvCallbackData);
-                    }
+
                 }
                 SetStale();
             }
@@ -249,10 +250,6 @@ GuiReturn_t SlickButtonControl::ProcessEvent( GuiEvent_t *pstEvent_ )
                         GetParentWindow()->SetFocus(NULL);
                         SetStale();
 
-                        if (m_pfCallback)
-                        {
-                            m_pfCallback(m_pvCallbackData);
-                        }
                     }
                 }
             }
