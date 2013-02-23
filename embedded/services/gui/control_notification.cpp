@@ -21,7 +21,7 @@ See license.txt for more information
 
 #include "control_notification.h"
 #include "kerneltypes.h"
-#include <stdio.h>
+
 //---------------------------------------------------------------------------
 void NotificationControl::Draw()
 {
@@ -99,7 +99,7 @@ GuiReturn_t NotificationControl::ProcessEvent( GuiEvent_t *pstEvent_ )
             if (m_bTrigger && m_usTimeout)
             {
                 m_usTimeout--;
-                printf("Timeout: %d\n", m_usTimeout);
+
                 if (!m_usTimeout)
                 {
                     m_bVisible = false;
