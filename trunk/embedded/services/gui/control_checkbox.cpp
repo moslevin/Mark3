@@ -29,14 +29,14 @@ See license.txt for more information
 
 //---------------------------------------------------------------------------
 static const K_UCHAR aucBox[] =
-{ 0xFF,
+{ 0x7E,
   0x81,
   0x81,
   0x81,
   0x81,
   0x81,
   0x81,
-  0xFF };
+  0x7E };
 
 //---------------------------------------------------------------------------
 static const K_UCHAR aucCheck[] =
@@ -67,12 +67,30 @@ void CheckBoxControl::Draw()
     // Draw the box, (and check, if necessary)
     {
         DrawRectangle_t stRect;
-        stRect.uLineColor = m_uBackColor;
+
+        if (GetParentWindow()->IsInFocus(this))
+        {
+            stRect.uLineColor = m_uActiveColor;
+        }
+        else
+        {
+            stRect.uLineColor = m_uBackColor;
+        }
+
         stRect.uFillColor = m_uBackColor;
-        stRect.usTop = usY + GetTop() + ((GetHeight() - 4) >> 1);
+        stRect.usTop = usY + GetTop();
         stRect.usLeft = usX + GetLeft();
-        stRect.usRight = stRect.usLeft + 8;
-        stRect.usBottom = stRect.usTop + 8;
+        stRect.usRight = stRect.usLeft + GetWidth() - 1;
+        stRect.usBottom = stRect.usTop + GetHeight() - 1;
+        stRect.bFill = true;
+        pclDriver->Rectangle(&stRect);
+
+        stRect.uLineColor = m_uBoxBGColor;
+        stRect.uFillColor = m_uBoxBGColor;
+        stRect.usTop = usY + GetTop() + ((GetHeight() - 5) >> 1) - 1;
+        stRect.usLeft = usX + GetLeft() + 2;
+        stRect.usRight = stRect.usLeft + 7;
+        stRect.usBottom = stRect.usTop + 7;
         stRect.bFill = true;
         pclDriver->Rectangle(&stRect);
     }
@@ -80,8 +98,8 @@ void CheckBoxControl::Draw()
     {
         DrawStamp_t stStamp;
         stStamp.uColor = m_uBoxColor;
-        stStamp.usY = usY + GetTop() + ((GetHeight() - 4) >> 1);
-        stStamp.usX = usX + GetLeft();
+        stStamp.usY = usY + GetTop() + ((GetHeight() - 5) >> 1) - 1;
+        stStamp.usX = usX + GetLeft() + 2;
         stStamp.usWidth = 8;
         stStamp.usHeight = 8;
         stStamp.pucData = (K_UCHAR*)aucBox;

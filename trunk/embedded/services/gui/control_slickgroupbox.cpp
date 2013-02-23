@@ -12,10 +12,8 @@ Copyright (c) 2012 Funkenstein Software Consulting, all rights reserved.
 See license.txt for more information
 ===========================================================================*/
 /*!
-	\file control_slickgroupbox.cpp
-	\brief GUI GroupBox Control Implementation, with flare
-
-	A groupbox control with Mark3 Visual Style.
+	\file control_groupbox.cpp
+	\brief GUI GroupBox Control Implementation
 */
 
 #include "gui.h"
@@ -38,6 +36,20 @@ void SlickGroupBoxControl::Draw()
     K_USHORT usTextWidth;
 
 	GetControlOffset(&usX, &usY);
+
+	    // Draw the header rectangle
+    {
+        DrawRectangle_t stRect;
+        stRect.usTop = GetTop() + usY;
+        stRect.usBottom = stRect.usTop + GetHeight() - 1;
+        stRect.usLeft = GetLeft() + usX;
+        stRect.usRight = stRect.usLeft + GetWidth() - 1;
+        stRect.bFill = true;
+        stRect.uFillColor = m_uBGColor;
+        stRect.uLineColor = m_uBGColor;
+        pclDriver->Rectangle(&stRect);
+    }
+
     {
         DrawLine_t stLine;
 

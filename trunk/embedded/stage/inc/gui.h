@@ -410,6 +410,13 @@ public:
     */
     const K_CHAR *GetName() { return m_szName; }
 
+    /*!
+        Invalidate a region of the window, specified by the bounding box.  The
+        coordinates specified in the parameters (top and left) refer to absolute
+        display coordinates, and are not relative to coordinates within a window.
+    */
+    void InvalidateRegion( K_USHORT usLeft_, K_USHORT usTop_, K_USHORT usWidth_, K_USHORT usHeight_ );
+
 private:
 	K_USHORT m_usTop;		//!< Topmost pixel of the window on the event surface
 	K_USHORT m_usLeft;		//!< Leftmost pixel of the window on the event surface
@@ -486,6 +493,12 @@ public:
     */
     GuiWindow *FindWindowByName( const K_CHAR *szName_ );
 
+    /*!
+        Invalidate a region of the window, specified by the bounding box.  The
+        coordinates specified in the parameters (top and left) refer to absolute
+        display coordinates, and are not relative to coordinates within a window.
+    */
+    void InvalidateRegion( K_USHORT usLeft_, K_USHORT usTop_, K_USHORT usWidth_, K_USHORT usHeight_ );
 
 private:
 	/*!

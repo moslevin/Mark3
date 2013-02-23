@@ -12,36 +12,53 @@ Copyright (c) 2012 Funkenstein Software Consulting, all rights reserved.
 See license.txt for more information
 ===========================================================================*/
 /*!
-	\file control_groupbox.h
-	\brief GUI Group Box Control
+	\file control_notification.h
+	\brief Notification pop-up control
 
-	A groupbox control is essentially a panel with a text caption, and a
-	lined border.
+    A pop-up control that can be used to present the user with information
+    about system state changes, events, etc.
 */
 
-#ifndef __CONTROL_SLICKGROUPBOX_H__
-#define __CONTROL_SLICKGROUPBOX_H__
+#ifndef __CONTROL_NOTIFICATION_H__
+#define __CONTROL_NOTIFICATION_H__
 
 #include "gui.h"
 #include "kerneltypes.h"
 #include "draw.h"
 
-class SlickGroupBoxControl : public GuiControl
+class NotificationControl : public GuiControl
 {
 public:
-	virtual void Init() { SetAcceptFocus(false); m_uBGColor = COLOR_BLACK; }
+	virtual void Init()
+	{
+        SetAcceptFocus(false);
+        m_szCaption = "";
+        m_pstFont = NULL;
+        m_bVisible = true;
+        m_bTrigger = false;
+    }
+
 	virtual void Draw();
-	virtual GuiReturn_t ProcessEvent( GuiEvent_t *pstEvent_ ) { return GUI_EVENT_OK; };
+	virtual GuiReturn_t ProcessEvent( GuiEvent_t *pstEvent_ );
     virtual void Activate( bool bActivate_ ) {}
 
     void SetFont( Font_t *pstFont_ ) { m_pstFont = pstFont_; }
-    void SetCaption( const K_CHAR *pcCaption_ ) { m_pcCaption = pcCaption_; }
-    void SetBGColor( COLOR uColor_ ) { m_uBGColor = uColor_; }
-private:
+    void SetCaption( const K_CHAR *szCaption_ ) { m_szCaption = szCaption_; }
 
-	Font_t *m_pstFont;
-	const K_CHAR *m_pcCaption;
-	COLOR m_uBGColor;
+    void Trigger( K_USHORT usTimeout_ )
+    {
+        m_usTimeout = usTimeout_;
+        m_bTrigger = true;
+        m_bVisible = true;
+        SetStale();
+    }
+
+private:
+    const K_CHAR * m_szCaption;
+    Font_t *m_pstFont;
+    K_USHORT m_usTimeout;
+    bool m_bTrigger;
+    bool m_bVisible;
 };
 
 #endif
