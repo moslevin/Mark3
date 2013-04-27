@@ -48,7 +48,7 @@ void LabelControl::Draw()
     stRect.usLeft = GetLeft() + usX;
     stRect.usRight = stRect.usLeft + GetWidth() - 1;
     stRect.usTop = GetTop() + usY;
-    stRect.usBottom = stRect.usTop + usY + GetHeight() - 1;
+    stRect.usBottom = stRect.usTop + GetHeight() - 1;
     stRect.uLineColor = m_uBackColor;
     stRect.uFillColor = m_uBackColor;
     stRect.bFill = true;

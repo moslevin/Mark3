@@ -1,171 +1,171 @@
 Archive member included because of file (symbol)
 
-/home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(driver.cpp.o)
+/home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(driver.cpp.o)
                               ./obj/avr/atmega328p/gcc/platform.cpp.o (_ZN10DriverList14m_clDriverListE)
-/home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(ll.cpp.o)
+/home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(ll.cpp.o)
                               ./obj/avr/atmega328p/gcc/platform.cpp.o (_ZN14DoubleLinkList3AddEP12LinkListNode)
-/home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(message.cpp.o)
+/home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(message.cpp.o)
                               ./obj/avr/atmega328p/gcc/platform.cpp.o (_ZN17GlobalMessagePool4PushEP7Message)
-/home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(semaphore.cpp.o)
-                              /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(message.cpp.o) (_ZN9Semaphore4InitEtt)
-/home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(thread.cpp.o)
+/home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(semaphore.cpp.o)
+                              /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(message.cpp.o) (_ZN9Semaphore4InitEtt)
+/home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(thread.cpp.o)
                               ./obj/avr/atmega328p/gcc/platform.cpp.o (_ZN6Thread4InitEPhthPFvPvES1_)
-/home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(threadlist.cpp.o)
-                              /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(semaphore.cpp.o) (_ZN10ThreadList13HighestWaiterEv)
-/home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kernel.cpp.o)
+/home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(threadlist.cpp.o)
+                              /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(semaphore.cpp.o) (_ZN10ThreadList13HighestWaiterEv)
+/home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kernel.cpp.o)
                               ./obj/avr/atmega328p/gcc/platform.cpp.o (_ZN6Kernel4InitEv)
-/home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(timerlist.cpp.o)
-                              /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kernel.cpp.o) (_ZN9TimerList4InitEv)
-/home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(threadport.cpp.o)
-                              /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(thread.cpp.o) (_ZN10ThreadPort9InitStackEP6Thread)
-/home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kernelswi.cpp.o)
-                              /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(threadport.cpp.o) (_ZN9KernelSWI6ConfigEv)
-/home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kerneltimer.cpp.o)
-                              /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(threadport.cpp.o) (_ZN11KernelTimer6ConfigEv)
-/home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kprofile.cpp.o)
-                              /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kernel.cpp.o) (_ZN8Profiler4InitEv)
-/home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(blocking.cpp.o)
-                              /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(semaphore.cpp.o) (_ZN14BlockingObject5BlockEP6Thread)
-/home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(quantum.cpp.o)
-                              /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(thread.cpp.o) (_ZN7Quantum9AddThreadEP6Thread)
-/home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(scheduler.cpp.o)
-                              /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kernel.cpp.o) (_ZN9Scheduler4InitEv)
-/home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libslip.a(slip_mux.cpp.o)
+/home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(timerlist.cpp.o)
+                              /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kernel.cpp.o) (_ZN9TimerList4InitEv)
+/home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(threadport.cpp.o)
+                              /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(thread.cpp.o) (_ZN10ThreadPort9InitStackEP6Thread)
+/home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kernelswi.cpp.o)
+                              /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(threadport.cpp.o) (_ZN9KernelSWI6ConfigEv)
+/home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kerneltimer.cpp.o)
+                              /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(threadport.cpp.o) (_ZN11KernelTimer6ConfigEv)
+/home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kprofile.cpp.o)
+                              /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kernel.cpp.o) (_ZN8Profiler4InitEv)
+/home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(blocking.cpp.o)
+                              /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(semaphore.cpp.o) (_ZN14BlockingObject5BlockEP6Thread)
+/home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(quantum.cpp.o)
+                              /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(thread.cpp.o) (_ZN7Quantum9AddThreadEP6Thread)
+/home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(scheduler.cpp.o)
+                              /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kernel.cpp.o) (_ZN9Scheduler4InitEv)
+/home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libslip.a(slip_mux.cpp.o)
                               ./obj/avr/atmega328p/gcc/platform.cpp.o (_ZN7SlipMux17m_pclMessageQueueE)
-/home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libslip.a(slip.cpp.o)
-                              /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libslip.a(slip_mux.cpp.o) (_ZN4Slip8ReadDataEPhPct)
-/home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libdrvUART.a(drvUART.cpp.o)
+/home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libslip.a(slip.cpp.o)
+                              /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libslip.a(slip_mux.cpp.o) (_ZN4Slip8ReadDataEPhPct)
+/home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libdrvUART.a(drvUART.cpp.o)
                               ./obj/avr/atmega328p/gcc/platform.cpp.o (_ZN10ATMegaUART4InitEv)
-/opt/avr8-gnu-toolchain-linux_x86_64/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a(_mulsi3.o)
-                              /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(timerlist.cpp.o) (__mulsi3)
-/opt/avr8-gnu-toolchain-linux_x86_64/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a(_udivmodsi4.o)
-                              /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(timerlist.cpp.o) (__udivmodsi4)
-/opt/avr8-gnu-toolchain-linux_x86_64/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a(_exit.o)
-                              /opt/avr8-gnu-toolchain-linux_x86_64/bin/../lib/gcc/avr/4.6.2/../../../../avr/lib/avr5/crtm328p.o (exit)
-/opt/avr8-gnu-toolchain-linux_x86_64/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a(_copy_data.o)
+/home/moslevin/atmel/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a(_mulsi3.o)
+                              /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(timerlist.cpp.o) (__mulsi3)
+/home/moslevin/atmel/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a(_udivmodsi4.o)
+                              /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(timerlist.cpp.o) (__udivmodsi4)
+/home/moslevin/atmel/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a(_exit.o)
+                              /home/moslevin/atmel/bin/../lib/gcc/avr/4.6.2/../../../../avr/lib/avr5/crtm328p.o (exit)
+/home/moslevin/atmel/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a(_copy_data.o)
                               ./obj/avr/atmega328p/gcc/platform.cpp.o (__do_copy_data)
-/opt/avr8-gnu-toolchain-linux_x86_64/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a(_clear_bss.o)
+/home/moslevin/atmel/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a(_clear_bss.o)
                               ./obj/avr/atmega328p/gcc/platform.cpp.o (__do_clear_bss)
-/opt/avr8-gnu-toolchain-linux_x86_64/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a(_ctors.o)
+/home/moslevin/atmel/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a(_ctors.o)
                               ./obj/avr/atmega328p/gcc/platform.cpp.o (__do_global_ctors)
-/opt/avr8-gnu-toolchain-linux_x86_64/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a(_tablejump.o)
-                              /opt/avr8-gnu-toolchain-linux_x86_64/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a(_ctors.o) (__tablejump__)
+/home/moslevin/atmel/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a(_tablejump.o)
+                              /home/moslevin/atmel/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a(_ctors.o) (__tablejump__)
 
 Discarded input sections
 
- .bss           0x0000000000000000        0x0 /opt/avr8-gnu-toolchain-linux_x86_64/bin/../lib/gcc/avr/4.6.2/../../../../avr/lib/avr5/crtm328p.o
+ .bss           0x0000000000000000        0x0 /home/moslevin/atmel/bin/../lib/gcc/avr/4.6.2/../../../../avr/lib/avr5/crtm328p.o
  .text          0x0000000000000000        0x0 ./obj/avr/atmega328p/gcc/platform.cpp.o
- .text          0x0000000000000000        0x0 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(driver.cpp.o)
- .text          0x0000000000000000        0x0 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(ll.cpp.o)
- .bss           0x0000000000000000        0x0 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(ll.cpp.o)
+ .text          0x0000000000000000        0x0 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(driver.cpp.o)
+ .text          0x0000000000000000        0x0 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(ll.cpp.o)
+ .bss           0x0000000000000000        0x0 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(ll.cpp.o)
  .text._ZN16CircularLinkList13PivotBackwardEv
-                0x0000000000000000       0x28 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(ll.cpp.o)
- .text          0x0000000000000000        0x0 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(message.cpp.o)
+                0x0000000000000000       0x28 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(ll.cpp.o)
+ .text          0x0000000000000000        0x0 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(message.cpp.o)
  .text._ZN12MessageQueue7ReceiveEm
-                0x0000000000000000       0x4e /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(message.cpp.o)
+                0x0000000000000000       0x4e /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(message.cpp.o)
  .text._ZN12MessageQueue8GetCountEv
-                0x0000000000000000        0x6 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(message.cpp.o)
- .text          0x0000000000000000        0x0 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(semaphore.cpp.o)
- .bss           0x0000000000000000        0x0 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(semaphore.cpp.o)
+                0x0000000000000000        0x6 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(message.cpp.o)
+ .text          0x0000000000000000        0x0 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(semaphore.cpp.o)
+ .bss           0x0000000000000000        0x0 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(semaphore.cpp.o)
  .text._ZN9Semaphore6WakeMeEP6Thread
-                0x0000000000000000        0x6 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(semaphore.cpp.o)
+                0x0000000000000000        0x6 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(semaphore.cpp.o)
  .text._ZN9Semaphore8GetCountEv
-                0x0000000000000000       0x22 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(semaphore.cpp.o)
- .text          0x0000000000000000        0x0 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(thread.cpp.o)
+                0x0000000000000000       0x22 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(semaphore.cpp.o)
+ .text          0x0000000000000000        0x0 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(thread.cpp.o)
  .text._ZL19ThreadSleepCallbackP6ThreadPv
-                0x0000000000000000        0x8 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(thread.cpp.o)
+                0x0000000000000000        0x8 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(thread.cpp.o)
  .text._ZN6Thread5SleepEm
-                0x0000000000000000       0xae /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(thread.cpp.o)
+                0x0000000000000000       0xae /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(thread.cpp.o)
  .text._ZN6Thread13GetStackSlackEv
-                0x0000000000000000       0x46 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(thread.cpp.o)
+                0x0000000000000000       0x46 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(thread.cpp.o)
  .text._ZN6Thread15SetPriorityBaseEh
-                0x0000000000000000       0x4c /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(thread.cpp.o)
+                0x0000000000000000       0x4c /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(thread.cpp.o)
  .text._ZN6Thread15InheritPriorityEh
-                0x0000000000000000       0x22 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(thread.cpp.o)
+                0x0000000000000000       0x22 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(thread.cpp.o)
  .text._ZN6Thread11SetPriorityEh
-                0x0000000000000000       0x8e /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(thread.cpp.o)
+                0x0000000000000000       0x8e /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(thread.cpp.o)
  .text._ZN6Thread4ExitEv
-                0x0000000000000000       0x46 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(thread.cpp.o)
- .text          0x0000000000000000        0x0 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(threadlist.cpp.o)
- .bss           0x0000000000000000        0x0 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(threadlist.cpp.o)
+                0x0000000000000000       0x46 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(thread.cpp.o)
+ .text          0x0000000000000000        0x0 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(threadlist.cpp.o)
+ .bss           0x0000000000000000        0x0 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(threadlist.cpp.o)
  .text._ZN10ThreadList3AddEP12LinkListNodePhh
-                0x0000000000000000       0x1e /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(threadlist.cpp.o)
- .text          0x0000000000000000        0x0 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kernel.cpp.o)
- .bss           0x0000000000000000        0x0 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kernel.cpp.o)
- .text          0x0000000000000000        0x0 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(timerlist.cpp.o)
+                0x0000000000000000       0x1e /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(threadlist.cpp.o)
+ .text          0x0000000000000000        0x0 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kernel.cpp.o)
+ .bss           0x0000000000000000        0x0 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kernel.cpp.o)
+ .text          0x0000000000000000        0x0 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(timerlist.cpp.o)
  .text._ZN5Timer16SetIntervalTicksEm
-                0x0000000000000000        0xc /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(timerlist.cpp.o)
+                0x0000000000000000        0xc /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(timerlist.cpp.o)
  .text._ZN5Timer18SetIntervalSecondsEm
-                0x0000000000000000       0x2e /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(timerlist.cpp.o)
+                0x0000000000000000       0x2e /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(timerlist.cpp.o)
  .text._ZN5Timer19SetIntervalUSecondsEm
-                0x0000000000000000       0x4c /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(timerlist.cpp.o)
- .text          0x0000000000000000        0x0 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(threadport.cpp.o)
- .bss           0x0000000000000000        0x2 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(threadport.cpp.o)
- .text          0x0000000000000000        0x0 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kernelswi.cpp.o)
- .bss           0x0000000000000000        0x0 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kernelswi.cpp.o)
+                0x0000000000000000       0x4c /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(timerlist.cpp.o)
+ .text          0x0000000000000000        0x0 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(threadport.cpp.o)
+ .bss           0x0000000000000000        0x2 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(threadport.cpp.o)
+ .text          0x0000000000000000        0x0 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kernelswi.cpp.o)
+ .bss           0x0000000000000000        0x0 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kernelswi.cpp.o)
  .text._ZN9KernelSWI4StopEv
-                0x0000000000000000        0x4 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kernelswi.cpp.o)
+                0x0000000000000000        0x4 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kernelswi.cpp.o)
  .text._ZN9KernelSWI2DIEv
-                0x0000000000000000        0x8 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kernelswi.cpp.o)
+                0x0000000000000000        0x8 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kernelswi.cpp.o)
  .text._ZN9KernelSWI2RIEh
-                0x0000000000000000        0xc /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kernelswi.cpp.o)
+                0x0000000000000000        0xc /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kernelswi.cpp.o)
  .text._ZN9KernelSWI5ClearEv
-                0x0000000000000000        0x4 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kernelswi.cpp.o)
- .text          0x0000000000000000        0x0 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kerneltimer.cpp.o)
- .bss           0x0000000000000000        0x0 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kerneltimer.cpp.o)
+                0x0000000000000000        0x4 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kernelswi.cpp.o)
+ .text          0x0000000000000000        0x0 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kerneltimer.cpp.o)
+ .bss           0x0000000000000000        0x0 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kerneltimer.cpp.o)
  .text._ZN11KernelTimer2DIEv
-                0x0000000000000000       0x18 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kerneltimer.cpp.o)
+                0x0000000000000000       0x18 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kerneltimer.cpp.o)
  .text._ZN11KernelTimer2RIEh
-                0x0000000000000000       0x18 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kerneltimer.cpp.o)
+                0x0000000000000000       0x18 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kerneltimer.cpp.o)
  .text._ZN11KernelTimer2EIEv
-                0x0000000000000000        0x8 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kerneltimer.cpp.o)
- .text          0x0000000000000000        0x0 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kprofile.cpp.o)
+                0x0000000000000000        0x8 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kerneltimer.cpp.o)
+ .text          0x0000000000000000        0x0 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kprofile.cpp.o)
  .text._ZN8Profiler5StartEv
-                0x0000000000000000       0x16 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kprofile.cpp.o)
+                0x0000000000000000       0x16 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kprofile.cpp.o)
  .text._ZN8Profiler4StopEv
-                0x0000000000000000       0x14 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kprofile.cpp.o)
+                0x0000000000000000       0x14 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kprofile.cpp.o)
  .text._ZN8Profiler4ReadEv
-                0x0000000000000000       0x2c /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kprofile.cpp.o)
- .text          0x0000000000000000        0x0 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(blocking.cpp.o)
- .bss           0x0000000000000000        0x0 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(blocking.cpp.o)
- .text          0x0000000000000000        0x0 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(quantum.cpp.o)
- .text          0x0000000000000000        0x0 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(scheduler.cpp.o)
- .text          0x0000000000000000        0x0 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libslip.a(slip_mux.cpp.o)
+                0x0000000000000000       0x2c /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kprofile.cpp.o)
+ .text          0x0000000000000000        0x0 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(blocking.cpp.o)
+ .bss           0x0000000000000000        0x0 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(blocking.cpp.o)
+ .text          0x0000000000000000        0x0 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(quantum.cpp.o)
+ .text          0x0000000000000000        0x0 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(scheduler.cpp.o)
+ .text          0x0000000000000000        0x0 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libslip.a(slip_mux.cpp.o)
  .text._ZN7SlipMux14InstallHandlerEhPFvP6DriverhPhtE
-                0x0000000000000000       0x18 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libslip.a(slip_mux.cpp.o)
- .text          0x0000000000000000        0x0 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libslip.a(slip.cpp.o)
- .bss           0x0000000000000000        0x0 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libslip.a(slip.cpp.o)
+                0x0000000000000000       0x18 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libslip.a(slip_mux.cpp.o)
+ .text          0x0000000000000000        0x0 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libslip.a(slip.cpp.o)
+ .bss           0x0000000000000000        0x0 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libslip.a(slip.cpp.o)
  .text._ZN4Slip10EncodeByteEhPh
-                0x0000000000000000       0x28 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libslip.a(slip.cpp.o)
+                0x0000000000000000       0x28 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libslip.a(slip.cpp.o)
  .text._ZN4Slip9WriteByteEh
-                0x0000000000000000       0x72 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libslip.a(slip.cpp.o)
+                0x0000000000000000       0x72 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libslip.a(slip.cpp.o)
  .text._ZN4Slip9WriteDataEhPct
-                0x0000000000000000       0xfe /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libslip.a(slip.cpp.o)
+                0x0000000000000000       0xfe /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libslip.a(slip.cpp.o)
  .text._ZN4Slip7SendAckEv
-                0x0000000000000000        0x8 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libslip.a(slip.cpp.o)
+                0x0000000000000000        0x8 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libslip.a(slip.cpp.o)
  .text._ZN4Slip8SendNackEv
-                0x0000000000000000        0x8 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libslip.a(slip.cpp.o)
+                0x0000000000000000        0x8 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libslip.a(slip.cpp.o)
  .text._ZN4Slip11WriteVectorEhP14SlipDataVectort
-                0x0000000000000000      0x154 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libslip.a(slip.cpp.o)
- .text          0x0000000000000000        0x0 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libdrvUART.a(drvUART.cpp.o)
- .text          0x0000000000000000        0x0 /opt/avr8-gnu-toolchain-linux_x86_64/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a(_mulsi3.o)
- .bss           0x0000000000000000        0x0 /opt/avr8-gnu-toolchain-linux_x86_64/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a(_mulsi3.o)
- .text          0x0000000000000000        0x0 /opt/avr8-gnu-toolchain-linux_x86_64/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a(_udivmodsi4.o)
- .bss           0x0000000000000000        0x0 /opt/avr8-gnu-toolchain-linux_x86_64/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a(_udivmodsi4.o)
- .text          0x0000000000000000        0x0 /opt/avr8-gnu-toolchain-linux_x86_64/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a(_exit.o)
- .bss           0x0000000000000000        0x0 /opt/avr8-gnu-toolchain-linux_x86_64/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a(_exit.o)
- .text.libgcc   0x0000000000000000        0x0 /opt/avr8-gnu-toolchain-linux_x86_64/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a(_exit.o)
- .text          0x0000000000000000        0x0 /opt/avr8-gnu-toolchain-linux_x86_64/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a(_copy_data.o)
- .bss           0x0000000000000000        0x0 /opt/avr8-gnu-toolchain-linux_x86_64/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a(_copy_data.o)
- .text.libgcc   0x0000000000000000        0x0 /opt/avr8-gnu-toolchain-linux_x86_64/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a(_copy_data.o)
- .text          0x0000000000000000        0x0 /opt/avr8-gnu-toolchain-linux_x86_64/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a(_clear_bss.o)
- .bss           0x0000000000000000        0x0 /opt/avr8-gnu-toolchain-linux_x86_64/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a(_clear_bss.o)
- .text.libgcc   0x0000000000000000        0x0 /opt/avr8-gnu-toolchain-linux_x86_64/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a(_clear_bss.o)
- .text          0x0000000000000000        0x0 /opt/avr8-gnu-toolchain-linux_x86_64/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a(_ctors.o)
- .bss           0x0000000000000000        0x0 /opt/avr8-gnu-toolchain-linux_x86_64/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a(_ctors.o)
- .text.libgcc   0x0000000000000000        0x0 /opt/avr8-gnu-toolchain-linux_x86_64/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a(_ctors.o)
- .text          0x0000000000000000        0x0 /opt/avr8-gnu-toolchain-linux_x86_64/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a(_tablejump.o)
- .bss           0x0000000000000000        0x0 /opt/avr8-gnu-toolchain-linux_x86_64/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a(_tablejump.o)
+                0x0000000000000000      0x154 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libslip.a(slip.cpp.o)
+ .text          0x0000000000000000        0x0 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libdrvUART.a(drvUART.cpp.o)
+ .text          0x0000000000000000        0x0 /home/moslevin/atmel/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a(_mulsi3.o)
+ .bss           0x0000000000000000        0x0 /home/moslevin/atmel/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a(_mulsi3.o)
+ .text          0x0000000000000000        0x0 /home/moslevin/atmel/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a(_udivmodsi4.o)
+ .bss           0x0000000000000000        0x0 /home/moslevin/atmel/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a(_udivmodsi4.o)
+ .text          0x0000000000000000        0x0 /home/moslevin/atmel/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a(_exit.o)
+ .bss           0x0000000000000000        0x0 /home/moslevin/atmel/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a(_exit.o)
+ .text.libgcc   0x0000000000000000        0x0 /home/moslevin/atmel/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a(_exit.o)
+ .text          0x0000000000000000        0x0 /home/moslevin/atmel/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a(_copy_data.o)
+ .bss           0x0000000000000000        0x0 /home/moslevin/atmel/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a(_copy_data.o)
+ .text.libgcc   0x0000000000000000        0x0 /home/moslevin/atmel/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a(_copy_data.o)
+ .text          0x0000000000000000        0x0 /home/moslevin/atmel/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a(_clear_bss.o)
+ .bss           0x0000000000000000        0x0 /home/moslevin/atmel/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a(_clear_bss.o)
+ .text.libgcc   0x0000000000000000        0x0 /home/moslevin/atmel/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a(_clear_bss.o)
+ .text          0x0000000000000000        0x0 /home/moslevin/atmel/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a(_ctors.o)
+ .bss           0x0000000000000000        0x0 /home/moslevin/atmel/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a(_ctors.o)
+ .text.libgcc   0x0000000000000000        0x0 /home/moslevin/atmel/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a(_ctors.o)
+ .text          0x0000000000000000        0x0 /home/moslevin/atmel/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a(_tablejump.o)
+ .bss           0x0000000000000000        0x0 /home/moslevin/atmel/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a(_tablejump.o)
 
 Memory Configuration
 
@@ -181,18 +181,18 @@ signature        0x0000000000840000 0x0000000000000400 rw !x
 Linker script and memory map
 
 Address of section .data set to 0x800100
-LOAD /opt/avr8-gnu-toolchain-linux_x86_64/bin/../lib/gcc/avr/4.6.2/../../../../avr/lib/avr5/crtm328p.o
+LOAD /home/moslevin/atmel/bin/../lib/gcc/avr/4.6.2/../../../../avr/lib/avr5/crtm328p.o
 START GROUP
-LOAD /opt/avr8-gnu-toolchain-linux_x86_64/bin/../lib/gcc/avr/4.6.2/../../../../avr/lib/avr5/libm.a
+LOAD /home/moslevin/atmel/bin/../lib/gcc/avr/4.6.2/../../../../avr/lib/avr5/libm.a
 END GROUP
 LOAD ./obj/avr/atmega328p/gcc/platform.cpp.o
-LOAD /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a
-LOAD /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libslip.a
-LOAD /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libdrvUART.a
-LOAD /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libheap.a
-LOAD /opt/avr8-gnu-toolchain-linux_x86_64/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a
-LOAD /opt/avr8-gnu-toolchain-linux_x86_64/bin/../lib/gcc/avr/4.6.2/../../../../avr/lib/avr5/libc.a
-LOAD /opt/avr8-gnu-toolchain-linux_x86_64/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a
+LOAD /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a
+LOAD /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libslip.a
+LOAD /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libdrvUART.a
+LOAD /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libheap.a
+LOAD /home/moslevin/atmel/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a
+LOAD /home/moslevin/atmel/bin/../lib/gcc/avr/4.6.2/../../../../avr/lib/avr5/libc.a
+LOAD /home/moslevin/atmel/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a
 
 .hash
  *(.hash)
@@ -286,7 +286,7 @@ LOAD /opt/avr8-gnu-toolchain-linux_x86_64/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a
 
 .text           0x0000000000000000     0x1b62
  *(.vectors)
- .vectors       0x0000000000000000       0x68 /opt/avr8-gnu-toolchain-linux_x86_64/bin/../lib/gcc/avr/4.6.2/../../../../avr/lib/avr5/crtm328p.o
+ .vectors       0x0000000000000000       0x68 /home/moslevin/atmel/bin/../lib/gcc/avr/4.6.2/../../../../avr/lib/avr5/crtm328p.o
                 0x0000000000000000                __vectors
                 0x0000000000000000                __vector_default
  *(.vectors)
@@ -305,12 +305,12 @@ LOAD /opt/avr8-gnu-toolchain-linux_x86_64/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a
                 0x0000000000000068                __ctors_start = .
  *(.ctors)
  .ctors         0x0000000000000068        0x2 ./obj/avr/atmega328p/gcc/platform.cpp.o
- .ctors         0x000000000000006a        0x2 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(driver.cpp.o)
- .ctors         0x000000000000006c        0x2 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(message.cpp.o)
- .ctors         0x000000000000006e        0x2 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(timerlist.cpp.o)
- .ctors         0x0000000000000070        0x2 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(quantum.cpp.o)
- .ctors         0x0000000000000072        0x2 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(scheduler.cpp.o)
- .ctors         0x0000000000000074        0x2 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libslip.a(slip_mux.cpp.o)
+ .ctors         0x000000000000006a        0x2 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(driver.cpp.o)
+ .ctors         0x000000000000006c        0x2 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(message.cpp.o)
+ .ctors         0x000000000000006e        0x2 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(timerlist.cpp.o)
+ .ctors         0x0000000000000070        0x2 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(quantum.cpp.o)
+ .ctors         0x0000000000000072        0x2 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(scheduler.cpp.o)
+ .ctors         0x0000000000000074        0x2 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libslip.a(slip_mux.cpp.o)
                 0x0000000000000076                __ctors_end = .
                 0x0000000000000076                __dtors_start = .
  *(.dtors)
@@ -318,26 +318,26 @@ LOAD /opt/avr8-gnu-toolchain-linux_x86_64/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a
  SORT(*)(.ctors)
  SORT(*)(.dtors)
  *(.init0)
- .init0         0x0000000000000076        0x0 /opt/avr8-gnu-toolchain-linux_x86_64/bin/../lib/gcc/avr/4.6.2/../../../../avr/lib/avr5/crtm328p.o
+ .init0         0x0000000000000076        0x0 /home/moslevin/atmel/bin/../lib/gcc/avr/4.6.2/../../../../avr/lib/avr5/crtm328p.o
                 0x0000000000000076                __init
  *(.init0)
  *(.init1)
  *(.init1)
  *(.init2)
- .init2         0x0000000000000076        0xc /opt/avr8-gnu-toolchain-linux_x86_64/bin/../lib/gcc/avr/4.6.2/../../../../avr/lib/avr5/crtm328p.o
+ .init2         0x0000000000000076        0xc /home/moslevin/atmel/bin/../lib/gcc/avr/4.6.2/../../../../avr/lib/avr5/crtm328p.o
  *(.init2)
  *(.init3)
  *(.init3)
  *(.init4)
- .init4         0x0000000000000082       0x16 /opt/avr8-gnu-toolchain-linux_x86_64/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a(_copy_data.o)
+ .init4         0x0000000000000082       0x16 /home/moslevin/atmel/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a(_copy_data.o)
                 0x0000000000000082                __do_copy_data
- .init4         0x0000000000000098       0x10 /opt/avr8-gnu-toolchain-linux_x86_64/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a(_clear_bss.o)
+ .init4         0x0000000000000098       0x10 /home/moslevin/atmel/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a(_clear_bss.o)
                 0x0000000000000098                __do_clear_bss
  *(.init4)
  *(.init5)
  *(.init5)
  *(.init6)
- .init6         0x00000000000000a8       0x16 /opt/avr8-gnu-toolchain-linux_x86_64/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a(_ctors.o)
+ .init6         0x00000000000000a8       0x16 /home/moslevin/atmel/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a(_ctors.o)
                 0x00000000000000a8                __do_global_ctors
  *(.init6)
  *(.init7)
@@ -345,10 +345,10 @@ LOAD /opt/avr8-gnu-toolchain-linux_x86_64/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a
  *(.init8)
  *(.init8)
  *(.init9)
- .init9         0x00000000000000be        0x8 /opt/avr8-gnu-toolchain-linux_x86_64/bin/../lib/gcc/avr/4.6.2/../../../../avr/lib/avr5/crtm328p.o
+ .init9         0x00000000000000be        0x8 /home/moslevin/atmel/bin/../lib/gcc/avr/4.6.2/../../../../avr/lib/avr5/crtm328p.o
  *(.init9)
  *(.text)
- .text          0x00000000000000c6        0x4 /opt/avr8-gnu-toolchain-linux_x86_64/bin/../lib/gcc/avr/4.6.2/../../../../avr/lib/avr5/crtm328p.o
+ .text          0x00000000000000c6        0x4 /home/moslevin/atmel/bin/../lib/gcc/avr/4.6.2/../../../../avr/lib/avr5/crtm328p.o
                 0x00000000000000c6                __vector_22
                 0x00000000000000c6                __vector_24
                 0x00000000000000c6                __vector_12
@@ -382,298 +382,298 @@ LOAD /opt/avr8-gnu-toolchain-linux_x86_64/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a
  .text.startup._GLOBAL__sub_I_g_clMainThreadQueue
                 0x00000000000001ca       0x40 ./obj/avr/atmega328p/gcc/platform.cpp.o
  .text._ZN7DevNull4InitEv
-                0x000000000000020a        0xc /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(driver.cpp.o)
+                0x000000000000020a        0xc /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(driver.cpp.o)
                 0x000000000000020a                _ZN7DevNull4InitEv
  .text._ZN7DevNull4OpenEv
-                0x0000000000000216        0x4 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(driver.cpp.o)
+                0x0000000000000216        0x4 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(driver.cpp.o)
                 0x0000000000000216                _ZN7DevNull4OpenEv
  .text._ZN7DevNull5CloseEv
-                0x000000000000021a        0x4 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(driver.cpp.o)
+                0x000000000000021a        0x4 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(driver.cpp.o)
                 0x000000000000021a                _ZN7DevNull5CloseEv
  .text._ZN7DevNull4ReadEtPh
-                0x000000000000021e        0x6 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(driver.cpp.o)
+                0x000000000000021e        0x6 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(driver.cpp.o)
                 0x000000000000021e                _ZN7DevNull4ReadEtPh
  .text._ZN7DevNull5WriteEtPh
-                0x0000000000000224        0x6 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(driver.cpp.o)
+                0x0000000000000224        0x6 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(driver.cpp.o)
                 0x0000000000000224                _ZN7DevNull5WriteEtPh
  .text._ZN7DevNull7ControlEtPvtS0_t
-                0x000000000000022a        0x6 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(driver.cpp.o)
+                0x000000000000022a        0x6 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(driver.cpp.o)
                 0x000000000000022a                _ZN7DevNull7ControlEtPvtS0_t
  .text._ZN10DriverList4InitEv
-                0x0000000000000230       0x1a /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(driver.cpp.o)
+                0x0000000000000230       0x1a /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(driver.cpp.o)
                 0x0000000000000230                _ZN10DriverList4InitEv
  .text._ZN10DriverList10FindByPathEPKc
-                0x000000000000024a       0x50 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(driver.cpp.o)
+                0x000000000000024a       0x50 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(driver.cpp.o)
                 0x000000000000024a                _ZN10DriverList10FindByPathEPKc
  .text.startup._GLOBAL__sub_I__ZN10DriverList14m_clDriverListE
-                0x000000000000029a       0x2a /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(driver.cpp.o)
+                0x000000000000029a       0x2a /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(driver.cpp.o)
  .text._ZN14DoubleLinkList6RemoveEP12LinkListNode
-                0x00000000000002c4       0x68 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(ll.cpp.o)
+                0x00000000000002c4       0x68 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(ll.cpp.o)
                 0x00000000000002c4                _ZN14DoubleLinkList6RemoveEP12LinkListNode
  .text._ZN16CircularLinkList6RemoveEP12LinkListNode
-                0x000000000000032c       0x84 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(ll.cpp.o)
+                0x000000000000032c       0x84 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(ll.cpp.o)
                 0x000000000000032c                _ZN16CircularLinkList6RemoveEP12LinkListNode
  .text._ZN14DoubleLinkList3AddEP12LinkListNode
-                0x00000000000003b0       0x48 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(ll.cpp.o)
+                0x00000000000003b0       0x48 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(ll.cpp.o)
                 0x00000000000003b0                _ZN14DoubleLinkList3AddEP12LinkListNode
  .text._ZN16CircularLinkList3AddEP12LinkListNode
-                0x00000000000003f8       0x52 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(ll.cpp.o)
+                0x00000000000003f8       0x52 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(ll.cpp.o)
                 0x00000000000003f8                _ZN16CircularLinkList3AddEP12LinkListNode
  .text._ZN12LinkListNode9ClearNodeEv
-                0x000000000000044a        0xc /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(ll.cpp.o)
+                0x000000000000044a        0xc /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(ll.cpp.o)
                 0x000000000000044a                _ZN12LinkListNode9ClearNodeEv
  .text._ZN16CircularLinkList12PivotForwardEv
-                0x0000000000000456       0x22 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(ll.cpp.o)
+                0x0000000000000456       0x22 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(ll.cpp.o)
                 0x0000000000000456                _ZN16CircularLinkList12PivotForwardEv
  .text._ZN17GlobalMessagePool4InitEv
-                0x0000000000000478       0x38 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(message.cpp.o)
+                0x0000000000000478       0x38 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(message.cpp.o)
                 0x0000000000000478                _ZN17GlobalMessagePool4InitEv
  .text._ZN17GlobalMessagePool4PushEP7Message
-                0x00000000000004b0       0x26 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(message.cpp.o)
+                0x00000000000004b0       0x26 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(message.cpp.o)
                 0x00000000000004b0                _ZN17GlobalMessagePool4PushEP7Message
  .text._ZN17GlobalMessagePool3PopEv
-                0x00000000000004d6       0x38 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(message.cpp.o)
+                0x00000000000004d6       0x38 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(message.cpp.o)
                 0x00000000000004d6                _ZN17GlobalMessagePool3PopEv
  .text._ZN12MessageQueue4InitEv
-                0x000000000000050e        0xe /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(message.cpp.o)
+                0x000000000000050e        0xe /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(message.cpp.o)
                 0x000000000000050e                _ZN12MessageQueue4InitEv
  .text._ZN12MessageQueue7ReceiveEv
-                0x000000000000051c       0x44 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(message.cpp.o)
+                0x000000000000051c       0x44 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(message.cpp.o)
                 0x000000000000051c                _ZN12MessageQueue7ReceiveEv
  .text._ZN12MessageQueue4SendEP7Message
-                0x0000000000000560       0x34 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(message.cpp.o)
+                0x0000000000000560       0x34 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(message.cpp.o)
                 0x0000000000000560                _ZN12MessageQueue4SendEP7Message
  .text.startup._GLOBAL__sub_I__ZN17GlobalMessagePool16m_aclMessagePoolE
-                0x0000000000000594       0x1e /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(message.cpp.o)
+                0x0000000000000594       0x1e /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(message.cpp.o)
  .text._Z23TimedSemaphore_CallbackP6ThreadPv
-                0x00000000000005b2       0x2e /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(semaphore.cpp.o)
+                0x00000000000005b2       0x2e /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(semaphore.cpp.o)
                 0x00000000000005b2                _Z23TimedSemaphore_CallbackP6ThreadPv
  .text._ZN9Semaphore8WakeNextEv
-                0x00000000000005e0       0x3c /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(semaphore.cpp.o)
+                0x00000000000005e0       0x3c /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(semaphore.cpp.o)
                 0x00000000000005e0                _ZN9Semaphore8WakeNextEv
  .text._ZN9Semaphore4InitEtt
-                0x000000000000061c        0xe /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(semaphore.cpp.o)
+                0x000000000000061c        0xe /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(semaphore.cpp.o)
                 0x000000000000061c                _ZN9Semaphore4InitEtt
  .text._ZN9Semaphore4PostEv
-                0x000000000000062a       0x4e /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(semaphore.cpp.o)
+                0x000000000000062a       0x4e /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(semaphore.cpp.o)
                 0x000000000000062a                _ZN9Semaphore4PostEv
  .text._ZN9Semaphore4PendEm
-                0x0000000000000678       0xd8 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(semaphore.cpp.o)
+                0x0000000000000678       0xd8 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(semaphore.cpp.o)
                 0x0000000000000678                _ZN9Semaphore4PendEm
  .text._ZN9Semaphore4PendEv
-                0x0000000000000750        0xc /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(semaphore.cpp.o)
+                0x0000000000000750        0xc /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(semaphore.cpp.o)
                 0x0000000000000750                _ZN9Semaphore4PendEv
  .text._ZN6Thread4InitEPhthPFvPvES1_
-                0x000000000000075c       0xae /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(thread.cpp.o)
+                0x000000000000075c       0xae /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(thread.cpp.o)
                 0x000000000000075c                _ZN6Thread4InitEPhthPFvPvES1_
  .text._ZN6Thread16ContextSwitchSWIEv
-                0x000000000000080a        0xe /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(thread.cpp.o)
+                0x000000000000080a        0xe /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(thread.cpp.o)
                 0x000000000000080a                _ZN6Thread16ContextSwitchSWIEv
  .text._ZN6Thread5YieldEv
-                0x0000000000000818       0x4a /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(thread.cpp.o)
+                0x0000000000000818       0x4a /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(thread.cpp.o)
                 0x0000000000000818                _ZN6Thread5YieldEv
  .text._ZN6Thread5StartEv
-                0x0000000000000862       0xa4 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(thread.cpp.o)
+                0x0000000000000862       0xa4 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(thread.cpp.o)
                 0x0000000000000862                _ZN6Thread5StartEv
  .text._ZN10ThreadList3AddEP12LinkListNode
-                0x0000000000000906       0x36 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(threadlist.cpp.o)
+                0x0000000000000906       0x36 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(threadlist.cpp.o)
                 0x0000000000000906                _ZN10ThreadList3AddEP12LinkListNode
  .text._ZN10ThreadList6RemoveEP12LinkListNode
-                0x000000000000093c       0x38 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(threadlist.cpp.o)
+                0x000000000000093c       0x38 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(threadlist.cpp.o)
                 0x000000000000093c                _ZN10ThreadList6RemoveEP12LinkListNode
  .text._ZN10ThreadList11SetPriorityEh
-                0x0000000000000974        0x6 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(threadlist.cpp.o)
+                0x0000000000000974        0x6 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(threadlist.cpp.o)
                 0x0000000000000974                _ZN10ThreadList11SetPriorityEh
  .text._ZN10ThreadList14SetFlagPointerEPh
-                0x000000000000097a        0x8 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(threadlist.cpp.o)
+                0x000000000000097a        0x8 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(threadlist.cpp.o)
                 0x000000000000097a                _ZN10ThreadList14SetFlagPointerEPh
  .text._ZN10ThreadList13HighestWaiterEv
-                0x0000000000000982       0x30 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(threadlist.cpp.o)
+                0x0000000000000982       0x30 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(threadlist.cpp.o)
                 0x0000000000000982                _ZN10ThreadList13HighestWaiterEv
  .text._ZN6Kernel4InitEv
-                0x00000000000009b2       0x1a /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kernel.cpp.o)
+                0x00000000000009b2       0x1a /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kernel.cpp.o)
                 0x00000000000009b2                _ZN6Kernel4InitEv
  .text._ZN6Kernel5StartEv
-                0x00000000000009cc        0x6 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kernel.cpp.o)
+                0x00000000000009cc        0x6 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kernel.cpp.o)
                 0x00000000000009cc                _ZN6Kernel5StartEv
  .text._ZN9TimerList4InitEv
-                0x00000000000009d2        0xe /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(timerlist.cpp.o)
+                0x00000000000009d2        0xe /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(timerlist.cpp.o)
                 0x00000000000009d2                _ZN9TimerList4InitEv
  .text._ZN9TimerList3AddEP5Timer
-                0x00000000000009e0       0xb6 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(timerlist.cpp.o)
+                0x00000000000009e0       0xb6 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(timerlist.cpp.o)
                 0x00000000000009e0                _ZN9TimerList3AddEP5Timer
  .text._ZN9TimerList6RemoveEP5Timer
-                0x0000000000000a96       0x3a /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(timerlist.cpp.o)
+                0x0000000000000a96       0x3a /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(timerlist.cpp.o)
                 0x0000000000000a96                _ZN9TimerList6RemoveEP5Timer
  .text._ZN9TimerList7ProcessEv
-                0x0000000000000ad0      0x15a /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(timerlist.cpp.o)
+                0x0000000000000ad0      0x15a /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(timerlist.cpp.o)
                 0x0000000000000ad0                _ZN9TimerList7ProcessEv
  .text._ZN5Timer4StopEv
-                0x0000000000000c2a        0xc /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(timerlist.cpp.o)
+                0x0000000000000c2a        0xc /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(timerlist.cpp.o)
                 0x0000000000000c2a                _ZN5Timer4StopEv
  .text._ZN5Timer19SetIntervalMSecondsEm
-                0x0000000000000c36       0x4c /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(timerlist.cpp.o)
+                0x0000000000000c36       0x4c /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(timerlist.cpp.o)
                 0x0000000000000c36                _ZN5Timer19SetIntervalMSecondsEm
  .text._ZN5Timer5StartEhmPFvP6ThreadPvES2_
-                0x0000000000000c82       0x5a /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(timerlist.cpp.o)
+                0x0000000000000c82       0x5a /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(timerlist.cpp.o)
                 0x0000000000000c82                _ZN5Timer5StartEhmPFvP6ThreadPvES2_
  .text.startup._GLOBAL__sub_I__ZN14TimerScheduler13m_clTimerListE
-                0x0000000000000cdc       0x1e /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(timerlist.cpp.o)
+                0x0000000000000cdc       0x1e /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(timerlist.cpp.o)
  .text._ZN10ThreadPort9InitStackEP6Thread
-                0x0000000000000cfa       0x86 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(threadport.cpp.o)
+                0x0000000000000cfa       0x86 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(threadport.cpp.o)
                 0x0000000000000cfa                _ZN10ThreadPort9InitStackEP6Thread
  .text._ZN10ThreadPort12StartThreadsEv
-                0x0000000000000d80       0x84 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(threadport.cpp.o)
+                0x0000000000000d80       0x84 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(threadport.cpp.o)
                 0x0000000000000d80                _ZN10ThreadPort12StartThreadsEv
  .text.__vector_1
-                0x0000000000000e04       0xc2 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(threadport.cpp.o)
+                0x0000000000000e04       0xc2 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(threadport.cpp.o)
                 0x0000000000000e04                __vector_1
  .text.__vector_11
-                0x0000000000000ec6       0x50 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(threadport.cpp.o)
+                0x0000000000000ec6       0x50 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(threadport.cpp.o)
                 0x0000000000000ec6                __vector_11
  .text._ZN9KernelSWI6ConfigEv
-                0x0000000000000f16       0x10 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kernelswi.cpp.o)
+                0x0000000000000f16       0x10 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kernelswi.cpp.o)
                 0x0000000000000f16                _ZN9KernelSWI6ConfigEv
  .text._ZN9KernelSWI5StartEv
-                0x0000000000000f26        0x6 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kernelswi.cpp.o)
+                0x0000000000000f26        0x6 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kernelswi.cpp.o)
                 0x0000000000000f26                _ZN9KernelSWI5StartEv
  .text._ZN9KernelSWI7TriggerEv
-                0x0000000000000f2c        0x6 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kernelswi.cpp.o)
+                0x0000000000000f2c        0x6 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kernelswi.cpp.o)
                 0x0000000000000f2c                _ZN9KernelSWI7TriggerEv
  .text._ZN11KernelTimer6ConfigEv
-                0x0000000000000f32        0x8 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kerneltimer.cpp.o)
+                0x0000000000000f32        0x8 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kerneltimer.cpp.o)
                 0x0000000000000f32                _ZN11KernelTimer6ConfigEv
  .text._ZN11KernelTimer5StartEv
-                0x0000000000000f3a       0x20 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kerneltimer.cpp.o)
+                0x0000000000000f3a       0x20 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kerneltimer.cpp.o)
                 0x0000000000000f3a                _ZN11KernelTimer5StartEv
  .text._ZN11KernelTimer4StopEv
-                0x0000000000000f5a       0x28 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kerneltimer.cpp.o)
+                0x0000000000000f5a       0x28 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kerneltimer.cpp.o)
                 0x0000000000000f5a                _ZN11KernelTimer4StopEv
  .text._ZN11KernelTimer4ReadEv
-                0x0000000000000f82       0x44 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kerneltimer.cpp.o)
+                0x0000000000000f82       0x44 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kerneltimer.cpp.o)
                 0x0000000000000f82                _ZN11KernelTimer4ReadEv
  .text._ZN11KernelTimer14SubtractExpiryEm
-                0x0000000000000fc6       0x20 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kerneltimer.cpp.o)
+                0x0000000000000fc6       0x20 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kerneltimer.cpp.o)
                 0x0000000000000fc6                _ZN11KernelTimer14SubtractExpiryEm
  .text._ZN11KernelTimer12TimeToExpiryEv
-                0x0000000000000fe6       0x30 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kerneltimer.cpp.o)
+                0x0000000000000fe6       0x30 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kerneltimer.cpp.o)
                 0x0000000000000fe6                _ZN11KernelTimer12TimeToExpiryEv
  .text._ZN11KernelTimer11GetOvertimeEv
-                0x0000000000001016        0xc /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kerneltimer.cpp.o)
+                0x0000000000001016        0xc /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kerneltimer.cpp.o)
                 0x0000000000001016                _ZN11KernelTimer11GetOvertimeEv
  .text._ZN11KernelTimer9SetExpiryEm
-                0x0000000000001022       0x28 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kerneltimer.cpp.o)
+                0x0000000000001022       0x28 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kerneltimer.cpp.o)
                 0x0000000000001022                _ZN11KernelTimer9SetExpiryEm
  .text._ZN11KernelTimer11ClearExpiryEv
-                0x000000000000104a        0xe /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kerneltimer.cpp.o)
+                0x000000000000104a        0xe /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kerneltimer.cpp.o)
                 0x000000000000104a                _ZN11KernelTimer11ClearExpiryEv
  .text._ZN8Profiler4InitEv
-                0x0000000000001058       0x1c /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kprofile.cpp.o)
+                0x0000000000001058       0x1c /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kprofile.cpp.o)
                 0x0000000000001058                _ZN8Profiler4InitEv
  .text._ZN8Profiler7ProcessEv
-                0x0000000000001074       0x42 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kprofile.cpp.o)
+                0x0000000000001074       0x42 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kprofile.cpp.o)
                 0x0000000000001074                _ZN8Profiler7ProcessEv
  .text.__vector_16
-                0x00000000000010b6       0x48 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kprofile.cpp.o)
+                0x00000000000010b6       0x48 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kprofile.cpp.o)
                 0x00000000000010b6                __vector_16
  .text._ZN14BlockingObject5BlockEP6Thread
-                0x00000000000010fe       0x28 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(blocking.cpp.o)
+                0x00000000000010fe       0x28 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(blocking.cpp.o)
                 0x00000000000010fe                _ZN14BlockingObject5BlockEP6Thread
  .text._ZN14BlockingObject7UnBlockEP6Thread
-                0x0000000000001126       0x2c /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(blocking.cpp.o)
+                0x0000000000001126       0x2c /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(blocking.cpp.o)
                 0x0000000000001126                _ZN14BlockingObject7UnBlockEP6Thread
  .text._ZL15QuantumCallbackP6ThreadPv
-                0x0000000000001152       0x36 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(quantum.cpp.o)
+                0x0000000000001152       0x36 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(quantum.cpp.o)
  .text._ZN7Quantum8SetTimerEP6Thread
-                0x0000000000001188       0x3e /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(quantum.cpp.o)
+                0x0000000000001188       0x3e /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(quantum.cpp.o)
                 0x0000000000001188                _ZN7Quantum8SetTimerEP6Thread
  .text._ZN7Quantum9AddThreadEP6Thread
-                0x00000000000011c6       0x38 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(quantum.cpp.o)
+                0x00000000000011c6       0x38 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(quantum.cpp.o)
                 0x00000000000011c6                _ZN7Quantum9AddThreadEP6Thread
  .text._ZN7Quantum12RemoveThreadEv
-                0x00000000000011fe       0x1a /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(quantum.cpp.o)
+                0x00000000000011fe       0x1a /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(quantum.cpp.o)
                 0x00000000000011fe                _ZN7Quantum12RemoveThreadEv
  .text._ZN7Quantum11UpdateTimerEv
-                0x0000000000001218       0x12 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(quantum.cpp.o)
+                0x0000000000001218       0x12 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(quantum.cpp.o)
                 0x0000000000001218                _ZN7Quantum11UpdateTimerEv
  .text.startup._GLOBAL__sub_I__ZN7Quantum16m_clQuantumTimerE
-                0x000000000000122a       0x26 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(quantum.cpp.o)
+                0x000000000000122a       0x26 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(quantum.cpp.o)
  .text._ZN9Scheduler4InitEv
-                0x0000000000001250       0x52 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(scheduler.cpp.o)
+                0x0000000000001250       0x52 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(scheduler.cpp.o)
                 0x0000000000001250                _ZN9Scheduler4InitEv
  .text._ZN9Scheduler8ScheduleEv
-                0x00000000000012a2       0x54 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(scheduler.cpp.o)
+                0x00000000000012a2       0x54 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(scheduler.cpp.o)
                 0x00000000000012a2                _ZN9Scheduler8ScheduleEv
  .text._ZN9Scheduler3AddEP6Thread
-                0x00000000000012f6       0x36 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(scheduler.cpp.o)
+                0x00000000000012f6       0x36 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(scheduler.cpp.o)
                 0x00000000000012f6                _ZN9Scheduler3AddEP6Thread
  .text._ZN9Scheduler6RemoveEP6Thread
-                0x000000000000132c       0x36 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(scheduler.cpp.o)
+                0x000000000000132c       0x36 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(scheduler.cpp.o)
                 0x000000000000132c                _ZN9Scheduler6RemoveEP6Thread
  .text.startup._GLOBAL__sub_I_g_pstNext
-                0x0000000000001362       0x4c /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(scheduler.cpp.o)
+                0x0000000000001362       0x4c /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(scheduler.cpp.o)
  .text._ZL16SlipMux_CallBackP6Driver
-                0x00000000000013ae       0x64 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libslip.a(slip_mux.cpp.o)
+                0x00000000000013ae       0x64 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libslip.a(slip_mux.cpp.o)
  .text._ZN7SlipMux4InitEPctPhtS1_
-                0x0000000000001412       0xd4 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libslip.a(slip_mux.cpp.o)
+                0x0000000000001412       0xd4 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libslip.a(slip_mux.cpp.o)
                 0x0000000000001412                _ZN7SlipMux4InitEPctPhtS1_
  .text._ZN7SlipMux14MessageReceiveEv
-                0x00000000000014e6       0x8e /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libslip.a(slip_mux.cpp.o)
+                0x00000000000014e6       0x8e /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libslip.a(slip_mux.cpp.o)
                 0x00000000000014e6                _ZN7SlipMux14MessageReceiveEv
  .text.startup._GLOBAL__sub_I__ZN7SlipMux17m_pclMessageQueueE
-                0x0000000000001574       0x24 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libslip.a(slip_mux.cpp.o)
+                0x0000000000001574       0x24 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libslip.a(slip_mux.cpp.o)
  .text._ZN4Slip10DecodeByteEPhS0_
-                0x0000000000001598       0x38 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libslip.a(slip.cpp.o)
+                0x0000000000001598       0x38 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libslip.a(slip.cpp.o)
                 0x0000000000001598                _ZN4Slip10DecodeByteEPhS0_
  .text._ZN4Slip8ReadDataEPhPct
-                0x00000000000015d0       0xf0 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libslip.a(slip.cpp.o)
+                0x00000000000015d0       0xf0 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libslip.a(slip.cpp.o)
                 0x00000000000015d0                _ZN4Slip8ReadDataEPhPct
  .text._ZN10ATMegaUART4OpenEv
-                0x00000000000016c0       0x1c /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libdrvUART.a(drvUART.cpp.o)
+                0x00000000000016c0       0x1c /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libdrvUART.a(drvUART.cpp.o)
                 0x00000000000016c0                _ZN10ATMegaUART4OpenEv
  .text._ZN10ATMegaUART5CloseEv
-                0x00000000000016dc       0x14 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libdrvUART.a(drvUART.cpp.o)
+                0x00000000000016dc       0x14 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libdrvUART.a(drvUART.cpp.o)
                 0x00000000000016dc                _ZN10ATMegaUART5CloseEv
  .text._ZN10ATMegaUART4ReadEtPh
-                0x00000000000016f0       0x8e /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libdrvUART.a(drvUART.cpp.o)
+                0x00000000000016f0       0x8e /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libdrvUART.a(drvUART.cpp.o)
                 0x00000000000016f0                _ZN10ATMegaUART4ReadEtPh
  .text._ZN10ATMegaUART7SetBaudEv
-                0x000000000000177e       0x32 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libdrvUART.a(drvUART.cpp.o)
+                0x000000000000177e       0x32 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libdrvUART.a(drvUART.cpp.o)
                 0x000000000000177e                _ZN10ATMegaUART7SetBaudEv
  .text._ZN10ATMegaUART7ControlEtPvtS0_t
-                0x00000000000017b0       0x86 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libdrvUART.a(drvUART.cpp.o)
+                0x00000000000017b0       0x86 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libdrvUART.a(drvUART.cpp.o)
                 0x00000000000017b0                _ZN10ATMegaUART7ControlEtPvtS0_t
  .text._ZN10ATMegaUART4InitEv
-                0x0000000000001836       0x3c /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libdrvUART.a(drvUART.cpp.o)
+                0x0000000000001836       0x3c /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libdrvUART.a(drvUART.cpp.o)
                 0x0000000000001836                _ZN10ATMegaUART4InitEv
  .text._ZN10ATMegaUART7StartTxEv
-                0x0000000000001872       0x3c /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libdrvUART.a(drvUART.cpp.o)
+                0x0000000000001872       0x3c /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libdrvUART.a(drvUART.cpp.o)
                 0x0000000000001872                _ZN10ATMegaUART7StartTxEv
  .text._ZN10ATMegaUART5WriteEtPh
-                0x00000000000018ae       0xc0 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libdrvUART.a(drvUART.cpp.o)
+                0x00000000000018ae       0xc0 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libdrvUART.a(drvUART.cpp.o)
                 0x00000000000018ae                _ZN10ATMegaUART5WriteEtPh
  .text._ZN10ATMegaUART5RxISREv
-                0x000000000000196e       0xb2 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libdrvUART.a(drvUART.cpp.o)
+                0x000000000000196e       0xb2 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libdrvUART.a(drvUART.cpp.o)
                 0x000000000000196e                _ZN10ATMegaUART5RxISREv
  .text.__vector_18
-                0x0000000000001a20       0x50 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libdrvUART.a(drvUART.cpp.o)
+                0x0000000000001a20       0x50 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libdrvUART.a(drvUART.cpp.o)
                 0x0000000000001a20                __vector_18
  .text._ZN10ATMegaUART5TxISREv
-                0x0000000000001a70       0x10 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libdrvUART.a(drvUART.cpp.o)
+                0x0000000000001a70       0x10 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libdrvUART.a(drvUART.cpp.o)
                 0x0000000000001a70                _ZN10ATMegaUART5TxISREv
  .text.__vector_20
-                0x0000000000001a80       0x50 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libdrvUART.a(drvUART.cpp.o)
+                0x0000000000001a80       0x50 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libdrvUART.a(drvUART.cpp.o)
                 0x0000000000001a80                __vector_20
- .text.libgcc   0x0000000000001ad0       0x3e /opt/avr8-gnu-toolchain-linux_x86_64/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a(_mulsi3.o)
+ .text.libgcc   0x0000000000001ad0       0x3e /home/moslevin/atmel/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a(_mulsi3.o)
                 0x0000000000001ad0                __mulsi3
- .text.libgcc   0x0000000000001b0e       0x44 /opt/avr8-gnu-toolchain-linux_x86_64/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a(_udivmodsi4.o)
+ .text.libgcc   0x0000000000001b0e       0x44 /home/moslevin/atmel/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a(_udivmodsi4.o)
                 0x0000000000001b0e                __udivmodsi4
- .text.libgcc   0x0000000000001b52        0xc /opt/avr8-gnu-toolchain-linux_x86_64/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a(_tablejump.o)
+ .text.libgcc   0x0000000000001b52        0xc /home/moslevin/atmel/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a(_tablejump.o)
                 0x0000000000001b52                __tablejump2__
                 0x0000000000001b56                __tablejump__
                 0x0000000000001b5e                . = ALIGN (0x2)
  *(.fini9)
- .fini9         0x0000000000001b5e        0x0 /opt/avr8-gnu-toolchain-linux_x86_64/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a(_exit.o)
+ .fini9         0x0000000000001b5e        0x0 /home/moslevin/atmel/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a(_exit.o)
                 0x0000000000001b5e                exit
                 0x0000000000001b5e                _exit
  *(.fini9)
@@ -694,47 +694,47 @@ LOAD /opt/avr8-gnu-toolchain-linux_x86_64/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a
  *(.fini1)
  *(.fini1)
  *(.fini0)
- .fini0         0x0000000000001b5e        0x4 /opt/avr8-gnu-toolchain-linux_x86_64/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a(_exit.o)
+ .fini0         0x0000000000001b5e        0x4 /home/moslevin/atmel/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a(_exit.o)
  *(.fini0)
                 0x0000000000001b62                _etext = .
 
 .data           0x0000000000800100       0x6c load address 0x0000000000001b62
                 0x0000000000800100                PROVIDE (__data_start, .)
  *(.data)
- .data          0x0000000000800100        0x0 /opt/avr8-gnu-toolchain-linux_x86_64/bin/../lib/gcc/avr/4.6.2/../../../../avr/lib/avr5/crtm328p.o
+ .data          0x0000000000800100        0x0 /home/moslevin/atmel/bin/../lib/gcc/avr/4.6.2/../../../../avr/lib/avr5/crtm328p.o
  .data          0x0000000000800100        0x9 ./obj/avr/atmega328p/gcc/platform.cpp.o
- .data          0x0000000000800109       0x1a /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(driver.cpp.o)
+ .data          0x0000000000800109       0x1a /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(driver.cpp.o)
                 0x0000000000800113                _ZTV7DevNull
- .data          0x0000000000800123       0x10 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(ll.cpp.o)
+ .data          0x0000000000800123       0x10 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(ll.cpp.o)
                 0x0000000000800123                _ZTV14DoubleLinkList
                 0x000000000080012b                _ZTV16CircularLinkList
- .data          0x0000000000800133        0x0 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(message.cpp.o)
- .data          0x0000000000800133        0x0 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(semaphore.cpp.o)
- .data          0x0000000000800133        0x0 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(thread.cpp.o)
- .data          0x0000000000800133        0x8 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(threadlist.cpp.o)
+ .data          0x0000000000800133        0x0 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(message.cpp.o)
+ .data          0x0000000000800133        0x0 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(semaphore.cpp.o)
+ .data          0x0000000000800133        0x0 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(thread.cpp.o)
+ .data          0x0000000000800133        0x8 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(threadlist.cpp.o)
                 0x0000000000800133                _ZTV10ThreadList
- .data          0x000000000080013b        0x0 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kernel.cpp.o)
- .data          0x000000000080013b        0x8 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(timerlist.cpp.o)
+ .data          0x000000000080013b        0x0 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kernel.cpp.o)
+ .data          0x000000000080013b        0x8 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(timerlist.cpp.o)
                 0x000000000080013b                _ZTV9TimerList
- .data          0x0000000000800143        0x0 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(threadport.cpp.o)
- .data          0x0000000000800143        0x0 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kernelswi.cpp.o)
- .data          0x0000000000800143        0x0 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kerneltimer.cpp.o)
- .data          0x0000000000800143        0x0 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kprofile.cpp.o)
- .data          0x0000000000800143        0x0 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(blocking.cpp.o)
- .data          0x0000000000800143        0x0 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(quantum.cpp.o)
- .data          0x0000000000800143       0x18 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(scheduler.cpp.o)
+ .data          0x0000000000800143        0x0 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(threadport.cpp.o)
+ .data          0x0000000000800143        0x0 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kernelswi.cpp.o)
+ .data          0x0000000000800143        0x0 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kerneltimer.cpp.o)
+ .data          0x0000000000800143        0x0 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kprofile.cpp.o)
+ .data          0x0000000000800143        0x0 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(blocking.cpp.o)
+ .data          0x0000000000800143        0x0 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(quantum.cpp.o)
+ .data          0x0000000000800143       0x18 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(scheduler.cpp.o)
                 0x0000000000800153                _ZTV8LinkList
- .data          0x000000000080015b        0x0 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libslip.a(slip_mux.cpp.o)
- .data          0x000000000080015b        0x0 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libslip.a(slip.cpp.o)
- .data          0x000000000080015b       0x10 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libdrvUART.a(drvUART.cpp.o)
+ .data          0x000000000080015b        0x0 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libslip.a(slip_mux.cpp.o)
+ .data          0x000000000080015b        0x0 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libslip.a(slip.cpp.o)
+ .data          0x000000000080015b       0x10 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libdrvUART.a(drvUART.cpp.o)
                 0x000000000080015b                _ZTV10ATMegaUART
- .data          0x000000000080016b        0x0 /opt/avr8-gnu-toolchain-linux_x86_64/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a(_mulsi3.o)
- .data          0x000000000080016b        0x0 /opt/avr8-gnu-toolchain-linux_x86_64/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a(_udivmodsi4.o)
- .data          0x000000000080016b        0x0 /opt/avr8-gnu-toolchain-linux_x86_64/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a(_exit.o)
- .data          0x000000000080016b        0x0 /opt/avr8-gnu-toolchain-linux_x86_64/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a(_copy_data.o)
- .data          0x000000000080016b        0x0 /opt/avr8-gnu-toolchain-linux_x86_64/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a(_clear_bss.o)
- .data          0x000000000080016b        0x0 /opt/avr8-gnu-toolchain-linux_x86_64/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a(_ctors.o)
- .data          0x000000000080016b        0x0 /opt/avr8-gnu-toolchain-linux_x86_64/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a(_tablejump.o)
+ .data          0x000000000080016b        0x0 /home/moslevin/atmel/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a(_mulsi3.o)
+ .data          0x000000000080016b        0x0 /home/moslevin/atmel/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a(_udivmodsi4.o)
+ .data          0x000000000080016b        0x0 /home/moslevin/atmel/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a(_exit.o)
+ .data          0x000000000080016b        0x0 /home/moslevin/atmel/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a(_copy_data.o)
+ .data          0x000000000080016b        0x0 /home/moslevin/atmel/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a(_clear_bss.o)
+ .data          0x000000000080016b        0x0 /home/moslevin/atmel/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a(_ctors.o)
+ .data          0x000000000080016b        0x0 /home/moslevin/atmel/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a(_tablejump.o)
  *(.data*)
  *(.rodata)
  *(.rodata*)
@@ -749,20 +749,20 @@ LOAD /opt/avr8-gnu-toolchain-linux_x86_64/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a
  *(.bss)
  .bss           0x000000000080016c      0x279 ./obj/avr/atmega328p/gcc/platform.cpp.o
                 0x000000000080016c                g_clMainThreadQueue
- .bss           0x00000000008003e5        0xe /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(driver.cpp.o)
+ .bss           0x00000000008003e5        0xe /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(driver.cpp.o)
                 0x00000000008003e5                _ZN10DriverList14m_clDriverListE
- .bss           0x00000000008003f3       0x46 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(message.cpp.o)
+ .bss           0x00000000008003f3       0x46 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(message.cpp.o)
                 0x00000000008003f3                _ZN17GlobalMessagePool8m_clListE
                 0x00000000008003f9                _ZN17GlobalMessagePool16m_aclMessagePoolE
- .bss           0x0000000000800439        0x1 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(thread.cpp.o)
- .bss           0x000000000080043a        0xb /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(timerlist.cpp.o)
+ .bss           0x0000000000800439        0x1 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(thread.cpp.o)
+ .bss           0x000000000080043a        0xb /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(timerlist.cpp.o)
                 0x000000000080043a                _ZN14TimerScheduler13m_clTimerListE
- .bss           0x0000000000800445        0x4 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kprofile.cpp.o)
+ .bss           0x0000000000800445        0x4 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kprofile.cpp.o)
                 0x0000000000800445                _ZN8Profiler9m_ulEpochE
- .bss           0x0000000000800449       0x15 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(quantum.cpp.o)
+ .bss           0x0000000000800449       0x15 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(quantum.cpp.o)
                 0x0000000000800449                _ZN7Quantum9m_bActiveE
                 0x000000000080044a                _ZN7Quantum16m_clQuantumTimerE
- .bss           0x000000000080045e       0x58 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(scheduler.cpp.o)
+ .bss           0x000000000080045e       0x58 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(scheduler.cpp.o)
                 0x000000000080045e                g_ucFlag
                 0x000000000080045f                _ZN9Scheduler11m_ucPriFlagE
                 0x0000000000800460                _ZN9Scheduler15m_aclPrioritiesE
@@ -770,14 +770,14 @@ LOAD /opt/avr8-gnu-toolchain-linux_x86_64/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a
                 0x00000000008004b1                _ZN9Scheduler10m_bEnabledE
                 0x00000000008004b2                g_pstCurrent
                 0x00000000008004b4                g_pstNext
- .bss           0x00000000008004b6       0x40 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libslip.a(slip_mux.cpp.o)
+ .bss           0x00000000008004b6       0x40 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libslip.a(slip_mux.cpp.o)
                 0x00000000008004b6                _ZN7SlipMux8m_clSlipE
                 0x00000000008004b8                _ZN7SlipMux11m_clSlipSemE
                 0x00000000008004c6                _ZN7SlipMux20m_apfChannelHandlersE
                 0x00000000008004d2                _ZN7SlipMux11m_pclDriverE
                 0x00000000008004d4                _ZN7SlipMux9m_aucDataE
                 0x00000000008004f4                _ZN7SlipMux17m_pclMessageQueueE
- .bss           0x00000000008004f6        0x2 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libdrvUART.a(drvUART.cpp.o)
+ .bss           0x00000000008004f6        0x2 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libdrvUART.a(drvUART.cpp.o)
  *(.bss*)
  *(COMMON)
                 0x00000000008004f8                PROVIDE (__bss_end, .)
@@ -809,11 +809,11 @@ LOAD /opt/avr8-gnu-toolchain-linux_x86_64/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a
 
 .stab           0x0000000000000000      0x6cc
  *(.stab)
- .stab          0x0000000000000000      0x6cc /opt/avr8-gnu-toolchain-linux_x86_64/bin/../lib/gcc/avr/4.6.2/../../../../avr/lib/avr5/crtm328p.o
+ .stab          0x0000000000000000      0x6cc /home/moslevin/atmel/bin/../lib/gcc/avr/4.6.2/../../../../avr/lib/avr5/crtm328p.o
 
 .stabstr        0x0000000000000000       0x85
  *(.stabstr)
- .stabstr       0x0000000000000000       0x85 /opt/avr8-gnu-toolchain-linux_x86_64/bin/../lib/gcc/avr/4.6.2/../../../../avr/lib/avr5/crtm328p.o
+ .stabstr       0x0000000000000000       0x85 /home/moslevin/atmel/bin/../lib/gcc/avr/4.6.2/../../../../avr/lib/avr5/crtm328p.o
 
 .stab.excl
  *(.stab.excl)
@@ -847,41 +847,41 @@ LOAD /opt/avr8-gnu-toolchain-linux_x86_64/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a
  .debug_aranges
                 0x0000000000000000       0x38 ./obj/avr/atmega328p/gcc/platform.cpp.o
  .debug_aranges
-                0x0000000000000038       0x60 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(driver.cpp.o)
+                0x0000000000000038       0x60 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(driver.cpp.o)
  .debug_aranges
-                0x0000000000000098       0x50 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(ll.cpp.o)
+                0x0000000000000098       0x50 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(ll.cpp.o)
  .debug_aranges
-                0x00000000000000e8       0x60 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(message.cpp.o)
+                0x00000000000000e8       0x60 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(message.cpp.o)
  .debug_aranges
-                0x0000000000000148       0x58 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(semaphore.cpp.o)
+                0x0000000000000148       0x58 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(semaphore.cpp.o)
  .debug_aranges
-                0x00000000000001a0       0x70 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(thread.cpp.o)
+                0x00000000000001a0       0x70 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(thread.cpp.o)
  .debug_aranges
-                0x0000000000000210       0x48 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(threadlist.cpp.o)
+                0x0000000000000210       0x48 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(threadlist.cpp.o)
  .debug_aranges
-                0x0000000000000258       0x28 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kernel.cpp.o)
+                0x0000000000000258       0x28 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kernel.cpp.o)
  .debug_aranges
-                0x0000000000000280       0x70 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(timerlist.cpp.o)
+                0x0000000000000280       0x70 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(timerlist.cpp.o)
  .debug_aranges
-                0x00000000000002f0       0x38 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(threadport.cpp.o)
+                0x00000000000002f0       0x38 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(threadport.cpp.o)
  .debug_aranges
-                0x0000000000000328       0x50 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kernelswi.cpp.o)
+                0x0000000000000328       0x50 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kernelswi.cpp.o)
  .debug_aranges
-                0x0000000000000378       0x78 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kerneltimer.cpp.o)
+                0x0000000000000378       0x78 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kerneltimer.cpp.o)
  .debug_aranges
-                0x00000000000003f0       0x48 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kprofile.cpp.o)
+                0x00000000000003f0       0x48 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kprofile.cpp.o)
  .debug_aranges
-                0x0000000000000438       0x28 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(blocking.cpp.o)
+                0x0000000000000438       0x28 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(blocking.cpp.o)
  .debug_aranges
-                0x0000000000000460       0x48 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(quantum.cpp.o)
+                0x0000000000000460       0x48 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(quantum.cpp.o)
  .debug_aranges
-                0x00000000000004a8       0x40 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(scheduler.cpp.o)
+                0x00000000000004a8       0x40 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(scheduler.cpp.o)
  .debug_aranges
-                0x00000000000004e8       0x40 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libslip.a(slip_mux.cpp.o)
+                0x00000000000004e8       0x40 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libslip.a(slip_mux.cpp.o)
  .debug_aranges
-                0x0000000000000528       0x58 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libslip.a(slip.cpp.o)
+                0x0000000000000528       0x58 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libslip.a(slip.cpp.o)
  .debug_aranges
-                0x0000000000000580       0x78 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libdrvUART.a(drvUART.cpp.o)
+                0x0000000000000580       0x78 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libdrvUART.a(drvUART.cpp.o)
 
 .debug_pubnames
  *(.debug_pubnames)
@@ -889,153 +889,153 @@ LOAD /opt/avr8-gnu-toolchain-linux_x86_64/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a
 .debug_info     0x0000000000000000     0xbe65
  *(.debug_info)
  .debug_info    0x0000000000000000     0x10ee ./obj/avr/atmega328p/gcc/platform.cpp.o
- .debug_info    0x00000000000010ee      0xad5 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(driver.cpp.o)
- .debug_info    0x0000000000001bc3      0x584 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(ll.cpp.o)
- .debug_info    0x0000000000002147      0xd5c /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(message.cpp.o)
- .debug_info    0x0000000000002ea3      0xdc3 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(semaphore.cpp.o)
- .debug_info    0x0000000000003c66     0x123f /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(thread.cpp.o)
- .debug_info    0x0000000000004ea5      0x9f0 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(threadlist.cpp.o)
- .debug_info    0x0000000000005895      0x543 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kernel.cpp.o)
- .debug_info    0x0000000000005dd8      0xe36 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(timerlist.cpp.o)
- .debug_info    0x0000000000006c0e      0x646 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(threadport.cpp.o)
- .debug_info    0x0000000000007254      0x187 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kernelswi.cpp.o)
- .debug_info    0x00000000000073db      0x306 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kerneltimer.cpp.o)
- .debug_info    0x00000000000076e1      0x5f8 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kprofile.cpp.o)
- .debug_info    0x0000000000007cd9      0x620 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(blocking.cpp.o)
- .debug_info    0x00000000000082f9      0xc8b /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(quantum.cpp.o)
- .debug_info    0x0000000000008f84      0x95f /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(scheduler.cpp.o)
- .debug_info    0x00000000000098e3     0x1126 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libslip.a(slip_mux.cpp.o)
- .debug_info    0x000000000000aa09      0x5d9 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libslip.a(slip.cpp.o)
- .debug_info    0x000000000000afe2      0xe83 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libdrvUART.a(drvUART.cpp.o)
+ .debug_info    0x00000000000010ee      0xad5 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(driver.cpp.o)
+ .debug_info    0x0000000000001bc3      0x584 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(ll.cpp.o)
+ .debug_info    0x0000000000002147      0xd5c /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(message.cpp.o)
+ .debug_info    0x0000000000002ea3      0xdc3 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(semaphore.cpp.o)
+ .debug_info    0x0000000000003c66     0x123f /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(thread.cpp.o)
+ .debug_info    0x0000000000004ea5      0x9f0 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(threadlist.cpp.o)
+ .debug_info    0x0000000000005895      0x543 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kernel.cpp.o)
+ .debug_info    0x0000000000005dd8      0xe36 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(timerlist.cpp.o)
+ .debug_info    0x0000000000006c0e      0x646 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(threadport.cpp.o)
+ .debug_info    0x0000000000007254      0x187 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kernelswi.cpp.o)
+ .debug_info    0x00000000000073db      0x306 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kerneltimer.cpp.o)
+ .debug_info    0x00000000000076e1      0x5f8 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kprofile.cpp.o)
+ .debug_info    0x0000000000007cd9      0x620 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(blocking.cpp.o)
+ .debug_info    0x00000000000082f9      0xc8b /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(quantum.cpp.o)
+ .debug_info    0x0000000000008f84      0x95f /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(scheduler.cpp.o)
+ .debug_info    0x00000000000098e3     0x1126 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libslip.a(slip_mux.cpp.o)
+ .debug_info    0x000000000000aa09      0x5d9 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libslip.a(slip.cpp.o)
+ .debug_info    0x000000000000afe2      0xe83 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libdrvUART.a(drvUART.cpp.o)
  *(.gnu.linkonce.wi.*)
 
 .debug_abbrev   0x0000000000000000     0x3a8b
  *(.debug_abbrev)
  .debug_abbrev  0x0000000000000000      0x3f1 ./obj/avr/atmega328p/gcc/platform.cpp.o
- .debug_abbrev  0x00000000000003f1      0x39b /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(driver.cpp.o)
- .debug_abbrev  0x000000000000078c      0x272 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(ll.cpp.o)
- .debug_abbrev  0x00000000000009fe      0x3e6 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(message.cpp.o)
- .debug_abbrev  0x0000000000000de4      0x3f8 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(semaphore.cpp.o)
- .debug_abbrev  0x00000000000011dc      0x472 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(thread.cpp.o)
- .debug_abbrev  0x000000000000164e      0x335 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(threadlist.cpp.o)
- .debug_abbrev  0x0000000000001983      0x1f4 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kernel.cpp.o)
- .debug_abbrev  0x0000000000001b77      0x46b /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(timerlist.cpp.o)
- .debug_abbrev  0x0000000000001fe2      0x2cc /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(threadport.cpp.o)
- .debug_abbrev  0x00000000000022ae       0xc5 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kernelswi.cpp.o)
- .debug_abbrev  0x0000000000002373      0x142 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kerneltimer.cpp.o)
- .debug_abbrev  0x00000000000024b5      0x242 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kprofile.cpp.o)
- .debug_abbrev  0x00000000000026f7      0x22a /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(blocking.cpp.o)
- .debug_abbrev  0x0000000000002921      0x419 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(quantum.cpp.o)
- .debug_abbrev  0x0000000000002d3a      0x39e /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(scheduler.cpp.o)
- .debug_abbrev  0x00000000000030d8      0x456 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libslip.a(slip_mux.cpp.o)
- .debug_abbrev  0x000000000000352e      0x1cb /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libslip.a(slip.cpp.o)
- .debug_abbrev  0x00000000000036f9      0x392 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libdrvUART.a(drvUART.cpp.o)
+ .debug_abbrev  0x00000000000003f1      0x39b /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(driver.cpp.o)
+ .debug_abbrev  0x000000000000078c      0x272 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(ll.cpp.o)
+ .debug_abbrev  0x00000000000009fe      0x3e6 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(message.cpp.o)
+ .debug_abbrev  0x0000000000000de4      0x3f8 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(semaphore.cpp.o)
+ .debug_abbrev  0x00000000000011dc      0x472 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(thread.cpp.o)
+ .debug_abbrev  0x000000000000164e      0x335 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(threadlist.cpp.o)
+ .debug_abbrev  0x0000000000001983      0x1f4 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kernel.cpp.o)
+ .debug_abbrev  0x0000000000001b77      0x46b /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(timerlist.cpp.o)
+ .debug_abbrev  0x0000000000001fe2      0x2cc /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(threadport.cpp.o)
+ .debug_abbrev  0x00000000000022ae       0xc5 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kernelswi.cpp.o)
+ .debug_abbrev  0x0000000000002373      0x142 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kerneltimer.cpp.o)
+ .debug_abbrev  0x00000000000024b5      0x242 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kprofile.cpp.o)
+ .debug_abbrev  0x00000000000026f7      0x22a /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(blocking.cpp.o)
+ .debug_abbrev  0x0000000000002921      0x419 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(quantum.cpp.o)
+ .debug_abbrev  0x0000000000002d3a      0x39e /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(scheduler.cpp.o)
+ .debug_abbrev  0x00000000000030d8      0x456 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libslip.a(slip_mux.cpp.o)
+ .debug_abbrev  0x000000000000352e      0x1cb /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libslip.a(slip.cpp.o)
+ .debug_abbrev  0x00000000000036f9      0x392 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libdrvUART.a(drvUART.cpp.o)
 
-.debug_line     0x0000000000000000     0x1a24
+.debug_line     0x0000000000000000     0x1a14
  *(.debug_line)
- .debug_line    0x0000000000000000      0x1e9 ./obj/avr/atmega328p/gcc/platform.cpp.o
- .debug_line    0x00000000000001e9      0x13b /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(driver.cpp.o)
- .debug_line    0x0000000000000324      0x10c /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(ll.cpp.o)
- .debug_line    0x0000000000000430      0x183 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(message.cpp.o)
- .debug_line    0x00000000000005b3      0x181 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(semaphore.cpp.o)
- .debug_line    0x0000000000000734      0x243 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(thread.cpp.o)
- .debug_line    0x0000000000000977      0x111 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(threadlist.cpp.o)
- .debug_line    0x0000000000000a88       0xc2 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kernel.cpp.o)
- .debug_line    0x0000000000000b4a      0x1d8 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(timerlist.cpp.o)
- .debug_line    0x0000000000000d22      0x155 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(threadport.cpp.o)
- .debug_line    0x0000000000000e77       0xfb /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kernelswi.cpp.o)
- .debug_line    0x0000000000000f72      0x175 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kerneltimer.cpp.o)
- .debug_line    0x00000000000010e7      0x114 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kprofile.cpp.o)
- .debug_line    0x00000000000011fb       0xc5 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(blocking.cpp.o)
- .debug_line    0x00000000000012c0      0x144 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(quantum.cpp.o)
- .debug_line    0x0000000000001404      0x123 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(scheduler.cpp.o)
- .debug_line    0x0000000000001527      0x16b /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libslip.a(slip_mux.cpp.o)
- .debug_line    0x0000000000001692      0x1ac /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libslip.a(slip.cpp.o)
- .debug_line    0x000000000000183e      0x1e6 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libdrvUART.a(drvUART.cpp.o)
+ .debug_line    0x0000000000000000      0x1d9 ./obj/avr/atmega328p/gcc/platform.cpp.o
+ .debug_line    0x00000000000001d9      0x13b /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(driver.cpp.o)
+ .debug_line    0x0000000000000314      0x10c /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(ll.cpp.o)
+ .debug_line    0x0000000000000420      0x183 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(message.cpp.o)
+ .debug_line    0x00000000000005a3      0x181 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(semaphore.cpp.o)
+ .debug_line    0x0000000000000724      0x243 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(thread.cpp.o)
+ .debug_line    0x0000000000000967      0x111 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(threadlist.cpp.o)
+ .debug_line    0x0000000000000a78       0xc2 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kernel.cpp.o)
+ .debug_line    0x0000000000000b3a      0x1d8 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(timerlist.cpp.o)
+ .debug_line    0x0000000000000d12      0x155 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(threadport.cpp.o)
+ .debug_line    0x0000000000000e67       0xfb /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kernelswi.cpp.o)
+ .debug_line    0x0000000000000f62      0x175 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kerneltimer.cpp.o)
+ .debug_line    0x00000000000010d7      0x114 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kprofile.cpp.o)
+ .debug_line    0x00000000000011eb       0xc5 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(blocking.cpp.o)
+ .debug_line    0x00000000000012b0      0x144 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(quantum.cpp.o)
+ .debug_line    0x00000000000013f4      0x123 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(scheduler.cpp.o)
+ .debug_line    0x0000000000001517      0x16b /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libslip.a(slip_mux.cpp.o)
+ .debug_line    0x0000000000001682      0x1ac /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libslip.a(slip.cpp.o)
+ .debug_line    0x000000000000182e      0x1e6 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libdrvUART.a(drvUART.cpp.o)
 
 .debug_frame    0x0000000000000000     0x1108
  *(.debug_frame)
  .debug_frame   0x0000000000000000       0x7c ./obj/avr/atmega328p/gcc/platform.cpp.o
- .debug_frame   0x000000000000007c       0xb0 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(driver.cpp.o)
- .debug_frame   0x000000000000012c       0xb4 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(ll.cpp.o)
- .debug_frame   0x00000000000001e0      0x140 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(message.cpp.o)
- .debug_frame   0x0000000000000320      0x120 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(semaphore.cpp.o)
- .debug_frame   0x0000000000000440      0x1a8 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(thread.cpp.o)
- .debug_frame   0x00000000000005e8       0x8c /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(threadlist.cpp.o)
- .debug_frame   0x0000000000000674       0x34 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kernel.cpp.o)
- .debug_frame   0x00000000000006a8      0x190 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(timerlist.cpp.o)
- .debug_frame   0x0000000000000838       0xa8 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(threadport.cpp.o)
- .debug_frame   0x00000000000008e0       0x84 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kernelswi.cpp.o)
- .debug_frame   0x0000000000000964       0xf0 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kerneltimer.cpp.o)
- .debug_frame   0x0000000000000a54       0xdc /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kprofile.cpp.o)
- .debug_frame   0x0000000000000b30       0x54 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(blocking.cpp.o)
- .debug_frame   0x0000000000000b84       0x80 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(quantum.cpp.o)
- .debug_frame   0x0000000000000c04       0x78 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(scheduler.cpp.o)
- .debug_frame   0x0000000000000c7c       0xe0 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libslip.a(slip_mux.cpp.o)
- .debug_frame   0x0000000000000d5c      0x1c0 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libslip.a(slip.cpp.o)
- .debug_frame   0x0000000000000f1c      0x1ec /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libdrvUART.a(drvUART.cpp.o)
+ .debug_frame   0x000000000000007c       0xb0 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(driver.cpp.o)
+ .debug_frame   0x000000000000012c       0xb4 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(ll.cpp.o)
+ .debug_frame   0x00000000000001e0      0x140 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(message.cpp.o)
+ .debug_frame   0x0000000000000320      0x120 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(semaphore.cpp.o)
+ .debug_frame   0x0000000000000440      0x1a8 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(thread.cpp.o)
+ .debug_frame   0x00000000000005e8       0x8c /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(threadlist.cpp.o)
+ .debug_frame   0x0000000000000674       0x34 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kernel.cpp.o)
+ .debug_frame   0x00000000000006a8      0x190 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(timerlist.cpp.o)
+ .debug_frame   0x0000000000000838       0xa8 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(threadport.cpp.o)
+ .debug_frame   0x00000000000008e0       0x84 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kernelswi.cpp.o)
+ .debug_frame   0x0000000000000964       0xf0 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kerneltimer.cpp.o)
+ .debug_frame   0x0000000000000a54       0xdc /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kprofile.cpp.o)
+ .debug_frame   0x0000000000000b30       0x54 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(blocking.cpp.o)
+ .debug_frame   0x0000000000000b84       0x80 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(quantum.cpp.o)
+ .debug_frame   0x0000000000000c04       0x78 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(scheduler.cpp.o)
+ .debug_frame   0x0000000000000c7c       0xe0 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libslip.a(slip_mux.cpp.o)
+ .debug_frame   0x0000000000000d5c      0x1c0 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libslip.a(slip.cpp.o)
+ .debug_frame   0x0000000000000f1c      0x1ec /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libdrvUART.a(drvUART.cpp.o)
 
 .debug_str      0x0000000000000000     0x25d7
  *(.debug_str)
  .debug_str     0x0000000000000000      0xabf ./obj/avr/atmega328p/gcc/platform.cpp.o
                                         0xba3 (size before relaxing)
- .debug_str     0x0000000000000abf      0x1b2 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(driver.cpp.o)
+ .debug_str     0x0000000000000abf      0x1b2 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(driver.cpp.o)
                                         0x4fb (size before relaxing)
- .debug_str     0x0000000000000c71      0x11f /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(ll.cpp.o)
+ .debug_str     0x0000000000000c71      0x11f /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(ll.cpp.o)
                                         0x301 (size before relaxing)
- .debug_str     0x0000000000000d90      0x121 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(message.cpp.o)
+ .debug_str     0x0000000000000d90      0x121 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(message.cpp.o)
                                         0xa95 (size before relaxing)
- .debug_str     0x0000000000000eb1      0x2e1 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(semaphore.cpp.o)
+ .debug_str     0x0000000000000eb1      0x2e1 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(semaphore.cpp.o)
                                         0xa8f (size before relaxing)
- .debug_str     0x0000000000001192      0x18c /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(thread.cpp.o)
+ .debug_str     0x0000000000001192      0x18c /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(thread.cpp.o)
                                         0xb7c (size before relaxing)
- .debug_str     0x000000000000131e      0x127 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(threadlist.cpp.o)
+ .debug_str     0x000000000000131e      0x127 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(threadlist.cpp.o)
                                         0x725 (size before relaxing)
- .debug_str     0x0000000000001445       0x52 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kernel.cpp.o)
+ .debug_str     0x0000000000001445       0x52 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kernel.cpp.o)
                                         0x55a (size before relaxing)
- .debug_str     0x0000000000001497      0x18f /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(timerlist.cpp.o)
+ .debug_str     0x0000000000001497      0x18f /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(timerlist.cpp.o)
                                         0xa4f (size before relaxing)
- .debug_str     0x0000000000001626      0x130 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(threadport.cpp.o)
+ .debug_str     0x0000000000001626      0x130 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(threadport.cpp.o)
                                         0x645 (size before relaxing)
- .debug_str     0x0000000000001756       0xda /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kernelswi.cpp.o)
+ .debug_str     0x0000000000001756       0xda /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kernelswi.cpp.o)
                                         0x194 (size before relaxing)
- .debug_str     0x0000000000001830      0x1f0 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kerneltimer.cpp.o)
+ .debug_str     0x0000000000001830      0x1f0 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kerneltimer.cpp.o)
                                         0x2c9 (size before relaxing)
- .debug_str     0x0000000000001a20       0xc3 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kprofile.cpp.o)
+ .debug_str     0x0000000000001a20       0xc3 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kprofile.cpp.o)
                                         0x5cf (size before relaxing)
- .debug_str     0x0000000000001ae3        0xd /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(blocking.cpp.o)
+ .debug_str     0x0000000000001ae3        0xd /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(blocking.cpp.o)
                                         0x590 (size before relaxing)
- .debug_str     0x0000000000001af0      0x12d /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(quantum.cpp.o)
+ .debug_str     0x0000000000001af0      0x12d /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(quantum.cpp.o)
                                         0xa18 (size before relaxing)
- .debug_str     0x0000000000001c1d      0x14c /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(scheduler.cpp.o)
+ .debug_str     0x0000000000001c1d      0x14c /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(scheduler.cpp.o)
                                         0x792 (size before relaxing)
- .debug_str     0x0000000000001d69      0x4fd /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libslip.a(slip_mux.cpp.o)
+ .debug_str     0x0000000000001d69      0x4fd /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libslip.a(slip_mux.cpp.o)
                                         0xead (size before relaxing)
- .debug_str     0x0000000000002266       0xa8 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libslip.a(slip.cpp.o)
+ .debug_str     0x0000000000002266       0xa8 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libslip.a(slip.cpp.o)
                                         0x2dc (size before relaxing)
- .debug_str     0x000000000000230e      0x2c9 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libdrvUART.a(drvUART.cpp.o)
+ .debug_str     0x000000000000230e      0x2c9 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libdrvUART.a(drvUART.cpp.o)
                                         0x971 (size before relaxing)
 
 .debug_loc      0x0000000000000000     0x3b8e
  *(.debug_loc)
  .debug_loc     0x0000000000000000       0xbd ./obj/avr/atmega328p/gcc/platform.cpp.o
- .debug_loc     0x00000000000000bd      0x16c /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(driver.cpp.o)
- .debug_loc     0x0000000000000229      0x24c /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(ll.cpp.o)
- .debug_loc     0x0000000000000475      0x40c /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(message.cpp.o)
- .debug_loc     0x0000000000000881      0x4be /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(semaphore.cpp.o)
- .debug_loc     0x0000000000000d3f      0x75c /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(thread.cpp.o)
- .debug_loc     0x000000000000149b      0x22b /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(threadlist.cpp.o)
- .debug_loc     0x00000000000016c6      0x64b /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(timerlist.cpp.o)
- .debug_loc     0x0000000000001d11      0x22f /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(threadport.cpp.o)
- .debug_loc     0x0000000000001f40       0x17 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kernelswi.cpp.o)
- .debug_loc     0x0000000000001f57      0x1af /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kerneltimer.cpp.o)
- .debug_loc     0x0000000000002106      0x199 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kprofile.cpp.o)
- .debug_loc     0x000000000000229f      0x144 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(blocking.cpp.o)
- .debug_loc     0x00000000000023e3       0xe5 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(quantum.cpp.o)
- .debug_loc     0x00000000000024c8      0x100 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(scheduler.cpp.o)
- .debug_loc     0x00000000000025c8      0x32e /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libslip.a(slip_mux.cpp.o)
- .debug_loc     0x00000000000028f6      0xa13 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libslip.a(slip.cpp.o)
- .debug_loc     0x0000000000003309      0x885 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libdrvUART.a(drvUART.cpp.o)
+ .debug_loc     0x00000000000000bd      0x16c /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(driver.cpp.o)
+ .debug_loc     0x0000000000000229      0x24c /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(ll.cpp.o)
+ .debug_loc     0x0000000000000475      0x40c /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(message.cpp.o)
+ .debug_loc     0x0000000000000881      0x4be /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(semaphore.cpp.o)
+ .debug_loc     0x0000000000000d3f      0x75c /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(thread.cpp.o)
+ .debug_loc     0x000000000000149b      0x22b /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(threadlist.cpp.o)
+ .debug_loc     0x00000000000016c6      0x64b /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(timerlist.cpp.o)
+ .debug_loc     0x0000000000001d11      0x22f /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(threadport.cpp.o)
+ .debug_loc     0x0000000000001f40       0x17 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kernelswi.cpp.o)
+ .debug_loc     0x0000000000001f57      0x1af /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kerneltimer.cpp.o)
+ .debug_loc     0x0000000000002106      0x199 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kprofile.cpp.o)
+ .debug_loc     0x000000000000229f      0x144 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(blocking.cpp.o)
+ .debug_loc     0x00000000000023e3       0xe5 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(quantum.cpp.o)
+ .debug_loc     0x00000000000024c8      0x100 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(scheduler.cpp.o)
+ .debug_loc     0x00000000000025c8      0x32e /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libslip.a(slip_mux.cpp.o)
+ .debug_loc     0x00000000000028f6      0xa13 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libslip.a(slip.cpp.o)
+ .debug_loc     0x0000000000003309      0x885 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libdrvUART.a(drvUART.cpp.o)
 
 .debug_macinfo
  *(.debug_macinfo)
@@ -1044,21 +1044,21 @@ LOAD linker stubs
 
 .debug_ranges   0x0000000000000000      0x4e0
  .debug_ranges  0x0000000000000000       0x28 ./obj/avr/atmega328p/gcc/platform.cpp.o
- .debug_ranges  0x0000000000000028       0x50 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(driver.cpp.o)
- .debug_ranges  0x0000000000000078       0x40 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(ll.cpp.o)
- .debug_ranges  0x00000000000000b8       0x50 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(message.cpp.o)
- .debug_ranges  0x0000000000000108       0x48 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(semaphore.cpp.o)
- .debug_ranges  0x0000000000000150       0x60 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(thread.cpp.o)
- .debug_ranges  0x00000000000001b0       0x50 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(threadlist.cpp.o)
- .debug_ranges  0x0000000000000200       0x18 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kernel.cpp.o)
- .debug_ranges  0x0000000000000218       0x60 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(timerlist.cpp.o)
- .debug_ranges  0x0000000000000278       0x28 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(threadport.cpp.o)
- .debug_ranges  0x00000000000002a0       0x40 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kernelswi.cpp.o)
- .debug_ranges  0x00000000000002e0       0x68 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kerneltimer.cpp.o)
- .debug_ranges  0x0000000000000348       0x38 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kprofile.cpp.o)
- .debug_ranges  0x0000000000000380       0x18 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(blocking.cpp.o)
- .debug_ranges  0x0000000000000398       0x38 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(quantum.cpp.o)
- .debug_ranges  0x00000000000003d0       0x30 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(scheduler.cpp.o)
- .debug_ranges  0x0000000000000400       0x30 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libslip.a(slip_mux.cpp.o)
- .debug_ranges  0x0000000000000430       0x48 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libslip.a(slip.cpp.o)
- .debug_ranges  0x0000000000000478       0x68 /home/moslevin/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libdrvUART.a(drvUART.cpp.o)
+ .debug_ranges  0x0000000000000028       0x50 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(driver.cpp.o)
+ .debug_ranges  0x0000000000000078       0x40 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(ll.cpp.o)
+ .debug_ranges  0x00000000000000b8       0x50 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(message.cpp.o)
+ .debug_ranges  0x0000000000000108       0x48 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(semaphore.cpp.o)
+ .debug_ranges  0x0000000000000150       0x60 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(thread.cpp.o)
+ .debug_ranges  0x00000000000001b0       0x50 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(threadlist.cpp.o)
+ .debug_ranges  0x0000000000000200       0x18 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kernel.cpp.o)
+ .debug_ranges  0x0000000000000218       0x60 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(timerlist.cpp.o)
+ .debug_ranges  0x0000000000000278       0x28 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(threadport.cpp.o)
+ .debug_ranges  0x00000000000002a0       0x40 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kernelswi.cpp.o)
+ .debug_ranges  0x00000000000002e0       0x68 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kerneltimer.cpp.o)
+ .debug_ranges  0x0000000000000348       0x38 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(kprofile.cpp.o)
+ .debug_ranges  0x0000000000000380       0x18 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(blocking.cpp.o)
+ .debug_ranges  0x0000000000000398       0x38 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(quantum.cpp.o)
+ .debug_ranges  0x00000000000003d0       0x30 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(scheduler.cpp.o)
+ .debug_ranges  0x0000000000000400       0x30 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libslip.a(slip_mux.cpp.o)
+ .debug_ranges  0x0000000000000430       0x48 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libslip.a(slip.cpp.o)
+ .debug_ranges  0x0000000000000478       0x68 /home/moslevin/m3/mark3/embedded/stage/lib/avr/atmega328p/gcc/libdrvUART.a(drvUART.cpp.o)

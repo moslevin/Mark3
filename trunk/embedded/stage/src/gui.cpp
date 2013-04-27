@@ -125,6 +125,127 @@ void GuiWindow::Redraw( K_BOOL bRedrawAll_ )
 }
 
 //---------------------------------------------------------------------------
+void GuiWindow::InvalidateRegion( K_USHORT usLeft_, K_USHORT usTop_, K_USHORT usWidth_, K_USHORT usHeight_ )
+{
+    LinkListNode *pclTempNode;
+    K_USHORT usLeft1, usLeft2, usRight1, usRight2, usTop1, usTop2, usBottom1, usBottom2;
+
+    pclTempNode = m_clControlList.GetHead();
+
+    usLeft1 = usLeft_;
+    usRight1 = usLeft_ + usWidth_ - 1;
+    usTop1 = usTop_;
+    usBottom1 = usTop_ + usHeight_ - 1;
+
+    printf("TEST: %d, %d, %d, %d\n", usLeft1, usRight1, usTop1, usBottom1);
+    while (pclTempNode)
+    {
+        GuiControl *pclControl = static_cast<GuiControl*>(pclTempNode);
+        K_USHORT usX, usY;
+
+        bool bMatch = false;
+
+        // Get the absolute display coordinates
+        pclControl->GetControlOffset(&usX, &usY);
+
+
+        usLeft2 = pclControl->GetLeft() + usX;
+        usRight2 = usLeft2 + pclControl->GetWidth() - 1;
+        usTop2 = pclControl->GetTop() + usY;
+        usBottom2 = usTop2 + pclControl->GetHeight() - 1;
+        printf("CTRL: %d, %d, %d, %d\n", usLeft2, usRight2, usTop2, usBottom2);
+        // If the control has any pixels in the bounding box.
+        if (
+                (
+                    (
+                        (usLeft1 >= usLeft2) &&
+                        (usLeft1 <= usRight2)
+                    ) ||
+                    (
+                        (usRight1 >= usLeft2) &&
+                        (usRight1 <= usRight2)
+                    ) ||
+                    ((usLeft1 <= usLeft2) && (usRight1 >= usRight2))
+                ) &&
+                (
+                    (
+                        (usTop1 >= usTop2) &&
+                        (usTop1 <= usBottom2)
+                    ) ||
+                    (
+                        (usBottom1 >= usTop2) &&
+                        (usBottom1 <= usBottom2)
+                    ) ||
+                    ((usTop1 <= usTop2) && (usBottom1 >= usBottom2))
+                )
+            )
+        {
+            bMatch = true;
+            printf( "Match 1\n");
+        }
+        else if(
+                (
+                    (
+                        (usLeft2 >= usLeft1) &&
+                        (usLeft2 <= usRight1)
+                    ) ||
+                    (
+                        (usRight2 >= usLeft1) &&
+                        (usRight2 <= usRight1)
+                    ) ||
+                    ((usLeft2 <= usLeft1) && (usRight2 >= usRight1))
+                ) &&
+                (
+                    (
+                        (usTop2 >= usTop1) &&
+                        (usTop2 <= usBottom1)
+                    ) ||
+                    (
+                        (usBottom2 >= usTop1) &&
+                        (usBottom2 <= usBottom1)
+                    ) ||
+                    ((usTop2 <= usTop1) && (usBottom2 >= usBottom1))
+                )
+            )
+        {
+            bMatch = true;
+            printf( "Match 2\n");
+        }
+
+
+        if (bMatch)
+        {
+            pclControl->SetStale();
+
+            // Invalidate all child controls as well (since redrawing a parent could cause them to disappear)
+            GuiControl *pclChild = static_cast<GuiControl*>(m_clControlList.GetHead());
+
+            // Go through all controls and check for parental ancestry
+            while (pclChild)
+            {
+                GuiControl *pclParent = static_cast<GuiControl*>(pclChild->GetParentControl());
+
+                // If this control is a descendant of the current control at some level
+                while (pclParent)
+                {
+                    if (pclParent == pclControl)
+                    {
+                        // Set the control as stale
+                        pclChild->SetStale();
+                        break;
+                    }
+                    pclParent = pclParent->GetParentControl();
+                }
+
+                pclChild = static_cast<GuiControl*>((static_cast<LinkListNode*>(pclChild))->GetNext());
+            }
+        }
+
+        pclTempNode = pclTempNode->GetNext();
+    }
+}
+
+//---------------------------------------------------------------------------
 void GuiWindow::ProcessEvent( GuiEvent_t *pstEvent_ )
 {
 	GUI_DEBUG_PRINT("GuiWindow::ProcessEvent\n");
@@ -537,6 +658,17 @@ void GuiEventSurface::CopyEvent( GuiEvent_t *pstDst_, GuiEvent_t *pstSrc_ )
 	{
 		*pucDst_++ = *pucSrc_++;
 	}
+}
+
+//---------------------------------------------------------------------------
+void GuiEventSurface::InvalidateRegion( K_USHORT usLeft_, K_USHORT usTop_, K_USHORT usWidth_, K_USHORT usHeight_ )
+{
+    LinkListNode* pclTempNode = m_clWindowList.GetHead();
+    while (pclTempNode)
+    {
+        (static_cast<GuiWindow*>(pclTempNode))->InvalidateRegion(usLeft_, usTop_, usWidth_, usWidth_);
+        pclTempNode = pclTempNode->GetNext();
+    }
 }
 
 //---------------------------------------------------------------------------
