@@ -20,16 +20,7 @@ See license.txt for more information
 #include "nlfs.h"
 #include "nlfs_file.h"
 #include "memutil.h"
-
-#define DEBUG       1
-
-#if DEBUG
- #include <stdio.h>
- #include <stdlib.h>
- #define DEBUG_PRINT     printf
-#else
- #define DEBUG_PRINT(...)
-#endif
+#include "nlfs_config.h"
 
 //---------------------------------------------------------------------------
 K_CHAR NLFS::Find_Last_Slash( const char *szPath_ )
@@ -83,8 +74,9 @@ void NLFS::Print_File_Details( K_USHORT usNode_ )
     DEBUG_PRINT(" Next Peer  : %d\n"   , stFileNode.stFileNode.usNextPeer);
     DEBUG_PRINT(" Prev Peer  : %d\n"   , stFileNode.stFileNode.usPrevPeer);
     DEBUG_PRINT(" User|Group : %d|%d\n", stFileNode.stFileNode.ucUser,
-                                   stFileNode.stFileNode.ucGroup);
-    DEBUG_PRINT(" Permissions: %04X\n"  , stFileNode.stFileNode.usPerms);
+                                         stFileNode.stFileNode.ucGroup);
+
+    DEBUG_PRINT(" Permissions: %04X\n" , stFileNode.stFileNode.usPerms);
     DEBUG_PRINT(" Parent     : %d\n"   , stFileNode.stFileNode.usParent);
     DEBUG_PRINT(" First Child: %d\n"   , stFileNode.stFileNode.usChild);
     DEBUG_PRINT(" Alloc Size : %d\n"   , stFileNode.stFileNode.ulAllocSize);

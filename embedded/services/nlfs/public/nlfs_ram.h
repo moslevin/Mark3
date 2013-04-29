@@ -21,6 +21,13 @@ See license.txt for more information
 
 #include "nlfs.h"
 
+/*!
+ * \brief The NLFS_RAM class
+ *
+ * This class implements an NLFS filesystem in a RAM buffer.  In this case, the
+ * host pointer passed into the "format" call is a pointer to the locally-
+ * allocated buffer in which the filesystem lives.
+ */
 class NLFS_RAM : public NLFS
 {
 private:
