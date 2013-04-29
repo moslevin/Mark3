@@ -15,8 +15,10 @@ See license.txt for more information
     \file bootloader.c
     \brief atmega328p Bootloader
     
-    This module implements a custom FunkenSlip-encoded bootloader, which fits
-    in a 1KB bootloader block.  
+    \page BOOTLOAD1 The Mark3 Bootloader
+
+    The Mark3 bootloader module implements a custom FunkenSlip-encoded 
+    bootloader, which fits in a 1KB bootloader block.  
     
     FunkenSlip encoding is used by Mark2 to provide a robust, common, and
     standards-based communications protocol for host-to-target interaction.
