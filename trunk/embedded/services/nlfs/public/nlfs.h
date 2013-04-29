@@ -13,7 +13,102 @@ See license.txt for more information
 ===========================================================================*/
 /*!
     \file   nlfs.h
-    \brief  Nice Little Filesystem (NLFS) implementation for Mark3
+    \brief  Nice Little Filesystem (NLFS) - a simple, embeddable filesystem
+
+    \page NLFS The Nice Little Filesystem (NLFS)
+
+    \section NLFSIntro Introduction to the Nice-Little-Filesystem (NLFS)
+
+    NLFS is yet-another filesystem intended for use in embedded applications.
+
+    It is intended to be portable, lightweight, and flexible in terms of supporting
+    different types of physical storage media.  In order to ensure that it's
+    easily embeddable, there are no external library dependencies, aside from
+    library code provided elsewhere in Mark3 (namely the MemUtil utility class).
+    Balancing code-size with features and functionality is also a tradeoff -
+    NLFS supports basic operations (create file, create directory, read, write,
+    seek, and delete), without a lot of other bells and whistles.  One other
+    feature built into the filesystem is posix-style user-group permissions.
+    While the APIs in the NLFS classes do not enforce permissions explicitly,
+    application-specific implementations of NLFS can enforce permissions
+    based on facilities based on the security mechanisms built into the host
+    OS.
+
+    The original purpose of this filesystem was to provide a flexible way of
+    packaging files for read-only use within Mark3 (such as scripts and compiled
+    DCPU-16 objects).  However, there are all sorts of purposes for this type
+    of filesystem - essentially, any application where a built-in file manifest
+    or resource container format.
+
+    \section NLFSArch Filesystem Architecture
+
+    NLFS is a block-based filesystem, composed of three separate regions of data
+    structures within a linearly-addressed blob of storage.  These regions are
+    represented on the physical storage in the following order:
+
+    [File Nodes][Data Block Headers][Block Data]
+
+    The individual regions are as follows:
+
+    1) File Nodes
+
+    This region is composed of a linear array of equally-sized file-node
+    (NLFS_Node_t) structures, starting at byte offset 0 in the underlying
+    media.
+
+    Each node defines a particular file or directory within the filesystem.
+    Because of the linear layout of the filesystem, the file nodes are all
+    pre-allocated during the time of filesystem creation.  As a result, care
+    should be taken to ensure enough file nodes are allocated to meet the needs
+    of your application, without wasting space in the filesystem for nodes
+    that will never be needed.
+
+    The first two nodes (node 0 and node 1) are special in the NLFS
+    implementation.
+
+    Node 0 is also known as the root filesystem node.  This block contains a
+    different internal data strucure from other file nodes, and stores the
+    configuration information for the particular filesystem, such as the number
+    of file nodes, file blocks, block sizes, as well as indexes of the first
+    free file and block nodes in the filesystem.  With this information, it is
+    possible to re-mount a filesystem created once in another location.
+
+    Node 1 is the mount-point for the filesystem, and is the root directory
+    under which all other files and directories are found.  By default Node 1
+    is simply named "/".
+
+    2) Block Headers
+
+    The block header region of the system comes after the file node region, and
+    consists of a linear array of block node data structures.  All storage in a
+    filesystem not allocated towards file nodes is automatically allocated
+    towards data blocks, and for each data block allocated, there is a block node
+    data structure allocated within the block node region.
+
+    The NLFS_Block_t data structure contains a link to the next node in a block
+    chain.  If the block is free, the link points to the index of the next free
+    block in the filesystem.  If allocated, the link points to the index of the
+    next block in the file.  This structure also contains flags which indicate
+    whether or not a block is free or allocated, and other flags used for
+    filesystem continuity checks.
+
+    3) Block Data
+
+    The block data region is the last linear range in the filesystem, and
+    consists of equally-sized blocks in the filesystem.  Each block consists
+    of a region of raw physical storage, without any additional metadata.
+
+    The contents of any files read or written to the filesystem is stored
+    within the blocks in this region.
+
+    \section NLFSClass Using the NLFS Class
+
+    The NLFS Class has a number of virtual methods, which require that a user
+    provides an implementaiton appropriate for the underlying physical storage
+    medium from within a class inheriting NLFS.s
+
+    An example implemention for a RAM-based filesystem is provided in the
+    NLFS_RAM class located within nlfs_ram.cpp.
 */
 
 #ifndef __NLFS_H__

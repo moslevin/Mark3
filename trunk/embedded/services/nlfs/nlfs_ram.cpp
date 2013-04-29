@@ -19,16 +19,7 @@ See license.txt for more information
 #include "nlfs.h"
 #include "nlfs_ram.h"
 #include "memutil.h"
-
-#define DEBUG       1
-
-#if DEBUG
- #include <stdio.h>
- #include <stdlib.h>
- #define DEBUG_PRINT     printf
-#else
- #define DEBUG_PRINT(...)
-#endif
+#include "nlfs_config.h"
 
 //---------------------------------------------------------------------------
 void NLFS_RAM::Read_Node( K_USHORT usNode_, NLFS_Node_t *pstFileNode_)

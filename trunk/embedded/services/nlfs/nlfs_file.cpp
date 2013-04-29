@@ -16,24 +16,13 @@ See license.txt for more information
     \brief Nice Little Filesystem - File Access Class
 */
 
-
-#define DEBUG       1
-
-#if DEBUG
- #include <stdio.h>
- #include <stdlib.h>
- #define DEBUG_PRINT     printf
-#else
- #define DEBUG_PRINT(...)
-#endif
-
 #include "kerneltypes.h"
 #include "memutil.h"
 #include "nlfs_file.h"
 #include "nlfs.h"
+#include "nlfs_config.h"
 
 //----------------------------------------------------------------------------
-
 int NLFS_File::Open(NLFS *pclFS_, const K_CHAR *szPath_, NLFS_File_Mode_t eMode_)
 {
     K_USHORT usNode;
@@ -98,6 +87,8 @@ int NLFS_File::Read(void *pvBuf_, K_ULONG ulLen_)
 {
     K_ULONG ulBytesLeft;
     K_ULONG ulOffset;
+    K_ULONG ulRead = 0;
+
     K_CHAR *szCharBuf = (K_CHAR*)pvBuf_;
 
     DEBUG_PRINT("Reading: %d bytes from file\n", ulLen_);
@@ -111,19 +102,20 @@ int NLFS_File::Read(void *pvBuf_, K_ULONG ulLen_)
         {
             m_pclFileSystem->Read_Block(m_ulCurrentBlock, ulOffset, (void*)szCharBuf, ulBytesLeft );
 
+            ulRead += ulBytesLeft;
             ulLen_ -= ulBytesLeft;
             szCharBuf += ulBytesLeft;
             m_stNode.stFileNode.ulFileSize++;
             DEBUG_PRINT( "%d bytes to go\n", ulLen_);
-
         }
 
         DEBUG_PRINT("reading next node\n");
         NLFS_Block_t stBlock;
         m_pclFileSystem->Read_Block_Header(m_ulCurrentBlock, &stBlock);
         m_ulCurrentBlock = stBlock.ulNextBlock;
-
     }
+
+    return ulRead;
 }
 
 //----------------------------------------------------------------------------
@@ -131,6 +123,7 @@ int NLFS_File::Write(void *pvBuf_, K_ULONG ulLen_)
 {
     K_ULONG ulBytesLeft;
     K_ULONG ulOffset;
+    K_ULONG ulWritten = 0;
     K_CHAR *szCharBuf = (K_CHAR*)pvBuf_;
 
     DEBUG_PRINT("writing: %d bytes to file\n", ulLen_);
@@ -143,12 +136,11 @@ int NLFS_File::Write(void *pvBuf_, K_ULONG ulLen_)
         if (ulBytesLeft && ulLen_ && (INVALID_BLOCK != m_ulCurrentBlock))
         {
             m_pclFileSystem->Write_Block(m_ulCurrentBlock, ulOffset, (void*)szCharBuf, ulBytesLeft );
-
+            ulWritten += ulBytesLeft;
             ulLen_ -= ulBytesLeft;
             szCharBuf += ulBytesLeft;
             m_stNode.stFileNode.ulFileSize++;
             DEBUG_PRINT( "%d bytes to go\n", ulLen_);
-
         }
         if (!ulLen_)
         {
@@ -163,6 +155,7 @@ int NLFS_File::Write(void *pvBuf_, K_ULONG ulLen_)
         DEBUG_PRINT("writing node to file\n");
         m_pclFileSystem->Write_Node(m_usFile, &m_stNode);
     }
+    return ulWritten;
 }
 
 //----------------------------------------------------------------------------
