@@ -15,6 +15,8 @@ See license.txt for more information
 	\file dcpu.cpp
 	\brief Portable DCPU-16 CPU emulator
 	
+	\section DCPU_1 DCPU-16 Emulator
+
 	The DCPU-16 is the in-game CPU used in the upcoming game 0x10^c, from the
 	creators of the wildly successful Minecraft.  While the DCPU is supposed
 	to be part of the game, it has serious potential for use in all sorts of
@@ -109,11 +111,7 @@ See license.txt for more information
 	DCPU_Registers *pstRegisters;
 	pstRegisters = clMyCPU.GetRegisters();
 	\endcode 
-	
-	ToDo:  Implement the hardware bus interface - provide functions to register
-	devices/drivers/etc. with the VM prior to initialization.  Hook into the
-	interrupt system to provide communication from the VM back to the host 
-	processor.
+
 */
 #include "dcpu.h"
 #include "kerneltypes.h"
