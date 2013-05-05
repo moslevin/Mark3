@@ -15,9 +15,7 @@ See license.txt for more information
     \file   nlfs.h
     \brief  Nice Little Filesystem (NLFS) - a simple, embeddable filesystem
 
-    \page NLFS The Nice Little Filesystem (NLFS)
-
-    \section NLFSIntro Introduction to the Nice-Little-Filesystem (NLFS)
+    Introduction to the Nice-Little-Filesystem (NLFS)
 
     NLFS is yet-another filesystem intended for use in embedded applications.
 
@@ -39,8 +37,6 @@ See license.txt for more information
     DCPU-16 objects).  However, there are all sorts of purposes for this type
     of filesystem - essentially, any application where a built-in file manifest
     or resource container format.
-
-    \section NLFSArch Filesystem Architecture
 
     NLFS is a block-based filesystem, composed of three separate regions of data
     structures within a linearly-addressed blob of storage.  These regions are
@@ -100,8 +96,6 @@ See license.txt for more information
 
     The contents of any files read or written to the filesystem is stored
     within the blocks in this region.
-
-    \section NLFSClass Using the NLFS Class
 
     The NLFS Class has a number of virtual methods, which require that a user
     provides an implementaiton appropriate for the underlying physical storage
@@ -308,6 +302,28 @@ public:
     K_USHORT Create_Dir(const K_CHAR *szPath_);
 
     /*!
+     * \brief Delete_File Removes a file from disk
+     * \param szPath_ Path of the file to remove
+     * \return Index of the node deleted or INVALID_NODE on error
+     */
+    K_USHORT Delete_File(const K_CHAR *szPath_);
+
+    /*!
+     * \brief Delete_Folder Remove a folder from disk
+     * \param szPath_ Path of the folder to remove
+     * \return Index of the node deleted or INVALID_NODE on error
+     */
+    K_USHORT Delete_Folder(const K_CHAR *szPath_);
+
+    /*!
+     * \brief Cleanup_Node_Links Remove the links between the given node and
+     *                           its parent/peer nodes.
+     * \param usNode_  Index of the node
+     * \param pstNode_ Pointer to a local copy of the node data
+     */
+    void Cleanup_Node_Links(K_USHORT usNode_, NLFS_Node_t *pstNode_);
+
+    /*!
      * \brief Find_Parent_Dir returns the directory under which the specified
      *        file object lives
      * \param [in] szPath_ - Path of the file to find parent directory node for
@@ -332,6 +348,31 @@ public:
      * \return The size of a data block in the filesystem, as configured at format.
      */
     K_ULONG GetBlockSize(void) { return m_stLocalRoot.ulBlockSize; }
+
+    /*!
+     * \brief GetNumBlocks retrieves the number of data blocks in the filesystem.
+     * \return The total number of blocks in the filesystem
+     */
+    K_ULONG GetNumBlocks(void) { return m_stLocalRoot.ulNumBlocks; }
+
+    /*!
+     * \brief GetNumBlocksFree retrieves the number of free data blocks in the
+     *        filesystem.
+     * \return The number of available blocks in the filesystem
+     */
+    K_ULONG GetNumBlocksFree(void) { return m_stLocalRoot.ulNumBlocksFree; }
+
+    /*!
+     * \brief GetNumFiles retrieves the maximum number of files in the filesystem
+     * \return The maximum number of files that can be allocated in the system
+     */
+    K_ULONG GetNumFiles(void)  { return m_stLocalRoot.usNumFiles; }
+
+    /*!
+     * \brief GetNumFilesFree retrieves the number of free blocks in the filesystem
+     * \return The number of free file nodes in the filesystem
+     */
+    K_USHORT GetNumFilesFree(void) { return m_stLocalRoot.usNumFilesFree; }
 protected:
 
     /*!
@@ -405,6 +446,27 @@ protected:
      * \param [in] ulLen_ - length of data to write (in bytes)
      */
     virtual void Write_Block(K_ULONG ulBlock_, K_ULONG ulOffset_, void *pvData_, K_ULONG ulLen_) = 0;
+
+    /*!
+     * \brief RootSync Synchronize the filesystem config in the object back to
+     *        the underlying storage mechanism.  This needs to be called to
+     *        ensure that underlying storage is kept consistent when creating
+     *        or deleting files.
+     */
+    void RootSync();
+
+    /*!
+     * \brief Repair Checks a filesystem for inconsistencies and makes repairs
+     *        in order to avoid losing storage blocks.
+     */
+    void Repair() {}
+
+    /*!
+     * \brief Print_Free_Details Print details about a free node
+     * \param usNode_ Node to print details for
+     */
+    void Print_Free_Details( K_USHORT usNode_);
+
 
     /*!
      * \brief Print_File_Details displays information about a given file node

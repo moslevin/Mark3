@@ -26,11 +26,9 @@ See license.txt for more information
 //----------------------------------------------------------------------------
 typedef enum
 {
-    NLFS_FILE_CREATE,       //!< Create the file if it does not exist
-    NLFS_FILE_APPEND,       //!< Open to end of file
-    NLFS_FILE_TRUNCATE,     //!< Truncate file size to 0-bytes
-//---
-    NLFS_FILE_MODES
+    NLFS_FILE_CREATE = 0x01,      //!< Create the file if it does not exist
+    NLFS_FILE_APPEND = 0x02,      //!< Open to end of file
+    NLFS_FILE_TRUNCATE = 0x04     //!< Truncate file size to 0-bytes
 } NLFS_File_Mode_t;
 
 //----------------------------------------------------------------------------

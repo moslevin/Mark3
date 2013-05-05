@@ -103,6 +103,15 @@ void NLFS::Print_Dir_Details( K_USHORT usNode_ )
 }
 
 //---------------------------------------------------------------------------
+void NLFS::Print_Free_Details( K_USHORT usNode_ )
+{
+    NLFS_Node_t stFileNode;
+    Read_Node(usNode_, &stFileNode);
+
+    DEBUG_PRINT(" Next Free  : %d\n"    , stFileNode.stFileNode.usNextPeer );
+}
+
+//---------------------------------------------------------------------------
 void NLFS::Print_Node_Details( K_USHORT usNode_ )
 {
     NLFS_Node_t stTempNode;
@@ -114,6 +123,7 @@ void NLFS::Print_Node_Details( K_USHORT usNode_ )
     {
         case NLFS_NODE_FREE:
             DEBUG_PRINT( "Free\n" );
+            Print_Free_Details(usNode_);
             break;
         case NLFS_NODE_ROOT:
             DEBUG_PRINT( "Root Block\n" );
@@ -150,10 +160,10 @@ K_USHORT NLFS::Pop_Free_Node(void)
     Write_Node(usRetVal, &stFileNode);
 
     //Update root node
-    Read_Node(FS_ROOT_BLOCK , &stFileNode);
+    Read_Node(FS_CONFIG_BLOCK , &stFileNode);
     stFileNode.stRootNode.usNextFreeNode = m_stLocalRoot.usNextFreeNode;
     stFileNode.stRootNode.usNumFilesFree--;
-    Write_Node(FS_ROOT_BLOCK, &stFileNode);
+    Write_Node(FS_CONFIG_BLOCK, &stFileNode);
 
     return usRetVal;
 }
@@ -166,15 +176,16 @@ void NLFS::Push_Free_Node(K_USHORT usNode_)
     Read_Node(usNode_, &stFileNode);
     stFileNode.stFileNode.usNextPeer = m_stLocalRoot.usNextFreeNode;
     m_stLocalRoot.usNextFreeNode = usNode_;
+
     Write_Node(usNode_, &stFileNode);
 
     DEBUG_PRINT("Node %d freed\n", usNode_);
 
     //Update root node
-    Read_Node(FS_ROOT_BLOCK , &stFileNode);
+    Read_Node(FS_CONFIG_BLOCK , &stFileNode);
     stFileNode.stRootNode.usNextFreeNode = m_stLocalRoot.usNextFreeNode;
     stFileNode.stRootNode.usNumFilesFree++;
-    Write_Node(FS_ROOT_BLOCK , &stFileNode);
+    Write_Node(FS_CONFIG_BLOCK , &stFileNode);
 }
 
 //---------------------------------------------------------------------------
@@ -198,12 +209,12 @@ K_ULONG NLFS::Pop_Free_Block(void)
 
     Write_Block_Header(ulRetVal, &stFileBlock);
 
-    Read_Node(FS_ROOT_BLOCK , &stFileNode);
+    Read_Node(FS_CONFIG_BLOCK , &stFileNode);
 
     stFileNode.stRootNode.ulNextFreeBlock = m_stLocalRoot.ulNextFreeBlock;
     stFileNode.stRootNode.ulNumBlocksFree--;
 
-    Write_Node(FS_ROOT_BLOCK , &stFileNode);
+    Write_Node(FS_CONFIG_BLOCK , &stFileNode);
 
     DEBUG_PRINT("Allocated block %d, next free %d\n", ulRetVal, m_stLocalRoot.ulNextFreeBlock);
     return ulRetVal;
@@ -222,10 +233,10 @@ void NLFS::Push_Free_Block(K_ULONG ulBlock_ )
 
     Write_Block_Header(ulBlock_, &stFileBlock);
 
-    Read_Node(FS_ROOT_BLOCK , &stFileNode);
+    Read_Node(FS_CONFIG_BLOCK , &stFileNode);
     stFileNode.stRootNode.ulNextFreeBlock = m_stLocalRoot.ulNextFreeBlock;
     stFileNode.stRootNode.ulNumBlocksFree++;
-    Write_Node(FS_ROOT_BLOCK , &stFileNode);
+    Write_Node(FS_CONFIG_BLOCK , &stFileNode);
 
     DEBUG_PRINT("Block %d freed\n", ulBlock_);
 }
@@ -267,6 +278,9 @@ K_ULONG NLFS::Append_Block_To_Node(NLFS_Node_t *pstFile_ )
 
     pstFile_->stFileNode.ulLastBlock = ulBlock;
     pstFile_->stFileNode.ulAllocSize += m_stLocalRoot.ulBlockSize;
+
+    RootSync();
+
     return ulBlock;
 }
 
@@ -549,6 +563,8 @@ K_USHORT NLFS::Create_File_i(const K_CHAR *szPath_, NLFS_Type_t eType_ )
     Write_Node(usNode, &stFileNode);
     Write_Node(usRootNodes, &stParentNode);
 
+    RootSync();
+
     return 0;
 }
 
@@ -575,6 +591,164 @@ K_USHORT NLFS::Create_Dir( const K_CHAR *szPath_ )
     }
 
     return Create_File_i(szPath_, NLFS_NODE_DIR );
+}
+
+//---------------------------------------------------------------------------
+void NLFS::Cleanup_Node_Links(K_USHORT usNode_, NLFS_Node_t *pstNode_)
+{
+    DEBUG_PRINT("Cleanup_Node_Links: Entering\n");
+
+    if (INVALID_NODE != pstNode_->stFileNode.usParent)
+    {
+        NLFS_Node_t stParent;
+        DEBUG_PRINT("Cleanup_Node_Links: Parent Node: %d\n", pstNode_->stFileNode.usParent);
+        Read_Node(pstNode_->stFileNode.usParent, &stParent);
+
+        DEBUG_PRINT("0\n");
+        if (stParent.stFileNode.usChild == usNode_)
+        {
+            DEBUG_PRINT("1\n");
+            stParent.stFileNode.usChild = pstNode_->stFileNode.usNextPeer;
+            Write_Node(pstNode_->stFileNode.usParent, &stParent);
+            DEBUG_PRINT("2\n");
+        }
+    }
+
+    DEBUG_PRINT("a\n");
+    if ( (INVALID_NODE != pstNode_->stFileNode.usNextPeer) ||
+         (INVALID_NODE != pstNode_->stFileNode.usPrevPeer) )
+    {
+        NLFS_Node_t stNextPeer;
+        NLFS_Node_t stPrevPeer;
+
+        DEBUG_PRINT("b\n");
+        if (INVALID_NODE != pstNode_->stFileNode.usNextPeer)
+        {
+            DEBUG_PRINT("c\n");
+            Read_Node(pstNode_->stFileNode.usNextPeer, &stNextPeer);
+            DEBUG_PRINT("d\n");
+        }
+
+        if (INVALID_NODE != pstNode_->stFileNode.usPrevPeer)
+        {
+            DEBUG_PRINT("e\n");
+            Read_Node(pstNode_->stFileNode.usPrevPeer, &stPrevPeer);
+            DEBUG_PRINT("f\n");
+        }
+
+        if (INVALID_NODE != pstNode_->stFileNode.usNextPeer)
+        {
+            DEBUG_PRINT("g\n");
+            stNextPeer.stFileNode.usPrevPeer = pstNode_->stFileNode.usPrevPeer;
+            Write_Node(pstNode_->stFileNode.usNextPeer, &stNextPeer);
+            DEBUG_PRINT("h\n");
+        }
+
+        if (INVALID_NODE != pstNode_->stFileNode.usPrevPeer)
+        {
+            DEBUG_PRINT("i\n");
+            stPrevPeer.stFileNode.usNextPeer = pstNode_->stFileNode.usNextPeer;
+            Write_Node(pstNode_->stFileNode.usPrevPeer, &stPrevPeer);
+            DEBUG_PRINT("j\n");
+        }
+    }
+    pstNode_->stFileNode.usParent = INVALID_NODE;
+    pstNode_->stFileNode.usPrevPeer = INVALID_NODE;
+    pstNode_->stFileNode.usNextPeer = INVALID_NODE;
+}
+
+//---------------------------------------------------------------------------
+K_USHORT NLFS::Delete_Folder(const K_CHAR *szPath_)
+{
+    K_USHORT usNode = Find_File(szPath_);
+    NLFS_Node_t stNode;
+
+    if (INVALID_NODE == usNode)
+    {
+        DEBUG_PRINT("Delete_Folder: File not found!\n");
+        return INVALID_NODE;
+    }
+    if (FS_ROOT_BLOCK == usNode || FS_CONFIG_BLOCK == usNode)
+    {
+        DEBUG_PRINT("Delete_Folder: Cannot delete root!\n");
+        return INVALID_NODE;
+    }
+
+    Read_Node(usNode, &stNode);
+
+    if (NLFS_NODE_FILE == stNode.eBlockType)
+    {
+        DEBUG_PRINT("Delete_Folder: Path is not a Folder (is it a file?)");
+        return INVALID_NODE;
+    }
+
+    if (INVALID_NODE != stNode.stFileNode.usChild)
+    {
+        DEBUG_PRINT("Delete_Folder: Folder is not empty!");
+        return INVALID_NODE;
+    }
+
+    Cleanup_Node_Links(usNode, &stNode);
+
+    stNode.eBlockType = NLFS_NODE_FREE;
+
+    Write_Node(usNode, &stNode);
+    Push_Free_Node(usNode);
+
+    RootSync();
+
+    return usNode;
+}
+
+//---------------------------------------------------------------------------
+K_USHORT NLFS::Delete_File( const K_CHAR *szPath_)
+{
+    K_USHORT usNode = Find_File(szPath_);
+    K_ULONG ulCurr;
+    K_ULONG ulPrev;
+    NLFS_Node_t stNode;
+    NLFS_Block_t stBlock;
+
+    if (INVALID_NODE == usNode)
+    {
+        DEBUG_PRINT("Delete_File: File not found!\n");
+        return INVALID_NODE;
+    }
+    if (FS_ROOT_BLOCK == usNode || FS_CONFIG_BLOCK == usNode)
+    {
+        DEBUG_PRINT("Delete_File: Cannot delete root!\n");
+        return INVALID_NODE;
+    }
+
+    Read_Node(usNode, &stNode);
+
+    if (NLFS_NODE_DIR == stNode.eBlockType)
+    {
+        DEBUG_PRINT("Delete_File: Path is not a file (is it a directory?)");
+        return INVALID_NODE;
+    }
+
+    Cleanup_Node_Links(usNode, &stNode);
+    ulCurr = stNode.stFileNode.ulFirstBlock;
+
+    while (INVALID_BLOCK != ulCurr)
+    {
+        Read_Block_Header(ulCurr, &stBlock);
+
+        ulPrev = ulCurr;
+        ulCurr = stBlock.ulNextBlock;
+
+        Push_Free_Block(ulPrev);
+    }
+
+    stNode.eBlockType = NLFS_NODE_FREE;
+
+    Write_Node(usNode, &stNode);
+    Push_Free_Node(usNode);
+
+    RootSync();
+
+    return usNode;
 }
 
 //---------------------------------------------------------------------------
@@ -687,10 +861,27 @@ void NLFS::Mount(void *pvHost_)
 
     //!! Must set the host pointer first.
     m_pvHost = pvHost_;
+    DEBUG_PRINT("Remounting FS %X - reading config node\n", pvHost_);
 
     // Reload the root block into the local cache
     Read_Node(FS_CONFIG_BLOCK, &stRootNode);
 
+    DEBUG_PRINT("Copying config node\n");
     MemUtil::CopyMemory(&m_stLocalRoot, &(stRootNode.stRootNode), sizeof(m_stLocalRoot));
+
+    DEBUG_PRINT("Block Size", m_stLocalRoot.ulBlockSize );
+    DEBUG_PRINT("Data Offset", m_stLocalRoot.ulDataOffset );
+    DEBUG_PRINT("Block Offset", m_stLocalRoot.ulBlockOffset );
 }
+
+//---------------------------------------------------------------------------
+void NLFS::RootSync()
+{
+    NLFS_Node_t stRootNode;
+
+    MemUtil::CopyMemory(&(stRootNode.stRootNode), &m_stLocalRoot, sizeof(m_stLocalRoot));
+    stRootNode.eBlockType = NLFS_NODE_ROOT;
+    Write_Node(FS_CONFIG_BLOCK, &stRootNode);
+}
+
 

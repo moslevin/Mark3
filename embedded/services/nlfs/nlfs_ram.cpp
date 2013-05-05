@@ -25,7 +25,7 @@ See license.txt for more information
 void NLFS_RAM::Read_Node( K_USHORT usNode_, NLFS_Node_t *pstFileNode_)
 {
     NLFS_Node_t *pstFileNode =  (NLFS_Node_t*)((K_ULONG)m_pvHost
-                                                      + (usNode_ * sizeof(NLFS_Node_t)));
+                                                    + (usNode_ * sizeof(NLFS_Node_t)));
 
     MemUtil::CopyMemory(pstFileNode_, pstFileNode, sizeof(NLFS_Node_t));
 }
@@ -34,7 +34,7 @@ void NLFS_RAM::Read_Node( K_USHORT usNode_, NLFS_Node_t *pstFileNode_)
 void NLFS_RAM::Write_Node(K_USHORT usNode_, NLFS_Node_t *pstFileNode_)
 {
     NLFS_Node_t *pstFileNode =  (NLFS_Node_t*)((K_ULONG)m_pvHost
-                                                      + (usNode_ * sizeof(NLFS_Node_t)));
+                                                    + (usNode_ * sizeof(NLFS_Node_t)));
 
     MemUtil::CopyMemory(pstFileNode, pstFileNode_, sizeof(NLFS_Node_t));
 }
@@ -43,8 +43,8 @@ void NLFS_RAM::Write_Node(K_USHORT usNode_, NLFS_Node_t *pstFileNode_)
 void NLFS_RAM::Read_Block_Header(K_ULONG ulBlock_, NLFS_Block_t *pstFileBlock_)
 {
     NLFS_Block_t *pstFileBlock =  (NLFS_Block_t*)((K_ULONG)m_pvHost
-                                                        + m_stLocalRoot.ulBlockOffset
-                                                        + (ulBlock_ * sizeof(NLFS_Block_t)));
+                                                    + m_stLocalRoot.ulBlockOffset
+                                                    + (ulBlock_ * sizeof(NLFS_Block_t)));
 
     MemUtil::CopyMemory(pstFileBlock_, pstFileBlock, sizeof(NLFS_Block_t));
 }
@@ -53,8 +53,8 @@ void NLFS_RAM::Read_Block_Header(K_ULONG ulBlock_, NLFS_Block_t *pstFileBlock_)
 void NLFS_RAM::Write_Block_Header(K_ULONG ulBlock_, NLFS_Block_t *pstFileBlock_)
 {
     NLFS_Block_t *pstFileBlock =  (NLFS_Block_t*)((K_ULONG)m_pvHost
-                                                        + m_stLocalRoot.ulBlockOffset
-                                                        + (ulBlock_ * sizeof(NLFS_Block_t)));
+                                                    + m_stLocalRoot.ulBlockOffset
+                                                    + (ulBlock_ * sizeof(NLFS_Block_t)));
 
     MemUtil::CopyMemory(pstFileBlock, pstFileBlock_, sizeof(NLFS_Block_t));
 }
@@ -66,15 +66,7 @@ void NLFS_RAM::Read_Block(K_ULONG ulBlock_, K_ULONG ulOffset_, void *pvData_, K_
                             + m_stLocalRoot.ulDataOffset
                             + ulOffset_
                             + (ulBlock_ * m_stLocalRoot.ulBlockSize) );
-
-    DEBUG_PRINT("Data offset %d\n", m_stLocalRoot.ulDataOffset);
-    DEBUG_PRINT("offset %d\n", ulOffset_);
-    DEBUG_PRINT("block size %d\n", m_stLocalRoot.ulBlockSize);
-    DEBUG_PRINT("block ID %d\n", ulBlock_);
-    DEBUG_PRINT("Reading %d bytes from 0x%X+%x, host %X\n", ulLen_, pvSrc_, ulOffset_, m_pvHost);
-
-    MemUtil::CopyMemory(pvData_, pvSrc_, (K_USHORT)ulLen_);
-    DEBUG_PRINT("Done\n");
+    MemUtil::CopyMemory(pvData_, pvSrc_, (K_USHORT)ulLen_);    
 }
 
 //---------------------------------------------------------------------------
@@ -84,13 +76,5 @@ void NLFS_RAM::Write_Block(K_ULONG ulBlock_, K_ULONG ulOffset_, void *pvData_, K
                             + m_stLocalRoot.ulDataOffset
                             + ulOffset_
                             + (ulBlock_ * m_stLocalRoot.ulBlockSize) );
-
-    DEBUG_PRINT("Data offset %d\n", m_stLocalRoot.ulDataOffset);
-    DEBUG_PRINT("offset %d\n", ulOffset_);
-    DEBUG_PRINT("block size %d\n", m_stLocalRoot.ulBlockSize);
-    DEBUG_PRINT("block ID %d\n", ulBlock_);
-    DEBUG_PRINT("Writing %d bytes to 0x%X+%x, host %X\n", ulLen_, pvDst_, ulOffset_, m_pvHost);
-
-    MemUtil::CopyMemory(pvDst_, pvData_, (K_USHORT)ulLen_);
-    DEBUG_PRINT("Done\n");
+    MemUtil::CopyMemory(pvDst_, pvData_, (K_USHORT)ulLen_);    
 }
