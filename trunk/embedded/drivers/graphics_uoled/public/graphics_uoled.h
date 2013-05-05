@@ -79,7 +79,7 @@ public:
     virtual void TriangleFill(DrawPoly_t *pstPoly_) {}
     virtual void Polygon(DrawPoly_t *pstPoly_) {}
 
-   // virtual void Text(DrawText_t *pstText_);
+    virtual void Text(DrawText_t *pstText_);
     virtual K_USHORT TextWidth(DrawText_t *pstText_) {return 0;}
 	void SetDriver( Driver *pclDriver_ ) { m_pclDriver = pclDriver_; }
 private:
@@ -91,6 +91,7 @@ private:
 	K_UCHAR ReadByte( void );
 	K_UCHAR WaitAck( void );
 	void WriteVector( DataVector_t *pstVector_, K_UCHAR ucCount_);
+    void MoveCursor(K_USHORT usX_, K_USHORT usY_);
 
 	Driver *m_pclDriver;
 	
