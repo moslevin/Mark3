@@ -36,12 +36,11 @@ K_UCHAR GraphicsUOLED::WaitAck( void )
     
     while (usTimeout--)
     {
-        Thread::USleep(1000);   //100us sleep
         if(m_pclDriver->Read(1, &ucResponse))
         {
             break;
         }
-
+        Thread::USleep(1000);   //100us sleep
     }
 
     return ucResponse;
@@ -240,3 +239,37 @@ void GraphicsUOLED::Rectangle(DrawRectangle_t *pstRectangle_)
     COMMAND_FOOTER
 }
 
+//---------------------------------------------------------------------------
+void GraphicsUOLED::MoveCursor(K_USHORT usX_, K_USHORT usY_)
+{
+    COMMAND_HEADER
+    DataVector_t astVector[3];
+
+    astVector[0].usData = TEXT_MOVE_CURSOR;
+    astVector[0].ucLen = 2;
+    astVector[1].usData = (usX_ + 4) >> 3;
+    astVector[1].ucLen = 2;
+    astVector[2].usData = (usY_ + 4) >> 3;
+    astVector[2].ucLen = 2;
+
+    WriteVector(astVector, 3);
+    COMMAND_FOOTER
+
+}
+
+//---------------------------------------------------------------------------
+void GraphicsUOLED::Text(DrawText_t *pstText_)
+{
+    MoveCursor(pstText_->usLeft, pstText_->usTop);
+
+    COMMAND_HEADER
+    const K_CHAR *pcCursor = pstText_->pcString;
+
+    WriteWord(TEXT_PUT_STRING);
+    while (*pcCursor)
+    {
+        WriteByte(*pcCursor++);
+    }
+    WriteByte(0);
+    COMMAND_FOOTER
+}
