@@ -240,6 +240,50 @@ void GraphicsUOLED::Rectangle(DrawRectangle_t *pstRectangle_)
 }
 
 //---------------------------------------------------------------------------
+void GraphicsUOLED::TriangleWire(DrawPoly_t *pstTriangle_)
+{
+    COMMAND_HEADER
+    DataVector_t astVector[8];
+
+    astVector[0].usData = GFX_DRAW_TRIANGLE;
+    astVector[0].ucLen = 2;
+    astVector[1].usData = pstTriangle_->pstVector[0].usX;
+    astVector[1].ucLen = 2;
+    astVector[2].usData = pstTriangle_->pstVector[0].usY;
+    astVector[2].ucLen = 2;
+    astVector[3].usData = pstTriangle_->pstVector[1].usX;
+    astVector[3].ucLen = 2;
+    astVector[4].usData = pstTriangle_->pstVector[1].usY;
+    astVector[4].ucLen = 2;
+    astVector[5].usData = pstTriangle_->pstVector[2].usX;
+    astVector[5].ucLen = 2;
+    astVector[6].usData = pstTriangle_->pstVector[2].usY;
+    astVector[6].ucLen = 2;
+    astVector[7].usData = pstTriangle_->uColor;
+    astVector[7].ucLen = 2;
+    WriteVector(astVector, 8);
+
+    COMMAND_FOOTER
+}
+
+//---------------------------------------------------------------------------
+void GraphicsUOLED::Polygon(DrawPoly_t *pstPoly_)
+{
+    K_UCHAR i;
+
+    COMMAND_HEADER
+    WriteWord(GFX_DRAW_POLYGON);
+    WriteWord(pstPoly_->usNumPoints);
+    for (i = 0; i < pstPoly_->usNumPoints; i++)
+    {
+        WriteWord(pstPoly_->pstVector[i].usX);
+        WriteWord(pstPoly_->pstVector[i].usY);
+    }
+    WriteWord(pstPoly_->uColor);
+    COMMAND_FOOTER
+}
+
+//---------------------------------------------------------------------------
 void GraphicsUOLED::MoveCursor(K_USHORT usX_, K_USHORT usY_)
 {
     COMMAND_HEADER
@@ -247,20 +291,38 @@ void GraphicsUOLED::MoveCursor(K_USHORT usX_, K_USHORT usY_)
 
     astVector[0].usData = TEXT_MOVE_CURSOR;
     astVector[0].ucLen = 2;
-    astVector[1].usData = (usX_ + 4) >> 3;
+    astVector[1].usData = (usY_ + 4) >> 3;
     astVector[1].ucLen = 2;
-    astVector[2].usData = (usY_ + 4) >> 3;
+    astVector[2].usData = (usX_ + 4) >> 3;
     astVector[2].ucLen = 2;
-
     WriteVector(astVector, 3);
     COMMAND_FOOTER
+}
+//---------------------------------------------------------------------------
+void GraphicsUOLED::MoveOrigin(K_USHORT usX_, K_USHORT usY_)
+{
+    COMMAND_HEADER
+    DataVector_t astVector[3];
 
+    astVector[0].usData = GFX_MOVE_ORIGIN;
+    astVector[0].ucLen = 2;
+    astVector[1].usData = usX_;
+    astVector[1].ucLen = 2;
+    astVector[2].usData = usY_;
+    astVector[2].ucLen = 2;
+    WriteVector(astVector, 3);
+    COMMAND_FOOTER
 }
 
 //---------------------------------------------------------------------------
 void GraphicsUOLED::Text(DrawText_t *pstText_)
 {
-    MoveCursor(pstText_->usLeft, pstText_->usTop);
+    MoveOrigin(pstText_->usLeft, pstText_->usTop);
+    if (m_uTextColor != pstText_->uColor)
+    {
+        SetFontFGColor(pstText_->uColor);
+        m_uTextColor = pstText_->uColor;
+    }
 
     COMMAND_HEADER
     const K_CHAR *pcCursor = pstText_->pcString;
@@ -272,6 +334,8 @@ void GraphicsUOLED::Text(DrawText_t *pstText_)
     }
     WriteByte(0);
     COMMAND_FOOTER
+
+    MoveOrigin(0, 0);
 }
 
 //---------------------------------------------------------------------------
@@ -286,3 +350,32 @@ K_USHORT GraphicsUOLED::TextWidth(DrawText_t *pstText_)
     }
     return usRetVal;
 }
+
+//---------------------------------------------------------------------------
+void GraphicsUOLED::SetFontFGColor(COLOR uColor_)
+{
+    COMMAND_HEADER
+    WriteWord(TEXT_FG_COLOR);
+    WriteWord(uColor_);
+    COMMAND_FOOTER
+}
+
+//---------------------------------------------------------------------------
+void GraphicsUOLED::SetFontBGColor(COLOR uColor_)
+{
+    COMMAND_HEADER
+    WriteWord(TEXT_BG_COLOR);
+    WriteWord(uColor_);
+    COMMAND_FOOTER
+}
+
+//---------------------------------------------------------------------------
+void GraphicsUOLED::SetTextOpacity(bool bOpaque_)
+{
+    COMMAND_HEADER
+    WriteWord(TEXT_OPACITY);
+    WriteWord((K_USHORT)bOpaque_);
+    COMMAND_FOOTER
+}
+
+//---------------------------------------------------------------------------

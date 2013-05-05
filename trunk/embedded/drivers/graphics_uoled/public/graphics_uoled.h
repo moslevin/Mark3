@@ -75,26 +75,34 @@ public:
     virtual void Bitmap(DrawBitmap_t *pstBitmap_) {}
     virtual void Stamp(DrawStamp_t *pstStamp_) {}
     virtual void Move(DrawMove_t *pstMove_ ) {}
-    virtual void TriangleWire(DrawPoly_t *pstPoly_){}
+    virtual void TriangleWire(DrawPoly_t *pstPoly_);
     virtual void TriangleFill(DrawPoly_t *pstPoly_) {}
-    virtual void Polygon(DrawPoly_t *pstPoly_) {}
+    virtual void Polygon(DrawPoly_t *pstPoly_);
 
     virtual void Text(DrawText_t *pstText_);
     virtual K_USHORT TextWidth(DrawText_t *pstText_);
 	void SetDriver( Driver *pclDriver_ ) { m_pclDriver = pclDriver_; }
 private:
 
-    void SetOutlineColor( COLOR uColor_ );
 
 	void WriteByte( K_UCHAR ucByte_ );
 	void WriteWord( K_USHORT usWord_ );
-	K_UCHAR ReadByte( void );
+    void WriteVector( DataVector_t *pstVector_, K_UCHAR ucCount_);
+
+    K_UCHAR ReadByte( void );
 	K_UCHAR WaitAck( void );
-	void WriteVector( DataVector_t *pstVector_, K_UCHAR ucCount_);
+
     void MoveCursor(K_USHORT usX_, K_USHORT usY_);
+    void MoveOrigin( K_USHORT usX_, K_USHORT usY_ );
+
+    void SetOutlineColor( COLOR uColor_ );
+    void SetFontFGColor(COLOR uColor_);
+    void SetFontBGColor(COLOR uColor_);
+    void SetTextOpacity(bool bOpaque_);
 
 	Driver *m_pclDriver;
 	
+    COLOR m_uTextColor;
 };
 
 #endif
