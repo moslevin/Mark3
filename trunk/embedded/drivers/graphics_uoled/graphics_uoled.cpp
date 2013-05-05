@@ -273,3 +273,16 @@ void GraphicsUOLED::Text(DrawText_t *pstText_)
     WriteByte(0);
     COMMAND_FOOTER
 }
+
+//---------------------------------------------------------------------------
+K_USHORT GraphicsUOLED::TextWidth(DrawText_t *pstText_)
+{
+    K_USHORT usRetVal = 0;
+    const K_CHAR *pcCursor = pstText_->pcString;
+
+    while (*pcCursor)
+    {
+        usRetVal += 8;
+    }
+    return usRetVal;
+}

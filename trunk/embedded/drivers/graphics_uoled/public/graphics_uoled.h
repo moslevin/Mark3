@@ -80,7 +80,7 @@ public:
     virtual void Polygon(DrawPoly_t *pstPoly_) {}
 
     virtual void Text(DrawText_t *pstText_);
-    virtual K_USHORT TextWidth(DrawText_t *pstText_) {return 0;}
+    virtual K_USHORT TextWidth(DrawText_t *pstText_);
 	void SetDriver( Driver *pclDriver_ ) { m_pclDriver = pclDriver_; }
 private:
 
