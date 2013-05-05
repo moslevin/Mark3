@@ -13,8 +13,11 @@ See license.txt for more information
 ===========================================================================*/
 /*!
 	\file slip.h
+
 	Serial Line IP framing code.  Also includes code to frame data in 
 	FunkenSlip format for use with SlipTerm on a host PC.  
+
+	\page SLIP1 Funkenslip Encoding
 	
 	FunkenSlip uses SLIP-framed messages with a pre-defined packet format 
 	as follows:
@@ -22,8 +25,11 @@ See license.txt for more information
 	[ Channel ][ Size ][ Data Buffer ][ CRC8 ]
 	
 	Channel is 1 byte, indicating the type of data carried in the message
+
 	Size is 2 bytes, indicating the length of the binary blob that follows
-	Data Buffer is n bytes, this is the packet data
+
+	Data Buffer is n bytes, and contains the raw packet data.
+
 	CRC16 is 2 byte, Providing an error detection mechanism
 */
 

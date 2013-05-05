@@ -238,6 +238,16 @@ public:
         \param ulTimeMs_ Time to sleep (in ms)
     */
 	static void Sleep(K_ULONG ulTimeMs_);
+
+    /*!
+        \fn void USleep(K_ULONG ulTimeUs_);
+
+        Put the thread to sleep for the specified time (in microseconds).
+        Actual time slept may be longer (but not less than) the interval specified.
+
+        \param ulTimeMs_ Time to sleep (in microseconds)
+    */
+    static void USleep(K_ULONG ulTimeUs_);
 #endif
 	
     /*!
