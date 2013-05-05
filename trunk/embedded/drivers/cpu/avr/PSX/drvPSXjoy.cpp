@@ -20,7 +20,7 @@ See license.txt for more information
 #include "kerneltypes.h"
 #include "driver.h"
 #include "joystick.h"
-#include "drvPSXjoy.h"
+#include "drvPSXJoy.h"
 
 #include <avr/io.h>
 

@@ -172,6 +172,27 @@ void Thread::Sleep(K_ULONG ulTimeMs_)
 	TimerScheduler::Add(&clTimer);
 	clSemaphore.Pend();
 }
+
+//---------------------------------------------------------------------------
+void Thread::USleep(K_ULONG ulTimeUs_)
+{
+    Timer clTimer;
+    Semaphore clSemaphore;
+
+    // Create a semaphore that this thread will block on
+    clSemaphore.Init(0, 1);
+
+    // Create a one-shot timer that will call a callback that posts the
+    // semaphore, waking our thread.
+    clTimer.SetIntervalUSeconds(ulTimeUs_);
+    clTimer.SetCallback(ThreadSleepCallback);
+    clTimer.SetData((void*)&clSemaphore);
+    clTimer.SetFlags(TIMERLIST_FLAG_ONE_SHOT);
+
+    // Add the new timer to the timer scheduler, and block the thread
+    TimerScheduler::Add(&clTimer);
+    clSemaphore.Pend();
+}
 #endif // KERNEL_USE_SLEEP
 
 //---------------------------------------------------------------------------
