@@ -1,1 +1,4 @@
-/bin/sh: 1: asdf: not found
+shiftreg.cpp:22:10: fatal error: 'avr/io.h' file not found [Lexical or Preprocessor Issue]
+#include <avr/io.h>
+         ^
+1 error generated.

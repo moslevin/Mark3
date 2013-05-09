@@ -1,1 +1,6 @@
-/bin/sh: 1: asdf: not found
+In file included from Kernel++.cpp:26:
+In file included from /home/moslevin/m3/trunk/embedded/stage/inc/thread.h:44:
+/home/moslevin/m3/trunk/embedded/stage/inc//threadport.h:27:10: fatal error: 'avr/io.h' file not found [Lexical or Preprocessor Issue]
+#include <avr/io.h>
+         ^
+1 error generated.

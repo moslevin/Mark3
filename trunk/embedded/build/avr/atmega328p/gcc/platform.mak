@@ -3,7 +3,7 @@
 CC=avr-gcc
 CPP=avr-gcc
 
-CFLAGS=-funsigned-char -funsigned-bitfields -Os -fpack-struct -fshort-enums -g2 -Wall -pedantic -c -mmcu=$(VARIANT) -I~/atmel/avr/include -DAVR
+CFLAGS=-funsigned-char -funsigned-bitfields -Os -fpack-struct -fshort-enums -g2 -Wall -pedantic -c -mmcu=$(VARIANT) -I~/atmel/avr/include -DAVR -DK_ADDR=K_USHORT
 CPPFLAGS=-funsigned-char -funsigned-bitfields -Os -fpack-struct -ffunction-sections -fshort-enums -g2 -Wall -c -mmcu=$(VARIANT) -I~/atmel/avr/include -DAVR
 
 LINK=avr-gcc
@@ -15,6 +15,6 @@ ARFLAGS=rcs
 OBJCOPY=avr-objcopy
 OBJCOPY_FLAGS=-O ihex -R .eeprom -R .fuse -R .lock -R .signature
 
-CLANG=asdf
+CLANG=clang
 CLANGFLAGS=-D __AVR_ATmega328P__ --analyze -fdiagnostics-show-category=name -Weverything  
 
