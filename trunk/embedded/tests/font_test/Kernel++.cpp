@@ -107,7 +107,6 @@ int main(void)
 void Font_PrintGlyph( Font_t *pstFont_, K_UCHAR ucGlyph_ )
 {
 	K_UCHAR i, j;
-	K_USHORT usSize;
 	K_UCHAR ucMask;
 	
 	K_UCHAR ucWidth;
@@ -176,7 +175,6 @@ void Font_PrintGlyph( Font_t *pstFont_, K_UCHAR ucGlyph_ )
 //---------------------------------------------------------------------------
 void AppEntry(void)
 {
-	Slip *pclSlip;
 	// Initialize the serial mux
 	SlipMux::Init("/dev/tty", UART_SIZE_RX, aucRxBuffer, UART_SIZE_TX, aucTxBuffer);
 	clUART.Open();

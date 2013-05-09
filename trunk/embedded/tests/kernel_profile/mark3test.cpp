@@ -134,6 +134,12 @@ static UnitTest clRoundRobinTest;
 static UnitTest clQuantumTest;
 static UnitTest clTimerTest;
 
+static Thread clTestThread2;
+static Thread clTestThread3;
+
+static K_UCHAR aucTestStack2[TEST_STACK2_SIZE];
+static K_UCHAR aucTestStack3[TEST_STACK3_SIZE];
+
 #endif
 
 //---------------------------------------------------------------------------
@@ -141,15 +147,11 @@ static Thread clMainThread;
 static Thread clIdleThread;
 
 static Thread clTestThread1;
-static Thread clTestThread2;
-static Thread clTestThread3;
 
 //---------------------------------------------------------------------------
 static K_UCHAR aucMainStack[MAIN_STACK_SIZE];
 static K_UCHAR aucIdleStack[IDLE_STACK_SIZE];
 static K_UCHAR aucTestStack1[TEST_STACK1_SIZE];
-static K_UCHAR aucTestStack2[TEST_STACK2_SIZE];
-static K_UCHAR aucTestStack3[TEST_STACK3_SIZE];
 
 //---------------------------------------------------------------------------
 static void AppMain( void *unused );
@@ -420,7 +422,7 @@ void Scheduler_Profiling()
 }
 
 //---------------------------------------------------------------------------
-static void PrintWait( Driver *pclDriver_, K_USHORT usSize_, K_CHAR *data )
+static void PrintWait( Driver *pclDriver_, K_USHORT usSize_, const K_CHAR *data )
 {
 	K_USHORT usWritten = 0;
 	
@@ -435,7 +437,7 @@ static void PrintWait( Driver *pclDriver_, K_USHORT usSize_, K_CHAR *data )
 }
 
 //---------------------------------------------------------------------------
-void Profile_Print( ProfileTimer *pclProfile_, K_CHAR *szName_ )
+void Profile_Print( ProfileTimer *pclProfile_, const K_CHAR *szName_ )
 {
 	Driver *pclUART = DriverList::FindByPath("/dev/tty");
 	K_CHAR szBuf[16];
@@ -448,10 +450,10 @@ void Profile_Print( ProfileTimer *pclProfile_, K_CHAR *szName_ )
 	szBuf[0] = '0';
 	
 	PrintWait( pclUART, KUtil_Strlen(szName_), szName_ );	
-	PrintWait( pclUART, 2, (K_CHAR*)": " );
+    PrintWait( pclUART, 2, ": " );
 	KUtil_Ultoa(ulVal, szBuf);
 	PrintWait( pclUART, KUtil_Strlen(szBuf), szBuf );
-	PrintWait( pclUART, 1, (K_CHAR*)"\n" );	
+    PrintWait( pclUART, 1, "\n" );
 }
 
 //---------------------------------------------------------------------------
@@ -595,7 +597,7 @@ void TestMutexThread(Mutex *pclMutex_)
 	{
 		clMutexTest.Fail();
 		
-	}
+    }
 	ucTestVal = 0xAC;
 	pclMutex_->Release();
 
@@ -710,8 +712,7 @@ void UT_MessageTest(void)
 	clMsgQ2.Init();	
 	
 	Message *pclMesg;
-	Thread *pstThis = Scheduler::GetCurrentThread();
-	
+
 	pclMesg = GlobalMessagePool::Pop();
 
 	clTestThread1.Init(aucTestStack1, TEST_STACK1_SIZE, 2, (ThreadEntry_t)TestMessageTest, NULL);
@@ -963,10 +964,10 @@ static void UT_Init()
 //---------------------------------------------------------------------------
 static void UT_Print( UnitTest *pclTest_ )
 {
-	K_CHAR *pass = "PASS";
-	K_CHAR *fail = "FAIL";
-	K_CHAR *pcName;
-	K_USHORT usLen;
+    const K_CHAR *pass = "PASS";
+    const K_CHAR *fail = "FAIL";
+    const K_CHAR *pcName;
+
 	Driver *pclUART = DriverList::FindByPath("/dev/tty");
 	
 	pclUART->Write( KUtil_Strlen(pclTest_->GetName()), (K_UCHAR*)pclTest_->GetName() );
@@ -1001,7 +1002,6 @@ static void UT_PrintResults()
 //---------------------------------------------------------------------------
 static void AppMain( void *unused )
 {
-	Thread *this_ = Scheduler::GetCurrentThread();
 	Driver *pclUART = DriverList::FindByPath("/dev/tty");
 	
 #if UNIT_TEST	
@@ -1054,7 +1054,7 @@ static void AppMain( void *unused )
 		Mutex_Profiling();
 		Thread_Profiling();
 		Scheduler_Profiling();
-		Profiler::Stop;
+        Profiler::Stop();
 				
 		Profile_PrintResults();
 		Thread::Sleep(500);
