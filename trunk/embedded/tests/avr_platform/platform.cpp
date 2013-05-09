@@ -16,6 +16,10 @@
 #include <avr/wdt.h>
 
 //---------------------------------------------------------------------------
+// Need to have this to handle pure-virtual functions
+extern "C" void __cxa_pure_virtual() {}
+
+//---------------------------------------------------------------------------
 #define IDLE_STACK_SIZE				(192)	
 #define MAIN_STACK_SIZE				(256)
 

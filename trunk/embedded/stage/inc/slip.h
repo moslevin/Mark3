@@ -100,7 +100,7 @@ public:
 	static K_USHORT EncodeByte( K_UCHAR ucChar_, K_UCHAR *aucBuf_ );
 
 	/*!
-		\fn K_USHORT DecodeByte( K_UCHAR *ucChar_, K_UCHAR *aucBuf_ )
+        \fn K_USHORT DecodeByte( K_UCHAR *ucChar_, const K_UCHAR *aucBuf_ )
 		
 		Decode a byte from a stream into a specified value
 		
@@ -113,10 +113,10 @@ public:
 		
 		\return # bytes read, or 0 on terminating character (192)
 	*/
-	static K_USHORT DecodeByte( K_UCHAR *ucChar_, K_UCHAR *aucBuf_ );
+    static K_USHORT DecodeByte( K_UCHAR *ucChar_, const K_UCHAR *aucBuf_ );
 	
 	/*!
-		\fn void WriteData( K_UCHAR ucChannel_, K_CHAR *aucBuf_, K_UCHAR ucLen_ )
+        \fn void WriteData( K_UCHAR ucChannel_, const K_CHAR *aucBuf_, K_UCHAR ucLen_ )
 		
 		Write a packet of data in the FunkenSlip format.
 		
@@ -127,7 +127,7 @@ public:
 		\param aucBuf_ Payload to encode
 		\param usLen_ Length of payload data
 	*/
-	void WriteData( K_UCHAR ucChannel_, K_CHAR *aucBuf_, K_USHORT usLen_ );
+    void WriteData( K_UCHAR ucChannel_, const K_CHAR *aucBuf_, K_USHORT usLen_ );
 
 	/*!
 		\fn K_USHORT ReadData( K_UCHAR *pucChannel_, K_CHAR *aucBuf_, K_USHORT usLen_ )

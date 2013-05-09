@@ -26,12 +26,14 @@ See license.txt for more information
 K_UCHAR ShiftDriver::Open()
 {
 	*m_pucEnablePort |= m_ucEnableBit;
+    return 0;
 }
 
 //---------------------------------------------------------------------------
 K_UCHAR ShiftDriver::Close()
 {
 	*m_pucEnablePort &= ~m_ucEnableBit;
+    return 0;
 }
 
 //---------------------------------------------------------------------------
@@ -49,6 +51,7 @@ K_USHORT ShiftDriver::Write( K_USHORT usBytes_,
 		WriteByte(pucData_[i]);
 	}	
 	*m_pucStrobePort |= m_ucStrobeBit;
+    return usBytes_;
 	
 }							  
 //---------------------------------------------------------------------------
@@ -79,6 +82,7 @@ K_USHORT ShiftDriver::Control( K_USHORT usEvent_,
 		default:
 			break;
 	}
+    return 0;
 }
 //---------------------------------------------------------------------------
 void ShiftDriver::SetClock( volatile K_UCHAR *pucPort_, K_UCHAR ucBit_ )

@@ -53,7 +53,7 @@ K_USHORT Slip::EncodeByte( K_UCHAR ucChar_, K_UCHAR *aucBuf_ )
 }
 
 //---------------------------------------------------------------------------
-K_USHORT Slip::DecodeByte( K_UCHAR *ucChar_, K_UCHAR *aucBuf_ )
+K_USHORT Slip::DecodeByte( K_UCHAR *ucChar_, const K_UCHAR *aucBuf_ )
 {
 	K_USHORT usLen = 1;
 	
@@ -161,7 +161,7 @@ K_USHORT Slip::ReadData(K_UCHAR *pucChannel_, K_CHAR *aucBuf_, K_USHORT usLen_)
 }
 
 //---------------------------------------------------------------------------
-void Slip::WriteData(K_UCHAR ucChannel_, K_CHAR *aucBuf_, K_USHORT usLen_)
+void Slip::WriteData(K_UCHAR ucChannel_, const K_CHAR *aucBuf_, K_USHORT usLen_)
 {
 	K_UCHAR aucTmp[2];	
 	K_USHORT usCRC = 0;

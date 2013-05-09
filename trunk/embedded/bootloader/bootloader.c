@@ -72,17 +72,17 @@ See license.txt for more information
     
 */
 
-//---------------------------------------------------------------------------
+/*-------------------------------------------------------------------------*/
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <avr/boot.h>
 #include <avr/wdt.h>
 
-//---------------------------------------------------------------------------
+/*-------------------------------------------------------------------------*/
 /*!
     generic types/defines used throughout the bootloader
 */
-//---------------------------------------------------------------------------
+/*-------------------------------------------------------------------------*/
 #define K_UCHAR         unsigned char
 #define K_USHORT        unsigned short
 #define K_ULONG         unsigned long
@@ -90,12 +90,12 @@ See license.txt for more information
 #define K_TRUE          1
 #define K_FALSE         0
 
-//---------------------------------------------------------------------------
+/*-------------------------------------------------------------------------*/
 /*!
     Serial port register configuration.  This is used to abstract-out the 
     registers from device-to-device.
 */
-//---------------------------------------------------------------------------
+/*-------------------------------------------------------------------------*/
 #define UDR             UDR0
 #define UCSRA           UCSR0A
 #define UCSRB           UCSR0B
@@ -107,23 +107,23 @@ See license.txt for more information
 #define BAUD_H          UBRR0H
 #define BAUD_L          UBRR0L
 
-//---------------------------------------------------------------------------
+/*-------------------------------------------------------------------------*/
 /*!
     Define the baud rate that the bootloader will operate at
 */
-//---------------------------------------------------------------------------
+/*-------------------------------------------------------------------------*/
 #define BAUD_RATE       ((K_ULONG)57600)
 
-//---------------------------------------------------------------------------
+/*-------------------------------------------------------------------------*/
 /*!
     Define the frequency that the system is running at.  This MUST match the
     actual running frequency, otherwise the serial port won't run at the 
     correct baud rate.
 */
-//---------------------------------------------------------------------------
+/*-------------------------------------------------------------------------*/
 #define SYSTEM_FREQ     ((K_ULONG)16000000)
 
-//---------------------------------------------------------------------------
+/*-------------------------------------------------------------------------*/
 /*!
     Buffer definitions - we have two buffers in our bootloader.
     
@@ -139,10 +139,10 @@ See license.txt for more information
          (the size varies between parts), the page buffer is committed to 
          FLASH.
 */
-#define PAGE_SIZE       (128)				//!< 64 words on mega328p.
-#define RX_BUF_SIZE     (64)                //!< Maximum single funkenslip packet size
+#define PAGE_SIZE       (128)				/*!< 64 words on mega328p.*/
+#define RX_BUF_SIZE     (64)                /*!< Maximum single funkenslip packet size */
 
-//---------------------------------------------------------------------------
+/*-------------------------------------------------------------------------*/
 /*!
     Protocol configuration
     
@@ -168,26 +168,26 @@ See license.txt for more information
     -EOF-   No more data to be transmitted.  Commit partial-pages to flash, and
             boot into the newly-flashed application.
 */
-#define PROGRAM_CHANNEL			(127)		//!< FunkenSlip channel to program on
-#define PROGRAM_CMD_SEEK		(0)			//!< Seek to address
-#define PROGRAM_CMD_WRITE		(1)			//!< Write current buffer
-#define PROGRAM_CMD_EOF			(2)			//!< End of file - stop programming
+#define PROGRAM_CHANNEL			(127)		/*!< FunkenSlip channel to program on*/
+#define PROGRAM_CMD_SEEK		(0)			/*!< Seek to address*/
+#define PROGRAM_CMD_WRITE		(1)			/*!< Write current buffer*/
+#define PROGRAM_CMD_EOF			(2)			/*!< End of file - stop programming */
 
-//---------------------------------------------------------------------------
-static K_ULONG ulPageAddr;                  //!< Page address pointer
-static K_UCHAR ucPageIdx;                   //!< Index in the data page
-static K_UCHAR aucPageBuf[PAGE_SIZE];       //!< Data buffer written to FLASH
-static K_UCHAR aucSerialBuf[RX_BUF_SIZE];   //!< Buffer filled with FunkenSlip packets
+/*-------------------------------------------------------------------------*/
+static K_ULONG ulPageAddr;                  /*!< Page address pointer*/
+static K_UCHAR ucPageIdx;                   /*!< Index in the data page*/
+static K_UCHAR aucPageBuf[PAGE_SIZE];       /*!< Data buffer written to FLASH*/
+static K_UCHAR aucSerialBuf[RX_BUF_SIZE];   /*!< Buffer filled with FunkenSlip packets*/
 
-//---------------------------------------------------------------------------
-typedef void (*main_func_t)(void);          //!< Function pointer type used to jump to app
+/*-------------------------------------------------------------------------*/
+typedef void (*main_func_t)(void);          /*!< Function pointer type used to jump to app*/
 
-//---------------------------------------------------------------------------
+/*-------------------------------------------------------------------------*/
 /*! 
     Forward declarations
 */
 
-//---------------------------------------------------------------------------
+/*-------------------------------------------------------------------------*/
 static void     BL_Exit(void); 
 static void     Serial_Init(void);
 static K_UCHAR  Serial_Read(void);
@@ -197,7 +197,7 @@ static K_UCHAR  Slip_DecodePacket(void);
 static K_BOOL   Serial_ValidatePacket(K_USHORT *pusLen_);
 static void		Flash_WritePage(void);
 
-//---------------------------------------------------------------------------
+/*-------------------------------------------------------------------------*/
 /*!
     Exit out of the bootloader, jumping to the main application.  Writes
     a message to the UART "Booting App", before performing the reboot.
@@ -206,10 +206,10 @@ static void		Flash_WritePage(void);
 */
 static void BL_Exit(void)
 {
-    // Set a function pointer to the start of the user-app.
+    /* Set a function pointer to the start of the user-app. */
     main_func_t app_start = (void*)0;
 	
-    // Write our farewell message to the UART
+    /* Write our farewell message to the UART */
 	Serial_Write('B');
 	Serial_Write('o');
 	Serial_Write('o');
@@ -223,11 +223,11 @@ static void BL_Exit(void)
 	Serial_Write('p');
 	Serial_Write('\n');
 
-    // Reboot!
+    /* Reboot! */
     app_start();
 }
 
-//---------------------------------------------------------------------------
+/*-------------------------------------------------------------------------*/
 /*!
     Initialize the serial port to the default baud rate specified in the 
     port configuration.  The bootloader uses a polling/busy-waiting RX and 
@@ -239,23 +239,23 @@ static void Serial_Init(void)
 {
     K_USHORT usBaudTemp = 0;
     
-    // Clear port config
+    /* Clear port config*/
     UCSRA = 0;
     UCSRB = 0;
     
-    // Set baud rate
+    /* Set baud rate*/
     usBaudTemp = (K_USHORT)(((SYSTEM_FREQ/16)/BAUD_RATE) - 1);
     BAUD_H = (K_UCHAR)(usBaudTemp >> 8);
     BAUD_L = (K_UCHAR)(usBaudTemp & 0x00FF);
     
-    // Set 8N1 format on the port
+    /* Set 8N1 format on the port */
     UCSRC = 0x06;
     
-    // Enable RX & TX, but no interrupts.
+    /* Enable RX & TX, but no interrupts. */
     UCSRB = (1 << RXEN) | (1 << TXEN);
 }
 
-//---------------------------------------------------------------------------
+/*-------------------------------------------------------------------------*/
 /*!
     Read a byte of data from the serial port, returning it to the user.
     \fn static K_UCHAR Serial_Read(void) 
@@ -267,7 +267,7 @@ static K_UCHAR Serial_Read(void)
     return UDR;
 }
 
-//---------------------------------------------------------------------------
+/*-------------------------------------------------------------------------*/
 /*!
     Poll until we recieve the SLIP end-of-packet character (192).  If a 
     specified internal (ad-hoc) timeout occurs before receiving a valid
@@ -294,7 +294,7 @@ static K_BOOL Serial_RxPoll(void)
     return K_FALSE;
 }
 
-//---------------------------------------------------------------------------
+/*-------------------------------------------------------------------------*/
 /*!
     Push a byte of data out of the serial port.  Waits until the port is free
     before attempting to write the character.
@@ -307,7 +307,7 @@ static void Serial_Write(K_UCHAR ucByte_)
     UDR = ucByte_;
 }
 
-//---------------------------------------------------------------------------
+/*-------------------------------------------------------------------------*/
 /*!
     Busy-wait until a full packet of data is received.
     \fn static K_BOOL Slip_FillPacket(void)     
@@ -332,7 +332,7 @@ static K_BOOL Slip_FillPacket(void)
     }
     return K_FALSE;
 }
-//---------------------------------------------------------------------------
+/*-------------------------------------------------------------------------*/
 /*!
     Perform in-place decoding on SLIP data in the serial buffer.
     \fn static K_UCHAR Slip_DecodePacket(void) 
@@ -344,7 +344,7 @@ static K_UCHAR Slip_DecodePacket(void)
     K_UCHAR *pucSrc = aucSerialBuf;
     K_UCHAR *pucDst = aucSerialBuf;
     
-    // Perform slip decoding in-place in the serial buffer packet
+    /* Perform slip decoding in-place in the serial buffer packet*/
     while ((*pucSrc != 192) && i < RX_BUF_SIZE)
     {
         if (*pucSrc == 219)
@@ -373,7 +373,7 @@ static K_UCHAR Slip_DecodePacket(void)
     return i;
 }
 
-//---------------------------------------------------------------------------
+/*-------------------------------------------------------------------------*/
 /*!
     Attempt to validate a packet of serial data which has already been 
     SLIP decoded.  This function validates the contents of the payload as 
@@ -393,7 +393,7 @@ static K_BOOL Serial_ValidatePacket(K_USHORT *pusLen_)
     
     ucChannel = aucSerialBuf[0];
     
-	// Ensure the channel is correct
+    /* Ensure the channel is correct */
 	if (ucChannel != PROGRAM_CHANNEL)
     {
 	    return K_FALSE;
@@ -401,18 +401,18 @@ static K_BOOL Serial_ValidatePacket(K_USHORT *pusLen_)
 	
     usCRC_Calc += aucSerialBuf[0];
     
-    // Read the length out
+    /* Read the length out */
     usLen = ((K_USHORT)aucSerialBuf[1]) << 8;
     usCRC_Calc += aucSerialBuf[1];
     
     usLen += (K_USHORT)aucSerialBuf[2];
     usCRC_Calc += aucSerialBuf[2];
     
-    // Length returned to the user is -1 because of the sub-command byte,
-    // which is part of the actual FunkenSlip data payload.
+    /* Length returned to the user is -1 because of the sub-command byte,*/
+    /* which is part of the actual FunkenSlip data payload.*/
     *pusLen_ = usLen - 1; 
     
-    // Continue reading through the packet to compute the CRC
+    /* Continue reading through the packet to compute the CRC */
 	pucData = &aucSerialBuf[3];
     while (usLen--)
     {
@@ -420,13 +420,13 @@ static K_BOOL Serial_ValidatePacket(K_USHORT *pusLen_)
         pucData++;
     }
     
-    // The CRC is stored at the end of the packet
+    /* The CRC is stored at the end of the packet */
     usCRC_Read = ((K_USHORT)*pucData) << 8;
     pucData++;
     
     usCRC_Read += ((K_USHORT)*pucData);
     
-    // Make sure the read CRC matches the generated CRC
+    /* Make sure the read CRC matches the generated CRC*/
     if (usCRC_Read != usCRC_Calc)
     {
         *pusLen_ = 0;		
@@ -436,7 +436,7 @@ static K_BOOL Serial_ValidatePacket(K_USHORT *pusLen_)
     return K_TRUE;
 }
 
-//---------------------------------------------------------------------------
+/*-------------------------------------------------------------------------*/
 /*!
     Shamelessly lifted from the AVR libc docs.  This uses the functions and 
     macros defined in boot.h in order to safely commit our page buffer to 
@@ -451,26 +451,26 @@ static void Flash_WritePage(void)
     eeprom_busy_wait();
 
     boot_page_erase(ulPageAddr);
-    boot_spm_busy_wait();      // Wait until the memory is erased.
+    boot_spm_busy_wait();      /* Wait until the memory is erased. */
 
     for (i=0; i<PAGE_SIZE; i+=2)
     {
-        // Set up little-endian word.
+        /* Set up little-endian word. */
         K_USHORT w = *pucData++;
         w += ((K_USHORT)(*pucData++)) << 8;
 
         boot_page_fill (ulPageAddr + i, w);
     }
 
-    boot_page_write (ulPageAddr);     // Store buffer in flash page.
-    boot_spm_busy_wait();       // Wait until the memory is written.
+    boot_page_write (ulPageAddr);     /* Store buffer in flash page. */
+    boot_spm_busy_wait();       /* Wait until the memory is written. */
 
-    // Reenable RWW-section again. We need this if we want to jump back
-    // to the application after bootloading.
+    /* Reenable RWW-section again. We need this if we want to jump back */
+    /* to the application after bootloading. */
     boot_rww_enable ();
 }
 
-//---------------------------------------------------------------------------
+/*-------------------------------------------------------------------------*/
 /*!
     Copy data in from the serial buffer to the page buffer.  Whenever a page
     buffer is full, commit the page to flash, and start the next.
@@ -479,9 +479,9 @@ static void Flash_WritePage(void)
 */
 static K_BOOL Flash_WriteBuffer(K_USHORT usLen_) 
 {
-    K_UCHAR ucIdx = 4; // Size of the header...
+    K_UCHAR ucIdx = 4; /* Size of the header... */
     
-    // Write from the serial buffer to the flash staging buffer
+    /* Write from the serial buffer to the flash staging buffer */
     while (usLen_--)
     {
         aucPageBuf[ucPageIdx] = aucSerialBuf[ucIdx++];
@@ -489,10 +489,10 @@ static K_BOOL Flash_WriteBuffer(K_USHORT usLen_)
         ucPageIdx++;
         if (ucPageIdx == PAGE_SIZE)
         {
-            // Write the page of data to flash...        
+            /* Write the page of data to flash...        */
             Flash_WritePage();
 			
-            //Update indexes/pages.
+            /* Update indexes/pages. */
             ucPageIdx = 0;
             ulPageAddr += PAGE_SIZE;			
         }
@@ -501,7 +501,7 @@ static K_BOOL Flash_WriteBuffer(K_USHORT usLen_)
     return K_TRUE;
 }
 
-//---------------------------------------------------------------------------
+/*-------------------------------------------------------------------------*/
 /*!
     Commit a partial-page of data to flash.  This completes the page buffer 
     with 0xFF bytes, before running Flash_WritePage() to seal the deal.
@@ -520,71 +520,72 @@ static void Flash_WritePartialPage(void)
 	}
 }
 
-//---------------------------------------------------------------------------
+/*-------------------------------------------------------------------------*/
 int main(void) 
 {
-    // Ensure interrupts are disabled when running the bootloader...
+    /* Ensure interrupts are disabled when running the bootloader... */
     cli();
 
-	// Clear the watchdog timer...
+    /* Clear the watchdog timer... */
 	{
 		volatile K_UCHAR ucTemp = MCUSR;
 		MCUSR = 0;
 		WDTCSR |= (1 << WDCE) | (1 << WDE);
 		WDTCSR = 0;
+        ucTemp = ucTemp;
 	}
 
-    // Start off by initializing the serial port
+    /* Start off by initializing the serial port */
     Serial_Init();
 
-    // Send a banner message, indicating we're in the Mark2 Boot Loader
+    /* Send a banner message, indicating we're in the Mark3 Boot Loader */
 	Serial_Write('M');
 	Serial_Write('a');
 	Serial_Write('r');
 	Serial_Write('k');
-	Serial_Write('2');
+    Serial_Write('3');
 	Serial_Write('B');
 	Serial_Write('L');
 	Serial_Write('\n');
 		
 #if 1
-    // Check to see if we're getting our start character to begin using the BL
+    /* Check to see if we're getting our start character to begin using the BL */
     if (!Serial_RxPoll())
     {
-        // Timed out - exit the bootloader
+        /* Timed out - exit the bootloader */
         BL_Exit();
     }
     
-    // Acknowledge the request to start programming.
+    /* Acknowledge the request to start programming. */
 	Serial_Write(69);	
 #endif
 
-    // Main programming loop.  Program until we can't program no more!
+    /* Main programming loop.  Program until we can't program no more! */
 	while (1)
 	{
 		K_USHORT usLen;
 		
-		// Wait until we receive a packet of data.
+        /* Wait until we receive a packet of data. */
 		Slip_FillPacket();		
 		
-		// Decode the serial buffer
+        /* Decode the serial buffer */
 		if (!Slip_DecodePacket())
 		{
 			Serial_Write('D');
 			continue;
 		}
 		
-		// Make sure the packet is VALID before trying to operate on it.
+        /* Make sure the packet is VALID before trying to operate on it. */
 		if (!Serial_ValidatePacket(&usLen))
 		{
 			Serial_Write('V');
 			continue;
 		}
 		
-		// Figure out what action to take based on the command field...
+        /* Figure out what action to take based on the command field... */
 		if (aucSerialBuf[3] == PROGRAM_CMD_SEEK)
 		{
-			// Seek to new address...
+            /* Seek to new address... */
 			K_USHORT usNewAddr = ((K_USHORT)aucSerialBuf[4]) << 8;
 			usNewAddr += aucSerialBuf[5];
 			Flash_WritePartialPage();
@@ -593,27 +594,27 @@ int main(void)
 		}	
 		else if (aucSerialBuf[3] == PROGRAM_CMD_WRITE)
 		{
-			// Write contents of buffer to staging buffer, then flash.			
+            /* Write contents of buffer to staging buffer, then flash.*/
 			Flash_WriteBuffer(usLen);	
 		}
 		else if (aucSerialBuf[3] == PROGRAM_CMD_EOF)
 		{
-			// End of file.  Commit current page to flash (if non-empty) and boot to
-			// application, if possible.			
+            /* End of file.  Commit current page to flash (if non-empty) and boot to */
+            /* application, if possible. */
 			Flash_WritePartialPage();
 			BL_Exit();
 		}			
 		else
 		{
-			// error, invalid command 
+            /* error, invalid command  */
 			Serial_Write('I');
 			continue;
 		}
 		
-        // If we get here, the packet was valid.
+        /* If we get here, the packet was valid. */
 		Serial_Write(69);
 	}		
     
-    // Return to app on exit.
+    /* Return to app on exit. */
     BL_Exit();
 }
