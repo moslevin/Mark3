@@ -408,15 +408,15 @@ K_USHORT NLFS::Find_File(const K_CHAR *szPath_)
 
     K_USHORT usTempNode;
 
-    int parent_dir = Find_Parent_Dir(szPath_);
+    K_USHORT usParentDir = Find_Parent_Dir(szPath_);
 
-    if (INVALID_NODE == parent_dir)
+    if (INVALID_NODE == usParentDir)
     {
         DEBUG_PRINT("invalid root dir\n");
         return INVALID_NODE;
     }
 
-    Read_Node(parent_dir, &stTempDir);
+    Read_Node(usParentDir, &stTempDir);
 
     if (INVALID_NODE == stTempDir.stFileNode.usChild)
     {
@@ -457,7 +457,7 @@ void NLFS::Print(void)
 void NLFS::Set_Node_Name( NLFS_Node_t *pstFileNode_, const char *szPath_ )
 {
     K_UCHAR i,j;
-    K_UCHAR ucLastSlash;
+    K_UCHAR ucLastSlash = 0;
 
     // Search for the last "/", that's where we stop looking.
     i = 0;
@@ -498,17 +498,17 @@ K_USHORT NLFS::Create_File_i(const K_CHAR *szPath_, NLFS_Type_t eType_ )
     // Tricky part - directory traversal
     usRootNodes = Find_Parent_Dir(szPath_);
 
-    if (-1 == usRootNodes)
+    if (INVALID_NODE == usRootNodes)
     {
         DEBUG_PRINT("Unable to find path - bailing\n");
-        return -1;
+        return INVALID_NODE;
     }
 
     usNode = Pop_Free_Node();
     if (!usNode)
     {
         DEBUG_PRINT("Unable to allocate node.  Failing\n");
-        return -1;
+        return INVALID_NODE;
     }
     DEBUG_PRINT("New file using node %d\n", usNode);
 

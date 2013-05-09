@@ -23,7 +23,6 @@ See license.txt for more information
 #include "fixed_heap.h"
 #include "memutil.h"
 
-#include <stdio.h>
 //---------------------------------------------------------------------------
 void GuiWindow::AddControl( GuiControl *pclControl_, GuiControl *pclParent_ )
 {
@@ -137,7 +136,6 @@ void GuiWindow::InvalidateRegion( K_USHORT usLeft_, K_USHORT usTop_, K_USHORT us
     usTop1 = usTop_;
     usBottom1 = usTop_ + usHeight_ - 1;
 
-    printf("TEST: %d, %d, %d, %d\n", usLeft1, usRight1, usTop1, usBottom1);
     while (pclTempNode)
     {
         GuiControl *pclControl = static_cast<GuiControl*>(pclTempNode);
@@ -153,7 +151,7 @@ void GuiWindow::InvalidateRegion( K_USHORT usLeft_, K_USHORT usTop_, K_USHORT us
         usRight2 = usLeft2 + pclControl->GetWidth() - 1;
         usTop2 = pclControl->GetTop() + usY;
         usBottom2 = usTop2 + pclControl->GetHeight() - 1;
-        printf("CTRL: %d, %d, %d, %d\n", usLeft2, usRight2, usTop2, usBottom2);
+
         // If the control has any pixels in the bounding box.
         if (
                 (
@@ -180,8 +178,7 @@ void GuiWindow::InvalidateRegion( K_USHORT usLeft_, K_USHORT usTop_, K_USHORT us
                 )
             )
         {
-            bMatch = true;
-            printf( "Match 1\n");
+            bMatch = true;            
         }
         else if(
                 (
@@ -208,8 +205,7 @@ void GuiWindow::InvalidateRegion( K_USHORT usLeft_, K_USHORT usTop_, K_USHORT us
                 )
             )
         {
-            bMatch = true;
-            printf( "Match 2\n");
+            bMatch = true;            
         }
 
 
@@ -345,7 +341,6 @@ void GuiWindow::ProcessEvent( GuiEvent_t *pstEvent_ )
                 // event falls within the bounding box
                	while (pclTempNode)
                 {
-                    GuiReturn_t eRet;
                     GuiControl *pclControl = (static_cast<GuiControl*>(pclTempNode));
 
                     pclControl->GetControlOffset(&usOffsetX, &usOffsetY);
@@ -607,7 +602,6 @@ K_BOOL GuiEventSurface::ProcessEvent()
 	if (stLocalEvent.ucTargetID == TARGET_ID_BROADCAST_Z)
 	{
 	    LinkListNode* pclTempNode = m_clWindowList.GetHead();
-	    LinkListNode* pclHighestNode = pclTempNode;
 		K_UCHAR ucMaxZ = 0;
 
 		while (pclTempNode)

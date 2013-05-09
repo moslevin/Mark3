@@ -28,7 +28,7 @@ int NLFS_File::Open(NLFS *pclFS_, const K_CHAR *szPath_, NLFS_File_Mode_t eMode_
     K_USHORT usNode;
     usNode = pclFS_->Find_File(szPath_);
 
-    if (-1 == usNode)
+    if (INVALID_NODE == usNode)
     {
         DEBUG_PRINT("file does not exist in path\n");
         return -1;
@@ -161,7 +161,7 @@ int NLFS_File::Write(void *pvBuf_, K_ULONG ulLen_)
 //----------------------------------------------------------------------------
 int NLFS_File::Close(void)
 {
-
+    return 0;
 }
 
 

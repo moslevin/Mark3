@@ -54,9 +54,6 @@ static Thread AppThread;			//!< Main "application" thread
 static Thread IdleThread;			//!< Idle thread - runs when app can't
 
 static ATMegaUART clUART;			//!< UART device driver object
-
-static SlipTerm clTerminal;			//!< Terminal interface, on top of serial/slip
-
 static MessageQueue clMsgQ;			//!< Message Queue for timers
 
 //---------------------------------------------------------------------------
@@ -288,8 +285,7 @@ void Sanity(void)
 //---------------------------------------------------------------------------
 void AppEntry(void)
 {
-	Slip *pclSlip;
-	
+
 	// Initialize the serial mux
 	clUART.Init();
 
