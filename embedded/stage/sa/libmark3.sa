@@ -1,19 +1,100 @@
-/bin/sh: 1: asdf: not found
-/bin/sh: 1: asdf: not found
-/bin/sh: 1: asdf: not found
-/bin/sh: 1: asdf: not found
-/bin/sh: 1: asdf: not found
-/bin/sh: 1: asdf: not found
-/bin/sh: 1: asdf: not found
-/bin/sh: 1: asdf: not found
-/bin/sh: 1: asdf: not found
-/bin/sh: 1: asdf: not found
-/bin/sh: 1: asdf: not found
-/bin/sh: 1: asdf: not found
-/bin/sh: 1: asdf: not found
-/bin/sh: 1: asdf: not found
-/bin/sh: 1: asdf: not found
-/bin/sh: 1: asdf: not found
-/bin/sh: 1: asdf: not found
-/bin/sh: 1: asdf: not found
-/bin/sh: 1: asdf: not found
+In file included from blocking.cpp:25:
+In file included from /home/moslevin/m3/trunk/embedded/stage/inc/blocking.h:55:
+In file included from /home/moslevin/m3/trunk/embedded/stage/inc//thread.h:44:
+/home/moslevin/m3/trunk/embedded/stage/inc//threadport.h:27:10: fatal error: 'avr/io.h' file not found [Lexical or Preprocessor Issue]
+#include <avr/io.h>
+         ^
+1 error generated.
+In file included from message.cpp:25:
+In file included from /home/moslevin/m3/trunk/embedded/stage/inc/message.h:87:
+In file included from /home/moslevin/m3/trunk/embedded/stage/inc//semaphore.h:28:
+In file included from /home/moslevin/m3/trunk/embedded/stage/inc//blocking.h:55:
+In file included from /home/moslevin/m3/trunk/embedded/stage/inc//thread.h:44:
+/home/moslevin/m3/trunk/embedded/stage/inc//threadport.h:27:10: fatal error: 'avr/io.h' file not found [Lexical or Preprocessor Issue]
+#include <avr/io.h>
+         ^
+1 error generated.
+In file included from mutex.cpp:23:
+In file included from /home/moslevin/m3/trunk/embedded/stage/inc/blocking.h:55:
+In file included from /home/moslevin/m3/trunk/embedded/stage/inc//thread.h:44:
+/home/moslevin/m3/trunk/embedded/stage/inc//threadport.h:27:10: fatal error: 'avr/io.h' file not found [Lexical or Preprocessor Issue]
+#include <avr/io.h>
+         ^
+1 error generated.
+In file included from profile.cpp:25:
+/home/moslevin/m3/trunk/embedded/stage/inc/threadport.h:27:10: fatal error: 'avr/io.h' file not found [Lexical or Preprocessor Issue]
+#include <avr/io.h>
+         ^
+1 error generated.
+In file included from quantum.cpp:25:
+In file included from /home/moslevin/m3/trunk/embedded/stage/inc/timerlist.h:37:
+In file included from /home/moslevin/m3/trunk/embedded/stage/inc//thread.h:44:
+/home/moslevin/m3/trunk/embedded/stage/inc//threadport.h:27:10: fatal error: 'avr/io.h' file not found [Lexical or Preprocessor Issue]
+#include <avr/io.h>
+         ^
+1 error generated.
+In file included from scheduler.cpp:24:
+In file included from /home/moslevin/m3/trunk/embedded/stage/inc/scheduler.h:50:
+In file included from /home/moslevin/m3/trunk/embedded/stage/inc//thread.h:44:
+/home/moslevin/m3/trunk/embedded/stage/inc//threadport.h:27:10: fatal error: 'avr/io.h' file not found [Lexical or Preprocessor Issue]
+#include <avr/io.h>
+         ^
+1 error generated.
+In file included from semaphore.cpp:25:
+In file included from /home/moslevin/m3/trunk/embedded/stage/inc/semaphore.h:28:
+In file included from /home/moslevin/m3/trunk/embedded/stage/inc//blocking.h:55:
+In file included from /home/moslevin/m3/trunk/embedded/stage/inc//thread.h:44:
+/home/moslevin/m3/trunk/embedded/stage/inc//threadport.h:27:10: fatal error: 'avr/io.h' file not found [Lexical or Preprocessor Issue]
+#include <avr/io.h>
+         ^
+1 error generated.
+In file included from thread.cpp:25:
+In file included from /home/moslevin/m3/trunk/embedded/stage/inc/thread.h:44:
+/home/moslevin/m3/trunk/embedded/stage/inc//threadport.h:27:10: fatal error: 'avr/io.h' file not found [Lexical or Preprocessor Issue]
+#include <avr/io.h>
+         ^
+1 error generated.
+In file included from threadlist.cpp:25:
+In file included from /home/moslevin/m3/trunk/embedded/stage/inc/thread.h:44:
+/home/moslevin/m3/trunk/embedded/stage/inc//threadport.h:27:10: fatal error: 'avr/io.h' file not found [Lexical or Preprocessor Issue]
+#include <avr/io.h>
+         ^
+1 error generated.
+In file included from kernel.cpp:25:
+In file included from /home/moslevin/m3/trunk/embedded/stage/inc/scheduler.h:50:
+In file included from /home/moslevin/m3/trunk/embedded/stage/inc//thread.h:44:
+/home/moslevin/m3/trunk/embedded/stage/inc//threadport.h:27:10: fatal error: 'avr/io.h' file not found [Lexical or Preprocessor Issue]
+#include <avr/io.h>
+         ^
+1 error generated.
+In file included from timerlist.cpp:25:
+In file included from /home/moslevin/m3/trunk/embedded/stage/inc/timerlist.h:37:
+In file included from /home/moslevin/m3/trunk/embedded/stage/inc//thread.h:44:
+/home/moslevin/m3/trunk/embedded/stage/inc//threadport.h:27:10: fatal error: 'avr/io.h' file not found [Lexical or Preprocessor Issue]
+#include <avr/io.h>
+         ^
+1 error generated.
+In file included from writebuf16.cpp:23:
+/home/moslevin/m3/trunk/embedded/stage/inc/threadport.h:27:10: fatal error: 'avr/io.h' file not found [Lexical or Preprocessor Issue]
+#include <avr/io.h>
+         ^
+1 error generated.
+In file included from cpu/avr/atmega328p/gcc/threadport.cpp:24:
+In file included from /home/moslevin/m3/trunk/embedded/stage/inc/thread.h:44:
+/home/moslevin/m3/trunk/embedded/stage/inc//threadport.h:27:10: fatal error: 'avr/io.h' file not found [Lexical or Preprocessor Issue]
+#include <avr/io.h>
+         ^
+1 error generated.
+cpu/avr/atmega328p/gcc/kernelswi.cpp:25:10: fatal error: 'avr/io.h' file not found [Lexical or Preprocessor Issue]
+#include <avr/io.h>
+         ^
+1 error generated.
+cpu/avr/atmega328p/gcc/kerneltimer.cpp:24:10: fatal error: 'avr/io.h' file not found [Lexical or Preprocessor Issue]
+#include <avr/io.h>
+         ^
+1 error generated.
+In file included from cpu/avr/atmega328p/gcc/kprofile.cpp:24:
+/home/moslevin/m3/trunk/embedded/stage/inc/threadport.h:27:10: fatal error: 'avr/io.h' file not found [Lexical or Preprocessor Issue]
+#include <avr/io.h>
+         ^
+1 error generated.
