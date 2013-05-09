@@ -63,6 +63,8 @@ int main(void)
 	Kernel::Start();
 }
 
+#if 0
+//!! These are example slip callback handlers, which must be setup explicitly
 //---------------------------------------------------------------------------
 static void Slip_TerminalCallback( Driver *pclDriver_, K_UCHAR ucChannel_, K_UCHAR *pucData_, K_USHORT usLen_ )
 {
@@ -83,6 +85,7 @@ static void Slip_ResetCallback( Driver *pclDriver_, K_UCHAR ucChannel_, K_UCHAR 
 	wdt_enable(WDTO_15MS);
 	while(1) { /* Spin until reset */ };
 }
+#endif
 
 //---------------------------------------------------------------------------
 static void MainThread( void* unused )
