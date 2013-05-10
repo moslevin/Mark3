@@ -37,7 +37,7 @@ See license.txt for more information
 
 	#define GUI_DEBUG_PRINT		printf
 #else
-	#define GUI_DEBUG_PRINT
+#define GUI_DEBUG_PRINT(...)
 #endif
 
 

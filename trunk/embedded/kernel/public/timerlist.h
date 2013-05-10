@@ -100,7 +100,9 @@ public:
         
 		Set the timer's flags based on the bits in the ucFlags_ argument
         
-        \param Flags to assign to the timer object
+        \param ucFlags_ Flags to assign to the timer object.
+                    TIMERLIST_FLAG_ONE_SHOT for a one-shot timer,
+                    0 for a continuous timer.
 	*/
 	void SetFlags (K_UCHAR ucFlags_) { m_ucFlags = ucFlags_; };
 		
@@ -111,7 +113,7 @@ public:
         
         \param pfCallback_ Pointer to the callback function to call
 	*/
-	void SetCallback( TimerCallback_t pfCallback_){ m_pfCallback = pfCallback_; };
+    void SetCallback( TimerCallback_t pfCallback_){ m_pfCallback = pfCallback_; }
 		
 	/*!
         \fn void SetData( void *pvData_ )
@@ -120,7 +122,7 @@ public:
         
         \param pvData_ Pointer to data to pass as argument into the callback
 	*/
-	void SetData( void *pvData_ ){ m_pvData = pvData_; };
+    void SetData( void *pvData_ ){ m_pvData = pvData_; }
 		
 	/*!
         \fn void SetOwner( Thread *pclOwner_)
@@ -130,7 +132,7 @@ public:
         
         \param pclOwner_ Owner thread of this timer object
 	*/
-	void SetOwner( Thread *pclOwner_){ m_pclOwner = pclOwner_; };
+    void SetOwner( Thread *pclOwner_){ m_pclOwner = pclOwner_; }
 		
 	/*!
         \fn void SetIntervalTicks(K_ULONG ulTicks_)

@@ -332,10 +332,19 @@ static void Mutex_Profiling()
 	K_USHORT i;
 	Mutex clMutex;
 	
-	for (i = 0; i < 100; i++)
+    for (i = 0; i < 10; i++)
 	{
 		clMutexInitTimer.Start();
 		clMutex.Init();
+        clMutex.Init();
+        clMutex.Init();
+        clMutex.Init();
+        clMutex.Init();
+        clMutex.Init();
+        clMutex.Init();
+        clMutex.Init();
+        clMutex.Init();
+        clMutex.Init();
 		clMutexInitTimer.Stop();
 	}
 	

@@ -56,7 +56,7 @@ static void SlipMux_CallBack( Driver *pclDriver_)
 }
 
 //---------------------------------------------------------------------------
-void SlipMux::Init(K_CHAR *pcDriverPath_, K_USHORT usRxSize_, K_UCHAR *aucRx_, K_USHORT usTxSize_, K_UCHAR *aucTx_)
+void SlipMux::Init(const K_CHAR *pcDriverPath_, K_USHORT usRxSize_, K_UCHAR *aucRx_, K_USHORT usTxSize_, K_UCHAR *aucTx_)
 {
 	m_pclDriver = DriverList::FindByPath(pcDriverPath_);
 	m_pclMessageQueue = NULL;

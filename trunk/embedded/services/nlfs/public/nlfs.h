@@ -420,7 +420,7 @@ protected:
      * \brief Write_Block_Header is an implementation-specific method used to write
      *        a file block header back to physical storage from a local struct
      * \param [in] ulBlock_ - data block index
-     * \param [in] pstNode_ - pointer to the local data structure to write from
+     * \param [in] pstFileBlock_ - pointer to the local data structure to write from
      */
     virtual void Write_Block_Header(K_ULONG ulBlock_, NLFS_Block_t *pstFileBlock_) = 0;
 

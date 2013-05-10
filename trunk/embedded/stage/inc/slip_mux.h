@@ -70,7 +70,7 @@ public:
 	 	Install a slip handler function for the given communication channel.
 		
 		\param ucChannel_ Channel to attach the handler to
-		\param pfHanler_ Pointer to the handler function to attach
+        \param pfHandler_ Pointer to the handler function to attach
 	*/	
 	static void InstallHandler( K_UCHAR ucChannel_, Slip_Channel pfHandler_ );
 

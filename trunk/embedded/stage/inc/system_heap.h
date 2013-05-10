@@ -182,18 +182,37 @@ HEAP_RAW_SIZE_20 + \
 HEAP_RAW_SIZE_21 
 	
 //---------------------------------------------------------------------------
+/*!
+ * \brief The SystemHeap class implements a heap which is accessible from
+ * all components in the system.
+ */
 class SystemHeap
 {
 public:	
+    /*!
+     * \brief Init Initialize the system heap prior to usage.
+     */
 	static void  Init(void);
+
+    /*!
+     * \brief Alloc allocate a block of data from the heap
+     * \param usSize_ size of the block (in bytes) to allocate
+     * \return pointer to a block of data allocated from the heap, or NULL on
+     *         failure.
+     */
 	static void* Alloc(K_USHORT usSize_);
+
+    /*!
+     * \brief Free free a block of data previously allocated from the heap
+     * \param pvData_ Pointer to a block of data allocated from the system heap
+     */
 	static void  Free(void *pvData_);
 
 private:
-	static K_UCHAR m_pucRawHeap[ HEAP_RAW_SIZE ];
-	static HeapConfig m_pclSystemHeapConfig[ HEAP_NUM_SIZES + 1 ];
-	static FixedHeap m_clSystemHeap;
-	static bool m_bInit;
+    static K_UCHAR m_pucRawHeap[ HEAP_RAW_SIZE ]; //!< Raw heap buffer
+    static HeapConfig m_pclSystemHeapConfig[ HEAP_NUM_SIZES + 1 ]; //!< Heap configuration metadata
+    static FixedHeap m_clSystemHeap; //!< Heap management object
+    static bool m_bInit; //!< True if initialized, false if uninitialized
 };
 
 #endif // USE_SYSTEM_HEAP
