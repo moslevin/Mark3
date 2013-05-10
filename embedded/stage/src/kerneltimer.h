@@ -95,7 +95,7 @@ public:
 		Returns the number of ticks remaining before the next timer 
 		expiry.
 		
-		\param Time before next expiry in platform-specific ticks
+        \return Time before next expiry in platform-specific ticks
 	*/
 	static K_ULONG TimeToExpiry(void);
     

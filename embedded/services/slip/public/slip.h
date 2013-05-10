@@ -16,8 +16,6 @@ See license.txt for more information
 
 	Serial Line IP framing code.  Also includes code to frame data in 
 	FunkenSlip format for use with SlipTerm on a host PC.  
-
-	\page SLIP1 Funkenslip Encoding
 	
 	FunkenSlip uses SLIP-framed messages with a pre-defined packet format 
 	as follows:

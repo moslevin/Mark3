@@ -76,7 +76,7 @@ public:
         thread's start method has been invoked first.
         
         \param paucStack_    Pointer to the stack to use for the thread
-        \param ucStackSize_  Size of the stack (in bytes)
+        \param usStackSize_  Size of the stack (in bytes)
         \param ucPriority_   Priority of the thread (0 = idle, 7 = max)
         \param pfEntryPoint_ This is the function that gets called when the
                              thread is started
@@ -108,7 +108,7 @@ public:
         
         \param szName_ Char string containing the thread name
     */
-    void SetName(const K_CHAR *szName_) { m_szName = szName_; };
+    void SetName(const K_CHAR *szName_) { m_szName = szName_; }
 #endif
     
     /*!
@@ -119,7 +119,7 @@ public:
         
         \return Pointer to the Thread's owner list
     */
-    ThreadList *GetOwner(void) { return m_pclOwner; };
+    ThreadList *GetOwner(void) { return m_pclOwner; }
     
     /*!        
         \fn ThreadList *GetCurrent(void)
@@ -128,7 +128,7 @@ public:
         
         \return Pointer to the thread's current list        
     */
-    ThreadList *GetCurrent(void) { return m_pclCurrent; } ;
+    ThreadList *GetCurrent(void) { return m_pclCurrent; }
 	
     /*!
         \fn K_UCHAR GetPriority(void)
@@ -138,16 +138,16 @@ public:
         \return Priority of the current thread
     */
 
-    K_UCHAR GetPriority(void) { return m_ucPriority; };
+    K_UCHAR GetPriority(void) { return m_ucPriority; }
 
     /*!
-        \fn K_UCHAR GetPriority(void)
+        \fn K_UCHAR GetCurPriority(void)
         
         Return the priority of the current thread
         
         \return Priority of the current thread
     */
-    K_UCHAR GetCurPriority(void) { return m_ucCurPriority; };
+    K_UCHAR GetCurPriority(void) { return m_ucCurPriority; }
     
 #if KERNEL_USE_QUANTUM	
 	/*!
@@ -166,7 +166,7 @@ public:
         
         \return The thread's quantum
     */
-	K_USHORT GetQuantum(void) { return m_usQuantum; };
+    K_USHORT GetQuantum(void) { return m_usQuantum; }
 #endif
 
     /*!
@@ -185,7 +185,7 @@ public:
         
         \param pclNewList_ Pointer to the threadlist to apply thread ownership       
     */
-    void SetOwner( ThreadList *pclNewList_ ) { m_pclOwner = pclNewList_; };
+    void SetOwner( ThreadList *pclNewList_ ) { m_pclOwner = pclNewList_; }
     
 	
 	/*!
@@ -238,6 +238,16 @@ public:
         \param ulTimeMs_ Time to sleep (in ms)
     */
 	static void Sleep(K_ULONG ulTimeMs_);
+
+    /*!
+        \fn void USleep(K_ULONG ulTimeUs_);
+
+        Put the thread to sleep for the specified time (in microseconds).
+        Actual time slept may be longer (but not less than) the interval specified.
+
+        \param ulTimeUs_ Time to sleep (in microseconds)
+    */
+    static void USleep(K_ULONG ulTimeUs_);
 #endif
 	
     /*!
@@ -294,6 +304,10 @@ private:
     */
 	static void ContextSwitchSWI(void);
 
+    /*!
+        \fn void SetPriorityBase(K_UCHAR ucPriority_)
+        \param ucPriority_
+     */
     void SetPriorityBase(K_UCHAR ucPriority_);
     
     //! Pointer to the top of the thread's stack

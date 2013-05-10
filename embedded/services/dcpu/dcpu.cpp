@@ -14,8 +14,6 @@ See license.txt for more information
 /*!
 	\file dcpu.cpp
 	\brief Portable DCPU-16 CPU emulator
-	
-	\page DCPU_1 DCPU-16 Emulator
 
 	The DCPU-16 is the in-game CPU used in the upcoming game 0x10^c, from the
 	creators of the wildly successful Minecraft.  While the DCPU is supposed

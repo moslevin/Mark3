@@ -76,8 +76,8 @@ class LinkListNode
 {
 protected:
 	
-    LinkListNode *next;
-    LinkListNode *prev;	
+    LinkListNode *next;     //!< Pointer to the next node in the list
+    LinkListNode *prev;     //!< Pointer to the previous node in the list
 	
     /*!
         \fn void ClearNode()
@@ -94,7 +94,7 @@ public:
         
         \return a pointer to the next node in the list.
     */
-    LinkListNode *GetNext(void) { return next; };
+    LinkListNode *GetNext(void) { return next; }
     
     /*!
         \fn LinkListNode *GetPrev();
@@ -103,7 +103,7 @@ public:
         
         \return a pointer to the previous node in the list.
     */
-    LinkListNode *GetPrev(void) { return prev; };
+    LinkListNode *GetPrev(void) { return prev; }
 		
     friend class LinkList;  
     friend class DoubleLinkList;  
@@ -117,8 +117,8 @@ public:
 class LinkList
 {  
 protected:
-    LinkListNode *m_pstHead;
-    LinkListNode *m_pstTail;
+    LinkListNode *m_pstHead;    //!< Pointer to the head node in the list
+    LinkListNode *m_pstTail;    //!< Pointer to the tail node in the list
     
 public:
     /*!
@@ -173,7 +173,7 @@ public:
     /*!
         Default constructor - initializes the head/tail nodes to NULL
     */
-    DoubleLinkList() { m_pstHead = NULL; m_pstTail = NULL; };
+    DoubleLinkList() { m_pstHead = NULL; m_pstTail = NULL; }
     
     /*!
         \fn void Add(LinkListNode *node_)
@@ -201,7 +201,7 @@ public:
 class CircularLinkList : public LinkList
 {
 public:
-    CircularLinkList() { m_pstHead = NULL; m_pstTail = NULL; };
+    CircularLinkList() { m_pstHead = NULL; m_pstTail = NULL; }
     
     /*!
         \fn void Add(LinkListNode *node_)

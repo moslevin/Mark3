@@ -44,7 +44,7 @@ class SlipMux
 {
 public:
 	/*!		
-		\fn void Init(K_CHAR *pcDriverPath_,
+        \fn void Init( const K_CHAR *pcDriverPath_,
 						K_USHORT usRxSize_,
 						K_UCHAR *aucRx_,
 						K_USHORT usTxSize_,
@@ -62,7 +62,7 @@ public:
 		\param usTxSize_ Size of the TX Buffer to attach to the driver
 		\param aucTx_ Pointer to the TX Buffer to attach to the driver
 	*/
-	static void Init(K_CHAR *pcDriverPath_, K_USHORT usRxSize_, K_UCHAR *aucRx_, K_USHORT usTxSize_, K_UCHAR *aucTx_);
+    static void Init(const K_CHAR *pcDriverPath_, K_USHORT usRxSize_, K_UCHAR *aucRx_, K_USHORT usTxSize_, K_UCHAR *aucTx_);
 	
 	/*!
 		\fn void InstallHandler( K_UCHAR ucChannel_, Slip_Channel pfHandler_ )
@@ -70,7 +70,7 @@ public:
 	 	Install a slip handler function for the given communication channel.
 		
 		\param ucChannel_ Channel to attach the handler to
-		\param pfHanler_ Pointer to the handler function to attach
+        \param pfHandler_ Pointer to the handler function to attach
 	*/	
 	static void InstallHandler( K_UCHAR ucChannel_, Slip_Channel pfHandler_ );
 

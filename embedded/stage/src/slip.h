@@ -13,6 +13,7 @@ See license.txt for more information
 ===========================================================================*/
 /*!
 	\file slip.h
+
 	Serial Line IP framing code.  Also includes code to frame data in 
 	FunkenSlip format for use with SlipTerm on a host PC.  
 	
@@ -22,8 +23,11 @@ See license.txt for more information
 	[ Channel ][ Size ][ Data Buffer ][ CRC8 ]
 	
 	Channel is 1 byte, indicating the type of data carried in the message
+
 	Size is 2 bytes, indicating the length of the binary blob that follows
-	Data Buffer is n bytes, this is the packet data
+
+	Data Buffer is n bytes, and contains the raw packet data.
+
 	CRC16 is 2 byte, Providing an error detection mechanism
 */
 
@@ -94,7 +98,7 @@ public:
 	static K_USHORT EncodeByte( K_UCHAR ucChar_, K_UCHAR *aucBuf_ );
 
 	/*!
-		\fn K_USHORT DecodeByte( K_UCHAR *ucChar_, K_UCHAR *aucBuf_ )
+        \fn K_USHORT DecodeByte( K_UCHAR *ucChar_, const K_UCHAR *aucBuf_ )
 		
 		Decode a byte from a stream into a specified value
 		
@@ -107,10 +111,10 @@ public:
 		
 		\return # bytes read, or 0 on terminating character (192)
 	*/
-	static K_USHORT DecodeByte( K_UCHAR *ucChar_, K_UCHAR *aucBuf_ );
+    static K_USHORT DecodeByte( K_UCHAR *ucChar_, const K_UCHAR *aucBuf_ );
 	
 	/*!
-		\fn void WriteData( K_UCHAR ucChannel_, K_CHAR *aucBuf_, K_UCHAR ucLen_ )
+        \fn void WriteData( K_UCHAR ucChannel_, const K_CHAR *aucBuf_, K_UCHAR ucLen_ )
 		
 		Write a packet of data in the FunkenSlip format.
 		
@@ -121,7 +125,7 @@ public:
 		\param aucBuf_ Payload to encode
 		\param usLen_ Length of payload data
 	*/
-	void WriteData( K_UCHAR ucChannel_, K_CHAR *aucBuf_, K_USHORT usLen_ );
+    void WriteData( K_UCHAR ucChannel_, const K_CHAR *aucBuf_, K_USHORT usLen_ );
 
 	/*!
 		\fn K_USHORT ReadData( K_UCHAR *pucChannel_, K_CHAR *aucBuf_, K_USHORT usLen_ )

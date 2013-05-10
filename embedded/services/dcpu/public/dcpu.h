@@ -322,7 +322,7 @@ public:
 		
 		Execute the hardware callback
 		
-		\param pclCPU Pointer to the VM triggering the interrupt
+        \param pclCPU_ Pointer to the VM triggering the interrupt
 	*/
 	void Interrupt( DCPU *pclCPU_ )
 	{

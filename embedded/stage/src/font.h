@@ -46,7 +46,7 @@ typedef struct
 	K_UCHAR ucFlags;
     K_UCHAR ucStartChar;
     K_UCHAR ucMaxChar;
-	K_CHAR *szName;
+    const K_CHAR *szName;
 	const FONT_STORAGE_TYPE *pucFontData;	
 } Font_t;
 

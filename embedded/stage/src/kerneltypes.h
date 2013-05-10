@@ -16,20 +16,27 @@ See license.txt for more information
 	\brief Basic data type primatives used throughout the OS
 */
 
+#include <stdint.h>
+
 #ifndef __KERNELTYPES_H__
 #define __KERNELTYPES_H__
 
 #if defined(bool)
 	#define K_BOOL			bool	
 #else
-	#define K_BOOL			unsigned char
+    #define K_BOOL			uint8_t
 #endif
 	
 #define K_CHAR			char
-#define K_UCHAR			unsigned char
-#define K_USHORT		unsigned short
-#define K_SHORT			short
-#define K_ULONG			unsigned long
-#define K_LONG			long
+#define K_UCHAR			uint8_t
+#define K_USHORT		uint16_t
+#define K_SHORT			int16_t
+#define K_ULONG			uint32_t
+#define K_LONG			int32_t
+
+#if !defined(K_ADDR)
+    #define K_ADDR      uint32_t
+#endif
+
 
 #endif
