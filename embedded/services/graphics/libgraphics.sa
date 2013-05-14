@@ -1,12 +1,12 @@
 graphics.cpp:619:3: warning: Value stored to 'usOffset' is never read
                 usOffset += (sizeof(Glyph_t) - 1);
                 ^           ~~~~~~~~~~~~~~~~~~~~~
-graphics.cpp:698:25: warning: Value stored to 'cStepY' is never read
-    if (sDeltaY1 < 0) { cStepY = -1; sDeltaY1 = -sDeltaY1; } else { cStepY = 1; }
-                        ^        ~~
 graphics.cpp:685:26: warning: Value stored to 'sMax' is never read
     if( sTemp > sMax ) { sMax  = sTemp; ucMaxEdge = 2; ucMinEdge1 = 0; ucMinEdge2 = 1;}
                          ^       ~~~~~
+graphics.cpp:698:25: warning: Value stored to 'cStepY' is never read
+    if (sDeltaY1 < 0) { cStepY = -1; sDeltaY1 = -sDeltaY1; } else { cStepY = 1; }
+                        ^        ~~
 graphics.cpp:698:69: warning: Value stored to 'cStepY' is never read
     if (sDeltaY1 < 0) { cStepY = -1; sDeltaY1 = -sDeltaY1; } else { cStepY = 1; }
                                                                     ^        ~

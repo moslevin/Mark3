@@ -180,17 +180,21 @@ typedef struct
 } TimerEvent_t;
 
 //---------------------------------------------------------------------------
+/*!
+    Composite UI event structure.  Depending on the event type, can contain
+    either a keyboard, mouse, touch, joystick, timer event, etc.
+*/
 typedef struct
 {
-	K_UCHAR ucEventType;
-	K_UCHAR ucTargetID;
+    K_UCHAR ucEventType;        //!< GuiEventType_t event type
+    K_UCHAR ucTargetID;         //!< Control index that this event is targeted towards
 	union
 	{
-		KeyEvent_t		stKey;
-		MouseEvent_t	stMouse;
-		TouchEvent_t	stTouch;
-		JoystickEvent_t stJoystick;
-		TimerEvent_t    stTimer;
+        KeyEvent_t		stKey;      //!< Keyboard data
+        MouseEvent_t	stMouse;    //!< Mouse data
+        TouchEvent_t	stTouch;    //!< Touchscreen data
+        JoystickEvent_t stJoystick; //!< Joystick data
+        TimerEvent_t    stTimer;    //!< Timer data
 	};
 
 } GuiEvent_t;
@@ -198,10 +202,10 @@ typedef struct
 //---------------------------------------------------------------------------
 typedef enum
 {
-	GUI_EVENT_OK = 0,
-	GUI_EVENT_CONSUMED,
-	GUI_EVENT_CANCEL,
-	GUI_EVENT_RETRY,
+    GUI_EVENT_OK = 0,       //!< No problem
+    GUI_EVENT_CONSUMED,     //!< Event was consumed
+    GUI_EVENT_CANCEL,       //!< Event processing canceled
+    GUI_EVENT_RETRY,        //!< Retry processing the event
 //---
 	GUI_EVENT_COUNT
 } GuiReturn_t;
