@@ -110,6 +110,11 @@ public:
 	*/
 	void WakeMe( Thread *pclOwner_ );
 	
+    /*!
+     * \brief SetExpired Set the expired state of the mutex.  Used by the internal
+     *        timer-related functions of the kernel - not for use by app code.
+     * \param bExpired_ true = expired, false = not expired
+     */
 	void SetExpired( bool bExpired_ ) { m_bExpired = bExpired_; }
 #endif
 
@@ -130,12 +135,12 @@ private:
     */
     K_UCHAR WakeNext();
     
-    K_UCHAR m_bReady;
-    K_UCHAR m_ucMaxPri;
-    Thread *m_pclOwner;
+    K_UCHAR m_bReady;       //!< State of the mutex - true = ready, false = claimed
+    K_UCHAR m_ucMaxPri;     //!< Maximum priority of thread in queue, used for priority inheritence
+    Thread *m_pclOwner;     //!< Pointer to the thread that owns the mutex (when claimed)
 	
 #if KERNEL_USE_TIMERS
-	bool	m_bExpired;
+    bool	m_bExpired;     //!< Whether or not a timed mutex has expired (true = expired)
 #endif	
 };
 
