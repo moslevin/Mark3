@@ -33,6 +33,8 @@ See license.txt for more information
 #include "tracebuffer.h"
 #include "kernel_debug.h"
 
+bool Kernel::m_bIsStarted;
+
 //---------------------------------------------------------------------------
 #if defined __FILE_ID__
 	#undef __FILE_ID__
@@ -42,6 +44,7 @@ See license.txt for more information
 //---------------------------------------------------------------------------
 void Kernel::Init(void)
 {
+    m_bIsStarted = false;
 #if KERNEL_USE_DEBUG
 	TraceBuffer::Init();
 #endif
@@ -67,7 +70,9 @@ void Kernel::Init(void)
 //---------------------------------------------------------------------------
 void Kernel::Start(void)
 {
-	KERNEL_TRACE( STR_THREAD_START );
+	KERNEL_TRACE( STR_THREAD_START );    
+    m_bIsStarted = true;
     ThreadPort::StartThreads();
 	KERNEL_TRACE( STR_START_ERROR );
+
 }
