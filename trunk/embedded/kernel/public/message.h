@@ -84,7 +84,7 @@ See license.txt for more information
 #include "mark3cfg.h"
 
 #include "ll.h"
-#include "semaphore.h"
+#include "ksemaphore.h"
 
 #if KERNEL_USE_MESSAGE
 

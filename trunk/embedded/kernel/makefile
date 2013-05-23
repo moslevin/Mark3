@@ -17,7 +17,7 @@ CPP_SOURCE= \
 	profile.cpp \
 	quantum.cpp \
 	scheduler.cpp \
-	semaphore.cpp \
+	ksemaphore.cpp \
 	thread.cpp \
 	threadlist.cpp \
 	kernel.cpp \
