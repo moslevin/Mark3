@@ -7,7 +7,7 @@
 #include "drvUART.h"
 #include "profile.h"
 #include "kprofile.h"
-#include "semaphore.h"
+#include "ksemaphore.h"
 #include "mutex.h"
 #include "message.h"
 #include "timerlist.h"

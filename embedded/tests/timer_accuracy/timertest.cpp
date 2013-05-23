@@ -27,7 +27,7 @@ See license.txt for more information
 #include "slip_mux.h"
 
 #include "profile.h"
-#include "semaphore.h"
+#include "ksemaphore.h"
 #include "timerlist.h"
 #include "kprofile.h"
 #include "slipterm.h"

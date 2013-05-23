@@ -13,7 +13,7 @@ See license.txt for more information
 ===========================================================================*/
 /*!
 
-    \file   semaphore.cpp
+    \file   ksemaphore.cpp
 
     \brief  Semaphore Blocking-Object Implemenation 
 
@@ -22,7 +22,7 @@ See license.txt for more information
 #include "kerneltypes.h"
 #include "mark3cfg.h"
 
-#include "semaphore.h"
+#include "ksemaphore.h"
 #include "blocking.h"   
 #include "kernel_debug.h"
 //---------------------------------------------------------------------------

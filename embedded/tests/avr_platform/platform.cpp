@@ -6,7 +6,7 @@
 #include "slip_mux.h"
 #include "drvUART.h"
 #include "message.h"
-#include "semaphore.h"
+#include "ksemaphore.h"
 #include "driver.h"
 
 //---------------------------------------------------------------------------

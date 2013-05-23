@@ -56,6 +56,12 @@ int NLFS_File::Seek(K_ULONG ulOffset_)
     m_ulCurrentBlock = m_stNode.stFileNode.ulFirstBlock;
     m_ulOffset = ulOffset_;
 
+    if (INVALID_NODE == m_usFile)
+    {
+        DEBUG_PRINT("Error - invalid file");
+        return -1;
+    }
+
     if (INVALID_BLOCK == m_ulCurrentBlock)
     {
         DEBUG_PRINT("Invalid block\n");
@@ -90,6 +96,12 @@ int NLFS_File::Read(void *pvBuf_, K_ULONG ulLen_)
     K_ULONG ulRead = 0;
 
     K_CHAR *szCharBuf = (K_CHAR*)pvBuf_;
+
+    if (INVALID_NODE == m_usFile)
+    {
+        DEBUG_PRINT("Error - invalid file");
+        return -1;
+    }
 
     DEBUG_PRINT("Reading: %d bytes from file\n", ulLen_);
     while (ulLen_)
@@ -126,6 +138,12 @@ int NLFS_File::Write(void *pvBuf_, K_ULONG ulLen_)
     K_ULONG ulWritten = 0;
     K_CHAR *szCharBuf = (K_CHAR*)pvBuf_;
 
+    if (INVALID_NODE == m_usFile)
+    {
+        DEBUG_PRINT("Error - invalid file");
+        return -1;
+    }
+
     DEBUG_PRINT("writing: %d bytes to file\n", ulLen_);
     while (ulLen_)
     {
@@ -161,11 +179,8 @@ int NLFS_File::Write(void *pvBuf_, K_ULONG ulLen_)
 //----------------------------------------------------------------------------
 int NLFS_File::Close(void)
 {
+    m_usFile = INVALID_NODE;
+    m_ulCurrentBlock = INVALID_BLOCK;
+    m_ulOffset = 0;
     return 0;
 }
-
-
-
-
-
-

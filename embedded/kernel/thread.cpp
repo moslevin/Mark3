@@ -26,7 +26,7 @@ See license.txt for more information
 #include "scheduler.h"
 #include "kernelswi.h"
 #include "timerlist.h"
-#include "semaphore.h"
+#include "ksemaphore.h"
 #include "quantum.h"
 #include "kernel_debug.h"
 //---------------------------------------------------------------------------

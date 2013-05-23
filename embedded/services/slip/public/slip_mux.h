@@ -20,7 +20,7 @@ See license.txt for more information
 
 #include "kerneltypes.h"
 #include "driver.h"
-#include "semaphore.h"
+#include "ksemaphore.h"
 #include "message.h"
 #include "slip.h"
 

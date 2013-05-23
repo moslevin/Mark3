@@ -1,7 +1,7 @@
 # Include common prelude make file
 include $(ROOT_DIR)base.mak
 
-ifeq ($(ARCH), avr)
+ifeq ($(ARCH), generic)
 source: source_cpp source_c source_h
 	echo "Copy platform specific kernel source"
 	

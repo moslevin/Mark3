@@ -59,7 +59,7 @@ See license.txt for more information
 #define PROFILING_RESULTS_H	0x100A		/* SUBSTITUTE="profiling_results.h" */
 #define QUANTUM_H			0x100B		/* SUBSTITUTE="quantum.h" */
 #define SCHEDULER_H			0x100C		/* SUBSTITUTE="scheduler.h" */
-#define SEMAPHORE_H			0x100D		/* SUBSTITUTE="semaphore.h" */
+#define SEMAPHORE_H			0x100D		/* SUBSTITUTE="ksemaphore.h" */
 #define THREAD_H			0x100E		/* SUBSTITUTE="thread.h" */
 #define THREADLIST_H		0x100F		/* SUBSTITUTE="threadlist.h" */
 #define TIMERLIST_H			0x1010		/* SUBSTITUTE="timerlist.h" */
