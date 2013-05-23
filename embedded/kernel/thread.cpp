@@ -28,7 +28,9 @@ See license.txt for more information
 #include "timerlist.h"
 #include "ksemaphore.h"
 #include "quantum.h"
+#include "kernel.h"
 #include "kernel_debug.h"
+
 //---------------------------------------------------------------------------
 #if defined __FILE_ID__
 	#undef __FILE_ID__
@@ -96,18 +98,22 @@ void Thread::Start(void)
     Scheduler::Add(this);	
 	m_pclOwner = Scheduler::GetThreadList(m_ucPriority);
     m_pclCurrent = m_pclOwner;
-	if (m_ucPriority >= Scheduler::GetCurrentThread()->GetCurPriority())
-	{
+
+    if (Kernel::IsStarted())
+    {
+        if (m_ucPriority >= Scheduler::GetCurrentThread()->GetCurPriority())
+        {
 #if KERNEL_USE_QUANTUM
-		// Deal with the thread Quantum
-		Quantum::RemoveThread();
-		Quantum::AddThread(this);
-#endif	
-	}
-	if (m_ucPriority > Scheduler::GetCurrentThread()->GetPriority())
-	{
-		Thread::Yield();
-	}	
+            // Deal with the thread Quantum
+            Quantum::RemoveThread();
+            Quantum::AddThread(this);
+#endif
+        }
+        if (m_ucPriority > Scheduler::GetCurrentThread()->GetPriority())
+        {
+            Thread::Yield();
+        }
+    }
     CS_EXIT();
 }
 
@@ -147,7 +153,6 @@ void Thread::Exit()
 static void ThreadSleepCallback( Thread *pclOwner_, void *pvData_ )
 {
 	Semaphore *pclSemaphore = static_cast<Semaphore*>(pvData_);
-    
     // Post the semaphore, which will wake the sleeping thread.
 	pclSemaphore->Post();
 }
@@ -171,6 +176,7 @@ void Thread::Sleep(K_ULONG ulTimeMs_)
     // Add the new timer to the timer scheduler, and block the thread
 	TimerScheduler::Add(&clTimer);
 	clSemaphore.Pend();
+
 }
 
 //---------------------------------------------------------------------------

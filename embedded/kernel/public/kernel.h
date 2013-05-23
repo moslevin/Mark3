@@ -63,6 +63,17 @@ public:
         this function, otherwise the behavior is undefined.
     */
 	static void Start(void);	
+
+    /*!
+      \brief IsStarted
+      \return Whether or not the kernel has started - true = running, false =
+              not started
+     */
+    static bool IsStarted()    {   return m_bIsStarted;    }
+
+private:
+
+    static bool m_bIsStarted;   //! true if kernel is running, false otherwise
 };
 
 #endif
