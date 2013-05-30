@@ -1,7 +1,3 @@
-In file included from fixed_heap.cpp:45:
-/home/moslevin/m3/trunk/embedded/stage/inc/threadport.h:41:8: error: unknown type name 'sem_t' [Parse Issue]
-extern sem_t stKSem;
-       ^
 fixed_heap.cpp:52:21: error: cast from pointer to smaller type 'uint32_t' (aka 'unsigned int') loses information [Semantic Issue]
     K_ADDR adNode = (K_ADDR)pvHeap_;
                     ^~~~~~~~~~~~~~~
@@ -17,4 +13,4 @@ fixed_heap.cpp:105:45: error: cast from pointer to smaller type 'uint32_t' (aka 
 fixed_heap.cpp:165:41: error: cast from pointer to smaller type 'uint32_t' (aka 'unsigned int') loses information [Semantic Issue]
     BlockHeap **pclHeap = (BlockHeap**)((K_ADDR)pvNode_ - sizeof(BlockHeap*));
                                         ^~~~~~~~~~~~~~~
-6 errors generated.
+5 errors generated.

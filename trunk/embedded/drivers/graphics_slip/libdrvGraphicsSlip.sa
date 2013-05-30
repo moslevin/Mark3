@@ -1,9 +1,0 @@
-In file included from graphics_slip.cpp:24:
-In file included from /home/moslevin/m3/trunk/embedded/stage/inc/slip_mux.h:23:
-In file included from /home/moslevin/m3/trunk/embedded/stage/inc//semaphore.h:28:
-In file included from /home/moslevin/m3/trunk/embedded/stage/inc//blocking.h:55:
-In file included from /home/moslevin/m3/trunk/embedded/stage/inc//thread.h:44:
-/home/moslevin/m3/trunk/embedded/stage/inc//threadport.h:41:8: error: unknown type name 'sem_t' [Parse Issue]
-extern sem_t stKSem;
-       ^
-1 error generated.

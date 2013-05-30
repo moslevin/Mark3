@@ -109,6 +109,7 @@ See license.txt for more information
 #define __NLFS_H__
 
 #include "kerneltypes.h"
+#include <stdint.h>
 
 class NLFS_File;
 
@@ -242,6 +243,21 @@ typedef struct
     };
 } NLFS_Block_t;
 
+
+//---------------------------------------------------------------------------
+/*!
+    Union used for managing host-specific pointers/data-types.  This is all
+    pretty abstract, as the data represented here is only accessed by the
+    underlying physical media drive.
+*/
+typedef union
+{
+    void *pvData;
+    uint32_t u32Data;
+    uint64_t u64Data;
+    K_ADDR kaData;
+} NLFS_Host_t;
+
 //---------------------------------------------------------------------------
 /*!
  * \brief Nice Little File System class
@@ -255,7 +271,8 @@ public:
      * \brief Format/Create a new filesystem with the configuration specified
      *        in the parameters
      *
-     * \param [in] pvHost_      - Pointer to the FS storage object
+     * \param [in] puHost_      - Pointer to the FS storage object, interpreted
+     *                            by the physical medium driver.
      *
      * \param [in] ulTotalSize_ - Total size of the object to format (in bytes)
      *
@@ -276,14 +293,14 @@ public:
      *                            on the block size - in many scenarios, larger
      *                            blocks can lead to higher throughput.
      */
-    void Format(void *pvHost_, K_ULONG ulTotalSize_, K_USHORT usNumFiles_, K_USHORT usDataBlockSize_);
+    void Format(NLFS_Host_t *puHost_, K_ULONG ulTotalSize_, K_USHORT usNumFiles_, K_USHORT usDataBlockSize_);
 
     /*!
      * \brief Re-mount a previously-cerated filesystem using this FS object.
      *
-     * \param [in] pvHost_ - Pointer to the filesystem object
+     * \param [in] puHost_ - Pointer to the filesystem object
      */
-    void Mount(void *pvHost_);
+    void Mount(NLFS_Host_t *puHost_);
 
     /*!
      * \brief Create_File creates a new file object at the specified path
@@ -535,7 +552,7 @@ protected:
      */
     void Set_Node_Name( NLFS_Node_t *pstFileNode_, const K_CHAR *szPath_ );
 
-    void *m_pvHost;                         //!< Local, cached copy of user pointer
+    NLFS_Host_t *m_puHost;                  //!< Local, cached copy of host FS pointer
     NLFS_Root_Node_t m_stLocalRoot;         //!< Local, cached copy of root
 };
 

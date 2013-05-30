@@ -752,7 +752,7 @@ K_USHORT NLFS::Delete_File( const K_CHAR *szPath_)
 }
 
 //---------------------------------------------------------------------------
-void NLFS::Format(void *pvHost_, K_ULONG ulTotalSize_, K_USHORT usNumFiles_, K_USHORT usDataBlockSize_)
+void NLFS::Format(NLFS_Host_t *puHost_, K_ULONG ulTotalSize_, K_USHORT usNumFiles_, K_USHORT usDataBlockSize_)
 {
     K_ULONG i;
     K_ULONG ulNumBlocks;
@@ -768,7 +768,7 @@ void NLFS::Format(void *pvHost_, K_ULONG ulTotalSize_, K_USHORT usNumFiles_, K_U
 
     // Set up the local_pointer -> this is used for the low-level, platform-specific
     // bits, allowing the FS to be used on RAM buffers, EEPROM's, networks, etc.
-    m_pvHost = pvHost_;
+    m_puHost = puHost_;
 
     // Set the local copies of the data block byte-offset, as well as the data-block size
     m_stLocalRoot.usNumFiles        = usNumFiles_;
@@ -855,12 +855,12 @@ void NLFS::Format(void *pvHost_, K_ULONG ulTotalSize_, K_USHORT usNumFiles_, K_U
 }
 
 //---------------------------------------------------------------------------
-void NLFS::Mount(void *pvHost_)
+void NLFS::Mount(NLFS_Host_t *puHost_)
 {
     NLFS_Node_t stRootNode;
 
     //!! Must set the host pointer first.
-    m_pvHost = pvHost_;
+    m_puHost = puHost_;
     DEBUG_PRINT("Remounting FS %X - reading config node\n", pvHost_);
 
     // Reload the root block into the local cache
