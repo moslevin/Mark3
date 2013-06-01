@@ -349,9 +349,9 @@ LOAD /home/moslevin/avr8-gnu-toolchain-linux_x86_64/bin/../lib/gcc/avr/4.6.2/avr
  *(.debug_abbrev)
  .debug_abbrev  0x0000000000000000      0x1f8 ./obj/avr/atmega328p/gcc/bootloader.c.o
 
-.debug_line     0x0000000000000000      0x1ad
+.debug_line     0x0000000000000000      0x162
  *(.debug_line)
- .debug_line    0x0000000000000000      0x1ad ./obj/avr/atmega328p/gcc/bootloader.c.o
+ .debug_line    0x0000000000000000      0x162 ./obj/avr/atmega328p/gcc/bootloader.c.o
 
 .debug_frame    0x0000000000000000       0x84
  *(.debug_frame)

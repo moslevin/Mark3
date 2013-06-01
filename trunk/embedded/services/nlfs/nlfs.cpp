@@ -273,6 +273,7 @@ K_ULONG NLFS::Append_Block_To_Node(NLFS_Node_t *pstFile_ )
     }
     else
     {
+        DEBUG_PRINT("  previous block is invalid, setting as first\n");
         pstFile_->stFileNode.ulFirstBlock = ulBlock;
     }
 
@@ -861,7 +862,7 @@ void NLFS::Mount(NLFS_Host_t *puHost_)
 
     //!! Must set the host pointer first.
     m_puHost = puHost_;
-    DEBUG_PRINT("Remounting FS %X - reading config node\n", pvHost_);
+    DEBUG_PRINT("Remounting FS %X - reading config node\n", puHost_);
 
     // Reload the root block into the local cache
     Read_Node(FS_CONFIG_BLOCK, &stRootNode);
