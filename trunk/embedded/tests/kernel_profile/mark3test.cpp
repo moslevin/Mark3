@@ -345,7 +345,7 @@ static void Mutex_Profiling()
         clMutex.Init();
         clMutex.Init();
         clMutex.Init();
-		clMutexInitTimer.Stop();
+        clMutexInitTimer.Stop();
 	}
 	
 	for (i = 0; i < 100; i++)
