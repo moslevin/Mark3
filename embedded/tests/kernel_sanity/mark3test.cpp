@@ -175,7 +175,7 @@ void KUtil_Ultoa( K_ULONG ucData_, K_CHAR *szText_ )
 	// Find max index to print...
 	ucMul = 10;
 	ucMax = 1;
-	while ( ucMul < ucData_ )
+    while ( ucMul <= ucData_ )
 	{
 		ucMax++;
 		ucMul *= 10; 
