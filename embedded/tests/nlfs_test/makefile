@@ -8,7 +8,8 @@ IS_APP=1
 APPNAME=nlfs_test
 
 #this is the list of the objects required to build the kernel
-CPP_SOURCE=nlfs_test.cpp
+CPP_SOURCE=nlfs_test.cpp \
+nlfs_eeprom.cpp
 
 LIBS=mark3 drvUART nlfs memutil
 

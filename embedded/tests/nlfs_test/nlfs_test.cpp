@@ -32,6 +32,7 @@ See license.txt for more information
 #include "nlfs_file.h"
 #include "nlfs_ram.h"
 #include "memutil.h"
+#include "nlfs_eeprom.h"
 
 #include <avr/io.h>
 #include <avr/sleep.h>
@@ -46,8 +47,8 @@ static Thread AppThread;			//!< Main "application" thread
 static Thread IdleThread;			//!< Idle thread - runs when app can't
 
 static ATMegaUART clUART;			//!< UART device driver object
-static K_UCHAR aucFS[512];          //!< Filesystem array
-static NLFS_RAM clNLFS;             //!< Filesystem object
+//static K_UCHAR aucFS[512];          //!< Filesystem array
+static NLFS_EEPROM clNLFS;             //!< Filesystem object
 
 //---------------------------------------------------------------------------
 #define STACK_SIZE_APP		(384)	//!< Size of the main app's stack
@@ -115,10 +116,14 @@ void NLFS_Test(void)
 {
     K_UCHAR aucRead[6];
 
-    clHost.pvData = (void*)aucFS;
+    clHost.u32Data = 0; //Format at EEPROM address 0
 
+    //!! Test 1 - Format the filesystem.
     clNLFS.Format(&clHost, 512, 4, 16);
+
     PrintString( "F_OK\n" );
+
+    //!! Test 2 - Create a file in the filesystem
     if (INVALID_NODE == clNLFS.Create_File("/a.txt"))
     {
         PrintString("CF\n");
@@ -128,7 +133,8 @@ void NLFS_Test(void)
         PrintString("CK\n");
     }
 
-    if (INVALID_NODE == clFile.Open(&clNLFS, "/a.txt", NLFS_FILE_TRUNCATE))
+    //!! Test 3 - Open a file in the filesystem, write to it, and close it
+    if (-1 == clFile.Open(&clNLFS, "/a.txt", NLFS_FILE_TRUNCATE))
     {
         PrintString("OF\n");
     }
@@ -136,12 +142,11 @@ void NLFS_Test(void)
     {
         PrintString("OK\n");
     }
-    PrintString("1");
-    clFile.Write((void*)"Hello", 6);
-    PrintString("2");
-    clFile.Close();
-    PrintString("3");
 
+    clFile.Write((void*)"Hello", 6);
+    clFile.Close();
+
+    //!! Test 4 - Read the file into a local array.
     MemUtil::SetMemory((void*)aucRead, 0, 6);
     clFile.Open(&clNLFS, "/a.txt", NLFS_FILE_APPEND);
     clFile.Read((void*)aucRead, 6);
