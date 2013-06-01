@@ -1,0 +1,4 @@
+uoled_test.cpp:32:10: fatal error: 'avr/io.h' file not found [Lexical or Preprocessor Issue]
+#include <avr/io.h>
+         ^
+1 error generated.
