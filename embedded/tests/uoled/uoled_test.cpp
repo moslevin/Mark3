@@ -120,14 +120,14 @@ void AppEntry(void)
         stText.usTop = 8;
         stText.uColor = COLOR_RED;
         //stText.pstFont = &fntTahoma_10_False_False_False_;
-        stText.pcString = "Hey Charlie!";
+        stText.pcString = "Hello World!";
         clUOLED.Text(&stText);
 
         stText.usLeft = 8;
         stText.usTop = 16;
         stText.uColor = COLOR_RED;
         //stText.pstFont = &fntTahoma_10_False_False_False_;
-        stText.pcString = "You're 4 Months!";
+        stText.pcString = "Goodbye World!";
         clUOLED.Text(&stText);
         Thread::Sleep(10);
 	}
