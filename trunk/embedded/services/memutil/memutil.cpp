@@ -265,5 +265,84 @@ void MemUtil::SetMemory( void *pvDst_, K_UCHAR ucVal_, K_USHORT usLen_ )
     }
 }
 
+//---------------------------------------------------------------------------
+K_UCHAR MemUtil::Tokenize( const K_CHAR *szBuffer_, Token_t *pastTokens_, K_UCHAR ucMaxTokens_)
+{
+    K_UCHAR ucCurrArg = 0;
+    K_UCHAR ucLastArg = 0;
+    K_UCHAR i = 0;
+
+    K_UCHAR bEscape = false;
+
+    KERNEL_ASSERT(szBuffer_);
+    KERNEL_ASSERT(pastTokens_);
+
+    while (szBuffer_[i])
+    {
+        //-- Handle unescaped quotes
+        if (szBuffer_[i] == '\"')
+        {
+            if (bEscape)
+            {
+                bEscape = false;
+            }
+            else
+            {
+                bEscape = true;
+            }
+            i++;
+            continue;
+        }
+
+        //-- Handle all escaped chars - by ignoring them
+        if (szBuffer_[i] == '\\')
+        {
+            i++;
+            if (szBuffer_[i])
+            {
+               i++;
+            }
+            continue;
+        }
+
+        //-- Process chars based on current escape characters
+        if (bEscape)
+        {
+            // Everything within the quote is treated as literal, but escaped chars are still treated the same
+            i++;
+            continue;
+        }
+
+        //-- Non-escaped case
+        if (szBuffer_[i] != ' ' )
+        {
+            i++;
+            continue;
+        }
+
+        pastTokens_[ucCurrArg].pcToken = &(szBuffer_[ucLastArg]);
+        pastTokens_[ucCurrArg].ucLen = i - ucLastArg;
+        ucCurrArg++;
+        if (ucCurrArg >= ucMaxTokens_)
+        {
+            return ucMaxTokens_;
+        }
+
+        i++;
+        while (szBuffer_[i] && szBuffer_[i] == ' ')
+        {
+            i++;
+        }
+
+        ucLastArg = i;
+    }
+    if (i && !szBuffer_[i] && (i - ucLastArg))
+    {
+        pastTokens_[ucCurrArg].pcToken = &(szBuffer_[ucLastArg]);
+        pastTokens_[ucCurrArg].ucLen = i - ucLastArg;
+        ucCurrArg++;
+    }
+    return ucCurrArg;
+}
 
 
