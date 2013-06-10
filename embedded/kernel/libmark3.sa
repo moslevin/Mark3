@@ -1,7 +1,7 @@
 thread.cpp:61:22: error: cast from pointer to smaller type 'uint16_t' (aka 'unsigned short') loses information [Semantic Issue]
     m_paucStackTop = TOP_OF_STACK(paucStack_, usStackSize_);
-                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/home/moslevin/m3/trunk/embedded/stage/inc//threadport.h:42:49: note: expanded from:
+                     ^~~~~~~~~~~~~~~~~~~~~~~
+/home/moslevin2/m3/trunk/embedded/stage/inc/threadport.h:42:49: note: expanded from macro 'TOP_OF_STACK'
 #define TOP_OF_STACK(x, y)        (K_UCHAR*) ( ((K_USHORT)x) + (y-1) )
                                                 ^
 1 error generated.
@@ -10,14 +10,14 @@ cpu/avr/atmega328p/gcc/threadport.cpp:45:14: error: cast from pointer to smaller
              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 cpu/avr/atmega328p/gcc/threadport.cpp:75:40: error: cast from pointer to smaller type 'uint16_t' (aka 'unsigned short') loses information [Semantic Issue]
     PUSH_TO_STACK(pucStack, (K_UCHAR)(((K_USHORT)(pclThread_->m_pvArg)) & 0x00FF));    //R24
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/home/moslevin/m3/trunk/embedded/stage/inc//threadport.h:44:41: note: expanded from:
+                                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/moslevin2/m3/trunk/embedded/stage/inc/threadport.h:44:41: note: expanded from macro 'PUSH_TO_STACK'
 #define PUSH_TO_STACK(x, y)        *x = y; x--;
                                         ^
 cpu/avr/atmega328p/gcc/threadport.cpp:76:41: error: cast from pointer to smaller type 'uint16_t' (aka 'unsigned short') loses information [Semantic Issue]
     PUSH_TO_STACK(pucStack, (K_UCHAR)((((K_USHORT)(pclThread_->m_pvArg))>>8) & 0x00FF)); //R25
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/home/moslevin/m3/trunk/embedded/stage/inc//threadport.h:44:41: note: expanded from:
+                                        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/moslevin2/m3/trunk/embedded/stage/inc/threadport.h:44:41: note: expanded from macro 'PUSH_TO_STACK'
 #define PUSH_TO_STACK(x, y)        *x = y; x--;
                                         ^
 3 errors generated.

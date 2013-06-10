@@ -27,6 +27,16 @@ See license.txt for more information
 
 //---------------------------------------------------------------------------
 /*!
+    \brief Token descriptor struct format
+*/
+typedef struct
+{
+    const K_CHAR *pcToken;  //!< Pointer to the beginning of the token string
+    K_UCHAR ucLen;          //!< Length of the token (in bytes)
+} Token_t;
+
+//---------------------------------------------------------------------------
+/*!
     \brief String and Memory manipulation class.
 
     Utility method class implementing common memory and string manipulation
@@ -170,6 +180,17 @@ public:
     */
     static void SetMemory( void *pvDst_, K_UCHAR ucVal_, K_USHORT usLen_ );
 
+    //-----------------------------------------------------------------------
+    /*!
+       \brief Tokenize Function to tokenize a string based on a space delimeter.  This is a
+              non-destructive function, which populates a Token_t descriptor array.
+
+       \param szBuffer_ String to tokenize
+       \param pastTokens_ Pointer to the array of token descriptors
+       \param ucMaxTokens_ Maximum number of tokens to parse (i.e. size of pastTokens_)
+       \return Count of tokens parsed
+    */
+    static K_UCHAR Tokenize( const char *szBuffer_, Token_t *pastTokens_, K_UCHAR ucMaxTokens_);    
 };
 
 
