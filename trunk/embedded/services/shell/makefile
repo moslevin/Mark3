@@ -8,7 +8,7 @@ IS_LIB=1
 LIBNAME=shell
 
 #this is the list of the objects required to build the kernel
-CPP_SOURCE=shell_command.cpp
+CPP_SOURCE=shell_support.cpp
 
 # Include the rest of the script that is actually used for building the 
 # outputs
