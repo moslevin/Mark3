@@ -87,17 +87,25 @@ static K_CHAR cmd_dir( CommandLine_t *pstCommand_ )
     K_UCHAR ucCount = 0;
     K_CHAR acVal[16] = {0};
 
-    // Get the "/" file node
+    NLFS_File_Stat_t stStats;
+
+    // Get the "/" file node    
     usRoot = FS_ROOT_BLOCK;
+
+    PrintString("Directory Listing For: ");
+    clNLFS.GetStat(usRoot, &stStats);
+    PrintString((const K_CHAR*)stStats.acFileName);
+    PrintString("\n");
+
     usRoot = clNLFS.GetFirstChild(usRoot);
 
     // Iterate through all child nodes in the FS.
     while (usRoot && INVALID_NODE != usRoot)
-    {
-        NLFS_File_Stat_t stStats;
+    {        
         if (clNLFS.GetStat( usRoot, &stStats))
         {
             // Print the filename and size for each file.
+            PrintString("    ");
             PrintString((const K_CHAR*)stStats.acFileName);
             PrintString("    ");
             MemUtil::DecimalToString( stStats.ulFileSize, acVal );
@@ -122,6 +130,8 @@ static K_CHAR cmd_dir( CommandLine_t *pstCommand_ )
 // Prepare an NLFS filesystem
 static void NLFS_Prepare(void)
 {
+    NLFS_File clFile;
+
     clHost.u32Data = 0; //Format at EEPROM address 0
 
     clNLFS.Format(&clHost, 2048, 8, 16);
@@ -131,6 +141,27 @@ static void NLFS_Prepare(void)
     clNLFS.Create_File("/c.txt");
     clNLFS.Create_File("/d.txt");
     clNLFS.Create_File("/e.txt");
+
+    clFile.Open( &clNLFS, "/a.txt", NLFS_FILE_CREATE );
+    clFile.Write((void*)("Hello World!\n"), 13);
+    clFile.Close();
+
+    clFile.Open( &clNLFS, "/b.txt", NLFS_FILE_CREATE );
+    clFile.Write((void*)("Hello!\n"), 7);
+    clFile.Close();
+
+    clFile.Open( &clNLFS, "/c.txt", NLFS_FILE_CREATE );
+    clFile.Write((void*)("World!\n"), 7);
+    clFile.Close();
+
+    clFile.Open( &clNLFS, "/d.txt", NLFS_FILE_CREATE );
+    clFile.Write((void*)("Mark3 Rulez!\n"), 13);
+    clFile.Close();
+
+    clFile.Open( &clNLFS, "/e.txt", NLFS_FILE_CREATE );
+    clFile.Write((void*)("FunkSW!\n"), 8);
+    clFile.Close();
+
 }
 
 //---------------------------------------------------------------------------
