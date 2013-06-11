@@ -886,3 +886,51 @@ void NLFS::RootSync()
 }
 
 
+//---------------------------------------------------------------------------
+K_USHORT NLFS::GetFirstChild( K_USHORT usNode_ )
+{
+    NLFS_Node_t stTemp;
+    if (!usNode_ || INVALID_NODE == usNode_)
+    {
+        return INVALID_NODE;
+    }
+    Read_Node(usNode_, &stTemp);
+
+    if (stTemp.eBlockType != NLFS_NODE_DIR)
+    {
+        return INVALID_NODE;
+    }
+
+    return stTemp.stFileNode.usChild;
+}
+
+//---------------------------------------------------------------------------
+K_USHORT NLFS::GetNextPeer( K_USHORT usNode_ )
+{
+    NLFS_Node_t stTemp;
+    if (!usNode_ || INVALID_NODE == usNode_)
+    {
+        return INVALID_NODE;
+    }
+    Read_Node(usNode_, &stTemp);
+    return stTemp.stFileNode.usNextPeer;
+}
+
+//---------------------------------------------------------------------------
+K_BOOL NLFS::GetStat( K_USHORT usNode_, NLFS_File_Stat_t *pstStat_)
+{
+    NLFS_Node_t stTemp;
+    if (!usNode_ || INVALID_NODE == usNode_)
+    {
+        return false;
+    }
+    Read_Node(usNode_, &stTemp);
+    pstStat_->ulAllocSize = stTemp.stFileNode.ulAllocSize;
+    pstStat_->ulFileSize = stTemp.stFileNode.ulFileSize;
+    pstStat_->ucGroup = stTemp.stFileNode.ucGroup;
+    pstStat_->ucUser = stTemp.stFileNode.ucUser;
+    pstStat_->usPerms = stTemp.stFileNode.usPerms;
+    MemUtil::CopyMemory(pstStat_->acFileName, stTemp.stFileNode.acFileName, 16);
+    return true;
+}
+

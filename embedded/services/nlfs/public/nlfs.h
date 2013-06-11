@@ -258,6 +258,21 @@ typedef union
     K_ADDR kaData;
 } NLFS_Host_t;
 
+
+//----------------------------------------------------------------------------
+/*!
+    Structure used to report the status of a given file
+*/
+typedef struct
+{
+    K_ULONG   ulAllocSize;  //!< Size of the file including partial blocks
+    K_ULONG   ulFileSize;   //!< Actual size of the file
+    K_USHORT  usPerms;      //!< Permissions attached to the file
+    K_UCHAR   ucUser;       //!< User associated with this file
+    K_UCHAR   ucGroup;      //!< Group associated with this file
+    K_CHAR    acFileName[16]; //!< Copy of the file name
+} NLFS_File_Stat_t;
+
 //---------------------------------------------------------------------------
 /*!
  * \brief Nice Little File System class
@@ -390,6 +405,32 @@ public:
      * \return The number of free file nodes in the filesystem
      */
     K_USHORT GetNumFilesFree(void) { return m_stLocalRoot.usNumFilesFree; }
+
+
+    /*!
+     * \brief GetFirstChild Return the first child node for a node representing
+     *                  a directory
+     * \param usNode_   Index of a directory node
+     * \return          Node ID of the first child node or INVALID_NODE on failure
+     */
+
+    K_USHORT GetFirstChild( K_USHORT usNode_ );
+
+    /*!
+     * \brief GetNextPeer   Return the Node ID of a File/Directory's next peer
+     * \param usNode_       Node index of the current object
+     * \return              Node ID of the next peer object
+     */
+    K_USHORT GetNextPeer( K_USHORT usNode_ );
+
+    /*!
+     * \brief GetStat       Get the status of a file on-disk
+     * \param usNode_       Node representing the file
+     * \param pstStat_      Pointer to the object containing the status
+     * \return true on success, false on failure
+     */
+    K_BOOL GetStat( K_USHORT usNode_, NLFS_File_Stat_t *pstStat_);
+
 protected:
 
     /*!

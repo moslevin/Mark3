@@ -15,6 +15,6 @@ ARFLAGS=rcs
 OBJCOPY=avr-objcopy
 OBJCOPY_FLAGS=-O ihex -R .eeprom -R .fuse -R .lock -R .signature
 
-CLANG=clang
+CLANG=true
 CLANGFLAGS=-D __AVR_ATmega328P__ --analyze -fdiagnostics-show-category=name -Weverything  
 

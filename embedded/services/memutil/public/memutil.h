@@ -59,6 +59,8 @@ public:
         \param szText_ Destination string buffer (3 bytes minimum)
     */
     static void DecimalToHex( K_UCHAR ucData_, char *szText_ );
+    static void DecimalToHex( K_USHORT usData_, char *szText_ );
+    static void DecimalToHex( K_ULONG ulData_, char *szText_ );
 
     //-----------------------------------------------------------------------
     /*!
@@ -70,6 +72,8 @@ public:
         \param szText_ Destination string buffer (4 bytes minimum)
     */
     static void DecimalToString( K_UCHAR ucData_, char *szText_ );
+    static void DecimalToString( K_USHORT usData_, char *szText_ );
+    static void DecimalToString( K_ULONG ulData_, char *szText_ );
 
     //-----------------------------------------------------------------------
     /*!
