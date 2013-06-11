@@ -57,6 +57,67 @@ void MemUtil::DecimalToHex( K_UCHAR ucData_, char *szText_ )
     }
 }
 
+//---------------------------------------------------------------------------
+void MemUtil::DecimalToHex( K_USHORT usData_, char *szText_ )
+{
+    K_USHORT usTmp = usData_;
+    K_USHORT usMax = 1;
+    K_USHORT usCompare = 0x0010;
+
+    KERNEL_ASSERT( szText_ );
+
+    while (usData_ > usCompare && usMax < 4)
+    {
+        usMax++;
+        usCompare <<= 4;
+    }
+
+    usTmp = usData_;
+    szText_[usMax] = 0;
+    while (usMax--)
+    {
+        if ((usTmp & 0x0F) <= 9)
+        {
+            szText_[usMax] = '0' + (usTmp & 0x0F);
+        }
+        else
+        {
+            szText_[usMax] = 'A' + ((usTmp & 0x0F) - 10);
+        }
+        usTmp>>=4;
+    }
+}
+
+//---------------------------------------------------------------------------
+void MemUtil::DecimalToHex( K_ULONG ulData_, char *szText_ )
+{
+    K_ULONG ulTmp = ulData_;
+    K_ULONG ulMax = 1;
+    K_ULONG ulCompare = 0x0010;
+
+    KERNEL_ASSERT( szText_ );
+
+    while (ulData_ > ulCompare && ulMax < 8)
+    {
+        ulMax++;
+        ulCompare <<= 4;
+    }
+
+    ulTmp = ulData_;
+    szText_[ulMax] = 0;
+    while (ulMax--)
+    {
+        if ((ulTmp & 0x0F) <= 9)
+        {
+            szText_[ulMax] = '0' + (ulTmp & 0x0F);
+        }
+        else
+        {
+            szText_[ulMax] = 'A' + ((ulTmp & 0x0F) - 10);
+        }
+        ulTmp>>=4;
+    }
+}
 //--------------------------------------------------------------------------- 
 void MemUtil::DecimalToString( K_UCHAR ucData_, char *szText_ )
 {
@@ -84,6 +145,52 @@ void MemUtil::DecimalToString( K_UCHAR ucData_, char *szText_ )
     {
         szText_[ucMax] = '0' + (ucTmp % 10);
         ucTmp/=10;
+    }
+}
+
+//---------------------------------------------------------------------------
+void MemUtil::DecimalToString( K_USHORT usData_, char *szText_ )
+{
+    K_USHORT usTmp = usData_;
+    K_USHORT usMax = 1;
+    K_USHORT usCompare = 10;
+
+    KERNEL_ASSERT(szText_);
+
+    while (usData_ >= usCompare && usMax < 5)
+    {
+        usCompare *= 10;
+        usMax++;
+    }
+
+    szText_[usMax] = 0;
+    while (usMax--)
+    {
+        szText_[usMax] = '0' + (usTmp % 10);
+        usTmp/=10;
+    }
+}
+
+//---------------------------------------------------------------------------
+void MemUtil::DecimalToString( K_ULONG ulData_, char *szText_ )
+{
+    K_ULONG ulTmp = ulData_;
+    K_ULONG ulMax = 1;
+    K_ULONG ulCompare = 10;
+
+    KERNEL_ASSERT(szText_);
+
+    while (ulData_ >= ulCompare && ulMax < 12)
+    {
+        ulCompare *= 10;
+        ulMax++;
+    }
+
+    szText_[ulMax] = 0;
+    while (ulMax--)
+    {
+        szText_[ulMax] = '0' + (ulTmp % 10);
+        ulTmp/=10;
     }
 }
 
