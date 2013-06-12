@@ -31,7 +31,20 @@ int NLFS_File::Open(NLFS *pclFS_, const K_CHAR *szPath_, NLFS_File_Mode_t eMode_
     if (INVALID_NODE == usNode)
     {
         DEBUG_PRINT("file does not exist in path\n");
-        return -1;
+        if (eMode_ & NLFS_FILE_CREATE)
+        {
+            DEBUG_PRINT("Attempt to create\n");
+            usNode = pclFS_->Create_File(szPath_);
+            if (INVALID_NODE == usNode)
+            {
+                DEBUG_PRINT("unable to create node in path\n");
+                return -1;
+            }
+        }
+        else
+        {
+            return -1;
+        }
     }
 
     DEBUG_PRINT("Current Node: %d\n", usNode);
@@ -40,11 +53,56 @@ int NLFS_File::Open(NLFS *pclFS_, const K_CHAR *szPath_, NLFS_File_Mode_t eMode_
     m_pclFileSystem->Read_Node(usNode, &m_stNode);
 
     m_usFile = usNode;
-    m_ulOffset = 0;
-    m_ulCurrentBlock = m_stNode.stFileNode.ulFirstBlock;
+
+    if (eMode_ & NLFS_FILE_APPEND)
+    {
+        if (!(eMode_ & NLFS_FILE_WRITE))
+        {
+            DEBUG_PRINT("Open file for append in read-only mode?  Why!\n");
+            return -1;
+        }
+        if (-1 == Seek(m_stNode.stFileNode.ulFileSize))
+        {
+            DEBUG_PRINT("file open failed - error seeking to EOF for append\n");
+            return -1;
+        }
+    }
+    else if (eMode_ & NLFS_FILE_TRUNCATE)
+    {
+        if (!(eMode_ & NLFS_FILE_WRITE))
+        {
+            DEBUG_PRINT("Truncate file in read-only mode?  Why!\n");
+            return -1;
+        }
+
+        K_ULONG ulCurr = m_stNode.stFileNode.ulFirstBlock;
+        K_ULONG ulPrev = ulCurr;
+
+        // Go through and clear all blocks allocated to the file
+        while (INVALID_BLOCK != ulCurr)
+        {
+            NLFS_Block_t stBlock;
+            pclFS_->Read_Block_Header(ulCurr, &stBlock);
+
+            ulPrev = ulCurr;
+            ulCurr = stBlock.ulNextBlock;
+
+            pclFS_->Push_Free_Block(ulPrev);
+        }
+
+        m_ulOffset = 0;
+        m_ulCurrentBlock = m_stNode.stFileNode.ulFirstBlock;
+    }
+    else
+    {
+        // Open file to beginning of file, regardless of mode.
+        m_ulOffset = 0;
+        m_ulCurrentBlock = m_stNode.stFileNode.ulFirstBlock;
+    }
+
+    m_ucFlags = eMode_;
+
     DEBUG_PRINT("Current Block: %d\n", m_ulCurrentBlock);
-
-
     DEBUG_PRINT("file open OK\n");
     return 0;
 }
@@ -103,6 +161,12 @@ int NLFS_File::Read(void *pvBuf_, K_ULONG ulLen_)
         return -1;
     }
 
+    if (!(NLFS_FILE_READ & m_ucFlags))
+    {
+        DEBUG_PRINT("Error - file not open for read\n");
+        return -1;
+    }
+
     DEBUG_PRINT("Reading: %d bytes from file\n", ulLen_);
     while (ulLen_)
     {
@@ -143,6 +207,12 @@ int NLFS_File::Write(void *pvBuf_, K_ULONG ulLen_)
     if (INVALID_NODE == m_usFile)
     {
         DEBUG_PRINT("Error - invalid file");
+        return -1;
+    }
+
+    if (!(NLFS_FILE_WRITE & m_ucFlags))
+    {
+        DEBUG_PRINT("Error - file not open for write\n");
         return -1;
     }
 
@@ -187,5 +257,6 @@ int NLFS_File::Close(void)
     m_usFile = INVALID_NODE;
     m_ulCurrentBlock = INVALID_BLOCK;
     m_ulOffset = 0;
+    m_ucFlags = 0;
     return 0;
 }

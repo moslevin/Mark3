@@ -566,7 +566,7 @@ K_USHORT NLFS::Create_File_i(const K_CHAR *szPath_, NLFS_Type_t eType_ )
 
     RootSync();
 
-    return 0;
+    return usNode;
 }
 
 //---------------------------------------------------------------------------
