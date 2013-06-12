@@ -136,29 +136,23 @@ static void NLFS_Prepare(void)
 
     clNLFS.Format(&clHost, 2048, 8, 16);
 
-    clNLFS.Create_File("/a.txt");
-    clNLFS.Create_File("/b.txt");
-    clNLFS.Create_File("/c.txt");
-    clNLFS.Create_File("/d.txt");
-    clNLFS.Create_File("/e.txt");
-
-    clFile.Open( &clNLFS, "/a.txt", NLFS_FILE_CREATE );
+    clFile.Open( &clNLFS, "/a.txt", NLFS_FILE_CREATE | NLFS_FILE_WRITE );
     clFile.Write((void*)("Hello World!\n"), 13);
     clFile.Close();
 
-    clFile.Open( &clNLFS, "/b.txt", NLFS_FILE_CREATE );
+    clFile.Open( &clNLFS, "/b.txt", NLFS_FILE_CREATE | NLFS_FILE_WRITE);
     clFile.Write((void*)("Hello!\n"), 7);
     clFile.Close();
 
-    clFile.Open( &clNLFS, "/c.txt", NLFS_FILE_CREATE );
+    clFile.Open( &clNLFS, "/c.txt", NLFS_FILE_CREATE | NLFS_FILE_WRITE);
     clFile.Write((void*)("World!\n"), 7);
     clFile.Close();
 
-    clFile.Open( &clNLFS, "/d.txt", NLFS_FILE_CREATE );
+    clFile.Open( &clNLFS, "/d.txt", NLFS_FILE_CREATE | NLFS_FILE_WRITE);
     clFile.Write((void*)("Mark3 Rulez!\n"), 13);
     clFile.Close();
 
-    clFile.Open( &clNLFS, "/e.txt", NLFS_FILE_CREATE );
+    clFile.Open( &clNLFS, "/e.txt", NLFS_FILE_CREATE | NLFS_FILE_WRITE);
     clFile.Write((void*)("FunkSW!\n"), 8);
     clFile.Close();
 
@@ -203,6 +197,8 @@ static void PrintString(const K_CHAR *szStr_)
     }
 }
 
+static Token_t astTokens[12];
+static CommandLine_t stCommand;
 //---------------------------------------------------------------------------
 void AppEntry(void)
 {
@@ -215,7 +211,19 @@ void AppEntry(void)
     }
 
     NLFS_Prepare();
-    cmd_dir(0);
+
+    // Set up a pre-seeded command to execute in the shell
+    {
+        const K_CHAR *szCmd = "dir /";
+        K_UCHAR ucNumTokens;
+
+        // Tokenize the command string into a commandline argument sructure
+        ucNumTokens = MemUtil::Tokenize(szCmd, astTokens, 12);
+        ShellSupport::TokensToCommandLine(astTokens, ucNumTokens, &stCommand);
+
+        // Attempt to execute something based on the commandline
+        ShellSupport::RunCommand(&stCommand, astCommands);
+    }
 
     while(1)
     {

@@ -28,8 +28,11 @@ typedef enum
 {
     NLFS_FILE_CREATE = 0x01,      //!< Create the file if it does not exist
     NLFS_FILE_APPEND = 0x02,      //!< Open to end of file
-    NLFS_FILE_TRUNCATE = 0x04     //!< Truncate file size to 0-bytes
-} NLFS_File_Mode_t;
+    NLFS_FILE_TRUNCATE = 0x04,    //!< Truncate file size to 0-bytes
+    NLFS_FILE_READ = 0x08,        //!< Open file for read
+    NLFS_FILE_WRITE = 0x10        //!< Open file for write
+} NLFS_File_Mode;
+typedef K_UCHAR NLFS_File_Mode_t;
 
 //----------------------------------------------------------------------------
 /*!
@@ -83,10 +86,11 @@ public:
     int     Close(void);
 
 private:
-    NLFS        *m_pclFileSystem;       //!< Pointer to the host filesystem
-    K_ULONG     m_ulOffset;             //!< Current byte offset within the file
-    K_ULONG     m_ulCurrentBlock;       //!< Index of the current filesystem block
-    K_USHORT    m_usFile;               //!< File index of the current file
+    NLFS                *m_pclFileSystem;       //!< Pointer to the host filesystem
+    K_ULONG             m_ulOffset;             //!< Current byte offset within the file
+    K_ULONG             m_ulCurrentBlock;       //!< Index of the current filesystem block
+    K_USHORT            m_usFile;               //!< File index of the current file
+    NLFS_File_Mode_t    m_ucFlags;              //!< File mode flags
     NLFS_Node_t m_stNode;               //!< Local copy of the file node
 };
 
