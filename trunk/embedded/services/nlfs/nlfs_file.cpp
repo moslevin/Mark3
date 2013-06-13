@@ -134,7 +134,7 @@ int NLFS_File::Seek(K_ULONG ulOffset_)
     {
         ulOffset_ -= m_pclFileSystem->GetBlockSize();
         m_ulCurrentBlock = stBlock.ulNextBlock;
-        if ((ulOffset) && (INVALID_BLOCK == m_ulCurrentBlock))
+        if ((ulOffset_) && (INVALID_BLOCK == m_ulCurrentBlock))
         {
             m_ulCurrentBlock = m_stNode.stFileNode.ulFirstBlock;
             m_ulOffset = 0;
@@ -172,7 +172,7 @@ int NLFS_File::Read(void *pvBuf_, K_ULONG ulLen_)
     DEBUG_PRINT("Reading: %d bytes from file\n", ulLen_);
     while (ulLen_ && !bBail)
     {
-        ulOffset = m_ulOffset & ~(m_pclFileSystem->GetBlockSize() - 1);
+        ulOffset = m_ulOffset & (m_pclFileSystem->GetBlockSize() - 1);
         ulBytesLeft = m_pclFileSystem->GetBlockSize() - ulOffset;
         if (ulBytesLeft > ulLen_)
         {
@@ -184,7 +184,7 @@ int NLFS_File::Read(void *pvBuf_, K_ULONG ulLen_)
             bBail = true;
         }
 
-        DEBUG_PRINT( "%d bytes left in block\n", ulBytesLeft);
+        DEBUG_PRINT( "%d bytes left in block, %d len, %x block\n", ulBytesLeft, ulLen_, m_ulCurrentBlock);
         if (ulBytesLeft && ulLen_ && (INVALID_BLOCK != m_ulCurrentBlock))
         {
             m_pclFileSystem->Read_Block(m_ulCurrentBlock, ulOffset, (void*)szCharBuf, ulBytesLeft );
@@ -195,11 +195,13 @@ int NLFS_File::Read(void *pvBuf_, K_ULONG ulLen_)
             m_ulOffset += ulBytesLeft;
             DEBUG_PRINT( "%d bytes to go\n", ulLen_);
         }
-
-        DEBUG_PRINT("reading next node\n");
-        NLFS_Block_t stBlock;
-        m_pclFileSystem->Read_Block_Header(m_ulCurrentBlock, &stBlock);
-        m_ulCurrentBlock = stBlock.ulNextBlock;
+        if (ulLen_)
+        {
+            DEBUG_PRINT("reading next node\n");
+            NLFS_Block_t stBlock;
+            m_pclFileSystem->Read_Block_Header(m_ulCurrentBlock, &stBlock);
+            m_ulCurrentBlock = stBlock.ulNextBlock;
+        }
 
         if (INVALID_BLOCK == m_ulCurrentBlock)
         {
@@ -207,7 +209,7 @@ int NLFS_File::Read(void *pvBuf_, K_ULONG ulLen_)
         }
 
     }
-
+    DEBUG_PRINT("Return :%d bytes read\n", ulRead);
     return ulRead;
 }
 
@@ -234,13 +236,12 @@ int NLFS_File::Write(void *pvBuf_, K_ULONG ulLen_)
     DEBUG_PRINT("writing: %d bytes to file\n", ulLen_);
     while (ulLen_)
     {
-        ulOffset = m_ulOffset & ~(m_pclFileSystem->GetBlockSize() - 1);
+        ulOffset = m_ulOffset & (m_pclFileSystem->GetBlockSize() - 1);
         ulBytesLeft = m_pclFileSystem->GetBlockSize() - ulOffset;
         if (ulBytesLeft > ulLen_)
         {
             ulBytesLeft = ulLen_;
         }
-        DEBUG_PRINT( "%d bytes left in block\n", ulBytesLeft);
         if (ulBytesLeft && ulLen_ && (INVALID_BLOCK != m_ulCurrentBlock))
         {
             m_pclFileSystem->Write_Block(m_ulCurrentBlock, ulOffset, (void*)szCharBuf, ulBytesLeft );
