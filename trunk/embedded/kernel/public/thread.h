@@ -109,6 +109,14 @@ public:
         \param szName_ Char string containing the thread name
     */
     void SetName(const K_CHAR *szName_) { m_szName = szName_; }
+
+    /*!
+        \fn const K_CHAR* GetName()
+
+        \return Pointer to the name of the thread.  If this is not set, 
+                will be NULL.
+    */
+    const K_CHAR* GetName() { return m_szName; }
 #endif
     
     /*!
