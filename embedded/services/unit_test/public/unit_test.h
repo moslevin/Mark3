@@ -63,6 +63,67 @@ public:
 	*/
 	void Fail();
 	
+	void ExpectTrue( bool bExpression_ )		
+		{ bExpression_ ? Pass() : Fail(); }
+
+	void ExpectFalse( bool bExpression_ )
+		{ !bExpression_ ? Pass() : Fail(); }
+
+	void ExpectEquals( bool bVal_, bool bExpression_ )
+		{ (bVal_ == bExpression_) ? Pass() : Fail(); }
+
+	void ExpectEquals( K_UCHAR ucVal_, K_UCHAR ucExpression_ )
+		{ (ucVal_ == ucExpression_) ? Pass() : Fail(); }
+
+	void ExpectEquals( K_USHORT usVal_, K_USHORT usExpression_ )
+		{ (usVal_ == usExpression_) ? Pass() : Fail(); }
+
+	void ExpectEquals( K_ULONG ulVal_, K_ULONG ulExpression_ )
+		{ (ulVal_ == ulExpression_) ? Pass() : Fail(); }
+
+	void ExpectEquals( K_CHAR cVal_, K_CHAR cExpression_ )
+		{ (cVal_ == cExpression_) ? Pass() : Fail(); }
+
+	void ExpectEquals( K_SHORT sVal_, K_SHORT sExpression_ )
+		{ (sVal_ == sExpression_) ? Pass() : Fail(); }
+
+	void ExpectEquals( K_LONG lVal_, K_LONG lExpression_ )
+		{ (lVal_ == lExpression_) ? Pass() : Fail(); }
+
+	void ExpectEquals( void* pvVal_, void* pvExpression_ )
+		{ (pvVal_ == pvExpression_) ? Pass() : Fail(); }
+
+
+    void ExpectFailTrue( bool bExpression_ )
+        { bExpression_ ? Fail() : Pass(); }
+
+    void ExpectFailFalse( bool bExpression_ )
+        { !bExpression_ ? Fail() : Pass(); }
+
+    void ExpectFailEquals( bool bVal_, bool bExpression_ )
+        { (bVal_ == bExpression_) ? Fail() : Pass(); }
+
+    void ExpectFailEquals( K_UCHAR ucVal_, K_UCHAR ucExpression_ )
+        { (ucVal_ == ucExpression_) ? Fail() : Pass(); }
+
+    void ExpectFailEquals( K_USHORT usVal_, K_USHORT usExpression_ )
+        { (usVal_ == usExpression_) ? Fail() : Pass(); }
+
+    void ExpectFailEquals( K_ULONG ulVal_, K_ULONG ulExpression_ )
+        { (ulVal_ == ulExpression_) ? Fail() : Pass(); }
+
+    void ExpectFailEquals( K_CHAR cVal_, K_CHAR cExpression_ )
+        { (cVal_ == cExpression_) ? Fail() : Pass(); }
+
+    void ExpectFailEquals( K_SHORT sVal_, K_SHORT sExpression_ )
+        { (sVal_ == sExpression_) ? Fail() : Pass(); }
+
+    void ExpectFailEquals( K_LONG lVal_, K_LONG lExpression_ )
+        { (lVal_ == lExpression_) ? Fail() : Pass(); }
+
+    void ExpectFailEquals( void* pvVal_, void* pvExpression_ )
+        { (pvVal_ == pvExpression_) ? Fail() : Pass(); }
+
 	/*!
 		\fn void Complete()
 		
@@ -117,10 +178,10 @@ public:
 	K_USHORT GetTotal() { return m_usIterations; }
 	
 private:
-	const K_CHAR *m_szName;			//!< Name of the tests performed
-	K_BOOL m_bIsActive;				//!< Whether or not the test is active
+    const K_CHAR *m_szName;		//!< Name of the tests performed
+    K_BOOL m_bIsActive;			//!< Whether or not the test is active
 	K_UCHAR m_bComplete;		//!< Whether or not the test is complete
-	K_BOOL m_bStatus;					//!< Status of the last-run test
+    K_BOOL m_bStatus;			//!< Status of the last-run test
 	K_USHORT m_usIterations;	//!< Number of iterations executed
 	K_USHORT m_usPassed;		//!< Number of iterations that have passed
 };

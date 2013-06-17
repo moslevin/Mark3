@@ -1180,9 +1180,9 @@ LOAD /usr/lib/gcc/avr/4.7.2/avr5/libgcc.a
  .stab          0x000000000000cc18       0xe4 /usr/lib/gcc/avr/4.7.2/../../../avr/lib/avr5/libc.a(eewr_byte_atmega328p.o)
                                          0xf0 (size before relaxing)
 
-.stabstr        0x0000000000000000    0x1ae3d
+.stabstr        0x0000000000000000    0x1b080
  *(.stabstr)
- .stabstr       0x0000000000000000    0x1ae3d /usr/lib/gcc/avr/4.7.2/../../../avr/lib/avr5/crtm328p.o
+ .stabstr       0x0000000000000000    0x1b080 /usr/lib/gcc/avr/4.7.2/../../../avr/lib/avr5/crtm328p.o
 
 .stab.excl
  *(.stab.excl)
