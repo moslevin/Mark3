@@ -60,12 +60,12 @@ static void TestFunc_##x(void) \
 //---------------------------------------------------------------------------
 #define EXPECT_TRUE(x)      pclCurrent->Start(); pclCurrent->ExpectTrue(x)
 #define EXPECT_FALSE(x)     pclCurrent->Start(); pclCurrent->ExpectFalse(x)
-#define EXPECT_EQUALS(x,y)  pclCurrent->Start(); pclCurrent->ExpectEquals(x, y)
+#define EXPECT_EQUALS(x,y)  pclCurrent->Start(); pclCurrent->ExpectEquals((K_LONG)(x), (K_LONG)(y))
 
 //---------------------------------------------------------------------------
 #define EXPECT_FAIL_TRUE(x)      pclCurrent->Start(); pclCurrent->ExpectFailTrue(x)
 #define EXPECT_FAIL_FALSE(x)     pclCurrent->Start(); pclCurrent->ExpectFailFalse(x)
-#define EXPECT_EQUALS(x,y)  pclCurrent->Start(); pclCurrent->ExpectFailEquals(x, y)
+#define EXPECT_FAIL_EQUALS(x,y)  pclCurrent->Start(); pclCurrent->ExpectFailEquals((K_LONG)(x), (K_LONG)(y))
 
 //---------------------------------------------------------------------------
 #define TEST_NAME_EVALUATE(name)       #name
