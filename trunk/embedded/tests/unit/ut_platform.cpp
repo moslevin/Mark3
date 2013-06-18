@@ -48,10 +48,17 @@ static void IdleEntry(void);
 void MyUnitTest::PrintTestResult()
 {
     K_CHAR acTemp[6];
+    int iLen;
+
     PrintString("Test ");
     PrintString(GetName());
     PrintString(": ");
-    for (int i = 0; i < 20; i++)
+    iLen = MemUtil::StringLength(GetName());
+    if (iLen >= 32)
+    {
+        iLen = 32;
+    }
+    for (int i = 0; i < 32 - iLen; i++)
     {
         PrintString(".");
     }
@@ -77,11 +84,13 @@ void run_tests()
     MyTestCase *pstTestCase;
     pstTestCase = astTestCases;
 
-    while (pstTestCase)
+    while (pstTestCase->pclTestCase)
     {
         pstTestCase->pfTestFunc();
+        pstTestCase++;
     }
     PrintString("--DONE--\n");
+    while(1){};
 }
 
 //---------------------------------------------------------------------------
