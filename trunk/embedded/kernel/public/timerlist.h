@@ -104,7 +104,7 @@ public:
                     TIMERLIST_FLAG_ONE_SHOT for a one-shot timer,
                     0 for a continuous timer.
 	*/
-	void SetFlags (K_UCHAR ucFlags_) { m_ucFlags = ucFlags_; };
+    void SetFlags (K_UCHAR ucFlags_) { m_ucFlags = ucFlags_; }
 		
 	/*!
         \fn void SetCallback( TimerCallback_t pfCallback_)
