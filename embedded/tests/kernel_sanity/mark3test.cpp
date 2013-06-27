@@ -1042,12 +1042,12 @@ void UT_TimerTest(void)
 	
 	ucTestVal = 0;
 	clTimer.Stop();
-	
+
 	clTimer.Start(1, 1, TimerTestCallback, NULL);
 	
 	Thread::Sleep(10);
 	
-	if (ucTestVal < 10)
+    if (ucTestVal < 9)
 	{
 		clTimerTest.Fail();
 	}
