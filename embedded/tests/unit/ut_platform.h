@@ -61,11 +61,19 @@ static void TestFunc_##x(void) \
 #define EXPECT_TRUE(x)      pclCurrent->Start(); pclCurrent->ExpectTrue(x)
 #define EXPECT_FALSE(x)     pclCurrent->Start(); pclCurrent->ExpectFalse(x)
 #define EXPECT_EQUALS(x,y)  pclCurrent->Start(); pclCurrent->ExpectEquals((K_LONG)(x), (K_LONG)(y))
+#define EXPECT_GT(x,y)      pclCurrent->Start(); pclCurrent->ExpectGreaterThan((K_LONG)(x), (K_LONG)(y))
+#define EXPECT_LT(x,y)      pclCurrent->Start(); pclCurrent->ExpectLessThan((K_LONG)(x), (K_LONG)(y))
+#define EXPECT_GTE(x,y)     pclCurrent->Start(); pclCurrent->ExpectGreaterThanEquals((K_LONG)(x), (K_LONG)(y))
+#define EXPECT_LTE(x,y)     pclCurrent->Start(); pclCurrent->ExpectLessThanEquals((K_LONG)(x), (K_LONG)(y))
 
 //---------------------------------------------------------------------------
 #define EXPECT_FAIL_TRUE(x)      pclCurrent->Start(); pclCurrent->ExpectFailTrue(x)
 #define EXPECT_FAIL_FALSE(x)     pclCurrent->Start(); pclCurrent->ExpectFailFalse(x)
 #define EXPECT_FAIL_EQUALS(x,y)  pclCurrent->Start(); pclCurrent->ExpectFailEquals((K_LONG)(x), (K_LONG)(y))
+#define EXPECT_FAIL_GT(x,y)      pclCurrent->Start(); pclCurrent->ExpectFailGreaterThan((K_LONG)(x), (K_LONG)(y))
+#define EXPECT_FAIL_LT(x,y)      pclCurrent->Start(); pclCurrent->ExpectFailLessThan((K_LONG)(x), (K_LONG)(y))
+#define EXPECT_FAIL_GTE(x,y)     pclCurrent->Start(); pclCurrent->ExpectFailGreaterThanEquals((K_LONG)(x), (K_LONG)(y))
+#define EXPECT_FAIL_LTE(x,y)     pclCurrent->Start(); pclCurrent->ExpectFailLessThanEquals((K_LONG)(x), (K_LONG)(y))
 
 //---------------------------------------------------------------------------
 #define TEST_NAME_EVALUATE(name)       #name

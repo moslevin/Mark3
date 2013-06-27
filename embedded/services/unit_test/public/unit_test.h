@@ -124,6 +124,30 @@ public:
     void ExpectFailEquals( void* pvVal_, void* pvExpression_ )
         { (pvVal_ == pvExpression_) ? Fail() : Pass(); }
 
+    void ExpectGreaterThan( K_LONG lVal_, K_LONG lExpression_ )
+        { (lVal_ > lExpression_) ? Pass() : Fail(); }
+
+    void ExpectLessThan( K_LONG lVal_, K_LONG lExpression_ )
+        { (lVal_ < lExpression_) ? Pass() : Fail(); }
+
+    void ExpectGreaterThanEquals( K_LONG lVal_, K_LONG lExpression_ )
+        { (lVal_ >= lExpression_) ? Pass() : Fail(); }
+
+    void ExpectLessThanEquals( K_LONG lVal_, K_LONG lExpression_ )
+        { (lVal_ <= lExpression_) ? Pass() : Fail(); }
+
+    void ExpectFailGreaterThan( K_LONG lVal_, K_LONG lExpression_ )
+        { (lVal_ > lExpression_) ? Fail() : Pass(); }
+
+    void ExpectFailLessThan( K_LONG lVal_, K_LONG lExpression_ )
+        { (lVal_ < lExpression_) ? Fail() : Pass(); }
+
+    void ExpectFailGreaterThanEquals( K_LONG lVal_, K_LONG lExpression_ )
+        { (lVal_ >= lExpression_) ? Fail() : Pass(); }
+
+    void ExpectFailLessThanEquals( K_LONG lVal_, K_LONG lExpression_ )
+        { (lVal_ <= lExpression_) ? Fail() : Pass(); }
+
 	/*!
 		\fn void Complete()
 		

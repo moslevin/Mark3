@@ -40,8 +40,11 @@ See license.txt for more information
     This must be calibrated on a per-device basis.  This value is currently
     Set up for a 16-bit timer, with a 256 prescaler, 16MHz clock, on an  
     ATMega328p (i.e. ARDUINO UNO).
+
+    !! Note - this is deprecated.  Better to have slightly long-cycled timers
+    than potentially short-cycled timers.
 */
-#define TL_FUDGE_FACTOR				(9) 
+#define TL_FUDGE_FACTOR				(0)
 
 TimerList TimerScheduler::m_clTimerList;
 //---------------------------------------------------------------------------
