@@ -25,6 +25,11 @@ See license.txt for more information
 #include <avr/io.h>
 #include <avr/sleep.h>
 
+extern "C"
+{
+void __cxa_pure_virtual(void) {}
+}
+
 //---------------------------------------------------------------------------
 // Global objects
 static Thread AppThread;			//!< Main "application" thread
