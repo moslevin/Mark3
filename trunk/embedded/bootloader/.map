@@ -1,43 +1,24 @@
 Archive member included because of file (symbol)
 
-/usr/lib/gcc/avr/4.7.2/avr5/libgcc.a(_exit.o)
-                              /usr/lib/gcc/avr/4.7.2/../../../avr/lib/avr5/crtm328p.o (exit)
-/usr/lib/gcc/avr/4.7.2/avr5/libgcc.a(_clear_bss.o)
+/home/moslevin/atmel/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a(_exit.o)
+                              /home/moslevin/atmel/bin/../lib/gcc/avr/4.6.2/../../../../avr/lib/avr5/crtm328p.o (exit)
+/home/moslevin/atmel/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a(_copy_data.o)
+                              ./obj/avr/atmega328p/gcc/bootloader.c.o (__do_copy_data)
+/home/moslevin/atmel/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a(_clear_bss.o)
                               ./obj/avr/atmega328p/gcc/bootloader.c.o (__do_clear_bss)
 
 Discarded input sections
 
- .data          0x0000000000000000        0x0 /usr/lib/gcc/avr/4.7.2/../../../avr/lib/avr5/crtm328p.o
- .bss           0x0000000000000000        0x0 /usr/lib/gcc/avr/4.7.2/../../../avr/lib/avr5/crtm328p.o
- .data          0x0000000000000000        0x0 ./obj/avr/atmega328p/gcc/bootloader.c.o
- .text          0x0000000000000000        0x0 /usr/lib/gcc/avr/4.7.2/avr5/libgcc.a(_exit.o)
- .data          0x0000000000000000        0x0 /usr/lib/gcc/avr/4.7.2/avr5/libgcc.a(_exit.o)
- .bss           0x0000000000000000        0x0 /usr/lib/gcc/avr/4.7.2/avr5/libgcc.a(_exit.o)
- .text.libgcc.mul
-                0x0000000000000000        0x0 /usr/lib/gcc/avr/4.7.2/avr5/libgcc.a(_exit.o)
- .text.libgcc.div
-                0x0000000000000000        0x0 /usr/lib/gcc/avr/4.7.2/avr5/libgcc.a(_exit.o)
- .text.libgcc   0x0000000000000000        0x0 /usr/lib/gcc/avr/4.7.2/avr5/libgcc.a(_exit.o)
- .text.libgcc.prologue
-                0x0000000000000000        0x0 /usr/lib/gcc/avr/4.7.2/avr5/libgcc.a(_exit.o)
- .text.libgcc.builtins
-                0x0000000000000000        0x0 /usr/lib/gcc/avr/4.7.2/avr5/libgcc.a(_exit.o)
- .text.libgcc.fmul
-                0x0000000000000000        0x0 /usr/lib/gcc/avr/4.7.2/avr5/libgcc.a(_exit.o)
- .text          0x0000000000000000        0x0 /usr/lib/gcc/avr/4.7.2/avr5/libgcc.a(_clear_bss.o)
- .data          0x0000000000000000        0x0 /usr/lib/gcc/avr/4.7.2/avr5/libgcc.a(_clear_bss.o)
- .bss           0x0000000000000000        0x0 /usr/lib/gcc/avr/4.7.2/avr5/libgcc.a(_clear_bss.o)
- .text.libgcc.mul
-                0x0000000000000000        0x0 /usr/lib/gcc/avr/4.7.2/avr5/libgcc.a(_clear_bss.o)
- .text.libgcc.div
-                0x0000000000000000        0x0 /usr/lib/gcc/avr/4.7.2/avr5/libgcc.a(_clear_bss.o)
- .text.libgcc   0x0000000000000000        0x0 /usr/lib/gcc/avr/4.7.2/avr5/libgcc.a(_clear_bss.o)
- .text.libgcc.prologue
-                0x0000000000000000        0x0 /usr/lib/gcc/avr/4.7.2/avr5/libgcc.a(_clear_bss.o)
- .text.libgcc.builtins
-                0x0000000000000000        0x0 /usr/lib/gcc/avr/4.7.2/avr5/libgcc.a(_clear_bss.o)
- .text.libgcc.fmul
-                0x0000000000000000        0x0 /usr/lib/gcc/avr/4.7.2/avr5/libgcc.a(_clear_bss.o)
+ .bss           0x0000000000000000        0x0 /home/moslevin/atmel/bin/../lib/gcc/avr/4.6.2/../../../../avr/lib/avr5/crtm328p.o
+ .text          0x0000000000000000        0x0 /home/moslevin/atmel/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a(_exit.o)
+ .bss           0x0000000000000000        0x0 /home/moslevin/atmel/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a(_exit.o)
+ .text.libgcc   0x0000000000000000        0x0 /home/moslevin/atmel/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a(_exit.o)
+ .text          0x0000000000000000        0x0 /home/moslevin/atmel/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a(_copy_data.o)
+ .bss           0x0000000000000000        0x0 /home/moslevin/atmel/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a(_copy_data.o)
+ .text.libgcc   0x0000000000000000        0x0 /home/moslevin/atmel/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a(_copy_data.o)
+ .text          0x0000000000000000        0x0 /home/moslevin/atmel/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a(_clear_bss.o)
+ .bss           0x0000000000000000        0x0 /home/moslevin/atmel/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a(_clear_bss.o)
+ .text.libgcc   0x0000000000000000        0x0 /home/moslevin/atmel/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a(_clear_bss.o)
 
 Memory Configuration
 
@@ -53,15 +34,15 @@ signature        0x0000000000840000 0x0000000000000400 rw !x
 Linker script and memory map
 
 Address of section .data set to 0x800100
-LOAD /usr/lib/gcc/avr/4.7.2/../../../avr/lib/avr5/crtm328p.o
+LOAD /home/moslevin/atmel/bin/../lib/gcc/avr/4.6.2/../../../../avr/lib/avr5/crtm328p.o
 START GROUP
-LOAD /usr/lib/gcc/avr/4.7.2/../../../avr/lib/avr5/libm.a
+LOAD /home/moslevin/atmel/bin/../lib/gcc/avr/4.6.2/../../../../avr/lib/avr5/libm.a
 END GROUP
 Address of section .text set to 0x7c00
 LOAD ./obj/avr/atmega328p/gcc/bootloader.c.o
-LOAD /usr/lib/gcc/avr/4.7.2/avr5/libgcc.a
-LOAD /usr/lib/gcc/avr/4.7.2/../../../avr/lib/avr5/libc.a
-LOAD /usr/lib/gcc/avr/4.7.2/avr5/libgcc.a
+LOAD /home/moslevin/atmel/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a
+LOAD /home/moslevin/atmel/bin/../lib/gcc/avr/4.6.2/../../../../avr/lib/avr5/libc.a
+LOAD /home/moslevin/atmel/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a
 
 .hash
  *(.hash)
@@ -153,9 +134,9 @@ LOAD /usr/lib/gcc/avr/4.7.2/avr5/libgcc.a
 .rela.plt
  *(.rela.plt)
 
-.text           0x0000000000007c00      0x3e2
+.text           0x0000000000007c00      0x3fe
  *(.vectors)
- .vectors       0x0000000000007c00       0x68 /usr/lib/gcc/avr/4.7.2/../../../avr/lib/avr5/crtm328p.o
+ .vectors       0x0000000000007c00       0x68 /home/moslevin/atmel/bin/../lib/gcc/avr/4.6.2/../../../../avr/lib/avr5/crtm328p.o
                 0x0000000000007c00                __vectors
                 0x0000000000007c00                __vector_default
  *(.vectors)
@@ -180,19 +161,21 @@ LOAD /usr/lib/gcc/avr/4.7.2/avr5/libgcc.a
  SORT(*)(.ctors)
  SORT(*)(.dtors)
  *(.init0)
- .init0         0x0000000000007c68        0x0 /usr/lib/gcc/avr/4.7.2/../../../avr/lib/avr5/crtm328p.o
+ .init0         0x0000000000007c68        0x0 /home/moslevin/atmel/bin/../lib/gcc/avr/4.6.2/../../../../avr/lib/avr5/crtm328p.o
                 0x0000000000007c68                __init
  *(.init0)
  *(.init1)
  *(.init1)
  *(.init2)
- .init2         0x0000000000007c68        0xc /usr/lib/gcc/avr/4.7.2/../../../avr/lib/avr5/crtm328p.o
+ .init2         0x0000000000007c68        0xc /home/moslevin/atmel/bin/../lib/gcc/avr/4.6.2/../../../../avr/lib/avr5/crtm328p.o
  *(.init2)
  *(.init3)
  *(.init3)
  *(.init4)
- .init4         0x0000000000007c74       0x10 /usr/lib/gcc/avr/4.7.2/avr5/libgcc.a(_clear_bss.o)
-                0x0000000000007c74                __do_clear_bss
+ .init4         0x0000000000007c74       0x16 /home/moslevin/atmel/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a(_copy_data.o)
+                0x0000000000007c74                __do_copy_data
+ .init4         0x0000000000007c8a       0x10 /home/moslevin/atmel/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a(_clear_bss.o)
+                0x0000000000007c8a                __do_clear_bss
  *(.init4)
  *(.init5)
  *(.init5)
@@ -203,46 +186,46 @@ LOAD /usr/lib/gcc/avr/4.7.2/avr5/libgcc.a
  *(.init8)
  *(.init8)
  *(.init9)
- .init9         0x0000000000007c84        0x8 /usr/lib/gcc/avr/4.7.2/../../../avr/lib/avr5/crtm328p.o
+ .init9         0x0000000000007c9a        0x8 /home/moslevin/atmel/bin/../lib/gcc/avr/4.6.2/../../../../avr/lib/avr5/crtm328p.o
  *(.init9)
  *(.text)
- .text          0x0000000000007c8c        0x4 /usr/lib/gcc/avr/4.7.2/../../../avr/lib/avr5/crtm328p.o
-                0x0000000000007c8c                __vector_22
-                0x0000000000007c8c                __vector_1
-                0x0000000000007c8c                __vector_24
-                0x0000000000007c8c                __vector_12
-                0x0000000000007c8c                __bad_interrupt
-                0x0000000000007c8c                __vector_6
-                0x0000000000007c8c                __vector_3
-                0x0000000000007c8c                __vector_23
-                0x0000000000007c8c                __vector_25
-                0x0000000000007c8c                __vector_11
-                0x0000000000007c8c                __vector_13
-                0x0000000000007c8c                __vector_17
-                0x0000000000007c8c                __vector_19
-                0x0000000000007c8c                __vector_7
-                0x0000000000007c8c                __vector_5
-                0x0000000000007c8c                __vector_4
-                0x0000000000007c8c                __vector_9
-                0x0000000000007c8c                __vector_2
-                0x0000000000007c8c                __vector_21
-                0x0000000000007c8c                __vector_15
-                0x0000000000007c8c                __vector_8
-                0x0000000000007c8c                __vector_14
-                0x0000000000007c8c                __vector_10
-                0x0000000000007c8c                __vector_16
-                0x0000000000007c8c                __vector_18
-                0x0000000000007c8c                __vector_20
- .text          0x0000000000007c90       0xf8 ./obj/avr/atmega328p/gcc/bootloader.c.o
-                0x0000000000007d88                . = ALIGN (0x2)
+ .text          0x0000000000007ca2        0x4 /home/moslevin/atmel/bin/../lib/gcc/avr/4.6.2/../../../../avr/lib/avr5/crtm328p.o
+                0x0000000000007ca2                __vector_22
+                0x0000000000007ca2                __vector_1
+                0x0000000000007ca2                __vector_24
+                0x0000000000007ca2                __vector_12
+                0x0000000000007ca2                __bad_interrupt
+                0x0000000000007ca2                __vector_6
+                0x0000000000007ca2                __vector_3
+                0x0000000000007ca2                __vector_23
+                0x0000000000007ca2                __vector_25
+                0x0000000000007ca2                __vector_11
+                0x0000000000007ca2                __vector_13
+                0x0000000000007ca2                __vector_17
+                0x0000000000007ca2                __vector_19
+                0x0000000000007ca2                __vector_7
+                0x0000000000007ca2                __vector_5
+                0x0000000000007ca2                __vector_4
+                0x0000000000007ca2                __vector_9
+                0x0000000000007ca2                __vector_2
+                0x0000000000007ca2                __vector_21
+                0x0000000000007ca2                __vector_15
+                0x0000000000007ca2                __vector_8
+                0x0000000000007ca2                __vector_14
+                0x0000000000007ca2                __vector_10
+                0x0000000000007ca2                __vector_16
+                0x0000000000007ca2                __vector_18
+                0x0000000000007ca2                __vector_20
+ .text          0x0000000000007ca6      0x100 ./obj/avr/atmega328p/gcc/bootloader.c.o
+                0x0000000000007da6                . = ALIGN (0x2)
  *(.text.*)
- .text.startup  0x0000000000007d88      0x256 ./obj/avr/atmega328p/gcc/bootloader.c.o
-                0x0000000000007d88                main
-                0x0000000000007fde                . = ALIGN (0x2)
+ .text.startup  0x0000000000007da6      0x254 ./obj/avr/atmega328p/gcc/bootloader.c.o
+                0x0000000000007da6                main
+                0x0000000000007ffa                . = ALIGN (0x2)
  *(.fini9)
- .fini9         0x0000000000007fde        0x0 /usr/lib/gcc/avr/4.7.2/avr5/libgcc.a(_exit.o)
-                0x0000000000007fde                exit
-                0x0000000000007fde                _exit
+ .fini9         0x0000000000007ffa        0x0 /home/moslevin/atmel/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a(_exit.o)
+                0x0000000000007ffa                exit
+                0x0000000000007ffa                _exit
  *(.fini9)
  *(.fini8)
  *(.fini8)
@@ -261,13 +244,18 @@ LOAD /usr/lib/gcc/avr/4.7.2/avr5/libgcc.a
  *(.fini1)
  *(.fini1)
  *(.fini0)
- .fini0         0x0000000000007fde        0x4 /usr/lib/gcc/avr/4.7.2/avr5/libgcc.a(_exit.o)
+ .fini0         0x0000000000007ffa        0x4 /home/moslevin/atmel/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a(_exit.o)
  *(.fini0)
-                0x0000000000007fe2                _etext = .
+                0x0000000000007ffe                _etext = .
 
-.data           0x0000000000800100        0x0 load address 0x0000000000007fe2
+.data           0x0000000000800100        0x0 load address 0x0000000000007ffe
                 0x0000000000800100                PROVIDE (__data_start, .)
  *(.data)
+ .data          0x0000000000800100        0x0 /home/moslevin/atmel/bin/../lib/gcc/avr/4.6.2/../../../../avr/lib/avr5/crtm328p.o
+ .data          0x0000000000800100        0x0 ./obj/avr/atmega328p/gcc/bootloader.c.o
+ .data          0x0000000000800100        0x0 /home/moslevin/atmel/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a(_exit.o)
+ .data          0x0000000000800100        0x0 /home/moslevin/atmel/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a(_copy_data.o)
+ .data          0x0000000000800100        0x0 /home/moslevin/atmel/bin/../lib/gcc/avr/4.6.2/avr5/libgcc.a(_clear_bss.o)
  *(.data*)
  *(.rodata)
  *(.rodata*)
@@ -283,8 +271,8 @@ LOAD /usr/lib/gcc/avr/4.7.2/avr5/libgcc.a
  *(.bss*)
  *(COMMON)
                 0x00000000008001c5                PROVIDE (__bss_end, .)
-                0x0000000000007fe2                __data_load_start = LOADADDR (.data)
-                0x0000000000007fe2                __data_load_end = (__data_load_start + SIZEOF (.data))
+                0x0000000000007ffe                __data_load_start = LOADADDR (.data)
+                0x0000000000007ffe                __data_load_end = (__data_load_start + SIZEOF (.data))
 
 .noinit         0x00000000008001c5        0x0
                 0x00000000008001c5                PROVIDE (__noinit_start, .)
@@ -309,15 +297,13 @@ LOAD /usr/lib/gcc/avr/4.7.2/avr5/libgcc.a
 .signature
  *(.signature*)
 
-.stab           0x0000000000000000     0x123c
+.stab           0x0000000000000000      0x6cc
  *(.stab)
- .stab          0x0000000000000000      0x6cc /usr/lib/gcc/avr/4.7.2/../../../avr/lib/avr5/crtm328p.o
- .stab          0x00000000000006cc      0xb70 ./obj/avr/atmega328p/gcc/bootloader.c.o
-                                        0xb7c (size before relaxing)
+ .stab          0x0000000000000000      0x6cc /home/moslevin/atmel/bin/../lib/gcc/avr/4.6.2/../../../../avr/lib/avr5/crtm328p.o
 
-.stabstr        0x0000000000000000      0xa2d
+.stabstr        0x0000000000000000       0x85
  *(.stabstr)
- .stabstr       0x0000000000000000      0xa2d /usr/lib/gcc/avr/4.7.2/../../../avr/lib/avr5/crtm328p.o
+ .stabstr       0x0000000000000000       0x85 /home/moslevin/atmel/bin/../lib/gcc/avr/4.6.2/../../../../avr/lib/avr5/crtm328p.o
 
 .stab.excl
  *(.stab.excl)
@@ -331,10 +317,8 @@ LOAD /usr/lib/gcc/avr/4.7.2/avr5/libgcc.a
 .stab.indexstr
  *(.stab.indexstr)
 
-.comment        0x0000000000000000       0x11
+.comment
  *(.comment)
- .comment       0x0000000000000000       0x11 ./obj/avr/atmega328p/gcc/bootloader.c.o
-                                         0x12 (size before relaxing)
 
 .debug
  *(.debug)
@@ -348,32 +332,44 @@ LOAD /usr/lib/gcc/avr/4.7.2/avr5/libgcc.a
 .debug_sfnames
  *(.debug_sfnames)
 
-.debug_aranges
+.debug_aranges  0x0000000000000000       0x28
  *(.debug_aranges)
+ .debug_aranges
+                0x0000000000000000       0x28 ./obj/avr/atmega328p/gcc/bootloader.c.o
 
 .debug_pubnames
  *(.debug_pubnames)
 
-.debug_info
+.debug_info     0x0000000000000000      0x4ba
  *(.debug_info)
+ .debug_info    0x0000000000000000      0x4ba ./obj/avr/atmega328p/gcc/bootloader.c.o
  *(.gnu.linkonce.wi.*)
 
-.debug_abbrev
+.debug_abbrev   0x0000000000000000      0x1f8
  *(.debug_abbrev)
+ .debug_abbrev  0x0000000000000000      0x1f8 ./obj/avr/atmega328p/gcc/bootloader.c.o
 
-.debug_line
+.debug_line     0x0000000000000000      0x193
  *(.debug_line)
+ .debug_line    0x0000000000000000      0x193 ./obj/avr/atmega328p/gcc/bootloader.c.o
 
-.debug_frame
+.debug_frame    0x0000000000000000       0x84
  *(.debug_frame)
+ .debug_frame   0x0000000000000000       0x84 ./obj/avr/atmega328p/gcc/bootloader.c.o
 
-.debug_str
+.debug_str      0x0000000000000000      0x208
  *(.debug_str)
+ .debug_str     0x0000000000000000      0x208 ./obj/avr/atmega328p/gcc/bootloader.c.o
+                                        0x24a (size before relaxing)
 
-.debug_loc
+.debug_loc      0x0000000000000000      0x516
  *(.debug_loc)
+ .debug_loc     0x0000000000000000      0x516 ./obj/avr/atmega328p/gcc/bootloader.c.o
 
 .debug_macinfo
  *(.debug_macinfo)
 OUTPUT(./obj/avr/atmega328p/gcc/bootloader.elf elf32-avr)
 LOAD linker stubs
+
+.debug_ranges   0x0000000000000000       0xd8
+ .debug_ranges  0x0000000000000000       0xd8 ./obj/avr/atmega328p/gcc/bootloader.c.o
