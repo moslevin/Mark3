@@ -117,6 +117,33 @@ void Thread::Start(void)
     CS_EXIT();
 }
 
+//---------------------------------------------------------------------------
+void Thread::Stop()
+{
+    K_UCHAR bReschedule = 0;
+
+    CS_ENTER();
+
+    // If a thread is attempting to stop itself, ensure we call the scheduler
+    if (this == Scheduler::GetCurrentThread())
+    {
+        bReschedule = true;
+    }
+
+    // Add this thread to the stop-list (removing it from active scheduling)
+    Scheduler::Remove(this);
+    m_pclOwner = Scheduler::GetStopList();
+    m_pclCurrent = m_pclOwner;
+    m_pclOwner->Add(this);
+
+    CS_EXIT();
+
+    if (bReschedule)
+    {
+        Thread::Yield();
+    }
+}
+
 #if KERNEL_USE_DYNAMIC_THREADS
 //---------------------------------------------------------------------------
 void Thread::Exit()
@@ -134,8 +161,8 @@ void Thread::Exit()
 		bReschedule = 1;			
 	}
 	
-	// Remove the thread from scheduling
-	Scheduler::Remove(this);
+    // Remove the thread from scheduling
+    m_pclCurrent->Remove(this);
 	
 	CS_EXIT();
 	
