@@ -98,6 +98,15 @@ public:
     */              
     void Start();    
     
+
+    /*!
+        \fn void Stop()
+
+        Stop a thread that's actively scheduled without destroying its
+        stacks.  Stopped threads can be restarted using the Start() API.
+    */
+    void Stop();
+
 #if KERNEL_USE_THREADNAME	
     /*!
         \fn void SetName(const K_CHAR *szName_)
