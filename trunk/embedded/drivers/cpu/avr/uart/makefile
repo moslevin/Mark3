@@ -7,8 +7,12 @@ include $(ROOT_DIR)base.mak
 IS_LIB=1
 LIBNAME=drvUART
 
+ifeq ($(ARCH), avr)
 #this is the list of the objects required to build the kernel
 CPP_SOURCE=drvUART.cpp
+else
+CPP_SOURCE=drvUART_sim.cpp
+endif
 
 # Include the rest of the script that is actually used for building the 
 # outputs

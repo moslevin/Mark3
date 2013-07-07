@@ -15,6 +15,7 @@ See license.txt for more information
     \file threadport.h
     \brief POSIX Implementation of Mark3 threads
 */
+#include "threadport.h"
 
 #include <pthread.h>
 #include <sched.h>
@@ -22,18 +23,14 @@ See license.txt for more information
 #include <stdlib.h>
 #include <string.h>
 #include <stdint.h>
-
-#include <semaphore.h>
 #include <unistd.h>
 #include <sys/syscall.h>
 #include <sys/types.h>
 
 #include "kerneltypes.h"
-#include "threadport.h"
 #include "kernelswi.h"
 #include "kerneltimer.h"
 #include "ksemaphore.h"
-
 #include "scheduler.h"
 
 //---------------------------------------------------------------------------

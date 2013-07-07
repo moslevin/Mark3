@@ -56,24 +56,8 @@ extern sem_t stKSem;
 #define CS_EXIT() \
     stParam___.sched_priority--; \
     pthread_setschedparam(0, iPolicy___, &stParam___); \
-} \
-
-#if 0
-#define CS_ENTER( ) \
-{\
-    K_BOOL bXXX = bIntEnabled; \
-    bIntEnabled = false; \
-
-//------------------------------------------------------------------------
-//! Exit critical section (restore status register)
-#define CS_EXIT( ) \
-    bIntEnabled = bXXX; \
-    if( bIntEnabled ) { \
-    if ( bSwitchOnCS ){ bSwitchOnCS = false; ThreadPort::SaveContext(); } \
-    if ( bTriggerInt ){ sem_post(&stKSem); bTriggerInt = false; } \
-    }\
 }
-#endif
+
 //------------------------------------------------------------------------
 //! Initiate a contex switch without using the SWI
 #define ENABLE_INTS()

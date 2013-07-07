@@ -40,16 +40,13 @@ LFLAGS+=-I$(INC_DIR)
 
 PUBLIC_DIR=./public/
 CFLAGS+=-I$(PUBLIC_DIR)
-CFLAGS+=-I/usr/lib/avr/include/
 CFLAGS+=-I$(shell pwd)/
 
 CPPFLAGS+=-I$(PUBLIC_DIR)
-CPPFLAGS+=-I/usr/lib/avr/include/
 CPPFLAGS+=-I$(shell pwd)/
 
 CLANGFLAGS+=-I$(INC_DIR)
 CLANGFLAGS+=-I$(PUBLIC_DIR)
-CLANGFLAGS+=-I/usr/lib/avr/include/
 CLANGFLAGS+=-I$(shell pwd)/
 
 OBJ_DIR=./obj/

@@ -24,7 +24,7 @@ See license.txt for more information
 
 //---------------------------------------------------------------------------
 #define TIMER_FREQ		((K_ULONG)1000000) // usecond timer resolution
-
+#define SYSTEM_FREQ     (TIMER_FREQ)
 //---------------------------------------------------------------------------
 /*!
     Hardware timer interface, used by all scheduling/timer subsystems.

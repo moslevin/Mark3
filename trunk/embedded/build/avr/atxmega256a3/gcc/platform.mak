@@ -18,3 +18,6 @@ OBJCOPY_FLAGS=-O ihex -R .eeprom -R .fuse -R .lock -R .signature
 CLANG=clang
 CLANGFLAGS=-D __AVR_ATxmega256A3__ --analyze -fdiagnostics-show-category=name -Weverything 
 
+CFLAGS+=-I/usr/lib/avr/include/
+CPPFLAGS+=-I/usr/lib/avr/include/
+CLANGFLAGS+=-I/usr/lib/avr/include/
