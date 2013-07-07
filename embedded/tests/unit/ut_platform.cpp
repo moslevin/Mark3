@@ -22,8 +22,10 @@ See license.txt for more information
 #include "ut_platform.h"
 #include "memutil.h"
 
+#if defined(AVR)
 #include <avr/io.h>
 #include <avr/sleep.h>
+#endif
 
 extern "C"
 {
@@ -146,6 +148,7 @@ void IdleEntry(void)
 {
     while(1)
     {
+#if defined(AVR)
         // LPM code;
         set_sleep_mode(SLEEP_MODE_IDLE);
         cli();
@@ -154,6 +157,7 @@ void IdleEntry(void)
         sleep_cpu();
         sleep_disable();
         sei();
+#endif
     }
 }
 
