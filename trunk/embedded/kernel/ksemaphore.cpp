@@ -91,15 +91,16 @@ void Semaphore::Init(K_USHORT usInitVal_, K_USHORT usMaxVal_)
 #if KERNEL_USE_TIMERS	
 	m_bExpired = false;
 #endif
+    m_clBlockList.Init();
 }
 
 //---------------------------------------------------------------------------
-void Semaphore::Post()
+bool Semaphore::Post()
 {
 	KERNEL_TRACE_1( STR_SEMAPHORE_POST_1, (K_USHORT)g_pstCurrent->GetID() );
 	
     K_UCHAR bThreadWake = 0;
-
+    K_BOOL bBail = false;
     // Increment the semaphore count - we can mess with threads so ensure this
     // is in a critical section.  We don't just disable the scheudler since
     // we want to be able to do this from within an interrupt context as well.
@@ -114,6 +115,11 @@ void Semaphore::Post()
             // Increment the count value
             m_usValue++;
         }
+        else
+        {
+            // Maximum value has been reached, bail out.
+            bBail = true;
+        }
     }
     else
     {
@@ -124,6 +130,12 @@ void Semaphore::Post()
 
     CS_EXIT();
 
+    // If we weren't able to increment the semaphore count, fail out.
+    if (bBail)
+    {
+        return false;
+    }
+
     // if bThreadWake was set, it means that a higher-priority thread was
     // woken.  Trigger a context switch to ensure that this thread gets
     // to execute next.
@@ -131,6 +143,7 @@ void Semaphore::Post()
     {
         Thread::Yield();
     }
+    return true;
 }
 
 #if !KERNEL_USE_TIMERS
@@ -152,7 +165,6 @@ void Semaphore::Post()
 	
 	// Decrement the semaphore count - if 0, wait.
     K_UCHAR bThreadWait = 0;
-    Thread *pclThread;
 
 #if KERNEL_USE_TIMERS
 	Timer clSemTimer;
@@ -164,9 +176,6 @@ void Semaphore::Post()
     // we're doing all of these operations from within a thread-safe context.
     CS_ENTER();
 
-    // Get the current thread pointer.
-    pclThread = Scheduler::GetCurrentThread();
-
     // Check to see if we need to take any action based on the semaphore count
     if (m_usValue != 0)
     {
@@ -176,16 +185,21 @@ void Semaphore::Post()
     }
     else
     {
+        Thread *pclThread;
+
+        // Get the current thread pointer.
+        pclThread = Scheduler::GetCurrentThread();
+
         // The semaphore count is zero - we need to block the current thread
         // and wait until the semaphore is posted from elsewhere.        
 #if KERNEL_USE_TIMERS
-			if (ulWaitTimeMS_)
-			{
-				clSemTimer.Start(0, ulWaitTimeMS_, TimedSemaphore_Callback, (void*)this);
-			}
+        if (ulWaitTimeMS_)
+        {
+            clSemTimer.Start(0, ulWaitTimeMS_, TimedSemaphore_Callback, (void*)this);
+        }
 #endif		
-			Block(pclThread);
-			bThreadWait = 1;		
+        Block(pclThread);
+        bThreadWait = 1;
     }
 
     // If bThreadWait was set, it means that the current thread is blocked.

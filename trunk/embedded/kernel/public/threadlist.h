@@ -37,7 +37,7 @@ public:
     /*! 
         Default constructor - zero-initializes the data.
     */
-    ThreadList() { m_ucPriority = 0; m_pucFlag = NULL; };
+    ThreadList() { m_ucPriority = 0; m_pucFlag = NULL; }
     
     /*!
         \fn void SetPriority(K_UCHAR ucPriority_)
