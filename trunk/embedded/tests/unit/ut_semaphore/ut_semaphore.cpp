@@ -107,10 +107,47 @@ TEST(ut_semaphore_post_pend)
 }
 TEST_END
 
+
+//===========================================================================
+void TimeSemFunction(void *param_)
+{
+    Semaphore *pclSem = (Semaphore*)param_;
+
+    Thread::Sleep(20);
+    pclSem->Post();
+    Scheduler::GetCurrentThread()->Exit();
+}
+
+//===========================================================================
+TEST(ut_semaphore_timed)
+{
+    Semaphore clTestSem;
+
+    clTestSem.Init(0,1);
+
+    clThread.Init(aucStack, 256, 7, TimeSemFunction, (void*)&clTestSem);
+    clThread.Start();
+
+    EXPECT_FALSE( clTestSem.Pend(10) );
+
+    // Pretty nuanced - we can only re-init the semaphore under the knowledge
+    // that there's nothing blocking on it already...  don't do this in
+    // production
+    clTestSem.Init(0,1);
+
+    clThread.Init(aucStack, 256, 7, TimeSemFunction, (void*)&clTestSem);
+    clThread.Start();
+
+    EXPECT_TRUE( clTestSem.Pend(30) );
+
+}
+TEST_END
+
 //===========================================================================
 // Test Whitelist Goes Here
 //===========================================================================
 TEST_CASE_START
   TEST_CASE(ut_semaphore_count),
   TEST_CASE(ut_semaphore_post_pend),
+  TEST_CASE(ut_semaphore_timed),
 TEST_CASE_END
