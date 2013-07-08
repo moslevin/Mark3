@@ -51,9 +51,12 @@ public:
 	/*!
         \fn void Post();
         
-        Increment the semaphore count.        
+        Increment the semaphore count.
+
+        \return true if the semaphore was posted, false if the count
+                is already maxed out.
 	*/
-	void Post();
+    bool Post();
     
 	/*!
         \fn void Pend();

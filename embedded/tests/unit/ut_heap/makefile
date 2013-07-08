@@ -10,7 +10,7 @@ APPNAME=ut_heap
 #this is the list of the objects required to build the kernel
 CPP_SOURCE=ut_heap.cpp ../ut_platform.cpp
 
-LIBS=mark3 drvUART unit_test memutil
+LIBS=mark3 drvUART unit_test memutil heap
 
 # Include the rest of the script that is actually used for building the 
 # outputs

@@ -193,7 +193,7 @@ public:
         
         \param pclNewList_ Pointer to the threadlist to apply thread ownership       
     */
-    void SetCurrent( ThreadList *pclNewList_ ) { m_pclCurrent = pclNewList_; };
+    void SetCurrent( ThreadList *pclNewList_ ) { m_pclCurrent = pclNewList_; }
     
     /*!
         \fn void SetOwner( ThreadList *pclNewList_ )

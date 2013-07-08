@@ -17,6 +17,10 @@ See license.txt for more information
 #include "kerneltypes.h"
 #include "kernel.h"
 #include "../ut_platform.h"
+#include "ksemaphore.h"
+#include "thread.h"
+#include "memutil.h"
+#include "driver.h"
 
 //===========================================================================
 // Local Defines
@@ -25,71 +29,81 @@ See license.txt for more information
 //===========================================================================
 // Define Test Cases Here
 //===========================================================================
-TEST(ut_logic)
+TEST(ut_semaphore_count)
 {
-    // Test the built-in unit-test logic to ensure our base assumptions are
-    // correct.
+    // Test - verify that we can only increment a counting semaphore to the
+    // maximum count.
 
-    // 1 == true, ensure that this test passes
-    EXPECT_TRUE(1);
+    // Verify that a counting semaphore with an initial count of zero and a
+    // maximum count of 10 can only be posted 10 times before saturaiton and
+    // failure.
 
-    // 0 == false, ensure that this test passes
-    EXPECT_FALSE(0);
+    Semaphore clTestSem;
+    clTestSem.Init( 0, 10 );
 
-    // 1 != false, ensure that this test fails
-    EXPECT_FAIL_FALSE(1);
+    for (int i = 0; i < 10; i++)
+    {
+        EXPECT_TRUE(clTestSem.Post());
+    }
+    EXPECT_FALSE(clTestSem.Post());
+}
+TEST_END
 
-    // 0 != true, ensure that this test fails
-    EXPECT_FAIL_TRUE(0);
+//===========================================================================
+static Thread clThread;
+static K_UCHAR aucStack[256];
+static Semaphore clSem1;
+static Semaphore clSem2;
+static volatile K_UCHAR ucCounter = 0;
 
-    // Ensure that various 8-32 bit values meet equality conditions
-    EXPECT_EQUALS(0, 0);
+//===========================================================================
+void PostPendFunction(void *param_)
+{
+    Semaphore *pclSem = (Semaphore*)param_;
+    while(1)
+    {
+        pclSem->Pend();
+        ucCounter++;
+    }
+}
 
-    // signed 8-bit values
-    EXPECT_EQUALS(-128, -128);
-    EXPECT_EQUALS(127, 127);
+//===========================================================================
+TEST(ut_semaphore_post_pend)
+{
+    // Test - Make sure that pending on a semaphore causes a higher-priority
+    // waiting thread to block, and that posting that semaphore from a running
+    // lower-priority thread awakens the higher-priority thread
 
-    // unsigned 8-bit values
-    EXPECT_EQUALS(255, 255);
+    clSem1.Init(0, 1);
 
-    // signed 16-bit values
-    EXPECT_EQUALS(32767, 32767);
-    EXPECT_EQUALS(-32768, -32768);
+    clThread.Init(aucStack, 256, 7, PostPendFunction, (void*)&clSem1);
+    clThread.Start();
 
-    // unsigned 16-bit values
-    EXPECT_EQUALS(65535, 65535);
+    for (int i = 0; i < 10; i++)
+    {
+        clSem1.Post();
+    }
 
-    // unsigned 32-bit values
-    EXPECT_EQUALS(-214783648, -214783648);
-    EXPECT_EQUALS(214783647, 214783647);
+    // Verify all 10 posts have been acknowledged by the high-priority thread
+    EXPECT_EQUALS(ucCounter, 10);
 
-    // signed 32-bit values
-    EXPECT_EQUALS(4294967295, 4294967295);
+    // After the test is over, kill the test thread.
+    clThread.Exit();
 
-    // Ensure that various 8-32 bit values meet equality conditions
-    EXPECT_FAIL_EQUALS(0, -1);
+    // Test - same as above, but with a counting semaphore instead of a
+    // binary semaphore.  Also using a default value.
+    clSem2.Init(10, 10);
 
-    // signed 8-bit values
-    EXPECT_FAIL_EQUALS(-128, -1);
-    EXPECT_FAIL_EQUALS(127, -1);
+    // Restart the test thread.
+    ucCounter = 0;
+    clThread.Init(aucStack, 256, 7, PostPendFunction, (void*)&clSem2);
+    clThread.Start();
 
-    // unsigned 8-bit values
-    EXPECT_FAIL_EQUALS(255, 0);
+    // We'll kill the thread as soon as it blocks.
+    clThread.Exit();
 
-    // signed 16-bit values
-    EXPECT_FAIL_EQUALS(32767, -1);
-    EXPECT_FAIL_EQUALS(-32768, -1);
-
-    // unsigned 16-bit values
-    EXPECT_FAIL_EQUALS(65535, 0);
-
-    // unsigned 32-bit values
-    EXPECT_FAIL_EQUALS(-214783648, -1);
-    EXPECT_FAIL_EQUALS(214783647, 1);
-
-    // signed 32-bit values
-    EXPECT_FAIL_EQUALS(4294967295, 0);
-
+    // semaphore should have pended 10 times before returning.
+    EXPECT_EQUALS(ucCounter, 10);
 }
 TEST_END
 
@@ -97,5 +111,6 @@ TEST_END
 // Test Whitelist Goes Here
 //===========================================================================
 TEST_CASE_START
-  TEST_CASE(ut_logic),
+  TEST_CASE(ut_semaphore_count),
+  TEST_CASE(ut_semaphore_post_pend),
 TEST_CASE_END
