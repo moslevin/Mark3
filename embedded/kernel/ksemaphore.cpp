@@ -215,7 +215,7 @@ bool Semaphore::Post()
 	
 	
 #if KERNEL_USE_TIMERS
-	if (ulWaitTimeMS_)
+    if (ulWaitTimeMS_ && bThreadWait)
 	{
 		clSemTimer.Stop();
 	}
