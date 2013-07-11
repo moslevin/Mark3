@@ -17,78 +17,214 @@ See license.txt for more information
 #include "kerneltypes.h"
 #include "kernel.h"
 #include "../ut_platform.h"
+#include "message.h"
+#include "thread.h"
+
+static Thread clMsgThread;
+static K_UCHAR aucMsgStack[256];
+
+static MessageQueue clMsgQ;
+static volatile K_UCHAR ucPassCount = 0;
 
 //===========================================================================
 // Local Defines
 //===========================================================================
 
+void MsgConsumer(void *unused_)
+{
+    Message *pclMsg;
+    K_UCHAR i;
+
+    for (i = 0; i < 20; i++)
+    {
+        pclMsg = clMsgQ.Receive();
+        ucPassCount = 0;
+
+        if (pclMsg)
+        {
+            ucPassCount++;
+        }
+        else
+        {
+            ucPassCount = 0;
+            continue;
+        }
+
+        switch(i)
+        {
+            case 0:
+                if (0 == pclMsg->GetCode())
+                {
+                    ucPassCount++;
+                }
+                if (0 == pclMsg->GetData())
+                {
+                    ucPassCount++;
+                }
+                break;
+            case 1:
+                if (1337 == (pclMsg->GetCode()) )
+                {
+                    ucPassCount++;
+                }
+                if (7331 == (uint16_t)(pclMsg->GetData()))
+                {
+                    ucPassCount++;
+                }
+
+            case 2:
+                if (0xA0A0== (pclMsg->GetCode()) )
+                {
+                    ucPassCount++;
+                }
+                if (0xC0C0 == (uint16_t)(pclMsg->GetData()))
+                {
+                    ucPassCount++;
+                }
+
+                break;
+
+            default:
+                break;
+        }
+        GlobalMessagePool::Push(pclMsg);
+    }
+}
+
 //===========================================================================
 // Define Test Cases Here
 //===========================================================================
-TEST(ut_logic)
+TEST(ut_message_tx_rx)
 {
-    // Test the built-in unit-test logic to ensure our base assumptions are
-    // correct.
+    // Test - verify that we can use a message queue object to send data
+    // from one thread to another, and that the receiver can block on the
+    // message queue.  This test also relies on priority scheduling working
+    // as expected.
 
-    // 1 == true, ensure that this test passes
-    EXPECT_TRUE(1);
+    Message *pclMsg;
 
-    // 0 == false, ensure that this test passes
-    EXPECT_FALSE(0);
+    clMsgThread.Init(aucMsgStack, 256, 7, MsgConsumer, 0);
 
-    // 1 != false, ensure that this test fails
-    EXPECT_FAIL_FALSE(1);
+    clMsgQ.Init();
 
-    // 0 != true, ensure that this test fails
-    EXPECT_FAIL_TRUE(0);
+    clMsgThread.Start();
 
-    // Ensure that various 8-32 bit values meet equality conditions
-    EXPECT_EQUALS(0, 0);
+    // Get a message from the pool
+    pclMsg = GlobalMessagePool::Pop();
+    EXPECT_FAIL_FALSE( pclMsg );
 
-    // signed 8-bit values
-    EXPECT_EQUALS(-128, -128);
-    EXPECT_EQUALS(127, 127);
+    // Send the message to the consumer thread
+    pclMsg->SetData(0);
+    pclMsg->SetCode(0);
 
-    // unsigned 8-bit values
-    EXPECT_EQUALS(255, 255);
+    clMsgQ.Send(pclMsg);
 
-    // signed 16-bit values
-    EXPECT_EQUALS(32767, 32767);
-    EXPECT_EQUALS(-32768, -32768);
+    EXPECT_EQUALS(ucPassCount, 3);
 
-    // unsigned 16-bit values
-    EXPECT_EQUALS(65535, 65535);
+    pclMsg = GlobalMessagePool::Pop();
+    EXPECT_FAIL_FALSE( pclMsg );
 
-    // unsigned 32-bit values
-    EXPECT_EQUALS(-214783648, -214783648);
-    EXPECT_EQUALS(214783647, 214783647);
+    // Send the message to the consumer thread
+    pclMsg->SetCode(1337);
+    pclMsg->SetData((void*)7331);
 
-    // signed 32-bit values
-    EXPECT_EQUALS(4294967295, 4294967295);
+    clMsgQ.Send(pclMsg);
 
-    // Ensure that various 8-32 bit values meet equality conditions
-    EXPECT_FAIL_EQUALS(0, -1);
+    EXPECT_EQUALS(ucPassCount, 3);
 
-    // signed 8-bit values
-    EXPECT_FAIL_EQUALS(-128, -1);
-    EXPECT_FAIL_EQUALS(127, -1);
+    pclMsg = GlobalMessagePool::Pop();
+    EXPECT_FAIL_FALSE( pclMsg );
 
-    // unsigned 8-bit values
-    EXPECT_FAIL_EQUALS(255, 0);
+    // Send the message to the consumer thread
+    pclMsg->SetCode(0xA0A0);
+    pclMsg->SetData((void*)0xC0C0);
 
-    // signed 16-bit values
-    EXPECT_FAIL_EQUALS(32767, -1);
-    EXPECT_FAIL_EQUALS(-32768, -1);
+    clMsgQ.Send(pclMsg);
 
-    // unsigned 16-bit values
-    EXPECT_FAIL_EQUALS(65535, 0);
+    EXPECT_EQUALS(ucPassCount, 3);
 
-    // unsigned 32-bit values
-    EXPECT_FAIL_EQUALS(-214783648, -1);
-    EXPECT_FAIL_EQUALS(214783647, 1);
+    clMsgThread.Exit();
+}
+TEST_END
 
-    // signed 32-bit values
-    EXPECT_FAIL_EQUALS(4294967295, 0);
+//===========================================================================
+TEST(ut_message_exhaust)
+{
+    // Test - exhaust the global message pool and ensure that we eventually
+    // get "NULL" returned when the pool is depleted, and not some other
+    // unexpected condition/system failure.
+    for (int i = 0; i < GLOBAL_MESSAGE_POOL_SIZE; i++)
+    {
+        EXPECT_FAIL_FALSE( GlobalMessagePool::Pop() );
+    }
+    EXPECT_FALSE( GlobalMessagePool::Pop());
+
+    // Test is over - re-init the pool..
+    GlobalMessagePool::Init();
+}
+TEST_END
+
+static volatile bool bTimedOut = false;
+//===========================================================================
+void MsgTimed(void *unused)
+{
+    Message *pclRet;
+    ucPassCount = 0;
+    pclRet = clMsgQ.Receive(10);
+    if (0 == pclRet)
+    {
+        ucPassCount++;
+    }
+    else
+    {
+        GlobalMessagePool::Push(pclRet);
+    }
+
+    pclRet = clMsgQ.Receive(1000);
+    if (0 != pclRet)
+    {
+        ucPassCount++;
+    }
+    else
+    {
+        GlobalMessagePool::Push(pclRet);
+    }
+
+    while(1)
+    {
+        pclRet = clMsgQ.Receive();
+        GlobalMessagePool::Push(pclRet);
+    }
+}
+
+//===========================================================================
+TEST(ut_message_timed_rx)
+{
+    Message *pclMsg;
+
+    pclMsg = GlobalMessagePool::Pop();
+    EXPECT_FAIL_FALSE( pclMsg );
+
+    // Send the message to the consumer thread
+    pclMsg->SetData(0);
+    pclMsg->SetCode(0);
+
+    // Test - Verify that the timed blocking in the message queues works
+    clMsgThread.Init(aucMsgStack, 256, 7, MsgTimed, 0);
+    clMsgThread.Start();
+
+    // Just let the timeout expire
+    Thread::Sleep(10);
+    EXPECT_EQUALS( ucPassCount, 1 );
+
+    // other thread has a timeout set... Don't leave them waiting!
+    clMsgQ.Send(pclMsg);
+
+    EXPECT_EQUALS( ucPassCount, 2 );
+
+    clMsgQ.Send(pclMsg);
+
+    clMsgThread.Exit();
 
 }
 TEST_END
@@ -97,5 +233,7 @@ TEST_END
 // Test Whitelist Goes Here
 //===========================================================================
 TEST_CASE_START
-  TEST_CASE(ut_logic),
+  TEST_CASE(ut_message_tx_rx),
+  TEST_CASE(ut_message_timed_rx),
+  TEST_CASE(ut_message_exhaust),
 TEST_CASE_END

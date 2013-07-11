@@ -107,7 +107,6 @@ TEST(ut_semaphore_post_pend)
 }
 TEST_END
 
-
 //===========================================================================
 void TimeSemFunction(void *param_)
 {

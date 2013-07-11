@@ -164,7 +164,7 @@ Discarded input sections
  .text._ZN17GlobalMessagePool4PushEP7Message
                 0x0000000000000000       0x26 /home/moslevin2/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(message.cpp.o)
  .text._ZN17GlobalMessagePool3PopEv
-                0x0000000000000000       0x36 /home/moslevin2/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(message.cpp.o)
+                0x0000000000000000       0x3e /home/moslevin2/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(message.cpp.o)
  .text._ZN12MessageQueue4InitEv
                 0x0000000000000000        0xc /home/moslevin2/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(message.cpp.o)
  .text._ZN12MessageQueue7ReceiveEv
@@ -1083,7 +1083,7 @@ LOAD /usr/lib/gcc/avr/4.7.2/avr5/libgcc.a
  .stab          0x0000000000007cf8      0x4ec /home/moslevin2/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(blocking.cpp.o)
                                         0x4f8 (size before relaxing)
  .stab          0x00000000000081e4      0x540 /home/moslevin2/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(message.cpp.o)
-                                        0x93c (size before relaxing)
+                                        0x96c (size before relaxing)
  .stab          0x0000000000008724      0x6e4 /home/moslevin2/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(quantum.cpp.o)
                                         0x6f0 (size before relaxing)
  .stab          0x0000000000008e08      0x6e4 /home/moslevin2/m3/trunk/embedded/stage/lib/avr/atmega328p/gcc/libmark3.a(scheduler.cpp.o)
