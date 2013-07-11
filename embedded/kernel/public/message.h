@@ -187,7 +187,7 @@ public:
 
 private:
     //! Array of message objects that make up the message pool
-	static Message m_aclMessagePool[8];	
+    static Message m_aclMessagePool[GLOBAL_MESSAGE_POOL_SIZE];
     
     //! Linked list used to manage the Message objects
 	static DoubleLinkList m_clList;

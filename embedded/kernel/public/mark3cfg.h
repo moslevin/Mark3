@@ -91,6 +91,15 @@ See license.txt for more information
 #endif
 
 /*!
+    If Messages are enabled, define the size of the default kernel message
+    pool.  Messages can be manually added to the message pool, but this
+    mechansims is more convenient and automatic.
+*/
+#if KERNEL_USE_MESSAGE
+    #define GLOBAL_MESSAGE_POOL_SIZE    (8)
+#endif
+
+/*!
 	Do you want the ability to use mutual exclusion semaphores (mutex) for 
 	resource/block protection?  Enabling this feature provides mutexes, with
 	priority inheritence, as declared in mutex.h.  Enabling per-thread mutex

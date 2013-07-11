@@ -46,7 +46,7 @@ DoubleLinkList GlobalMessagePool::m_clList;
 void GlobalMessagePool::Init()
 {
 	K_UCHAR i;
-	for (i = 0; i < 8; i++)
+    for (i = 0; i < GLOBAL_MESSAGE_POOL_SIZE; i++)
 	{
 		GlobalMessagePool::m_aclMessagePool[i].Init();
 		GlobalMessagePool::m_clList.Add(&(GlobalMessagePool::m_aclMessagePool[i]));
@@ -72,7 +72,10 @@ Message *GlobalMessagePool::Pop()
 	CS_ENTER();
 	
 	pclRet = static_cast<Message*>( GlobalMessagePool::m_clList.GetHead() );
-	GlobalMessagePool::m_clList.Remove( static_cast<LinkListNode*>( pclRet ) );
+    if (0 != pclRet)
+    {
+        GlobalMessagePool::m_clList.Remove( static_cast<LinkListNode*>( pclRet ) );
+    }
 	
 	CS_EXIT();
 	return pclRet;
@@ -81,7 +84,7 @@ Message *GlobalMessagePool::Pop()
 //---------------------------------------------------------------------------
 void MessageQueue::Init() 
 { 
-	m_clSemaphore.Init(0, 100); 
+    m_clSemaphore.Init(0, GLOBAL_MESSAGE_POOL_SIZE);
 }
 
 //---------------------------------------------------------------------------
@@ -95,7 +98,7 @@ Message *MessageQueue::Receive()
 	CS_ENTER();
 	
 	// Pop the head of the message queue and return it
-	pclRet = static_cast<Message*>( m_clLinkList.GetHead() );
+	pclRet = static_cast<Message*>( m_clLinkList.GetHead() );    
 	m_clLinkList.Remove(static_cast<Message*>(pclRet));		
 	
 	CS_EXIT();
