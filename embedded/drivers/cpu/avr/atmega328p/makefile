@@ -8,6 +8,6 @@ include $(ROOT_DIR)base.mak
 
 # Include the rest of the script that is actually used for building the 
 # outputs
-ifeq ($(ARCH), avr)
+ifeq ($(TOOLCHAIN), gcc)
 include $(ROOT_DIR)build.mak
 endif
