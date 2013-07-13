@@ -8,4 +8,6 @@ include $(ROOT_DIR)base.mak
 
 # Include the rest of the script that is actually used for building the 
 # outputs
+ifeq ($(VARIANT), atmega328p)
 include $(ROOT_DIR)build.mak
+endif
