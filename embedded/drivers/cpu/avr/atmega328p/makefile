@@ -8,6 +8,9 @@ include $(ROOT_DIR)base.mak
 
 # Include the rest of the script that is actually used for building the 
 # outputs
-ifeq ($(TOOLCHAIN), gcc)
+ifeq ($(ARCH),avr)
+ifeq ($(VARIANT),atmega328p)
 include $(ROOT_DIR)build.mak
 endif
+endif
+
