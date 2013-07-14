@@ -87,7 +87,7 @@ See license.txt for more information
     when it came to tools. It was the kind of environment where vendors cost 
     us money, but manpower was free. In retrospect, we didn't have a ton of 
     business during the time that I worked there, and that may have had 
-    something to do with the fact that we were constantly K_SHORT on ready 
+    something to do with the fact that we were constantly short on ready
     cash for things we could code ourselves. 
 
     Early on, I asked why we didn't use industry-standard tools - like JTAG 
@@ -121,7 +121,7 @@ See license.txt for more information
     switching (althrough it was hidden by the compiler). 
 
     And every time a new iteration of our product was developed, the 
-    firmware took far too K_LONG to bring up, because the algorithms and data 
+    firmware took far too long to bring up, because the algorithms and data
     structures had to be re-tooled to work with the peripherals and sensors 
     attached to the new boards. We worked very hard in an attempt to 
     reinvent the wheel, all in the name of producing "efficient" code. 
@@ -203,7 +203,7 @@ See license.txt for more information
 	a few-thousand lines), then a more appropriate question would be 
 	"can you afford *not* to use an	RTOS in your system?".
 	
-	In K_SHORT, there are simply too many benefits of an RTOS to ignore.
+    In short, there are simply too many benefits of an RTOS to ignore.
 	- Sophisticated synchronization objects 
 	- The ability to efficiently block and wait 
 	- Enhanced responsiveness for high-priority tasks
@@ -600,7 +600,7 @@ See license.txt for more information
     in this system, with only one interrupt source and only one task this 
     might not be a big deal, but say that Do_something() takes several 
     seconds to complete, and in that time several other interrupts occur 
-    from other sources. While executing in our K_LONG-running interrupt, no 
+    from other sources. While executing in our long-running interrupt, no
     other interrupts can be processed - in many cases, if two interrupts of 
     the same type occur before the first is processed, one of these 
     interrupt events will be lost. This can be utterly disastrous in a 
@@ -689,7 +689,7 @@ See license.txt for more information
     individual tasks from within main(). 
 
     Next, we can see that tasks are explicitly given priorities inside the 
-    main loop based on the logic of the if/else if structure. As K_LONG as 
+    main loop based on the logic of the if/else if structure. As long as
     there is something set in the event flag, we will always try to execute 
     Task1 first, and only when Task1 isn't set will we attempt to execute 
     Task2, and then Task 3. This added logic provides the notion of 
@@ -704,7 +704,7 @@ See license.txt for more information
     scheduling is referred to ascooperative multitasking: we can have as 
     many tasks as we want, but unless they cooperate by means of returning 
     back to main, the system can end up with high-priority tasks getting 
-    starved for CPU time by lower-priority, K_LONG-running tasks. 
+    starved for CPU time by lower-priority, long-running tasks.
 
     This is one of the more popular Os-baked-into-the-application 
     approaches, and is widely used in a variety of real-time embedded 
@@ -914,7 +914,7 @@ See license.txt for more information
       - The RTOS is tickless, the OS only wakes up when a timer expires, not
         at a regular interval
       - One-shot and periodic timers with event callbacks
-      - Timers are high-precision and K_LONG-counting 
+      - Timers are high-precision and long-counting
         (about 68000 seconds when used with a 16us resolution timer)
       .      
     - Driver API 
@@ -1062,7 +1062,7 @@ See license.txt for more information
     behavior in the system.
     
     The App thread is at a priority level greater-than 0.  This ensures that
-    as K_LONG as the App thread has something useful to do, it will be given
+    as long as the App thread has something useful to do, it will be given
     control of the CPU.  In this case, if the app thread blocks, control
     will be given back to the Idle thread, which will put the CPU into
     a power-saving mode until an interrupt occurs.
@@ -1523,7 +1523,7 @@ See license.txt for more information
 	of which it shares time amongst ready threads in the group.  Once 
 	a thread's timeslice has expired, the next thread in the priority 
 	group is chosen to run until its quantum has expired - the cycle
-	continues over and over so K_LONG as each thread has work to be done.
+    continues over and over so long as each thread has work to be done.
 	
 	By default, the round-robin interval is set at 4ms.
 	
