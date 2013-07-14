@@ -145,7 +145,6 @@ void MessageQueue::Send( Message *pclSrc_ )
 	CS_EXIT();
 }
 
-
 //---------------------------------------------------------------------------
 K_USHORT MessageQueue::GetCount()
 {

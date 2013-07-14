@@ -322,7 +322,7 @@ void Thread::SetPriority(K_UCHAR ucPriority_)
 
 //---------------------------------------------------------------------------
 void Thread::InheritPriority(K_UCHAR ucPriority_)
-{
+{    
     SetOwner(Scheduler::GetThreadList(ucPriority_));
     m_ucCurPriority = ucPriority_;
 }
