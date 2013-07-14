@@ -17,85 +17,190 @@ See license.txt for more information
 #include "kerneltypes.h"
 #include "kernel.h"
 #include "../ut_platform.h"
+#include "thread.h"
+#include "mutex.h"
 
 //===========================================================================
 // Local Defines
 //===========================================================================
 
+static K_UCHAR aucTestStack[256];
+static Thread clMutexThread;
+
+static K_UCHAR aucTestStack2[256];
+static Thread clTestThread2;
+static volatile K_UCHAR ucToken;
+
 //===========================================================================
 // Define Test Cases Here
 //===========================================================================
-TEST(ut_logic)
+
+void TypicalMutexTest(void *mutex_)
 {
-    // Test the built-in unit-test logic to ensure our base assumptions are
-    // correct.
+    Mutex *pclMutex = (Mutex*)mutex_;
 
-    // 1 == true, ensure that this test passes
-    EXPECT_TRUE(1);
+    pclMutex->Claim();
+    ucToken = 0x69;
+    pclMutex->Release();
 
-    // 0 == false, ensure that this test passes
-    EXPECT_FALSE(0);
+    // Exit the thread when we're done this operation.
+    Scheduler::GetCurrentThread()->Exit();
+}
 
-    // 1 != false, ensure that this test fails
-    EXPECT_FAIL_FALSE(1);
+TEST(ut_typical_mutex)
+{
+    // Test - Typical mutex usage, ensure that two threads can synchronize
+    // access to a single resource
+    Mutex clMutex;
 
-    // 0 != true, ensure that this test fails
-    EXPECT_FAIL_TRUE(0);
+    clMutex.Init();
 
-    // Ensure that various 8-32 bit values meet equality conditions
-    EXPECT_EQUALS(0, 0);
+    // Create a higher-priority thread that will immediately pre-empt us.
+    // Verify that while we have the mutex held, that the high-priority thread
+    // is blocked waiting for us to relinquish access.
+    clMutexThread.Init(aucTestStack, 256, 7, TypicalMutexTest, (void*)&clMutex);
 
-    // signed 8-bit values
-    EXPECT_EQUALS(-128, -128);
-    EXPECT_EQUALS(127, 127);
+    clMutex.Claim();
 
-    // unsigned 8-bit values
-    EXPECT_EQUALS(255, 255);
+    ucToken = 0x96;
+    clMutexThread.Start();
 
-    // signed 16-bit values
-    EXPECT_EQUALS(32767, 32767);
-    EXPECT_EQUALS(-32768, -32768);
+    // Spend some time sleeping, just to drive the point home...
+    Thread::Sleep(100);
 
-    // unsigned 16-bit values
-    EXPECT_EQUALS(65535, 65535);
+    // Test Point - Verify that the token value hasn't changed (which would
+    // indicate the high-priority thread held the mutex...)
+    EXPECT_EQUALS( ucToken, 0x96 );
 
-    // unsigned 32-bit values
-    EXPECT_EQUALS(-214783648, -214783648);
-    EXPECT_EQUALS(214783647, 214783647);
+    // Relese the mutex, see what happens.
+    clMutex.Release();
 
-    // signed 32-bit values
-    EXPECT_EQUALS(4294967295, 4294967295);
-
-    // Ensure that various 8-32 bit values meet equality conditions
-    EXPECT_FAIL_EQUALS(0, -1);
-
-    // signed 8-bit values
-    EXPECT_FAIL_EQUALS(-128, -1);
-    EXPECT_FAIL_EQUALS(127, -1);
-
-    // unsigned 8-bit values
-    EXPECT_FAIL_EQUALS(255, 0);
-
-    // signed 16-bit values
-    EXPECT_FAIL_EQUALS(32767, -1);
-    EXPECT_FAIL_EQUALS(-32768, -1);
-
-    // unsigned 16-bit values
-    EXPECT_FAIL_EQUALS(65535, 0);
-
-    // unsigned 32-bit values
-    EXPECT_FAIL_EQUALS(-214783648, -1);
-    EXPECT_FAIL_EQUALS(214783647, 1);
-
-    // signed 32-bit values
-    EXPECT_FAIL_EQUALS(4294967295, 0);
+    // Test Point - Verify that after releasing the mutex, the higher-priority
+    // thread immediately resumes, claiming the mutex, and adjusting the
+    // token value to its value.  Check the new token value here.
+    EXPECT_EQUALS( ucToken, 0x69 );
 
 }
 TEST_END
 
 //===========================================================================
+void TimedMutexTest(void *mutex_)
+{
+    Mutex *pclMutex = (Mutex*)mutex_;
+
+    pclMutex->Claim();
+    Thread::Sleep(20);
+    pclMutex->Release();
+
+    Scheduler::GetCurrentThread()->Exit();
+}
+
+//===========================================================================
+TEST(ut_timed_mutex)
+{
+    // Test - Enusre that when a thread fails to obtain a resource in a
+    // timeout scenario, that the timeout is reported correctly
+
+    Mutex clMutex;
+    clMutex.Init();
+
+    clMutexThread.Init(aucTestStack, 256, 7, TimedMutexTest, (void*)&clMutex);
+    clMutexThread.Start();
+
+    EXPECT_FALSE( clMutex.Claim(10) );
+
+    Thread::Sleep(20);
+
+    clMutexThread.Init(aucTestStack, 256, 7, TimedMutexTest, (void*)&clMutex);
+    clMutexThread.Start();
+
+    EXPECT_TRUE( clMutex.Claim(30) );
+}
+TEST_END
+
+//===========================================================================
+void LowPriThread(void *mutex_)
+{
+    Mutex *pclMutex = (Mutex*)mutex_;
+
+    pclMutex->Claim();
+
+    Thread::Sleep(100);
+
+    pclMutex->Release();
+
+    while(1)
+    {
+        Thread::Sleep(1000);
+    }
+}
+
+//===========================================================================
+void HighPriThread(void *mutex_)
+{
+    Mutex *pclMutex = (Mutex*)mutex_;
+
+    pclMutex->Claim();
+
+    Thread::Sleep(100);
+
+    pclMutex->Release();
+
+    while(1)
+    {
+        Thread::Sleep(1000);
+    }
+}
+
+//===========================================================================
+TEST(ut_priority_mutex)
+{
+    // Test - Priority inheritence protocol.  Ensure that the priority
+    // inversion problem is correctly avoided by our semaphore implementation
+    // In the low/med/high scenario, we play the "med" priority thread
+    Mutex clMutex;
+    clMutex.Init();
+
+    Scheduler::GetCurrentThread()->SetPriority(3);
+
+    clMutexThread.Init(aucTestStack, 256, 2, LowPriThread, (void*)&clMutex);
+    clTestThread2.Init(aucTestStack2, 256, 4, HighPriThread, (void*)&clMutex);
+
+    // Start the low-priority thread and give it the mutex
+    clMutexThread.Start();
+    Thread::Sleep(20);
+
+    // Start the high-priority thread, which will block, waiting for the
+    // low-priority action to complete...
+    clTestThread2.Start();
+    Thread::Sleep(20);
+
+    // Test point - Low-priority thread boost:
+    // Check the priorities of the threads.  The low-priority thread
+    // should now have the same priority as the high-priority thread
+    EXPECT_EQUALS( clMutexThread.GetCurPriority(), 4 );
+    EXPECT_EQUALS( clTestThread2.GetCurPriority(), 4 );
+
+    Thread::Sleep(200);
+
+    // Test point - Low-priority thread drop:
+    // After the threads have relinquished their mutexes, ensure that
+    // they are placed back at their correct priorities
+    EXPECT_EQUALS( clMutexThread.GetCurPriority(), 2 );
+    EXPECT_EQUALS( clTestThread2.GetCurPriority(), 4 );
+
+    clMutexThread.Exit();
+    clTestThread2.Exit();
+}
+TEST_END
+
+
+//===========================================================================
 // Test Whitelist Goes Here
 //===========================================================================
 TEST_CASE_START
-  TEST_CASE(ut_logic),
+  TEST_CASE(ut_typical_mutex),
+  TEST_CASE(ut_timed_mutex),
+  TEST_CASE(ut_priority_mutex),
 TEST_CASE_END
+

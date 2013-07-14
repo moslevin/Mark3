@@ -158,9 +158,9 @@ void Mutex::Init()
 					{
 						break;
 					}
-					pclTemp = static_cast<Thread*>(pclTemp->GetNext());
-					
+					pclTemp = static_cast<Thread*>(pclTemp->GetNext());					
 				}
+                m_pclOwner->InheritPriority(m_ucMaxPri);
 			}
         }
 
