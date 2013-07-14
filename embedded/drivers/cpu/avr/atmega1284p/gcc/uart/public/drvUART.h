@@ -42,8 +42,8 @@ See license.txt for more information
 
 #define UART_DEFAULT_BAUD       ((K_ULONG)57600)
 
-#define UART_RX_ISR             (USART_RX_vect)
-#define UART_TX_ISR             (USART_TX_vect)
+#define UART_RX_ISR             (USART0_RX_vect)
+#define UART_TX_ISR             (USART0_TX_vect)
 
 //---------------------------------------------------------------------------
 typedef enum
