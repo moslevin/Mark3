@@ -135,6 +135,7 @@ private:
     */
     K_UCHAR WakeNext();
     
+    K_UCHAR m_ucRecurse;    //!< The recursive lock-count when a mutex is claimed multiple times by the same owner
     K_UCHAR m_bReady;       //!< State of the mutex - true = ready, false = claimed
     K_UCHAR m_ucMaxPri;     //!< Maximum priority of thread in queue, used for priority inheritence
     Thread *m_pclOwner;     //!< Pointer to the thread that owns the mutex (when claimed)
