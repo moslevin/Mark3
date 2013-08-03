@@ -1652,7 +1652,81 @@ See license.txt for more information
 	your project.  This should contain the source to the kernel, all
 	drivers, and all services that are in the tree - along with the necessary
 	header files.
-	
+
+    \section WINBUILD Building on Windows
+
+    Building Mark3 on Windows is the same as on Linux, but there are a few
+    prerequisites that need to be taken into consideration before the
+    build scripts and makefiles will work as expected.
+
+    Step 1 - Install Latest Atmel Studio IDE
+
+    Atmel Studio contains the AVR8 GCC toolchain, which contains the necessary
+    compilers, assemblers, and platform support required to turn the source
+    modules into libraries and executables.
+
+    To get Atmel Studio, go to the Atmel website (http://www.atmel.com) and
+    register to download the latest version.  This is a free download (and
+    rather large).  The included IDE (if you choose to use it) is very slick,
+    as it's based on Visual Studio, and contains a wonderful cycle-accurate
+    simulator for AVR devices.  In fact, the simulator is so good that most
+    of the kernel and its drivers were developed using this tool.
+
+    Once you have downloaded and installed Atmel Studio, you will need to
+    add the location of the AVR toolcahin to the PATH environment variable.
+
+    To do this, go to Control Panel -> System and Security -> System ->
+    Advanced System Settings, and edit the PATH variable.  Append the location
+    of the toolchain bin folder to the end of the variable.
+
+    On Windows 7 x64, it should look something like this:
+
+    C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.2.1002\avr8-gnu-toolchain\bin
+
+    Step 2 - Install MinGW and MinSys
+
+    MinGW (and MinSys in particular) provide a unix-like environment that
+    runs under windows.  Some of the utilities provided include a version of
+    the bash shell, and GNU standard make - both which are required by
+    the Mark3 recursive build system.
+
+    The MinGW installer can be downloaded from its project page on SourceForge.
+    When installing, be sure to select the "MinSys" component.
+
+    Once installed, add the MinSys binary path to the PATH environment variable,
+    in a similar fashion as with Atmel Studio in Step 1.
+
+    Step 3 - Setup Include Paths in Platform Makefile
+
+    The AVR header file path must be added to the "platform.mak" makefile for
+    each AVR Target you are attempting to build for.  These files can be located
+    under /embedded/build/avr/atmegaXXX/.  The path to the includes directory
+    should be added to the end of the CFLAGS and CPPFLAGS variables, as shown
+    in the following:
+
+    \code
+
+    TEST_INC="/c/Program Files (x86)/Atmel/Atmel Toolchain/AVR8 GCC/Native/3.4.2.1002/avr8-gnu-toolchain/include"
+    CFLAGS += -I$(TEST_INC)
+    CPPFLAGS += -I$(TEST_INC)
+
+    \endcode
+
+    Step 4 - Build Mark3 using Bash
+
+    Launch a terminal to your Mark3 base directory, and cd into the "embedded" folder.
+    You should now be able to build Mark3 by running "bash ./build.sh" from the
+    command-line.
+
+    Alternately, you can run bash itself, building Mark3 by running ./build.sh or the
+    various make targets using the same synatx as documented previously.
+	    
+    Note - building on Windows is *slow*.  This has a lot to do with how "make" performs
+    under windows.  There are faster substitutes for make (such as cs-make) that
+    are exponentially quicker, and approach the performance of make on Linux.
+    Other mechanisms, such as running make with multiple concurrent jobs (i.e. "make -j4")
+    also helps significantly, especially on systems with multicore CPUs.
+
 */
 /*!
     \page LICENSE License

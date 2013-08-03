@@ -89,6 +89,7 @@ void Mutex::Init()
     m_bReady = 1;             // The mutex is free.
     m_ucMaxPri = 0;           // Set the maximum priority inheritence state
     m_pclOwner = NULL;        // Clear the mutex owner
+    m_ucRecurse = 0;          // Reset recurse count
 }
 
 //---------------------------------------------------------------------------
@@ -126,11 +127,29 @@ void Mutex::Init()
     {
         // Mutex isn't claimed, claim it.
         m_bReady = 0;
+        m_ucRecurse = 0;
         m_ucMaxPri = pclThread->GetPriority();
         m_pclOwner = pclThread;
     }
     else
     {
+        // If the mutex is already claimed, check to see if this is the owner thread,
+        // since we allow the mutex to be claimed recursively.
+        if (pclThread == m_pclOwner)
+        {
+            // Ensure that we haven't exceeded the maximum recursive-lock count
+            KERNEL_ASSERT( (m_ucRecurse < 255) );
+            m_ucRecurse++;
+
+            // Increment the lock count and bail
+            Scheduler::SetScheduler(1);
+#if KERNEL_USE_TIMERS
+            return true;
+#else
+            return;
+#endif
+        }
+
         // The mutex is claimed already - we have to block now.  Move the
         // current thread to the list of threads waiting on the mutex.
 #if KERNEL_USE_TIMERS		
@@ -197,6 +216,18 @@ void Mutex::Release()
     // Disable the scheduler while we deal with internal data structures.
     Scheduler::SetScheduler(0);
     pclThread = Scheduler::GetCurrentThread();
+
+    // This thread had better be the one that owns the mutex currently...
+    KERNEL_ASSERT( (pclThread == m_pclOwner) );
+
+    // If the owner had claimed the lock multiple times, decrease the lock
+    // count and return immediately.
+    if (m_ucRecurse)
+    {
+        m_ucRecurse--;
+        Scheduler::SetScheduler(1);
+        return;
+    }
 
     // Restore the thread's original priority
     if (pclThread->GetCurPriority() != pclThread->GetPriority())
