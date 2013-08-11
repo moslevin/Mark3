@@ -34,6 +34,8 @@ See license.txt for more information
 #include "kernel_debug.h"
 
 bool Kernel::m_bIsStarted;
+bool Kernel::m_bIsPanic;
+panic_func_t Kernel::m_pfPanic;
 
 //---------------------------------------------------------------------------
 #if defined __FILE_ID__
@@ -45,6 +47,9 @@ bool Kernel::m_bIsStarted;
 void Kernel::Init(void)
 {
     m_bIsStarted = false;
+    m_bIsPanic = false;
+    m_pfPanic = 0;
+
 #if KERNEL_USE_DEBUG
 	TraceBuffer::Init();
 #endif
@@ -75,4 +80,18 @@ void Kernel::Start(void)
     ThreadPort::StartThreads();
 	KERNEL_TRACE( STR_START_ERROR );
 
+}
+
+//---------------------------------------------------------------------------
+void Kernel::Panic(K_USHORT usCause_)
+{
+    m_bIsPanic = true;
+    if (m_pfPanic)
+    {
+        m_pfPanic(usCause_);
+    }
+    else
+    {
+        while(1);
+    }
 }
