@@ -33,6 +33,8 @@ See license.txt for more information
 #define __KERNEL_H__
 
 #include "kerneltypes.h"
+#include "panic_codes.h"
+
 //---------------------------------------------------------------------------
 /*!
 	Class that encapsulates all of the kernel startup functions.
@@ -71,9 +73,31 @@ public:
      */
     static bool IsStarted()    {   return m_bIsStarted;    }
 
-private:
+    /*!
+     * \brief SetPanic Set a function to be called when a kernel panic occurs,
+     *        giving the user to determine the behavior when a catastrophic
+     *        failure is observed.
+     *
+     * \param pfPanic_ Panic function pointer
+     */
+    static void SetPanic( panic_func_t pfPanic_ ) { m_pfPanic = pfPanic_; }
 
-    static bool m_bIsStarted;   //! true if kernel is running, false otherwise
+    /*!
+     * \brief IsPanic Returns whether or not the kernel is in a panic state
+     * \return Whether or not the kernel is in a panic state
+     */
+    static bool IsPanic()      {   return m_bIsPanic;   }
+
+    /*!
+     * \brief Panic Cause the kernel to enter its panic state
+     * \param usCause_ Reason for the kernel panic
+     */
+    static void Panic(K_USHORT usCause_);
+
+private:
+    static bool m_bIsStarted;       //!< true if kernel is running, false otherwise
+    static bool m_bIsPanic;         //!< true if kernel is in panic state, false otherwise
+    static panic_func_t m_pfPanic;  //!< user-set panic function
 };
 
 #endif

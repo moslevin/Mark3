@@ -38,5 +38,6 @@ See license.txt for more information
     #define K_ADDR      uint32_t
 #endif
 
+typedef void (*panic_func_t)( K_USHORT usPanicCode_ );
 
 #endif

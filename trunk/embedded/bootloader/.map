@@ -315,9 +315,9 @@ LOAD /usr/lib/gcc/avr/4.7.2/avr5/libgcc.a
  .stab          0x00000000000006cc      0xb70 ./obj/avr/atmega328p/gcc/bootloader.c.o
                                         0xb7c (size before relaxing)
 
-.stabstr        0x0000000000000000      0xa2a
+.stabstr        0x0000000000000000      0xa26
  *(.stabstr)
- .stabstr       0x0000000000000000      0xa2a /usr/lib/gcc/avr/4.7.2/../../../avr/lib/avr5/crtm328p.o
+ .stabstr       0x0000000000000000      0xa26 /usr/lib/gcc/avr/4.7.2/../../../avr/lib/avr5/crtm328p.o
 
 .stab.excl
  *(.stab.excl)

@@ -20,6 +20,7 @@ See license.txt for more information
 */
 
 #include "kerneltypes.h"
+#include "kernel.h"
 #include "ll.h"
 #include "kernel_debug.h"
 
@@ -67,14 +68,26 @@ void DoubleLinkList::Remove(LinkListNode *node_)
 
     if (node_->prev)
     {
+#if SAFE_UNLINK
+        if (node_->prev->next != node_)
+        {
+            Kernel::Panic(PANIC_LIST_UNLINK_FAILED);
+        }
+#endif
         node_->prev->next = node_->next;
     }
     if (node_->next)
     {
+#if SAFE_UNLINK
+        if (node_->next->prev != node_)
+        {
+            Kernel::Panic(PANIC_LIST_UNLINK_FAILED);
+        }
+#endif
         node_->next->prev = node_->prev;
     }
     if (node_ == m_pstHead)
-    {
+    {        
         m_pstHead = node_->next;
     }
     if (node_ == m_pstTail)
@@ -124,6 +137,14 @@ void CircularLinkList::Remove(LinkListNode *node_)
         return;
     }
     
+#if SAFE_UNLINK
+    // Verify that all nodes are properly connected
+    if ((node_->prev->next != node_) || (node_->next->prev != node_))
+    {
+        Kernel::Panic(PANIC_LIST_UNLINK_FAILED);
+    }
+#endif
+
     // This is a circularly linked list - no need to check for connection,
     // just remove the node.
     node_->next->prev = node_->prev;

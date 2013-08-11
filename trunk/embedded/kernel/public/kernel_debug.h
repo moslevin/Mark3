@@ -81,6 +81,7 @@ See license.txt for more information
 		ausMsg__[3] = TraceBuffer::Increment(); \
 		ausMsg__[4] = STR_ASSERT_FAILED;	\
 		TraceBuffer::Write(ausMsg__, 5); \
+        Kernel::Panic(PANIC_ASSERT_FAILED); \
 	}	\
 }
 
