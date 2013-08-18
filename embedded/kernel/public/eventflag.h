@@ -51,13 +51,13 @@ public:
      * \brief SetFlags
      * \param usMask_
      */
-    void SetFlags(K_USHORT usMask_);
+    void Set(K_USHORT usMask_);
 
     /*!
      * \brief ClearFlags
      * \param usMask_
      */
-    void ClearFlags(K_USHORT usMask_);
+    void Clear(K_USHORT usMask_);
 
     /*!
      * \brief GetMask
