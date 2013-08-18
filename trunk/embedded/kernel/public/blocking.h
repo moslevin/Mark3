@@ -54,7 +54,7 @@ See license.txt for more information
 #include "threadlist.h"
 #include "thread.h"
 
-#if KERNEL_USE_MUTEX || KERNEL_USE_SEMAPHORE
+#if KERNEL_USE_MUTEX || KERNEL_USE_SEMAPHORE || KERNEL_USE_EVENTFLAG
 
 //---------------------------------------------------------------------------
 /*!

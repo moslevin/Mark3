@@ -154,4 +154,11 @@ See license.txt for more information
 #define KERNEL_USE_DEBUG				(0)
 
 
+/*!
+    Provides additional event-flag based blocking.  This relies on an
+    additional per-thread flag-mask to be allocated, which adds 2 bytes
+    to the size of each thread object.
+*/
+#define KERNEL_USE_EVENTFLAG            (1)
+
 #endif
