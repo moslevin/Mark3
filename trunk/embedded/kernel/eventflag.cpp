@@ -89,11 +89,12 @@ void EventFlag::Wait(K_USHORT usMask_, EventFlagOperation_t eMode_)
 }
 
 //---------------------------------------------------------------------------
-void EventFlag::SetFlags(K_USHORT usMask_)
+void EventFlag::Set(K_USHORT usMask_)
 {
     Thread *pclPrev;
     Thread *pclCurrent;
     bool bReschedule = false;
+    K_USHORT usNewMask;
 
     CS_ENTER();
 
@@ -102,6 +103,7 @@ void EventFlag::SetFlags(K_USHORT usMask_)
     // the threads involved.
 
     m_usSetMask |= usMask_;
+    usNewMask = m_usSetMask;
 
     // Start at the head of the list, and iterate through until we hit the
     // "head" element in the list again.  Ensure that we handle the case where
@@ -109,58 +111,104 @@ void EventFlag::SetFlags(K_USHORT usMask_)
     // one element in the list.
     pclCurrent = static_cast<Thread*>(m_clBlockList.GetHead());
 
+    // Do nothing when there are no objects blocking.
     if (pclCurrent)
     {
+        // First loop - process every thread in the block-list and check to
+        // see whether or not the current flags match the event-flag conditions
+        // on the thread.
         do
         {
             pclPrev = pclCurrent;
             pclCurrent = static_cast<Thread*>(pclCurrent->GetNext());
 
+            // Read the thread's event mask/mode
             K_USHORT usThreadMask = pclPrev->GetEventFlagMask();
             EventFlagOperation_t eThreadMode = pclPrev->GetEventFlagMode();
 
-            if (pclPrev->GetEventFlagMask() & usMask_)
+            // For the "any" mode - unblock the blocked threads if one or more bits
+            // in the thread's bitmask match the object's bitmask
+            if ((EVENT_FLAG_ANY == eThreadMode) || (EVENT_FLAG_ANY_CLEAR == eThreadMode))
             {
-                pclPrev->SetEventFlagMode(EVENT_FLAG_PENDING_UNBLOCK);
-                bReschedule = true;
+                if (usThreadMask & m_usSetMask)
+                {
+                    pclPrev->SetEventFlagMode(EVENT_FLAG_PENDING_UNBLOCK);
+                    bReschedule = true;
+
+                    // If the "clear" variant is set, then clear the bits in the mask
+                    // that caused the thread to unblock.
+                    if (EVENT_FLAG_ANY_CLEAR == eThreadMode)
+                    {
+                        usNewMask &=~ (usThreadMask & usMask_);
+                    }
+                }
+            }
+            // For the "all" mode, every set bit in the thread's requested bitmask must
+            // match the object's flag mask.
+            else if ((EVENT_FLAG_ALL == eThreadMode) || (EVENT_FLAG_ALL_CLEAR == eThreadMode))
+            {
+                if ((usThreadMask & m_usSetMask) == usThreadMask)
+                {
+                    pclPrev->SetEventFlagMode(EVENT_FLAG_PENDING_UNBLOCK);
+                    bReschedule = true;
+
+                    // If the "clear" variant is set, then clear the bits in the mask
+                    // that caused the thread to unblock.
+                    if (EVENT_FLAG_ALL_CLEAR == eThreadMode)
+                    {
+                        usNewMask &=~ (usThreadMask & usMask_);
+                    }
+                }
             }
         }
         // To keep looping, ensure that there's something in the list, and
         // that the next item isn't the head of the list.
         while (pclPrev != m_clBlockList.GetTail());
 
+        // Second loop - go through and unblock all of the threads that
+        // were tagged for unblocking.
         pclCurrent = static_cast<Thread*>(m_clBlockList.GetHead());
         bool bIsTail = false;
         do
         {
-
             pclPrev = pclCurrent;
             pclCurrent = static_cast<Thread*>(pclCurrent->GetNext());
 
+            // Check to see if this is the condition to terminate the loop
             if (pclPrev == m_clBlockList.GetTail())
             {
                 bIsTail = true;
             }
 
+            // If the first pass indicated that this thread should be
+            // unblocked, then unblock the thread
             if (pclPrev->GetEventFlagMode() == EVENT_FLAG_PENDING_UNBLOCK)
             {
                 UnBlock(pclPrev);
             }
         }
-        while ( !bIsTail );
+        while (!bIsTail);
     }
 
+    // If we awoke any threads, re-run the scheduler
     if (bReschedule)
     {
         Thread::Yield();
     }
 
+    // Update the bitmask based on any "clear" operations performed along
+    // the way
+    m_usSetMask = usNewMask;
+
+    // Restore interrupts - will potentially cause a context switch if a
+    // thread is unblocked.
     CS_EXIT();
 }
 
 //---------------------------------------------------------------------------
-void EventFlag::ClearFlags(K_USHORT usMask_)
+void EventFlag::Clear(K_USHORT usMask_)
 {
+    // Just clear the bitfields in the local object.
     CS_ENTER();
     m_usSetMask &= ~usMask_;
     CS_EXIT();
@@ -169,6 +217,7 @@ void EventFlag::ClearFlags(K_USHORT usMask_)
 //---------------------------------------------------------------------------
 K_USHORT EventFlag::GetMask()
 {
+    // Return the presently held event flag values in this object
     K_USHORT usReturn;
     CS_ENTER();
     usReturn = m_usSetMask;
