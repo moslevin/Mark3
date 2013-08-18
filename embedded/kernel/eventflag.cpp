@@ -23,11 +23,10 @@ See license.txt for more information
 #include "eventflag.h"
 
 //---------------------------------------------------------------------------
-void EventFlag::Wait(K_USHORT usMask_, EventFlagOperation_t eMode_)
+K_USHORT EventFlag::Wait(K_USHORT usMask_, EventFlagOperation_t eMode_)
 {
     bool bThreadYield = false;
     bool bMatch = false;
-    K_USHORT usThreadMask;
     Thread *pclThread = Scheduler::GetCurrentThread();
 
     // Ensure we're operating in a critical section while we determine
@@ -36,24 +35,26 @@ void EventFlag::Wait(K_USHORT usMask_, EventFlagOperation_t eMode_)
 
     // Check to see whether or not the current mask matches any of the
     // desired bits.
-    usThreadMask = pclThread->GetEventFlagMask();
+    pclThread->SetEventFlagMask(usMask_;);
 
     if ((eMode_ == EVENT_FLAG_ALL) || (eMode_ == EVENT_FLAG_ALL_CLEAR))
     {
         // Check to see if the flags in their current state match all of
         // the set flags in the event flag group, with this mask.
-        if ((m_usSetMask & usMask_) == (usThreadMask & usMask_))
+        if ((m_usSetMask & usMask_) == usMask_)
         {
             bMatch = true;
+            pclThread->SetEventFlagMask(usMask_);
         }
     }
     else if ((eMode_ == EVENT_FLAG_ANY) || (eMode_ == EVENT_FLAG_ANY_CLEAR))
     {
         // Check to see if the existing flags match any of the set flags in
         // the event flag group  with this mask
-        if (m_usSetMask & usMask_& usThreadMask)
+        if (m_usSetMask & usMask_)
         {
             bMatch = true;
+            pclThread->SetEventFlagMask(m_usSetMask & usMask_);
         }
     }
 
@@ -86,6 +87,8 @@ void EventFlag::Wait(K_USHORT usMask_, EventFlagOperation_t eMode_)
     //!! If the Yield operation causes a new thread to be chosen, there will
     //!! Be a context switch at the above CS_EXIT().  The original calling
     //!! thread will not return back until a matching SetFlags call is made.
+
+    return pclThread->GetEventFlagMask();
 }
 
 //---------------------------------------------------------------------------
@@ -133,6 +136,7 @@ void EventFlag::Set(K_USHORT usMask_)
                 if (usThreadMask & m_usSetMask)
                 {
                     pclPrev->SetEventFlagMode(EVENT_FLAG_PENDING_UNBLOCK);
+                    pclPrev->SetEventFlagMask(m_usSetMask & usThreadMask);
                     bReschedule = true;
 
                     // If the "clear" variant is set, then clear the bits in the mask
@@ -150,6 +154,7 @@ void EventFlag::Set(K_USHORT usMask_)
                 if ((usThreadMask & m_usSetMask) == usThreadMask)
                 {
                     pclPrev->SetEventFlagMode(EVENT_FLAG_PENDING_UNBLOCK);
+                    pclPrev->SetEventFlagMask(usThreadMask);
                     bReschedule = true;
 
                     // If the "clear" variant is set, then clear the bits in the mask

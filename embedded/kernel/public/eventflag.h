@@ -29,7 +29,19 @@ See license.txt for more information
 
 //---------------------------------------------------------------------------
 /*!
- * \brief The EventFlag class
+ * \brief The EventFlag class is a blocking object, similar to a semaphore or
+ * mutex, commonly used for synchronizing thread execution based on events
+ * occurring within the system.
+ *
+ * Each EventFlag object contains a 16-bit bitmask, which is used to trigger
+ * events on associated threads.  Threads wishing to block, waiting for
+ * a specific event to occur can wait on any pattern within this 16-bit bitmask
+ * to be set.  Here, we provide the ability for a thread to block, waiting
+ * for ANY bits in a specified mask to be set, or for ALL bits within a
+ * specific mask to be set.  Depending on how the object is configured, the
+ * bits that triggered the wakeup can be automatically cleared once a match
+ * has occurred.
+ *
  */
 class EventFlag : public BlockingObject
 {
@@ -44,24 +56,39 @@ public:
      * \param usMask_ - 16-bit bitmask to block on
      * \param eMode_ - EVENT_FLAG_ANY:  Thread will block on any of the bits in the mask
      *               - EVENT_FLAG_ALL:  Thread will block on all of the bits in the mask
+     * \return Bitmask condition that caused the thread to unblock, or 0 on error or timeout
      */
-    void Wait(K_USHORT usMask_, EventFlagOperation_t eMode_);
+    K_USHORT Wait(K_USHORT usMask_, EventFlagOperation_t eMode_);
+
+#if 0
+    /*!
+     * \brief Wait - Block a thread on the specific flags in this event flag group
+     * \param usMask_ - 16-bit bitmask to block on
+     * \param eMode_ - EVENT_FLAG_ANY:  Thread will block on any of the bits in the mask
+     *               - EVENT_FLAG_ALL:  Thread will block on all of the bits in the mask
+     * \param ulTimeMS_ - Time to block (in ms)
+     * \return Bitmask condition that caused the thread to unblock, or 0 on error or timeout
+     */
+    K_USHORT Wait(K_USHORT usMask_, EventFlagOperation_t eMode_, K_ULONG ulTimeMS_);
+
+#endif
 
     /*!
-     * \brief SetFlags
-     * \param usMask_
+     * \brief Set - Set additional flags in this object (logical OR).  This API can potentially
+     *              result in threads blocked on Wait() to be unblocked.
+     * \param usMask_ - Bitmask of flags to set.
      */
     void Set(K_USHORT usMask_);
 
     /*!
-     * \brief ClearFlags
-     * \param usMask_
+     * \brief ClearFlags - Clear a specific set of flags within this object, specific by bitmask
+     * \param usMask_ - Bitmask of flags to clear
      */
     void Clear(K_USHORT usMask_);
 
     /*!
-     * \brief GetMask
-     * \return
+     * \brief GetMask Returns the state of the 16-bit bitmask within this object
+     * \return The state of the 16-bit bitmask
      */
     K_USHORT GetMask();
 

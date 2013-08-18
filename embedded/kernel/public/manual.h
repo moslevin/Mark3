@@ -908,7 +908,9 @@ See license.txt for more information
       - Priority-inheritance on Mutex objects to prevent priority inversion 
       .
     - Synchronization Objects 
-      - Binary and counting Semaphore to coordinate thread execution 
+      - Binary and counting Semaphore to coordinate thread execution
+      - Mutexes with priority inheritance protocol
+      - Event flags with 16-bit bitfields for complex thread synchronization
       .
     - Efficient Timers
       - The RTOS is tickless, the OS only wakes up when a timer expires, not
@@ -1358,6 +1360,72 @@ See license.txt for more information
 	
 	\endcode 
 	
+    \section EVF Event Flags
+
+    Event Flags are another synchronization object, conceptually similar
+    to a semaphore.
+
+    Unlike a semaphore, however, the condition on which threads are unblocked
+    is determined by a more complex set of rules.  Each Event Flag object
+    contains a 16-bit field, and threads block, waiting for combinations of
+    bits within this field to become set.
+
+    A thread can wait on any pattern of bits from this field to be set, and
+    any number of threads can wait on any number of different patterns.  Threads
+    can wait on a single bit, multiple bits, or bits from within a subset of
+    bits within the field.
+
+    As a result, setting a single value in the flag can result in any number of
+    threads becoming unblocked simultaneously.  This mechanism is extremely
+    powerful, allowing for all sorts of complex, yet efficient, thread
+    synchronization schemes that can be created using a single shared object.
+
+    Note that Event Flags can be set from interrupts, but you cannot wait on
+    an event flag from within an interrupt.
+
+    Examples demonstrating the use of event flags are shown below.
+
+    \code
+
+        // Simple example showing a thread blocking on a multiple bits in the
+        // fields within an event flag.
+
+        EventFlag clEventFlag;
+
+        int main()
+        {
+            ...
+            clEventFlag.Init(); // Initialize event flag prior to use
+            ...
+        }
+
+        void MyInterrupt()
+        {
+            // Some interrupt corresponds to event 0x0020
+            clEventFlag.Set(0x0020);
+        }
+
+        void MyThreadFunc()
+        {
+            ...
+            while(1)
+            {
+                ...
+                K_USHORT usWakeCondition;
+
+                // Allow this thread to block on multiple flags
+                usWakeCondition = clEventFlag.Wait(0x00FF, EVENT_FLAG_ANY);
+
+                // Clear the event condition that caused the thread to wake (in this case,
+                // usWakeCondtion will equal 0x20)
+                clEventFlag.Clear(usWakeCondition);
+
+                // <do something>
+            }
+        }
+
+    \endcode
+
     \section MSG Messages
     
 	Sending messages between threads is the key means of synchronizing 
