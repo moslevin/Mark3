@@ -217,7 +217,8 @@ void EventFlag::Clear(K_USHORT usMask_)
 //---------------------------------------------------------------------------
 K_USHORT EventFlag::GetMask()
 {
-    // Return the presently held event flag values in this object
+    // Return the presently held event flag values in this object.  Ensure
+    // we get this within a critical section to guarantee atomicity.
     K_USHORT usReturn;
     CS_ENTER();
     usReturn = m_usSetMask;
