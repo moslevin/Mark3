@@ -38,6 +38,19 @@ See license.txt for more information
     #define K_ADDR      uint32_t
 #endif
 
+//---------------------------------------------------------------------------
 typedef void (*panic_func_t)( K_USHORT usPanicCode_ );
+
+//---------------------------------------------------------------------------
+typedef enum
+{
+    EVENT_FLAG_ALL,
+    EVENT_FLAG_ANY,
+    EVENT_FLAG_ALL_CLEAR,
+    EVENT_FLAG_ANY_CLEAR,
+    EVENT_FLAG_MODES,
+    EVENT_FLAG_PENDING_UNBLOCK
+} EventFlagOperation_t;
+
 
 #endif

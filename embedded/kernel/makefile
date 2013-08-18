@@ -11,6 +11,7 @@ LIBNAME=mark3
 CPP_SOURCE= \
 	blocking.cpp \
 	driver.cpp \
+        eventflag.cpp \
 	ll.cpp \
 	message.cpp \
 	mutex.cpp \

@@ -309,6 +309,36 @@ public:
 	*/
 	K_USHORT GetStackSlack();
 	
+#if KERNEL_USE_EVENTFLAG
+    /*!
+        \brief GetEventFlagMask returns the thread's current event-flag mask,
+              which is used in conjunction with the EventFlag blocking object
+              type.
+
+        \return A copy of the thread's event flag mask
+     */
+    K_USHORT GetEventFlagMask() { return m_usFlagMask; }
+
+    /*!
+        \brief SetEventFlagMask Sets the active event flag bitfield mask
+        \param usMask_
+     */
+    void SetEventFlagMask(K_USHORT usMask_) { m_usFlagMask = usMask_; }
+
+    /*!
+     * \brief SetEventFlagMode Sets the active event flag operation mode
+     * \param eMode_ Event flag operation mode, defines the logical operator
+     *               to apply to the event flag.
+     */
+    void SetEventFlagMode(EventFlagOperation_t eMode_ ) { m_eFlagMode = eMode_; }
+
+    /*!
+     * \brief GetEventFlagMode Returns the thread's event flag's operating mode
+     * \return The thread's event flag mode.
+     */
+    EventFlagOperation_t GetEventFlagMode() { return m_eFlagMode; }
+#endif
+
 	friend class ThreadPort;
 	
 private:
@@ -360,6 +390,14 @@ private:
     //! Thread name
     const K_CHAR *m_szName;
 #endif	
+
+#if KERNEL_USE_EVENTFLAG
+    //! Event-flag mask
+    K_USHORT m_usFlagMask;
+
+    //! Event-flag mode
+    EventFlagOperation_t m_eFlagMode;
+#endif
     
     //! Pointer to the thread-list where the thread currently resides
     ThreadList *m_pclCurrent;
