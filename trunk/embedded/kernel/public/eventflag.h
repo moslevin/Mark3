@@ -49,7 +49,7 @@ public:
     /*!
      * \brief Init Initializes the EventFlag object prior to use.
      */
-    void Init() { m_usSetMask = 0; m_clBlockList.Init(); }
+    void Init() { m_usSetMask = 0; m_clBlockList.Init(); m_bExpired = false;}
 
     /*!
      * \brief Wait - Block a thread on the specific flags in this event flag group
@@ -60,7 +60,7 @@ public:
      */
     K_USHORT Wait(K_USHORT usMask_, EventFlagOperation_t eMode_);
 
-#if 0
+#if KERNEL_USE_TIMERS
     /*!
      * \brief Wait - Block a thread on the specific flags in this event flag group
      * \param usMask_ - 16-bit bitmask to block on
@@ -71,6 +71,11 @@ public:
      */
     K_USHORT Wait(K_USHORT usMask_, EventFlagOperation_t eMode_, K_ULONG ulTimeMS_);
 
+    void WakeMe(Thread *pclOwner_);
+
+    void SetExpired(bool bExpired_) { m_bExpired = bExpired_; }
+
+    bool GetExpired()   { return m_bExpired; }
 #endif
 
     /*!
@@ -94,6 +99,10 @@ public:
 
 private:
     K_USHORT m_usSetMask;
+
+#if KERNEL_USE_TIMERS
+    bool m_bExpired;
+#endif
 };
 
 #endif //KERNEL_USE_EVENTFLAG
