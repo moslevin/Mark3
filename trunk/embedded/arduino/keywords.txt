@@ -15,6 +15,7 @@ MessageQueue	KEYWORD1
 ProfileTimer	KEYWORD1
 Scheduler	KEYWORD1
 Timer		KEYWORD1
+EventFlag	KEYWORD1
 
 #######################################
 # Methods and Functions (KEYWORD2)
@@ -93,6 +94,11 @@ SetOwner	KEYWORD2
 SetIntervalTicks	KEYWORD2
 SetIntervalSeconds	KEYWORD2
 SetIntervalUSeconds	KEYWORD2
+
+# eventflag.h
+Set	KEYWORD2
+Wait	KEYWORD2
+Clear	KEYWORD2
 
 #######################################
 # Constants (LITERAL1)
