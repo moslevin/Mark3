@@ -153,5 +153,6 @@ See license.txt for more information
 */
 #define KERNEL_USE_DEBUG				(0)
 
+#define KERNEL_USE_EVENTFLAG            (1)
 
 #endif
