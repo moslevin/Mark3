@@ -44,5 +44,8 @@ cp -f ./output/latex/refman.pdf ./Mark3/Docs
 cp -fR ./output/html ./Mark3/Docs
 
 ## Create an archive containing the exported source and docs
-zip -r Mark3.zip Mark3
+SVN_REV=`svn info | grep Revision | sed 's/Revision: //'`
+BUILD_DATE=`date +%C%y_%m_%d`
+ZIPNAME="Mark3_r"${SVN_REV}"_"${BUILD_DATE}".zip"
+zip -r ${ZIPNAME} Mark3
 
