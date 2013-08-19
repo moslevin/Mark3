@@ -28,11 +28,12 @@ See license.txt for more information
 Thread clThread1;
 Thread clThread2;
 
-K_UCHAR aucThreadStack1[160];
+K_UCHAR aucThreadStack1[256];
 K_UCHAR aucThreadStack2[160];
 
 EventFlag clFlagGroup;
 volatile K_UCHAR ucFlagCount = 0;
+volatile K_UCHAR ucTimeoutCount = 0;
 
 //---------------------------------------------------------------------------
 void WaitOnFlag1Any(void *unused_)
@@ -83,6 +84,47 @@ void WaitOnAll(void *mask_)
         ucFlagCount++;
         clFlagGroup.Clear(usMask);
     }
+}
+
+//---------------------------------------------------------------------------
+void TimedWait(void *time_)
+{
+    K_USHORT usRet;
+    K_USHORT usTime = *((K_USHORT*)time_);
+    usRet = clFlagGroup.Wait(0x0001, EVENT_FLAG_ALL, usTime);
+    if (usRet == 0x0001)
+    {
+        ucFlagCount++;
+    }
+    else if (usRet == 0x0000)
+    {
+        ucTimeoutCount++;
+    }
+    clFlagGroup.Clear(0x0001);
+    Scheduler::GetCurrentThread()->Exit();
+
+}
+
+
+//---------------------------------------------------------------------------
+void TimedWaitAll(void *time_)
+{
+    K_USHORT usRet;
+    K_USHORT usTime = *((K_USHORT*)time_);
+    while(1)
+    {
+        usRet = clFlagGroup.Wait(0x0001, EVENT_FLAG_ALL, usTime);
+        if (usRet == 0x0001)
+        {
+            ucFlagCount++;
+        }
+        else if (usRet == 0x0000)
+        {
+            ucTimeoutCount++;
+        }
+        clFlagGroup.Clear(0x0001);
+    }
+    Scheduler::GetCurrentThread()->Exit();
 }
 
 //===========================================================================
@@ -375,10 +417,131 @@ TEST(ut_flag_multiwait)
 TEST_END
 
 //===========================================================================
+TEST(ut_timedwait)
+{
+    K_USHORT usInterval;
+
+    // Test point - verify positive test case (no timeout, no premature
+    // unblocking)
+    ucTimeoutCount = 0;
+    ucFlagCount = 0;
+    usInterval = 200;
+
+    clFlagGroup.Init();
+
+    clThread1.Init(aucThreadStack1, 160, 7, TimedWait, (void*)&usInterval);
+    clThread1.Start();
+
+    Thread::Sleep(100);
+
+    EXPECT_EQUALS(ucTimeoutCount, 0);
+    EXPECT_EQUALS(ucFlagCount, 0);
+
+    clFlagGroup.Set(0x0001);
+
+    EXPECT_EQUALS(ucTimeoutCount, 0);
+    EXPECT_EQUALS(ucFlagCount, 1);
+
+
+    // Test point - verify negative test case (timeouts), followed by a
+    // positive test result.
+    ucTimeoutCount = 0;
+    ucFlagCount = 0;
+    usInterval = 200;
+
+    clFlagGroup.Init();
+    clFlagGroup.Clear(0xFFFF);
+
+    clThread1.Init(aucThreadStack1, 160, 7, TimedWait, (void*)&usInterval);
+    clThread1.Start();
+
+    Thread::Sleep(100);
+
+    EXPECT_EQUALS(ucTimeoutCount, 0);
+    EXPECT_EQUALS(ucFlagCount, 0);
+
+    Thread::Sleep(200);
+
+    EXPECT_EQUALS(ucTimeoutCount, 1);
+    EXPECT_EQUALS(ucFlagCount, 0);
+
+    // Test point - verify negative test case (timeouts), followed by a
+    // positive test result.
+    ucTimeoutCount = 0;
+    ucFlagCount = 0;
+    usInterval = 200;
+
+    clFlagGroup.Init();
+    clFlagGroup.Clear(0xFFFF);
+
+    clThread1.Init(aucThreadStack1, 160, 7, TimedWaitAll, (void*)&usInterval);
+    clThread1.Start();
+
+    Thread::Sleep(210);
+
+    EXPECT_EQUALS(ucTimeoutCount, 1);
+    EXPECT_EQUALS(ucFlagCount, 0);
+
+    Thread::Sleep(210);
+
+    EXPECT_EQUALS(ucTimeoutCount, 2);
+    EXPECT_EQUALS(ucFlagCount, 0);
+
+    Thread::Sleep(210);
+
+    EXPECT_EQUALS(ucTimeoutCount, 3);
+    EXPECT_EQUALS(ucFlagCount, 0);
+
+    Thread::Sleep(210);
+
+    EXPECT_EQUALS(ucTimeoutCount, 4);
+    EXPECT_EQUALS(ucFlagCount, 0);
+
+    Thread::Sleep(210);
+
+    EXPECT_EQUALS(ucTimeoutCount, 5);
+    EXPECT_EQUALS(ucFlagCount, 0);
+
+    Thread::Sleep(80);
+    clFlagGroup.Set(0x0001);
+
+    EXPECT_EQUALS(ucTimeoutCount, 5);
+    EXPECT_EQUALS(ucFlagCount, 1);
+
+    Thread::Sleep(80);
+    clFlagGroup.Set(0x0001);
+
+    EXPECT_EQUALS(ucTimeoutCount, 5);
+    EXPECT_EQUALS(ucFlagCount, 2);
+
+    Thread::Sleep(80);
+    clFlagGroup.Set(0x0001);
+
+    EXPECT_EQUALS(ucTimeoutCount, 5);
+    EXPECT_EQUALS(ucFlagCount, 3);
+
+    Thread::Sleep(80);
+    clFlagGroup.Set(0x0001);
+
+    EXPECT_EQUALS(ucTimeoutCount, 5);
+    EXPECT_EQUALS(ucFlagCount, 4);
+
+    Thread::Sleep(80);
+    clFlagGroup.Set(0x0001);
+
+    EXPECT_EQUALS(ucTimeoutCount, 5);
+    EXPECT_EQUALS(ucFlagCount, 5);
+
+
+}
+TEST_END
+
+//===========================================================================
 // Test Whitelist Goes Here
 //===========================================================================
 TEST_CASE_START
-  TEST_CASE(ut_waitany),
-  TEST_CASE(ut_waitall),
-  TEST_CASE(ut_flag_multiwait),
+  //TEST_CASE(ut_waitany),
+  //TEST_CASE(ut_waitall),
+  //TEST_CASE(ut_flag_multiwait),
+  TEST_CASE(ut_timedwait),
 TEST_CASE_END

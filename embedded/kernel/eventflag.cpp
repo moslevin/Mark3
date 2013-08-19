@@ -22,12 +22,49 @@ See license.txt for more information
 #include "thread.h"
 #include "eventflag.h"
 
+#if KERNEL_USE_EVENTFLAG
+
+#if KERNEL_USE_TIMERS
+#include "timerlist.h"
+//---------------------------------------------------------------------------
+void TimedEventFlag_Callback(Thread *pclOwner_, void *pvData_)
+{
+    EventFlag *pclEventFlag = static_cast<EventFlag*>(pvData_);
+
+    pclEventFlag->WakeMe(pclOwner_);
+    pclEventFlag->SetExpired(true);
+    pclOwner_->SetEventFlagMask(0);
+
+    if (pclOwner_->GetPriority() > Scheduler::GetCurrentThread()->GetPriority())
+    {
+        Thread::Yield();
+    }
+}
+
+//---------------------------------------------------------------------------
+void EventFlag::WakeMe(Thread *pclChosenOne_)
+{
+    UnBlock(pclChosenOne_);
+}
+
 //---------------------------------------------------------------------------
 K_USHORT EventFlag::Wait(K_USHORT usMask_, EventFlagOperation_t eMode_)
+{
+    return Wait(usMask_, eMode_, 0);
+}
+K_USHORT EventFlag::Wait(K_USHORT usMask_, EventFlagOperation_t eMode_, K_ULONG ulTimeMS_)
+#else
+K_USHORT EventFlag::Wait(K_USHORT usMask_, EventFlagOperation_t eMode_)
+#endif
 {
     bool bThreadYield = false;
     bool bMatch = false;
     Thread *pclThread = Scheduler::GetCurrentThread();
+
+#if KERNEL_USE_TIMERS
+    Timer clEventTimer;
+    m_bExpired = false;
+#endif
 
     // Ensure we're operating in a critical section while we determine
     // whether or not we need to block the current thread on this object.
@@ -35,7 +72,7 @@ K_USHORT EventFlag::Wait(K_USHORT usMask_, EventFlagOperation_t eMode_)
 
     // Check to see whether or not the current mask matches any of the
     // desired bits.
-    pclThread->SetEventFlagMask(usMask_;);
+    pclThread->SetEventFlagMask(usMask_);
 
     if ((eMode_ == EVENT_FLAG_ALL) || (eMode_ == EVENT_FLAG_ALL_CLEAR))
     {
@@ -65,6 +102,13 @@ K_USHORT EventFlag::Wait(K_USHORT usMask_, EventFlagOperation_t eMode_)
         pclThread->SetEventFlagMask(usMask_);
         pclThread->SetEventFlagMode(eMode_);
 
+#if KERNEL_USE_TIMERS
+        if (ulTimeMS_)
+        {
+            clEventTimer.Start(0, ulTimeMS_, TimedEventFlag_Callback, (void*)this);
+        }
+#endif
+
         // Add the thread to the object's block-list.
         Block(pclThread);
 
@@ -83,6 +127,13 @@ K_USHORT EventFlag::Wait(K_USHORT usMask_, EventFlagOperation_t eMode_)
 
     // Exit the critical section and return back to normal execution
     CS_EXIT();
+
+#if KERNEL_USE_TIMERS
+    if (ulTimeMS_ && bThreadYield)
+    {
+        clEventTimer.Stop();
+    }
+#endif
 
     //!! If the Yield operation causes a new thread to be chosen, there will
     //!! Be a context switch at the above CS_EXIT().  The original calling
@@ -230,3 +281,5 @@ K_USHORT EventFlag::GetMask()
     CS_EXIT();
     return usReturn;
 }
+
+#endif // KERNEL_USE_EVENTFLAG
