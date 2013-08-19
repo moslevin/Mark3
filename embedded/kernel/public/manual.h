@@ -909,7 +909,6 @@ See license.txt for more information
       .
     - Synchronization Objects 
       - Binary and counting Semaphore to coordinate thread execution
-      - Mutexes with priority inheritance protocol
       - Event flags with 16-bit bitfields for complex thread synchronization
       .
     - Efficient Timers
@@ -1417,7 +1416,7 @@ See license.txt for more information
                 usWakeCondition = clEventFlag.Wait(0x00FF, EVENT_FLAG_ANY);
 
                 // Clear the event condition that caused the thread to wake (in this case,
-                // usWakeCondtion will equal 0x20)
+                // usWakeCondtion will equal 0x20 when triggered from the interrupt above)
                 clEventFlag.Clear(usWakeCondition);
 
                 // <do something>
