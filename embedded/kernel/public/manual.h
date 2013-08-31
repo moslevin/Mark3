@@ -1609,7 +1609,7 @@ See license.txt for more information
 	then be imported into an application using the linker without having to 
 	copy-and-paste files on a module-by-module basis. Applications built 
 	during this process can then be loaded onto a device directly, without 
-	requiring a GUI-based IDE. As a result, Mark2 integrates well with 3rd 
+	requiring a GUI-based IDE. As a result, Mark3 integrates well with 3rd 
 	party tools for continuous-integration and automated testing. 
 
 	This modular framework allows for large volumes of libraries and binaries
@@ -1622,18 +1622,18 @@ See license.txt for more information
 	
 	\section BUILDLAYOUT Source Layout
 	
-	One key aspect of Mark2 is that system features are organized into 
+	One key aspect of Mark3 is that system features are organized into 
 	their own separate modules. These modules are further grouped 
 	together into folders based on the type of features represented: 
 
 	\verbatim
-	Root             Base folder, contains recursive makefiles for build system
-        bootloader   Mark2 Bootloader code for AVR
+	Root         Base folder, contains recursive makefiles for build system
+        bootloader   Mark3 Bootloader code for AVR
         build        Makefile support for various platforms
         doc          Documentation (including this)
         drivers      Device driver code
         example      Example applications					
-        kernel       Basic Mark2 Components (the focus of this manual)			
+        kernel       Basic Mark3 Components (the focus of this manual)			
             cpu      CPU-specific porting code
         services     Utility code and services, extended system features
         stage        Staging directory, where the build system places artifacts
