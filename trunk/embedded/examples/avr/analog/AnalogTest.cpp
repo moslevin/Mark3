@@ -79,7 +79,7 @@ K_USHORT AnalogRead(K_UCHAR ucChannel_)
 
     // Read the results from the registers, and assemble into a single int
     ucLow  = ADCL;
-    ucHight = ADCH;
+    ucHigh = ADCH;
 
     usRet = (ucHigh << 8) | ucLow;
     return usRet;
@@ -92,16 +92,22 @@ void AppThread(void *unused_)
     K_UCHAR ucChannel = 0;
     K_CHAR acStrBuf[6];
 
+    // Grab the serial driver
     Driver *my_uart = DriverList::FindByPath("/dev/tty");
 
+    // Set up the serial driver's buffers
     my_uart->Control( CMD_SET_BUFFERS, aucRxData, UART_RX_SIZE,
                                          aucTxData, UART_TX_SIZE);
+    // Open the driver
     my_uart->Open();
 
+    // Initialize the AtoD code
     AnalogInit();
 	
+    // Loop through each of the AtoD channels in sequence and print out the
+    // values to the serial port
 	while(1)
-	{        
+    {
         usRetVal = AnalogRead(ucChannel);
 
         MemUtil::DecimalToString(ucChannel, acStrBuf);
@@ -114,7 +120,7 @@ void AppThread(void *unused_)
 
         ucChannel = ( ucChannel + 1 ) & 0x0F;
 
-        Thread::Sleep(1000);
+        Thread::Sleep(10);
 	}
 }
 //---------------------------------------------------------------------------
