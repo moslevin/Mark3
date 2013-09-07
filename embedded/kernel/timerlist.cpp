@@ -51,7 +51,7 @@ TimerList TimerScheduler::m_clTimerList;
 void TimerList::Init(void)
 {
     m_bTimerActive = 0;    
-    m_ulNextWakeup = 0;
+    m_ulNextWakeup = 0;    
 }
 
 //---------------------------------------------------------------------------
@@ -136,7 +136,7 @@ void TimerList::Process(void)
 			if (pclNode->m_ucFlags & TIMERLIST_FLAG_ACTIVE)
 			{
 				// Did the timer expire?
-				if (pclNode->m_ulTimeLeft <= m_ulNextWakeup)
+                if (pclNode->m_ulTimeLeft <= m_ulNextWakeup)
 				{
 					// Yes - set the "callback" flag - we'll execute the callbacks later
 					pclNode->m_ucFlags |= TIMERLIST_FLAG_CALLBACK;
@@ -154,10 +154,11 @@ void TimerList::Process(void)
 						// I think we're good though...						
 						pclNode->m_ulTimeLeft = pclNode->m_ulInterval;
 						
-						// If the time remaining is less than the expiry, set the new expiry.
-						if (pclNode->m_ulTimeLeft < ulNewExpiry)
+                        // If the time remaining (plus the length of the tolerance interval)
+                        // is less than the next expiry interval, set the next expiry interval.
+                        if ((pclNode->m_ulTimeLeft + pclNode->m_ulTimerTolerance) < ulNewExpiry)
 						{
-							ulNewExpiry = pclNode->m_ulTimeLeft;
+                            ulNewExpiry = pclNode->m_ulTimeLeft + pclNode->m_ulTimerTolerance;
 						}
 					}
 				}
@@ -170,7 +171,6 @@ void TimerList::Process(void)
 						ulNewExpiry = pclNode->m_ulTimeLeft;
 					}
 				}
-            
 			}
 			pclNode = static_cast<Timer*>(pclNode->GetNext());        
 		}
@@ -188,7 +188,7 @@ void TimerList::Process(void)
 				pclNode->m_pfCallback( pclNode->m_pclOwner, pclNode->m_pvData );
 				pclNode->m_ucFlags &= ~TIMERLIST_FLAG_CALLBACK;
 			
-				// If this was a one-shot timer, let's remove it.
+                // If this was a one-shot timer, let's remove it.
 				if (pclNode->m_ucFlags & TIMERLIST_FLAG_ONE_SHOT)
 				{
 					pclPrev = pclNode;
@@ -250,6 +250,13 @@ void Timer::Start( K_UCHAR bRepeat_, K_ULONG ulIntervalMs_, TimerCallback_t pfCa
 }
 
 //---------------------------------------------------------------------------
+void Timer::Start( K_UCHAR bRepeat_, K_ULONG ulIntervalMs_, K_ULONG ulToleranceMs_, TimerCallback_t pfCallback_, void *pvData_ )
+{
+    m_ulTimerTolerance = ulToleranceMs_;
+    Start(bRepeat_, ulIntervalMs_, pfCallback_, pvData_);
+}
+
+//---------------------------------------------------------------------------
 void Timer::Stop()
 {
     TimerScheduler::Remove(this);
@@ -280,5 +287,12 @@ void Timer::SetIntervalUSeconds( K_ULONG ulUSeconds_)
 {
 	m_ulInterval = USECONDS_TO_TICKS(ulUSeconds_) - TL_FUDGE_FACTOR;
 }
+
+//---------------------------------------------------------------------------
+void Timer::SetTolerance(K_ULONG ulTicks_)
+{
+    m_ulTimerTolerance = ulTicks_;
+}
+
 
 #endif //KERNEL_USE_TIMERS
