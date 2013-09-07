@@ -81,14 +81,20 @@ public:
 	/*!
 		Default Constructor - zero-initializes all internal data.
 	*/
-	Timer(){ m_ulInterval = 0; m_ulTimeLeft = 0; m_ucFlags = 0; }
+    Timer(){ m_ulInterval = 0; m_ulTimerTolerance = 0; m_ulTimeLeft = 0; m_ucFlags = 0; }
 	
     /*!
         Start a timer using default ownership, using repeats as an option, and 
         millisecond resolution.
     */
 	void Start( K_UCHAR bRepeat_, K_ULONG ulIntervalMs_, TimerCallback_t pfCallback_, void *pvData_ );
-	
+
+    /*!
+        Start a timer using default ownership, using repeats as an option, and
+        millisecond resolution.
+    */
+    void Start( K_UCHAR bRepeat_, K_ULONG ulIntervalMs_, K_ULONG ulToleranceMs_, TimerCallback_t pfCallback_, void *pvData_ );
+
     /*!
         Stop a timer already in progress.   Has no effect on timers that have
 		already been stopped.
@@ -169,6 +175,17 @@ public:
         \param ulUSeconds_ Time in microseconds
 	*/
 	void SetIntervalUSeconds(K_ULONG ulUSeconds_);
+
+    /*!
+        \fn void SetTolerance(K_ULONG ulTicks_)
+
+        Set the timer's maximum tolerance in order to synchronize timer
+        processing with other timers in the system.
+
+        \param ulTicks_ Maximum tolerance in ticks
+
+    */
+    void SetTolerance(K_ULONG ulTicks_);
 	
 private:
     
@@ -185,6 +202,9 @@ private:
     
     //! Time remaining on the timer
     K_ULONG m_ulTimeLeft;
+
+    //! Maximum tolerance (used for timer harmonization)
+    K_ULONG m_ulTimerTolerance;
 
     //! Pointer to the owner thread
     Thread  *m_pclOwner;
