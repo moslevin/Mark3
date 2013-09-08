@@ -28,8 +28,8 @@ See license.txt for more information
 //---------------------------------------------------------------------------
 void KernelSWI::Config(void)
 {
-    PORTD &= ~0x04; // Clear INT0
-    DDRD |= 0x04;    // Set PortD, bit 2 (INT0) As Output
+    PORTD &= ~0x01; // Clear INT0
+    DDRD |= 0x01;    // Set PortD, bit 0 (INT0) As Output
     EICRA |= (1 << ISC00) | (1 << ISC01);    // Rising edge on INT0
 }
 
@@ -78,7 +78,7 @@ void KernelSWI::Trigger(void)
 {
     //if(Thread_IsSchedulerEnabled())
     {
-        PORTD &= ~0x04;
-        PORTD |= 0x04;    
+        PORTD &= ~0x01;
+        PORTD |= 0x01;
     }    
 }
