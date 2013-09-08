@@ -252,7 +252,7 @@ void Timer::Start( K_UCHAR bRepeat_, K_ULONG ulIntervalMs_, TimerCallback_t pfCa
 //---------------------------------------------------------------------------
 void Timer::Start( K_UCHAR bRepeat_, K_ULONG ulIntervalMs_, K_ULONG ulToleranceMs_, TimerCallback_t pfCallback_, void *pvData_ )
 {
-    m_ulTimerTolerance = ulToleranceMs_;
+    m_ulTimerTolerance = MSECONDS_TO_TICKS(ulToleranceMs_);
     Start(bRepeat_, ulIntervalMs_, pfCallback_, pvData_);
 }
 
