@@ -121,6 +121,7 @@ void TimeSemFunction(void *param_)
 TEST(ut_semaphore_timed)
 {
     Semaphore clTestSem;
+    Semaphore clTestSem2;
 
     clTestSem.Init(0,1);
 
@@ -129,15 +130,17 @@ TEST(ut_semaphore_timed)
 
     EXPECT_FALSE( clTestSem.Pend(10) );
 
+    Thread::Sleep(20);
+
     // Pretty nuanced - we can only re-init the semaphore under the knowledge
     // that there's nothing blocking on it already...  don't do this in
     // production
-    clTestSem.Init(0,1);
+    clTestSem2.Init(0,1);
 
-    clThread.Init(aucStack, 256, 7, TimeSemFunction, (void*)&clTestSem);
+    clThread.Init(aucStack, 256, 7, TimeSemFunction, (void*)&clTestSem2);
     clThread.Start();
 
-    EXPECT_TRUE( clTestSem.Pend(30) );
+    EXPECT_TRUE( clTestSem2.Pend(30) );
 
 }
 TEST_END

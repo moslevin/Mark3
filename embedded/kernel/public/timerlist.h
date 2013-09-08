@@ -86,12 +86,24 @@ public:
     /*!
         Start a timer using default ownership, using repeats as an option, and 
         millisecond resolution.
+
+        \param bRepeat_ 0 - timer is one-shot.  1 - timer is repeating.
+        \param ulIntervalMs_ - Interval of the timer in miliseconds
+        \param pfCallback_ - Function to call on timer expiry
+        \param pvData_ - Data to pass into the callback function
     */
 	void Start( K_UCHAR bRepeat_, K_ULONG ulIntervalMs_, TimerCallback_t pfCallback_, void *pvData_ );
 
     /*!
         Start a timer using default ownership, using repeats as an option, and
         millisecond resolution.
+
+        \param bRepeat_ 0 - timer is one-shot.  1 - timer is repeating.
+        \param ulIntervalMs_ - Interval of the timer in miliseconds
+        \param ulToleranceMs - Allow the timer expiry to be delayed by an additional maximum time, in
+                               order to have as many timers expire at the same time as possible.
+        \param pfCallback_ - Function to call on timer expiry
+        \param pvData_ - Data to pass into the callback function
     */
     void Start( K_UCHAR bRepeat_, K_ULONG ulIntervalMs_, K_ULONG ulToleranceMs_, TimerCallback_t pfCallback_, void *pvData_ );
 
