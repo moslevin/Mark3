@@ -34,7 +34,7 @@ typedef enum
     //--[Mandatory for a display driver]-------------------------------------
     DISPLAY_EVENT_SET_PIXEL = 0x00,    
     DISPLAY_EVENT_GET_PIXEL,
-	
+    
     //--[Optional if supported in hardware]----------------------------------
     DISPLAY_EVENT_CLEAR,
     DISPLAY_EVENT_LINE,
@@ -45,7 +45,7 @@ typedef enum
     DISPLAY_EVENT_STAMP,
     DISPLAY_EVENT_TEXT,    
     DISPLAY_EVENT_MOVE,
-	DISPLAY_EVENT_POLY
+    DISPLAY_EVENT_POLY
 } DisplayEvent_t;
 
 //---------------------------------------------------------------------------

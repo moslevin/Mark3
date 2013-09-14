@@ -27,17 +27,17 @@ See license.txt for more information
 
 //---------------------------------------------------------------------------
 #if defined __FILE_ID__
-	#undef __FILE_ID__
+    #undef __FILE_ID__
 #endif
-#define __FILE_ID__ 	BLOCKING_CPP
+#define __FILE_ID__     BLOCKING_CPP
 
 #if KERNEL_USE_SEMAPHORE || KERNEL_USE_MUTEX
 //---------------------------------------------------------------------------
 void BlockingObject::Block(Thread *pclThread_)
 {
-	KERNEL_ASSERT( pclThread_ );
-	KERNEL_TRACE_1( STR_THREAD_BLOCK_1, (K_USHORT)pclThread_->GetID() );
-	
+    KERNEL_ASSERT( pclThread_ );
+    KERNEL_TRACE_1( STR_THREAD_BLOCK_1, (K_USHORT)pclThread_->GetID() );
+    
     // Remove the thread from its current thread list (the "owner" list)
     // ... And add the thread to this object's block list    
     Scheduler::Remove(pclThread_);
@@ -45,16 +45,16 @@ void BlockingObject::Block(Thread *pclThread_)
     
     // Set the "current" list location to the blocklist for this thread
     pclThread_->SetCurrent(&m_clBlockList);
-	
+    
 }
 
 //---------------------------------------------------------------------------
 void BlockingObject::UnBlock(Thread *pclThread_)
 {
-	KERNEL_ASSERT( pclThread_ );
-	KERNEL_TRACE_1( STR_THREAD_UNBLOCK_1, (K_USHORT)pclThread_->GetID() );
+    KERNEL_ASSERT( pclThread_ );
+    KERNEL_TRACE_1( STR_THREAD_UNBLOCK_1, (K_USHORT)pclThread_->GetID() );
     
-	// Remove the thread from its current thread list (the "owner" list)
+    // Remove the thread from its current thread list (the "owner" list)
     pclThread_->GetCurrent()->Remove(pclThread_);
     
     // Put the thread back in its active owner's list.  This is usually

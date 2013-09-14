@@ -35,7 +35,7 @@ See license.txt for more information
 //! Stack pointer define
 #define SPH_        0x3E
 #define SPL_        0x3D
-#define RAMPZ_		0x3B
+#define RAMPZ_        0x3B
 
 //---------------------------------------------------------------------------
 //! Macro to find the top of a stack given its size and top address
@@ -172,8 +172,8 @@ public:
        
         Function to start the scheduler, initial threads, etc.
     */
-	static void StartThreads();
-	friend class Thread;
+    static void StartThreads();
+    friend class Thread;
 private:
 
     /*!
@@ -183,7 +183,7 @@ private:
         
         \param pstThread_ Pointer to the thread to initialize
     */
-	static void InitStack(Thread *pstThread_);
+    static void InitStack(Thread *pstThread_);
 };
 
 #endif //__ThreadPORT_H_

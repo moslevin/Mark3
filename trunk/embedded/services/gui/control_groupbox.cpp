@@ -12,8 +12,8 @@ Copyright (c) 2012 Funkenstein Software Consulting, all rights reserved.
 See license.txt for more information
 ===========================================================================*/
 /*!
-	\file control_groupbox.cpp
-	\brief GUI GroupBox Control Implementation
+    \file control_groupbox.cpp
+    \brief GUI GroupBox Control Implementation
 */
 
 #include "gui.h"
@@ -29,12 +29,12 @@ See license.txt for more information
 //---------------------------------------------------------------------------
 void GroupBoxControl::Draw()
 {
-	GUI_DEBUG_PRINT( "GroupBoxControl::Draw()\n");
-	GraphicsDriver *pclDriver = GetParentWindow()->GetDriver();
-	K_USHORT usX, usY;
+    GUI_DEBUG_PRINT( "GroupBoxControl::Draw()\n");
+    GraphicsDriver *pclDriver = GetParentWindow()->GetDriver();
+    K_USHORT usX, usY;
     K_USHORT usTextWidth;
 
-	GetControlOffset(&usX, &usY);
+    GetControlOffset(&usX, &usY);
 
     // Draw the background panel
     {

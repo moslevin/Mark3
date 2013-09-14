@@ -12,14 +12,14 @@ Copyright (c) 2012 Funkenstein Software Consulting, all rights reserved.
 See license.txt for more information
 ===========================================================================*/
 /*!
-	\file control_gamepanel.h
-	\brief GUI Game Panel Control
+    \file control_gamepanel.h
+    \brief GUI Game Panel Control
 
-	A game panel is a blank UI element whose dimensions define the 
-	dimensions of a gameplay surface.  The element triggers a draw() call
-	on every tick event (which can be used to kick a game's state machine).
-	The control also responds to joystick events, which can then be
-	used to control the game.
+    A game panel is a blank UI element whose dimensions define the 
+    dimensions of a gameplay surface.  The element triggers a draw() call
+    on every tick event (which can be used to kick a game's state machine).
+    The control also responds to joystick events, which can then be
+    used to control the game.
 */
 
 #ifndef __CONTROL_GAMEPANEL_H__

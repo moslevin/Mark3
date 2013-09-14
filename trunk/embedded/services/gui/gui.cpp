@@ -12,8 +12,8 @@ Copyright (c) 2012 Funkenstein Software Consulting, all rights reserved.
 See license.txt for more information
 ===========================================================================*/
 /*!
-	\file gui.cpp
-	\brief Graphical User Interface classes and data structure definitions.
+    \file gui.cpp
+    \brief Graphical User Interface classes and data structure definitions.
 */
 
 #include "message.h"
@@ -26,101 +26,101 @@ See license.txt for more information
 //---------------------------------------------------------------------------
 void GuiWindow::AddControl( GuiControl *pclControl_, GuiControl *pclParent_ )
 {
-	GUI_DEBUG_PRINT("GuiWindow::AddControl\n");
+    GUI_DEBUG_PRINT("GuiWindow::AddControl\n");
 
-	m_clControlList.Add(static_cast<LinkListNode*>(pclControl_));
-	m_pclInFocus = pclControl_;
-	m_ucControlCount++;
+    m_clControlList.Add(static_cast<LinkListNode*>(pclControl_));
+    m_pclInFocus = pclControl_;
+    m_ucControlCount++;
 
-	pclControl_->SetParentWindow(this);
-	pclControl_->SetParentControl(pclParent_);
+    pclControl_->SetParentWindow(this);
+    pclControl_->SetParentControl(pclParent_);
 }
 
 //---------------------------------------------------------------------------
 void GuiWindow::RemoveControl( GuiControl *pclControl_ )
 {
-	GUI_DEBUG_PRINT("GuiWindow::RemoveControl\n");
+    GUI_DEBUG_PRINT("GuiWindow::RemoveControl\n");
 
-	if (pclControl_->GetPrev())
-	{
-		m_pclInFocus = static_cast<GuiControl*>(pclControl_->GetPrev());
-	}
-	else if (pclControl_->GetNext())
-	{
-		m_pclInFocus = static_cast<GuiControl*>(pclControl_->GetNext());
-	}
-	else
-	{
-		m_pclInFocus = NULL;
-	}
-	m_clControlList.Remove(static_cast<LinkListNode*>(pclControl_));
-	m_ucControlCount--;
+    if (pclControl_->GetPrev())
+    {
+        m_pclInFocus = static_cast<GuiControl*>(pclControl_->GetPrev());
+    }
+    else if (pclControl_->GetNext())
+    {
+        m_pclInFocus = static_cast<GuiControl*>(pclControl_->GetNext());
+    }
+    else
+    {
+        m_pclInFocus = NULL;
+    }
+    m_clControlList.Remove(static_cast<LinkListNode*>(pclControl_));
+    m_ucControlCount--;
 }
 
 //---------------------------------------------------------------------------
 K_UCHAR GuiWindow::GetMaxZOrder()
 {
-	GUI_DEBUG_PRINT("GuiWindow::GetMaxZOrder\n");
+    GUI_DEBUG_PRINT("GuiWindow::GetMaxZOrder\n");
 
-	LinkListNode *pclTempNode;
-	K_UCHAR ucZ = 0;
-	K_UCHAR ucTempZ;
+    LinkListNode *pclTempNode;
+    K_UCHAR ucZ = 0;
+    K_UCHAR ucTempZ;
 
-	pclTempNode = m_clControlList.GetHead();
+    pclTempNode = m_clControlList.GetHead();
 
-	while (pclTempNode)
-	{
-		ucTempZ = (static_cast<GuiControl*>(pclTempNode))->GetZOrder();
-		if (ucTempZ > ucZ)
-		{
-			ucZ = ucTempZ;
-		}
-		pclTempNode = pclTempNode->GetNext();
-	}
+    while (pclTempNode)
+    {
+        ucTempZ = (static_cast<GuiControl*>(pclTempNode))->GetZOrder();
+        if (ucTempZ > ucZ)
+        {
+            ucZ = ucTempZ;
+        }
+        pclTempNode = pclTempNode->GetNext();
+    }
 
-	return ucZ;
+    return ucZ;
 }
 
 //---------------------------------------------------------------------------
 void GuiWindow::Redraw( K_BOOL bRedrawAll_ )
 {
-	GUI_DEBUG_PRINT("GuiWindow::Redraw\n");
+    GUI_DEBUG_PRINT("GuiWindow::Redraw\n");
 
-	K_UCHAR ucControlsLeft = m_ucControlCount;
-	K_UCHAR ucCurrentZ = 0;
-	K_UCHAR ucMaxZ;
+    K_UCHAR ucControlsLeft = m_ucControlCount;
+    K_UCHAR ucCurrentZ = 0;
+    K_UCHAR ucMaxZ;
 
-	ucMaxZ = GetMaxZOrder();
+    ucMaxZ = GetMaxZOrder();
 
-	// While there are still controls left to process (and we're less than
-	// the maximum Z-order, just a sanity check.), redraw each object that
-	// has its stale flag set, or all controls if the bRedrawAll_ parameter
-	// is true.
-	while (ucControlsLeft && (ucCurrentZ <= ucMaxZ))
-	{
-		LinkListNode *pclTempNode;
+    // While there are still controls left to process (and we're less than
+    // the maximum Z-order, just a sanity check.), redraw each object that
+    // has its stale flag set, or all controls if the bRedrawAll_ parameter
+    // is true.
+    while (ucControlsLeft && (ucCurrentZ <= ucMaxZ))
+    {
+        LinkListNode *pclTempNode;
 
-		pclTempNode = m_clControlList.GetHead();
-		while (pclTempNode)
-		{
-			GuiControl* pclTempControl = static_cast<GuiControl*>(pclTempNode);
-			if (pclTempControl->GetZOrder() == ucCurrentZ)
-			{
-				if ((bRedrawAll_) || (pclTempControl->IsStale()))
-				{
-					pclTempControl->Draw();
-					pclTempControl->ClearStale();
-				}
+        pclTempNode = m_clControlList.GetHead();
+        while (pclTempNode)
+        {
+            GuiControl* pclTempControl = static_cast<GuiControl*>(pclTempNode);
+            if (pclTempControl->GetZOrder() == ucCurrentZ)
+            {
+                if ((bRedrawAll_) || (pclTempControl->IsStale()))
+                {
+                    pclTempControl->Draw();
+                    pclTempControl->ClearStale();
+                }
 
-				ucControlsLeft--;
-			}
+                ucControlsLeft--;
+            }
 
-			pclTempNode = pclTempNode->GetNext();
-		}
-		ucCurrentZ++;
-	}
-	GUI_DEBUG_PRINT("  Current Z: %d\n", ucCurrentZ);
-	GUI_DEBUG_PRINT("  Controls Left: %d\n", ucControlsLeft);
+            pclTempNode = pclTempNode->GetNext();
+        }
+        ucCurrentZ++;
+    }
+    GUI_DEBUG_PRINT("  Current Z: %d\n", ucCurrentZ);
+    GUI_DEBUG_PRINT("  Controls Left: %d\n", ucControlsLeft);
 }
 
 //---------------------------------------------------------------------------
@@ -244,40 +244,40 @@ void GuiWindow::InvalidateRegion( K_USHORT usLeft_, K_USHORT usTop_, K_USHORT us
 //---------------------------------------------------------------------------
 void GuiWindow::ProcessEvent( GuiEvent_t *pstEvent_ )
 {
-	GUI_DEBUG_PRINT("GuiWindow::ProcessEvent\n");
+    GUI_DEBUG_PRINT("GuiWindow::ProcessEvent\n");
 
-	// If the event is for broadcast - send it to all controls,
-	// without regard to order.
-	if ((TARGET_ID_BROADCAST == pstEvent_->ucTargetID)
+    // If the event is for broadcast - send it to all controls,
+    // without regard to order.
+    if ((TARGET_ID_BROADCAST == pstEvent_->ucTargetID)
         || (TARGET_ID_BROADCAST_Z == pstEvent_->ucTargetID))
-	{
-		GUI_DEBUG_PRINT("  TARGET_ID_BROADCAST(_Z)\n");
+    {
+        GUI_DEBUG_PRINT("  TARGET_ID_BROADCAST(_Z)\n");
 
-		LinkListNode *pclTempNode;
-		pclTempNode = m_clControlList.GetHead();
+        LinkListNode *pclTempNode;
+        pclTempNode = m_clControlList.GetHead();
 
-		while (pclTempNode)
-		{
-			GuiReturn_t eRet;
-			eRet = (static_cast<GuiControl*>(pclTempNode))->ProcessEvent(pstEvent_);
-			if (GUI_EVENT_CONSUMED == eRet)
-			{
-				break;
-			}
-			pclTempNode = pclTempNode->GetNext();
-		}
-	}
-	// Send the event only to the currently-selected object.
-	else if (TARGET_ID_FOCUS == pstEvent_->ucTargetID)
-	{
-		GUI_DEBUG_PRINT("  TARGET_ID_FOCUS\n");
-		GuiReturn_t eReturn = GUI_EVENT_OK;
+        while (pclTempNode)
+        {
+            GuiReturn_t eRet;
+            eRet = (static_cast<GuiControl*>(pclTempNode))->ProcessEvent(pstEvent_);
+            if (GUI_EVENT_CONSUMED == eRet)
+            {
+                break;
+            }
+            pclTempNode = pclTempNode->GetNext();
+        }
+    }
+    // Send the event only to the currently-selected object.
+    else if (TARGET_ID_FOCUS == pstEvent_->ucTargetID)
+    {
+        GUI_DEBUG_PRINT("  TARGET_ID_FOCUS\n");
+        GuiReturn_t eReturn = GUI_EVENT_OK;
 
         // Try to let the control process the event on its own
-		if (m_pclInFocus)
-		{
-			eReturn = m_pclInFocus->ProcessEvent(pstEvent_);
-		}
+        if (m_pclInFocus)
+        {
+            eReturn = m_pclInFocus->ProcessEvent(pstEvent_);
+        }
 
         // If the event was not consumed, use default logic to process the event
         if (GUI_EVENT_CONSUMED != eReturn)
@@ -306,17 +306,17 @@ void GuiWindow::ProcessEvent( GuiEvent_t *pstEvent_ )
                 }
             }
         }
-	}
-	else if (TARGET_ID_HIGH_Z == pstEvent_->ucTargetID)
-	{
-		GUI_DEBUG_PRINT("  TARGET_ID_HIGH_Z\n");
+    }
+    else if (TARGET_ID_HIGH_Z == pstEvent_->ucTargetID)
+    {
+        GUI_DEBUG_PRINT("  TARGET_ID_HIGH_Z\n");
 
         K_USHORT usTargetX, usTargetY;
         K_USHORT usOffsetX, usOffsetY;
         K_UCHAR ucMaxZ = 0;
 
-		LinkListNode *pclTempNode;
-		pclTempNode = m_clControlList.GetHead();
+        LinkListNode *pclTempNode;
+        pclTempNode = m_clControlList.GetHead();
 
         switch (pstEvent_->ucEventType)
         {
@@ -339,7 +339,7 @@ void GuiWindow::ProcessEvent( GuiEvent_t *pstEvent_ )
 
                 // Go through every control on the window, checking to see if the
                 // event falls within the bounding box
-               	while (pclTempNode)
+                   while (pclTempNode)
                 {
                     GuiControl *pclControl = (static_cast<GuiControl*>(pclTempNode));
 
@@ -381,14 +381,14 @@ void GuiWindow::ProcessEvent( GuiEvent_t *pstEvent_ )
             default:
                 break;
         }
-	}
+    }
 }
 //---------------------------------------------------------------------------
 void GuiWindow::SetFocus( GuiControl *pclControl_ )
 {
-	GUI_DEBUG_PRINT("GuiWindow::SetFocus\n");
+    GUI_DEBUG_PRINT("GuiWindow::SetFocus\n");
 
-	m_pclInFocus = pclControl_;
+    m_pclInFocus = pclControl_;
 }
 
 //---------------------------------------------------------------------------
@@ -524,134 +524,134 @@ GuiWindow *GuiEventSurface::FindWindowByName( const K_CHAR *szName_ )
 //---------------------------------------------------------------------------
 void GuiEventSurface::AddWindow( GuiWindow *pclWindow_ )
 {
-	GUI_DEBUG_PRINT("GuiEventSurface::AddWindow\n");
+    GUI_DEBUG_PRINT("GuiEventSurface::AddWindow\n");
 
-	m_clWindowList.Add(static_cast<LinkListNode*>(pclWindow_));
+    m_clWindowList.Add(static_cast<LinkListNode*>(pclWindow_));
 }
 
 //---------------------------------------------------------------------------
 void GuiEventSurface::RemoveWindow( GuiWindow *pclWindow_ )
 {
-	GUI_DEBUG_PRINT("GuiEventSurface::RemoveWindow\n");
+    GUI_DEBUG_PRINT("GuiEventSurface::RemoveWindow\n");
 
-	m_clWindowList.Remove(static_cast<LinkListNode*>(pclWindow_));
+    m_clWindowList.Remove(static_cast<LinkListNode*>(pclWindow_));
 }
 
 //---------------------------------------------------------------------------
 K_BOOL GuiEventSurface::SendEvent( GuiEvent_t *pstEvent_ )
 {
-	GUI_DEBUG_PRINT("GuiEventSurface::SendEvent\n");
+    GUI_DEBUG_PRINT("GuiEventSurface::SendEvent\n");
 
-	// Allocate a message from the global message pool
-	Message *pclMessage = GlobalMessagePool::Pop();
+    // Allocate a message from the global message pool
+    Message *pclMessage = GlobalMessagePool::Pop();
 
-	// No messages available? Return a failure
-	if (!pclMessage)
-	{
-		return false;
-	}
+    // No messages available? Return a failure
+    if (!pclMessage)
+    {
+        return false;
+    }
 
-	// Allocate a copy of the event from the heap
-	GuiEvent_t *pstEventCopy = static_cast<GuiEvent_t*>(SystemHeap::Alloc(sizeof(GuiEvent_t)));
+    // Allocate a copy of the event from the heap
+    GuiEvent_t *pstEventCopy = static_cast<GuiEvent_t*>(SystemHeap::Alloc(sizeof(GuiEvent_t)));
 
-	// If the allocation fails, push the message back to the global pool and bail
-	if (!pstEventCopy)
-	{
-		GlobalMessagePool::Push(pclMessage);
-		return false;
-	}
+    // If the allocation fails, push the message back to the global pool and bail
+    if (!pstEventCopy)
+    {
+        GlobalMessagePool::Push(pclMessage);
+        return false;
+    }
 
-	// Copy the source event into the destination event buffer
-	CopyEvent(pstEventCopy, pstEvent_);
+    // Copy the source event into the destination event buffer
+    CopyEvent(pstEventCopy, pstEvent_);
 
-	// Set the new event as the message payload
-	pclMessage->SetData(static_cast<void*>(pstEventCopy));
+    // Set the new event as the message payload
+    pclMessage->SetData(static_cast<void*>(pstEventCopy));
 
-	// Send the event to the message queue
-	m_clMessageQueue.Send(pclMessage);
+    // Send the event to the message queue
+    m_clMessageQueue.Send(pclMessage);
 
-	return true;
+    return true;
 }
 
 //---------------------------------------------------------------------------
 K_BOOL GuiEventSurface::ProcessEvent()
 {
-	GUI_DEBUG_PRINT("GuiEventSurface::ProcessEvent\n");
+    GUI_DEBUG_PRINT("GuiEventSurface::ProcessEvent\n");
 
-	// read the event from the queue (blocking call)
-	Message *pclMessage = m_clMessageQueue.Receive();
-	GuiEvent_t stLocalEvent;
+    // read the event from the queue (blocking call)
+    Message *pclMessage = m_clMessageQueue.Receive();
+    GuiEvent_t stLocalEvent;
 
-	// If we failed to get something from the queue,
-	// bail out
-	if (!pclMessage)
-	{
-		return false;
-	}
+    // If we failed to get something from the queue,
+    // bail out
+    if (!pclMessage)
+    {
+        return false;
+    }
 
-	// Copy the event data from the message into a local copy
-	CopyEvent(&stLocalEvent,
-		static_cast<GuiEvent_t*>(pclMessage->GetData()));
+    // Copy the event data from the message into a local copy
+    CopyEvent(&stLocalEvent,
+        static_cast<GuiEvent_t*>(pclMessage->GetData()));
 
-	// Free the message and event as soon as possible, since
-	// they are shared system resources
-	SystemHeap::Free(pclMessage->GetData());
-	GlobalMessagePool::Push(pclMessage);
+    // Free the message and event as soon as possible, since
+    // they are shared system resources
+    SystemHeap::Free(pclMessage->GetData());
+    GlobalMessagePool::Push(pclMessage);
 
-	// Special case check - target ID is the highest Z-ordered window(s) ONLY.
-	if (stLocalEvent.ucTargetID == TARGET_ID_BROADCAST_Z)
-	{
-	    LinkListNode* pclTempNode = m_clWindowList.GetHead();
-		K_UCHAR ucMaxZ = 0;
+    // Special case check - target ID is the highest Z-ordered window(s) ONLY.
+    if (stLocalEvent.ucTargetID == TARGET_ID_BROADCAST_Z)
+    {
+        LinkListNode* pclTempNode = m_clWindowList.GetHead();
+        K_UCHAR ucMaxZ = 0;
 
-		while (pclTempNode)
-		{
-			if (ucMaxZ < (static_cast<GuiWindow*>(pclTempNode))->GetZOrder() )
-			{
-				ucMaxZ = static_cast<GuiWindow*>(pclTempNode)->GetZOrder();
-			}
-			pclTempNode = pclTempNode->GetNext();
-		}
+        while (pclTempNode)
+        {
+            if (ucMaxZ < (static_cast<GuiWindow*>(pclTempNode))->GetZOrder() )
+            {
+                ucMaxZ = static_cast<GuiWindow*>(pclTempNode)->GetZOrder();
+            }
+            pclTempNode = pclTempNode->GetNext();
+        }
 
-		// Iterate through all windows again - may have multiple windows
-		// at the same z-order.
-		pclTempNode = m_clWindowList.GetHead();
-		while (pclTempNode)
-		{
-			if (ucMaxZ == (static_cast<GuiWindow*>(pclTempNode))->GetZOrder())
-			{
-				(static_cast<GuiWindow*>(pclTempNode))->ProcessEvent(&stLocalEvent);
-			}
-			pclTempNode = pclTempNode->GetNext();
-		}
-	}
-	// Broadcast the event - sending it to *all* windows.  Let the individual
-	// windows figure out what to do with the events.
-	else
-	{
-		LinkListNode* pclTempNode = m_clWindowList.GetHead();
-		while (pclTempNode)
-		{
-			(static_cast<GuiWindow*>(pclTempNode))->ProcessEvent(&stLocalEvent);
-			pclTempNode = pclTempNode->GetNext();
-		}
-	}
+        // Iterate through all windows again - may have multiple windows
+        // at the same z-order.
+        pclTempNode = m_clWindowList.GetHead();
+        while (pclTempNode)
+        {
+            if (ucMaxZ == (static_cast<GuiWindow*>(pclTempNode))->GetZOrder())
+            {
+                (static_cast<GuiWindow*>(pclTempNode))->ProcessEvent(&stLocalEvent);
+            }
+            pclTempNode = pclTempNode->GetNext();
+        }
+    }
+    // Broadcast the event - sending it to *all* windows.  Let the individual
+    // windows figure out what to do with the events.
+    else
+    {
+        LinkListNode* pclTempNode = m_clWindowList.GetHead();
+        while (pclTempNode)
+        {
+            (static_cast<GuiWindow*>(pclTempNode))->ProcessEvent(&stLocalEvent);
+            pclTempNode = pclTempNode->GetNext();
+        }
+    }
 
-	// Return out
-	return true;
+    // Return out
+    return true;
 }
 
 //---------------------------------------------------------------------------
 void GuiEventSurface::CopyEvent( GuiEvent_t *pstDst_, GuiEvent_t *pstSrc_ )
 {
-	GUI_DEBUG_PRINT("GuiEventSurface::CopyEvent\n");
-	K_UCHAR *pucDst_ = (K_UCHAR*)pstDst_;
-	K_UCHAR *pucSrc_ = (K_UCHAR*)pstSrc_;
-	K_UCHAR i;
-	for (i = 0; i < sizeof(GuiEvent_t); i++)
-	{
-		*pucDst_++ = *pucSrc_++;
-	}
+    GUI_DEBUG_PRINT("GuiEventSurface::CopyEvent\n");
+    K_UCHAR *pucDst_ = (K_UCHAR*)pstDst_;
+    K_UCHAR *pucSrc_ = (K_UCHAR*)pstSrc_;
+    K_UCHAR i;
+    for (i = 0; i < sizeof(GuiEvent_t); i++)
+    {
+        *pucDst_++ = *pucSrc_++;
+    }
 }
 
 //---------------------------------------------------------------------------
@@ -668,20 +668,20 @@ void GuiEventSurface::InvalidateRegion( K_USHORT usLeft_, K_USHORT usTop_, K_USH
 //---------------------------------------------------------------------------
 void GuiControl::GetControlOffset( K_USHORT *pusX_, K_USHORT *pusY_ )
 {
-	GUI_DEBUG_PRINT("GuiControl::GetControlOffset\n");
-	GuiControl *pclTempControl = m_pclParentControl;
-	*pusX_ = 0;
-	*pusY_ = 0;
-	while (pclTempControl)
-	{
-		*pusX_ += pclTempControl->GetLeft();
-		*pusY_ += pclTempControl->GetTop();
-		pclTempControl = pclTempControl->GetParentControl();
-	}
+    GUI_DEBUG_PRINT("GuiControl::GetControlOffset\n");
+    GuiControl *pclTempControl = m_pclParentControl;
+    *pusX_ = 0;
+    *pusY_ = 0;
+    while (pclTempControl)
+    {
+        *pusX_ += pclTempControl->GetLeft();
+        *pusY_ += pclTempControl->GetTop();
+        pclTempControl = pclTempControl->GetParentControl();
+    }
 
-	if (m_pclParentWindow)
-	{
-		*pusX_ += m_pclParentWindow->GetLeft();
-		*pusY_ += m_pclParentWindow->GetTop();
-	}
+    if (m_pclParentWindow)
+    {
+        *pusX_ += m_pclParentWindow->GetLeft();
+        *pusY_ += m_pclParentWindow->GetTop();
+    }
 }

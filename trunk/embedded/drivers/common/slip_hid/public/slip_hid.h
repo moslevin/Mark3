@@ -12,9 +12,9 @@ Copyright (c) 2012 Funkenstein Software Consulting, all rights reserved.
 See license.txt for more information
 ===========================================================================*/
 /*!
-	\file slip_hid.h
-	
-	\brief HID device abstraction over FunkenSlip channel	
+    \file slip_hid.h
+    
+    \brief HID device abstraction over FunkenSlip channel    
 */
 
 #ifndef __SLIP_HID_H__
@@ -26,30 +26,30 @@ See license.txt for more information
 //---------------------------------------------------------------------------
 typedef enum
 {
-	CMD_SET_SURFACE,	// Set the event surface to attach to (output)
-	CMD_SET_SLIPMUX,	// Set the slip mux object to attach to (input)
+    CMD_SET_SURFACE,    // Set the event surface to attach to (output)
+    CMD_SET_SLIPMUX,    // Set the slip mux object to attach to (input)
 } SlipDriverCommands_t;
 
 //---------------------------------------------------------------------------
 class SlipHid : public Driver 
 {
 public:
-	virtual void Init() {}
-	
-	virtual K_UCHAR Open() 
-		{ return 0; }
-	
-	virtual K_UCHAR Close() 
-		{ return 0; }
-	
-	virtual K_USHORT Read( K_USHORT usBytes_, K_UCHAR *pucData_) 
-		{ return usBytes_; }
-	
-	virtual K_USHORT Write( K_USHORT usBytes_, K_UCHAR *pucData_) 
-		{ return usBytes_; }
+    virtual void Init() {}
     
-	virtual K_USHORT Control( K_USHORT usEvent_, void *pvDataIn_,
-					 K_USHORT usSizeIn_, void *pvDataOut_, K_USHORT usSizeOut_ );
+    virtual K_UCHAR Open() 
+        { return 0; }
+    
+    virtual K_UCHAR Close() 
+        { return 0; }
+    
+    virtual K_USHORT Read( K_USHORT usBytes_, K_UCHAR *pucData_) 
+        { return usBytes_; }
+    
+    virtual K_USHORT Write( K_USHORT usBytes_, K_UCHAR *pucData_) 
+        { return usBytes_; }
+    
+    virtual K_USHORT Control( K_USHORT usEvent_, void *pvDataIn_,
+                     K_USHORT usSizeIn_, void *pvDataOut_, K_USHORT usSizeOut_ );
 private:
 };
 

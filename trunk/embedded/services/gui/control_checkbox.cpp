@@ -12,10 +12,10 @@ Copyright (c) 2012 Funkenstein Software Consulting, all rights reserved.
 See license.txt for more information
 ===========================================================================*/
 /*!
-	\file control_checkbox.cpp
-	\brief Checkbox Control
+    \file control_checkbox.cpp
+    \brief Checkbox Control
 
-	A binary On/Off switch control
+    A binary On/Off switch control
 */
 
 #include "gui.h"
@@ -25,7 +25,7 @@ See license.txt for more information
 #include "control_checkbox.h"
 
 //---------------------------------------------------------------------------
-#define TEXT_X_OFFSET		(13)
+#define TEXT_X_OFFSET        (13)
 
 //---------------------------------------------------------------------------
 static const K_UCHAR aucBox[] =

@@ -12,8 +12,8 @@ Copyright (c) 2012 Funkenstein Software Consulting, all rights reserved.
 See license.txt for more information
 ===========================================================================*/
 /*!
-	\file screen.h
-	\brief Higher level window management framework
+    \file screen.h
+    \brief Higher level window management framework
 */
 
 #ifndef __SCREEN_H__

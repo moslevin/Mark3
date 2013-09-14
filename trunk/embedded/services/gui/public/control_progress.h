@@ -12,11 +12,11 @@ Copyright (c) 2012 Funkenstein Software Consulting, all rights reserved.
 See license.txt for more information
 ===========================================================================*/
 /*!
-	\file control_progress.h
-	\brief GUI Progress Bar Control
+    \file control_progress.h
+    \brief GUI Progress Bar Control
 
-	A simple progress bar control using lines and rectangles to display
-	the status of an operation from initialization to completion
+    A simple progress bar control using lines and rectangles to display
+    the status of an operation from initialization to completion
 */
 
 #ifndef __CONTROL_PROGRESS_H__
@@ -30,22 +30,22 @@ See license.txt for more information
 class ProgressControl : public GuiControl
 {
 public:
-	virtual void Init();
-	virtual void Draw();
-	virtual GuiReturn_t ProcessEvent( GuiEvent_t *pstEvent_ );
+    virtual void Init();
+    virtual void Draw();
+    virtual GuiReturn_t ProcessEvent( GuiEvent_t *pstEvent_ );
     virtual void Activate( bool bActivate_ ) {}
 
-	void SetBackColor( COLOR eColor_ ) 	{ m_uBackColor = eColor_; }
-	void SetProgressColor( COLOR eColor_ )  { m_uProgressColor = eColor_; }
-	void SetBorderColor( COLOR eColor_ )	{ m_uBorderColor = eColor_; }
+    void SetBackColor( COLOR eColor_ )     { m_uBackColor = eColor_; }
+    void SetProgressColor( COLOR eColor_ )  { m_uProgressColor = eColor_; }
+    void SetBorderColor( COLOR eColor_ )    { m_uBorderColor = eColor_; }
 
-	void SetProgress( K_UCHAR ucProgress_ );
+    void SetProgress( K_UCHAR ucProgress_ );
 
 private:
-	COLOR m_uBackColor;
-	COLOR m_uProgressColor;
-	COLOR m_uBorderColor;
-	K_UCHAR m_ucProgress;
+    COLOR m_uBackColor;
+    COLOR m_uProgressColor;
+    COLOR m_uBorderColor;
+    K_UCHAR m_ucProgress;
 };
 
 #endif

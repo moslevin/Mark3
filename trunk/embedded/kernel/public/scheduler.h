@@ -75,7 +75,7 @@ public:
         current state of the threads.  Note that the next-thread chosen
         from this function is only valid while in a critical section.
     */
-	static void Schedule();
+    static void Schedule();
     
     /*!
         \fn void Add(Thread *pclThread_)
@@ -108,14 +108,14 @@ public:
         
         \param bEnable_ true to enable, false to disable the scheduler 
     */
-	static void SetScheduler(K_UCHAR bEnable_){ m_bEnabled = bEnable_; }
+    static void SetScheduler(K_UCHAR bEnable_){ m_bEnabled = bEnable_; }
 
     /*!
         Return the pointer to the currently-running thread.
         
         \return Pointer to the currently-running thread
     */
-	static Thread *GetCurrentThread(){ return g_pstCurrent; }
+    static Thread *GetCurrentThread(){ return g_pstCurrent; }
     
     /*!
         Return the pointer to the thread that should run next, according
@@ -151,19 +151,19 @@ public:
         
         \return true - scheduler enabled, false - disabled
     */
-	static K_UCHAR IsEnabled(){ return m_bEnabled; }
-		
+    static K_UCHAR IsEnabled(){ return m_bEnabled; }
+        
 private:
-	//! Scheduler's state - enabled or disabled
+    //! Scheduler's state - enabled or disabled
     static K_UCHAR m_bEnabled;
-	
-	//! ThreadList for all stopped threads
+    
+    //! ThreadList for all stopped threads
     static ThreadList m_clStopList;
-	
-	//! ThreadLists for all threads at all priorities
+    
+    //! ThreadLists for all threads at all priorities
     static ThreadList m_aclPriorities[NUM_PRIORITIES];
-	
-	//! Bitmap flag for each
+    
+    //! Bitmap flag for each
     static K_UCHAR m_ucPriFlag;
 };
 #endif

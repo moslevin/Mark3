@@ -90,23 +90,23 @@ void ThreadPort::InitStack(Thread *pclThread_)
 //---------------------------------------------------------------------------
 static void Thread_Switch(void)
 {
-	g_pstCurrent = g_pstNext;
+    g_pstCurrent = g_pstNext;
 }
 
 
 //---------------------------------------------------------------------------
 void ThreadPort::StartThreads()
 {
-    KernelSWI::Config();				 // configure the task switch SWI
-    KernelTimer::Config();				 // configure the kernel timer
-	
-    Scheduler::SetScheduler(1);		  	 // enable the scheduler
-    Scheduler::Schedule();				 // run the scheduler - determine the first thread to run
+    KernelSWI::Config();                 // configure the task switch SWI
+    KernelTimer::Config();                 // configure the kernel timer
+    
+    Scheduler::SetScheduler(1);               // enable the scheduler
+    Scheduler::Schedule();                 // run the scheduler - determine the first thread to run
 
-    Thread_Switch();					 // Set the next scheduled thread to the current thread
+    Thread_Switch();                     // Set the next scheduled thread to the current thread
 
-    KernelTimer::Start();				 // enable the kernel timer
-    KernelSWI::Start();					 // enable the task switch SWI
+    KernelTimer::Start();                 // enable the kernel timer
+    KernelSWI::Start();                     // enable the task switch SWI
 
     // Restore the context...
     Thread_RestoreContext();        // restore the context of the first running thread
@@ -136,10 +136,10 @@ ISR(INT0_vect)
 //---------------------------------------------------------------------------
 ISR(TIMER1_COMPA_vect)
 {
-#if KERNEL_USE_TIMERS	
-	TimerScheduler::Process();
-#endif	
-#if KERNEL_USE_QUANTUM	
-	Quantum::UpdateTimer();
-#endif	
+#if KERNEL_USE_TIMERS    
+    TimerScheduler::Process();
+#endif    
+#if KERNEL_USE_QUANTUM    
+    Quantum::UpdateTimer();
+#endif    
 }

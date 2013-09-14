@@ -12,8 +12,8 @@ Copyright (c) 2012 Funkenstein Software Consulting, all rights reserved.
 See license.txt for more information
 ===========================================================================*/
 /*!
-	\file tracebuffer.cpp
-	\brief Kernel trace buffer class definition	
+    \file tracebuffer.cpp
+    \brief Kernel trace buffer class definition    
 */
 
 #include "kerneltypes.h"
@@ -32,21 +32,21 @@ K_USHORT TraceBuffer::m_ausBuffer[ (TRACE_BUFFER_SIZE/sizeof(K_USHORT)) ];
 //---------------------------------------------------------------------------
 void TraceBuffer::Init()
 {
-	m_clBuffer.SetBuffers(m_ausBuffer, TRACE_BUFFER_SIZE/sizeof(K_USHORT));
-	m_usIndex = 0;
+    m_clBuffer.SetBuffers(m_ausBuffer, TRACE_BUFFER_SIZE/sizeof(K_USHORT));
+    m_usIndex = 0;
 }
 
 //---------------------------------------------------------------------------
 K_USHORT TraceBuffer::Increment()
 {
-	return m_usIndex++;	
+    return m_usIndex++;    
 }
 
 //---------------------------------------------------------------------------
 void TraceBuffer::Write( K_USHORT *pusData_, K_USHORT usSize_ )
 {
-	// Pipe the data directly to the circular buffer
-	m_clBuffer.WriteData(pusData_, usSize_);
+    // Pipe the data directly to the circular buffer
+    m_clBuffer.WriteData(pusData_, usSize_);
 }
 
 #endif

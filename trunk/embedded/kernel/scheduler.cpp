@@ -26,9 +26,9 @@ See license.txt for more information
 #include "kernel_debug.h"
 //---------------------------------------------------------------------------
 #if defined __FILE_ID__
-	#undef __FILE_ID__
+    #undef __FILE_ID__
 #endif
-#define __FILE_ID__ 	SCHEDULER_CPP
+#define __FILE_ID__     SCHEDULER_CPP
 
 //---------------------------------------------------------------------------
 Thread *g_pstNext;
@@ -53,7 +53,7 @@ void Scheduler::Init()
         m_aclPriorities[i].SetPriority(i);
         m_aclPriorities[i].SetFlagPointer(&m_ucPriFlag);
     }
-	g_ucFlag = m_ucPriFlag;
+    g_ucFlag = m_ucPriFlag;
 }
 
 //---------------------------------------------------------------------------
@@ -68,21 +68,21 @@ void Scheduler::Schedule()
     
     // Get the thread node at this priority.
     g_pstNext = (Thread*)( m_aclPriorities[ucPri].GetHead() );
-	g_ucFlag = m_ucPriFlag;
-	
-	KERNEL_TRACE_1( STR_SCHEDULE_1, (K_USHORT)g_pstNext->GetID() );
+    g_ucFlag = m_ucPriFlag;
+    
+    KERNEL_TRACE_1( STR_SCHEDULE_1, (K_USHORT)g_pstNext->GetID() );
 }
 
 //---------------------------------------------------------------------------
 void Scheduler::Add(Thread *pclThread_)
 {
     m_aclPriorities[pclThread_->GetPriority()].Add(pclThread_);
-	g_ucFlag = m_ucPriFlag;
+    g_ucFlag = m_ucPriFlag;
 }
 
 //---------------------------------------------------------------------------
 void Scheduler::Remove(Thread *pclThread_)
 {
     m_aclPriorities[pclThread_->GetPriority()].Remove(pclThread_);
-	g_ucFlag = m_ucPriFlag;
+    g_ucFlag = m_ucPriFlag;
 }

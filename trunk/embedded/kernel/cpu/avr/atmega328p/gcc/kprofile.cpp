@@ -35,7 +35,7 @@ void Profiler::Init()
     TCCR0B = 0;
     TIFR0 = 0;
     TIMSK0 = 0;
-	m_ulEpoch = 0;
+    m_ulEpoch = 0;
 }
 
 //---------------------------------------------------------------------------
@@ -57,21 +57,21 @@ void Profiler::Stop()
 //---------------------------------------------------------------------------
 K_USHORT Profiler::Read()
 {
-	K_USHORT usRet;
-	CS_ENTER();
-	TCCR0B &= ~(1 << CS01);
-	usRet = TCNT0;
-	TCCR0B |= (1 << CS01);
-	CS_EXIT();
+    K_USHORT usRet;
+    CS_ENTER();
+    TCCR0B &= ~(1 << CS01);
+    usRet = TCNT0;
+    TCCR0B |= (1 << CS01);
+    CS_EXIT();
     return usRet;
 }
 
 //---------------------------------------------------------------------------
 void Profiler::Process()
 {
-	CS_ENTER();
-	m_ulEpoch++;
-	CS_EXIT();
+    CS_ENTER();
+    m_ulEpoch++;
+    CS_EXIT();
 }
 
 //---------------------------------------------------------------------------

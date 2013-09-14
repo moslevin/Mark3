@@ -12,14 +12,14 @@ Copyright (c) 2012 Funkenstein Software Consulting, all rights reserved.
 See license.txt for more information
 ===========================================================================*/
 /*!
-	\file drvPSXJoy.h
-	
-	\brief Playstation (PSX/PS2) joystick driver for AVR
-	
-	This implementation uses the Driver->Graphics Driver class heirarchy in
-	order to provide consisency with other drivers in the system, and 
-	allow for other joystick drivers to be swapped out without impacting the
-	user code.
+    \file drvPSXJoy.h
+    
+    \brief Playstation (PSX/PS2) joystick driver for AVR
+    
+    This implementation uses the Driver->Graphics Driver class heirarchy in
+    order to provide consisency with other drivers in the system, and 
+    allow for other joystick drivers to be swapped out without impacting the
+    user code.
 */
 
 #ifndef __DRV_PSXJOY_IN_H_
@@ -63,68 +63,68 @@ See license.txt for more information
 #define PSX_SIZE_ANALOG          (6)
 
 /*!
-	Class implementing a playstation joystick driver, using the Mark3 Joystick
-	Driver API.
+    Class implementing a playstation joystick driver, using the Mark3 Joystick
+    Driver API.
 */
 class PSXJoystick : public JoystickDriver
 {
 public:
-	virtual void Init();
-	virtual K_UCHAR Open();
-	virtual K_USHORT Control( K_USHORT usEvent_,
-								void *pvDataIn_, 
+    virtual void Init();
+    virtual K_UCHAR Open();
+    virtual K_USHORT Control( K_USHORT usEvent_,
+                                void *pvDataIn_, 
                                 K_USHORT usSizeIn_, 
                                 void *pvDataOut_, 
                                 K_USHORT usSizeOut_ );
-	virtual K_UCHAR Close() { return 0; }
-	virtual K_USHORT Read( K_USHORT usBytes_, K_UCHAR *pucData_ ) { return usBytes_; }
-	virtual K_USHORT Write( K_USHORT usBytes_, K_UCHAR pucData_ ) { return usBytes_; }
-	
+    virtual K_UCHAR Close() { return 0; }
+    virtual K_USHORT Read( K_USHORT usBytes_, K_UCHAR *pucData_ ) { return usBytes_; }
+    virtual K_USHORT Write( K_USHORT usBytes_, K_UCHAR pucData_ ) { return usBytes_; }
+    
 private:
-	/*!
-		\fn void JoyDelay(K_USHORT usTime_)
-		
-		Simple delay implementation.  Not instrumented.  This is a
-		busy-waiting delay.
-	*/
-	void JoyDelay(K_USHORT usTime_);
-	
-	/*!
-		\fn void ScanInternal();
-		
-		Function that is invoked to scan the joystick from Driver::Control().
-		This starts the process of querying the joystick interface on the 
-		hardware ports, and updates the current report structure if successful.
-	*/
-	void ScanInternal();
-	
-	/*!
-		\fn K_UCHAR CmdByte(K_UCHAR ucCmd_, K_BOOL bWaitAck_)
-		
-		Function that scans a single byte from the joystick interface.
-		
-		\param ucCmd_ Command to issue on the interface
-		\param bWaitAck_ Wait for acknowledgment on the interface if
-			   true, false to not wait.
-	*/
-	K_UCHAR CmdByte(K_UCHAR ucCmd_, K_BOOL bWaitAck_);
-	
-	/*!
-		\fn void Decode(K_UCHAR ucJoyMode_, K_UCHAR *pucData_)
-		
-		Decode the bytestream read from the joystick interafce, and 
-		convert it into the regular joystick report format.
-		
-		\param ucJoyMode_ Joystick mode byte, read from the HW interface
-		\param pucData_ Pointer to the bytestream containing the joystick
-					    state information, relative to the joystick mode.
-	*/
-	void Decode(K_UCHAR ucJoyMode_, K_UCHAR *pucData_);
+    /*!
+        \fn void JoyDelay(K_USHORT usTime_)
+        
+        Simple delay implementation.  Not instrumented.  This is a
+        busy-waiting delay.
+    */
+    void JoyDelay(K_USHORT usTime_);
     
-	K_UCHAR m_ucType;		//!< Joystick type identifier
-    K_BOOL m_bConnected;	//!< Whether or not the joystick is connected
+    /*!
+        \fn void ScanInternal();
+        
+        Function that is invoked to scan the joystick from Driver::Control().
+        This starts the process of querying the joystick interface on the 
+        hardware ports, and updates the current report structure if successful.
+    */
+    void ScanInternal();
     
-    K_UCHAR m_aucRaw[6];	//!< Raw Joystick Data
+    /*!
+        \fn K_UCHAR CmdByte(K_UCHAR ucCmd_, K_BOOL bWaitAck_)
+        
+        Function that scans a single byte from the joystick interface.
+        
+        \param ucCmd_ Command to issue on the interface
+        \param bWaitAck_ Wait for acknowledgment on the interface if
+               true, false to not wait.
+    */
+    K_UCHAR CmdByte(K_UCHAR ucCmd_, K_BOOL bWaitAck_);
+    
+    /*!
+        \fn void Decode(K_UCHAR ucJoyMode_, K_UCHAR *pucData_)
+        
+        Decode the bytestream read from the joystick interafce, and 
+        convert it into the regular joystick report format.
+        
+        \param ucJoyMode_ Joystick mode byte, read from the HW interface
+        \param pucData_ Pointer to the bytestream containing the joystick
+                        state information, relative to the joystick mode.
+    */
+    void Decode(K_UCHAR ucJoyMode_, K_UCHAR *pucData_);
+    
+    K_UCHAR m_ucType;        //!< Joystick type identifier
+    K_BOOL m_bConnected;    //!< Whether or not the joystick is connected
+    
+    K_UCHAR m_aucRaw[6];    //!< Raw Joystick Data
 };
 
 #endif 

@@ -98,7 +98,7 @@ public:
         
         \return Pointer to the highest-priority thread
     */
-	Thread *HighestWaiter();
+    Thread *HighestWaiter();
 private:
 
     //! Priority of the threadlist

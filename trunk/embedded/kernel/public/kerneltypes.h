@@ -12,8 +12,8 @@ Copyright (c) 2012 Funkenstein Software Consulting, all rights reserved.
 See license.txt for more information
 ===========================================================================*/
 /*!
-	\file kerneltypes.h
-	\brief Basic data type primatives used throughout the OS
+    \file kerneltypes.h
+    \brief Basic data type primatives used throughout the OS
 */
 
 #include <stdint.h>
@@ -22,17 +22,17 @@ See license.txt for more information
 #define __KERNELTYPES_H__
 
 #if defined(bool)
-	#define K_BOOL			bool	
+    #define K_BOOL            bool    
 #else
-    #define K_BOOL			uint8_t
+    #define K_BOOL            uint8_t
 #endif
-	
-#define K_CHAR			char
-#define K_UCHAR			uint8_t
-#define K_USHORT		uint16_t
-#define K_SHORT			int16_t
-#define K_ULONG			uint32_t
-#define K_LONG			int32_t
+    
+#define K_CHAR            char
+#define K_UCHAR            uint8_t
+#define K_USHORT        uint16_t
+#define K_SHORT            int16_t
+#define K_ULONG            uint32_t
+#define K_LONG            int32_t
 
 #if !defined(K_ADDR)
     #define K_ADDR      uint32_t

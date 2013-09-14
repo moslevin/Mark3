@@ -13,10 +13,10 @@ Copyright (c) 2012 Funkenstein Software Consulting, all rights reserved.
 See license.txt for more information
 ===========================================================================*/
 /*!
-	\file control_slickbutton.h
-	\brief GUI Button Control, with a flare
+    \file control_slickbutton.h
+    \brief GUI Button Control, with a flare
 
-	Basic pushbutton control with an up/down state, and Mark3 visual style
+    Basic pushbutton control with an up/down state, and Mark3 visual style
 */
 
 #ifndef __CONTROL_SLICKBUTTON_H__
@@ -33,9 +33,9 @@ class SlickButtonControl : public GuiControl
 {
 public:
 
-	virtual void Init();
-	virtual void Draw();
-	virtual GuiReturn_t ProcessEvent( GuiEvent_t *pstEvent_ );
+    virtual void Init();
+    virtual void Draw();
+    virtual GuiReturn_t ProcessEvent( GuiEvent_t *pstEvent_ );
     virtual void Activate( bool bActivate_ );
 
     void SetFont( Font_t *pstFont_ )        { m_pstFont = pstFont_; }

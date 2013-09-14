@@ -12,8 +12,8 @@ Copyright (c) 2012 Funkenstein Software Consulting, all rights reserved.
 See license.txt for more information
 ===========================================================================*/
 /*!
-	\file control_gamepanel.cpp
-	\brief GUI Panel Control Implementation with joystick control and 
+    \file control_gamepanel.cpp
+    \brief GUI Panel Control Implementation with joystick control and 
            tick-based state machine updates.
 */
 

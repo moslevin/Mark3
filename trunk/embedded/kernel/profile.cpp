@@ -26,9 +26,9 @@ See license.txt for more information
 #include "kernel_debug.h"
 //---------------------------------------------------------------------------
 #if defined __FILE_ID__
-	#undef __FILE_ID__
+    #undef __FILE_ID__
 #endif
-#define __FILE_ID__ 	PROFILE_CPP
+#define __FILE_ID__     PROFILE_CPP
 
 
 #if KERNEL_USE_PROFILER
@@ -49,7 +49,7 @@ void ProfileTimer::Start()
     {
         CS_ENTER();
         m_ulCurrentIteration = 0;
-		m_ulInitialEpoch = Profiler::GetEpoch();		
+        m_ulInitialEpoch = Profiler::GetEpoch();        
         m_usInitial = Profiler::Read();        
         CS_EXIT();
         m_bActive = 1;
@@ -88,46 +88,46 @@ K_ULONG ProfileTimer::GetAverage()
 //---------------------------------------------------------------------------     
 K_ULONG ProfileTimer::GetCurrent()
 {
-	
+    
     if (m_bActive)
     {
-		K_USHORT usCurrent;
-		K_ULONG ulEpoch;
-		CS_ENTER();
-		usCurrent = Profiler::Read();
-		ulEpoch = Profiler::GetEpoch();
-		CS_EXIT();
+        K_USHORT usCurrent;
+        K_ULONG ulEpoch;
+        CS_ENTER();
+        usCurrent = Profiler::Read();
+        ulEpoch = Profiler::GetEpoch();
+        CS_EXIT();
         return ComputeCurrentTicks(usCurrent, ulEpoch);
     }
-	return m_ulCurrentIteration;
+    return m_ulCurrentIteration;
 }
 
 //---------------------------------------------------------------------------
 K_ULONG ProfileTimer::ComputeCurrentTicks(K_USHORT usCurrent_, K_ULONG ulEpoch_)
 {    
     K_ULONG ulTotal;
-	K_ULONG ulOverflows;
-	
-	ulOverflows = ulEpoch_ - m_ulInitialEpoch;
-	
-	// More than one overflow...
-	if (ulOverflows > 1)
-	{
+    K_ULONG ulOverflows;
+    
+    ulOverflows = ulEpoch_ - m_ulInitialEpoch;
+    
+    // More than one overflow...
+    if (ulOverflows > 1)
+    {
         ulTotal = ((K_ULONG)(ulOverflows-1) * TICKS_PER_OVERFLOW)
-				+ (K_ULONG)(TICKS_PER_OVERFLOW - m_usInitial) +
-				(K_ULONG)usCurrent_;		
-	}
-	// Only one overflow, or one overflow that has yet to be processed
-	else if (ulOverflows || (usCurrent_ < m_usInitial))
-	{
-		ulTotal = (K_ULONG)(TICKS_PER_OVERFLOW - m_usInitial) +
-				(K_ULONG)usCurrent_;		
-	}
-	// No overflows, none pending.
-	else
-	{
-		ulTotal = (K_ULONG)(usCurrent_ - m_usInitial);					
-	}
+                + (K_ULONG)(TICKS_PER_OVERFLOW - m_usInitial) +
+                (K_ULONG)usCurrent_;        
+    }
+    // Only one overflow, or one overflow that has yet to be processed
+    else if (ulOverflows || (usCurrent_ < m_usInitial))
+    {
+        ulTotal = (K_ULONG)(TICKS_PER_OVERFLOW - m_usInitial) +
+                (K_ULONG)usCurrent_;        
+    }
+    // No overflows, none pending.
+    else
+    {
+        ulTotal = (K_ULONG)(usCurrent_ - m_usInitial);                    
+    }
 
     return ulTotal;
 }

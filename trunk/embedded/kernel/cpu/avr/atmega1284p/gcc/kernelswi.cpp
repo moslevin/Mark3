@@ -49,22 +49,22 @@ void KernelSWI::Stop(void)
 //---------------------------------------------------------------------------
 K_UCHAR KernelSWI::DI()
 {
-	K_UCHAR bEnabled = ((EIMSK & (1 << INT0)) != 0);
-	EIMSK &= ~(1 << INT0);
-	return bEnabled;
+    K_UCHAR bEnabled = ((EIMSK & (1 << INT0)) != 0);
+    EIMSK &= ~(1 << INT0);
+    return bEnabled;
 }
 
 //---------------------------------------------------------------------------
 void KernelSWI::RI(K_UCHAR bEnable_)
 {
-	if (bEnable_)
-	{
-		EIMSK |= (1 << INT0);	
-	}
-	else
-	{
-		EIMSK &= ~(1 << INT0);	
-	}
+    if (bEnable_)
+    {
+        EIMSK |= (1 << INT0);    
+    }
+    else
+    {
+        EIMSK &= ~(1 << INT0);    
+    }
 }
 
 //---------------------------------------------------------------------------

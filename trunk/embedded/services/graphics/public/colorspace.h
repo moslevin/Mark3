@@ -36,7 +36,7 @@ See license.txt for more information
     #define MAX_BLUE            (0x01)
     #define RGB_COLOR(R,G,B)    ( (R | G | B) != 0 )
     #define BYTES_PER_PIXEL        (1)
-    #define COLOR					K_UCHAR
+    #define COLOR                    K_UCHAR
 //---------------------------------------------------------------------------
 #elif DRAW_COLOR_8BIT
 //---------------------------------------------------------------------------
@@ -52,7 +52,7 @@ See license.txt for more information
     
     #define RGB_COLOR(R,G,B)    ( MASK_BLUE(B) | MASK_GREEN(G) | MASK_RED(R) )
     #define BYTES_PER_PIXEL        (1)
-    #define COLOR					K_UCHAR
+    #define COLOR                    K_UCHAR
 //---------------------------------------------------------------------------
 #elif DRAW_COLOR_16BIT_BGR565
 //---------------------------------------------------------------------------
@@ -68,7 +68,7 @@ See license.txt for more information
     
     #define RGB_COLOR(R,G,B)    ( MASK_BLUE(B) | MASK_GREEN(G) | MASK_RED(R) )
     #define BYTES_PER_PIXEL        (2)
-    #define COLOR					K_USHORT
+    #define COLOR                    K_USHORT
 //---------------------------------------------------------------------------    
 #elif DRAW_COLOR_16BIT_RGB555
 //---------------------------------------------------------------------------
@@ -84,7 +84,7 @@ See license.txt for more information
         
     #define RGB_COLOR(R,G,B)    ( MASK_BLUE(B) | MASK_GREEN(G) | MASK_RED(R) )
     #define BYTES_PER_PIXEL     (2)
-    #define COLOR				K_USHORT
+    #define COLOR                K_USHORT
 //---------------------------------------------------------------------------
 #elif DRAW_COLOR_24BIT
 //---------------------------------------------------------------------------
@@ -101,7 +101,7 @@ See license.txt for more information
     #define RGB_COLOR(R,G,B)    ( MASK_BLUE(B) | MASK_GREEN(G) | MASK_RED(R) )
     
     #define BYTES_PER_PIXEL        (3)
-    #define COLOR					K_ULONG
+    #define COLOR                    K_ULONG
 #elif DRAW_COLOR_24BIT_RGB
 //8R:8G:8B
     #define COLOR    K_ULONG
@@ -116,7 +116,7 @@ See license.txt for more information
     #define RGB_COLOR(R,G,B)    ( MASK_BLUE(B) | MASK_GREEN(G) | MASK_RED(R) )
     
     #define BYTES_PER_PIXEL        (3)
-    #define COLOR					K_ULONG
+    #define COLOR                    K_ULONG
 //---------------------------------------------------------------------------
 #else
     #error "Must define a color space for graphics framework"

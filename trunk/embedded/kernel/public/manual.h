@@ -35,29 +35,29 @@ See license.txt for more information
         
     \endverbatim
 
-	The Mark3 Realtime Kernel is a completely free, open-source, real-time 
-	operating system aimed at bringing multitasking to microcontroller 
-	systems without MMUs. 
+    The Mark3 Realtime Kernel is a completely free, open-source, real-time 
+    operating system aimed at bringing multitasking to microcontroller 
+    systems without MMUs. 
 
-	It uses modern programming languages and concepts (it's written 
-	entirely in C++) to minimize code duplication, and its object-oriented 
-	design enhances readibility. The API is simple - there are only six 
-	functions required to set up the kernel, initialize threads, and start 
-	the scheduler. 
-		
-	The source is fully-documented with example code provided to illustrate 
-	concepts. The result is a performant RTOS, which is easy to read, easy 
-	to understand, and easy to extend to fit your needs. 
+    It uses modern programming languages and concepts (it's written 
+    entirely in C++) to minimize code duplication, and its object-oriented 
+    design enhances readibility. The API is simple - there are only six 
+    functions required to set up the kernel, initialize threads, and start 
+    the scheduler. 
+        
+    The source is fully-documented with example code provided to illustrate 
+    concepts. The result is a performant RTOS, which is easy to read, easy 
+    to understand, and easy to extend to fit your needs. 
 
-	But Mark3 is bigger than just a real-time kernel, it also contains a 
-	number of class-leading features: 
-	
-	- Device driver HAL which provides a meaningful abstraction around device-specific peripherals.  
-	- Capable recursive-make driven build system which can be used to build all libraries, examples, tests, and documentation for any number of targets from the command-line.
-	- Graphics and UI code designed to simplify the implementation of systems using displays, keypads, joysticks, and touchscreens
-	- Standards-based custom communications protocol used to simplify the creation of host tools
-	- A bulletproof, well-documented bootloader for AVR microcontrollers
-	.	
+    But Mark3 is bigger than just a real-time kernel, it also contains a 
+    number of class-leading features: 
+    
+    - Device driver HAL which provides a meaningful abstraction around device-specific peripherals.  
+    - Capable recursive-make driven build system which can be used to build all libraries, examples, tests, and documentation for any number of targets from the command-line.
+    - Graphics and UI code designed to simplify the implementation of systems using displays, keypads, joysticks, and touchscreens
+    - Standards-based custom communications protocol used to simplify the creation of host tools
+    - A bulletproof, well-documented bootloader for AVR microcontrollers
+    .    
 */
 /*!        
     \page PREFACE Preface
@@ -195,29 +195,29 @@ See license.txt for more information
 /*!
     \page COST Can you Afford an RTOS? 
 
-	Of course, since you're reading the manual for an RTOS that I've been
-	developing for the last few years, you can guess that the conclusion
-	that I draw is a resounding "yes".
-	
-	If your code is of any sort of non-trivial complexity (say, at least
-	a few-thousand lines), then a more appropriate question would be 
-	"can you afford *not* to use an	RTOS in your system?".
-	
+    Of course, since you're reading the manual for an RTOS that I've been
+    developing for the last few years, you can guess that the conclusion
+    that I draw is a resounding "yes".
+    
+    If your code is of any sort of non-trivial complexity (say, at least
+    a few-thousand lines), then a more appropriate question would be 
+    "can you afford *not* to use an    RTOS in your system?".
+    
     In short, there are simply too many benefits of an RTOS to ignore.
-	- Sophisticated synchronization objects 
-	- The ability to efficiently block and wait 
-	- Enhanced responsiveness for high-priority tasks
-	- Built in timers
-	- Built in efficient memory management
-	.
-	
-	Sure, these features have a cost in code space and RAM, but from my 
-	experience the cost of trying to code around a lack of these features 
-	will cost you as much - if not more.  The results are often far
-	less maintainable, error prone, and complex.  And that simply adds
-	time and cost.  Real developers ship, and the RTOS is quickly becoming
-	one of the standard tools that help keep developers shipping.
-	
+    - Sophisticated synchronization objects 
+    - The ability to efficiently block and wait 
+    - Enhanced responsiveness for high-priority tasks
+    - Built in timers
+    - Built in efficient memory management
+    .
+    
+    Sure, these features have a cost in code space and RAM, but from my 
+    experience the cost of trying to code around a lack of these features 
+    will cost you as much - if not more.  The results are often far
+    less maintainable, error prone, and complex.  And that simply adds
+    time and cost.  Real developers ship, and the RTOS is quickly becoming
+    one of the standard tools that help keep developers shipping.
+    
     \section COST0 Intro
     (Note - this article was written for the C-based Mark2 kernel, which
     is slightly different.  While the general principles are the same,
@@ -258,7 +258,7 @@ See license.txt for more information
     - Memory overhead: The RAM associated wtih running the kernel and application threads. 
     - Runtime overhead: The CPU cycles required for the kernel's functionality (primarily scheduling and thread switching)
     .
-	
+    
     While there are other notable reasons to include or avoid the use of an 
     RTOS in certain applications (determinism, responsiveness, and interrupt 
     latency among others), these are not considered in this discussion - as 
@@ -393,15 +393,15 @@ See license.txt for more information
     then becomes the difference between the following: 
 
     Preemptive mode:
-	- Posting the semaphore that wakes the high-priority thread 
-	- Performing a context switch to the high-priority thread 
-	.
-	
+    - Posting the semaphore that wakes the high-priority thread 
+    - Performing a context switch to the high-priority thread 
+    .
+    
     Cooperative mode:
-	- Setting the high-priority thread's event flag 
+    - Setting the high-priority thread's event flag 
     - Acknowledging the event from the event loop 
-	.
-	
+    .
+    
     Using the cycle-accurate AVR simulator, we find the end-to-end event 
     sequence time to be 20.4us for the cooperative mode scheduler and 44.2us 
     for the preemptive, giving a difference of 23.8us. 
@@ -1024,30 +1024,30 @@ See license.txt for more information
     \code
     
     int main(void)
-    {		
+    {        
         //1) Initialize the kernel prior to use
-        Kernel::Init();						//!< MUST be before other kernel ops
+        Kernel::Init();                        //!< MUST be before other kernel ops
         
         //2) Initialize all of the threads we've defined
-        AppThread.Init(	aucAppStack,		//!< Pointer to the stack
-                        STACK_SIZE_APP,		//!< Size of the stack
-                        1,					//!< Thread priority                        
-                        (void*)AppEntry,	//!< Entry function
+        AppThread.Init(    aucAppStack,        //!< Pointer to the stack
+                        STACK_SIZE_APP,        //!< Size of the stack
+                        1,                    //!< Thread priority                        
+                        (void*)AppEntry,    //!< Entry function
                         NULL );             //!< Entry function argument
 
-        IdleThread.Init( aucIdleStack,		//!< Pointer to the stack
-                         STACK_SIZE_IDLE,	//!< Size of the stack
-                         0,					//!< Thread priority		
-                         4,					//!< Thread quantum
-                         (void*)IdleEntry,	//!< Entry function
-                         NULL );			//!< Entry function argument
+        IdleThread.Init( aucIdleStack,        //!< Pointer to the stack
+                         STACK_SIZE_IDLE,    //!< Size of the stack
+                         0,                    //!< Thread priority        
+                         4,                    //!< Thread quantum
+                         (void*)IdleEntry,    //!< Entry function
+                         NULL );            //!< Entry function argument
         
         //3) Add the threads to the scheduler
-        AppThread.Start();					//!< Schedule the threads
+        AppThread.Start();                    //!< Schedule the threads
         IdleThread.Start();
         
         //4) Give control of the system to the kernel
-        Kernel::Start();					//!< Start the kernel!
+        Kernel::Start();                    //!< Start the kernel!
     }    
     \endcode
     
@@ -1135,11 +1135,11 @@ See license.txt for more information
     
     ...
     {    
-        clMyThread.Init(aucStack,   		//!< Pointer to the stack to use by this thread
-                        192,	        	//!< Size of the stack in bytes
-                        1,					//!< Thread priority (0 = idle, 7 = max)
-                        4,					//!< Thread quantum (in milliseconds), used by RR scheduler
-                        (void*)AppEntry,	//!< Function where the thread starts executing
+        clMyThread.Init(aucStack,           //!< Pointer to the stack to use by this thread
+                        192,                //!< Size of the stack in bytes
+                        1,                    //!< Thread priority (0 = idle, 7 = max)
+                        4,                    //!< Thread quantum (in milliseconds), used by RR scheduler
+                        (void*)AppEntry,    //!< Function where the thread starts executing
                         NULL );             //!< Argument passed into the entry function
                         
     }
@@ -1297,68 +1297,68 @@ See license.txt for more information
 
     \section MUT Mutexes
 
-	Mutexes (Mutual exclusion objects) are provided as a means of creating 
-	"protected sections" around a particular resource, allowing for access 
-	of these objects to be serialized. Only one thread can hold the mutex at 
-	a time - other threads have to wait until the region is released by the 
-	owner thread before they can take their turn operating on the protected 
-	resource. Note that mutexes can only be owned by threads - they are not 
-	available to other contexts (i.e. interrupts). Calling the mutex APIs 
-	from an interrupt will cause catastrophic system failures. 
-		
-	Note that these objects are also not recursive- that is, the owner 
-	thread can not attempt to claim a mutex more than once. 
-		
-	Prioritiy inheritence is provided with these objects as a means to 
-	avoid prioritiy inversions. Whenever a thread at a priority than the 
-	mutex owner blocks on a mutex, the priority of the current thread is 
-	boosted to the highest-priority waiter to ensure that other tasks at 
-	intermediate priorities cannot artificically prevent progress from being 
-	made. 
-		
-	Mutex objects are very easy to use, as there are only three operations 
-	supported: Initialize, Claim and Release. An example is shown below. 
-	
-	\code 
-	
-	Mutex clMutex;	// Create a mutex globally.
-	
-	void Init()
-	{
-		// Initialize the mutex before use.
-		clMutex.Init();
-	}
-	
-	// Some function called from a thread
-	void Thread1Function()
-	{
-		clMutex.Claim();
-	
-		// Once the mutex is owned, no other thread can 
-		// enter a block protect by the same mutex
-	
-		my_protected_resource.do_something();
-		my_protected_resource.do_something_else();
-	
-		clMutex.Release();
+    Mutexes (Mutual exclusion objects) are provided as a means of creating 
+    "protected sections" around a particular resource, allowing for access 
+    of these objects to be serialized. Only one thread can hold the mutex at 
+    a time - other threads have to wait until the region is released by the 
+    owner thread before they can take their turn operating on the protected 
+    resource. Note that mutexes can only be owned by threads - they are not 
+    available to other contexts (i.e. interrupts). Calling the mutex APIs 
+    from an interrupt will cause catastrophic system failures. 
+        
+    Note that these objects are also not recursive- that is, the owner 
+    thread can not attempt to claim a mutex more than once. 
+        
+    Prioritiy inheritence is provided with these objects as a means to 
+    avoid prioritiy inversions. Whenever a thread at a priority than the 
+    mutex owner blocks on a mutex, the priority of the current thread is 
+    boosted to the highest-priority waiter to ensure that other tasks at 
+    intermediate priorities cannot artificically prevent progress from being 
+    made. 
+        
+    Mutex objects are very easy to use, as there are only three operations 
+    supported: Initialize, Claim and Release. An example is shown below. 
+    
+    \code 
+    
+    Mutex clMutex;    // Create a mutex globally.
+    
+    void Init()
+    {
+        // Initialize the mutex before use.
+        clMutex.Init();
     }
-	
-	// Some function called from another thread
-	void Thread2Function()
-	{
-		clMutex.Claim();
-				
-		// Once the mutex is owned, no other thread can 
-		// enter a block protect by the same mutex
+    
+    // Some function called from a thread
+    void Thread1Function()
+    {
+        clMutex.Claim();
+    
+        // Once the mutex is owned, no other thread can 
+        // enter a block protect by the same mutex
+    
+        my_protected_resource.do_something();
+        my_protected_resource.do_something_else();
+    
+        clMutex.Release();
+    }
+    
+    // Some function called from another thread
+    void Thread2Function()
+    {
+        clMutex.Claim();
+                
+        // Once the mutex is owned, no other thread can 
+        // enter a block protect by the same mutex
 
-		my_protected_resource.do_something();
-		my_protected_resource.do_different_things();
-		
-		clMutex.Release();
-	}
-	
-	\endcode 
-	
+        my_protected_resource.do_something();
+        my_protected_resource.do_different_things();
+        
+        clMutex.Release();
+    }
+    
+    \endcode 
+    
     \section EVF Event Flags
 
     Event Flags are another synchronization object, conceptually similar
@@ -1427,298 +1427,298 @@ See license.txt for more information
 
     \section MSG Messages
     
-	Sending messages between threads is the key means of synchronizing 
-	access to data, and the primary mechanism to perform asynchronous data 
-	processing operations. 
-	
-	Sending a message consists of the following operations:
-	
-	- Obtain a Message object from the global message pool
-	- Set the message data and event fields
-	- Send the message to the destination message queue
-	.
-	
-	While receiving a message consists of the following steps:
-	
-	- Wait for a messages in the destination message queue
-	- Process the message data
-	- Return the message back to the global message pool
-	.
+    Sending messages between threads is the key means of synchronizing 
+    access to data, and the primary mechanism to perform asynchronous data 
+    processing operations. 
+    
+    Sending a message consists of the following operations:
+    
+    - Obtain a Message object from the global message pool
+    - Set the message data and event fields
+    - Send the message to the destination message queue
+    .
+    
+    While receiving a message consists of the following steps:
+    
+    - Wait for a messages in the destination message queue
+    - Process the message data
+    - Return the message back to the global message pool
+    .
 
-	These operations, and the various data objects involved are discussed in 
-	more detail in the following section. 
+    These operations, and the various data objects involved are discussed in 
+    more detail in the following section. 
 
-	\subsection MSGO Message Objects
-	
-	Message objects are used to communicate arbitrary data between threads 
-	in a safe and synchronous way. 
-		
-	The message object consists of an event code field and a data field. 
-	The event code is used to provide context to the message object, while 
-	the data field (essentially a void * data pointer) is used to provide a 
-	payload of data corresponding to the particular event. 
-		
-	Access to these fields is marshalled by accessors - the transmitting 
-	thread uses the SetData() and SetCode() methods to seed the data, while 
-	the receiving thread uses the GetData() and GetCode() methods to 
-	retrieve it. 
-		
-	By providing the data as a void data pointer instead of a fixed-size 
-	message, we achieve an unprecedented measure of simplicity and 
-	flexibility. Data can be either statically or dynamically allocated, and 
-	sized appropriately for the event without having to format and reformat 
-	data by both sending and receiving threads. The choices here are left to 
-	the user - and the kernel doesn't get in the way of efficiency. 
+    \subsection MSGO Message Objects
+    
+    Message objects are used to communicate arbitrary data between threads 
+    in a safe and synchronous way. 
+        
+    The message object consists of an event code field and a data field. 
+    The event code is used to provide context to the message object, while 
+    the data field (essentially a void * data pointer) is used to provide a 
+    payload of data corresponding to the particular event. 
+        
+    Access to these fields is marshalled by accessors - the transmitting 
+    thread uses the SetData() and SetCode() methods to seed the data, while 
+    the receiving thread uses the GetData() and GetCode() methods to 
+    retrieve it. 
+        
+    By providing the data as a void data pointer instead of a fixed-size 
+    message, we achieve an unprecedented measure of simplicity and 
+    flexibility. Data can be either statically or dynamically allocated, and 
+    sized appropriately for the event without having to format and reformat 
+    data by both sending and receiving threads. The choices here are left to 
+    the user - and the kernel doesn't get in the way of efficiency. 
 
-	It is worth noting that you can send messages to message queues from
-	within ISR context.  This helps maintain consistency, since the same
-	APIs can be used to provide event-driven programming facilities 
-	throughout the whole of the OS.
-	
-	\subsection MSGP Global Message Pool
-	
-	To maintain efficiency in the messaging system (and to prevent 
-	over-allocation of data), a global pool of message objects is provided. 
-	The size of this message pool is specified in the implementation, and 
-	can be adjusted depending on the requirements of the target application 
-	as a compile-time option. 
-		
-	Allocating a message from the message pool is as simple as calling the 
-	GlobalMessagePool::Pop() Method. 
-		
-	Messages are returned back to the GlobalMessagePool::Push() method once 
-	the message contents are no longer required. 
-		
-	One must be careful to ensure that discarded messages always are 
-	returned to the pool, otherwise a resource leak can occur, which may 
-	cripple the operating system's ability to pass data between threads. 
-	
-	\subsection MSGQ Message Queues
-	
-	Message objects specify data with context, but do not specify where the 
-	messages will be sent. For this purpose we have a MessageQueue object. 
-	Sending an object to a message queue involves calling the 
-	MessageQueue::Send() method, passing in a pointer to the Message object 
-	as an argument. 
+    It is worth noting that you can send messages to message queues from
+    within ISR context.  This helps maintain consistency, since the same
+    APIs can be used to provide event-driven programming facilities 
+    throughout the whole of the OS.
+    
+    \subsection MSGP Global Message Pool
+    
+    To maintain efficiency in the messaging system (and to prevent 
+    over-allocation of data), a global pool of message objects is provided. 
+    The size of this message pool is specified in the implementation, and 
+    can be adjusted depending on the requirements of the target application 
+    as a compile-time option. 
+        
+    Allocating a message from the message pool is as simple as calling the 
+    GlobalMessagePool::Pop() Method. 
+        
+    Messages are returned back to the GlobalMessagePool::Push() method once 
+    the message contents are no longer required. 
+        
+    One must be careful to ensure that discarded messages always are 
+    returned to the pool, otherwise a resource leak can occur, which may 
+    cripple the operating system's ability to pass data between threads. 
+    
+    \subsection MSGQ Message Queues
+    
+    Message objects specify data with context, but do not specify where the 
+    messages will be sent. For this purpose we have a MessageQueue object. 
+    Sending an object to a message queue involves calling the 
+    MessageQueue::Send() method, passing in a pointer to the Message object 
+    as an argument. 
 
-	When a message is sent to the queue, the first thread blocked on the 
-	queue (as a result of calling the MessageQueue Receive() method) will 
-	wake up, with a pointer to the Message object returned. 
+    When a message is sent to the queue, the first thread blocked on the 
+    queue (as a result of calling the MessageQueue Receive() method) will 
+    wake up, with a pointer to the Message object returned. 
 
-	It's worth noting that multiple threads can block on the same message 
-	queue, providing a means for multiple threads to share work in parallel.
+    It's worth noting that multiple threads can block on the same message 
+    queue, providing a means for multiple threads to share work in parallel.
 
-	\subsection MSGQS Messaging Example
-	
-	\code
-	
-	// Message queue object shared between threads
-	MessageQueue clMsgQ;
-	
-	// Function that initializes the shared message queue
-	void MsgQInit()
-	{
-		clMsgQ.Init();
-	}
-	
-	// Function called by one thread to send message data to 
-	// another
-	void TxMessage()
-	{	
-		// Get a message, initialize its data
-		Message *pclMesg = GlobalMessagePool::Pop();
-		
-		pclMesg->SetCode(0xAB);
-		pclMesg->SetData((void*)some_data);	
-		
-		// Send the data to the message queue
-		clMsgQ.Send(pclMesg);
-	}
-	
-	// Function called in the other thread to block until
-	// a message is received in the message queue.	
-	void RxMessage()
-	{
-		Message *pclMesg;
-		
-		// Block until we have a message in the queue
-		pclMesg = clMsgQ.Receive();
-		
-		// Do something with the data once the message is received
-		pclMesg->GetCode();
-		
-		// Free the message once we're done with it.
-		GlobalMessagePool::Push(pclMesg);
-	}
-	\endcode
-	
+    \subsection MSGQS Messaging Example
+    
+    \code
+    
+    // Message queue object shared between threads
+    MessageQueue clMsgQ;
+    
+    // Function that initializes the shared message queue
+    void MsgQInit()
+    {
+        clMsgQ.Init();
+    }
+    
+    // Function called by one thread to send message data to 
+    // another
+    void TxMessage()
+    {    
+        // Get a message, initialize its data
+        Message *pclMesg = GlobalMessagePool::Pop();
+        
+        pclMesg->SetCode(0xAB);
+        pclMesg->SetData((void*)some_data);    
+        
+        // Send the data to the message queue
+        clMsgQ.Send(pclMesg);
+    }
+    
+    // Function called in the other thread to block until
+    // a message is received in the message queue.    
+    void RxMessage()
+    {
+        Message *pclMesg;
+        
+        // Block until we have a message in the queue
+        pclMesg = clMsgQ.Receive();
+        
+        // Do something with the data once the message is received
+        pclMesg->GetCode();
+        
+        // Free the message once we're done with it.
+        GlobalMessagePool::Push(pclMesg);
+    }
+    \endcode
+    
     \section SLP Sleep
     
-	There are instances where it may be necessary for a thread to poll a 
-	resource, or wait a specific amount of time before proceeding to operate 
-	on a peripheral or volatile piece of data. 
-		
-	While the Timer object is generally a better choice for performing 
-	time-sensitive operations (and certainly a better choice for periodic 
-	operations), the Thread::Sleep() method provides a convenient (and 
-	efficient) mechanism that allows for a thread to suspend its execution 
-	for a specified interval. 
-		
-	Note that when a thread is sleeping it is blocked, during which other 
-	threads can operate, or the system can enter its idle state. 
-	
-	\code
-	int GetPeripheralData();
-	{
-		int value;
-		// The hardware manual for a peripheral specifies that
-		// the "foo()" method will result in data being generated
-		// that can be captured using the "bar()" method.
-		// However, the value only becomes valid after 10ms
-		
-		peripheral.foo();	
-		Thread::Sleep(10);	// Wait 10ms for data to become valid
-		value = peripheral.bar();
-		return value;
-	}
-	\endcode 
-	
+    There are instances where it may be necessary for a thread to poll a 
+    resource, or wait a specific amount of time before proceeding to operate 
+    on a peripheral or volatile piece of data. 
+        
+    While the Timer object is generally a better choice for performing 
+    time-sensitive operations (and certainly a better choice for periodic 
+    operations), the Thread::Sleep() method provides a convenient (and 
+    efficient) mechanism that allows for a thread to suspend its execution 
+    for a specified interval. 
+        
+    Note that when a thread is sleeping it is blocked, during which other 
+    threads can operate, or the system can enter its idle state. 
+    
+    \code
+    int GetPeripheralData();
+    {
+        int value;
+        // The hardware manual for a peripheral specifies that
+        // the "foo()" method will result in data being generated
+        // that can be captured using the "bar()" method.
+        // However, the value only becomes valid after 10ms
+        
+        peripheral.foo();    
+        Thread::Sleep(10);    // Wait 10ms for data to become valid
+        value = peripheral.bar();
+        return value;
+    }
+    \endcode 
+    
     \section RR Round-Robin Quantum
-	
-	Threads at the same thread priority are scheduled using a round-robin
-	scheme.  Each thread is given a timeslice (which can be configured) 
-	of which it shares time amongst ready threads in the group.  Once 
-	a thread's timeslice has expired, the next thread in the priority 
-	group is chosen to run until its quantum has expired - the cycle
+    
+    Threads at the same thread priority are scheduled using a round-robin
+    scheme.  Each thread is given a timeslice (which can be configured) 
+    of which it shares time amongst ready threads in the group.  Once 
+    a thread's timeslice has expired, the next thread in the priority 
+    group is chosen to run until its quantum has expired - the cycle
     continues over and over so long as each thread has work to be done.
-	
-	By default, the round-robin interval is set at 4ms.
-	
-	This value can be overridden by calling the thread's SetQuantum()
-	with a new interval specified in milliseconds.
+    
+    By default, the round-robin interval is set at 4ms.
+    
+    This value can be overridden by calling the thread's SetQuantum()
+    with a new interval specified in milliseconds.
 */
 /*!
-	\page BUILD0 Build System
-	
-	Mark3 is distributed with a recursive makefile build system, allowing 
-	the entire source tree to be built into a series of libraries with
-	simple make commands. The way the scripts work, every directory with a 
-	valid makefile is scanned, as well as all of its subdirectories. The 
-	build then generates binary components for all of the components it 
-	finds -libraries and executables. All libraries that are generated can 
-	then be imported into an application using the linker without having to 
-	copy-and-paste files on a module-by-module basis. Applications built 
-	during this process can then be loaded onto a device directly, without 
-	requiring a GUI-based IDE. As a result, Mark3 integrates well with 3rd 
-	party tools for continuous-integration and automated testing. 
+    \page BUILD0 Build System
+    
+    Mark3 is distributed with a recursive makefile build system, allowing 
+    the entire source tree to be built into a series of libraries with
+    simple make commands. The way the scripts work, every directory with a 
+    valid makefile is scanned, as well as all of its subdirectories. The 
+    build then generates binary components for all of the components it 
+    finds -libraries and executables. All libraries that are generated can 
+    then be imported into an application using the linker without having to 
+    copy-and-paste files on a module-by-module basis. Applications built 
+    during this process can then be loaded onto a device directly, without 
+    requiring a GUI-based IDE. As a result, Mark3 integrates well with 3rd 
+    party tools for continuous-integration and automated testing. 
 
-	This modular framework allows for large volumes of libraries and binaries
-	to be built at once - the default build script leverages this to build all 
-	of the examples and unit tests at once,	linking against the pre-built 
-	kernel, services, and drivers.  Whatever can be built as a library is 
-	built as a library, promoting reuse throughout the platform, and enabling 
-	Mark3 to be used as a platform, with an ecosystem of libraries, services,
-	drivers and applications. 
-	
-	\section BUILDLAYOUT Source Layout
-	
-	One key aspect of Mark3 is that system features are organized into 
-	their own separate modules. These modules are further grouped 
-	together into folders based on the type of features represented: 
+    This modular framework allows for large volumes of libraries and binaries
+    to be built at once - the default build script leverages this to build all 
+    of the examples and unit tests at once,    linking against the pre-built 
+    kernel, services, and drivers.  Whatever can be built as a library is 
+    built as a library, promoting reuse throughout the platform, and enabling 
+    Mark3 to be used as a platform, with an ecosystem of libraries, services,
+    drivers and applications. 
+    
+    \section BUILDLAYOUT Source Layout
+    
+    One key aspect of Mark3 is that system features are organized into 
+    their own separate modules. These modules are further grouped 
+    together into folders based on the type of features represented: 
 
-	\verbatim
-	Root         Base folder, contains recursive makefiles for build system
+    \verbatim
+    Root         Base folder, contains recursive makefiles for build system
         bootloader   Mark3 Bootloader code for AVR
         build        Makefile support for various platforms
         doc          Documentation (including this)
         drivers      Device driver code
-        example      Example applications					
-        kernel       Basic Mark3 Components (the focus of this manual)			
+        example      Example applications                    
+        kernel       Basic Mark3 Components (the focus of this manual)            
             cpu      CPU-specific porting code
         services     Utility code and services, extended system features
         stage        Staging directory, where the build system places artifacts
         tests        Unit tests, written as C/C++ applications
-	\endverbatim
-	
-	\section BUILDKERNEL Building the kernel
-	
-	The base.mak file determines how the kernel, drivers, and libraries are
-	built, for what targets, and with what options.  Most of these options can 
-	be copied directly from the options found in your IDE managed projects. 
-	Below is an overview of the main variables used to configure the build.
+    \endverbatim
+    
+    \section BUILDKERNEL Building the kernel
+    
+    The base.mak file determines how the kernel, drivers, and libraries are
+    built, for what targets, and with what options.  Most of these options can 
+    be copied directly from the options found in your IDE managed projects. 
+    Below is an overview of the main variables used to configure the build.
 
-	\verbatim
-	STAGE 		- Location in the filesystem where the build output is stored
-	ROOT_DIR 	- The location of the root source tree
-	ARCH		- The CPU architecture to build against
-	VARIANT		- The variant of the above CPU to target
-	TOOLCHAIN	- Which toolchain to build with (dependent on ARCH and VARIANT)
-	\endverbatim
-	
-	Build.mak contains the logic which is used to perform the recursive make 
-	in all directories. Unless you really know what you're doing, it's best 
-	to leave this as-is. 
+    \verbatim
+    STAGE         - Location in the filesystem where the build output is stored
+    ROOT_DIR     - The location of the root source tree
+    ARCH        - The CPU architecture to build against
+    VARIANT        - The variant of the above CPU to target
+    TOOLCHAIN    - Which toolchain to build with (dependent on ARCH and VARIANT)
+    \endverbatim
+    
+    Build.mak contains the logic which is used to perform the recursive make 
+    in all directories. Unless you really know what you're doing, it's best 
+    to leave this as-is. 
 
-	You must make sure that all required paths are set in your system 
-	environment variables so that they are accessible through from the 
-	command-line. 
+    You must make sure that all required paths are set in your system 
+    environment variables so that they are accessible through from the 
+    command-line. 
 
-	Once configured, you can build the source tree using the various make targets:
+    Once configured, you can build the source tree using the various make targets:
 
-	- make headers 
-	  - copy all headers in each module's /public subdirectory to the location specified by STAGE environment variable's ./inc subdirectory.
-	  .
-	- make library 
-	  - regenerate all objects copy marked as libraries (i.e. the kernel + drivers).  Resulting binaries are copied into STAGE's ./lib subdirectory.
-	  .
-	- make binary 
-	  - build all executable projects in the root directory structure.  In the default distribution, this includes the basic set of demos.
-	  .
-	.
-	
-	To add new components to the recursive build system, simply add your 
-	code into a new folder beneath the root install location. 
+    - make headers 
+      - copy all headers in each module's /public subdirectory to the location specified by STAGE environment variable's ./inc subdirectory.
+      .
+    - make library 
+      - regenerate all objects copy marked as libraries (i.e. the kernel + drivers).  Resulting binaries are copied into STAGE's ./lib subdirectory.
+      .
+    - make binary 
+      - build all executable projects in the root directory structure.  In the default distribution, this includes the basic set of demos.
+      .
+    .
+    
+    To add new components to the recursive build system, simply add your 
+    code into a new folder beneath the root install location. 
 
-	Source files, the module makefile and private header files go directly 
-	in the new folder, while public headers are placed in a ./public
-	subdirectory. Create a ./obj directory to hold the output from the 
-	builds. 
+    Source files, the module makefile and private header files go directly 
+    in the new folder, while public headers are placed in a ./public
+    subdirectory. Create a ./obj directory to hold the output from the 
+    builds. 
 
-	The contents of the module makefile looks something like this:
+    The contents of the module makefile looks something like this:
 
-	\code 
-		
-	# Include common prelude make file
-	include $(ROOT_DIR)base.mak
+    \code 
+        
+    # Include common prelude make file
+    include $(ROOT_DIR)base.mak
 
-	# If we're building a library, set IS_LIB and LIBNAME
-	# If we're building an app, set IS_APP and APPNAME
-	IS_LIB=1
-	LIBNAME=mylib
+    # If we're building a library, set IS_LIB and LIBNAME
+    # If we're building an app, set IS_APP and APPNAME
+    IS_LIB=1
+    LIBNAME=mylib
 
-	#this is the list of the source modules required to build the kernel
-	CPP_SOURCE = mylib.cpp \
-				 someotherfile.cpp
+    #this is the list of the source modules required to build the kernel
+    CPP_SOURCE = mylib.cpp \
+                 someotherfile.cpp
 
-	# Similarly, C-language source would be under the C_SOURCE variable.
-				 
-	# Include the rest of the script that is actually used for building the 
-	# outputs
-	include $(ROOT_DIR)build.mak
-	
-	\endcode 
-	
-	Once you've placed your code files in the right place, and configured 
-	the makefile appropriately, a fresh call to make headers, make library, 
-	then make binary will guarantee that your code is built. 
+    # Similarly, C-language source would be under the C_SOURCE variable.
+                 
+    # Include the rest of the script that is actually used for building the 
+    # outputs
+    include $(ROOT_DIR)build.mak
+    
+    \endcode 
+    
+    Once you've placed your code files in the right place, and configured 
+    the makefile appropriately, a fresh call to make headers, make library, 
+    then make binary will guarantee that your code is built. 
 
-	Now, you can still copy-and-paste the required kernel, port, and 
-	drivers, directly into your application avoiding the whole process of 
-	using make from the command line. To do this, run "make source" from 
-	the root directory in svn, and copy the contents of /stage/src into
-	your project.  This should contain the source to the kernel, all
-	drivers, and all services that are in the tree - along with the necessary
-	header files.
+    Now, you can still copy-and-paste the required kernel, port, and 
+    drivers, directly into your application avoiding the whole process of 
+    using make from the command line. To do this, run "make source" from 
+    the root directory in svn, and copy the contents of /stage/src into
+    your project.  This should contain the source to the kernel, all
+    drivers, and all services that are in the tree - along with the necessary
+    header files.
 
     \section WINBUILD Building on Windows
 
@@ -1787,7 +1787,7 @@ See license.txt for more information
 
     Alternately, you can run bash itself, building Mark3 by running ./build.sh or the
     various make targets using the same synatx as documented previously.
-	    
+        
     Note - building on Windows is *slow*.  This has a lot to do with how "make" performs
     under windows.  There are faster substitutes for make (such as cs-make) that
     are exponentially quicker, and approach the performance of make on Linux.
@@ -1800,28 +1800,28 @@ See license.txt for more information
     
     \section LIC0 License
     
-	Copyright (c) 2013, Funkenstein Software Consulting
-	All rights reserved.
-	
-	Redistribution and use in source and binary forms, with or without
-	modification, are permitted provided that the following conditions are met:
-	    * Redistributions of source code must retain the above copyright
-	      notice, this list of conditions and the following disclaimer.
-	    * Redistributions in binary form must reproduce the above copyright
-	      notice, this list of conditions and the following disclaimer in the
-	      documentation and/or other materials provided with the distribution.
+    Copyright (c) 2013, Funkenstein Software Consulting
+    All rights reserved.
+    
+    Redistribution and use in source and binary forms, with or without
+    modification, are permitted provided that the following conditions are met:
+        * Redistributions of source code must retain the above copyright
+          notice, this list of conditions and the following disclaimer.
+        * Redistributions in binary form must reproduce the above copyright
+          notice, this list of conditions and the following disclaimer in the
+          documentation and/or other materials provided with the distribution.
         * Neither the name of Funkenstein Software Consulting, nor the
-	      names of its contributors may be used to endorse or promote products
-	      derived from this software without specific prior written permission.
-	
-	THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-	ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-	WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+          names of its contributors may be used to endorse or promote products
+          derived from this software without specific prior written permission.
+    
+    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+    ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+    WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
     DISCLAIMED. IN NO EVENT SHALL FUNKENSTEIN SOFTWARE (MARK SLEVINSKY) BE LIABLE FOR ANY
-	DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-	(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-	LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
-	ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-	(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-	SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+    DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+    (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+    LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+    ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+    (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */

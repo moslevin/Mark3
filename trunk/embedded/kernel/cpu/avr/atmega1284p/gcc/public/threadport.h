@@ -176,8 +176,8 @@ public:
        
         Function to start the scheduler, initial threads, etc.
     */
-	static void StartThreads();
-	friend class Thread;
+    static void StartThreads();
+    friend class Thread;
 private:
 
     /*!
@@ -187,7 +187,7 @@ private:
         
         \param pstThread_ Pointer to the thread to initialize
     */
-	static void InitStack(Thread *pstThread_);
+    static void InitStack(Thread *pstThread_);
 };
 
 #endif //__ThreadPORT_H_

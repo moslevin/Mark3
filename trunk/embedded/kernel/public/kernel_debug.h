@@ -12,9 +12,9 @@ Copyright (c) 2012 Funkenstein Software Consulting, all rights reserved.
 See license.txt for more information
 ===========================================================================*/
 /*!
-	\file kernel_debug.h
-	
-	\brief Macros and functions used for assertions, kernel traces, etc.
+    \file kernel_debug.h
+    
+    \brief Macros and functions used for assertions, kernel traces, etc.
 */
 
 #ifndef __KERNEL_DEBUG_H__
@@ -28,66 +28,66 @@ See license.txt for more information
 #if KERNEL_USE_DEBUG
 
 //---------------------------------------------------------------------------
-#define __FILE_ID__			STR_UNDEFINED
+#define __FILE_ID__            STR_UNDEFINED
 
 //---------------------------------------------------------------------------
-#define KERNEL_TRACE( x )	\
-{ 	\
-	K_USHORT ausMsg__[5]; \
-	ausMsg__[0] = 0xACDC;  \
-	ausMsg__[1] = __FILE_ID__; \
-	ausMsg__[2] = __LINE__; \
-	ausMsg__[3] = TraceBuffer::Increment() ; \
-	ausMsg__[4] = (K_USHORT)(x) ; \
-	TraceBuffer::Write(ausMsg__, 5); \
+#define KERNEL_TRACE( x )    \
+{     \
+    K_USHORT ausMsg__[5]; \
+    ausMsg__[0] = 0xACDC;  \
+    ausMsg__[1] = __FILE_ID__; \
+    ausMsg__[2] = __LINE__; \
+    ausMsg__[3] = TraceBuffer::Increment() ; \
+    ausMsg__[4] = (K_USHORT)(x) ; \
+    TraceBuffer::Write(ausMsg__, 5); \
 };
 
 //---------------------------------------------------------------------------
 #define KERNEL_TRACE_1( x, arg1 ) \
-{ 	\
-	K_USHORT ausMsg__[6]; \
-	ausMsg__[0] = 0xACDC;  \
-	ausMsg__[1] = __FILE_ID__; \
-	ausMsg__[2] = __LINE__; \
-	ausMsg__[3] = TraceBuffer::Increment(); \
-	ausMsg__[4] = (K_USHORT)(x); \
-	ausMsg__[5] = arg1; \
-	TraceBuffer::Write(ausMsg__, 6); \
+{     \
+    K_USHORT ausMsg__[6]; \
+    ausMsg__[0] = 0xACDC;  \
+    ausMsg__[1] = __FILE_ID__; \
+    ausMsg__[2] = __LINE__; \
+    ausMsg__[3] = TraceBuffer::Increment(); \
+    ausMsg__[4] = (K_USHORT)(x); \
+    ausMsg__[5] = arg1; \
+    TraceBuffer::Write(ausMsg__, 6); \
 }
 
 //---------------------------------------------------------------------------
 #define KERNEL_TRACE_2( x, arg1, arg2 ) \
-{ 	\
-	K_USHORT ausMsg__[7]; \
-	ausMsg__[0] = 0xACDC;  \
-	ausMsg__[1] = __FILE_ID__; \
-	ausMsg__[2] = __LINE__; \
-	ausMsg__[3] = TraceBuffer::Increment(); \
-	ausMsg__[4] = (K_USHORT)(x); \
-	ausMsg__[5] = arg1; \
-	ausMsg__[6] = arg2; \
-	TraceBuffer::Write(ausMsg__, 7); \
+{     \
+    K_USHORT ausMsg__[7]; \
+    ausMsg__[0] = 0xACDC;  \
+    ausMsg__[1] = __FILE_ID__; \
+    ausMsg__[2] = __LINE__; \
+    ausMsg__[3] = TraceBuffer::Increment(); \
+    ausMsg__[4] = (K_USHORT)(x); \
+    ausMsg__[5] = arg1; \
+    ausMsg__[6] = arg2; \
+    TraceBuffer::Write(ausMsg__, 7); \
 }
 
 //---------------------------------------------------------------------------
 #define KERNEL_ASSERT( x ) \
-{		\
-	if( ( x ) == false ) \
-	{	\
-		K_USHORT ausMsg__[5];	\
-		ausMsg__[0] = 0xACDC;	\
-		ausMsg__[1] = __FILE_ID__;	\
-		ausMsg__[2] = __LINE__; \
-		ausMsg__[3] = TraceBuffer::Increment(); \
-		ausMsg__[4] = STR_ASSERT_FAILED;	\
-		TraceBuffer::Write(ausMsg__, 5); \
+{        \
+    if( ( x ) == false ) \
+    {    \
+        K_USHORT ausMsg__[5];    \
+        ausMsg__[0] = 0xACDC;    \
+        ausMsg__[1] = __FILE_ID__;    \
+        ausMsg__[2] = __LINE__; \
+        ausMsg__[3] = TraceBuffer::Increment(); \
+        ausMsg__[4] = STR_ASSERT_FAILED;    \
+        TraceBuffer::Write(ausMsg__, 5); \
         Kernel::Panic(PANIC_ASSERT_FAILED); \
-	}	\
+    }    \
 }
 
 #else
 //---------------------------------------------------------------------------
-#define __FILE_ID__			0
+#define __FILE_ID__            0
 //---------------------------------------------------------------------------
 #define KERNEL_TRACE( x )
 //---------------------------------------------------------------------------
