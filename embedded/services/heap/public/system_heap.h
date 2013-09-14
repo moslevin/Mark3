@@ -12,10 +12,10 @@ Copyright (c) 2012 Funkenstein Software Consulting, all rights reserved.
 See license.txt for more information
 ===========================================================================*/
 /*!
-	\file "system_heap.h"
-	
-	\brief Global system-heap implmentation.  Provides a basic malloc()/free()
-		   allocation scheme.
+    \file "system_heap.h"
+    
+    \brief Global system-heap implmentation.  Provides a basic malloc()/free()
+           allocation scheme.
 */
 
 #ifndef __SYSTEM_HEAP_H__
@@ -28,8 +28,8 @@ See license.txt for more information
 
 //---------------------------------------------------------------------------
 /*!
-	Really ugly computations used to auto-size the heap footprint based on 
-	the user-configuration data. (don't touch this!!!)
+    Really ugly computations used to auto-size the heap footprint based on 
+    the user-configuration data. (don't touch this!!!)
 */
 #if HEAP_NUM_SIZES > 0
     #define HEAP_RAW_SIZE_1 ((HEAP_BLOCK_SIZE_1 + sizeof(LinkListNode) + sizeof(void*)) * HEAP_BLOCK_COUNT_1 )
@@ -158,7 +158,7 @@ See license.txt for more information
 #endif
 
 //---------------------------------------------------------------------------
-#define HEAP_RAW_SIZE	\
+#define HEAP_RAW_SIZE    \
 HEAP_RAW_SIZE_1 + \
 HEAP_RAW_SIZE_2 + \
 HEAP_RAW_SIZE_3 + \
@@ -180,7 +180,7 @@ HEAP_RAW_SIZE_18 + \
 HEAP_RAW_SIZE_19 + \
 HEAP_RAW_SIZE_20 + \
 HEAP_RAW_SIZE_21 
-	
+    
 //---------------------------------------------------------------------------
 /*!
  * \brief The SystemHeap class implements a heap which is accessible from
@@ -188,11 +188,11 @@ HEAP_RAW_SIZE_21
  */
 class SystemHeap
 {
-public:	
+public:    
     /*!
      * \brief Init Initialize the system heap prior to usage.
      */
-	static void  Init(void);
+    static void  Init(void);
 
     /*!
      * \brief Alloc allocate a block of data from the heap
@@ -200,13 +200,13 @@ public:
      * \return pointer to a block of data allocated from the heap, or NULL on
      *         failure.
      */
-	static void* Alloc(K_USHORT usSize_);
+    static void* Alloc(K_USHORT usSize_);
 
     /*!
      * \brief Free free a block of data previously allocated from the heap
      * \param pvData_ Pointer to a block of data allocated from the system heap
      */
-	static void  Free(void *pvData_);
+    static void  Free(void *pvData_);
 
 private:
     static K_UCHAR m_pucRawHeap[ HEAP_RAW_SIZE ]; //!< Raw heap buffer

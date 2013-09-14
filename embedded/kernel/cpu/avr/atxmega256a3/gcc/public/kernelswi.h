@@ -32,59 +32,59 @@ See license.txt for more information
 class KernelSWI
 {
 public:
-	/*!
-		\fn void Config(void)
-		
-		Configure the software interrupt - must be called before any other 
-		software interrupt functions are called.
-	*/
-	static void Config(void);
+    /*!
+        \fn void Config(void)
+        
+        Configure the software interrupt - must be called before any other 
+        software interrupt functions are called.
+    */
+    static void Config(void);
 
-	/*!
-		\fn void Start(void)
-		
-		Enable ("Start") the software interrupt functionality
-	*/
-	static void Start(void);
-	
-	/*!
-		\fn void Stop(void)
-		
-		Disable the software interrupt functionality
-	*/
-	static void Stop(void);
-	
-	/*!
-		\fn void Clear(void)
-		
-		Clear the software interrupt
-	*/
-	static void Clear(void);
-	
-	/*!
-		Call the software interrupt
-		
-		\fn void Trigger(void)
-	*/
-	static void Trigger(void);
-	
-	/*!
-		\fn K_UCHAR DI();
-		
-		Disable the SWI flag itself
-		
+    /*!
+        \fn void Start(void)
+        
+        Enable ("Start") the software interrupt functionality
+    */
+    static void Start(void);
+    
+    /*!
+        \fn void Stop(void)
+        
+        Disable the software interrupt functionality
+    */
+    static void Stop(void);
+    
+    /*!
+        \fn void Clear(void)
+        
+        Clear the software interrupt
+    */
+    static void Clear(void);
+    
+    /*!
+        Call the software interrupt
+        
+        \fn void Trigger(void)
+    */
+    static void Trigger(void);
+    
+    /*!
+        \fn K_UCHAR DI();
+        
+        Disable the SWI flag itself
+        
         \return previous status of the SWI, prior to the DI call
-	*/
-	static K_UCHAR DI();
-	
-	/*!
-		\fn void RI(K_UCHAR bEnable_)
-		
-		Restore the state of the SWI to the value specified
-		
+    */
+    static K_UCHAR DI();
+    
+    /*!
+        \fn void RI(K_UCHAR bEnable_)
+        
+        Restore the state of the SWI to the value specified
+        
         \param bEnable_ true - enable the SWI, false - disable SWI
-	*/		
-	static void RI(K_UCHAR bEnable_);	
+    */        
+    static void RI(K_UCHAR bEnable_);    
 };
 
 

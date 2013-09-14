@@ -34,10 +34,10 @@ void __cxa_pure_virtual(void) {}
 
 //---------------------------------------------------------------------------
 // Global objects
-static Thread AppThread;			//!< Main "application" thread
-static Thread IdleThread;			//!< Idle thread - runs when app can't
+static Thread AppThread;            //!< Main "application" thread
+static Thread IdleThread;            //!< Idle thread - runs when app can't
 
-static ATMegaUART clUART;			//!< UART device driver object
+static ATMegaUART clUART;            //!< UART device driver object
 
 //---------------------------------------------------------------------------
 static K_UCHAR aucAppStack[STACK_SIZE_APP];
@@ -164,27 +164,27 @@ void IdleEntry(void)
 //---------------------------------------------------------------------------
 int main(void)
 {
-    Kernel::Init();						//!< MUST be before other kernel ops
+    Kernel::Init();                        //!< MUST be before other kernel ops
 
-    AppThread.Init(	aucAppStack,		//!< Pointer to the stack
-                    STACK_SIZE_APP,		//!< Size of the stack
-                    1,					//!< Thread priority
-                    (ThreadEntry_t)AppEntry,	//!< Entry function
+    AppThread.Init(    aucAppStack,        //!< Pointer to the stack
+                    STACK_SIZE_APP,        //!< Size of the stack
+                    1,                    //!< Thread priority
+                    (ThreadEntry_t)AppEntry,    //!< Entry function
                     (void*)&AppThread );//!< Entry function argument
 
-    IdleThread.Init( aucIdleStack,		//!< Pointer to the stack
-                     STACK_SIZE_IDLE,	//!< Size of the stack
-                     0,					//!< Thread priority
-                     (ThreadEntry_t)IdleEntry,	//!< Entry function
-                     NULL );			//!< Entry function argument
+    IdleThread.Init( aucIdleStack,        //!< Pointer to the stack
+                     STACK_SIZE_IDLE,    //!< Size of the stack
+                     0,                    //!< Thread priority
+                     (ThreadEntry_t)IdleEntry,    //!< Entry function
+                     NULL );            //!< Entry function argument
 
-    AppThread.Start();					//!< Schedule the threads
+    AppThread.Start();                    //!< Schedule the threads
     IdleThread.Start();
 
-    clUART.SetName("/dev/tty");			//!< Add the serial driver
+    clUART.SetName("/dev/tty");            //!< Add the serial driver
     clUART.Init();
 
     DriverList::Add( &clUART );
 
-    Kernel::Start();					//!< Start the kernel!
+    Kernel::Start();                    //!< Start the kernel!
 }

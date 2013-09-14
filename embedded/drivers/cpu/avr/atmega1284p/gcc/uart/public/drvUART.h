@@ -49,12 +49,12 @@ See license.txt for more information
 typedef enum
 {
     CMD_SET_BAUDRATE = 0x80,
-    CMD_SET_BUFFERS,	
+    CMD_SET_BUFFERS,    
     CMD_SET_RX_ESCAPE,
     CMD_SET_RX_CALLBACK,
     CMD_SET_RX_ECHO,
-	CMD_SET_RX_ENABLE,
-	CMD_SET_RX_DISABLE
+    CMD_SET_RX_ENABLE,
+    CMD_SET_RX_DISABLE
 } CMD_UART;
 
 class ATMegaUART;
@@ -66,61 +66,61 @@ typedef void (*UART_Rx_Callback_t)( ATMegaUART *pclUART );
 
 //---------------------------------------------------------------------------
 /*!
-	Implements a UART driver on the ATMega328p
+    Implements a UART driver on the ATMega328p
 */
 class ATMegaUART : public Driver
 {
-	
-public:		
-	virtual void Init();
-	virtual K_UCHAR Open();
-	virtual K_UCHAR Close();
-	virtual K_USHORT Read( K_USHORT usBytes_, 
-								 K_UCHAR *pucData_ );
-								 
-	virtual K_USHORT Write( K_USHORT usBytes_, 
-								  K_UCHAR *pucData_ );
-								  
-	virtual K_USHORT Control( K_USHORT usEvent_, 
-									void *pvIn_, 
-									K_USHORT usSizeIn_, 
-									void *pvOut_, 
-									K_USHORT usSizeOut_ );
-	/*!
-		Called from the transmit complete ISR - implements a 
-		callback/transmit state-machine
-	*/						
-	void TxISR();
-	
-	/*!
-		Called from the receive-complete ISR - implements a 
-		callback/receive state-machine
-	*/
-	void RxISR();
-	
-	/*! 		
-		\fn K_UCHAR *GetRxBuffer(void)
-		
-		Return a pointer to the receive buffer for this UART.
+    
+public:        
+    virtual void Init();
+    virtual K_UCHAR Open();
+    virtual K_UCHAR Close();
+    virtual K_USHORT Read( K_USHORT usBytes_, 
+                                 K_UCHAR *pucData_ );
+                                 
+    virtual K_USHORT Write( K_USHORT usBytes_, 
+                                  K_UCHAR *pucData_ );
+                                  
+    virtual K_USHORT Control( K_USHORT usEvent_, 
+                                    void *pvIn_, 
+                                    K_USHORT usSizeIn_, 
+                                    void *pvOut_, 
+                                    K_USHORT usSizeOut_ );
+    /*!
+        Called from the transmit complete ISR - implements a 
+        callback/transmit state-machine
+    */                        
+    void TxISR();
+    
+    /*!
+        Called from the receive-complete ISR - implements a 
+        callback/receive state-machine
+    */
+    void RxISR();
+    
+    /*!         
+        \fn K_UCHAR *GetRxBuffer(void)
+        
+        Return a pointer to the receive buffer for this UART.
 
-		\return pointer to the driver's RX buffer
-	*/
-	K_UCHAR *GetRxBuffer(void) { return m_pucRxBuffer; }
-	
-	/*! 
-		\fn K_UCHAR *GetTxBuffer(void)
-		
-		Return a pointer to the transmit buffer for this UART.
-		
-		\return pointer to the driver's TX buffer
-	*/
-	K_UCHAR *GetTxBuffer(void) { return m_pucTxBuffer; }
+        \return pointer to the driver's RX buffer
+    */
+    K_UCHAR *GetRxBuffer(void) { return m_pucRxBuffer; }
+    
+    /*! 
+        \fn K_UCHAR *GetTxBuffer(void)
+        
+        Return a pointer to the transmit buffer for this UART.
+        
+        \return pointer to the driver's TX buffer
+    */
+    K_UCHAR *GetTxBuffer(void) { return m_pucTxBuffer; }
 
 private:
 
-	void SetBaud(void);
-	void StartTx(void);
-	
+    void SetBaud(void);
+    void StartTx(void);
+    
     K_UCHAR m_ucTxSize;                //!< Size of the TX Buffer
     K_UCHAR m_ucTxHead;                //!< Head index
     K_UCHAR m_ucTxTail;                //!< Tail index
@@ -139,7 +139,7 @@ private:
     
     K_UCHAR m_ucRxEscape;              //!< Escape character
     
-    UART_Rx_Callback_t    pfCallback;    //!< Callback function on matched escape character		
+    UART_Rx_Callback_t    pfCallback;    //!< Callback function on matched escape character        
 };
 
 #endif 

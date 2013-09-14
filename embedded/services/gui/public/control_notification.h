@@ -12,8 +12,8 @@ Copyright (c) 2012 Funkenstein Software Consulting, all rights reserved.
 See license.txt for more information
 ===========================================================================*/
 /*!
-	\file control_notification.h
-	\brief Notification pop-up control
+    \file control_notification.h
+    \brief Notification pop-up control
 
     A pop-up control that can be used to present the user with information
     about system state changes, events, etc.
@@ -29,8 +29,8 @@ See license.txt for more information
 class NotificationControl : public GuiControl
 {
 public:
-	virtual void Init()
-	{
+    virtual void Init()
+    {
         SetAcceptFocus(false);
         m_szCaption = "";
         m_pstFont = NULL;
@@ -38,8 +38,8 @@ public:
         m_bTrigger = false;
     }
 
-	virtual void Draw();
-	virtual GuiReturn_t ProcessEvent( GuiEvent_t *pstEvent_ );
+    virtual void Draw();
+    virtual GuiReturn_t ProcessEvent( GuiEvent_t *pstEvent_ );
     virtual void Activate( bool bActivate_ ) {}
 
     void SetFont( Font_t *pstFont_ ) { m_pstFont = pstFont_; }

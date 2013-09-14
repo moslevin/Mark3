@@ -12,10 +12,10 @@ Copyright (c) 2012 Funkenstein Software Consulting, all rights reserved.
 See license.txt for more information
 ===========================================================================*/
 /*!
-	\file graphics_uoled.h
-	
-	\brief Graphics driver implementation on 4D systems uOLED displays
-	
+    \file graphics_uoled.h
+    
+    \brief Graphics driver implementation on 4D systems uOLED displays
+    
 */
 
 #include "driver.h"
@@ -42,35 +42,35 @@ typedef struct
 
 
 /*!
-	Graphics driver implementation based on the generic GraphicsDriver class
+    Graphics driver implementation based on the generic GraphicsDriver class
 */
 class GraphicsUOLED : public GraphicsDriver
 {
 public:
 //---------------------------------------------------------
     virtual void Init() {}
-	virtual K_UCHAR Open() { return 0; }
-	virtual K_UCHAR Close() { return 0; }
-	virtual K_USHORT Read( K_USHORT usBytes_, K_UCHAR *pucData_ )
-		{ return 0; }
-	virtual K_USHORT Write( K_USHORT usBytes_, K_UCHAR *pucData_ )
-		{ return 0; }
-	virtual K_USHORT Control( K_USHORT usEvent_, void *pvDataIn_, K_USHORT usSizeIn_, void *pvDataOut_, K_USHORT usSizeOut_ )
-		{ return 0; }		
-		
+    virtual K_UCHAR Open() { return 0; }
+    virtual K_UCHAR Close() { return 0; }
+    virtual K_USHORT Read( K_USHORT usBytes_, K_UCHAR *pucData_ )
+        { return 0; }
+    virtual K_USHORT Write( K_USHORT usBytes_, K_UCHAR *pucData_ )
+        { return 0; }
+    virtual K_USHORT Control( K_USHORT usEvent_, void *pvDataIn_, K_USHORT usSizeIn_, void *pvDataOut_, K_USHORT usSizeOut_ )
+        { return 0; }        
+        
 //---------------------------------------------------------
     virtual void DrawPixel(DrawPoint_t *pstPoint_) { Point(pstPoint_); }
 
 //---------------------------------------------------------
 /*
-	Raster operations defined using per-pixel rendering.
-	Can be overridden in inheriting classes.
+    Raster operations defined using per-pixel rendering.
+    Can be overridden in inheriting classes.
 */
-	virtual void ClearScreen();
-	virtual void Point(DrawPoint_t *pstPoint_);
-	virtual void Line(DrawLine_t *pstLine_);
-	virtual void Rectangle(DrawRectangle_t *pstRectangle_);
-	virtual void Circle(DrawCircle_t *pstCircle_);
+    virtual void ClearScreen();
+    virtual void Point(DrawPoint_t *pstPoint_);
+    virtual void Line(DrawLine_t *pstLine_);
+    virtual void Rectangle(DrawRectangle_t *pstRectangle_);
+    virtual void Circle(DrawCircle_t *pstCircle_);
     virtual void Ellipse(DrawEllipse_t *pstEllipse_) {}
     virtual void Bitmap(DrawBitmap_t *pstBitmap_) {}
     virtual void Stamp(DrawStamp_t *pstStamp_) {}
@@ -81,16 +81,16 @@ public:
 
     virtual void Text(DrawText_t *pstText_);
     virtual K_USHORT TextWidth(DrawText_t *pstText_);
-	void SetDriver( Driver *pclDriver_ ) { m_pclDriver = pclDriver_; }
+    void SetDriver( Driver *pclDriver_ ) { m_pclDriver = pclDriver_; }
 private:
 
 
-	void WriteByte( K_UCHAR ucByte_ );
-	void WriteWord( K_USHORT usWord_ );
+    void WriteByte( K_UCHAR ucByte_ );
+    void WriteWord( K_USHORT usWord_ );
     void WriteVector( DataVector_t *pstVector_, K_UCHAR ucCount_);
 
     K_UCHAR ReadByte( void );
-	K_UCHAR WaitAck( void );
+    K_UCHAR WaitAck( void );
 
     void MoveCursor(K_USHORT usX_, K_USHORT usY_);
     void MoveOrigin( K_USHORT usX_, K_USHORT usY_ );
@@ -100,8 +100,8 @@ private:
     void SetFontBGColor(COLOR uColor_);
     void SetTextOpacity(bool bOpaque_);
 
-	Driver *m_pclDriver;
-	
+    Driver *m_pclDriver;
+    
     COLOR m_uTextColor;
 };
 

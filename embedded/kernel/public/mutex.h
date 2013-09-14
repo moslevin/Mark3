@@ -86,19 +86,19 @@ public:
 
 #if KERNEL_USE_TIMERS
 
-	/*!
-		\fn bool Claim(K_ULONG ulWaitTimeMS_)
-		
-		\param ulWaitTimeMS_
-		
-		\return true - mutex was claimed within the time period specified
-				false - mutex operation timed-out before the claim operation.
-	*/
-	bool Claim(K_ULONG ulWaitTimeMS_);
-	
-	/*!
-		\fn void WakeMe( Thread *pclOwner_ )
-	    
+    /*!
+        \fn bool Claim(K_ULONG ulWaitTimeMS_)
+        
+        \param ulWaitTimeMS_
+        
+        \return true - mutex was claimed within the time period specified
+                false - mutex operation timed-out before the claim operation.
+    */
+    bool Claim(K_ULONG ulWaitTimeMS_);
+    
+    /*!
+        \fn void WakeMe( Thread *pclOwner_ )
+        
         Wake a thread blocked on the mutex.  This is an
         internal function used for implementing timed mutexes
         relying on timer callbacks.  Since these do not have
@@ -106,16 +106,16 @@ public:
         classes, we have to wrap this as a public method - do not
         use this for any other purposes.
     
-		\param pclOwner_ Thread to unblock from this object.		
-	*/
-	void WakeMe( Thread *pclOwner_ );
-	
+        \param pclOwner_ Thread to unblock from this object.        
+    */
+    void WakeMe( Thread *pclOwner_ );
+    
     /*!
      * \brief SetExpired Set the expired state of the mutex.  Used by the internal
      *        timer-related functions of the kernel - not for use by app code.
      * \param bExpired_ true = expired, false = not expired
      */
-	void SetExpired( bool bExpired_ ) { m_bExpired = bExpired_; }
+    void SetExpired( bool bExpired_ ) { m_bExpired = bExpired_; }
 #endif
 
     /*!
@@ -139,10 +139,10 @@ private:
     K_UCHAR m_bReady;       //!< State of the mutex - true = ready, false = claimed
     K_UCHAR m_ucMaxPri;     //!< Maximum priority of thread in queue, used for priority inheritence
     Thread *m_pclOwner;     //!< Pointer to the thread that owns the mutex (when claimed)
-	
+    
 #if KERNEL_USE_TIMERS
-    bool	m_bExpired;     //!< Whether or not a timed mutex has expired (true = expired)
-#endif	
+    bool    m_bExpired;     //!< Whether or not a timed mutex has expired (true = expired)
+#endif    
 };
 
 #endif //KERNEL_USE_MUTEX

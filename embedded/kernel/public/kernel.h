@@ -37,24 +37,24 @@ See license.txt for more information
 
 //---------------------------------------------------------------------------
 /*!
-	Class that encapsulates all of the kernel startup functions.
+    Class that encapsulates all of the kernel startup functions.
 */
 class Kernel
 {
 public:    
     /*!
-	    Kernel Initialization Function, call before any other OS function
+        Kernel Initialization Function, call before any other OS function
         
-		\fn Init()
+        \fn Init()
         
         Initializes all global resources used by the operating system.  This 
         must be called before any other kernel function is invoked.
     */
-	static void Init(void);
+    static void Init(void);
         
     /*!
-		Start the kernel; function never returns
-	
+        Start the kernel; function never returns
+    
         \fn Start()
         
         Start the operating system kernel - the current execution context is
@@ -64,7 +64,7 @@ public:
         You must have at least one thread added to the kernel before calling
         this function, otherwise the behavior is undefined.
     */
-	static void Start(void);	
+    static void Start(void);    
 
     /*!
       \brief IsStarted

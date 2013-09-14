@@ -12,10 +12,10 @@ Copyright (c) 2012 Funkenstein Software Consulting, all rights reserved.
 See license.txt for more information
 ===========================================================================*/
 /*!
-	\file control_button.cpp
-	\brief GUI Button Control Implementation
+    \file control_button.cpp
+    \brief GUI Button Control Implementation
 
-	Basic pushbutton control with an up/down state.
+    Basic pushbutton control with an up/down state.
 */
 
 #include "control_slickbutton.h"

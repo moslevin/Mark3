@@ -162,7 +162,7 @@ void KernelTimer::ClearExpiry(void)
 
 //---------------------------------------------------------------------------
 K_UCHAR KernelTimer::DI(void)
-{	
+{    
     KernelTimer::RI(0);
 }
 
@@ -174,6 +174,6 @@ void KernelTimer::EI(void)
 
 //---------------------------------------------------------------------------
 void KernelTimer::RI(K_UCHAR bEnable_)
-{	
+{    
     bEnabled = bEnable_;
 }

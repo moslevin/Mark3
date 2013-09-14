@@ -46,11 +46,11 @@ See license.txt for more information
 
 //---------------------------------------------------------------------------
 //! Suggested default thread quantum
-#define THREAD_QUANTUM_DEFAULT		(4)
+#define THREAD_QUANTUM_DEFAULT        (4)
 
 //---------------------------------------------------------------------------
 /*!
-	Function pointer type used for thread entrypoint functions
+    Function pointer type used for thread entrypoint functions
 */
 typedef void (*ThreadEntry_t)(void *pvArg_);
 
@@ -67,7 +67,7 @@ public:
     /*!
         \fn void Init(K_UCHAR *paucStack_, 
               K_USHORT usStackSize_,
-              K_UCHAR ucPriority_,			  
+              K_UCHAR ucPriority_,              
               ThreadEntry_t pfEntryPoint_,
               void *pvArg_ );
               
@@ -107,7 +107,7 @@ public:
     */
     void Stop();
 
-#if KERNEL_USE_THREADNAME	
+#if KERNEL_USE_THREADNAME    
     /*!
         \fn void SetName(const K_CHAR *szName_)
         
@@ -146,7 +146,7 @@ public:
         \return Pointer to the thread's current list        
     */
     ThreadList *GetCurrent(void) { return m_pclCurrent; }
-	
+    
     /*!
         \fn K_UCHAR GetPriority(void)
         
@@ -166,15 +166,15 @@ public:
     */
     K_UCHAR GetCurPriority(void) { return m_ucCurPriority; }
     
-#if KERNEL_USE_QUANTUM	
-	/*!
-		\fn void SetQuantum( K_USHORT usQuantum_ )
-		
-		Set the thread's round-robin execution quantum.
-		
-		\param usQuantum_ Thread's execution quantum (in milliseconds)
-	*/
-	void SetQuantum( K_USHORT usQuantum_ ) { m_usQuantum = usQuantum_; }
+#if KERNEL_USE_QUANTUM    
+    /*!
+        \fn void SetQuantum( K_USHORT usQuantum_ )
+        
+        Set the thread's round-robin execution quantum.
+        
+        \param usQuantum_ Thread's execution quantum (in milliseconds)
+    */
+    void SetQuantum( K_USHORT usQuantum_ ) { m_usQuantum = usQuantum_; }
 
     /*!
         \fn K_USHORT GetQuantum(void)
@@ -204,46 +204,46 @@ public:
     */
     void SetOwner( ThreadList *pclNewList_ ) { m_pclOwner = pclNewList_; }
     
-	
-	/*!
-		\fn void SetPriority( K_UCHAR ucPriority_ )
-		
-		Set the priority of the Thread (running or otherwise) to a different
-		level.  This activity involves re-scheduling, and must be done so 
-		with due caution, as it may effect the determinism of the system.
-		
-		This should *always* be called from within a critical section to
-		prevent system issues.
-		
-		\param ucPriority_ New priority of the thread
-	*/
+    
+    /*!
+        \fn void SetPriority( K_UCHAR ucPriority_ )
+        
+        Set the priority of the Thread (running or otherwise) to a different
+        level.  This activity involves re-scheduling, and must be done so 
+        with due caution, as it may effect the determinism of the system.
+        
+        This should *always* be called from within a critical section to
+        prevent system issues.
+        
+        \param ucPriority_ New priority of the thread
+    */
     void SetPriority(K_UCHAR ucPriority_);
     
-	/*!
-		\fn void InheritPriority(K_UCHAR ucPriority_)
-		
-		Allow the thread to run at a different priority level (temporarily)
-		for the purpose of avoiding priority inversions.  This should
-		only be called from within the implementation of blocking-objects.
-		
-		\param ucPriority_  New Priority to boost to.		
-	*/
+    /*!
+        \fn void InheritPriority(K_UCHAR ucPriority_)
+        
+        Allow the thread to run at a different priority level (temporarily)
+        for the purpose of avoiding priority inversions.  This should
+        only be called from within the implementation of blocking-objects.
+        
+        \param ucPriority_  New Priority to boost to.        
+    */
     void InheritPriority(K_UCHAR ucPriority_); 
     
-#if KERNEL_USE_DYNAMIC_THREADS	
-	/*!
-		\fn void Exit()
-		
-		Remove the thread from being scheduled again.  The thread is 
-		effectively destroyed when this occurs.  This is extremely 
-		useful for cases where a thread encounters an unrecoverable
-		error and needs to be restarted, or in the context of systems
-		where threads need to be created and destroyed dynamically.
-		
-		This must not be called on the idle thread.
-	*/	
-	void Exit();
-#endif	
+#if KERNEL_USE_DYNAMIC_THREADS    
+    /*!
+        \fn void Exit()
+        
+        Remove the thread from being scheduled again.  The thread is 
+        effectively destroyed when this occurs.  This is extremely 
+        useful for cases where a thread encounters an unrecoverable
+        error and needs to be restarted, or in the context of systems
+        where threads need to be created and destroyed dynamically.
+        
+        This must not be called on the idle thread.
+    */    
+    void Exit();
+#endif    
 
 #if KERNEL_USE_SLEEP    
     /*!
@@ -254,7 +254,7 @@ public:
         
         \param ulTimeMs_ Time to sleep (in ms)
     */
-	static void Sleep(K_ULONG ulTimeMs_);
+    static void Sleep(K_ULONG ulTimeMs_);
 
     /*!
         \fn void USleep(K_ULONG ulTimeUs_);
@@ -266,7 +266,7 @@ public:
     */
     static void USleep(K_ULONG ulTimeUs_);
 #endif
-	
+    
     /*!
         \fn void Yield(void)
         
@@ -274,41 +274,41 @@ public:
         determine what thread should run next.  This is typically used when
         threads are moved in and out of the scheduler.
     */
-	static void Yield(void);
-	
-	/*!
-		\fn void SetID( K_UCHAR ucID_ )
-		
-		Set an 8-bit ID to uniquely identify this thread.
-		
-		\param ucID_ 8-bit Thread ID, set by the user
-	*/
-	void SetID( K_UCHAR ucID_ ) { m_ucThreadID = ucID_; }
-	
-	/*!
-		\fn K_UCHAR GetID()
-		
-		Return the 8-bit ID corresponding to this thread.
-		
-		\return Thread's 8-bit ID, set by the user
-	*/
-	K_UCHAR GetID() { return m_ucThreadID; }
-	
-	
-	/*!
-		\fn K_USHORT GetStackSlack()
-		
-		Performs a (somewhat lengthy) check on the thread stack to check the
-		amount of stack margin (or "slack") remaining on the stack. If you're
-		having problems with blowing your stack, you can run this function 
-		at points in your code during development to see what operations 
-		cause problems.  Also useful during development as a tool to optimally 
-		size thread stacks.
-		
-		\return The amount of slack (unused bytes) on the stack
-	*/
-	K_USHORT GetStackSlack();
-	
+    static void Yield(void);
+    
+    /*!
+        \fn void SetID( K_UCHAR ucID_ )
+        
+        Set an 8-bit ID to uniquely identify this thread.
+        
+        \param ucID_ 8-bit Thread ID, set by the user
+    */
+    void SetID( K_UCHAR ucID_ ) { m_ucThreadID = ucID_; }
+    
+    /*!
+        \fn K_UCHAR GetID()
+        
+        Return the 8-bit ID corresponding to this thread.
+        
+        \return Thread's 8-bit ID, set by the user
+    */
+    K_UCHAR GetID() { return m_ucThreadID; }
+    
+    
+    /*!
+        \fn K_USHORT GetStackSlack()
+        
+        Performs a (somewhat lengthy) check on the thread stack to check the
+        amount of stack margin (or "slack") remaining on the stack. If you're
+        having problems with blowing your stack, you can run this function 
+        at points in your code during development to see what operations 
+        cause problems.  Also useful during development as a tool to optimally 
+        size thread stacks.
+        
+        \return The amount of slack (unused bytes) on the stack
+    */
+    K_USHORT GetStackSlack();
+    
 #if KERNEL_USE_EVENTFLAG
     /*!
         \brief GetEventFlagMask returns the thread's current event-flag mask,
@@ -339,8 +339,8 @@ public:
     EventFlagOperation_t GetEventFlagMode() { return m_eFlagMode; }
 #endif
 
-	friend class ThreadPort;
-	
+    friend class ThreadPort;
+    
 private:
     /*!
         \fn void ContextSwitchSWI()
@@ -349,7 +349,7 @@ private:
         whenever the kernel decides that it is necessary to swap out the 
         current thread for the "next" thread.       
     */
-	static void ContextSwitchSWI(void);
+    static void ContextSwitchSWI(void);
 
     /*!
         \fn void SetPriorityBase(K_UCHAR ucPriority_)
@@ -366,14 +366,14 @@ private:
     //! Size of the stack (in bytes)
     K_USHORT m_usStackSize;   
 
-#if KERNEL_USE_QUANTUM	
+#if KERNEL_USE_QUANTUM    
     //! Thread quantum (in milliseconds)
     K_USHORT m_usQuantum;     
 #endif
     
-	//! Thread ID
-	K_UCHAR m_ucThreadID;
-	
+    //! Thread ID
+    K_UCHAR m_ucThreadID;
+    
     //! Default priority of the thread
     K_UCHAR m_ucPriority;     
     
@@ -389,7 +389,7 @@ private:
 #if KERNEL_USE_THREADNAME
     //! Thread name
     const K_CHAR *m_szName;
-#endif	
+#endif    
 
 #if KERNEL_USE_EVENTFLAG
     //! Event-flag mask

@@ -12,15 +12,15 @@ Copyright (c) 2012 Funkenstein Software Consulting, all rights reserved.
 See license.txt for more information
 ===========================================================================*/
 /*!
-	\file control_panel.h
-	\brief GUI Panel Control
+    \file control_panel.h
+    \brief GUI Panel Control
 
-	The "panel" is probably the simplest control that can be implemented in a
-	GUI.  It serves as a dock for other controls, and also as an example
-	for implementing more complex controls.
+    The "panel" is probably the simplest control that can be implemented in a
+    GUI.  It serves as a dock for other controls, and also as an example
+    for implementing more complex controls.
 
-	A panel is essentially a flat rectangle, specified by a control's typical
-	top/left/height/width parameters, and a color value.
+    A panel is essentially a flat rectangle, specified by a control's typical
+    top/left/height/width parameters, and a color value.
 */
 
 #ifndef __CONTROL_PANEL_H__
@@ -33,15 +33,15 @@ See license.txt for more information
 class PanelControl : public GuiControl
 {
 public:
-	virtual void Init() { m_uColor = COLOR_BLACK; SetAcceptFocus(false); }
-	virtual void Draw();
-	virtual GuiReturn_t ProcessEvent( GuiEvent_t *pstEvent_ ) {};
+    virtual void Init() { m_uColor = COLOR_BLACK; SetAcceptFocus(false); }
+    virtual void Draw();
+    virtual GuiReturn_t ProcessEvent( GuiEvent_t *pstEvent_ ) {};
     virtual void Activate( bool bActivate_ ) {}
 
-	void SetColor( COLOR eColor_ ) { m_uColor = eColor_; }
+    void SetColor( COLOR eColor_ ) { m_uColor = eColor_; }
 
 private:
-	COLOR m_uColor;
+    COLOR m_uColor;
 
 };
 

@@ -39,9 +39,9 @@ panic_func_t Kernel::m_pfPanic;
 
 //---------------------------------------------------------------------------
 #if defined __FILE_ID__
-	#undef __FILE_ID__
+    #undef __FILE_ID__
 #endif
-#define __FILE_ID__ 	KERNEL_CPP
+#define __FILE_ID__     KERNEL_CPP
 
 //---------------------------------------------------------------------------
 void Kernel::Init(void)
@@ -51,16 +51,16 @@ void Kernel::Init(void)
     m_pfPanic = 0;
 
 #if KERNEL_USE_DEBUG
-	TraceBuffer::Init();
+    TraceBuffer::Init();
 #endif
-	KERNEL_TRACE( STR_MARK3_INIT );
+    KERNEL_TRACE( STR_MARK3_INIT );
 
     // Initialize the global kernel data - scheduler, timer-scheduler, and
-    // the global message pool.	
+    // the global message pool.    
     Scheduler::Init();
 #if KERNEL_USE_DRIVER
-	DriverList::Init();
-#endif	
+    DriverList::Init();
+#endif    
 #if KERNEL_USE_TIMERS    
     TimerScheduler::Init();
 #endif
@@ -68,17 +68,17 @@ void Kernel::Init(void)
     GlobalMessagePool::Init();
 #endif
 #if KERNEL_USE_PROFILER
-	Profiler::Init();
+    Profiler::Init();
 #endif
 }
     
 //---------------------------------------------------------------------------
 void Kernel::Start(void)
 {
-	KERNEL_TRACE( STR_THREAD_START );    
+    KERNEL_TRACE( STR_THREAD_START );    
     m_bIsStarted = true;
     ThreadPort::StartThreads();
-	KERNEL_TRACE( STR_START_ERROR );
+    KERNEL_TRACE( STR_START_ERROR );
 
 }
 

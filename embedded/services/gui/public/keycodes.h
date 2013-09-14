@@ -12,9 +12,9 @@ Copyright (c) 2012 Funkenstein Software Consulting, all rights reserved.
 See license.txt for more information
 ===========================================================================*/
 /*!
-	\file "keycodes.h"
-	
-	\brief Standard ASCII keyboard codes
+    \file "keycodes.h"
+    
+    \brief Standard ASCII keyboard codes
 */
 
 #ifndef __KEYCODES_H_

@@ -26,9 +26,9 @@ See license.txt for more information
 #include "kernel_debug.h"
 //---------------------------------------------------------------------------
 #if defined __FILE_ID__
-	#undef __FILE_ID__
+    #undef __FILE_ID__
 #endif
-#define __FILE_ID__ 	THREADLIST_CPP
+#define __FILE_ID__     THREADLIST_CPP
 
 //---------------------------------------------------------------------------
 void ThreadList::SetPriority(K_UCHAR ucPriority_)
@@ -86,28 +86,28 @@ void ThreadList::Remove(LinkListNode *node_) {
 //---------------------------------------------------------------------------
 Thread *ThreadList::HighestWaiter()
 {
-	Thread *pclTemp = static_cast<Thread*>(GetHead());
-	Thread *pclChosen = pclTemp;
-	
-	K_UCHAR ucMaxPri = 0;
+    Thread *pclTemp = static_cast<Thread*>(GetHead());
+    Thread *pclChosen = pclTemp;
+    
+    K_UCHAR ucMaxPri = 0;
     
     // Go through the list, return the highest-priority thread in this list.
-	while(1)
-	{
+    while(1)
+    {
         // Compare against current max-priority thread
-		if (pclTemp->GetPriority() >= ucMaxPri)
-		{
-			ucMaxPri = pclTemp->GetPriority();
-			pclChosen = pclTemp;
-		}
+        if (pclTemp->GetPriority() >= ucMaxPri)
+        {
+            ucMaxPri = pclTemp->GetPriority();
+            pclChosen = pclTemp;
+        }
         
         // Break out if this is the last thread in the list
-		if (pclTemp == static_cast<Thread*>(GetTail()))
-		{
-			break;
-		}
+        if (pclTemp == static_cast<Thread*>(GetTail()))
+        {
+            break;
+        }
         
-		pclTemp = static_cast<Thread*>(pclTemp->GetNext());		
-	} 
-	return pclChosen;
+        pclTemp = static_cast<Thread*>(pclTemp->GetNext());        
+    } 
+    return pclChosen;
 }

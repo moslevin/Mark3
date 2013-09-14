@@ -12,8 +12,8 @@ Copyright (c) 2012 Funkenstein Software Consulting, all rights reserved.
 See license.txt for more information
 ===========================================================================*/
 /*!
-	\file control_panel.cpp
-	\brief GUI Panel Control Implementation
+    \file control_panel.cpp
+    \brief GUI Panel Control Implementation
 */
 
 #include "gui.h"
@@ -25,24 +25,24 @@ See license.txt for more information
 //---------------------------------------------------------------------------
 void LabelControl::Draw()
 {
-	GUI_DEBUG_PRINT( "LabelControl::Draw()\n");
-	GraphicsDriver *pclDriver = GetParentWindow()->GetDriver();
+    GUI_DEBUG_PRINT( "LabelControl::Draw()\n");
+    GraphicsDriver *pclDriver = GetParentWindow()->GetDriver();
 
-	DrawWindow_t stWindow;
+    DrawWindow_t stWindow;
 
-	K_USHORT usX, usY;
+    K_USHORT usX, usY;
 
-	GetControlOffset(&usX, &usY);
+    GetControlOffset(&usX, &usY);
 
     DrawText_t stText;
     DrawRectangle_t stRect;
     K_USHORT usTextWidth;
 
-	stText.usTop = GetTop() + usY;
-	stText.usLeft = GetLeft() + usX;
-	stText.uColor = m_uFontColor;
-	stText.pcString = m_pcCaption;
-	stText.pstFont = m_pstFont;
+    stText.usTop = GetTop() + usY;
+    stText.usLeft = GetLeft() + usX;
+    stText.uColor = m_uFontColor;
+    stText.pcString = m_pcCaption;
+    stText.pstFont = m_pstFont;
     usTextWidth = pclDriver->TextWidth(&stText);
 
     stRect.usLeft = GetLeft() + usX;
@@ -54,17 +54,17 @@ void LabelControl::Draw()
     stRect.bFill = true;
     pclDriver->Rectangle(&stRect);
 
-	stWindow.usLeft = stText.usLeft;
-	stWindow.usRight = stText.usLeft+ GetWidth() - 1;
-	stWindow.usTop = stText.usTop;
-	stWindow.usBottom = stText.usTop + GetHeight() - 1;
+    stWindow.usLeft = stText.usLeft;
+    stWindow.usRight = stText.usLeft+ GetWidth() - 1;
+    stWindow.usTop = stText.usTop;
+    stWindow.usBottom = stText.usTop + GetHeight() - 1;
 
-	if (!stText.pstFont)
-	{
-		return;
-	}
+    if (!stText.pstFont)
+    {
+        return;
+    }
 
-	pclDriver->SetWindow(&stWindow);
-	pclDriver->Text(&stText);
-	pclDriver->ClearWindow();
+    pclDriver->SetWindow(&stWindow);
+    pclDriver->Text(&stText);
+    pclDriver->ClearWindow();
 }

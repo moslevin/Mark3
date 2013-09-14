@@ -12,8 +12,8 @@ Copyright (c) 2012 Funkenstein Software Consulting, all rights reserved.
 See license.txt for more information
 ===========================================================================*/
 /*!
-	\file control_panel.cpp
-	\brief GUI Panel Control Implementation
+    \file control_panel.cpp
+    \brief GUI Panel Control Implementation
 */
 
 #include "gui.h"
@@ -25,20 +25,20 @@ See license.txt for more information
 //---------------------------------------------------------------------------
 void PanelControl::Draw()
 {
-	GUI_DEBUG_PRINT( "PanelControl::Draw()\n");
-	GraphicsDriver *pclDriver = GetParentWindow()->GetDriver();
-	DrawRectangle_t stRectangle;	
-	K_USHORT usX, usY;
-	
-	GetControlOffset(&usX, &usY);
-	
-	stRectangle.usTop = GetTop() + usY;
-	stRectangle.usBottom = stRectangle.usTop + GetHeight() -1;
-	stRectangle.usLeft = GetLeft() + usX;
-	stRectangle.usRight = stRectangle.usLeft + GetWidth() -1;
-	stRectangle.bFill = true;
-	stRectangle.uLineColor = m_uColor;
-	stRectangle.uFillColor = m_uColor;
-	
-	pclDriver->Rectangle(&stRectangle);
+    GUI_DEBUG_PRINT( "PanelControl::Draw()\n");
+    GraphicsDriver *pclDriver = GetParentWindow()->GetDriver();
+    DrawRectangle_t stRectangle;    
+    K_USHORT usX, usY;
+    
+    GetControlOffset(&usX, &usY);
+    
+    stRectangle.usTop = GetTop() + usY;
+    stRectangle.usBottom = stRectangle.usTop + GetHeight() -1;
+    stRectangle.usLeft = GetLeft() + usX;
+    stRectangle.usRight = stRectangle.usLeft + GetWidth() -1;
+    stRectangle.bFill = true;
+    stRectangle.uLineColor = m_uColor;
+    stRectangle.uFillColor = m_uColor;
+    
+    pclDriver->Rectangle(&stRectangle);
 }

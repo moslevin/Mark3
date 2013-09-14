@@ -89,7 +89,7 @@ See license.txt for more information
 #if KERNEL_USE_MESSAGE
 
 #if KERNEL_USE_TIMERS
-	#include "timerlist.h"
+    #include "timerlist.h"
 #endif
 
 //---------------------------------------------------------------------------
@@ -104,7 +104,7 @@ public:
         
         Initialize the data and code in the message.
     */
-	void Init() { m_pvData = NULL; m_usCode = 0; }
+    void Init() { m_pvData = NULL; m_usCode = 0; }
     
     /*!
         \fn void SetData( void *pvData_ )
@@ -113,7 +113,7 @@ public:
         
         \param pvData_ Pointer to the data object to send in the message
     */
-	void SetData( void *pvData_ ) { m_pvData = pvData_; }
+    void SetData( void *pvData_ ) { m_pvData = pvData_; }
     
     /*!
         \fn void *GetData()
@@ -122,8 +122,8 @@ public:
         
         \return Pointer to the data set in the message object
     */
-	void *GetData() { return m_pvData; }
-	
+    void *GetData() { return m_pvData; }
+    
     /*!
         \fn SetCode( K_USHORT usCode_ )
         
@@ -132,7 +132,7 @@ public:
         \param usCode_ Data code to set in the object
     */
     void SetCode( K_USHORT usCode_ ) { m_usCode = usCode_; }
-	
+    
     /*!
         \fn K_USHORT GetCode()
         
@@ -144,10 +144,10 @@ public:
 private:
 
     //! Pointer to the message data
-	void *m_pvData;
+    void *m_pvData;
     
     //! Message code, providing context for the message
-	K_USHORT m_usCode;
+    K_USHORT m_usCode;
 };
 
 //---------------------------------------------------------------------------
@@ -162,7 +162,7 @@ public:
         
         Initialize the message queue prior to use
     */
-	static void Init();	
+    static void Init();    
     
     /*!
         \fn void Push( Message *pclMessage_ )
@@ -173,7 +173,7 @@ public:
         \param pclMessage_ Pointer to the Message object to return back to 
                the global queue
     */
-	static void Push( Message *pclMessage_ );
+    static void Push( Message *pclMessage_ );
     
     /*!
         \fn Message *Pop()
@@ -183,14 +183,14 @@ public:
         
         \return Pointer to a Message object
     */
-	static Message *Pop();
+    static Message *Pop();
 
 private:
     //! Array of message objects that make up the message pool
     static Message m_aclMessagePool[GLOBAL_MESSAGE_POOL_SIZE];
     
     //! Linked list used to manage the Message objects
-	static DoubleLinkList m_clList;
+    static DoubleLinkList m_clList;
 };
 
 //---------------------------------------------------------------------------
@@ -206,7 +206,7 @@ public:
         
         Initialize the message queue prior to use.
     */
-	void Init();		
+    void Init();        
     
     /*!        
         \fn Message *Receive()
@@ -216,26 +216,26 @@ public:
         
         \return Pointer to a message object at the head of the queue
     */
-	Message *Receive();
+    Message *Receive();
     
 #if KERNEL_USE_TIMERS
-	/*!        
+    /*!        
         \fn Message *Receive( K_ULONG ulWaitTimeMS_ )
         
         Receive a message from the message queue.  If the message queue
         is empty, the thread will block until a message is available for
-		the duration specified.  If no message arrives within that 
-		duration, the call will return with NULL.
+        the duration specified.  If no message arrives within that 
+        duration, the call will return with NULL.
         
-		\param ulWaitTimeMS_ The amount of time in ms to wait for a 
-				message before timing out and unblocking the waiting thread.
-		
+        \param ulWaitTimeMS_ The amount of time in ms to wait for a 
+                message before timing out and unblocking the waiting thread.
+        
         \return Pointer to a message object at the head of the queue or
-				NULL on timeout.
+                NULL on timeout.
     */
-	Message *Receive( K_ULONG ulTimeWaitMS_ );
-#endif	
-	
+    Message *Receive( K_ULONG ulTimeWaitMS_ );
+#endif    
+    
     /*!
         \fn void Send( Message *pclSrc_ )
         
@@ -244,24 +244,24 @@ public:
         
         \param pclSrc_ Pointer to the message object to add to the queue
     */
-	void Send( Message *pclSrc_ );
+    void Send( Message *pclSrc_ );
     
-	
-	/*!
-		\fn K_USHORT GetCount()
-		
-		Return the number of messages pending in the "receive" queue.
-		
-		\return Count of pending messages in the queue.
-	*/
-	K_USHORT GetCount();
+    
+    /*!
+        \fn K_USHORT GetCount()
+        
+        Return the number of messages pending in the "receive" queue.
+        
+        \return Count of pending messages in the queue.
+    */
+    K_USHORT GetCount();
 private:
 
     //! Counting semaphore used to manage thread blocking
-	Semaphore m_clSemaphore;
+    Semaphore m_clSemaphore;
     
     //! List object used to store messages
-	DoubleLinkList m_clLinkList;
+    DoubleLinkList m_clLinkList;
 };
 
 #endif //KERNEL_USE_MESSAGE

@@ -29,7 +29,7 @@ See license.txt for more information
 #include <avr/interrupt.h>
 
 //---------------------------------------------------------------------------
-static ATMegaUART *pclActive;	// Pointer to the active object
+static ATMegaUART *pclActive;    // Pointer to the active object
 
 //---------------------------------------------------------------------------
 void ATMegaUART::SetBaud(void)
@@ -86,8 +86,8 @@ K_UCHAR ATMegaUART::Open()
     // Enable Rx/Tx + Interrupts
     UART_SRB |= (1 << UART_RXEN) | ( 1 << UART_TXEN);
     UART_SRB |= (1 << UART_RXCIE) | (1 << UART_TXCIE);
-	pclActive = this;
-	return 0;
+    pclActive = this;
+    return 0;
 }
 
 //---------------------------------------------------------------------------
@@ -118,7 +118,7 @@ K_USHORT ATMegaUART::Control( K_USHORT usCmdId_, void *pvIn_, K_USHORT usSizeIn_
             m_ucRxSize = usSizeIn_;
             m_ucTxSize = usSizeOut_;
         }            
-            break;		
+            break;        
         case CMD_SET_RX_ESCAPE:
         {
             m_ucRxEscape = *((K_UCHAR*)pvIn_);
@@ -134,16 +134,16 @@ K_USHORT ATMegaUART::Control( K_USHORT usCmdId_, void *pvIn_, K_USHORT usSizeIn_
             m_bEcho = *((K_UCHAR*)pvIn_);
         }
             break;
-		case CMD_SET_RX_ENABLE:
-		{
-			UART_SRB |= (1 << UART_RXEN);
-		}
-			break;
-		case CMD_SET_RX_DISABLE:
-		{
-			UART_SRB &= ~(1 << UART_RXEN);
-		}
-			break;						
+        case CMD_SET_RX_ENABLE:
+        {
+            UART_SRB |= (1 << UART_RXEN);
+        }
+            break;
+        case CMD_SET_RX_DISABLE:
+        {
+            UART_SRB &= ~(1 << UART_RXEN);
+        }
+            break;                        
         default:
             break;
     }
@@ -252,10 +252,10 @@ K_USHORT ATMegaUART::Write(K_USHORT usSizeOut_, K_UCHAR *pvData_)
     {
         // We know we're idle if we get here.
         CS_ENTER();
-		if (UART_SRA & (1 << UDRE0))
-		{
-			StartTx();
-		}		
+        if (UART_SRA & (1 << UDRE0))
+        {
+            StartTx();
+        }        
         CS_EXIT();
     }
     
@@ -297,7 +297,7 @@ void ATMegaUART::RxISR()
     ucNext = (m_ucRxHead + 1);
     if (ucNext >= m_ucRxSize)
     {
-	    ucNext = 0;
+        ucNext = 0;
     }
     
     // Always add the byte to the buffer (but flag an error if it's full...)
@@ -309,48 +309,48 @@ void ATMegaUART::RxISR()
     // If the buffer's full, discard the oldest byte in the buffer and flag an error
     if (ucNext == m_ucRxTail)
     {
-	    // Update the buffer tail pointer
-	    m_ucRxTail = (m_ucRxTail + 1);
-	    if (m_ucRxTail >= m_ucRxSize)
-	    {
-		    m_ucRxTail = 0;
-	    }
+        // Update the buffer tail pointer
+        m_ucRxTail = (m_ucRxTail + 1);
+        if (m_ucRxTail >= m_ucRxSize)
+        {
+            m_ucRxTail = 0;
+        }
 
-	    // Flag an error - the buffer is full
-	    m_bRxOverflow = 1;
+        // Flag an error - the buffer is full
+        m_bRxOverflow = 1;
     }
     
     // If local-echo is enabled, TX the K_CHAR
     if (m_bEcho)
     {
-	    Write(1, &ucTemp);
+        Write(1, &ucTemp);
     }
     
     // If we've hit the RX callback character, run the callback
     // This is used for calling line-end functions, etc..
     if (ucTemp == m_ucRxEscape)
     {
-	    if (pfCallback)
-	    {
-		    pfCallback(this);
-	    }
+        if (pfCallback)
+        {
+            pfCallback(this);
+        }
     }
 }
 
 //---------------------------------------------------------------------------
 ISR(UART_RX_ISR)
 {
-	pclActive->RxISR();
+    pclActive->RxISR();
 }
 
 //---------------------------------------------------------------------------
 void ATMegaUART::TxISR()
 {
-	// If the head != tail, there's something to send.
-	if (m_ucTxHead != m_ucTxTail)
-	{
-		StartTx();
-	}
+    // If the head != tail, there's something to send.
+    if (m_ucTxHead != m_ucTxTail)
+    {
+        StartTx();
+    }
 }
 
 //---------------------------------------------------------------------------

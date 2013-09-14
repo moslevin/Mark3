@@ -12,8 +12,8 @@ Copyright (c) 2012 Funkenstein Software Consulting, all rights reserved.
 See license.txt for more information
 ===========================================================================*/
 /*!
-	\file graphics.cpp
-	\brief Generic graphics driver implementation
+    \file graphics.cpp
+    \brief Generic graphics driver implementation
 */
 
 #include "kerneltypes.h"
@@ -26,17 +26,17 @@ See license.txt for more information
 //---------------------------------------------------------------------------
 void GraphicsDriver::ClearScreen()
 {
-	DrawPoint_t stPoint;
-	stPoint.uColor = COLOR_BLACK;
+    DrawPoint_t stPoint;
+    stPoint.uColor = COLOR_BLACK;
 
-	for (stPoint.usX = 0; stPoint.usX < m_usResX; stPoint.usX++)
-	{
-		for (stPoint.usY = 0; stPoint.usY < m_usResY; stPoint.usY++)
-		{
-			// Pixel Write
-			DrawPixel(&stPoint);
-		}
-	}
+    for (stPoint.usX = 0; stPoint.usX < m_usResX; stPoint.usX++)
+    {
+        for (stPoint.usY = 0; stPoint.usY < m_usResY; stPoint.usY++)
+        {
+            // Pixel Write
+            DrawPixel(&stPoint);
+        }
+    }
 }
 //---------------------------------------------------------------------------
 void GraphicsDriver::Point(DrawPoint_t *pstPoint_)
@@ -47,583 +47,583 @@ void GraphicsDriver::Point(DrawPoint_t *pstPoint_)
 //---------------------------------------------------------------------------
 void GraphicsDriver::Line(DrawLine_t *pstLine_)
 {
-	// Bresenham Line drawing algorithm, adapted from:
-	// www.cs.unc.edu/~mcmillan/comp136/Lecture6/Lines.html
+    // Bresenham Line drawing algorithm, adapted from:
+    // www.cs.unc.edu/~mcmillan/comp136/Lecture6/Lines.html
 
-	DrawPoint_t stPoint;
-	K_SHORT sX1 = (K_SHORT)pstLine_->usX1;
-	K_SHORT sX2 = (K_SHORT)pstLine_->usX2;
-	K_SHORT sY1 = (K_SHORT)pstLine_->usY1;
-	K_SHORT sY2 = (K_SHORT)pstLine_->usY2;
-	K_SHORT sDeltaY = sY2 - sY1;
-	K_SHORT sDeltaX = sX2 - sX1;
-	K_CHAR cStepx, cStepy;
-	stPoint.uColor = pstLine_->uColor;
+    DrawPoint_t stPoint;
+    K_SHORT sX1 = (K_SHORT)pstLine_->usX1;
+    K_SHORT sX2 = (K_SHORT)pstLine_->usX2;
+    K_SHORT sY1 = (K_SHORT)pstLine_->usY1;
+    K_SHORT sY2 = (K_SHORT)pstLine_->usY2;
+    K_SHORT sDeltaY = sY2 - sY1;
+    K_SHORT sDeltaX = sX2 - sX1;
+    K_CHAR cStepx, cStepy;
+    stPoint.uColor = pstLine_->uColor;
 
-	if (sDeltaY < 0)
-	{
-		sDeltaY = -sDeltaY;
-		cStepy = -1;
-	}
-	else
-	{
-		cStepy = 1;
-	}
+    if (sDeltaY < 0)
+    {
+        sDeltaY = -sDeltaY;
+        cStepy = -1;
+    }
+    else
+    {
+        cStepy = 1;
+    }
 
-	if (sDeltaX < 0)
-	{
-		sDeltaX = -sDeltaX;
-		cStepx = -1;
-	}
-	else
-	{
-		cStepx = 1;
-	}
+    if (sDeltaX < 0)
+    {
+        sDeltaX = -sDeltaX;
+        cStepx = -1;
+    }
+    else
+    {
+        cStepx = 1;
+    }
 
-	// Scale by a factor of 2 in each direction
-	sDeltaY <<= 1;
-	sDeltaX <<= 1;
+    // Scale by a factor of 2 in each direction
+    sDeltaY <<= 1;
+    sDeltaX <<= 1;
 
-	stPoint.usX = sX1;
-	stPoint.usY = sY1;
-	DrawPixel(&stPoint);
+    stPoint.usX = sX1;
+    stPoint.usY = sY1;
+    DrawPixel(&stPoint);
 
-	if (sDeltaX > sDeltaY)
-	{
-		K_SHORT sFraction = sDeltaY - (sDeltaX >> 1);
+    if (sDeltaX > sDeltaY)
+    {
+        K_SHORT sFraction = sDeltaY - (sDeltaX >> 1);
 
-		while (sX1 != sX2)
-		{
-			if (sFraction >= 0)
-			{
-				sY1 += cStepy;
-				sFraction -= sDeltaX;
-			}
-			sX1 += cStepx;
-			sFraction += sDeltaY;
+        while (sX1 != sX2)
+        {
+            if (sFraction >= 0)
+            {
+                sY1 += cStepy;
+                sFraction -= sDeltaX;
+            }
+            sX1 += cStepx;
+            sFraction += sDeltaY;
 
-			stPoint.usX = sX1;
-			stPoint.usY = sY1;
-			DrawPixel(&stPoint);
-		}
-	}
-	else
-	{
-		K_SHORT sFraction = sDeltaX - (sDeltaY >> 1);
-		while (sY1 != sY2)
-		{
-			if (sFraction >= 0)
-			{
-				sX1 += cStepx;
-				sFraction -= sDeltaY;
-			}
-			sY1 += cStepy;
-			sFraction += sDeltaX;
+            stPoint.usX = sX1;
+            stPoint.usY = sY1;
+            DrawPixel(&stPoint);
+        }
+    }
+    else
+    {
+        K_SHORT sFraction = sDeltaX - (sDeltaY >> 1);
+        while (sY1 != sY2)
+        {
+            if (sFraction >= 0)
+            {
+                sX1 += cStepx;
+                sFraction -= sDeltaY;
+            }
+            sY1 += cStepy;
+            sFraction += sDeltaX;
 
-			stPoint.usX = sX1;
-			stPoint.usY = sY1;
-			DrawPixel(&stPoint);
-		}
-	}
+            stPoint.usX = sX1;
+            stPoint.usY = sY1;
+            DrawPixel(&stPoint);
+        }
+    }
 }
 
 //---------------------------------------------------------------------------
 void GraphicsDriver::Rectangle(DrawRectangle_t *pstRectangle_)
 {
-	DrawPoint_t stPoint;
+    DrawPoint_t stPoint;
 
-	// if drawing a background fill color (optional)
-	if (pstRectangle_->bFill == true)
-	{
-		stPoint.uColor = pstRectangle_->uFillColor;
-		for (stPoint.usX = pstRectangle_->usLeft; stPoint.usX <= pstRectangle_->usRight; stPoint.usX++)
-		{
-			for (stPoint.usY = pstRectangle_->usTop; stPoint.usY <= pstRectangle_->usBottom; stPoint.usY++)
-			{
-				DrawPixel(&stPoint);
-			}
-		}
-	}
+    // if drawing a background fill color (optional)
+    if (pstRectangle_->bFill == true)
+    {
+        stPoint.uColor = pstRectangle_->uFillColor;
+        for (stPoint.usX = pstRectangle_->usLeft; stPoint.usX <= pstRectangle_->usRight; stPoint.usX++)
+        {
+            for (stPoint.usY = pstRectangle_->usTop; stPoint.usY <= pstRectangle_->usBottom; stPoint.usY++)
+            {
+                DrawPixel(&stPoint);
+            }
+        }
+    }
 
-	// Draw four orthogonal lines...
-	stPoint.uColor = pstRectangle_->uLineColor;
-	stPoint.usY = pstRectangle_->usTop;
-	for (stPoint.usX = pstRectangle_->usLeft; stPoint.usX <= pstRectangle_->usRight; stPoint.usX++)
-	{
-		DrawPixel(&stPoint);
-	}
+    // Draw four orthogonal lines...
+    stPoint.uColor = pstRectangle_->uLineColor;
+    stPoint.usY = pstRectangle_->usTop;
+    for (stPoint.usX = pstRectangle_->usLeft; stPoint.usX <= pstRectangle_->usRight; stPoint.usX++)
+    {
+        DrawPixel(&stPoint);
+    }
 
-	stPoint.usY = pstRectangle_->usBottom;
-	for (stPoint.usX = pstRectangle_->usLeft; stPoint.usX <= pstRectangle_->usRight; stPoint.usX++)
-	{
-		DrawPixel(&stPoint);
-	}
+    stPoint.usY = pstRectangle_->usBottom;
+    for (stPoint.usX = pstRectangle_->usLeft; stPoint.usX <= pstRectangle_->usRight; stPoint.usX++)
+    {
+        DrawPixel(&stPoint);
+    }
 
-	stPoint.usX = pstRectangle_->usLeft;
-	for (stPoint.usY = pstRectangle_->usTop; stPoint.usY <= pstRectangle_->usBottom; stPoint.usY++)
-	{
-		DrawPixel(&stPoint);
-	}
+    stPoint.usX = pstRectangle_->usLeft;
+    for (stPoint.usY = pstRectangle_->usTop; stPoint.usY <= pstRectangle_->usBottom; stPoint.usY++)
+    {
+        DrawPixel(&stPoint);
+    }
 
-	stPoint.usX = pstRectangle_->usRight;
-	for (stPoint.usY = pstRectangle_->usTop; stPoint.usY <= pstRectangle_->usBottom; stPoint.usY++)
-	{
-		DrawPixel(&stPoint);
-	}
+    stPoint.usX = pstRectangle_->usRight;
+    for (stPoint.usY = pstRectangle_->usTop; stPoint.usY <= pstRectangle_->usBottom; stPoint.usY++)
+    {
+        DrawPixel(&stPoint);
+    }
 }
 
 //---------------------------------------------------------------------------
 void GraphicsDriver::Circle(DrawCircle_t *pstCircle_)
 {
-	DrawPoint_t stPoint;
-	K_SHORT sX;
-	K_SHORT sY;
-	K_ULONG ulRadSquare;
+    DrawPoint_t stPoint;
+    K_SHORT sX;
+    K_SHORT sY;
+    K_ULONG ulRadSquare;
 
-	K_ULONG ulXSquare;
-	K_ULONG ulYSquare;
+    K_ULONG ulXSquare;
+    K_ULONG ulYSquare;
 
-	// Get the radius squared value...
-	ulRadSquare = (K_ULONG)pstCircle_->usRadius;
-	ulRadSquare *= ulRadSquare;
+    // Get the radius squared value...
+    ulRadSquare = (K_ULONG)pstCircle_->usRadius;
+    ulRadSquare *= ulRadSquare;
 
-	// Look at the upper-right quarter of the circle
-	for (sX = 0; sX <= (K_SHORT)pstCircle_->usRadius; sX++)
-	{
-		ulXSquare = (K_ULONG)sX;
-		ulXSquare *= ulXSquare;
-		for (sY = 0; sY <= (K_SHORT)pstCircle_->usRadius; sY++)
-		{
-			ulYSquare = (K_ULONG)sY;
-			ulYSquare *= ulYSquare;
+    // Look at the upper-right quarter of the circle
+    for (sX = 0; sX <= (K_SHORT)pstCircle_->usRadius; sX++)
+    {
+        ulXSquare = (K_ULONG)sX;
+        ulXSquare *= ulXSquare;
+        for (sY = 0; sY <= (K_SHORT)pstCircle_->usRadius; sY++)
+        {
+            ulYSquare = (K_ULONG)sY;
+            ulYSquare *= ulYSquare;
 
-			// if filled...
-			if (pstCircle_->bFill == true)
-			{
-				stPoint.uColor = pstCircle_->uFillColor;
-				if (ulXSquare + ulYSquare <= ulRadSquare)
-				{
-					// Draw the fill color at the appropriate locations (quadrature...)
-					stPoint.usX = pstCircle_->usX + sX;
-					stPoint.usY = pstCircle_->usY + sY;
-					DrawPixel(&stPoint);
-					stPoint.usX = pstCircle_->usX - sX;
-					stPoint.usY = pstCircle_->usY + sY;
-					DrawPixel(&stPoint);
-					stPoint.usX = pstCircle_->usX + sX;
-					stPoint.usY = pstCircle_->usY - sY;
-					DrawPixel(&stPoint);
-					stPoint.usX = pstCircle_->usX - sX;
-					stPoint.usY = pstCircle_->usY - sY;
-					DrawPixel(&stPoint);
-				}
-			}
-			// Check for edge...
-			if (
-				((ulXSquare + ulYSquare) >= (ulRadSquare-pstCircle_->usRadius)) &&
-				((ulXSquare + ulYSquare) <= (ulRadSquare+pstCircle_->usRadius))
-			   )
-			{
-				stPoint.uColor = pstCircle_->uLineColor;
+            // if filled...
+            if (pstCircle_->bFill == true)
+            {
+                stPoint.uColor = pstCircle_->uFillColor;
+                if (ulXSquare + ulYSquare <= ulRadSquare)
+                {
+                    // Draw the fill color at the appropriate locations (quadrature...)
+                    stPoint.usX = pstCircle_->usX + sX;
+                    stPoint.usY = pstCircle_->usY + sY;
+                    DrawPixel(&stPoint);
+                    stPoint.usX = pstCircle_->usX - sX;
+                    stPoint.usY = pstCircle_->usY + sY;
+                    DrawPixel(&stPoint);
+                    stPoint.usX = pstCircle_->usX + sX;
+                    stPoint.usY = pstCircle_->usY - sY;
+                    DrawPixel(&stPoint);
+                    stPoint.usX = pstCircle_->usX - sX;
+                    stPoint.usY = pstCircle_->usY - sY;
+                    DrawPixel(&stPoint);
+                }
+            }
+            // Check for edge...
+            if (
+                ((ulXSquare + ulYSquare) >= (ulRadSquare-pstCircle_->usRadius)) &&
+                ((ulXSquare + ulYSquare) <= (ulRadSquare+pstCircle_->usRadius))
+               )
+            {
+                stPoint.uColor = pstCircle_->uLineColor;
 
-				// Draw the fill color at the appropriate locations (quadrature...)
-				stPoint.usX = pstCircle_->usX + sX;
-				stPoint.usY = pstCircle_->usY + sY;
-				DrawPixel(&stPoint);
-				stPoint.usX = pstCircle_->usX - sX;
-				stPoint.usY = pstCircle_->usY + sY;
-				DrawPixel(&stPoint);
-				stPoint.usX = pstCircle_->usX + sX;
-				stPoint.usY = pstCircle_->usY - sY;
-				DrawPixel(&stPoint);
-				stPoint.usX = pstCircle_->usX - sX;
-				stPoint.usY = pstCircle_->usY - sY;
-				DrawPixel(&stPoint);
-			}
-		}
-	}
+                // Draw the fill color at the appropriate locations (quadrature...)
+                stPoint.usX = pstCircle_->usX + sX;
+                stPoint.usY = pstCircle_->usY + sY;
+                DrawPixel(&stPoint);
+                stPoint.usX = pstCircle_->usX - sX;
+                stPoint.usY = pstCircle_->usY + sY;
+                DrawPixel(&stPoint);
+                stPoint.usX = pstCircle_->usX + sX;
+                stPoint.usY = pstCircle_->usY - sY;
+                DrawPixel(&stPoint);
+                stPoint.usX = pstCircle_->usX - sX;
+                stPoint.usY = pstCircle_->usY - sY;
+                DrawPixel(&stPoint);
+            }
+        }
+    }
 }
 
 //---------------------------------------------------------------------------
 void GraphicsDriver::Ellipse(DrawEllipse_t *pstEllipse_)
 {
-	DrawPoint_t stPoint;
-	K_SHORT sX;
-	K_SHORT sY;
-	K_ULONG ulRadius;
-	K_ULONG ulHSquare;
-	K_ULONG ulVSquare;
-	K_ULONG ulXSquare;
-	K_ULONG ulYSquare;
+    DrawPoint_t stPoint;
+    K_SHORT sX;
+    K_SHORT sY;
+    K_ULONG ulRadius;
+    K_ULONG ulHSquare;
+    K_ULONG ulVSquare;
+    K_ULONG ulXSquare;
+    K_ULONG ulYSquare;
 
-	ulHSquare = (K_ULONG)pstEllipse_->usWidth;
-	ulHSquare *= ulHSquare;
+    ulHSquare = (K_ULONG)pstEllipse_->usWidth;
+    ulHSquare *= ulHSquare;
 
-	ulVSquare = (K_ULONG)pstEllipse_->usHeight;
-	ulVSquare *= ulVSquare;
+    ulVSquare = (K_ULONG)pstEllipse_->usHeight;
+    ulVSquare *= ulVSquare;
 
-	ulRadius = ulHSquare * ulVSquare;
+    ulRadius = ulHSquare * ulVSquare;
 
-	for (sX = 0; sX <= (K_SHORT)pstEllipse_->usWidth; sX++)
-	{
-		ulXSquare = (K_ULONG)sX;
-		ulXSquare *= ulXSquare;
-		ulXSquare *= ulHSquare;
+    for (sX = 0; sX <= (K_SHORT)pstEllipse_->usWidth; sX++)
+    {
+        ulXSquare = (K_ULONG)sX;
+        ulXSquare *= ulXSquare;
+        ulXSquare *= ulHSquare;
 
-		for (sY = 0; sY <= (K_SHORT)pstEllipse_->usHeight; sY++)
-		{
-			ulYSquare = (K_ULONG)sY;
-			ulYSquare *= ulYSquare;
-			ulYSquare *= ulVSquare;
+        for (sY = 0; sY <= (K_SHORT)pstEllipse_->usHeight; sY++)
+        {
+            ulYSquare = (K_ULONG)sY;
+            ulYSquare *= ulYSquare;
+            ulYSquare *= ulVSquare;
 
-			if ((ulXSquare + ulYSquare) <= ulRadius)
-			{
-				// Draw the fill color at the appropriate locations (quadrature...)
-				stPoint.usX = pstEllipse_->usX + sX;
-				stPoint.usY = pstEllipse_->usY + sY;
-				DrawPixel(&stPoint);
-				stPoint.usX = pstEllipse_->usX - sX;
-				stPoint.usY = pstEllipse_->usY + sY;
-				DrawPixel(&stPoint);
-				stPoint.usX = pstEllipse_->usX + sX;
-				stPoint.usY = pstEllipse_->usY - sY;
-				DrawPixel(&stPoint);
-				stPoint.usX = pstEllipse_->usX - sX;
-				stPoint.usY = pstEllipse_->usY - sY;
-				DrawPixel(&stPoint);
-			}
-		}
-	}
+            if ((ulXSquare + ulYSquare) <= ulRadius)
+            {
+                // Draw the fill color at the appropriate locations (quadrature...)
+                stPoint.usX = pstEllipse_->usX + sX;
+                stPoint.usY = pstEllipse_->usY + sY;
+                DrawPixel(&stPoint);
+                stPoint.usX = pstEllipse_->usX - sX;
+                stPoint.usY = pstEllipse_->usY + sY;
+                DrawPixel(&stPoint);
+                stPoint.usX = pstEllipse_->usX + sX;
+                stPoint.usY = pstEllipse_->usY - sY;
+                DrawPixel(&stPoint);
+                stPoint.usX = pstEllipse_->usX - sX;
+                stPoint.usY = pstEllipse_->usY - sY;
+                DrawPixel(&stPoint);
+            }
+        }
+    }
 }
 
 //---------------------------------------------------------------------------
 void GraphicsDriver::Bitmap(DrawBitmap_t *pstBitmap_)
 {
-	K_USHORT usRow;
-	K_USHORT usCol;
+    K_USHORT usRow;
+    K_USHORT usCol;
 
-	K_USHORT usIndex;
+    K_USHORT usIndex;
 
-	K_UCHAR ucRed = 0;
-	K_UCHAR ucBlue = 0;
-	K_UCHAR ucGreen = 0;
+    K_UCHAR ucRed = 0;
+    K_UCHAR ucBlue = 0;
+    K_UCHAR ucGreen = 0;
 
-	DrawPoint_t stPoint;
+    DrawPoint_t stPoint;
 
-	usIndex = 0;
-	for (usRow = pstBitmap_->usY; usRow < (pstBitmap_->usY + pstBitmap_->usHeight); usRow++)
-	{
-		for (usCol = pstBitmap_->usX; usCol < (pstBitmap_->usX + pstBitmap_->usWidth); usCol++)
-		{
+    usIndex = 0;
+    for (usRow = pstBitmap_->usY; usRow < (pstBitmap_->usY + pstBitmap_->usHeight); usRow++)
+    {
+        for (usCol = pstBitmap_->usX; usCol < (pstBitmap_->usX + pstBitmap_->usWidth); usCol++)
+        {
 
-			stPoint.usX = usCol;
-			stPoint.usY = usRow;
+            stPoint.usX = usCol;
+            stPoint.usY = usRow;
 
-			// Build the color based on the bitmap value...  This algorithm
-			// is slow, but it automatically converts any 8/16/24 bit bitmap into the
-			// current colorspace defined...
-			switch(pstBitmap_->ucBPP)
-			{
-				case 1:
-				{
-					// 3:2:3, RGB
-					ucRed     = ((pstBitmap_->pucData[usIndex]) & 0xE0) << 1;
-					ucGreen   = ((pstBitmap_->pucData[usIndex]) & 0x18) << 3;
-					ucBlue    = ((pstBitmap_->pucData[usIndex]) & 0x07) << 5;
-				}
-					break;
-				case 2:
-				{
-					K_USHORT usTemp;
-					usTemp = pstBitmap_->pucData[usIndex];
-					usTemp <<= 8;
-					usTemp |= pstBitmap_->pucData[usIndex + 1];
+            // Build the color based on the bitmap value...  This algorithm
+            // is slow, but it automatically converts any 8/16/24 bit bitmap into the
+            // current colorspace defined...
+            switch(pstBitmap_->ucBPP)
+            {
+                case 1:
+                {
+                    // 3:2:3, RGB
+                    ucRed     = ((pstBitmap_->pucData[usIndex]) & 0xE0) << 1;
+                    ucGreen   = ((pstBitmap_->pucData[usIndex]) & 0x18) << 3;
+                    ucBlue    = ((pstBitmap_->pucData[usIndex]) & 0x07) << 5;
+                }
+                    break;
+                case 2:
+                {
+                    K_USHORT usTemp;
+                    usTemp = pstBitmap_->pucData[usIndex];
+                    usTemp <<= 8;
+                    usTemp |= pstBitmap_->pucData[usIndex + 1];
 
-					// 5:6:5, RGB
-					ucRed     = (K_UCHAR)((usTemp >> 11) & 0x001F) << 3;
-					ucGreen   = (K_UCHAR)((usTemp >> 5) & 0x003F)  << 2;
-					ucBlue    = (K_UCHAR)(usTemp & 0x001F) << 3;
-				}
-					break;
-				case 3:
-				{
-					K_ULONG ulTemp;
-					ulTemp = pstBitmap_->pucData[usIndex];
-					ulTemp <<= 8;
-					ulTemp |= pstBitmap_->pucData[usIndex + 1];
-					ulTemp <<= 8;
-					ulTemp |= pstBitmap_->pucData[usIndex + 2];
+                    // 5:6:5, RGB
+                    ucRed     = (K_UCHAR)((usTemp >> 11) & 0x001F) << 3;
+                    ucGreen   = (K_UCHAR)((usTemp >> 5) & 0x003F)  << 2;
+                    ucBlue    = (K_UCHAR)(usTemp & 0x001F) << 3;
+                }
+                    break;
+                case 3:
+                {
+                    K_ULONG ulTemp;
+                    ulTemp = pstBitmap_->pucData[usIndex];
+                    ulTemp <<= 8;
+                    ulTemp |= pstBitmap_->pucData[usIndex + 1];
+                    ulTemp <<= 8;
+                    ulTemp |= pstBitmap_->pucData[usIndex + 2];
 
-					// 8:8:8 RGB
-					ucRed    = (K_UCHAR)((ulTemp & 0x00FF0000) >> 16);
-					ucGreen  = (K_UCHAR)((ulTemp & 0x0000FF00) >> 8);
-					ucBlue   = (K_UCHAR)((ulTemp & 0x000000FF));
-				}
-					break;
-				default:
-					break;
-			}
+                    // 8:8:8 RGB
+                    ucRed    = (K_UCHAR)((ulTemp & 0x00FF0000) >> 16);
+                    ucGreen  = (K_UCHAR)((ulTemp & 0x0000FF00) >> 8);
+                    ucBlue   = (K_UCHAR)((ulTemp & 0x000000FF));
+                }
+                    break;
+                default:
+                    break;
+            }
 
-			// Convert the R,G,B values into the correct colorspace for display
+            // Convert the R,G,B values into the correct colorspace for display
 #if DRAW_COLOR_2BIT
-			//1-bit
-			ucRed >>= 7;
-			ucGreen >>= 7;
-			ucBlue >>= 7;
+            //1-bit
+            ucRed >>= 7;
+            ucGreen >>= 7;
+            ucBlue >>= 7;
 #elif DRAW_COLOR_8BIT
-			//3:2:3 R:G:B
-			ucRed >>= 5;
-			ucGreen >>= 6;
-			ucBlue >>= 5;
+            //3:2:3 R:G:B
+            ucRed >>= 5;
+            ucGreen >>= 6;
+            ucBlue >>= 5;
 #elif DRAW_COLOR_16BIT
-			//5:6:5 R:G:B
-			ucRed >>= 3;
-			ucGreen >>= 2;
-			ucBlue >>= 3;
+            //5:6:5 R:G:B
+            ucRed >>= 3;
+            ucGreen >>= 2;
+            ucBlue >>= 3;
 #elif DRAW_COLOR_24BIT
-			// No conversion required
+            // No conversion required
 #endif
-			// Build the color.
-			stPoint.uColor = RGB_COLOR(ucRed,ucGreen,ucBlue);
+            // Build the color.
+            stPoint.uColor = RGB_COLOR(ucRed,ucGreen,ucBlue);
 
-			// Draw the point.
-			DrawPixel(&stPoint);
+            // Draw the point.
+            DrawPixel(&stPoint);
 
-			// Stamps are opaque, don't fill in the BG
-			usIndex += m_ucBPP / 8;
-		}
-	}
+            // Stamps are opaque, don't fill in the BG
+            usIndex += m_ucBPP / 8;
+        }
+    }
 }
 
 //---------------------------------------------------------------------------
 void GraphicsDriver::Stamp(DrawStamp_t *pstStamp_)
 {
-	K_USHORT usRow;
-	K_USHORT usCol;
-	K_USHORT usShift;
-	K_USHORT usIndex;
-	DrawPoint_t stPoint;
+    K_USHORT usRow;
+    K_USHORT usCol;
+    K_USHORT usShift;
+    K_USHORT usIndex;
+    DrawPoint_t stPoint;
 
-	usIndex = 0;
-	for (usRow = pstStamp_->usY; usRow < (pstStamp_->usY + pstStamp_->usHeight); usRow++)
-	{
-		usShift = 0x80;
-		for (usCol = pstStamp_->usX; usCol < (pstStamp_->usX + pstStamp_->usWidth); usCol++)
-		{
-			// If the packed bit in the bitmap is a "1", draw the color.
-			if (pstStamp_->pucData[usIndex] & usShift)
-			{
-				stPoint.usX = usCol;
-				stPoint.usY = usRow;
-				stPoint.uColor = pstStamp_->uColor;
-				DrawPixel(&stPoint);
-			}
-			// Stamps are opaque, don't fill in the BG
+    usIndex = 0;
+    for (usRow = pstStamp_->usY; usRow < (pstStamp_->usY + pstStamp_->usHeight); usRow++)
+    {
+        usShift = 0x80;
+        for (usCol = pstStamp_->usX; usCol < (pstStamp_->usX + pstStamp_->usWidth); usCol++)
+        {
+            // If the packed bit in the bitmap is a "1", draw the color.
+            if (pstStamp_->pucData[usIndex] & usShift)
+            {
+                stPoint.usX = usCol;
+                stPoint.usY = usRow;
+                stPoint.uColor = pstStamp_->uColor;
+                DrawPixel(&stPoint);
+            }
+            // Stamps are opaque, don't fill in the BG
 
-			// Shift to the next bit in the field
-			usShift >>= 1;
+            // Shift to the next bit in the field
+            usShift >>= 1;
 
-			// Rollover - next bit in the bitmap.
-			// This obviously works best for stamps that are multiples of 8x8
-			if (usShift == 0)
-			{
-				usShift = 0x80;
-				usIndex++;
-			}
-		}
-	}
+            // Rollover - next bit in the bitmap.
+            // This obviously works best for stamps that are multiples of 8x8
+            if (usShift == 0)
+            {
+                usShift = 0x80;
+                usIndex++;
+            }
+        }
+    }
 }
 
 //----------------------------------------------------------------------------
 void GraphicsDriver::Move( DrawMove_t *pstMove_ )
 {
-	DrawPoint_t stPoint;
-	K_LONG sX;
-	K_LONG sY;
-	K_LONG sXInc = 0;
-	K_LONG sYInc = 0;
+    DrawPoint_t stPoint;
+    K_LONG sX;
+    K_LONG sY;
+    K_LONG sXInc = 0;
+    K_LONG sYInc = 0;
 
-	K_BOOL bLeftToRight = false;
-	K_BOOL bTopToBottom = false;
+    K_BOOL bLeftToRight = false;
+    K_BOOL bTopToBottom = false;
 
-	if (pstMove_->usSrcX > pstMove_->usDstX)
-	{
-		bLeftToRight = true;
-	}
-	if (pstMove_->usSrcY > pstMove_->usDstY)
-	{
-		bTopToBottom = true;
-	}
+    if (pstMove_->usSrcX > pstMove_->usDstX)
+    {
+        bLeftToRight = true;
+    }
+    if (pstMove_->usSrcY > pstMove_->usDstY)
+    {
+        bTopToBottom = true;
+    }
 
-	if (bLeftToRight)
-	{
-		sXInc++;
-	}
-	else
-	{
-		sXInc--;
-		pstMove_->usSrcX += pstMove_->usCopyWidth - 1;
-		pstMove_->usDstX += pstMove_->usCopyWidth - 1;
-	}
+    if (bLeftToRight)
+    {
+        sXInc++;
+    }
+    else
+    {
+        sXInc--;
+        pstMove_->usSrcX += pstMove_->usCopyWidth - 1;
+        pstMove_->usDstX += pstMove_->usCopyWidth - 1;
+    }
 
-	if (bTopToBottom)
-	{
-		sYInc++;
-	}
-	else
-	{
-		sYInc--;
-		pstMove_->usSrcY += pstMove_->usCopyHeight - 1;
-		pstMove_->usDstY += pstMove_->usCopyHeight - 1;
-	}
+    if (bTopToBottom)
+    {
+        sYInc++;
+    }
+    else
+    {
+        sYInc--;
+        pstMove_->usSrcY += pstMove_->usCopyHeight - 1;
+        pstMove_->usDstY += pstMove_->usCopyHeight - 1;
+    }
 
-	// Hideously inefficient memory move...
-	for (sX = 0; sX < pstMove_->usCopyWidth; sX++)
-	{
-		for (sY = 0; sY < pstMove_->usCopyHeight; sY++)
-		{
-			// Read from source (value read into the point struct)
-			stPoint.usY = (K_USHORT)((K_LONG)pstMove_->usSrcY + ((K_LONG)sY * sYInc));
-			stPoint.usX = (K_USHORT)((K_LONG)pstMove_->usSrcX + ((K_LONG)sX * sXInc));
-			ReadPixel(&stPoint);
+    // Hideously inefficient memory move...
+    for (sX = 0; sX < pstMove_->usCopyWidth; sX++)
+    {
+        for (sY = 0; sY < pstMove_->usCopyHeight; sY++)
+        {
+            // Read from source (value read into the point struct)
+            stPoint.usY = (K_USHORT)((K_LONG)pstMove_->usSrcY + ((K_LONG)sY * sYInc));
+            stPoint.usX = (K_USHORT)((K_LONG)pstMove_->usSrcX + ((K_LONG)sX * sXInc));
+            ReadPixel(&stPoint);
 
-			// Copy to dest
-			stPoint.usY = (K_USHORT)((K_LONG)pstMove_->usDstY + ((K_LONG)sY * sYInc));
-			stPoint.usX = (K_USHORT)((K_LONG)pstMove_->usDstX + ((K_LONG)sX * sXInc));
-			DrawPixel(&stPoint);
-		}
-	}
+            // Copy to dest
+            stPoint.usY = (K_USHORT)((K_LONG)pstMove_->usDstY + ((K_LONG)sY * sYInc));
+            stPoint.usX = (K_USHORT)((K_LONG)pstMove_->usDstX + ((K_LONG)sX * sXInc));
+            DrawPixel(&stPoint);
+        }
+    }
 }
 
 //---------------------------------------------------------------------------
 void GraphicsDriver::Text(DrawText_t *pstText_)
 {
-	K_USHORT usX, usY;
-	K_USHORT usStartX;
-	K_USHORT usStartY;
-	K_USHORT usCharOffsetX;
-	K_USHORT usCharIndex = 0;
-	K_UCHAR *pucData = (K_UCHAR*)pstText_->pstFont->pucFontData;
-	DrawPoint_t stPoint;
+    K_USHORT usX, usY;
+    K_USHORT usStartX;
+    K_USHORT usStartY;
+    K_USHORT usCharOffsetX;
+    K_USHORT usCharIndex = 0;
+    K_UCHAR *pucData = (K_UCHAR*)pstText_->pstFont->pucFontData;
+    DrawPoint_t stPoint;
 
-	// set the color for this element.
-	stPoint.uColor = pstText_->uColor;
+    // set the color for this element.
+    stPoint.uColor = pstText_->uColor;
 
-	usCharOffsetX = 0;
+    usCharOffsetX = 0;
 
-	// Draw every character in the string, one at a time
-	while (pstText_->pcString[usCharIndex] != 0)
-	{
-		K_USHORT usOffset = 0;
-		
-		K_UCHAR ucWidth;
-		K_UCHAR ucHeight;
-		K_UCHAR ucVOffset;
-		K_UCHAR ucBitmask;
-		
-		// Read the glyphs from memory until we arrive at the one we wish to print
-		for (usX = 0; usX < pstText_->pcString[usCharIndex]; usX++)
-		{
-			// Glyphs are variable-sized for efficiency - to look up a particular 
-			// glyph, we must traverse all preceding glyphs in the list
-			ucWidth  = Font_ReadByte(usOffset, pucData);
-			ucHeight = Font_ReadByte(usOffset + 1, pucData);
+    // Draw every character in the string, one at a time
+    while (pstText_->pcString[usCharIndex] != 0)
+    {
+        K_USHORT usOffset = 0;
+        
+        K_UCHAR ucWidth;
+        K_UCHAR ucHeight;
+        K_UCHAR ucVOffset;
+        K_UCHAR ucBitmask;
+        
+        // Read the glyphs from memory until we arrive at the one we wish to print
+        for (usX = 0; usX < pstText_->pcString[usCharIndex]; usX++)
+        {
+            // Glyphs are variable-sized for efficiency - to look up a particular 
+            // glyph, we must traverse all preceding glyphs in the list
+            ucWidth  = Font_ReadByte(usOffset, pucData);
+            ucHeight = Font_ReadByte(usOffset + 1, pucData);
 
-			// Adjust the offset to point to the next glyph
-			usOffset += ((((K_USHORT)ucWidth + 7) >> 3) * (K_USHORT)ucHeight) 
-						+ (sizeof(Glyph_t) - 1);		
-		}
-	
-		// Header information:  glyph size and vertical offset
-		ucWidth   = Font_ReadByte(usOffset++, pucData);
-		ucHeight  = Font_ReadByte(usOffset++, pucData);
-		ucVOffset = Font_ReadByte(usOffset++, pucData);
+            // Adjust the offset to point to the next glyph
+            usOffset += ((((K_USHORT)ucWidth + 7) >> 3) * (K_USHORT)ucHeight) 
+                        + (sizeof(Glyph_t) - 1);        
+        }
+    
+        // Header information:  glyph size and vertical offset
+        ucWidth   = Font_ReadByte(usOffset++, pucData);
+        ucHeight  = Font_ReadByte(usOffset++, pucData);
+        ucVOffset = Font_ReadByte(usOffset++, pucData);
 
-		usStartY = pstText_->usTop + (K_USHORT)ucVOffset;
-		usStartX = pstText_->usLeft;
-		
-		// Draw the font from left->right, top->bottom
-		for (	usY = usStartY;
-				usY < usStartY + (K_USHORT)ucHeight;
-				usY++ )
-		{
-			K_UCHAR ucTempChar = Font_ReadByte(usOffset, pucData);
-			ucBitmask = 0x80;
-			
-			for (	usX = usCharOffsetX + usStartX;
-					usX < usCharOffsetX + usStartX + (K_USHORT)ucWidth;
-					usX++ )
-			{				
-				if (!ucBitmask)
-				{
-					ucBitmask = 0x80;
-					usOffset++;
-					ucTempChar = Font_ReadByte(usOffset, pucData);
-				}
-				
-				if (ucTempChar & ucBitmask)
-				{
-					// Update the location
-					stPoint.usX = usX;
-					stPoint.usY = usY;
+        usStartY = pstText_->usTop + (K_USHORT)ucVOffset;
+        usStartX = pstText_->usLeft;
+        
+        // Draw the font from left->right, top->bottom
+        for (    usY = usStartY;
+                usY < usStartY + (K_USHORT)ucHeight;
+                usY++ )
+        {
+            K_UCHAR ucTempChar = Font_ReadByte(usOffset, pucData);
+            ucBitmask = 0x80;
+            
+            for (    usX = usCharOffsetX + usStartX;
+                    usX < usCharOffsetX + usStartX + (K_USHORT)ucWidth;
+                    usX++ )
+            {                
+                if (!ucBitmask)
+                {
+                    ucBitmask = 0x80;
+                    usOffset++;
+                    ucTempChar = Font_ReadByte(usOffset, pucData);
+                }
+                
+                if (ucTempChar & ucBitmask)
+                {
+                    // Update the location
+                    stPoint.usX = usX;
+                    stPoint.usY = usY;
 
-					// Draw the point.
-					DrawPixel(&stPoint);
-				}
-				
-				ucBitmask >>= 1;
-			}
+                    // Draw the point.
+                    DrawPixel(&stPoint);
+                }
+                
+                ucBitmask >>= 1;
+            }
 
-			usOffset++;
-		}
+            usOffset++;
+        }
 
-		// Next character
-		usCharIndex++;
-		usCharOffsetX += (K_USHORT)ucWidth + 1;
-	}
+        // Next character
+        usCharIndex++;
+        usCharOffsetX += (K_USHORT)ucWidth + 1;
+    }
 }
 
 //----------------------------------------------------------------------------
 K_USHORT GraphicsDriver::TextWidth(DrawText_t *pstText_)
 {
     K_USHORT usCharOffsetX;
-	K_USHORT usCharIndex = 0;
-	K_USHORT usX;
-	K_UCHAR *pucData = (K_UCHAR*)pstText_->pstFont->pucFontData;
+    K_USHORT usCharIndex = 0;
+    K_USHORT usX;
+    K_UCHAR *pucData = (K_UCHAR*)pstText_->pstFont->pucFontData;
 
-	usCharOffsetX = 0;
+    usCharOffsetX = 0;
 
-	// Draw every character in the string, one at a time
-	while (pstText_->pcString[usCharIndex] != 0)
-	{
-		K_USHORT usOffset = 0;
-		
-		K_UCHAR ucWidth;
-		K_UCHAR ucHeight;
-		
-		// Read the glyphs from memory until we arrive at the one we wish to print
-		for (usX = 0; usX < pstText_->pcString[usCharIndex]; usX++)
-		{
-			// Glyphs are variable-sized for efficiency - to look up a particular 
-			// glyph, we must traverse all preceding glyphs in the list
-			ucWidth  = Font_ReadByte(usOffset, pucData);
-			ucHeight = Font_ReadByte(usOffset + 1, pucData);
+    // Draw every character in the string, one at a time
+    while (pstText_->pcString[usCharIndex] != 0)
+    {
+        K_USHORT usOffset = 0;
+        
+        K_UCHAR ucWidth;
+        K_UCHAR ucHeight;
+        
+        // Read the glyphs from memory until we arrive at the one we wish to print
+        for (usX = 0; usX < pstText_->pcString[usCharIndex]; usX++)
+        {
+            // Glyphs are variable-sized for efficiency - to look up a particular 
+            // glyph, we must traverse all preceding glyphs in the list
+            ucWidth  = Font_ReadByte(usOffset, pucData);
+            ucHeight = Font_ReadByte(usOffset + 1, pucData);
 
-			// Adjust the offset to point to the next glyph
-			usOffset += ((((K_USHORT)ucWidth + 7) >> 3) * (K_USHORT)ucHeight) 
-						+ (sizeof(Glyph_t) - 1);		
-		}
-	
-		// Header information:  glyph size and vertical offset
-		ucWidth   = Font_ReadByte(usOffset, pucData);
-		usOffset += (sizeof(Glyph_t) - 1);
-	
-		// Next character
-		usCharIndex++;
-		usCharOffsetX += (K_USHORT)ucWidth + 1;
-	}
-	
-	return usCharOffsetX;
+            // Adjust the offset to point to the next glyph
+            usOffset += ((((K_USHORT)ucWidth + 7) >> 3) * (K_USHORT)ucHeight) 
+                        + (sizeof(Glyph_t) - 1);        
+        }
+    
+        // Header information:  glyph size and vertical offset
+        ucWidth   = Font_ReadByte(usOffset, pucData);
+        usOffset += (sizeof(Glyph_t) - 1);
+    
+        // Next character
+        usCharIndex++;
+        usCharOffsetX += (K_USHORT)ucWidth + 1;
+    }
+    
+    return usCharOffsetX;
 }
 
 //----------------------------------------------------------------------------
@@ -881,21 +881,21 @@ void GraphicsDriver::Polygon(DrawPoly_t *pstPoly_)
 //----------------------------------------------------------------------------
 void GraphicsDriver::SetWindow(DrawWindow_t *pstWindow_)
 {
-	if ((pstWindow_->usLeft <= pstWindow_->usRight) &&
-		(pstWindow_->usRight < m_usResX) &&
-		(pstWindow_->usLeft < m_usResX))
-	{
-		m_usLeft = pstWindow_->usLeft;
-		m_usRight = pstWindow_->usRight;
-	}
+    if ((pstWindow_->usLeft <= pstWindow_->usRight) &&
+        (pstWindow_->usRight < m_usResX) &&
+        (pstWindow_->usLeft < m_usResX))
+    {
+        m_usLeft = pstWindow_->usLeft;
+        m_usRight = pstWindow_->usRight;
+    }
     
     if ((pstWindow_->usTop <= pstWindow_->usBottom) &&
-		(pstWindow_->usTop < m_usTop)  &&
-		(pstWindow_->usBottom < m_usBottom))
-	{
-	    m_usTop = pstWindow_->usTop;    
-	    m_usBottom = pstWindow_->usBottom;
-	}
+        (pstWindow_->usTop < m_usTop)  &&
+        (pstWindow_->usBottom < m_usBottom))
+    {
+        m_usTop = pstWindow_->usTop;    
+        m_usBottom = pstWindow_->usBottom;
+    }
     
 }
 

@@ -28,66 +28,66 @@ See license.txt for more information
 
 //---------------------------------------------------------------------------
 
-#define EEPROM_SIZE		(4096)
+#define EEPROM_SIZE        (4096)
 
 //---------------------------------------------------------------------------
 void ATMegaEEPROM::Init()
 { 
-	m_usAddress = 0;
+    m_usAddress = 0;
 }
 
 //---------------------------------------------------------------------------
 K_UCHAR ATMegaEEPROM::Open()
 { 
-	return 0; 
+    return 0; 
 }
 
 //---------------------------------------------------------------------------
 K_UCHAR ATMegaEEPROM::Close()
 { 
-	return 0; 
+    return 0; 
 }
-	
+    
 //---------------------------------------------------------------------------
 K_USHORT ATMegaEEPROM::Read( K_USHORT usBytes_, K_UCHAR *pucData_ )
 {
-	K_USHORT usNumBytes = usBytes_;
+    K_USHORT usNumBytes = usBytes_;
 
-	if ((m_usAddress + usBytes_) >= EEPROM_SIZE)
-	{
-		usNumBytes = EEPROM_SIZE - m_usAddress;
-	}
-		
-	if (!usNumBytes)
-	{
-		return 0;
-	}
+    if ((m_usAddress + usBytes_) >= EEPROM_SIZE)
+    {
+        usNumBytes = EEPROM_SIZE - m_usAddress;
+    }
+        
+    if (!usNumBytes)
+    {
+        return 0;
+    }
 
-	eeprom_read_block((void*)pucData_, (const void*)m_usAddress, (size_t)usNumBytes);
-	m_usAddress += usNumBytes;
-		
-	return usNumBytes;
+    eeprom_read_block((void*)pucData_, (const void*)m_usAddress, (size_t)usNumBytes);
+    m_usAddress += usNumBytes;
+        
+    return usNumBytes;
 }
 
 //---------------------------------------------------------------------------
 K_USHORT ATMegaEEPROM::Write( K_USHORT usBytes_, K_UCHAR *pucData_ )
 {
-	K_USHORT usNumBytes = usBytes_;
+    K_USHORT usNumBytes = usBytes_;
 
-	if ((m_usAddress + usBytes_) >= EEPROM_SIZE)
-	{
-		usNumBytes = EEPROM_SIZE - m_usAddress;
-	}
-	
-	if (!usNumBytes)
-	{
-		return 0;
-	}
+    if ((m_usAddress + usBytes_) >= EEPROM_SIZE)
+    {
+        usNumBytes = EEPROM_SIZE - m_usAddress;
+    }
+    
+    if (!usNumBytes)
+    {
+        return 0;
+    }
 
-	eeprom_write_block((void*)pucData_, (void*)m_usAddress, usNumBytes);
-	m_usAddress += usNumBytes;
-	
-	return usNumBytes;
+    eeprom_write_block((void*)pucData_, (void*)m_usAddress, usNumBytes);
+    m_usAddress += usNumBytes;
+    
+    return usNumBytes;
 }
 
 //---------------------------------------------------------------------------

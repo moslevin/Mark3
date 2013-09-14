@@ -13,10 +13,10 @@ Copyright (c) 2012 Funkenstein Software Consulting, all rights reserved.
 See license.txt for more information
 ===========================================================================*/
 /*!
-	\file control_button.h
-	\brief GUI Button Control
+    \file control_button.h
+    \brief GUI Button Control
 
-	Basic pushbutton control with an up/down state.
+    Basic pushbutton control with an up/down state.
 */
 
 #ifndef __CONTROL_BUTTON_H__
@@ -33,9 +33,9 @@ class ButtonControl : public GuiControl
 {
 public:
 
-	virtual void Init();
-	virtual void Draw();
-	virtual GuiReturn_t ProcessEvent( GuiEvent_t *pstEvent_ );
+    virtual void Init();
+    virtual void Draw();
+    virtual GuiReturn_t ProcessEvent( GuiEvent_t *pstEvent_ );
     virtual void Activate( bool bActivate_ );
 
     void SetBGColor( COLOR eColor_ )        { m_uBGColor = eColor_; }

@@ -64,8 +64,8 @@ void ThreadPort::InitStack(Thread *pclThread_)
 
     // Push status register and R1 (which is used as a constant zero)
     PUSH_TO_STACK(pucStack, 0x80);  // SR
-	// Push the pmic status register..
-	PUSH_TO_STACK(pucStack, 0x00);	// PMIC CTRL
+    // Push the pmic status register..
+    PUSH_TO_STACK(pucStack, 0x00);    // PMIC CTRL
     PUSH_TO_STACK(pucStack, 0x00);  // R1
 
     // Push other registers
@@ -83,12 +83,12 @@ void ThreadPort::InitStack(Thread *pclThread_)
     {
         PUSH_TO_STACK(pucStack, i);
     }
-	
-	PUSH_TO_STACK(pucStack, 0x3B);	//RAMPZ	3B
-    PUSH_TO_STACK(pucStack, 0x39);	//RAMPX 39
-	PUSH_TO_STACK(pucStack, 0x38);  //RAMPD 38
-	PUSH_TO_STACK(pucStack, 0x3C);  //EIND  3C
-	
+    
+    PUSH_TO_STACK(pucStack, 0x3B);    //RAMPZ    3B
+    PUSH_TO_STACK(pucStack, 0x39);    //RAMPX 39
+    PUSH_TO_STACK(pucStack, 0x38);  //RAMPD 38
+    PUSH_TO_STACK(pucStack, 0x3C);  //EIND  3C
+    
     // Set the top o' the stack.
     pclThread_->m_paucStackTop = (K_UCHAR*)pucStack;
 
@@ -98,28 +98,28 @@ void ThreadPort::InitStack(Thread *pclThread_)
 //---------------------------------------------------------------------------
 static void Thread_Switch(void)
 {
-	g_pstCurrent = g_pstNext;
+    g_pstCurrent = g_pstNext;
 }
 
 
 //---------------------------------------------------------------------------
 void ThreadPort::StartThreads()
 {
-    KernelSWI::Config();				 // configure the task switch SWI
-    KernelTimer::Config();				 // configure the kernel timer
-	
-    Scheduler::SetScheduler(1);		  	 // enable the scheduler
-    Scheduler::Schedule();				 // run the scheduler - determine the first thread to run
+    KernelSWI::Config();                 // configure the task switch SWI
+    KernelTimer::Config();                 // configure the kernel timer
+    
+    Scheduler::SetScheduler(1);               // enable the scheduler
+    Scheduler::Schedule();                 // run the scheduler - determine the first thread to run
 
-    Thread_Switch();					 // Set the next scheduled thread to the current thread
+    Thread_Switch();                     // Set the next scheduled thread to the current thread
 
-    //KernelTimer::Start();				 // enable the kernel timer
-    KernelSWI::Start();					 // enable the task switch SWI
+    //KernelTimer::Start();                 // enable the kernel timer
+    KernelSWI::Start();                     // enable the task switch SWI
 
     // Restore the context...
     Thread_RestoreContext();        // restore the context of the first running thread
     ASM("reti");  
-	                  // return from interrupt - will return to the first scheduled thread
+                      // return from interrupt - will return to the first scheduled thread
 }
 
 //---------------------------------------------------------------------------
@@ -145,10 +145,10 @@ ISR(INT0_vect)
 //---------------------------------------------------------------------------
 ISR(TIMER1_COMPA_vect)
 {
-#if KERNEL_USE_TIMERS	
-	TimerScheduler::Process();
-#endif	
-#if KERNEL_USE_QUANTUM	
-	Quantum::UpdateTimer();
-#endif	
+#if KERNEL_USE_TIMERS    
+    TimerScheduler::Process();
+#endif    
+#if KERNEL_USE_QUANTUM    
+    Quantum::UpdateTimer();
+#endif    
 }

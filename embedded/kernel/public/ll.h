@@ -52,12 +52,12 @@ See license.txt for more information
 
 //---------------------------------------------------------------------------
 /*! 
-	"Safe unlinking" performs extra checks on data to make sure that there 
+    "Safe unlinking" performs extra checks on data to make sure that there 
     are no consistencies when performing node operations.  This goes beyond
     pointer checks, adding a layer of structural and metadata validation to
     help detect system corruption early.
 */
-#define SAFE_UNLINK		(1)
+#define SAFE_UNLINK        (1)
 
 //---------------------------------------------------------------------------
 /*!
@@ -77,7 +77,7 @@ class CircularLinkList;
 class LinkListNode
 {
 protected:
-	
+    
     LinkListNode *next;     //!< Pointer to the next node in the list
     LinkListNode *prev;     //!< Pointer to the previous node in the list
 
@@ -108,7 +108,7 @@ public:
         \return a pointer to the previous node in the list.
     */
     LinkListNode *GetPrev(void) { return prev; }
-		
+        
     friend class LinkList;  
     friend class DoubleLinkList;  
     friend class CircularLinkList;  
@@ -157,7 +157,7 @@ public:
     */
     LinkListNode *GetHead() { return m_pstHead; }
     
-	/*!
+    /*!
         \fn LinkListNode *GetTail()
         
         Get the tail node of the linked list

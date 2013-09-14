@@ -26,7 +26,7 @@ See license.txt for more information
 
 typedef enum
 {
-	EEPROM_CMD_SEEK = 0x80	//!< Set the current EEPROM address, used for read/write
+    EEPROM_CMD_SEEK = 0x80    //!< Set the current EEPROM address, used for read/write
 } EEPROM_Cmd_t;
 
 class ATMegaEEPROM;
@@ -34,22 +34,22 @@ class ATMegaEEPROM;
 class ATMegaEEPROM : public Driver
 {
 public:
-	virtual void Init();
-	virtual K_UCHAR Open();
-	virtual K_UCHAR Close();
-	virtual K_USHORT Read( K_USHORT usBytes_,
-		K_UCHAR *pucData_ );
-		
-	virtual K_USHORT Write( K_USHORT usBytes_,
-		K_UCHAR *pucData_ );
-		
-	virtual K_USHORT Control( K_USHORT usEvent_,
-		void *pvIn_,
-		K_USHORT usSizeIn_,
-		void *pvOut_,
-		K_USHORT usSizeOut_ );
+    virtual void Init();
+    virtual K_UCHAR Open();
+    virtual K_UCHAR Close();
+    virtual K_USHORT Read( K_USHORT usBytes_,
+        K_UCHAR *pucData_ );
+        
+    virtual K_USHORT Write( K_USHORT usBytes_,
+        K_UCHAR *pucData_ );
+        
+    virtual K_USHORT Control( K_USHORT usEvent_,
+        void *pvIn_,
+        K_USHORT usSizeIn_,
+        void *pvOut_,
+        K_USHORT usSizeOut_ );
 private:
-	K_USHORT m_usAddress;		
+    K_USHORT m_usAddress;        
 };
 
 #endif 

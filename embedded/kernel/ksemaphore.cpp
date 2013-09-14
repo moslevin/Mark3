@@ -27,9 +27,9 @@ See license.txt for more information
 #include "kernel_debug.h"
 //---------------------------------------------------------------------------
 #if defined __FILE_ID__
-	#undef __FILE_ID__
+    #undef __FILE_ID__
 #endif
-#define __FILE_ID__ 	SEMAPHORE_CPP
+#define __FILE_ID__     SEMAPHORE_CPP
 
 #if KERNEL_USE_SEMAPHORE
 
@@ -39,18 +39,18 @@ See license.txt for more information
 //---------------------------------------------------------------------------
 void TimedSemaphore_Callback(Thread *pclOwner_, void *pvData_)
 {
-	Semaphore *pclSemaphore = static_cast<Semaphore*>(pvData_);
-	
-	// Indicate that the semaphore has expired on the thread
-	pclSemaphore->SetExpired(true);
-	
-	// Wake up the thread that was blocked on this semaphore.
-	pclSemaphore->WakeMe(pclOwner_);
-	
-	if (pclOwner_->GetPriority() > Scheduler::GetCurrentThread()->GetPriority())
-	{
-		Thread::Yield();
-	}	
+    Semaphore *pclSemaphore = static_cast<Semaphore*>(pvData_);
+    
+    // Indicate that the semaphore has expired on the thread
+    pclSemaphore->SetExpired(true);
+    
+    // Wake up the thread that was blocked on this semaphore.
+    pclSemaphore->WakeMe(pclOwner_);
+    
+    if (pclOwner_->GetPriority() > Scheduler::GetCurrentThread()->GetPriority())
+    {
+        Thread::Yield();
+    }    
 }
 
 //---------------------------------------------------------------------------
@@ -88,8 +88,8 @@ void Semaphore::Init(K_USHORT usInitVal_, K_USHORT usMaxVal_)
     // the initial count.  Clear the wait list for this object.
     m_usValue = usInitVal_;
     m_usMaxValue = usMaxVal_;    
-#if KERNEL_USE_TIMERS	
-	m_bExpired = false;
+#if KERNEL_USE_TIMERS    
+    m_bExpired = false;
 #endif
     m_clBlockList.Init();
 }
@@ -97,8 +97,8 @@ void Semaphore::Init(K_USHORT usInitVal_, K_USHORT usMaxVal_)
 //---------------------------------------------------------------------------
 bool Semaphore::Post()
 {
-	KERNEL_TRACE_1( STR_SEMAPHORE_POST_1, (K_USHORT)g_pstCurrent->GetID() );
-	
+    KERNEL_TRACE_1( STR_SEMAPHORE_POST_1, (K_USHORT)g_pstCurrent->GetID() );
+    
     K_UCHAR bThreadWake = 0;
     K_BOOL bBail = false;
     // Increment the semaphore count - we can mess with threads so ensure this
@@ -148,30 +148,30 @@ bool Semaphore::Post()
 
 #if !KERNEL_USE_TIMERS
 //---------------------------------------------------------------------------
-	// No timers, no timed pend
-	void Semaphore::Pend()
+    // No timers, no timed pend
+    void Semaphore::Pend()
 #else
 //---------------------------------------------------------------------------
-	// Redirect the untimed pend API to the timed pend, with a null timeout.
-	void Semaphore::Pend()
-	{
-		Pend(0);
-	}
-//---------------------------------------------------------------------------	
-	bool Semaphore::Pend( K_ULONG ulWaitTimeMS_ )
+    // Redirect the untimed pend API to the timed pend, with a null timeout.
+    void Semaphore::Pend()
+    {
+        Pend(0);
+    }
+//---------------------------------------------------------------------------    
+    bool Semaphore::Pend( K_ULONG ulWaitTimeMS_ )
 #endif
 {
     KERNEL_TRACE_1( STR_SEMAPHORE_PEND_1, (K_USHORT)g_pstCurrent->GetID() );
-	
-	// Decrement the semaphore count - if 0, wait.
+    
+    // Decrement the semaphore count - if 0, wait.
     K_UCHAR bThreadWait = 0;
 
 #if KERNEL_USE_TIMERS
-	Timer clSemTimer;
+    Timer clSemTimer;
 
-	m_bExpired = false;
-#endif	
-	
+    m_bExpired = false;
+#endif    
+    
     // Once again, messing with thread data - ensure
     // we're doing all of these operations from within a thread-safe context.
     CS_ENTER();
@@ -197,7 +197,7 @@ bool Semaphore::Post()
         {
             clSemTimer.Start(0, ulWaitTimeMS_, TimedSemaphore_Callback, (void*)this);
         }
-#endif		
+#endif        
         Block(pclThread);
         bThreadWait = 1;
     }
@@ -212,25 +212,25 @@ bool Semaphore::Post()
     }
     
     CS_EXIT();
-	
-	
+    
+    
 #if KERNEL_USE_TIMERS
     if (ulWaitTimeMS_ && bThreadWait)
-	{
-		clSemTimer.Stop();
-	}
-	return (m_bExpired == 0);
+    {
+        clSemTimer.Stop();
+    }
+    return (m_bExpired == 0);
 #endif
 }
 
 //---------------------------------------------------------------------------
 K_USHORT Semaphore::GetCount()
 {
-	K_USHORT usRet;
-	CS_ENTER();
-	usRet = m_usValue;
-	CS_EXIT();
-	return usRet;
+    K_USHORT usRet;
+    CS_ENTER();
+    usRet = m_usValue;
+    CS_EXIT();
+    return usRet;
 }
 
 #endif

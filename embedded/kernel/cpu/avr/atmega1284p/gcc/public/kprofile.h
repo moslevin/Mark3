@@ -70,11 +70,11 @@ public:
         Process the profiling counters from ISR.
     */
     static void Process();
-	
-	/*!
-		Return the current timer epoch	
-	*/
-	static K_ULONG GetEpoch(){ return m_ulEpoch; }
+    
+    /*!
+        Return the current timer epoch    
+    */
+    static K_ULONG GetEpoch(){ return m_ulEpoch; }
 private:
 
     static K_ULONG m_ulEpoch;

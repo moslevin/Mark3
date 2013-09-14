@@ -25,9 +25,9 @@ See license.txt for more information
 #include "kernel_debug.h"
 //---------------------------------------------------------------------------
 #if defined __FILE_ID__
-	#undef __FILE_ID__
+    #undef __FILE_ID__
 #endif
-#define __FILE_ID__ 	MUTEX_CPP
+#define __FILE_ID__     MUTEX_CPP
 
 
 #if KERNEL_USE_MUTEX
@@ -37,25 +37,25 @@ See license.txt for more information
 //---------------------------------------------------------------------------
 void TimedMutex_Calback(Thread *pclOwner_, void *pvData_)
 {
-	Mutex *pclMutex = static_cast<Mutex*>(pvData_);
-		
-	// Indicate that the semaphore has expired on the thread
-	pclMutex->SetExpired(true);
-		
-	// Wake up the thread that was blocked on this semaphore.
-	pclMutex->WakeMe(pclOwner_);
-		
-	if (pclOwner_->GetPriority() > Scheduler::GetCurrentThread()->GetPriority())
-	{
-		Thread::Yield();
-	}
+    Mutex *pclMutex = static_cast<Mutex*>(pvData_);
+        
+    // Indicate that the semaphore has expired on the thread
+    pclMutex->SetExpired(true);
+        
+    // Wake up the thread that was blocked on this semaphore.
+    pclMutex->WakeMe(pclOwner_);
+        
+    if (pclOwner_->GetPriority() > Scheduler::GetCurrentThread()->GetPriority())
+    {
+        Thread::Yield();
+    }
 }
 
 //---------------------------------------------------------------------------
 void Mutex::WakeMe(Thread *pclOwner_)
 {
-	// Remove from the semaphore waitlist and back to its ready list.
-	UnBlock(pclOwner_);
+    // Remove from the semaphore waitlist and back to its ready list.
+    UnBlock(pclOwner_);
 }
 
 #endif
@@ -94,24 +94,24 @@ void Mutex::Init()
 
 //---------------------------------------------------------------------------
 #if KERNEL_USE_TIMERS
-	void Mutex::Claim()
-	{
-		Claim(0);
-	}
-	bool Mutex::Claim(K_ULONG ulWaitTimeMS_)
+    void Mutex::Claim()
+    {
+        Claim(0);
+    }
+    bool Mutex::Claim(K_ULONG ulWaitTimeMS_)
 #else
-	void Mutex::Claim()
+    void Mutex::Claim()
 #endif
 {
-	KERNEL_TRACE_1( STR_MUTEX_CLAIM_1, (K_USHORT)g_pstCurrent->GetID() );
-	
+    KERNEL_TRACE_1( STR_MUTEX_CLAIM_1, (K_USHORT)g_pstCurrent->GetID() );
+    
     K_UCHAR bSchedule = 0;
     Thread *pclThread;
 
 #if KERNEL_USE_TIMERS
-	Timer clTimer;
-		
-	m_bExpired = false;
+    Timer clTimer;
+        
+    m_bExpired = false;
 #endif
 
     // Disable the scheduler while claiming the mutex - we're dealing with all
@@ -152,13 +152,13 @@ void Mutex::Init()
 
         // The mutex is claimed already - we have to block now.  Move the
         // current thread to the list of threads waiting on the mutex.
-#if KERNEL_USE_TIMERS		
-		if (ulWaitTimeMS_)		
-		{
-			clTimer.Start(0, ulWaitTimeMS_, (TimerCallback_t)TimedMutex_Calback, (void*)this);	
-		}
-#endif		
-		
+#if KERNEL_USE_TIMERS        
+        if (ulWaitTimeMS_)        
+        {
+            clTimer.Start(0, ulWaitTimeMS_, (TimerCallback_t)TimedMutex_Calback, (void*)this);    
+        }
+#endif        
+        
         Block(pclThread);
 
         // Check if priority inheritence is necessary.  We do this in order
@@ -167,20 +167,20 @@ void Mutex::Init()
         if(m_ucMaxPri <= pclThread->GetPriority())
         {
             m_ucMaxPri = pclThread->GetPriority();
-			
-			{
-				Thread *pclTemp = static_cast<Thread*>(m_clBlockList.GetHead());	
-				while(pclTemp)
-				{
-					pclTemp->InheritPriority(m_ucMaxPri);
-					if(pclTemp == static_cast<Thread*>(m_clBlockList.GetTail()) )
-					{
-						break;
-					}
-					pclTemp = static_cast<Thread*>(pclTemp->GetNext());					
-				}
+            
+            {
+                Thread *pclTemp = static_cast<Thread*>(m_clBlockList.GetHead());    
+                while(pclTemp)
+                {
+                    pclTemp->InheritPriority(m_ucMaxPri);
+                    if(pclTemp == static_cast<Thread*>(m_clBlockList.GetTail()) )
+                    {
+                        break;
+                    }
+                    pclTemp = static_cast<Thread*>(pclTemp->GetNext());                    
+                }
                 m_pclOwner->InheritPriority(m_ucMaxPri);
-			}
+            }
         }
 
         // Switch Threads when we exit the critical section.
@@ -195,20 +195,20 @@ void Mutex::Init()
         // Switch threads if this thread acquired the mutex
         Thread::Yield();
     }
-	
+    
 #if KERNEL_USE_TIMERS
-	if (ulWaitTimeMS_)
-	{
-		clTimer.Stop();
-	}
-	return (m_bExpired == 0);
+    if (ulWaitTimeMS_)
+    {
+        clTimer.Stop();
+    }
+    return (m_bExpired == 0);
 #endif
 }
 
 //---------------------------------------------------------------------------
 void Mutex::Release()
 {
-	KERNEL_TRACE_1( STR_MUTEX_RELEASE_1, (K_USHORT)g_pstCurrent->GetID() );
+    KERNEL_TRACE_1( STR_MUTEX_RELEASE_1, (K_USHORT)g_pstCurrent->GetID() );
 
     K_UCHAR bSchedule = 0;
     Thread *pclThread;

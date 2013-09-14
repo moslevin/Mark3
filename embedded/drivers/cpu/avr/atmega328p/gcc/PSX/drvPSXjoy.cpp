@@ -12,9 +12,9 @@ Copyright (c) 2012 Funkenstein Software Consulting, all rights reserved.
 See license.txt for more information
 ===========================================================================*/
 /*!
-	\file drvPSXjoy.cpp
-	
-	\brief Playstation (PSX/PS2) Joystick driver implementaiton for AVR
+    \file drvPSXjoy.cpp
+    
+    \brief Playstation (PSX/PS2) Joystick driver implementaiton for AVR
 */
 
 #include "kerneltypes.h"
@@ -27,8 +27,8 @@ See license.txt for more information
 //---------------------------------------------------------------------------
 void PSXJoystick::Init()
 {
-	m_ucType = 0;
-	m_bConnected = false;
+    m_ucType = 0;
+    m_bConnected = false;
 }
 
 //---------------------------------------------------------------------------
@@ -48,13 +48,13 @@ K_UCHAR PSXJoystick::Open()
 
     PSX_PORT |= PSX_ACK_BIT;    // Set internal pullup    
     PSX_DDR  &= ~PSX_ACK_BIT;   // Ack controlled by ctrlr    
-	
-	return 0;
+    
+    return 0;
 }
 
 //---------------------------------------------------------------------------
 K_USHORT PSXJoystick::Control( K_USHORT usEvent_, void *pvIn_, K_USHORT usSizeIn_,
-												  void *pvOut_, K_USHORT usSizeOut_ )
+                                                  void *pvOut_, K_USHORT usSizeOut_ )
 {    
     switch(usEvent_)
     {
@@ -63,7 +63,7 @@ K_USHORT PSXJoystick::Control( K_USHORT usEvent_, void *pvIn_, K_USHORT usSizeIn
         {
             ScanInternal();
         }
-			break;
+            break;
         default:
             break;
     }
@@ -73,11 +73,11 @@ K_USHORT PSXJoystick::Control( K_USHORT usEvent_, void *pvIn_, K_USHORT usSizeIn
 //---------------------------------------------------------------------------
 void PSXJoystick::JoyDelay(K_USHORT usTime_)
 {
-	volatile K_USHORT usTime = 0;
-	while (usTime < (usTime_ << 4))
-	{
-		usTime++;
-	}
+    volatile K_USHORT usTime = 0;
+    while (usTime < (usTime_ << 4))
+    {
+        usTime++;
+    }
 }
 
 //---------------------------------------------------------------------------
@@ -238,27 +238,27 @@ K_UCHAR PSXJoystick::CmdByte(K_UCHAR ucCmd_, K_BOOL bWaitAck_)
 //---------------------------------------------------------------------------
 void PSXJoystick::Decode(K_UCHAR ucJoyMode_, K_UCHAR *pucData_)
 {
-	// Common to all supported modes...
-	m_stCurrentReport.bSelect   = ((pucData_[0] & 0x01) == 0);
-	m_stCurrentReport.bButton10 = ((pucData_[0] & 0x02) == 0);	//L3
-	m_stCurrentReport.bButton9  = ((pucData_[0] & 0x04) == 0);	//R3
-	m_stCurrentReport.bStart    = ((pucData_[0] & 0x08) == 0);
-	m_stCurrentReport.bUp 		= ((pucData_[0] & 0x10) == 0);
-	m_stCurrentReport.bRight 	= ((pucData_[0] & 0x20) == 0);
-	m_stCurrentReport.bDown 	= ((pucData_[0] & 0x40) == 0);
-	m_stCurrentReport.bLeft 	= ((pucData_[0] & 0x80) == 0);
+    // Common to all supported modes...
+    m_stCurrentReport.bSelect   = ((pucData_[0] & 0x01) == 0);
+    m_stCurrentReport.bButton10 = ((pucData_[0] & 0x02) == 0);    //L3
+    m_stCurrentReport.bButton9  = ((pucData_[0] & 0x04) == 0);    //R3
+    m_stCurrentReport.bStart    = ((pucData_[0] & 0x08) == 0);
+    m_stCurrentReport.bUp         = ((pucData_[0] & 0x10) == 0);
+    m_stCurrentReport.bRight     = ((pucData_[0] & 0x20) == 0);
+    m_stCurrentReport.bDown     = ((pucData_[0] & 0x40) == 0);
+    m_stCurrentReport.bLeft     = ((pucData_[0] & 0x80) == 0);
     
-	// Decode the message data into the appropriate joypad report format
+    // Decode the message data into the appropriate joypad report format
     switch (ucJoyMode_)
     {
         case PSX_TYPE_DIGITAL:    // Digital Mode
         {            
-            m_stCurrentReport.bButton6  = ((pucData_[1] & 0x01) == 0);	//L1
-            m_stCurrentReport.bButton5  = ((pucData_[1] & 0x02) == 0);	//R1
-            m_stCurrentReport.bButton8  = ((pucData_[1] & 0x04) == 0);	//L2
-            m_stCurrentReport.bButton7  = ((pucData_[1] & 0x08) == 0);	//R2
-            m_stCurrentReport.bButton1  = ((pucData_[1] & 0x10) == 0);	//Triangle
-            m_stCurrentReport.bButton2  = ((pucData_[1] & 0x20) == 0);	//O
+            m_stCurrentReport.bButton6  = ((pucData_[1] & 0x01) == 0);    //L1
+            m_stCurrentReport.bButton5  = ((pucData_[1] & 0x02) == 0);    //R1
+            m_stCurrentReport.bButton8  = ((pucData_[1] & 0x04) == 0);    //L2
+            m_stCurrentReport.bButton7  = ((pucData_[1] & 0x08) == 0);    //R2
+            m_stCurrentReport.bButton1  = ((pucData_[1] & 0x10) == 0);    //Triangle
+            m_stCurrentReport.bButton2  = ((pucData_[1] & 0x20) == 0);    //O
             m_stCurrentReport.bButton3  = ((pucData_[1] & 0x40) == 0);  //X
             m_stCurrentReport.bButton4  = ((pucData_[1] & 0x80) == 0);  //[]
         }
@@ -284,12 +284,12 @@ void PSXJoystick::Decode(K_UCHAR ucJoyMode_, K_UCHAR *pucData_)
             
         case PSX_TYPE_ANALOG_RED:    // Analog Red Mode
         {
-            m_stCurrentReport.bButton6  = ((pucData_[1] & 0x01) == 0);	//L1
-            m_stCurrentReport.bButton5  = ((pucData_[1] & 0x02) == 0);	//R1
-            m_stCurrentReport.bButton8  = ((pucData_[1] & 0x04) == 0);	//L2
-            m_stCurrentReport.bButton7  = ((pucData_[1] & 0x08) == 0);	//R2
-            m_stCurrentReport.bButton1  = ((pucData_[1] & 0x10) == 0);	//Triangle
-            m_stCurrentReport.bButton2  = ((pucData_[1] & 0x20) == 0);	//O
+            m_stCurrentReport.bButton6  = ((pucData_[1] & 0x01) == 0);    //L1
+            m_stCurrentReport.bButton5  = ((pucData_[1] & 0x02) == 0);    //R1
+            m_stCurrentReport.bButton8  = ((pucData_[1] & 0x04) == 0);    //L2
+            m_stCurrentReport.bButton7  = ((pucData_[1] & 0x08) == 0);    //R2
+            m_stCurrentReport.bButton1  = ((pucData_[1] & 0x10) == 0);    //Triangle
+            m_stCurrentReport.bButton2  = ((pucData_[1] & 0x20) == 0);    //O
             m_stCurrentReport.bButton3  = ((pucData_[1] & 0x40) == 0);  //X
             m_stCurrentReport.bButton4  = ((pucData_[1] & 0x80) == 0);  //[]
         

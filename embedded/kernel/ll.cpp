@@ -16,7 +16,7 @@ See license.txt for more information
     \file   ll.cpp   
 
     \brief  Core Linked-List implementation, from which all kernel objects
-			are derived
+            are derived
 */
 
 #include "kerneltypes.h"
@@ -26,9 +26,9 @@ See license.txt for more information
 
 //---------------------------------------------------------------------------
 #if defined __FILE_ID__
-	#undef __FILE_ID__
+    #undef __FILE_ID__
 #endif
-#define __FILE_ID__ 	LL_CPP
+#define __FILE_ID__     LL_CPP
 
 //---------------------------------------------------------------------------
 void LinkListNode::ClearNode()
@@ -40,8 +40,8 @@ void LinkListNode::ClearNode()
 //---------------------------------------------------------------------------
 void DoubleLinkList::Add(LinkListNode *node_)
 {
-	KERNEL_ASSERT( node_ );
-	
+    KERNEL_ASSERT( node_ );
+    
     // Add a node to the end of the linked list.
     if (!m_pstHead)
     {
@@ -64,7 +64,7 @@ void DoubleLinkList::Add(LinkListNode *node_)
 //---------------------------------------------------------------------------
 void DoubleLinkList::Remove(LinkListNode *node_)
 {
-	KERNEL_ASSERT( node_ );
+    KERNEL_ASSERT( node_ );
 
     if (node_->prev)
     {
@@ -101,7 +101,7 @@ void DoubleLinkList::Remove(LinkListNode *node_)
 //---------------------------------------------------------------------------
 void CircularLinkList::Add(LinkListNode *node_)
 {
-	KERNEL_ASSERT( node_ );
+    KERNEL_ASSERT( node_ );
 
     // Add a node to the end of the linked list.
     if (!m_pstHead)
@@ -126,8 +126,8 @@ void CircularLinkList::Add(LinkListNode *node_)
 //---------------------------------------------------------------------------
 void CircularLinkList::Remove(LinkListNode *node_)
 {
-	KERNEL_ASSERT( node_ );
-	
+    KERNEL_ASSERT( node_ );
+    
     // Check to see if this is the head of the list...
     if ((node_ == m_pstHead) && (m_pstHead == m_pstTail)) 
     {

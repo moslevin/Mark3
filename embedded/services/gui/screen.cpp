@@ -12,8 +12,8 @@ Copyright (c) 2012 Funkenstein Software Consulting, all rights reserved.
 See license.txt for more information
 ===========================================================================*/
 /*!
-	\file screen.cpp
-	\brief Higher level window management framework
+    \file screen.cpp
+    \brief Higher level window management framework
 */
 
 #include "kerneltypes.h"
