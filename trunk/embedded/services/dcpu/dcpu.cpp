@@ -119,6 +119,11 @@ See license.txt for more information
 
 //---------------------------------------------------------------------------
 #if CORE_DEBUG
+
+  #include <stdio.h>
+  #include <string.h>
+  #include <stdlib.h>
+
   #define DBG_PRINT(...)		printf(__VA_ARGS__)
 #else
   #define DBG_PRINT(...)
@@ -533,9 +538,9 @@ void DCPU::STD()
 //---------------------------------------------------------------------------
 void DCPU::JSR()
 {
-	DBG_PRINT("JSR\n");
-	m_pusRAM[ --m_stRegisters.SP ] = m_stRegisters.PC;
-	m_stRegisters.PC = *b;
+	DBG_PRINT("JSR 0x%04X\n", *a);
+	m_pusRAM[ m_stRegisters.SP-- ] = m_stRegisters.PC;
+	m_stRegisters.PC = *a;
 }
 
 //---------------------------------------------------------------------------
@@ -552,8 +557,8 @@ void DCPU::INT()
 	// Either acknowledge the interrupt immediately, or queue it.
 	if (m_bInterruptQueueing == false)
 	{	
-		m_pusRAM[ --m_stRegisters.SP ] = m_stRegisters.PC;
-		m_pusRAM[ --m_stRegisters.SP ] = m_stRegisters.A;
+		m_pusRAM[ m_stRegisters.SP-- ] = m_stRegisters.PC;
+		m_pusRAM[ m_stRegisters.SP-- ] = m_stRegisters.A;
 		
 		m_stRegisters.A = *a;
 		m_stRegisters.PC = m_stRegisters.IA;	
@@ -573,8 +578,8 @@ void DCPU::ProcessInterruptQueue()
 	// the queue isn't empty
 	if (m_stRegisters.IA && !m_bInterruptQueueing && m_ucQueueLevel)
 	{
-		m_pusRAM[ --m_stRegisters.SP ] = m_stRegisters.PC;
-		m_pusRAM[ --m_stRegisters.SP ] = m_stRegisters.A;
+		m_pusRAM[ m_stRegisters.SP-- ] = m_stRegisters.PC;
+		m_pusRAM[ m_stRegisters.SP-- ] = m_stRegisters.A;
 		
 		m_stRegisters.A = m_ausInterruptQueue[ m_ucQueueLevel-- ];
 		m_stRegisters.PC = m_stRegisters.IA;	
@@ -610,8 +615,8 @@ void DCPU::RFI()
 		re-enabling interrupts. */
 	m_bInterruptQueueing = false;
 
-	m_stRegisters.A  = m_pusRAM[ m_stRegisters.SP++ ];
-	m_stRegisters.PC = m_pusRAM[ m_stRegisters.SP++ ];
+	m_stRegisters.A  = m_pusRAM[ ++m_stRegisters.SP ];
+	m_stRegisters.PC = m_pusRAM[ ++m_stRegisters.SP ];
 	
 }
 
@@ -678,7 +683,7 @@ void DCPU::HWI()
 	pclPlugin = (DCPUPlugin*)m_clPluginList.GetHead();
 	
 	while (pclPlugin)
-	{
+	{		
 		if (pclPlugin->GetDeviceNumber() == *a)
 		{
 			pclPlugin->Interrupt(this);
@@ -741,11 +746,11 @@ K_UCHAR DCPU::GetOperand( K_UCHAR ucOpType_, K_USHORT **pusResult_ )
 		case ARG_PUSH_POP_SP:
 			if (*pusResult_ == a)
 			{
-				a = &m_pusRAM[ m_stRegisters.SP++ ];
+				a = &m_pusRAM[ ++m_stRegisters.SP ];
 			}
 			else
 			{
-				b = &m_pusRAM[ --m_stRegisters.SP ];
+				b = &m_pusRAM[ m_stRegisters.SP-- ];
 			}
 			break;	
 		case ARG_PEEK_SP:
@@ -753,7 +758,7 @@ K_UCHAR DCPU::GetOperand( K_UCHAR ucOpType_, K_USHORT **pusResult_ )
 			break;
 		case ARG_WORD_SP:
 		{
-			K_USHORT usTemp = m_pusROM[ m_stRegisters.PC++ ];
+			K_USHORT usTemp = m_pusROM[ ++m_stRegisters.PC ];
 			usTemp += m_stRegisters.SP;
 			*pusResult_ = &m_pusRAM[ usTemp ];
 			ucRetVal++;
@@ -807,6 +812,8 @@ void DCPU::RunOpcode()
 	K_UCHAR ucA = (K_UCHAR)DCPU_A_MASK(usWord);
 	K_UCHAR ucB = (K_UCHAR)DCPU_B_MASK(usWord);
 	K_UCHAR ucSize = 1;
+
+	DBG_PRINT("0x%04X: %04X\n", m_stRegisters.PC - 1, usWord );
 
 	// Decode the opcode 
 	if (ucOp)
@@ -922,8 +929,8 @@ void DCPU::SendInterrupt( K_USHORT usMessage_ )
 	// Either acknowledge the interrupt immediately, or queue it.
 	if (m_bInterruptQueueing == false)
 	{	
-		m_pusRAM[ --m_stRegisters.SP ] = m_stRegisters.PC;
-		m_pusRAM[ --m_stRegisters.SP ] = m_stRegisters.A;
+		m_pusRAM[ m_stRegisters.SP-- ] = m_stRegisters.PC;
+		m_pusRAM[ m_stRegisters.SP-- ] = m_stRegisters.A;
 		
 		m_stRegisters.A = usMessage_;
 		m_stRegisters.PC = m_stRegisters.IA;	
@@ -938,6 +945,7 @@ void DCPU::SendInterrupt( K_USHORT usMessage_ )
 
 //---------------------------------------------------------------------------
 void DCPU::AddPlugin( DCPUPlugin *pclPlugin_ )
+
 {
 	m_clPluginList.Add( (LinkListNode*)pclPlugin_ );	
 }
