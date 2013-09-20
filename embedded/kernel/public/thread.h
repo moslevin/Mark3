@@ -83,7 +83,7 @@ public:
         \param pvArg_        Pointer to the argument passed into the thread's
                              entrypoint function.
     */
-    void Init(K_UCHAR *paucStack_, 
+    void Init(K_WORD *paucStack_, 
               K_USHORT usStackSize_,
               K_UCHAR ucPriority_,
               ThreadEntry_t pfEntryPoint_,
@@ -358,10 +358,10 @@ private:
     void SetPriorityBase(K_UCHAR ucPriority_);
     
     //! Pointer to the top of the thread's stack
-    K_UCHAR *m_paucStackTop;  
+    K_WORD *m_pwStackTop;
     
     //! Pointer to the thread's stack
-    K_UCHAR *m_paucStack;     
+    K_WORD *m_pwStack;
 
     //! Size of the stack (in bytes)
     K_USHORT m_usStackSize;   

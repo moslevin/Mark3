@@ -12,48 +12,48 @@ Copyright (c) 2012 Funkenstein Software Consulting, all rights reserved.
 See license.txt for more information
 ===========================================================================*/
 /*!
-    \file kerneltypes.h
-    \brief Basic data type primatives used throughout the OS
+    \file kprofile.cpp
+    
+    \brief Profiling timer implementation
 */
 
-#include <stdint.h>
+#include "kerneltypes.h"
+#include "mark3cfg.h"
+#include "profile.h"
+#include "kprofile.h"
+#include "threadport.h"
 
-#ifndef __KERNELTYPES_H__
-#define __KERNELTYPES_H__
 
-#if defined(bool)
-    #define K_BOOL            bool    
-#else
-    #define K_BOOL            uint8_t
-#endif
-    
-#define K_CHAR            char
-#define K_UCHAR            uint8_t
-#define K_USHORT        uint16_t
-#define K_SHORT            int16_t
-#define K_ULONG            uint32_t
-#define K_LONG            int32_t
-
-#if !defined(K_ADDR)
-    #define K_ADDR      uint32_t
-#endif
-#if !defined(K_WORD)
-    #define K_WORD      uint32_t
-#endif
+#if KERNEL_USE_PROFILER
+K_ULONG Profiler::m_ulEpoch;
 
 //---------------------------------------------------------------------------
-typedef void (*panic_func_t)( K_USHORT usPanicCode_ );
-
-//---------------------------------------------------------------------------
-typedef enum
+void Profiler::Init()
 {
-    EVENT_FLAG_ALL,
-    EVENT_FLAG_ANY,
-    EVENT_FLAG_ALL_CLEAR,
-    EVENT_FLAG_ANY_CLEAR,
-    EVENT_FLAG_MODES,
-    EVENT_FLAG_PENDING_UNBLOCK
-} EventFlagOperation_t;
 
+}
+
+//---------------------------------------------------------------------------
+void Profiler::Start()
+{
+
+}    
+
+//---------------------------------------------------------------------------
+void Profiler::Stop()
+{
+
+}    
+//---------------------------------------------------------------------------
+K_USHORT Profiler::Read()
+{
+    return 0;
+}
+
+//---------------------------------------------------------------------------
+void Profiler::Process()
+{
+
+}
 
 #endif

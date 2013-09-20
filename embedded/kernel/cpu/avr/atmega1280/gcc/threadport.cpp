@@ -45,13 +45,13 @@ void ThreadPort::InitStack(Thread *pclThread_)
     usAddr = (K_USHORT)(pclThread_->m_pfEntryPoint);
 
     // Start by finding the bottom of the stack
-    pucStack = (K_UCHAR*)pclThread_->m_paucStackTop;
+    pucStack = (K_UCHAR*)pclThread_->m_pwStackTop;
 
     // clear the stack, and initialize it to a known-default value (easier
     // to debug when things go sour with stack corruption or overflow)
     for (i = 0; i < pclThread_->m_usStackSize; i++)
     {
-        pclThread_->m_paucStack[i] = 0xFF;
+        pclThread_->m_pwStack[i] = 0xFF;
     }
 
     // Our context starts with the entry function
@@ -86,7 +86,7 @@ void ThreadPort::InitStack(Thread *pclThread_)
     PUSH_TO_STACK(pucStack, 'd');
 
     // Set the top o' the stack.
-    pclThread_->m_paucStackTop = (K_UCHAR*)pucStack;
+    pclThread_->m_pwStackTop = (K_UCHAR*)pucStack;
 
     // That's it!  the thread is ready to run now.
 }
