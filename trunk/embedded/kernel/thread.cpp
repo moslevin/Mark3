@@ -38,7 +38,7 @@ See license.txt for more information
 #define __FILE_ID__     THREAD_CPP
 
 //---------------------------------------------------------------------------
-void Thread::Init(  K_UCHAR *paucStack_, 
+void Thread::Init(  K_WORD *pwStack_,
                 K_USHORT usStackSize_,
                 K_UCHAR ucPriority_,                
                 ThreadEntry_t pfEntryPoint_,
@@ -46,7 +46,7 @@ void Thread::Init(  K_UCHAR *paucStack_,
 {
     static K_UCHAR ucThreadID = 0;
 
-    KERNEL_ASSERT( paucStack_ );
+    KERNEL_ASSERT( pwStack_ );
     KERNEL_ASSERT( pfEntryPoint_ );
     
     m_ucThreadID = ucThreadID++;
@@ -57,8 +57,8 @@ void Thread::Init(  K_UCHAR *paucStack_,
     KERNEL_TRACE_1( STR_ENTRYPOINT_1, (K_USHORT)pfEntryPoint_ );
     
     // Initialize the thread parameters to their initial values.
-    m_paucStack = paucStack_;
-    m_paucStackTop = TOP_OF_STACK(paucStack_, usStackSize_);
+    m_pwStack = pwStack_;
+    m_pwStackTop = TOP_OF_STACK(pwStack_, usStackSize_);
     
     m_usStackSize = usStackSize_;
     
@@ -238,7 +238,7 @@ K_USHORT Thread::GetStackSlack()
     //!! ToDo: Take into account stacks that grow up
     for (usCount = 0; usCount < m_usStackSize; usCount++)
     {
-        if (m_paucStack[usCount] != 0xFF)
+        if (m_pwStack[usCount] != 0xFF)
         {
             break;
         }
