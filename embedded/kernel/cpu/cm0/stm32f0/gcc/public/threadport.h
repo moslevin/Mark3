@@ -26,7 +26,7 @@ See license.txt for more information
 
 //---------------------------------------------------------------------------
 //! ASM Macro - simplify the use of ASM directive in C
-#define ASM(x)      asm volatile(x);
+#define ASM      asm volatile
 
 //---------------------------------------------------------------------------
 //! Macro to find the top of a stack given its size and top address
@@ -34,28 +34,20 @@ See license.txt for more information
 //! Push a value y to the stack pointer x and decrement the stack pointer
 #define PUSH_TO_STACK(x, y)        *x = y; x--;
 
-//---------------------------------------------------------------------------
-//! Save the context of the Thread
-#define Thread_SaveContext()
-
-//---------------------------------------------------------------------------
-//! Restore the context of the Thread
-#define Thread_RestoreContext()
-
 //------------------------------------------------------------------------
 //! These macros *must* be used in pairs !
 //------------------------------------------------------------------------
 //! Enter critical section (copy status register, disable interrupts)
-#define CS_ENTER()
+#define CS_ENTER()			ENABLE_INTS();
 
 //------------------------------------------------------------------------
 //! Exit critical section (restore status register)
-#define CS_EXIT()
+#define CS_EXIT()			DISABLE_INTS();
 
 //------------------------------------------------------------------------
 //! Initiate a contex switch without using the SWI
-#define ENABLE_INTS()
-#define DISABLE_INTS()
+#define ENABLE_INTS()		ASM(" cpsie i \n");
+#define DISABLE_INTS()		ASM(" cpsid i \n");
 
 //------------------------------------------------------------------------
 class Thread;
