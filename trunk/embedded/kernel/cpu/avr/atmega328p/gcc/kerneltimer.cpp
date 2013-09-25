@@ -41,21 +41,27 @@ void KernelTimer::Start(void)
     TIFR1 &= ~TIMER_IFR;
     TIMSK1 |= TIMER_IMSK;
     TCCR1B |= (1 << CS12);        // Enable count...
+#if !KERNEL_TIMERS_TICKLESS
+    OCR1A = (TIMER_FREQ/1000) + 1;
+#endif
 }
 
 //---------------------------------------------------------------------------
 void KernelTimer::Stop(void)
 {
+#if KERNEL_TIMERS_TICKLESS
     TIFR1 &= ~TIMER_IFR;
     TIMSK1 &= ~TIMER_IMSK;
     TCCR1B &= ~(1 << CS12);      // Disable count...    
     TCNT1 = 0;
     OCR1A = 0;
+#endif
 }
 
 //---------------------------------------------------------------------------
 K_USHORT KernelTimer::Read(void)
 {
+#if KERNEL_TIMERS_TICKLESS
     volatile K_USHORT usRead1;
     volatile K_USHORT usRead2;
     
@@ -65,18 +71,26 @@ K_USHORT KernelTimer::Read(void)
     } while (usRead1 != usRead2);
     
     return usRead1;    
+#else
+    return 0;
+#endif
 }
 
 //---------------------------------------------------------------------------
 K_ULONG KernelTimer::SubtractExpiry(K_ULONG ulInterval_)
 {
+#if KERNEL_TIMERS_TICKLESS
     OCR1A -= (K_USHORT)ulInterval_;        
     return (K_ULONG)OCR1A;
+#else
+    return 0;
+#endif
 }
 
 //---------------------------------------------------------------------------
 K_ULONG KernelTimer::TimeToExpiry(void)
 {
+#if KERNEL_TIMERS_TICKLESS
     K_USHORT usRead = KernelTimer::Read();
     K_USHORT usOCR1A = OCR1A;
 
@@ -88,6 +102,9 @@ K_ULONG KernelTimer::TimeToExpiry(void)
     {
         return (K_ULONG)(usOCR1A - usRead);    
     }
+#else
+    return 0;
+#endif
 }
 
 //---------------------------------------------------------------------------
@@ -99,6 +116,7 @@ K_ULONG KernelTimer::GetOvertime(void)
 //---------------------------------------------------------------------------
 K_ULONG KernelTimer::SetExpiry(K_ULONG ulInterval_)
 {
+#if KERNEL_TIMERS_TICKLESS
     K_USHORT usSetInterval;    
     if (ulInterval_ > 65535)
     {
@@ -110,21 +128,30 @@ K_ULONG KernelTimer::SetExpiry(K_ULONG ulInterval_)
     }    
     OCR1A = usSetInterval;
     return (K_ULONG)usSetInterval;
+#else
+    return 0;
+#endif
 }
 
 //---------------------------------------------------------------------------
 void KernelTimer::ClearExpiry(void)
 {
+#if KERNEL_TIMERS_TICKLESS
     OCR1A = 65535;                    // Clear the compare value
+#endif
 }
 
 //---------------------------------------------------------------------------
 K_UCHAR KernelTimer::DI(void)
 {
+#if KERNEL_TIMERS_TICKLESS
     K_UCHAR bEnabled = ((TIMSK1 & (TIMER_IMSK)) != 0);
     TIFR1 &= ~TIMER_IFR;      // Clear interrupt flags
     TIMSK1 &= ~TIMER_IMSK;    // Disable interrupt
     return bEnabled;
+#else
+    return 0;
+#endif
 }
 
 //---------------------------------------------------------------------------
@@ -136,6 +163,7 @@ void KernelTimer::EI(void)
 //---------------------------------------------------------------------------
 void KernelTimer::RI(K_UCHAR bEnable_)
 {
+#if KERNEL_TIMERS_TICKLESS
     if (bEnable_)    
     {
         TIMSK1 |= (1 << OCIE1A);    // Enable interrupt
@@ -144,4 +172,5 @@ void KernelTimer::RI(K_UCHAR bEnable_)
     {
         TIMSK1 &= ~(1 << OCIE1A);
     }    
+#endif
 }
