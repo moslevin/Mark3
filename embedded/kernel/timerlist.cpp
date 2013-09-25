@@ -35,18 +35,8 @@ See license.txt for more information
 #if KERNEL_USE_TIMERS
 
 //---------------------------------------------------------------------------
-/*!
-    Number of ticks to account for overhead when performing Time->tick computations.
-    This must be calibrated on a per-device basis.  This value is currently
-    Set up for a 16-bit timer, with a 256 prescaler, 16MHz clock, on an  
-    ATMega328p (i.e. ARDUINO UNO).
-
-    !! Note - this is deprecated.  Better to have slightly long-cycled timers
-    than potentially short-cycled timers.
-*/
-#define TL_FUDGE_FACTOR                (0)
-
 TimerList TimerScheduler::m_clTimerList;
+
 //---------------------------------------------------------------------------
 void TimerList::Init(void)
 {
@@ -57,21 +47,27 @@ void TimerList::Init(void)
 //---------------------------------------------------------------------------
 void TimerList::Add(Timer *pclListNode_)
 {
+#if KERNEL_TIMERS_TICKLESS
+    K_UCHAR bStart = 0;
+#endif
+
     K_LONG lDelta;
-    K_UCHAR bStart = 0;   
-     CS_ENTER();
-    
+    CS_ENTER();
+
+#if KERNEL_TIMERS_TICKLESS
     if (GetHead() == NULL)
     {
         bStart = 1;
-    }        
-    
+    }
+#endif
+
     pclListNode_->ClearNode();    
     DoubleLinkList::Add(pclListNode_);
     
     // Set the initial timer value
     pclListNode_->m_ulTimeLeft = pclListNode_->m_ulInterval;    
-    
+
+#if KERNEL_TIMERS_TICKLESS
     if (!bStart)
     {
         // If the new interval is less than the amount of time remaining...
@@ -88,7 +84,9 @@ void TimerList::Add(Timer *pclListNode_)
         m_ulNextWakeup = pclListNode_->m_ulInterval;
         KernelTimer::SetExpiry(m_ulNextWakeup);
         KernelTimer::Start();        
-    }    
+    }
+#endif
+
     // Set the timer as active.
     pclListNode_->m_ucFlags |= TIMERLIST_FLAG_ACTIVE;    
     CS_EXIT();
@@ -100,11 +98,13 @@ void TimerList::Remove(Timer *pclLinkListNode_)
     CS_ENTER();
     
     DoubleLinkList::Remove(pclLinkListNode_);
-    
+
+#if KERNEL_TIMERS_TICKLESS
     if (this->GetHead() == NULL)
     {
         KernelTimer::Stop();
     }
+#endif
     
     CS_EXIT();
 }
@@ -112,23 +112,29 @@ void TimerList::Remove(Timer *pclLinkListNode_)
 //---------------------------------------------------------------------------
 void TimerList::Process(void)
 {
+#if KERNEL_TIMERS_TICKLESS
     K_ULONG ulNewExpiry;
     K_ULONG ulOvertime;
     K_UCHAR bContinue;
+#endif
     
     Timer *pclNode;
     Timer *pclPrev;
-    
+
+#if KERNEL_TIMERS_TICKLESS
     // Clear the timer and its expiry time - keep it running though
-    KernelTimer::ClearExpiry();
-    
+    KernelTimer::ClearExpiry();  
     do 
     {        
-        ulNewExpiry = MAX_TIMER_TICKS;
+#endif
         pclNode = static_cast<Timer*>(GetHead());
         pclPrev = NULL;
+
+#if KERNEL_TIMERS_TICKLESS
         bContinue = 0;
-        
+        ulNewExpiry = MAX_TIMER_TICKS;
+#endif
+
         // Subtract the elapsed time interval from each active timer.
         while (pclNode)
         {        
@@ -136,7 +142,12 @@ void TimerList::Process(void)
             if (pclNode->m_ucFlags & TIMERLIST_FLAG_ACTIVE)
             {
                 // Did the timer expire?
+#if KERNEL_TIMERS_TICKLESS
                 if (pclNode->m_ulTimeLeft <= m_ulNextWakeup)
+#else
+                pclNode->m_ulTimeLeft--;
+                if (0 == pclNode->m_ulTimeLeft)
+#endif
                 {
                     // Yes - set the "callback" flag - we'll execute the callbacks later
                     pclNode->m_ucFlags |= TIMERLIST_FLAG_CALLBACK;
@@ -154,14 +165,17 @@ void TimerList::Process(void)
                         // I think we're good though...                        
                         pclNode->m_ulTimeLeft = pclNode->m_ulInterval;
                         
+#if KERNEL_TIMERS_TICKLESS
                         // If the time remaining (plus the length of the tolerance interval)
                         // is less than the next expiry interval, set the next expiry interval.
                         if ((pclNode->m_ulTimeLeft + pclNode->m_ulTimerTolerance) < ulNewExpiry)
                         {
                             ulNewExpiry = pclNode->m_ulTimeLeft + pclNode->m_ulTimerTolerance;
                         }
+#endif
                     }
                 }
+#if KERNEL_TIMERS_TICKLESS
                 else
                 {
                     // Not expiring, but determine how K_LONG to run the next timer interval for.
@@ -171,6 +185,7 @@ void TimerList::Process(void)
                         ulNewExpiry = pclNode->m_ulTimeLeft;
                     }
                 }
+#endif
             }
             pclNode = static_cast<Timer*>(pclNode->GetNext());        
         }
@@ -202,7 +217,8 @@ void TimerList::Process(void)
                 Remove(pclPrev);
             }        
         }    
-    
+
+#if KERNEL_TIMERS_TICKLESS
         // Check to see how much time has elapsed since the time we 
         // acknowledged the interrupt... 
         ulOvertime = KernelTimer::GetOvertime();
@@ -214,9 +230,9 @@ void TimerList::Process(void)
         
     // If it's taken longer to go through this loop than would take us to
     // the next expiry, re-run the timing loop
+
     } while (bContinue);
-    
-    
+
     // This timer elapsed, but there's nothing more to do...
     // Turn the timer off.
     if (ulNewExpiry >= MAX_TIMER_TICKS)
@@ -229,6 +245,7 @@ void TimerList::Process(void)
         // overtime has accumulated since the last time we called this handler
         m_ulNextWakeup = KernelTimer::SetExpiry(ulNewExpiry + ulOvertime);        
     }
+#endif
 }
 
 //---------------------------------------------------------------------------
@@ -273,19 +290,19 @@ void Timer::SetIntervalTicks( K_ULONG ulTicks_ )
 //---------------------------------------------------------------------------
 void Timer::SetIntervalSeconds( K_ULONG ulSeconds_)
 {
-    m_ulInterval = SECONDS_TO_TICKS(ulSeconds_) - TL_FUDGE_FACTOR;
+    m_ulInterval = SECONDS_TO_TICKS(ulSeconds_);
 }
 
 //---------------------------------------------------------------------------
 void Timer::SetIntervalMSeconds( K_ULONG ulMSeconds_)
 {
-    m_ulInterval = MSECONDS_TO_TICKS(ulMSeconds_) - TL_FUDGE_FACTOR;
+    m_ulInterval = MSECONDS_TO_TICKS(ulMSeconds_);
 }
 
 //---------------------------------------------------------------------------
 void Timer::SetIntervalUSeconds( K_ULONG ulUSeconds_)
 {
-    m_ulInterval = USECONDS_TO_TICKS(ulUSeconds_) - TL_FUDGE_FACTOR;
+    m_ulInterval = USECONDS_TO_TICKS(ulUSeconds_);
 }
 
 //---------------------------------------------------------------------------

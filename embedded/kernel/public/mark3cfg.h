@@ -56,6 +56,28 @@ See license.txt for more information
 #define KERNEL_USE_TIMERS               (1)
 
 /*!
+    If you've opted to use the kernel timers module, you have an option
+    as to which timer implementation to use:  Tick-based or Tick-less.
+
+    Tick-based timers provide a "traditional" RTOS timer implementation
+    based on a fixed-frequency timer interrupt.  While this provides
+    very accurate, reliable timing, it also means that the CPU is being
+    interrupted far more often than may be necessary (as not all timer
+    ticks result in "real work" being done).
+
+    Tick-less timers still rely on a hardware timer interrupt, but uses
+    a dynamic expiry interval to ensure that the interrupt is only
+    called when the next timer expires.  This increases the complexity
+    of the timer interrupt handler, but reduces the number and frequency.
+
+    Note that the CPU port (kerneltimer.cpp) must be implemented for the
+    particular timer variant desired.
+*/
+#if KERNEL_USE_TIMERS
+    #define KERNEL_TIMERS_TICKLESS      (1)
+#endif
+
+/*!
     Do you want to enable time quanta?  This is useful when you want to have
     tasks in the same priority group share time in a controlled way.  This
     allows equal tasks to use unequal amounts of the CPU, which is a great 
