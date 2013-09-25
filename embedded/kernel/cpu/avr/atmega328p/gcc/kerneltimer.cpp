@@ -37,13 +37,14 @@ void KernelTimer::Config(void)
 //---------------------------------------------------------------------------
 void KernelTimer::Start(void)
 {
+#if !KERNEL_TIMERS_TICKLESS
+    TCCR1B = ((1 << WGM12) | (1 << CS11) | (1 << CS10));
+    OCR1A = ((SYSTEM_FREQ / 1000) / 64);
+#endif
+
     TCNT1 = 0;
     TIFR1 &= ~TIMER_IFR;
     TIMSK1 |= TIMER_IMSK;
-    TCCR1B |= (1 << CS12);        // Enable count...
-#if !KERNEL_TIMERS_TICKLESS
-    OCR1A = (TIMER_FREQ/1000) + 1;
-#endif
 }
 
 //---------------------------------------------------------------------------
