@@ -15,7 +15,7 @@ See license.txt for more information
 
     \file   threadport.h    
 
-    \brief  ATMega328p Multithreading support.
+    \brief  Cortex M-0 Multithreading support.
 */
 
 #ifndef __THREADPORT_H_
@@ -30,22 +30,37 @@ See license.txt for more information
 
 //---------------------------------------------------------------------------
 //! Macro to find the top of a stack given its size and top address
-#define TOP_OF_STACK(x, y)        (K_ULONG*) ( ((K_ULONG)x) + (y-1) )
+#define TOP_OF_STACK(x, y)        (K_WORD*) ( ((K_ULONG)x) + (y - sizeof(K_WORD)) )
 //! Push a value y to the stack pointer x and decrement the stack pointer
 #define PUSH_TO_STACK(x, y)        *x = y; x--;
 
 //------------------------------------------------------------------------
-//! These macros *must* be used in pairs !
+//! These macros *must* be used in matched-pairs !
+//! Nesting *is* supported !
 //------------------------------------------------------------------------
-//! Enter critical section (copy status register, disable interrupts)
-#define CS_ENTER()			ENABLE_INTS();
+//! Enter critical section (copy current PRIMASK register value, disable interrupts)
+#define CS_ENTER()	\
+{	\
+	K_ULONG __ulRegState;	\
+	asm	( \
+	" mrs r0, PRIMASK \n"	\
+	" mov %[STATUS], r0 \n" \
+	" cpsid i \n "	\
+	: [STATUS] "=r" (__ulRegState) \
+	);
 
 //------------------------------------------------------------------------
-//! Exit critical section (restore status register)
-#define CS_EXIT()			DISABLE_INTS();
-
+//! Exit critical section (restore previous PRIMASK status register value)
+#define CS_EXIT() \
+	asm	( \
+	" mov r0, %[STATUS] \n" \
+	" msr primask, r0 \n"	\
+	: \
+	: [STATUS] "r" (__ulRegState) \
+	); \
+}
+ 
 //------------------------------------------------------------------------
-//! Initiate a contex switch without using the SWI
 #define ENABLE_INTS()		ASM(" cpsie i \n");
 #define DISABLE_INTS()		ASM(" cpsid i \n");
 

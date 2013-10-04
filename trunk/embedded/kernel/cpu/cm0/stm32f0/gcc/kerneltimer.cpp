@@ -20,28 +20,32 @@ See license.txt for more information
 
 #include "kerneltypes.h"
 #include "kerneltimer.h"
+#include "threadport.h"
+
 
 //---------------------------------------------------------------------------
 void KernelTimer::Config(void)
-{        
-
+{
+	   
 }
 
 //---------------------------------------------------------------------------
 void KernelTimer::Start(void)
-{
-
+{	
+	SysTick_Config(SYSTEM_FREQ / 1000); // 1KHz fixed clock...
+	NVIC_EnableIRQ(SysTick_IRQn);
 }
 
 //---------------------------------------------------------------------------
 void KernelTimer::Stop(void)
 {
-
+	SysTick->CTRL &= ~SysTick_CTRL_ENABLE_Msk;
 }
 
 //---------------------------------------------------------------------------
 K_USHORT KernelTimer::Read(void)
 {
+	// Not implemented in this port
 	return 0;
 }
 
@@ -65,30 +69,30 @@ K_ULONG KernelTimer::GetOvertime(void)
 
 //---------------------------------------------------------------------------
 K_ULONG KernelTimer::SetExpiry(K_ULONG ulInterval_)
-{
-    return 0;
+{	
+	return 0;
 }
 
 //---------------------------------------------------------------------------
 void KernelTimer::ClearExpiry(void)
 {
-
 }
 
-//---------------------------------------------------------------------------
+//-------------------------------------------------------------------------
 K_UCHAR KernelTimer::DI(void)
 {
-    return 0;
+	return 0;
 }
 
 //---------------------------------------------------------------------------
 void KernelTimer::EI(void)
-{
+{	
     KernelTimer::RI(0);
 }
 
 //---------------------------------------------------------------------------
 void KernelTimer::RI(K_UCHAR bEnable_)
 {
-
 }
+
+//---------------------------------------------------------------------------

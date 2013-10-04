@@ -29,12 +29,10 @@ See license.txt for more information
 #include "quantum.h"
 
 //---------------------------------------------------------------------------
-Thread *g_pstCurrentThread;
-
-//---------------------------------------------------------------------------
 static void ThreadPort_StartFirstThread( void ) __attribute__ (( naked ));
-void ThreadPort_SVCHandler( void ) __attribute__ (( naked ));
-void ThreadPort_PendSVHandler( void ) __attribute__ (( naked ));
+void SVC_Handler( void ) __attribute__ (( naked ));
+void PendSV_Handler( void ) __attribute__ (( naked ));
+void SysTick_Handler( void );
 
 //---------------------------------------------------------------------------
 /*
@@ -120,12 +118,12 @@ void ThreadPort::InitStack(Thread *pclThread_)
 	PUSH_TO_STACK(pulStack, 0x06);
 	PUSH_TO_STACK(pulStack, 0x05);
 	PUSH_TO_STACK(pulStack, 0x04);
+	pulStack++;
 
 	pclThread_->m_pwStackTop = pulStack;
 }
 
 //---------------------------------------------------------------------------
-void Thread_Switch(void) __attribute__((noinline));
 void Thread_Switch(void)
 {
 	g_pstCurrent = g_pstNext;
@@ -182,7 +180,7 @@ void ThreadPort::StartThreads()
 void ThreadPort_StartFirstThread( void )
 {
     ASM (
-        " ldr r0, =0 \n"
+        " mov r0, #0 \n"
         " ldr r1, [r0] \n"
         " msr msp, r1 \n"
         " cpsie i \n"
@@ -255,9 +253,8 @@ void ThreadPort_StartFirstThread( void )
 		This code is identical to what we need to restore the context, so
 		we'll just make it a macro and be done with it.
 */
-void ThreadPort_SVCHandler( void )
+void SVC_Handler(void)
 {
-	
 	ASM(
 	// Get the pointer to the first thread's stack
 	" mov r3, %[CURRENT_THREAD]\n "
@@ -277,6 +274,12 @@ void ThreadPort_SVCHandler( void )
 	// Pop manually-stacked R4-R7
 	" sub r2, #32 \n "
 	" ldmia r2!, {r4-r7} \n "
+	// Also modify the control register to force use of thread mode as well
+	// For CM3 forward-compatibility, also set user mode.
+	" mrs r0, control \n"
+	" mov r1, #0x03 \n"
+	" orr r0, r1 \n"
+	" msr control, r0 \n"	
 	// Return into thread mode, using PSP as the thread's stack pointer
 	// To do this, or 0x0D into the current lr.
 	" mov r0, #0x0D \n "
@@ -353,37 +356,43 @@ void ThreadPort_SVCHandler( void )
 	Small optimization - we don't bother explicitly setting the 
 	
 */	
-void ThreadPort_PendSVHandler( void )
-{
-	// Thread_SaveContext()
+void PendSV_Handler(void)
+{	
 	ASM(
-	// Optimization - preload NEXT_THREAD so that we can do a quick Thread_Switch()
-	// equivalent.
-	" mov r0, %[NEXT_THREAD]\n "
-	" mov r1, %[CURRENT_THREAD]\n "	
+	// Thread_SaveContext()
+	" ldr r1, CURR_ \n"
+	" ldr r1, [r1] \n "
 	" mov r3, r1 \n "
 	" add r3, #8 \n "
+	
 	//  Grab the psp and adjust it by 32 based on the extra registers we're going
 	// to be manually stacking.
 	" mrs r2, psp \n "
 	" sub r2, #32 \n "
+	
 	// While we're here, store the new top-of-stack value
 	" str r2, [r3] \n "
+	
 	// And, while r2 is at the bottom of the stack frame, stack r7-r4
 	" stmia r2!, {r4-r7} \n "
+	
 	// Stack r11-r8
 	" mov r7, r11 \n "
 	" mov r6, r10 \n "
 	" mov r5, r9 \n "
 	" mov r4, r8 \n "
 	" stmia r2!, {r4-r7} \n "
-	
-	// Thread_Switch();
+		
+	// Equivalent of Thread_Swap()
+	" ldr r1, CURR_ \n"
+	" ldr r0, NEXT_ \n"
+	" ldr r0, [r0] \n"
 	" str r0, [r1] \n"
 	
 	// Get the pointer to the next thread's stack	
 	" add r0, #8 \n "
 	" ldr r2, [r0] \n "
+	
 	// Stack pointer is in r2, start loading registers from the "manually-stacked" set
 	// Start with r11-r8, since these can't be accessed directly.
 	" add r2, #16 \n "
@@ -392,14 +401,35 @@ void ThreadPort_PendSVHandler( void )
 	" mov r10, r6 \n "
 	" mov r9, r5 \n "
 	" mov r8, r4 \n "
+	
 	// After subbing R2 #16 manually, and #16 through ldmia, our PSP is where it
 	// needs to be when we return from the exception handler
 	" msr psp, r2 \n "
+	
 	// Pop manually-stacked R4-R7
 	" sub r2, #32 \n "
 	" ldmia r2!, {r4-r7} \n "
+		
 	// lr contains the proper EXC_RETURN value, we're done with exceptions.
 	" bx lr \n "
-	: : [NEXT_THREAD] "r" (g_pstNext), [CURRENT_THREAD] "r" (g_pstCurrent)
+	" nop \n "
+	
+	// Must be 4-byte aligned.  Also - GNU assembler, I hate you for making me resort to this.
+	" NEXT_: .word g_pstNext \n"
+	" CURR_: .word g_pstCurrent \n"	
 	);
+}
+
+//---------------------------------------------------------------------------
+void SysTick_Handler(void)
+{
+#if KERNEL_USE_TIMERS
+	TimerScheduler::Process();
+#endif
+#if KERNEL_USE_QUANTUM
+	Quantum::UpdateTimer();
+#endif
+
+	// Clear the systick interrupt pending bit.
+	SCB->ICSR |= SCB_ICSR_PENDSTCLR_Msk;
 }
