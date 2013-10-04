@@ -19,12 +19,13 @@ See license.txt for more information
 */
 
 #include "kerneltypes.h"
+
 #ifndef __KERNELTIMER_H_
 #define __KERNELTIMER_H_
 
 //---------------------------------------------------------------------------
-#define SYSTEM_FREQ        ((K_ULONG)16000000)
-#define TIMER_FREQ        ((K_ULONG)(SYSTEM_FREQ / 256)) // Timer ticks per second...
+#define SYSTEM_FREQ		48000000
+#define TIMER_FREQ		1000	
 
 //---------------------------------------------------------------------------
 /*!
