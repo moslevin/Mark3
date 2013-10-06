@@ -20,6 +20,7 @@ See license.txt for more information
 
 #include "kerneltypes.h"
 #include "kerneltimer.h"
+#include "mark3cfg.h"
 
 #include <avr/io.h>
 #include <avr/interrupt.h>
@@ -40,6 +41,8 @@ void KernelTimer::Start(void)
 #if !KERNEL_TIMERS_TICKLESS
     TCCR1B = ((1 << WGM12) | (1 << CS11) | (1 << CS10));
     OCR1A = ((SYSTEM_FREQ / 1000) / 64);
+#else
+    TCCR1B |= (1 << CS12);
 #endif
 
     TCNT1 = 0;
