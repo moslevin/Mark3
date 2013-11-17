@@ -13,61 +13,57 @@ See license.txt for more information
 ===========================================================================*/
 /*!
 
-    \file   kernelswi.cpp
+    \file   drvUART.cpp
 
-    \brief  Kernel Software interrupt implementation for ARM Cortex-M0
-
+    \brief  SAM D20 serial port driver
 */
 
-#include "kerneltypes.h"
-#include "kernelswi.h"
+#include "drvUART.h"
 
-#include <samd20.h>
 //---------------------------------------------------------------------------
-void KernelSWI::Config(void)
+void D20_UART::Init(void)
+{    
+    m_clUART.SetInterface(SERCOM_IF_3);
+    m_clUART.SetTxPad(SERCOM_PAD_2);
+    m_clUART.SetRxPad(SERCOM_PAD_3);
+    m_clUART.SetMux(SERCOM_MUX_C);
+
+    m_clUART.SetParity(false);
+    m_clUART.SetStopBits(1);
+    m_clUART.SetBaud(57600);
+}
+
+//---------------------------------------------------------------------------
+K_UCHAR D20_UART::Open()
 {
-	NVIC_SetPriority(SVCall_IRQn, (1<<__NVIC_PRIO_BITS) - 1);
-	NVIC_SetPriority(PendSV_IRQn, (1<<__NVIC_PRIO_BITS) - 1);	
-}
-
-//---------------------------------------------------------------------------	
-void KernelSWI::Start(void)
-{        
-	// Nothing to do...
+    m_clUART.Open();
+    return 0;
 }
 
 //---------------------------------------------------------------------------
-void KernelSWI::Stop(void)
+K_UCHAR D20_UART::Close(void)
 {
-	// Nothing to do...
+    return 0;
 }
 
 //---------------------------------------------------------------------------
-K_UCHAR KernelSWI::DI()
+K_USHORT D20_UART::Control( K_USHORT usCmdId_, void *pvIn_, K_USHORT usSizeIn_, void *pvOut_, K_USHORT usSizeOut_)
 {
-	// Not implemented
-	return 0;
+    return 0;
 }
 
 //---------------------------------------------------------------------------
-void KernelSWI::RI(K_UCHAR bEnable_)
+K_USHORT D20_UART::Read( K_USHORT usSizeIn_, K_UCHAR *pvData_ )
 {
-	// Not implemented
+    return usSizeIn_;
 }
 
 //---------------------------------------------------------------------------
-void KernelSWI::Clear(void)
-{	
-	// There's no convenient CMSIS function call for PendSV set/clear,
-	// But we do at least have some structs/macros.
-	
-	// Note that set/clear each have their own bits in the same register.
-	// Setting the "set" or "clear" bit results in the desired operation.
-	SCB->ICSR |= SCB_ICSR_PENDSVCLR_Msk;
-}
-
-//---------------------------------------------------------------------------
-void KernelSWI::Trigger(void)
-{	
-	SCB->ICSR |= SCB_ICSR_PENDSVSET_Msk;
+K_USHORT D20_UART::Write(K_USHORT usSizeOut_, K_UCHAR *pvData_)
+{
+    for (K_USHORT i = 0; i < usSizeOut_; i++)
+    {
+        m_clUART.Write(pvData_[i]);
+    }
+	return usSizeOut_;
 }
