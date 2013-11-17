@@ -22,6 +22,7 @@ See license.txt for more information
 #include "kerneltimer.h"
 #include "threadport.h"
 
+#include <samd20.h>
 
 //---------------------------------------------------------------------------
 void KernelTimer::Config(void)

@@ -36,6 +36,8 @@ void SVC_Handler( void ) __attribute__ (( naked ));
 void PendSV_Handler( void ) __attribute__ (( naked ));
 void SysTick_Handler( void );
 
+volatile K_ULONG g_ulCriticalCount = 0;
+
 //---------------------------------------------------------------------------
 /*
     1) Setting up the thread stacks

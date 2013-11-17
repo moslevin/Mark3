@@ -25,6 +25,9 @@ See license.txt for more information
 #include "thread.h"
 
 //---------------------------------------------------------------------------
+extern volatile K_ULONG g_ulCriticalCount;
+
+//---------------------------------------------------------------------------
 //! ASM Macro - simplify the use of ASM directive in C
 #define ASM      asm volatile
 
@@ -37,32 +40,37 @@ See license.txt for more information
 //------------------------------------------------------------------------
 //! These macros *must* be used in matched-pairs !
 //! Nesting *is* supported !
+
+//------------------------------------------------------------------------
+#ifndef xDMB
+    #define xDMB()					ASM(" dmb \n");
+#endif
+#ifndef xdisable_irq
+	#define xdisable_irq()			ASM(" cpsid i \n");
+#endif
+#ifndef xenable_irq
+	#define xenable_irq()			ASM(" cpsie i \n");
+#endif
+
+#define ENABLE_INTS()		{ xDMB(); xenable_irq(); }
+#define DISABLE_INTS()		{ xdisable_irq(); xDMB(); }
+
 //------------------------------------------------------------------------
 //! Enter critical section (copy current PRIMASK register value, disable interrupts)
 #define CS_ENTER()	\
-{	\
-	K_ULONG __ulRegState;	\
-	asm	( \
-	" mrs r0, PRIMASK \n"	\
-	" mov %[STATUS], r0 \n" \
-	" cpsid i \n "	\
-	: [STATUS] "=r" (__ulRegState) \
-	);
-
+{ \
+	DISABLE_INTS(); \
+	g_ulCriticalCount++;\
+}
 //------------------------------------------------------------------------
 //! Exit critical section (restore previous PRIMASK status register value)
 #define CS_EXIT() \
-	asm	( \
-	" mov r0, %[STATUS] \n" \
-	" msr primask, r0 \n"	\
-	: \
-	: [STATUS] "r" (__ulRegState) \
-	); \
-}
- 
-//------------------------------------------------------------------------
-#define ENABLE_INTS()		ASM(" cpsie i \n");
-#define DISABLE_INTS()		ASM(" cpsid i \n");
+{ \
+	g_ulCriticalCount--; \
+	if( 0 == g_ulCriticalCount ) { \
+		ENABLE_INTS(); \
+	} \
+} 
 
 //------------------------------------------------------------------------
 class Thread;

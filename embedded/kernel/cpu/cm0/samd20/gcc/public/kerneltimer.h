@@ -24,7 +24,7 @@ See license.txt for more information
 #define __KERNELTIMER_H_
 
 //---------------------------------------------------------------------------
-#define SYSTEM_FREQ		48000000
+#define SYSTEM_FREQ		20000000
 #define TIMER_FREQ		1000	
 
 //---------------------------------------------------------------------------
