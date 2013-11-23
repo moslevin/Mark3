@@ -34,7 +34,6 @@ See license.txt for more information
 static void ThreadPort_StartFirstThread( void ) __attribute__ (( naked ));
 void SVC_Handler( void ) __attribute__ (( naked ));
 void PendSV_Handler( void ) __attribute__ (( naked ));
-void SysTick_Handler( void );
 
 volatile K_ULONG g_ulCriticalCount = 0;
 
@@ -424,16 +423,31 @@ void PendSV_Handler(void)
 	);
 }
 
-//---------------------------------------------------------------------------
+#if KERNEL_TIMERS_TICKLESS
+void TC0_Handler(void)
+{
+	#if KERNEL_USE_TIMERS
+	TimerScheduler::Process();
+	#endif
+	#if KERNEL_USE_QUANTUM
+	Quantum::UpdateTimer();
+	#endif
+
+	// Clear the systick interrupt pending bit.
+	TC0->COUNT16.INTFLAG.reg = TC_INTFLAG_OVF;
+}
+#else
 void SysTick_Handler(void)
 {
-#if KERNEL_USE_TIMERS
+	#if KERNEL_USE_TIMERS
 	TimerScheduler::Process();
-#endif
-#if KERNEL_USE_QUANTUM
+	#endif
+	#if KERNEL_USE_QUANTUM
 	Quantum::UpdateTimer();
-#endif
+	#endif
 
 	// Clear the systick interrupt pending bit.
 	SCB->ICSR |= SCB_ICSR_PENDSTCLR_Msk;
 }
+#endif
+
