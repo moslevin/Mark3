@@ -121,6 +121,10 @@ case ${TARGET} in
 	"arduino" )
 		cp -f ./arduino/mark3cfg.h_arduino ${TARGET_DIR}/Mark3/mark3cfg.h
 		;;
+	"samd20" )
+		cp -f ./drivers/cpu/cm0/samd20/gcc/system/*.cpp ${TARGET_DIR}/Mark3/
+		cp -f ./drivers/cpu/cm0/samd20/gcc/system/public/*.h ${TARGET_DIR}/Mark3/
+		;;
 	*)
 		;;
 esac
@@ -176,8 +180,8 @@ fi
 
 ## Create a .zip file tagged against the SVN revision and date
 SVN_REV=`svn info | grep Revision | sed 's/Revision: //'`
-BUILD_DATE=`date +%C%y_%m_%d`
-ZIPNAME="Mark3_r"${SVN_REV}"_"${BUILD_DATE}".zip"
+BUILD_DATE=`date +%C%y%m%d`
+ZIPNAME="Mark3_"${TARGET}"_r"${SVN_REV}"_"${BUILD_DATE}".zip"
 cd ${TARGET_DIR}
 echo "[ Creating Source/Doc Archive ]"
 zip -r ${ZIPNAME} Mark3 2> /dev/null >> /dev/null 
