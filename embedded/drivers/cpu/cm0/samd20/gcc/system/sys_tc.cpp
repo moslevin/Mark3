@@ -16,6 +16,7 @@ See license.txt for more information
   \brief Atmel SAM D20 Timer Capture Class implementation
  */
 
+#include "sys_tc.h"
 
 //---------------------------------------------------------------------------
 void SysTC::SetInterface( TCXBit_t eBit_ )
