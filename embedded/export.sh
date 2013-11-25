@@ -120,6 +120,7 @@ cp -f ./kernel/cpu/${ARCH}/${VARIANT}/${TOOLCHAIN}/public/*.h ${TARGET_DIR}/Mark
 case ${TARGET} in
 	"arduino" )
 		cp -f ./arduino/mark3cfg.h_arduino ${TARGET_DIR}/Mark3/mark3cfg.h
+		cp -f ./arduino/keywords.txt ${TARGET_DIR}/Mark3
 		;;
 	"samd20" )
 		cp -f ./drivers/cpu/cm0/samd20/gcc/system/*.cpp ${TARGET_DIR}/Mark3/
