@@ -9,6 +9,7 @@ LIBNAME=mark3
 
 #this is the list of the objects required to build the kernel
 CPP_SOURCE= \
+        atomic.cpp \
 	blocking.cpp \
 	driver.cpp \
         eventflag.cpp \
@@ -23,6 +24,7 @@ CPP_SOURCE= \
 	threadlist.cpp \
 	kernel.cpp \
 	timerlist.cpp \
+        transaction.cpp \
 	tracebuffer.cpp \
 	writebuf16.cpp
 
