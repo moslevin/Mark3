@@ -24,6 +24,7 @@ See license.txt for more information
 
 #include "blocking.h"
 #include "thread.h"
+#include "atomic.h"
 
 //---------------------------------------------------------------------------
 #if defined __FILE_ID__
@@ -63,6 +64,18 @@ void BlockingObject::UnBlock(Thread *pclThread_)
     
     // Tag the thread's current list location to its owner
     pclThread_->SetCurrent(pclThread_->GetOwner());
+}
+
+//---------------------------------------------------------------------------
+K_UCHAR BlockingObject::Lock()
+{
+    return Atomic::Add(&m_ucLocks, 1);
+}
+
+//---------------------------------------------------------------------------
+K_UCHAR BlockingObject::UnLock()
+{
+    return Atomic::Sub(&m_ucLocks, 1);
 }
 
 #endif
