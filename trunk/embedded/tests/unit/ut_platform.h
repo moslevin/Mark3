@@ -20,8 +20,8 @@ See license.txt for more information
 #include "unit_test.h"
 
 //---------------------------------------------------------------------------
-#define STACK_SIZE_APP        (256)    //!< Size of the main app's stack
-#define STACK_SIZE_IDLE        (128)    //!< Size of the idle thread stack
+#define STACK_SIZE_APP        (320)    //!< Size of the main app's stack
+#define STACK_SIZE_IDLE        (256)    //!< Size of the idle thread stack
 
 //---------------------------------------------------------------------------
 #define UART_SIZE_RX        (32)    //!< UART RX Buffer size

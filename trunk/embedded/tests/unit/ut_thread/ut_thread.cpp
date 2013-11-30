@@ -27,9 +27,9 @@ See license.txt for more information
 //===========================================================================
 // Local Defines
 //===========================================================================
-static K_UCHAR aucStack1[256];
-static K_UCHAR aucStack2[256];
-static K_UCHAR aucStack3[256];
+static K_UCHAR aucStack1[320];
+static K_UCHAR aucStack2[320];
+static K_UCHAR aucStack3[320];
 
 static Thread clThread1;
 static Thread clThread2;
