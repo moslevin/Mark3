@@ -32,6 +32,7 @@ See license.txt for more information
 #include "kprofile.h"
 #include "tracebuffer.h"
 #include "kernel_debug.h"
+#include "transaction.h"
 
 bool Kernel::m_bIsStarted;
 bool Kernel::m_bIsPanic;
@@ -70,6 +71,7 @@ void Kernel::Init(void)
 #if KERNEL_USE_PROFILER
     Profiler::Init();
 #endif
+	TransactionQueue::GlobalQueueInit();
 }
     
 //---------------------------------------------------------------------------

@@ -64,6 +64,12 @@ See license.txt for more information
 */
 class BlockingObject
 {
+public:
+    BlockingObject()
+    {
+        m_ucLocks = 0;
+    }
+
 protected:
     /*!
         \fn void Block(Thread *pclThread_);
@@ -101,10 +107,41 @@ protected:
     void UnBlock(Thread *pclThread_);
 
     /*!
+        \brief Lock()
+
+        \return Count of pending locks held on this blocking object
+
+        This function atomically-increments the internal lock count
+        on the object, and returns the new lock count, indicating the
+        number of concurrent accesses on the object.  This may be used
+        in conjunction with a transaction queue to implement blocking
+        and unblocking functions that do not rely on critical sections
+
+    */
+    K_UCHAR Lock();
+
+    /*!
+        \brief Unlock
+
+        \sa Lock
+
+        \return Count of pending locks held on this blocking oject
+
+        This function will atomically-decrement the internal lock count
+        held on the object, returning the new lock count value.
+     */
+    K_UCHAR UnLock();
+
+    /*!
         ThreadList which is used to hold the list of threads blocked
         on a given object.
     */
     ThreadList m_clBlockList;
+
+    /*!
+        The current count of locks held by this blocking object
+     */
+    K_UCHAR     m_ucLocks;
 };
 
 #endif
