@@ -23,6 +23,7 @@ See license.txt for more information
 #include "ll.h"
 #include "scheduler.h"
 #include "thread.h"
+#include "threadport.h"
 #include "kernel_debug.h"
 //---------------------------------------------------------------------------
 #if defined __FILE_ID__
@@ -35,7 +36,9 @@ Thread *g_pstNext;
 Thread *g_pstCurrent;
 
 //---------------------------------------------------------------------------
-K_UCHAR Scheduler::m_bEnabled;
+K_BOOL Scheduler::m_bEnabled;
+K_BOOL Scheduler::m_bQueuedSchedule;
+
 ThreadList Scheduler::m_clStopList;
 ThreadList Scheduler::m_aclPriorities[NUM_PRIORITIES];
 K_UCHAR Scheduler::m_ucPriFlag;
@@ -54,6 +57,7 @@ void Scheduler::Init()
         m_aclPriorities[i].SetFlagPointer(&m_ucPriFlag);
     }
     g_ucFlag = m_ucPriFlag;
+    m_bQueuedSchedule = false;
 }
 
 //---------------------------------------------------------------------------
@@ -85,4 +89,22 @@ void Scheduler::Remove(Thread *pclThread_)
 {
     m_aclPriorities[pclThread_->GetPriority()].Remove(pclThread_);
     g_ucFlag = m_ucPriFlag;
+}
+
+//---------------------------------------------------------------------------
+K_BOOL Scheduler::SetScheduler(K_BOOL bEnable_)
+{
+    K_BOOL bRet ;
+    CS_ENTER();
+    bRet = m_bEnabled;
+    m_bEnabled = bEnable_;
+    // If there was a queued scheduler evevent, dequeue and trigger an
+    // immediate Yield
+    if (m_bEnabled && m_bQueuedSchedule)
+    {
+        m_bQueuedSchedule = false;
+        Thread::Yield();
+    }
+    CS_EXIT();
+    return bRet;
 }

@@ -23,6 +23,8 @@ See license.txt for more information
 #include "blocking.h"
 #include "mutex.h"
 #include "kernel_debug.h"
+#include "transaction.h"
+
 //---------------------------------------------------------------------------
 #if defined __FILE_ID__
     #undef __FILE_ID__
@@ -32,32 +34,206 @@ See license.txt for more information
 
 #if KERNEL_USE_MUTEX
 
+//---------------------------------------------------------------------------
+#define MUTEX_TRANSACTION_CLAIM		(0)
+#define MUTEX_TRANSACTION_RELEASE	(1)
+#define MUTEX_TRANSACTION_TIMEOUT	(2)
+
 #if KERNEL_USE_TIMERS
 
 //---------------------------------------------------------------------------
 void TimedMutex_Calback(Thread *pclOwner_, void *pvData_)
 {
-    Mutex *pclMutex = static_cast<Mutex*>(pvData_);
-        
-    // Indicate that the semaphore has expired on the thread
-    pclMutex->SetExpired(true);
+    Mutex *pclMutex = static_cast<Mutex*>(pvData_);    
         
     // Wake up the thread that was blocked on this semaphore.
-    pclMutex->WakeMe(pclOwner_);
-        
-    if (pclOwner_->GetPriority() > Scheduler::GetCurrentThread()->GetPriority())
-    {
-        Thread::Yield();
-    }
+    pclMutex->Timeout(pclOwner_);
 }
 
 //---------------------------------------------------------------------------
-void Mutex::WakeMe(Thread *pclOwner_)
+void Mutex::Timeout(Thread *pclOwner_)
 {
-    // Remove from the semaphore waitlist and back to its ready list.
-    UnBlock(pclOwner_);
+	if (Lock())
+	{
+		m_clKTQ.Enqueue( MUTEX_TRANSACTION_TIMEOUT, (void*)pclOwner_ );
+		return;
+	}
+	
+	K_BOOL bSchedState = Scheduler::SetScheduler(false);
+	
+	m_clKTQ.Enqueue( MUTEX_TRANSACTION_TIMEOUT, (void*)pclOwner_ );
+
+	if (ProcessQueue()) {
+		Thread::Yield();
+	}
+
+	Scheduler::SetScheduler(bSchedState);	
 }
 
+#endif
+
+//---------------------------------------------------------------------------
+K_BOOL Mutex::ProcessQueue()
+{
+	Transaction *pclTRX;
+	K_BOOL bReschedule = false;
+
+	do
+	{
+		pclTRX = m_clKTQ.Dequeue();
+		KERNEL_ASSERT(pclTRX);
+
+		switch (pclTRX->GetCode())
+		{
+			case MUTEX_TRANSACTION_CLAIM:
+				ClaimTransaction(pclTRX, &bReschedule);
+				break;
+			case MUTEX_TRANSACTION_RELEASE:
+				ReleaseTransaction(pclTRX, &bReschedule);
+				break;
+#if KERNEL_USE_TIMERS				
+			case MUTEX_TRANSACTION_TIMEOUT:
+				TimeoutTransaction(pclTRX, &bReschedule);
+				break;
+#endif				
+			default:
+			break;
+		}
+		m_clKTQ.Finish(pclTRX);
+	} while (UnLock() > 1);
+
+	return bReschedule;	
+}
+//---------------------------------------------------------------------------
+void Mutex::ClaimTransaction(Transaction *pclTRX_, K_BOOL *pbReschedule_)
+{
+	Thread *pclThread = static_cast<Thread*>(pclTRX_->GetData());
+
+	// Check to see if the mutex is claimed or not
+	if (m_bReady != 0)
+	{
+		// Mutex isn't claimed, claim it.
+		m_bReady = 0;
+		m_ucRecurse = 0;
+		m_ucMaxPri = pclThread->GetPriority();
+		m_pclOwner = pclThread;
+	}
+	else
+	{
+		// If the mutex is already claimed, check to see if this is the owner thread,
+		// since we allow the mutex to be claimed recursively.
+		if (pclThread == m_pclOwner)
+		{
+			// Ensure that we haven't exceeded the maximum recursive-lock count
+			KERNEL_ASSERT( (m_ucRecurse < 255) );
+			m_ucRecurse++;
+			return;
+		}
+
+		// The mutex is claimed already - we have to block now.  Move the
+		// current thread to the list of threads waiting on the mutex.
+#if KERNEL_USE_TIMERS
+		K_ULONG ulWaitTimeMS = pclThread->GetTimer()->GetInterval();
+		pclThread->SetExpired(false);
+		if (ulWaitTimeMS)
+		{
+			pclThread->GetTimer()->Start(0, ulWaitTimeMS, (TimerCallback_t)TimedMutex_Calback, (void*)this);
+		}
+#endif
+		
+		Block(pclThread);
+
+		// Check if priority inheritence is necessary.  We do this in order
+		// to ensure that we don't end up with priority inversions in case
+		// multiple threads are waiting on the same resource.
+		
+		// We can get away with doing this outside of a critical section, as all
+		// transactions are serialized by the transaction queue, and the scheduler
+		// is disabled.
+		
+		if(m_ucMaxPri <= pclThread->GetPriority())
+		{
+			m_ucMaxPri = pclThread->GetPriority();
+			
+			{
+				Thread *pclTemp = static_cast<Thread*>(m_clBlockList.GetHead());
+				while(pclTemp)
+				{
+					pclTemp->InheritPriority(m_ucMaxPri);
+					if(pclTemp == static_cast<Thread*>(m_clBlockList.GetTail()) )
+					{
+						break;
+					}
+					pclTemp = static_cast<Thread*>(pclTemp->GetNext());
+				}
+				m_pclOwner->InheritPriority(m_ucMaxPri);
+			}
+		}
+
+		*pbReschedule_ = true;
+	}
+}
+	
+//---------------------------------------------------------------------------
+void Mutex::ReleaseTransaction(Transaction *pclTRX_, K_BOOL *pbReschedule_)
+{
+	Thread *pclThread;
+
+	// Disable the scheduler while we deal with internal data structures.	
+	pclThread = Scheduler::GetCurrentThread();
+
+	// This thread had better be the one that owns the mutex currently...
+	KERNEL_ASSERT((pclThread == m_pclOwner));
+
+	// If the owner had claimed the lock multiple times, decrease the lock
+	// count and return immediately.
+	if (m_ucRecurse)
+	{
+		m_ucRecurse--;		
+		return;
+	}
+
+	// Restore the thread's original priority
+	if (pclThread->GetCurPriority() != pclThread->GetPriority())
+	{
+		pclThread->SetPriority(pclThread->GetPriority());
+		
+		// In this case, we want to reschedule
+		*pbReschedule_ = true;
+	}
+
+	// No threads are waiting on this semaphore?
+	if (m_clBlockList.GetHead() == NULL)
+	{
+		// Re-initialize the mutex to its default values
+		m_bReady = 1;
+		m_ucMaxPri = 0;
+		m_pclOwner = NULL;
+	}
+	else
+	{
+		// Wake the highest priority Thread pending on the mutex
+		if(WakeNext())
+		{
+			// Switch threads if it's higher or equal priority than the current thread
+			*pbReschedule_ = true;
+		}
+	}
+}
+
+#if KERNEL_USE_TIMERS
+//---------------------------------------------------------------------------
+void Mutex::TimeoutTransaction(Transaction *pclTRX_, K_BOOL *pbReschedule_)
+{
+	Thread *pclChosenOne = static_cast<Thread*>(pclTRX_->GetData());
+	
+	UnBlock(pclChosenOne);
+	pclChosenOne->SetExpired(true);
+	if (pclChosenOne->GetPriority() > Scheduler::GetCurrentThread()->GetPriority())
+	{
+		*pbReschedule_ = true;	
+	}	
+}
 #endif
 
 //---------------------------------------------------------------------------
@@ -105,104 +281,29 @@ void Mutex::Init()
 {
     KERNEL_TRACE_1( STR_MUTEX_CLAIM_1, (K_USHORT)g_pstCurrent->GetID() );
     
-    K_UCHAR bSchedule = 0;
-    Thread *pclThread;
-
+	Lock();
+	
+	K_BOOL bSchedState = Scheduler::SetScheduler(false);
+	
 #if KERNEL_USE_TIMERS
-    Timer clTimer;
-        
-    m_bExpired = false;
-#endif
+	g_pstCurrent->GetTimer()->SetIntervalTicks(ulWaitTimeMS_);
+#endif	
+	
+	m_clKTQ.Enqueue( MUTEX_TRANSACTION_CLAIM, (void*)g_pstCurrent );
 
-    // Disable the scheduler while claiming the mutex - we're dealing with all
-    // sorts of private thread data, can't have a thread switch while messing
-    // with internal data structures.
-    Scheduler::SetScheduler(0);
+	if (ProcessQueue()) {
+		Thread::Yield();
+	}
 
-    // Get the current thread pointer
-    pclThread = Scheduler::GetCurrentThread();
-
-    // Check to see if the mutex is claimed or not
-    if (m_bReady != 0)
-    {
-        // Mutex isn't claimed, claim it.
-        m_bReady = 0;
-        m_ucRecurse = 0;
-        m_ucMaxPri = pclThread->GetPriority();
-        m_pclOwner = pclThread;
-    }
-    else
-    {
-        // If the mutex is already claimed, check to see if this is the owner thread,
-        // since we allow the mutex to be claimed recursively.
-        if (pclThread == m_pclOwner)
-        {
-            // Ensure that we haven't exceeded the maximum recursive-lock count
-            KERNEL_ASSERT( (m_ucRecurse < 255) );
-            m_ucRecurse++;
-
-            // Increment the lock count and bail
-            Scheduler::SetScheduler(1);
+	Scheduler::SetScheduler(bSchedState);
+	
 #if KERNEL_USE_TIMERS
-            return true;
-#else
-            return;
-#endif
-        }
-
-        // The mutex is claimed already - we have to block now.  Move the
-        // current thread to the list of threads waiting on the mutex.
-#if KERNEL_USE_TIMERS        
-        if (ulWaitTimeMS_)        
-        {
-            clTimer.Start(0, ulWaitTimeMS_, (TimerCallback_t)TimedMutex_Calback, (void*)this);    
-        }
-#endif        
-        
-        Block(pclThread);
-
-        // Check if priority inheritence is necessary.  We do this in order
-        // to ensure that we don't end up with priority inversions in case
-        // multiple threads are waiting on the same resource.
-        if(m_ucMaxPri <= pclThread->GetPriority())
-        {
-            m_ucMaxPri = pclThread->GetPriority();
-            
-            {
-                Thread *pclTemp = static_cast<Thread*>(m_clBlockList.GetHead());    
-                while(pclTemp)
-                {
-                    pclTemp->InheritPriority(m_ucMaxPri);
-                    if(pclTemp == static_cast<Thread*>(m_clBlockList.GetTail()) )
-                    {
-                        break;
-                    }
-                    pclTemp = static_cast<Thread*>(pclTemp->GetNext());                    
-                }
-                m_pclOwner->InheritPriority(m_ucMaxPri);
-            }
-        }
-
-        // Switch Threads when we exit the critical section.
-        bSchedule = 1;
-    }
-
-    // Done with thread data -reenable the scheduler
-    Scheduler::SetScheduler(1);
-    
-    if (bSchedule)
-    {
-        // Switch threads if this thread acquired the mutex
-        Thread::Yield();
-    }
-    
-#if KERNEL_USE_TIMERS
-    if (ulWaitTimeMS_)
-    {
-        clTimer.Stop();
-    }
-    return (m_bExpired == 0);
-#endif
+	if (ulWaitTimeMS_)
+	{
+		g_pstCurrent->GetTimer()->Stop();
+	}
+	return (g_pstCurrent->GetExpired() == false);
+#endif    
 }
 
 //---------------------------------------------------------------------------
@@ -210,59 +311,21 @@ void Mutex::Release()
 {
     KERNEL_TRACE_1( STR_MUTEX_RELEASE_1, (K_USHORT)g_pstCurrent->GetID() );
 
-    K_UCHAR bSchedule = 0;
-    Thread *pclThread;
+	if (Lock())
+	{
+		m_clKTQ.Enqueue( MUTEX_TRANSACTION_RELEASE, (void*)g_pstCurrent );
+		return;
+	}
+	
+	K_BOOL bSchedState = Scheduler::SetScheduler(false);
+	
+	m_clKTQ.Enqueue( MUTEX_TRANSACTION_RELEASE, (void*)g_pstCurrent );
 
-    // Disable the scheduler while we deal with internal data structures.
-    Scheduler::SetScheduler(0);
-    pclThread = Scheduler::GetCurrentThread();
+	if (ProcessQueue()) {
+		Thread::Yield();
+	}
 
-    // This thread had better be the one that owns the mutex currently...
-    KERNEL_ASSERT( (pclThread == m_pclOwner) );
-
-    // If the owner had claimed the lock multiple times, decrease the lock
-    // count and return immediately.
-    if (m_ucRecurse)
-    {
-        m_ucRecurse--;
-        Scheduler::SetScheduler(1);
-        return;
-    }
-
-    // Restore the thread's original priority
-    if (pclThread->GetCurPriority() != pclThread->GetPriority())
-    {
-        pclThread->SetPriority(pclThread->GetPriority());
-        
-        // In this case, we want to reschedule
-        bSchedule = 1;
-    }
-
-    // No threads are waiting on this semaphore?
-    if (m_clBlockList.GetHead() == NULL)
-    {
-        // Re-initialize the mutex to its default values
-        m_bReady = 1;
-        m_ucMaxPri = 0;
-        m_pclOwner = NULL;
-    }
-    else
-    {
-        // Wake the highest priority Thread pending on the mutex
-        if(WakeNext())
-        {
-            // Switch threads if it's higher or equal priority than the current thread
-            bSchedule = 1;
-        }
-    }
-
-    // Must enable the scheduler again in order to switch threads.
-    Scheduler::SetScheduler(1);
-    if(bSchedule)
-    {
-        // Switch threads if a higher-priority thread was woken
-        Thread::Yield();
-    }
+	Scheduler::SetScheduler(bSchedState);    
 }
 
 #endif //KERNEL_USE_MUTEX

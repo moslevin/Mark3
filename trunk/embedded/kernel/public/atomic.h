@@ -35,6 +35,8 @@ public:
      * \return Previously-set value
      */
     static K_UCHAR Set( K_UCHAR *pucSource_, K_UCHAR ucVal_ );
+    static K_USHORT Set( K_USHORT *pusSource_, K_USHORT usVal_ );
+    static K_ULONG Set( K_ULONG *pulSource_, K_ULONG ulVal_ );
 
     /*!
      * \brief Add Add a value to a variable in an uninterruptable operation
@@ -43,6 +45,8 @@ public:
      * \return Previously-held value in pucSource_
      */
     static K_UCHAR Add( K_UCHAR *pucSource_, K_UCHAR ucVal_ );
+    static K_USHORT Add( K_USHORT *pusSource_, K_USHORT usVal_ );
+    static K_ULONG Add( K_ULONG *pulSource_, K_ULONG ulVal_ );
 
     /*!
      * \brief Sub Subtract a value from a variable in an uninterruptable operation
@@ -51,6 +55,8 @@ public:
      * \return Previously-held value in pucSource_
      */
     static K_UCHAR Sub( K_UCHAR *pucSource_, K_UCHAR ucVal_ );
+    static K_USHORT Sub( K_USHORT *pusSource_, K_USHORT usVal_ );
+    static K_ULONG Sub( K_ULONG *pulSource_, K_ULONG ulVal_ );
 
     /*!
      * \brief TestAndSet Test to see if a variable is set, and set it if

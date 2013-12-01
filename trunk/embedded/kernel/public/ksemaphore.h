@@ -27,6 +27,8 @@ See license.txt for more information
 
 #include "blocking.h"
 #include "threadlist.h"
+#include "transaction.h"
+#include "atomic.h"
 
 #if KERNEL_USE_SEMAPHORE
 
@@ -56,7 +58,7 @@ public:
         \return true if the semaphore was posted, false if the count
                 is already maxed out.
     */
-    bool Post();
+    void Post();
     
     /*!
         \fn void Pend();
@@ -65,7 +67,6 @@ public:
         the thread will block until the semaphore is pended.        
     */
     void Pend();
-    
     
     /*!
         \fn K_USHORT GetCount()
@@ -95,7 +96,7 @@ public:
     bool Pend( K_ULONG ulWaitTimeMS_);
     
     /*!
-        \fn void WakeMe(Thread *pclChosenOne_)
+        \fn void Timeout(Thread *pclChosenOne_)
         
         Wake a thread blocked on the semaphore.  This is an
         internal function used for implementing timed semaphores
@@ -104,17 +105,8 @@ public:
         classes, we have to wrap this as a public method - do not
         use this for any other purposes.
     */
-    void WakeMe(Thread *pclChosenOne_);
+    void Timeout(Thread *pclChosenOne_);
     
-    /*!
-        \fn void SetExpired(bool bExpired_)
-        
-        Set the semaphore expired flag on this object.        
-    \
-    */
-    void SetExpired(bool bExpired_) { m_bExpired = bExpired_; }
-    
-    bool GetExpired() { return m_bExpired; }
 #endif    
     
 private:
@@ -125,14 +117,61 @@ private:
         Wake the next thread waiting on the semaphore.
     */
     K_UCHAR WakeNext();
+
+    /*!
+     * \brief ProcessQueue
+     *
+     * Process all pending actions on the semaphore's transaction queue.
+	 * This should only be called from within a context where the blocking 
+	 * object's Lock() value has already been called.  When ProcessQueue
+	 * returns, the Lock() value will be reset to 0 - as all pending
+	 * transactions have been processed.
+	 *
+	 * \return true - A thread scheduling operation must be performed.
+	 *		   false - No rescheduling is required.
+     */
+    K_BOOL ProcessQueue();
+
+	/*!
+	 * \brief PostTransaction
+	 *
+	 * Perform a semaphore "post" operation, as specified from an object on
+	 * the transaction queue.
+	 *
+	 * \param pclTRX_ - Pointer to the transaction object
+	 * \param pbReschedule_ - Pointer to boolean to be set true if rescheduling
+	 *		  is required.
+	 */
+	void PostTransaction(Transaction *pclTRX_, K_BOOL *pbReschedule_);
+	
+	/*!
+	 * \brief PendTransaction
+	 *
+	 * Perform a semaphore "pend" operation, as specified from an object on
+	 * the transaction queue.
+	 *
+	 * \param pclTRX_ - Pointer to the transaction object
+	 * \param pbReschedule_ - Pointer to boolean to be set true if rescheduling
+	 *		  is required.
+	 */
+	void PendTransaction(Transaction *pclTRX_, K_BOOL *pbReschedule_);
+	
+	/*!
+	 * \brief TimeoutTransaction
+	 *
+	 * Perform a semaphore "timeout" operation, as specified from an object on
+	 * the transaction queue.
+	 *
+	 * \param pclTRX_ - Pointer to the transaction object
+	 * \param pbReschedule_ - Pointer to boolean to be set true if rescheduling
+	 *		  is required.
+	 */
+	void TimeoutTransaction(Transaction *pclTRX_, K_BOOL *pbReschedule_);
+		
+    TransactionQueue m_clKTQ;	//!< Kernel transaction queue used to serialize requests
     
-    K_USHORT m_usValue;
-    K_USHORT m_usMaxValue;
-    
-#if KERNEL_USE_TIMERS
-    bool m_bExpired;
-#endif
-    
+    K_USHORT m_usValue;			//!< Current value in the semaphore
+    K_USHORT m_usMaxValue;		//!< Maximum value that the semaphore can hold    
 };
 
 #endif //KERNEL_USE_SEMAPHORE

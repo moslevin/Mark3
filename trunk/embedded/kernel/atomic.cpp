@@ -30,6 +30,26 @@ K_UCHAR Atomic::Set( K_UCHAR *pucSource_, K_UCHAR ucVal_ )
     CS_EXIT();
     return ucRet;
 }
+//---------------------------------------------------------------------------
+K_USHORT Atomic::Set( K_USHORT *pusSource_, K_USHORT usVal_ )
+{
+    K_USHORT usRet;
+    CS_ENTER();
+    usRet = *pusSource_;
+    *pusSource_ = usVal_;
+    CS_EXIT();
+    return usRet;
+}
+//---------------------------------------------------------------------------
+K_ULONG Atomic::Set( K_ULONG *pulSource_, K_ULONG ulVal_ )
+{
+    K_ULONG ulRet;
+    CS_ENTER();
+    ulRet = *pulSource_;
+    *pulSource_ = ulVal_;
+    CS_EXIT();
+    return ulRet;
+}
 
 //---------------------------------------------------------------------------
 K_UCHAR Atomic::Add( K_UCHAR *pucSource_, K_UCHAR ucVal_ )
@@ -43,6 +63,28 @@ K_UCHAR Atomic::Add( K_UCHAR *pucSource_, K_UCHAR ucVal_ )
 }
 
 //---------------------------------------------------------------------------
+K_USHORT Atomic::Add( K_USHORT *pusSource_, K_USHORT usVal_ )
+{
+    K_USHORT usRet;
+    CS_ENTER();
+    usRet = *pusSource_;
+    *pusSource_ += usVal_;
+    CS_EXIT();
+    return usRet;
+}
+
+//---------------------------------------------------------------------------
+K_ULONG Atomic::Add( K_ULONG *pulSource_, K_ULONG ulVal_ )
+{
+    K_ULONG ulRet;
+    CS_ENTER();
+    ulRet = *pulSource_;
+    *pulSource_ += ulVal_;
+    CS_EXIT();
+    return ulRet;
+}
+
+//---------------------------------------------------------------------------
 K_UCHAR Atomic::Sub( K_UCHAR *pucSource_, K_UCHAR ucVal_ )
 {
     K_UCHAR ucRet;
@@ -51,6 +93,28 @@ K_UCHAR Atomic::Sub( K_UCHAR *pucSource_, K_UCHAR ucVal_ )
     *pucSource_ -= ucVal_;
     CS_EXIT();
     return ucRet;
+}
+
+//---------------------------------------------------------------------------
+K_USHORT Atomic::Sub( K_USHORT *pusSource_, K_USHORT usVal_ )
+{
+    K_USHORT usRet;
+    CS_ENTER();
+    usRet = *pusSource_;
+    *pusSource_ -= usVal_;
+    CS_EXIT();
+    return usRet;
+}
+
+//---------------------------------------------------------------------------
+K_ULONG Atomic::Sub( K_ULONG *pulSource_, K_ULONG ulVal_ )
+{
+    K_ULONG ulRet;
+    CS_ENTER();
+    ulRet = *pulSource_;
+    *pulSource_ -= ulVal_;
+    CS_EXIT();
+    return ulRet;
 }
 
 //---------------------------------------------------------------------------
