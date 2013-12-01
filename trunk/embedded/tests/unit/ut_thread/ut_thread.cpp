@@ -16,7 +16,7 @@ See license.txt for more information
 
 #include "kerneltypes.h"
 #include "kernel.h"
-#include "../ut_platform.h"
+#include "ut_platform.h"
 #include "thread.h"
 #include "ksemaphore.h"
 #include "kprofile.h"
@@ -74,7 +74,7 @@ TEST(ut_threadcreate)
     clSem1.Pend(10);
 
     // Ensure that the semaphore was posted before we got to the 10ms timeout
-    EXPECT_FALSE(clSem1.GetExpired());
+    EXPECT_FALSE(g_pstCurrent->GetExpired());
 }
 TEST_END
 
@@ -90,7 +90,7 @@ TEST(ut_threadstop)
     clSem2.Post();
     clSem1.Pend(10);
 
-    EXPECT_FALSE(clSem1.GetExpired());
+    EXPECT_FALSE(g_pstCurrent->GetExpired());
 }
 TEST_END
 
@@ -103,7 +103,7 @@ TEST(ut_threadexit)
     clSem2.Post();
     clSem1.Pend(10);
 
-    EXPECT_TRUE(clSem1.GetExpired());
+    EXPECT_TRUE(g_pstCurrent->GetExpired());
 }
 TEST_END
 
