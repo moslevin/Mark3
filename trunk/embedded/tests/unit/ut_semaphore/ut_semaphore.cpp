@@ -16,7 +16,7 @@ See license.txt for more information
 
 #include "kerneltypes.h"
 #include "kernel.h"
-#include "ut_platform.h"
+#include "../ut_platform.h"
 #include "ksemaphore.h"
 #include "thread.h"
 #include "memutil.h"
