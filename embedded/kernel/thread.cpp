@@ -253,23 +253,29 @@ K_USHORT Thread::GetStackSlack()
 void Thread::Yield()
 {
     CS_ENTER();
-    
-    // Run the scheduler
-    Scheduler::Schedule();
 
-    // Only switch contexts if the new task is different than the old task
-    if (Scheduler::GetCurrentThread() != Scheduler::GetNextThread())
+    // Run the scheduler
+    if (Scheduler::IsEnabled())
     {
+        Scheduler::Schedule();
+
+        // Only switch contexts if the new task is different than the old task
+        if (Scheduler::GetCurrentThread() != Scheduler::GetNextThread())
+        {
 #if KERNEL_USE_QUANTUM
-        // new thread scheduled.  Stop current quantum timer (if it exists),
-        // and restart it for the new thread (if required).        
-        Quantum::RemoveThread();
-        Quantum::AddThread(g_pstNext);    
+            // new thread scheduled.  Stop current quantum timer (if it exists),
+            // and restart it for the new thread (if required).
+            Quantum::RemoveThread();
+            Quantum::AddThread(g_pstNext);
 #endif
-    
-        Thread::ContextSwitchSWI();
+            Thread::ContextSwitchSWI();
+        }
     }
-    
+    else
+    {
+        Scheduler::QueueScheduler();
+    }
+
     CS_EXIT();
 }
 
@@ -307,17 +313,25 @@ void Thread::SetPriority(K_UCHAR ucPriority_)
     
     if (bSchedule)
     {
-        CS_ENTER();
-        Scheduler::Schedule();
-#if KERNEL_USE_QUANTUM
-        // new thread scheduled.  Stop current quantum timer (if it exists),
-        // and restart it for the new thread (if required).        
-        Quantum::RemoveThread();
-        Quantum::AddThread(g_pstNext);    
-#endif
-        CS_EXIT();
-        Thread::ContextSwitchSWI();
+        if (Scheduler::IsEnabled())
+        {
+            CS_ENTER();
+            Scheduler::Schedule();
+    #if KERNEL_USE_QUANTUM
+            // new thread scheduled.  Stop current quantum timer (if it exists),
+            // and restart it for the new thread (if required).
+            Quantum::RemoveThread();
+            Quantum::AddThread(g_pstNext);
+    #endif
+            CS_EXIT();
+            Thread::ContextSwitchSWI();
+        }
+        else
+        {
+            Scheduler::QueueScheduler();
+        }
     }
+
 }
 
 //---------------------------------------------------------------------------
@@ -339,3 +353,11 @@ void Thread::ContextSwitchSWI()
 }
 
 
+//---------------------------------------------------------------------------
+Timer *Thread::GetTimer()						{ return &m_clTimer; }
+//---------------------------------------------------------------------------
+
+void Thread::SetExpired( K_BOOL bExpired_ )		{ m_bExpired = bExpired_; }
+//---------------------------------------------------------------------------
+
+K_BOOL Thread::GetExpired()						{ return m_bExpired; }

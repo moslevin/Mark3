@@ -54,6 +54,7 @@ See license.txt for more information
 #include "mark3cfg.h"
 
 #include "blocking.h"
+#include "transaction.h"
 
 #if KERNEL_USE_MUTEX
 
@@ -97,7 +98,7 @@ public:
     bool Claim(K_ULONG ulWaitTimeMS_);
     
     /*!
-        \fn void WakeMe( Thread *pclOwner_ )
+        \fn void Timeout( Thread *pclOwner_ )
         
         Wake a thread blocked on the mutex.  This is an
         internal function used for implementing timed mutexes
@@ -108,14 +109,8 @@ public:
     
         \param pclOwner_ Thread to unblock from this object.        
     */
-    void WakeMe( Thread *pclOwner_ );
+    void Timeout( Thread *pclOwner_ );
     
-    /*!
-     * \brief SetExpired Set the expired state of the mutex.  Used by the internal
-     *        timer-related functions of the kernel - not for use by app code.
-     * \param bExpired_ true = expired, false = not expired
-     */
-    void SetExpired( bool bExpired_ ) { m_bExpired = bExpired_; }
 #endif
 
     /*!
@@ -135,14 +130,52 @@ private:
     */
     K_UCHAR WakeNext();
     
+	K_BOOL ProcessQueue();
+	
+	/*!
+	 * \brief ClaimTransaction
+	 *
+	 * Perform a mutex Claim (Lock) operation, as specified from an object on
+	 * the transaction queue.
+	 *
+	 * \param pclTRX_ - Pointer to the transaction object
+	 * \param pbReschedule_ - Pointer to boolean to be set true if rescheduling
+	 *		  is required.
+	 */
+	void ClaimTransaction(Transaction *pclTRX_, K_BOOL *pbReschedule_);
+	
+	/*!
+	 * \brief ReleaseTransaction
+	 *
+	 * Perform a Mutex Release/Unlock operation, as specified from an object on
+	 * the transaction queue.
+	 *
+	 * \param pclTRX_ - Pointer to the transaction object
+	 * \param pbReschedule_ - Pointer to boolean to be set true if rescheduling
+	 *		  is required.
+	 */
+	void ReleaseTransaction(Transaction *pclTRX_, K_BOOL *pbReschedule_);
+	
+#if KERNEL_USE_TIMERS	
+	/*!
+	 * \brief TimeoutTransaction
+	 *
+	 * Perform a Mutex "timeout" operation, as specified from an object on
+	 * the transaction queue.
+	 *
+	 * \param pclTRX_ - Pointer to the transaction object
+	 * \param pbReschedule_ - Pointer to boolean to be set true if rescheduling
+	 *		  is required.
+	 */
+	void TimeoutTransaction(Transaction *pclTRX_, K_BOOL *pbReschedule_);
+#endif
+	
     K_UCHAR m_ucRecurse;    //!< The recursive lock-count when a mutex is claimed multiple times by the same owner
     K_UCHAR m_bReady;       //!< State of the mutex - true = ready, false = claimed
     K_UCHAR m_ucMaxPri;     //!< Maximum priority of thread in queue, used for priority inheritence
     Thread *m_pclOwner;     //!< Pointer to the thread that owns the mutex (when claimed)
-    
-#if KERNEL_USE_TIMERS
-    bool    m_bExpired;     //!< Whether or not a timed mutex has expired (true = expired)
-#endif    
+
+	TransactionQueue m_clKTQ; //!< Kernel transaction queue used for serializing access to the object
 };
 
 #endif //KERNEL_USE_MUTEX

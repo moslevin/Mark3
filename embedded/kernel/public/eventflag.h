@@ -24,6 +24,7 @@ See license.txt for more information
 #include "kerneltypes.h"
 #include "blocking.h"
 #include "thread.h"
+#include "transaction.h"
 
 #if KERNEL_USE_EVENTFLAG
 
@@ -49,7 +50,7 @@ public:
     /*!
      * \brief Init Initializes the EventFlag object prior to use.
      */
-    void Init() { m_usSetMask = 0; m_clBlockList.Init(); m_bExpired = false;}
+    void Init() { m_usSetMask = 0; m_clBlockList.Init(); }
 
     /*!
      * \brief Wait - Block a thread on the specific flags in this event flag group
@@ -71,11 +72,8 @@ public:
      */
     K_USHORT Wait(K_USHORT usMask_, EventFlagOperation_t eMode_, K_ULONG ulTimeMS_);
 
-    void WakeMe(Thread *pclOwner_);
+    void Timeout(Thread *pclOwner_);
 
-    void SetExpired(bool bExpired_) { m_bExpired = bExpired_; }
-
-    bool GetExpired()   { return m_bExpired; }
 #endif
 
     /*!
@@ -98,11 +96,62 @@ public:
     K_USHORT GetMask();
 
 private:
-    K_USHORT m_usSetMask;
+
+	K_BOOL ProcessQueue();
+
+	/*!
+	 * \brief WaitTransaction
+	 *
+	 * Perform a synchronous even-flag blocking operation, as specified from an object on
+	 * the transaction queue.
+	 *
+	 * \param pclTRX_ - Pointer to the transaction object
+	 * \param pbReschedule_ - Pointer to boolean to be set true if rescheduling
+	 *		  is required.
+	 */	
+	void WaitTransaction( Transaction *pclTRX_, K_BOOL *pbReschedule_ );
+	
+	/*!
+	 * \brief SetTransaction
+	 *
+	 * Set an event-flag mask in a synchronous operation, as specified from an object on
+	 * the transaction queue.
+	 *
+	 * \param pclTRX_ - Pointer to the transaction object
+	 * \param pbReschedule_ - Pointer to boolean to be set true if rescheduling
+	 *		  is required.
+	 */
+	void SetTransaction( Transaction *pclTRX_, K_BOOL *pbReschedule_ );
+	
+	/*!
+	 * \brief ClearTransaction
+	 *
+	 * Clear event flags synchrnously, as specified from an object on
+	 * the transaction queue.
+	 *
+	 * \param pclTRX_ - Pointer to the transaction object
+	 * \param pbReschedule_ - Pointer to boolean to be set true if rescheduling
+	 *		  is required.
+	 */
+	void ClearTransaction( Transaction *pclTRX_, K_BOOL *pbReschedule_ );
 
 #if KERNEL_USE_TIMERS
-    bool m_bExpired;
+	/*!
+	 * \brief TimeoutTransaction
+	 *
+	 * Perform an event flag "timeout" operation, as specified from an object on
+	 * the transaction queue.
+	 *
+	 * \param pclTRX_ - Pointer to the transaction object
+	 * \param pbReschedule_ - Pointer to boolean to be set true if rescheduling
+	 *		  is required.
+	 */
+	void TimeoutTransaction( Transaction *pclTRX_, K_BOOL *pbReschedule_ );
 #endif
+
+    K_USHORT m_usSetMask;		//!< Currently set bits in the event mask
+	
+	TransactionQueue m_clKTQ;	//!< Kernel Transaction Queue used to manage serialization of operations
 };
 
 #endif //KERNEL_USE_EVENTFLAG

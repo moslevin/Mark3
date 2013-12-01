@@ -34,9 +34,9 @@ See license.txt for more information
 #include "mark3cfg.h"
 
 #include "ll.h"
-#include "thread.h"
 
 #if KERNEL_USE_TIMERS
+class Thread;
 
 //---------------------------------------------------------------------------
 #define TIMERLIST_FLAG_ONE_SHOT         (0x01)    //!< Timer is one-shot
@@ -189,6 +189,9 @@ public:
         \param ulSeconds_ Time in seconds
     */
     void SetIntervalSeconds(K_ULONG ulSeconds_);
+ 
+ 
+	K_ULONG GetInterval()	{ return m_ulInterval; }
     
     /*!
         \fn void SetIntervalMSeconds(K_ULONG ulMSeconds_)

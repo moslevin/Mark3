@@ -53,10 +53,7 @@ See license.txt for more information
     Function pointer type used for thread entrypoint functions
 */
 typedef void (*ThreadEntry_t)(void *pvArg_);
-
-//---------------------------------------------------------------------------
-class ThreadPort;
-
+class Timer;
 //---------------------------------------------------------------------------
 /*!
     Object providing fundamental multitasking support in the kernel.
@@ -339,6 +336,15 @@ public:
     EventFlagOperation_t GetEventFlagMode() { return m_eFlagMode; }
 #endif
 
+#if KERNEL_USE_TIMERS
+	/*!
+		Return a pointer to the thread's timer object
+	*/
+	Timer *GetTimer();
+	void SetExpired( K_BOOL bExpired_ );
+	K_BOOL GetExpired();
+#endif
+
     friend class ThreadPort;
     
 private:
@@ -397,6 +403,12 @@ private:
 
     //! Event-flag mode
     EventFlagOperation_t m_eFlagMode;
+#endif
+
+#if KERNEL_USE_TIMERS
+	//! Timer used for blocking-object timeouts
+	Timer	m_clTimer;
+	K_BOOL	m_bExpired;
 #endif
     
     //! Pointer to the thread-list where the thread currently resides
