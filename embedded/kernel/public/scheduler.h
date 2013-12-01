@@ -48,6 +48,7 @@ See license.txt for more information
 
 #include "kerneltypes.h"
 #include "thread.h"
+#include "threadport.h"
 
 extern Thread *g_pstNext;
 extern Thread *g_pstCurrent;
@@ -108,7 +109,7 @@ public:
         
         \param bEnable_ true to enable, false to disable the scheduler 
     */
-    static void SetScheduler(K_UCHAR bEnable_){ m_bEnabled = bEnable_; }
+    static K_BOOL SetScheduler(K_BOOL bEnable_);
 
     /*!
         Return the pointer to the currently-running thread.
@@ -152,11 +153,16 @@ public:
         \return true - scheduler enabled, false - disabled
     */
     static K_UCHAR IsEnabled(){ return m_bEnabled; }
-        
+
+    static void QueueScheduler() { m_bQueuedSchedule = true; }
+
 private:
     //! Scheduler's state - enabled or disabled
-    static K_UCHAR m_bEnabled;
-    
+    static K_BOOL m_bEnabled;
+
+    //! Variable representing whether or not there's a queued scheduler operation
+    static K_BOOL m_bQueuedSchedule;
+
     //! ThreadList for all stopped threads
     static ThreadList m_clStopList;
     
