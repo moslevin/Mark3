@@ -24,10 +24,10 @@ See license.txt for more information
 // Local Defines
 //===========================================================================
 
-static K_UCHAR aucTestStack[256];
+static K_UCHAR aucTestStack[320];
 static Thread clMutexThread;
 
-static K_UCHAR aucTestStack2[256];
+static K_UCHAR aucTestStack2[320];
 static Thread clTestThread2;
 static volatile K_UCHAR ucToken;
 
@@ -58,7 +58,7 @@ TEST(ut_typical_mutex)
     // Create a higher-priority thread that will immediately pre-empt us.
     // Verify that while we have the mutex held, that the high-priority thread
     // is blocked waiting for us to relinquish access.
-    clMutexThread.Init(aucTestStack, 256, 7, TypicalMutexTest, (void*)&clMutex);
+    clMutexThread.Init(aucTestStack, 320, 7, TypicalMutexTest, (void*)&clMutex);
 
     clMutex.Claim();
 
@@ -104,14 +104,14 @@ TEST(ut_timed_mutex)
     Mutex clMutex;
     clMutex.Init();
 
-    clMutexThread.Init(aucTestStack, 256, 7, TimedMutexTest, (void*)&clMutex);
+    clMutexThread.Init(aucTestStack, 320, 7, TimedMutexTest, (void*)&clMutex);
     clMutexThread.Start();
 
     EXPECT_FALSE( clMutex.Claim(10) );
 
     Thread::Sleep(20);
 
-    clMutexThread.Init(aucTestStack, 256, 7, TimedMutexTest, (void*)&clMutex);
+    clMutexThread.Init(aucTestStack, 320, 7, TimedMutexTest, (void*)&clMutex);
     clMutexThread.Start();
 
     EXPECT_TRUE( clMutex.Claim(30) );
@@ -163,8 +163,8 @@ TEST(ut_priority_mutex)
 
     Scheduler::GetCurrentThread()->SetPriority(3);
 
-    clMutexThread.Init(aucTestStack, 256, 2, LowPriThread, (void*)&clMutex);
-    clTestThread2.Init(aucTestStack2, 256, 4, HighPriThread, (void*)&clMutex);
+    clMutexThread.Init(aucTestStack, 320, 2, LowPriThread, (void*)&clMutex);
+    clTestThread2.Init(aucTestStack2, 320, 4, HighPriThread, (void*)&clMutex);
 
     // Start the low-priority thread and give it the mutex
     clMutexThread.Start();
