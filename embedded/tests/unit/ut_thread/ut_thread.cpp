@@ -27,9 +27,9 @@ See license.txt for more information
 //===========================================================================
 // Local Defines
 //===========================================================================
-static K_UCHAR aucStack1[320];
-static K_UCHAR aucStack2[320];
-static K_UCHAR aucStack3[320];
+static K_UCHAR aucStack1[224];
+static K_UCHAR aucStack2[224];
+static K_UCHAR aucStack3[224];
 
 static Thread clThread1;
 static Thread clThread2;
@@ -64,7 +64,7 @@ TEST(ut_threadcreate)
     clSem2.Init(0,1);
 
     // Initialize our thread
-    clThread1.Init(aucStack1, 256, 7, ThreadEntryPoint1, NULL);
+    clThread1.Init(aucStack1, 224, 7, ThreadEntryPoint1, NULL);
 
     // Start the thread (threads are created in the stopped state)
     clThread1.Start();
@@ -142,7 +142,7 @@ TEST(ut_threadsleep)
     clSem2.Init(0, 1);
 
     // Initialize our thread
-    clThread1.Init(aucStack1, 256, 7, ThreadSleepEntryPoint, NULL);
+    clThread1.Init(aucStack1, 224, 7, ThreadSleepEntryPoint, NULL);
 
     // Start the thread (threads are created in the stopped state)
     clThread1.Start();
@@ -200,9 +200,9 @@ TEST(ut_roundrobin)
     // Create three threads that only increment counters, and keep them at
     // the same priority in order to test the roundrobin functionality of
     // the scheduler
-    clThread1.Init( aucStack1, 256, 1, RR_EntryPoint, (void*)&ulRR1);
-    clThread2.Init( aucStack2, 256, 1, RR_EntryPoint, (void*)&ulRR2);
-    clThread3.Init( aucStack3, 256, 1, RR_EntryPoint, (void*)&ulRR3);
+    clThread1.Init( aucStack1, 224, 1, RR_EntryPoint, (void*)&ulRR1);
+    clThread2.Init( aucStack2, 224, 1, RR_EntryPoint, (void*)&ulRR2);
+    clThread3.Init( aucStack3, 224, 1, RR_EntryPoint, (void*)&ulRR3);
 
     ulRR1 = 0;
     ulRR2 = 0;
@@ -275,9 +275,9 @@ TEST(ut_quanta)
     // Create three threads that only increment counters - similar to the
     // previous test.  However, modify the thread quanta such that each thread
     // will get a different proportion of the CPU cycles.
-    clThread1.Init( aucStack1, 256, 1, RR_EntryPoint, (void*)&ulRR1);
-    clThread2.Init( aucStack2, 256, 1, RR_EntryPoint, (void*)&ulRR2);
-    clThread3.Init( aucStack3, 256, 1, RR_EntryPoint, (void*)&ulRR3);
+    clThread1.Init( aucStack1, 224, 1, RR_EntryPoint, (void*)&ulRR1);
+    clThread2.Init( aucStack2, 224, 1, RR_EntryPoint, (void*)&ulRR2);
+    clThread3.Init( aucStack3, 224, 1, RR_EntryPoint, (void*)&ulRR3);
 
     ulRR1 = 0;
     ulRR2 = 0;

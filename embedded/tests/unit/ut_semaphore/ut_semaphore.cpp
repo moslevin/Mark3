@@ -53,7 +53,7 @@ TEST_END
 
 //===========================================================================
 static Thread clThread;
-static K_UCHAR aucStack[320];
+static K_UCHAR aucStack[256];
 static Semaphore clSem1;
 static Semaphore clSem2;
 static volatile K_UCHAR ucCounter = 0;
@@ -78,7 +78,7 @@ TEST(ut_semaphore_post_pend)
 
     clSem1.Init(0, 1);
 
-    clThread.Init(aucStack, 320, 7, PostPendFunction, (void*)&clSem1);
+    clThread.Init(aucStack, 256, 7, PostPendFunction, (void*)&clSem1);
     clThread.Start();
 
     for (int i = 0; i < 10; i++)
@@ -98,7 +98,7 @@ TEST(ut_semaphore_post_pend)
 
     // Restart the test thread.
     ucCounter = 0;
-    clThread.Init(aucStack, 320, 7, PostPendFunction, (void*)&clSem2);
+    clThread.Init(aucStack, 256, 7, PostPendFunction, (void*)&clSem2);
     clThread.Start();
 
     // We'll kill the thread as soon as it blocks.
@@ -133,7 +133,7 @@ TEST(ut_semaphore_timed)
 
     clTestSem.Init(0,1);
 
-    clThread.Init(aucStack, 320, 7, TimeSemFunction, (void*)&clTestSem);
+    clThread.Init(aucStack, 256, 7, TimeSemFunction, (void*)&clTestSem);
     clThread.Start();
 
     EXPECT_FALSE( clTestSem.Pend(10) );
@@ -145,7 +145,7 @@ TEST(ut_semaphore_timed)
     // production
     clTestSem2.Init(0,1);
 
-    clThread.Init(aucStack, 320, 7, TimeSemFunction, (void*)&clTestSem2);
+    clThread.Init(aucStack, 256, 7, TimeSemFunction, (void*)&clTestSem2);
     clThread.Start();
 
     EXPECT_TRUE( clTestSem2.Pend(30) );

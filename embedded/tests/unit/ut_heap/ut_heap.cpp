@@ -26,7 +26,7 @@ See license.txt for more information
 //===========================================================================
 // Local Defines
 //===========================================================================
-#define MAX_ALLOCS          (64)
+#define MAX_ALLOCS          (32)
 
 static K_USHORT usMaxAllocs;
 static K_USHORT usMaxAllocSize;
@@ -249,8 +249,8 @@ void HeapScriptTest(void *pvParam_)
 Thread clTestThread1;
 Thread clTestThread2;
 
-K_UCHAR aucTestStack1[256];
-K_UCHAR aucTestStack2[256];
+K_UCHAR aucTestStack1[224];
+K_UCHAR aucTestStack2[224];
 
 //===========================================================================
 // Test out how the heap handles constant, multi-threaded access.
@@ -262,8 +262,8 @@ TEST(ut_sysheap_multithread)
     // Note that there's no interaction between objects alloc'd in one thread
     // and free'd in another
 
-    clTestThread1.Init( aucTestStack1, 256, 1, HeapScriptTest, (void*)0);
-    clTestThread2.Init( aucTestStack2, 256, 1, HeapScriptTest, (void*)1);
+    clTestThread1.Init( aucTestStack1, 224, 1, HeapScriptTest, (void*)0);
+    clTestThread2.Init( aucTestStack2, 224, 1, HeapScriptTest, (void*)1);
 
     Scheduler::GetCurrentThread()->SetPriority(7);
 
