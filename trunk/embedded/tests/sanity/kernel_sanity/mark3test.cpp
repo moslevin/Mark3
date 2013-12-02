@@ -64,8 +64,8 @@ static Mutex clMutex;
 
 //---------------------------------------------------------------------------
 #define TEST_STACK1_SIZE            (256)
-#define TEST_STACK2_SIZE            (192)
-#define TEST_STACK3_SIZE            (192)
+#define TEST_STACK2_SIZE            (256)
+#define TEST_STACK3_SIZE            (256)
 #define MAIN_STACK_SIZE            (256)
 #define IDLE_STACK_SIZE            (256)
 
@@ -105,7 +105,7 @@ static K_UCHAR aucTestStack1[TEST_STACK1_SIZE];
 //---------------------------------------------------------------------------
 static void AppMain( void *unused );
 static void IdleMain( void *unused );
-
+static void PrintWait( Driver *pclDriver_, K_USHORT usSize_, const K_CHAR *data );
 //---------------------------------------------------------------------------
 int main(void)
 {
@@ -412,15 +412,14 @@ void Profile_PrintResults()
 //---------------------------------------------------------------------------
 void TestSemThread(Semaphore *pstSem_)
 {
-    pstSem_->Pend();
-    
+    pstSem_->Pend();    
     if (ucTestVal != 0x12)
     {
         clSemTest.Fail();
     }
     ucTestVal = 0x21;
 
-    pstSem_->Pend();
+    pstSem_->Pend();    
     if (ucTestVal != 0x32)
     {
         clSemTest.Fail();
@@ -428,6 +427,7 @@ void TestSemThread(Semaphore *pstSem_)
     ucTestVal = 0x23;
     
     pstSem_->Pend();
+
     if (ucTestVal != 0x45)
     {
         clSemTest.Fail();
@@ -447,15 +447,14 @@ void UT_SemaphoreTest(void)
     clSemaphore.Init(0, 1);
     clSemTest.Start();
     
-    clTestThread1.Init(aucTestStack1, TEST_STACK1_SIZE, 2, (ThreadEntry_t)TestSemThread, (void*)&clSemaphore);
+    clTestThread1.Init(aucTestStack1, TEST_STACK1_SIZE, 3, (ThreadEntry_t)TestSemThread, (void*)&clSemaphore);
     clTestThread1.Start();
-    
-    Thread::Yield();
+
     
     ucTestVal = 0x12;
     
-    clSemaphore.Post();
-    
+    clSemaphore.Post();    
+    //PrintWait(&clUART, 1, "a");
     if (ucTestVal != 0x21)
     {
         clSemTest.Fail();
@@ -463,6 +462,7 @@ void UT_SemaphoreTest(void)
     
     ucTestVal = 0x32;
     clSemaphore.Post();
+    PrintWait(&clUART, 1, "b");
     if (ucTestVal != 0x23)
     {
         clSemTest.Fail();
@@ -470,6 +470,7 @@ void UT_SemaphoreTest(void)
     
     ucTestVal = 0x45;
     clSemaphore.Post();
+    PrintWait(&clUART, 1, "c");
     if (ucTestVal != 0x54)
     {
         clSemTest.Fail();
@@ -508,8 +509,8 @@ void UT_TimedSemaphoreTest(void)
     clTestThread1.Start();
     
 // Test 1 - block on a semaphore, wait on thread that will post before expiry
-    clSem.Pend(15);
-    if (clSem.GetExpired())
+    
+    if (!clSem.Pend(15))
     {
         // FAIL if we expired
         clTimedSemaphoreTest.Fail();
@@ -527,9 +528,9 @@ void UT_TimedSemaphoreTest(void)
     
     //clTestThread1.Init(aucTestStack1, TEST_STACK1_SIZE, 2, (ThreadEntry_t)TimedSemaphoreThread_Long, (void*)&clSem );
     //clTestThread1.Start();    
-    clSem.Pend(15);
     
-    if (clSem.GetExpired())
+    
+    if (!clSem.Pend(15))
     {
         // PASS if we expired
         clTimedSemaphoreTest.Pass();
