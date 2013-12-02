@@ -75,6 +75,9 @@ K_USHORT EventFlag::Wait(K_USHORT usMask_, EventFlagOperation_t eMode_)
 	K_BOOL bSchedState = Scheduler::SetScheduler(false);
 	
 	g_pstCurrent->SetEventFlagMode(eMode_);
+#if KERNEL_USE_TIMERS
+	g_pstCurrent->GetTimer()->SetIntervalTicks(ulTimeMS_);
+#endif	
 	m_clKTQ.Enqueue( EVENT_TRANSACTION_WAIT, (void*)usMask_ );
 	
 	if (ProcessQueue())
