@@ -29,7 +29,7 @@ Thread clThread1;
 Thread clThread2;
 
 K_UCHAR aucThreadStack1[256];
-K_UCHAR aucThreadStack2[224];
+K_UCHAR aucThreadStack2[256];
 
 EventFlag clFlagGroup;
 volatile K_UCHAR ucFlagCount = 0;
@@ -140,7 +140,7 @@ TEST(ut_waitany)
     clFlagGroup.Init();
     ucFlagCount = 0;
 
-    clThread1.Init(aucThreadStack1, 224, 7, WaitOnAny, (void*)(&usMask));
+    clThread1.Init(aucThreadStack1, 256, 7, WaitOnAny, (void*)(&usMask));
     clThread1.Start();
 
     Thread::Sleep(100);
@@ -173,7 +173,7 @@ TEST(ut_waitany)
     ucFlagCount = 0;
     usMask = 0xAAAA;
 
-    clThread1.Init(aucThreadStack1, 224, 7, WaitOnAny, (void*)(&usMask));
+    clThread1.Init(aucThreadStack1, 256, 7, WaitOnAny, (void*)(&usMask));
     clThread1.Start();
 
     Thread::Sleep(100);
@@ -215,7 +215,7 @@ TEST(ut_waitall)
     clFlagGroup.Init();
     ucFlagCount = 0;
 
-    clThread1.Init(aucThreadStack1, 224, 7, WaitOnAll, (void*)(&usMask));
+    clThread1.Init(aucThreadStack1, 256, 7, WaitOnAll, (void*)(&usMask));
     clThread1.Start();
 
     Thread::Sleep(100);
@@ -248,7 +248,7 @@ TEST(ut_waitall)
     ucFlagCount = 0;
     usMask = 0xAAAA;
 
-    clThread1.Init(aucThreadStack1, 224, 7, WaitOnAll, (void*)(&usMask));
+    clThread1.Init(aucThreadStack1, 256, 7, WaitOnAll, (void*)(&usMask));
     clThread1.Start();
 
     Thread::Sleep(100);
@@ -293,8 +293,8 @@ TEST(ut_flag_multiwait)
     ucFlagCount = 0;
     clFlagGroup.Clear(0xFFFF);
 
-    clThread1.Init(aucThreadStack1, 224, 7, WaitOnFlag1Any, 0);
-    clThread2.Init(aucThreadStack2, 224, 7, WaitOnFlag1Any, 0);
+    clThread1.Init(aucThreadStack1, 256, 7, WaitOnFlag1Any, 0);
+    clThread2.Init(aucThreadStack2, 256, 7, WaitOnFlag1Any, 0);
 
     clThread1.Start();
     clThread2.Start();
@@ -315,8 +315,8 @@ TEST(ut_flag_multiwait)
     // Test point - 2 threads blocking on an event flag, bits 0x5555.  Block
     // on these threads, and verify that only bits in the pattern will cause
     // the threads to awaken
-    clThread1.Init(aucThreadStack1, 224, 7, WaitOnMultiAny, 0);
-    clThread2.Init(aucThreadStack2, 224, 7, WaitOnMultiAny, 0);
+    clThread1.Init(aucThreadStack1, 256, 7, WaitOnMultiAny, 0);
+    clThread2.Init(aucThreadStack2, 256, 7, WaitOnMultiAny, 0);
 
     clThread1.Start();
     clThread2.Start();
@@ -339,8 +339,8 @@ TEST(ut_flag_multiwait)
     clFlagGroup.Clear(0xFFFF);
 
 
-    clThread1.Init(aucThreadStack1, 224, 7, WaitOnMultiAny, 0);
-    clThread2.Init(aucThreadStack2, 224, 7, WaitOnMultiAny, 0);
+    clThread1.Init(aucThreadStack1, 256, 7, WaitOnMultiAny, 0);
+    clThread2.Init(aucThreadStack2, 256, 7, WaitOnMultiAny, 0);
 
     clThread1.Start();
     clThread2.Start();
@@ -363,8 +363,8 @@ TEST(ut_flag_multiwait)
     ucFlagCount = 0;
     clFlagGroup.Clear(0xFFFF);
 
-    clThread1.Init(aucThreadStack1, 224, 7, WaitOnMultiAll, 0);
-    clThread2.Init(aucThreadStack2, 224, 7, WaitOnMultiAll, 0);
+    clThread1.Init(aucThreadStack1, 256, 7, WaitOnMultiAll, 0);
+    clThread2.Init(aucThreadStack2, 256, 7, WaitOnMultiAll, 0);
 
     clThread1.Start();
     clThread2.Start();
@@ -389,8 +389,8 @@ TEST(ut_flag_multiwait)
 
     // "All" mode - each flag must be set in order to ensure that the threads
     // unblock.
-    clThread1.Init(aucThreadStack1, 224, 7, WaitOnMultiAll, 0);
-    clThread2.Init(aucThreadStack2, 224, 7, WaitOnMultiAll, 0);
+    clThread1.Init(aucThreadStack1, 256, 7, WaitOnMultiAll, 0);
+    clThread2.Init(aucThreadStack2, 256, 7, WaitOnMultiAll, 0);
 
     clThread1.Start();
     clThread2.Start();
@@ -429,7 +429,7 @@ TEST(ut_timedwait)
 
     clFlagGroup.Init();
 
-    clThread1.Init(aucThreadStack1, 224, 7, TimedWait, (void*)&usInterval);
+    clThread1.Init(aucThreadStack1, 256, 7, TimedWait, (void*)&usInterval);
     clThread1.Start();
 
     Thread::Sleep(100);
@@ -442,6 +442,7 @@ TEST(ut_timedwait)
     EXPECT_EQUALS(ucTimeoutCount, 0);
     EXPECT_EQUALS(ucFlagCount, 1);
 
+
     // Test point - verify negative test case (timeouts), followed by a
     // positive test result.
     ucTimeoutCount = 0;
@@ -450,8 +451,8 @@ TEST(ut_timedwait)
 
     clFlagGroup.Init();
     clFlagGroup.Clear(0xFFFF);
-
-    clThread1.Init(aucThreadStack1, 224, 7, TimedWait, (void*)&usInterval);
+	
+    clThread1.Init(aucThreadStack1, 256, 7, TimedWait, (void*)&usInterval);
     clThread1.Start();
 
     Thread::Sleep(100);
@@ -473,7 +474,7 @@ TEST(ut_timedwait)
     clFlagGroup.Init();
     clFlagGroup.Clear(0xFFFF);
 
-    clThread1.Init(aucThreadStack1, 224, 7, TimedWaitAll, (void*)&usInterval);
+    clThread1.Init(aucThreadStack1, 256, 7, TimedWaitAll, (void*)&usInterval);
     clThread1.Start();
 
     Thread::Sleep(210);
@@ -500,7 +501,6 @@ TEST(ut_timedwait)
 
     EXPECT_EQUALS(ucTimeoutCount, 5);
     EXPECT_EQUALS(ucFlagCount, 0);
-
 
     Thread::Sleep(80);
     clFlagGroup.Set(0x0001);
@@ -531,6 +531,7 @@ TEST(ut_timedwait)
 
     EXPECT_EQUALS(ucTimeoutCount, 5);
     EXPECT_EQUALS(ucFlagCount, 5);
+
 
 }
 TEST_END
