@@ -101,7 +101,12 @@ public:
     /*!
         Default Constructor - zero-initializes all internal data.
     */
-    Timer(){ m_ulInterval = 0; m_ulTimerTolerance = 0; m_ulTimeLeft = 0; m_ucFlags = 0; }
+    Timer() { Init(); }
+
+    /*!
+        Re-initialize the Timer to default values.
+     */
+    void Init() { m_ulInterval = 0; m_ulTimerTolerance = 0; m_ulTimeLeft = 0; m_ucFlags = 0; }
     
     /*!
         Start a timer using default ownership, using repeats as an option, and 

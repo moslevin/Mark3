@@ -41,8 +41,10 @@ void BlockingObject::Block(Thread *pclThread_)
     
     // Remove the thread from its current thread list (the "owner" list)
     // ... And add the thread to this object's block list
-
+    CS_ENTER();
     Scheduler::Remove(pclThread_);
+    CS_EXIT();
+
     m_clBlockList.Add(pclThread_);
     
     // Set the "current" list location to the blocklist for this thread
@@ -60,7 +62,9 @@ void BlockingObject::UnBlock(Thread *pclThread_)
     
     // Put the thread back in its active owner's list.  This is usually
     // the ready-queue at the thread's original priority.    
+    CS_ENTER();
     Scheduler::Add(pclThread_);
+    CS_EXIT();
     
     // Tag the thread's current list location to its owner
     pclThread_->SetCurrent(pclThread_->GetOwner());	
