@@ -97,6 +97,17 @@ public:
 
 private:
 
+    /*!
+     * \brief ProcessQueue
+     *
+     * Process the kernel transaction queue associated with this event-flag object.  This
+     * executes all queued accesses in first-in first-out order, ensuring that state is
+     * preserved and results are deterministic.  When this function returns, the event
+     * flag object is no longer blocked.
+     *
+     * \return true - the sheduler must be re-run when enabled.  false - the scheduler
+     *         does not need to be re-run.
+     */
 	K_BOOL ProcessQueue();
 
 	/*!

@@ -163,7 +163,14 @@ void Thread::Exit()
     
     // Remove the thread from scheduling
     m_pclCurrent->Remove(this);
-    
+
+#if KERNEL_USE_TIMERS
+    // Just to be safe - attempt to remove the thread's timer
+    // from the timer-scheduler (does no harm if it isn't
+    // in the timer-list)
+    TimerScheduler::Remove(&m_clTimer);
+#endif
+
     CS_EXIT();
     
     if (bReschedule) 
@@ -186,44 +193,45 @@ static void ThreadSleepCallback( Thread *pclOwner_, void *pvData_ )
 
 //---------------------------------------------------------------------------
 void Thread::Sleep(K_ULONG ulTimeMs_)
-{
-    Timer clTimer;
+{    
     Semaphore clSemaphore;
-    
+    Timer *pclTimer = g_pstCurrent->GetTimer();
+
     // Create a semaphore that this thread will block on
     clSemaphore.Init(0, 1);
     
     // Create a one-shot timer that will call a callback that posts the 
     // semaphore, waking our thread.
-    clTimer.SetIntervalMSeconds(ulTimeMs_);
-    clTimer.SetCallback(ThreadSleepCallback);
-    clTimer.SetData((void*)&clSemaphore);
-    clTimer.SetFlags(TIMERLIST_FLAG_ONE_SHOT);
+    pclTimer->Init();
+    pclTimer->SetIntervalMSeconds(ulTimeMs_);
+    pclTimer->SetCallback(ThreadSleepCallback);
+    pclTimer->SetData((void*)&clSemaphore);
+    pclTimer->SetFlags(TIMERLIST_FLAG_ONE_SHOT);
     
     // Add the new timer to the timer scheduler, and block the thread
-    TimerScheduler::Add(&clTimer);
+    TimerScheduler::Add(pclTimer);
     clSemaphore.Pend();
-
 }
 
 //---------------------------------------------------------------------------
 void Thread::USleep(K_ULONG ulTimeUs_)
-{
-    Timer clTimer;
+{    
     Semaphore clSemaphore;
+    Timer *pclTimer = g_pstCurrent->GetTimer();
 
     // Create a semaphore that this thread will block on
     clSemaphore.Init(0, 1);
 
     // Create a one-shot timer that will call a callback that posts the
     // semaphore, waking our thread.
-    clTimer.SetIntervalUSeconds(ulTimeUs_);
-    clTimer.SetCallback(ThreadSleepCallback);
-    clTimer.SetData((void*)&clSemaphore);
-    clTimer.SetFlags(TIMERLIST_FLAG_ONE_SHOT);
+    pclTimer->Init();
+    pclTimer->SetIntervalUSeconds(ulTimeUs_);
+    pclTimer->SetCallback(ThreadSleepCallback);
+    pclTimer->SetData((void*)&clSemaphore);
+    pclTimer->SetFlags(TIMERLIST_FLAG_ONE_SHOT);
 
     // Add the new timer to the timer scheduler, and block the thread
-    TimerScheduler::Add(&clTimer);
+    TimerScheduler::Add(pclTimer);
     clSemaphore.Pend();
 }
 #endif // KERNEL_USE_SLEEP
@@ -300,10 +308,9 @@ void Thread::SetPriority(K_UCHAR ucPriority_)
     {
         bSchedule = 1;
     }
+    Scheduler::Remove(this);
     CS_EXIT();
 
-    Scheduler::Remove(this);
-    
     m_ucCurPriority = ucPriority_;
     m_ucPriority = ucPriority_;
     

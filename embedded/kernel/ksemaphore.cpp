@@ -259,9 +259,14 @@ void Semaphore::Post()
 	
 	Lock();
 	
+    // Set data on the current thread that needs to be passed into the transaction
+    // handler (and can't be queued in the simple key-value pair in the transaciton
+    // object)
+
 #if KERNEL_USE_TIMERS
 	// Hack - pre-set the interval, since we can't cache it in the transaction
 	g_pstCurrent->GetTimer()->SetIntervalTicks(ulWaitTimeMS_);
+    g_pstCurrent->SetExpired(false);
 #endif	
 	
 	m_clKTQ.Enqueue( SEMAPHORE_TRANSACTION_PEND, (void*)g_pstCurrent )	;

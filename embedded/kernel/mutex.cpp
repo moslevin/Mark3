@@ -53,20 +53,34 @@ void TimedMutex_Calback(Thread *pclOwner_, void *pvData_)
 //---------------------------------------------------------------------------
 void Mutex::Timeout(Thread *pclOwner_)
 {
+    // Take a lock on the object - if the object is already locked, it means
+    // that another context is currently operating within the locked context.
+    // In that case, queue an event in the kernel transaction queue, and
+    // return out immediately.  The operation will be executed on the
+    // thread currently holding the lock.
 	if (Lock())
 	{
 		m_clKTQ.Enqueue( MUTEX_TRANSACTION_TIMEOUT, (void*)pclOwner_ );
 		return;
 	}
-	
+
+    // If we get the lock, it means that there are no other threads currently
+    // running transactions on this object.  In that case, disable the scheduler
+    // (effectively boosting our priority above the highest thread, but below
+    // interrupts).
 	K_BOOL bSchedState = Scheduler::SetScheduler(false);
 	
+    // Queue the action that we want to perform
 	m_clKTQ.Enqueue( MUTEX_TRANSACTION_TIMEOUT, (void*)pclOwner_ );
 
+    // Drain the FIFO - this will ensure that the operation above is executed,
+    // as well as any other queued operations that occur as a reuslt of
+    // processing through interrupts.
 	if (ProcessQueue()) {
 		Thread::Yield();
 	}
 
+    // Re-enable the scheduler to its previous state.
 	Scheduler::SetScheduler(bSchedState);	
 }
 
@@ -283,14 +297,20 @@ void Mutex::Init()
 {
     KERNEL_TRACE_1( STR_MUTEX_CLAIM_1, (K_USHORT)g_pstCurrent->GetID() );
     
+    // Claim the lock (we know only one thread can hold the lock, only one thread can
+    // execute at a time, and only threads can call wait)
 	Lock();
 	
+    // Disable the scheduler to ensure that our thread won't be preempted
 	K_BOOL bSchedState = Scheduler::SetScheduler(false);
 	
+    // Set data on the current thread that needs to be passed into the transaction
+    // handler (and can't be queued in the simple key-value pair in the transaciton
+    // object)
 #if KERNEL_USE_TIMERS
 	g_pstCurrent->GetTimer()->SetIntervalTicks(ulWaitTimeMS_);
-#endif	
-	
+    g_pstCurrent->SetExpired(false);
+#endif		
 	m_clKTQ.Enqueue( MUTEX_TRANSACTION_CLAIM, (void*)g_pstCurrent );
 
 	if (ProcessQueue()) {
