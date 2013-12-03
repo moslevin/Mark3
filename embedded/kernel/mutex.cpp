@@ -228,7 +228,9 @@ void Mutex::TimeoutTransaction(Transaction *pclTRX_, K_BOOL *pbReschedule_)
 	Thread *pclChosenOne = static_cast<Thread*>(pclTRX_->GetData());
 	
 	UnBlock(pclChosenOne);
+
 	pclChosenOne->SetExpired(true);
+
 	if (pclChosenOne->GetPriority() > Scheduler::GetCurrentThread()->GetPriority())
 	{
 		*pbReschedule_ = true;	

@@ -131,8 +131,7 @@ void Semaphore::PostTransaction(Transaction *pclTRX_, K_BOOL *pbReschedule_)
 //---------------------------------------------------------------------------
 void Semaphore::PendTransaction(Transaction *pclTRX_, K_BOOL *pbReschedule_)
 {
-	// Atomic decrement-and-set of semaphore value
-	CS_ENTER();
+    // Decrement-and-set the semaphore value
 	if (m_usValue == 0)
 	{
 		// Thread must block if counting value is already 0
@@ -142,8 +141,7 @@ void Semaphore::PendTransaction(Transaction *pclTRX_, K_BOOL *pbReschedule_)
 	{
 		m_usValue--;
 	}
-	CS_EXIT();
-				
+
 	// The semaphore count is zero - we need to block the current thread
 	// and wait until the semaphore is posted from elsewhere.
 	if (*pbReschedule_)

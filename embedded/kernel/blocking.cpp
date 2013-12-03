@@ -41,13 +41,12 @@ void BlockingObject::Block(Thread *pclThread_)
     
     // Remove the thread from its current thread list (the "owner" list)
     // ... And add the thread to this object's block list
-	CS_ENTER();
+
     Scheduler::Remove(pclThread_);
     m_clBlockList.Add(pclThread_);
     
     // Set the "current" list location to the blocklist for this thread
-    pclThread_->SetCurrent(&m_clBlockList);
-    CS_EXIT();
+    pclThread_->SetCurrent(&m_clBlockList);    
 }
 
 //---------------------------------------------------------------------------
@@ -56,7 +55,6 @@ void BlockingObject::UnBlock(Thread *pclThread_)
     KERNEL_ASSERT( pclThread_ );
     KERNEL_TRACE_1( STR_THREAD_UNBLOCK_1, (K_USHORT)pclThread_->GetID() );
     
-	CS_ENTER();
     // Remove the thread from its current thread list (the "owner" list)
     pclThread_->GetCurrent()->Remove(pclThread_);
     
@@ -65,8 +63,7 @@ void BlockingObject::UnBlock(Thread *pclThread_)
     Scheduler::Add(pclThread_);
     
     // Tag the thread's current list location to its owner
-    pclThread_->SetCurrent(pclThread_->GetOwner());
-	CS_EXIT();
+    pclThread_->SetCurrent(pclThread_->GetOwner());	
 }
 
 //---------------------------------------------------------------------------

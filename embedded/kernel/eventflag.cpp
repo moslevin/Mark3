@@ -48,6 +48,7 @@ void EventFlag::Timeout(Thread *pclChosenOne_)
 	    m_clKTQ.Enqueue( EVENT_TRANSACTION_TIMEOUT, (void*)pclChosenOne_ );
 	    return;
     }
+
     K_BOOL bSchedState = Scheduler::SetScheduler(false);
     	
     m_clKTQ.Enqueue( EVENT_TRANSACTION_TIMEOUT, (void*)pclChosenOne_ );
@@ -77,7 +78,8 @@ K_USHORT EventFlag::Wait(K_USHORT usMask_, EventFlagOperation_t eMode_)
 	g_pstCurrent->SetEventFlagMode(eMode_);
 #if KERNEL_USE_TIMERS
 	g_pstCurrent->GetTimer()->SetIntervalTicks(ulTimeMS_);
-#endif	
+#endif
+
 	m_clKTQ.Enqueue( EVENT_TRANSACTION_WAIT, (void*)usMask_ );
 	
 	if (ProcessQueue())
