@@ -18,7 +18,10 @@ See license.txt for more information
     \brief  Basic Atomic Operations
 */
 
+#include "kerneltypes.h"
+#include "mark3cfg.h"
 #include "atomic.h"
+#include "threadport.h"
 
 //---------------------------------------------------------------------------
 K_UCHAR Atomic::Set( K_UCHAR *pucSource_, K_UCHAR ucVal_ )
