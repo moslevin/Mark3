@@ -25,6 +25,15 @@ See license.txt for more information
 #include "mark3cfg.h"
 #include "threadport.h"
 
+/*!
+ * \brief The Atomic class
+ *
+ * This utility class provides primatives for atomic operations - that is,
+ * operations that are guaranteed to execute uninterrupted.  Basic atomic
+ * primatives provided here include Set/Add/Delete for 8, 16, and 32-bit
+ * integer types, as well as an atomic test-and-set.
+ *
+ */
 class Atomic
 {
 public:
