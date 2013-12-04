@@ -82,4 +82,20 @@ K_UCHAR BlockingObject::UnLock()
     return Atomic::Sub(&m_ucLocks, 1);
 }
 
+//---------------------------------------------------------------------------
+K_BOOL BlockingObject::LockAndQueue( K_USHORT usCode_, void *pvData_, K_BOOL *pbSchedState_)
+{
+    K_UCHAR ucRet;
+    CS_ENTER();
+    m_clKTQ.Enqueue(usCode_, pvData_);
+    if (!m_ucLocks)
+    {
+        *pbSchedState_ = Scheduler::SetScheduler(false);
+    }
+    ucRet = m_ucLocks;
+    m_ucLocks++;
+    CS_EXIT();
+    return (ucRet);
+}
+
 #endif

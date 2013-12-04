@@ -162,7 +162,6 @@ private:
 
     K_USHORT m_usSetMask;		//!< Currently set bits in the event mask
 	
-	TransactionQueue m_clKTQ;	//!< Kernel Transaction Queue used to manage serialization of operations
 };
 
 #endif //KERNEL_USE_EVENTFLAG

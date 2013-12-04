@@ -168,8 +168,6 @@ private:
 	 */
 	void TimeoutTransaction(Transaction *pclTRX_, K_BOOL *pbReschedule_);
 		
-    TransactionQueue m_clKTQ;	//!< Kernel transaction queue used to serialize requests
-    
     K_USHORT m_usValue;			//!< Current value in the semaphore
     K_USHORT m_usMaxValue;		//!< Maximum value that the semaphore can hold    
 };

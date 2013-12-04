@@ -175,7 +175,6 @@ private:
     K_UCHAR m_ucMaxPri;     //!< Maximum priority of thread in queue, used for priority inheritence
     Thread *m_pclOwner;     //!< Pointer to the thread that owns the mutex (when claimed)
 
-	TransactionQueue m_clKTQ; //!< Kernel transaction queue used for serializing access to the object
 };
 
 #endif //KERNEL_USE_MUTEX

@@ -22,6 +22,7 @@ See license.txt for more information
 #include "kerneltypes.h"
 #include "mark3cfg.h"
 
+#include "kernel.h"
 #include "ksemaphore.h"
 #include "blocking.h"   
 #include "kernel_debug.h"
@@ -56,16 +57,12 @@ void TimedSemaphore_Callback(Thread *pclOwner_, void *pvData_)
 
 //---------------------------------------------------------------------------
 void Semaphore::Timeout(Thread *pclChosenOne_)
-{
-    if (Lock())
+{    
+    K_BOOL bSchedState;
+    if (LockAndQueue(SEMAPHORE_TRANSACTION_UNBLOCK, pclChosenOne_, &bSchedState))
     {
-        m_clKTQ.Enqueue(SEMAPHORE_TRANSACTION_UNBLOCK, pclChosenOne_);
         return;
     }
-
-    K_BOOL bSchedState = Scheduler::SetScheduler(false);
-
-    m_clKTQ.Enqueue(SEMAPHORE_TRANSACTION_UNBLOCK, pclChosenOne_);
 
     if (ProcessQueue()) {
         Thread::Yield();
@@ -213,15 +210,11 @@ void Semaphore::Post()
 {
     KERNEL_TRACE_1( STR_SEMAPHORE_POST_1, (K_USHORT)g_pstCurrent->GetID() );
 
-    if (Lock())
+    K_BOOL bSchedState;
+    if (LockAndQueue(SEMAPHORE_TRANSACTION_POST, 0, &bSchedState))
     {
-        m_clKTQ.Enqueue(SEMAPHORE_TRANSACTION_POST, 0);
         return;
     }
-
-    K_BOOL bSchedState = Scheduler::SetScheduler(false);
-
-    m_clKTQ.Enqueue(SEMAPHORE_TRANSACTION_POST, 0);
 
     if (ProcessQueue()) {
         Thread::Yield();
@@ -248,17 +241,18 @@ void Semaphore::Post()
 #endif
 {
     KERNEL_TRACE_1( STR_SEMAPHORE_PEND_1, (K_USHORT)g_pstCurrent->GetID() );
-	
-	// We can get away with locking the queue instead of entering a critical section,
-	// since we know that only threads can pend, and only one thread can run at a time.
-	// Block/Unblock operations are protected by critical sections (fixed time ops).
-		
+
 	// By locking the queue, we ensure that any post/unblock operations on this
 	// semaphore that interrupt our normal execution wind up being queued flushed
 	// before we exit.
-	
-	Lock();
-	
+
+    K_BOOL bSchedState;
+    if (LockAndQueue(SEMAPHORE_TRANSACTION_PEND, (void*)g_pstCurrent, &bSchedState))
+    {
+        // This should never happen - kernel panic if we do.
+        Kernel::Panic( PANIC_PEND_LOCK_VIOLATION );
+    }
+
     // Set data on the current thread that needs to be passed into the transaction
     // handler (and can't be queued in the simple key-value pair in the transaciton
     // object)
@@ -268,10 +262,6 @@ void Semaphore::Post()
 	g_pstCurrent->GetTimer()->SetIntervalTicks(ulWaitTimeMS_);
     g_pstCurrent->SetExpired(false);
 #endif	
-	
-	m_clKTQ.Enqueue( SEMAPHORE_TRANSACTION_PEND, (void*)g_pstCurrent )	;
-
-	K_BOOL bSchedState = Scheduler::SetScheduler(false);
 
     if (ProcessQueue())
     {

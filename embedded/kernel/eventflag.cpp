@@ -50,21 +50,12 @@ void EventFlag::Timeout(Thread *pclChosenOne_)
     // In that case, queue an event in the kernel transaction queue, and
     // return out immediately.  The operation will be executed on the
     // thread currently holding the lock.
-    if (Lock())
+    K_BOOL bSchedState;
+    if (LockAndQueue( EVENT_TRANSACTION_TIMEOUT, (void*)pclChosenOne_, &bSchedState))
     {
-	    m_clKTQ.Enqueue( EVENT_TRANSACTION_TIMEOUT, (void*)pclChosenOne_ );
-	    return;
+        return;
     }
 
-    // If we get the lock, it means that there are no other threads currently
-    // running transactions on this object.  In that case, disable the scheduler
-    // (effectively boosting our priority above the highest thread, but below
-    // interrupts).
-    K_BOOL bSchedState = Scheduler::SetScheduler(false);
-    	
-    // Queue the action that we want to perform
-    m_clKTQ.Enqueue( EVENT_TRANSACTION_TIMEOUT, (void*)pclChosenOne_ );
-    	
     // Drain the FIFO - this will ensure that the operation above is executed,
     // as well as any other queued operations that occur as a reuslt of
     // processing through interrupts.
@@ -90,10 +81,12 @@ K_USHORT EventFlag::Wait(K_USHORT usMask_, EventFlagOperation_t eMode_)
 {
     // Claim the lock (we know only one thread can hold the lock, only one thread can
     // execute at a time, and only threads can call wait)
-	Lock();
-	
-    // Disable the scheduler to ensure that our thread won't be preempted
-	K_BOOL bSchedState = Scheduler::SetScheduler(false);
+    K_BOOL bSchedState;
+    if (LockAndQueue(EVENT_TRANSACTION_WAIT, (void*)usMask_, &bSchedState))
+    {
+        // This should never be able to happen with the logic implemented above
+        Kernel::Panic( PANIC_EVENT_LOCK_VIOLATION );
+    }
 	
     // Set data on the current thread that needs to be passed into the transaction
     // handler (and can't be queued in the simple key-value pair in the transaciton
@@ -103,9 +96,6 @@ K_USHORT EventFlag::Wait(K_USHORT usMask_, EventFlagOperation_t eMode_)
 	g_pstCurrent->GetTimer()->SetIntervalTicks(ulTimeMS_);
     g_pstCurrent->SetExpired(false);
 #endif
-
-    // Enqueue the wait event
-	m_clKTQ.Enqueue( EVENT_TRANSACTION_WAIT, (void*)usMask_ );
 	
     // Drain the FIFO of all queued events and trigger a context switch if necessary
 	if (ProcessQueue())
@@ -360,15 +350,12 @@ void EventFlag::TimeoutTransaction( Transaction *pclTRX_, K_BOOL *pbReschedule_ 
 void EventFlag::Set(K_USHORT usMask_)
 {
     // This function follows the signature of Wait() and Timeout()
-	if (Lock())	
-	{
-		m_clKTQ.Enqueue( EVENT_TRANSACTION_SET, (void*)usMask_ );
-		return;
-	}
-	K_BOOL bSchedState = Scheduler::SetScheduler(false);
-	
-	m_clKTQ.Enqueue( EVENT_TRANSACTION_SET, (void*)usMask_ );
-	
+    K_BOOL bSchedState;
+    if (LockAndQueue( EVENT_TRANSACTION_SET, (void*)usMask_, &bSchedState))
+    {
+        return;
+    }
+
 	if (ProcessQueue())
 	{
 		Thread::Yield();
@@ -381,15 +368,12 @@ void EventFlag::Set(K_USHORT usMask_)
 void EventFlag::Clear(K_USHORT usMask_)
 {
     // This function follows the signature of Wait() and Timeout()
-	if (Lock())
-	{
-		m_clKTQ.Enqueue( EVENT_TRANSACTION_CLEAR, (void*)usMask_ );
-		return;
-	}
-	K_BOOL bSchedState = Scheduler::SetScheduler(false);
-	
-	m_clKTQ.Enqueue( EVENT_TRANSACTION_CLEAR, (void*)usMask_ );
-	
+    K_BOOL bSchedState;
+    if (LockAndQueue( EVENT_TRANSACTION_CLEAR, (void*)usMask_, &bSchedState))
+    {
+        return;
+    }
+
 	if (ProcessQueue())
 	{
 		Thread::Yield();
