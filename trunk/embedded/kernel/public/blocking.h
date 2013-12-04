@@ -54,6 +54,8 @@ See license.txt for more information
 #include "threadlist.h"
 #include "thread.h"
 
+#include "transaction.h"
+
 #if KERNEL_USE_MUTEX || KERNEL_USE_SEMAPHORE || KERNEL_USE_EVENTFLAG
 
 //---------------------------------------------------------------------------
@@ -132,11 +134,36 @@ protected:
      */
     K_UCHAR UnLock();
 
+
+    /*!
+        \brief LockAndQueue
+
+        Lock the object and endqueue data on its transaction queue.  If
+        the object is already locked, enqueue the data and return back.
+        Otherwise, disable the scheduler and return its state in addition
+        to enqueuing the given transaction
+
+        \param usCode_  Transaction code value
+        \param pvData_  Abstract transaction data pointer
+        \param pbSchedState_ Pointer to a flag used to store the scheduler's
+                        original state.
+
+        \return true - Object was previously locked, false - object was
+                        not previously locked.
+     */
+    K_BOOL  LockAndQueue( K_USHORT usCode_, void *pvData_, K_BOOL *pbSchedState_);
+
     /*!
         ThreadList which is used to hold the list of threads blocked
         on a given object.
     */
     ThreadList m_clBlockList;
+
+    /*!
+        Kernel Transaction Queue used to serialize acceses to this
+        blocking object
+     */
+    TransactionQueue m_clKTQ;
 
     /*!
         The current count of locks held by this blocking object

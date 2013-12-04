@@ -29,7 +29,7 @@ See license.txt for more information
 //===========================================================================
 // Define Test Cases Here
 //===========================================================================
-#if 0
+
 TEST(ut_semaphore_count)
 {
     // Test - verify that we can only increment a counting semaphore to the
@@ -41,15 +41,15 @@ TEST(ut_semaphore_count)
 
     Semaphore clTestSem;
     clTestSem.Init( 0, 10 );
-
     for (int i = 0; i < 10; i++)
     {
-        EXPECT_TRUE(clTestSem.Post());
+        clTestSem.Post();
+        EXPECT_TRUE(clTestSem.GetCount() != 0);
     }
-    EXPECT_FALSE(clTestSem.Post());
+    clTestSem.Post();
+    EXPECT_FALSE(clTestSem.GetCount() >= 11);
 }
 TEST_END
-#endif
 
 //===========================================================================
 static Thread clThread;
@@ -57,16 +57,20 @@ static K_UCHAR aucStack[256];
 static Semaphore clSem1;
 static Semaphore clSem2;
 static volatile K_UCHAR ucCounter = 0;
+static volatile K_BOOL bExitThread = false;
 
 //===========================================================================
 void PostPendFunction(void *param_)
 {
     Semaphore *pclSem = (Semaphore*)param_;
-    while(1)
-    {        
+    bExitThread = false;
+    ucCounter = 0;
+    while(false == bExitThread)
+    {                
         pclSem->Pend();
-        ucCounter++;
+        ucCounter += 1;
     }
+    g_pstCurrent->Exit();
 }
 
 //===========================================================================
@@ -75,7 +79,6 @@ TEST(ut_semaphore_post_pend)
     // Test - Make sure that pending on a semaphore causes a higher-priority
     // waiting thread to block, and that posting that semaphore from a running
     // lower-priority thread awakens the higher-priority thread
-
     clSem1.Init(0, 1);
 
     clThread.Init(aucStack, 256, 7, PostPendFunction, (void*)&clSem1);
@@ -89,8 +92,8 @@ TEST(ut_semaphore_post_pend)
     // Verify all 10 posts have been acknowledged by the high-priority thread
     EXPECT_EQUALS(ucCounter, 10);
 
-    // After the test is over, kill the test thread.
-    clThread.Exit();
+    bExitThread = true;
+    clSem1.Post();
 
     // Test - same as above, but with a counting semaphore instead of a
     // binary semaphore.  Also using a default value.
@@ -102,16 +105,12 @@ TEST(ut_semaphore_post_pend)
     clThread.Start();
 
     // We'll kill the thread as soon as it blocks.
-    clThread.Exit();
 
     // semaphore should have pended 10 times before returning.
-    EXPECT_EQUALS(ucCounter, 10);
-    {
-        K_CHAR szStr[16];
-        MemUtil::DecimalToString(ucCounter, szStr);
-        PrintString(szStr);
-        PrintString("\n");
-    }
+    EXPECT_EQUALS(ucCounter, 10);    
+
+    bExitThread = true;
+    clSem1.Post();
 }
 TEST_END
 
@@ -157,7 +156,7 @@ TEST_END
 // Test Whitelist Goes Here
 //===========================================================================
 TEST_CASE_START
-  // TEST_CASE(ut_semaphore_count),
+  TEST_CASE(ut_semaphore_count),
   TEST_CASE(ut_semaphore_post_pend),
   TEST_CASE(ut_semaphore_timed),
 TEST_CASE_END
