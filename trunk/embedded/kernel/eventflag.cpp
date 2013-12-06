@@ -82,7 +82,7 @@ K_USHORT EventFlag::Wait(K_USHORT usMask_, EventFlagOperation_t eMode_)
     // Claim the lock (we know only one thread can hold the lock, only one thread can
     // execute at a time, and only threads can call wait)
     K_BOOL bSchedState;
-    if (LockAndQueue(EVENT_TRANSACTION_WAIT, (void*)usMask_, &bSchedState))
+    if (LockAndQueue(EVENT_TRANSACTION_WAIT, (void*)((K_ADDR)usMask_), &bSchedState))
     {
         // This should never be able to happen with the logic implemented above
         Kernel::Panic( PANIC_EVENT_LOCK_VIOLATION );
@@ -161,7 +161,7 @@ void EventFlag::WaitTransaction( Transaction *pclTRX_, K_BOOL *pbReschedule_ )
 {
 	bool bMatch = false;
 	Thread *pclThread = Scheduler::GetCurrentThread();
-	K_USHORT usMask = (K_USHORT)(pclTRX_->GetData());
+	K_USHORT usMask = (K_USHORT)((K_ADDR)pclTRX_->GetData());
 	
 #if KERNEL_USE_TIMERS
 	Timer *pclTimer = pclThread->GetTimer();
@@ -222,7 +222,7 @@ void EventFlag::SetTransaction( Transaction *pclTRX_, K_BOOL *pbReschedule_ )
 	Thread *pclCurrent;
 	   
 	K_USHORT usNewMask;
-	K_USHORT usMask = (K_USHORT)(pclTRX_->GetData());
+	K_USHORT usMask = (K_USHORT)((K_ADDR)pclTRX_->GetData());
 	// Walk through the whole block list, checking to see whether or not
 	// the current flag set now matches any/all of the masks and modes of
 	// the threads involved.
@@ -325,7 +325,7 @@ void EventFlag::SetTransaction( Transaction *pclTRX_, K_BOOL *pbReschedule_ )
 //---------------------------------------------------------------------------
 void EventFlag::ClearTransaction( Transaction *pclTRX_, K_BOOL *pbReschedule_ )
 {
-    m_usSetMask &= ~((K_USHORT)(pclTRX_->GetData()));
+    m_usSetMask &= ~((K_USHORT)((K_ADDR)pclTRX_->GetData()));
 }
 
 #if KERNEL_USE_TIMERS
@@ -351,7 +351,7 @@ void EventFlag::Set(K_USHORT usMask_)
 {
     // This function follows the signature of Wait() and Timeout()
     K_BOOL bSchedState;
-    if (LockAndQueue( EVENT_TRANSACTION_SET, (void*)usMask_, &bSchedState))
+    if (LockAndQueue( EVENT_TRANSACTION_SET, (void*)((K_ADDR)usMask_), &bSchedState))
     {
         return;
     }
@@ -369,7 +369,7 @@ void EventFlag::Clear(K_USHORT usMask_)
 {
     // This function follows the signature of Wait() and Timeout()
     K_BOOL bSchedState;
-    if (LockAndQueue( EVENT_TRANSACTION_CLEAR, (void*)usMask_, &bSchedState))
+    if (LockAndQueue( EVENT_TRANSACTION_CLEAR, (void*)((K_ADDR)usMask_), &bSchedState))
     {
         return;
     }
