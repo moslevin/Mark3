@@ -36,15 +36,17 @@ void TransactionQueue::GlobalQueueInit()
 //---------------------------------------------------------------------------
 void TransactionQueue::Enqueue( K_USHORT usData_, void *pvData_)
 {
-	Transaction *pclTrx;
+    // Note - We do not do this from a critical section, as we assume
+    // that anything calling Enqueue() is already running in a critical
+    // section.
 
-	CS_ENTER();
+    Transaction *pclTrx;
+
 	pclTrx = static_cast<Transaction*>(m_clGlobalQueue.GetHead());
 
 	KERNEL_ASSERT(pclTrx);
 
 	m_clGlobalQueue.Remove(pclTrx);
-	CS_EXIT();
 
 	pclTrx->Set( usData_, pvData_ );
 	Add(pclTrx);
