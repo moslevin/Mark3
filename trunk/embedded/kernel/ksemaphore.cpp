@@ -129,20 +129,12 @@ void Semaphore::PostTransaction(Transaction *pclTRX_, K_BOOL *pbReschedule_)
 void Semaphore::PendTransaction(Transaction *pclTRX_, K_BOOL *pbReschedule_)
 {
     // Decrement-and-set the semaphore value
-	if (m_usValue == 0)
+    if (0 == m_usValue)
 	{
-		// Thread must block if counting value is already 0
-		*pbReschedule_ = true;
-	}
-	else
-	{
-		m_usValue--;
-	}
+        // The semaphore count is zero - we need to block the current thread
+        // and wait until the semaphore is posted from elsewhere.
+        *pbReschedule_ = true;
 
-	// The semaphore count is zero - we need to block the current thread
-	// and wait until the semaphore is posted from elsewhere.
-	if (*pbReschedule_)
-	{
 		// Get the current thread pointer.
 		Thread *pclThread = static_cast<Thread*>(pclTRX_->GetData());
 
@@ -158,6 +150,10 @@ void Semaphore::PendTransaction(Transaction *pclTRX_, K_BOOL *pbReschedule_)
 #endif
 		Block(pclThread);
 	}	
+    else
+    {
+        m_usValue--;
+    }
 }
 	
 //---------------------------------------------------------------------------

@@ -28,7 +28,9 @@ See license.txt for more information
 #include "kernel_debug.h"
 
 //---------------------------------------------------------------------------
-#define TRANSACTION_QUEUE_SIZE          (8)
+// Note - this number doesn't have to be large - there's rarely ever going to
+// be more than 1 of these objects ever required.
+#define TRANSACTION_QUEUE_SIZE          (3)
 
 //---------------------------------------------------------------------------
 /*!
