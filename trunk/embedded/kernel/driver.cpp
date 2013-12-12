@@ -44,17 +44,14 @@ public:
     virtual K_UCHAR Open() { return 0; }
     virtual K_UCHAR Close() { return 0; }
         
-    virtual K_USHORT Read( K_USHORT usBytes_,
-    K_UCHAR *pucData_){ return 0; }
+    virtual K_USHORT Read( K_USHORT usBytes_, K_UCHAR *pucData_)
+        { return usBytes_; }
     
-    virtual K_USHORT Write( K_USHORT usBytes_,
-    K_UCHAR *pucData_) { return 0; }
+    virtual K_USHORT Write( K_USHORT usBytes_, K_UCHAR *pucData_)
+        { return usBytes_; }
     
-    virtual K_USHORT Control( K_USHORT usEvent_,
-        void *pvDataIn_,
-        K_USHORT usSizeIn_,
-        void *pvDataOut_,
-        K_USHORT usSizeOut_ ) { return 0; }
+    virtual K_USHORT Control( K_USHORT usEvent_, void *pvDataIn_, K_USHORT usSizeIn_, void *pvDataOut_,  K_USHORT usSizeOut_ )
+        { return 0; }
     
 };
 

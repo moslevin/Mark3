@@ -338,7 +338,6 @@ void Thread::SetPriority(K_UCHAR ucPriority_)
             Scheduler::QueueScheduler();
         }
     }
-
 }
 
 //---------------------------------------------------------------------------
@@ -358,7 +357,6 @@ void Thread::ContextSwitchSWI()
         KernelSWI::Trigger();
     }
 }
-
 
 //---------------------------------------------------------------------------
 Timer *Thread::GetTimer()						{ return &m_clTimer; }

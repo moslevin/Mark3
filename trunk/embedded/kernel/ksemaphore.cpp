@@ -36,6 +36,7 @@ See license.txt for more information
 
 #if KERNEL_USE_SEMAPHORE
 
+//---------------------------------------------------------------------------
 #define SEMAPHORE_TRANSACTION_POST      (0)
 #define SEMAPHORE_TRANSACTION_PEND      (1)
 #define SEMAPHORE_TRANSACTION_UNBLOCK   (2)
@@ -204,7 +205,7 @@ void Semaphore::Init(K_USHORT usInitVal_, K_USHORT usMaxVal_)
 //---------------------------------------------------------------------------
 void Semaphore::Post()
 {
-    KERNEL_TRACE_1( STR_SEMAPHORE_POST_1, (K_USHORT)g_pstCurrent->GetID() );
+    KERNEL_TRACE_1( STR_SEMAPHORE_POST_1, (K_USHORT)Scheduler::GetCurrentThread()->GetID() );
 
     K_BOOL bSchedState;
     if (LockAndQueue(SEMAPHORE_TRANSACTION_POST, 0, &bSchedState))
@@ -236,14 +237,14 @@ void Semaphore::Post()
     bool Semaphore::Pend( K_ULONG ulWaitTimeMS_ )
 #endif
 {
-    KERNEL_TRACE_1( STR_SEMAPHORE_PEND_1, (K_USHORT)g_pstCurrent->GetID() );
+    KERNEL_TRACE_1( STR_SEMAPHORE_PEND_1, (K_USHORT)Scheduler::GetCurrentThread()->GetID() );
 
 	// By locking the queue, we ensure that any post/unblock operations on this
 	// semaphore that interrupt our normal execution wind up being queued flushed
 	// before we exit.
 
     K_BOOL bSchedState;
-    if (LockAndQueue(SEMAPHORE_TRANSACTION_PEND, (void*)g_pstCurrent, &bSchedState))
+    if (LockAndQueue(SEMAPHORE_TRANSACTION_PEND, (void*)Scheduler::GetCurrentThread(), &bSchedState))
     {
         // This should never happen - kernel panic if we do.
         Kernel::Panic( PANIC_PEND_LOCK_VIOLATION );
@@ -254,9 +255,9 @@ void Semaphore::Post()
     // object)
 
 #if KERNEL_USE_TIMERS
-	// Hack - pre-set the interval, since we can't cache it in the transaction
-	g_pstCurrent->GetTimer()->SetIntervalTicks(ulWaitTimeMS_);
-    g_pstCurrent->SetExpired(false);
+    // Pre-set the interval, since we can't cache it in the transaction
+    Scheduler::GetCurrentThread()->GetTimer()->SetIntervalTicks(ulWaitTimeMS_);
+    Scheduler::GetCurrentThread()->SetExpired(false);
 #endif	
 
     if (ProcessQueue())
@@ -270,9 +271,9 @@ void Semaphore::Post()
 #if KERNEL_USE_TIMERS
     if (ulWaitTimeMS_)
     {
-		g_pstCurrent->GetTimer()->Stop();        
+        Scheduler::GetCurrentThread()->GetTimer()->Stop();
     }
-	K_BOOL retVal = (g_pstCurrent->GetExpired() == false);
+    K_BOOL retVal = (Scheduler::GetCurrentThread()->GetExpired() == false);
 	
     return retVal;
 #endif
