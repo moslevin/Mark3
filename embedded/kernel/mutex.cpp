@@ -288,12 +288,12 @@ void Mutex::Init()
     void Mutex::Claim()
 #endif
 {
-    KERNEL_TRACE_1( STR_MUTEX_CLAIM_1, (K_USHORT)g_pstCurrent->GetID() );
+    KERNEL_TRACE_1( STR_MUTEX_CLAIM_1, (K_USHORT)Scheduler::GetCurrentThread()->GetID() );
     
     // Claim the lock (we know only one thread can hold the lock, only one thread can
     // execute at a time, and only threads can call wait)
     K_BOOL bSchedState;
-    if (LockAndQueue( MUTEX_TRANSACTION_CLAIM, (void*)g_pstCurrent, &bSchedState))
+    if (LockAndQueue( MUTEX_TRANSACTION_CLAIM, (void*)Scheduler::GetCurrentThread(), &bSchedState))
     {
         Kernel::Panic( PANIC_MUTEX_LOCK_VIOLATION );
     }
@@ -302,8 +302,8 @@ void Mutex::Init()
     // handler (and can't be queued in the simple key-value pair in the transaciton
     // object)
 #if KERNEL_USE_TIMERS
-	g_pstCurrent->GetTimer()->SetIntervalTicks(ulWaitTimeMS_);
-    g_pstCurrent->SetExpired(false);
+    Scheduler::GetCurrentThread()->GetTimer()->SetIntervalTicks(ulWaitTimeMS_);
+    Scheduler::GetCurrentThread()->SetExpired(false);
 #endif		
 
 	if (ProcessQueue()) {
@@ -315,19 +315,19 @@ void Mutex::Init()
 #if KERNEL_USE_TIMERS
 	if (ulWaitTimeMS_)
 	{
-		g_pstCurrent->GetTimer()->Stop();
+        Scheduler::GetCurrentThread()->GetTimer()->Stop();
 	}
-	return (g_pstCurrent->GetExpired() == false);
+    return (Scheduler::GetCurrentThread()->GetExpired() == false);
 #endif    
 }
 
 //---------------------------------------------------------------------------
 void Mutex::Release()
 {
-    KERNEL_TRACE_1( STR_MUTEX_RELEASE_1, (K_USHORT)g_pstCurrent->GetID() );
+    KERNEL_TRACE_1( STR_MUTEX_RELEASE_1, (K_USHORT)Scheduler::GetCurrentThread()->GetID() );
 
     K_BOOL bSchedState;
-    if (LockAndQueue( MUTEX_TRANSACTION_RELEASE, (void*)g_pstCurrent, &bSchedState))
+    if (LockAndQueue( MUTEX_TRANSACTION_RELEASE, (void*)Scheduler::GetCurrentThread(), &bSchedState))
     {
         return;
     }

@@ -121,14 +121,14 @@ K_ULONG Atomic::Sub( K_ULONG *pulSource_, K_ULONG ulVal_ )
 }
 
 //---------------------------------------------------------------------------
-K_BOOL Atomic::TestAndSet( K_BOOL *pbLock )
+K_BOOL Atomic::TestAndSet( K_BOOL *pbLock_ )
 {
     K_UCHAR ucRet;
     CS_ENTER();
-    ucRet = *pbLock;
+    ucRet = *pbLock_;
     if (!ucRet)
     {
-        *pbLock = 1;
+        *pbLock_ = 1;
     }
     CS_EXIT();
     return ucRet;

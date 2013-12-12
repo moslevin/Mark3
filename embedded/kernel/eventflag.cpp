@@ -91,10 +91,10 @@ K_USHORT EventFlag::Wait(K_USHORT usMask_, EventFlagOperation_t eMode_)
     // Set data on the current thread that needs to be passed into the transaction
     // handler (and can't be queued in the simple key-value pair in the transaciton
     // object)
-	g_pstCurrent->SetEventFlagMode(eMode_);
+    Scheduler::GetCurrentThread()->SetEventFlagMode(eMode_);
 #if KERNEL_USE_TIMERS
-	g_pstCurrent->GetTimer()->SetIntervalTicks(ulTimeMS_);
-    g_pstCurrent->SetExpired(false);
+    Scheduler::GetCurrentThread()->GetTimer()->SetIntervalTicks(ulTimeMS_);
+    Scheduler::GetCurrentThread()->SetExpired(false);
 #endif
 	
     // Drain the FIFO of all queued events and trigger a context switch if necessary
@@ -107,17 +107,17 @@ K_USHORT EventFlag::Wait(K_USHORT usMask_, EventFlagOperation_t eMode_)
 	Scheduler::SetScheduler(bSchedState);
 
 //!! If the Yield operation causes a new thread to be chosen, there will
-//!! Be a context switch at the above CS_EXIT().  The original calling
+//!! Be a context switch at the above SetScheduler() call.  The original calling
 //!! thread will not return back until a matching SetFlags call is made.
 
 #if KERNEL_USE_TIMERS
     if (ulTimeMS_)
     {
-        g_pstCurrent->GetTimer()->Stop();
+        Scheduler::GetCurrentThread()->GetTimer()->Stop();
     }
 #endif
 
-    return g_pstCurrent->GetEventFlagMask();
+    return Scheduler::GetCurrentThread()->GetEventFlagMask();
 }
 
 //---------------------------------------------------------------------------
