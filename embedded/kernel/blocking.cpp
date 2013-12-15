@@ -24,7 +24,6 @@ See license.txt for more information
 
 #include "blocking.h"
 #include "thread.h"
-#include "atomic.h"
 
 //---------------------------------------------------------------------------
 #if defined __FILE_ID__
@@ -71,15 +70,14 @@ void BlockingObject::UnBlock(Thread *pclThread_)
 }
 
 //---------------------------------------------------------------------------
-K_UCHAR BlockingObject::Lock()
-{
-    return Atomic::Add(&m_ucLocks, 1);
-}
-
-//---------------------------------------------------------------------------
 K_UCHAR BlockingObject::UnLock()
 {
-    return Atomic::Sub(&m_ucLocks, 1);
+    K_UCHAR ucRet;
+    CS_ENTER();
+    ucRet = m_ucLocks;
+    m_ucLocks--;
+    CS_EXIT();
+    return ucRet;
 }
 
 //---------------------------------------------------------------------------

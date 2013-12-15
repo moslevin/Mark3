@@ -23,22 +23,7 @@ See license.txt for more information
     you can usually find a sweet spot between features and resource usage
     by picking and choosing features a-la-carte.  This config file is
     written in an "interactive" way, in order to minimize confusion about
-    what each option provides, and to make dependencies obvious.
-    
-    As of 7.6.2012 on AVR, these are the costs associated with the various
-    features:
-
-    Base Kernel:        2888 bytes
-    Tickless Timers:    1194 bytes
-    Semaphores:         224 bytes
-    Message Queues:     332 bytes (+ Semaphores)
-    Mutexes:            290 bytes
-    Thread Sleep:       162 bytes (+ Semaphores/Timers)
-    Round-Robin:        304 bytes (+ Timers)
-    Drivers:            144 bytes
-    Dynamic Threads:    68 bytes
-    Thread Names:       8 bytes
-    Profiling Timers:    624 bytes
+    what each option provides, and to make dependencies obvious.   
 */
 
 #ifndef __MARK3CFG_H__
@@ -53,7 +38,7 @@ See license.txt for more information
     -Thread Quantum (used for round-robin scheduling) is dependent on this
      module, as is Thread Sleep functionality.
 */
-#define KERNEL_USE_TIMERS               (1)
+#define KERNEL_USE_TIMERS                (1)
 
 /*!
     If you've opted to use the kernel timers module, you have an option
@@ -74,7 +59,7 @@ See license.txt for more information
     particular timer variant desired.
 */
 #if KERNEL_USE_TIMERS
-    #define KERNEL_TIMERS_TICKLESS      (1)
+    #define KERNEL_TIMERS_TICKLESS       (1)
 #endif
 
 /*!
@@ -87,10 +72,16 @@ See license.txt for more information
     priority will get the default quantum.
 */
 #if KERNEL_USE_TIMERS    
-    #define KERNEL_USE_QUANTUM          (1)
+    #define KERNEL_USE_QUANTUM           (1)
 #else
-    #define KERNEL_USE_QUANTUM          (0)
+    #define KERNEL_USE_QUANTUM           (0)
 #endif
+
+/*!
+    This value defines the default thread quantum when KERNEL_USE_QUANTUM is
+    enabled.  The thread quantum value is in milliseconds
+*/
+#define THREAD_QUANTUM_DEFAULT           (4)
 
 /*!
     Do you want the ability to use counting/binary semaphores for thread 
@@ -99,7 +90,7 @@ See license.txt for more information
     pick one blocking mechanism, this is the one to choose.  By also enabling 
     per-thread semaphores, each thread will receive it's own built-in semaphore. 
 */
-#define KERNEL_USE_SEMAPHORE            (1)
+#define KERNEL_USE_SEMAPHORE             (1)
 
 /*!
     Enable inter-thread messaging using named mailboxes.  
@@ -107,9 +98,19 @@ See license.txt for more information
     mailbox of a depth specified by THREAD_MAILBOX_SIZE.  
 */
 #if KERNEL_USE_SEMAPHORE                
-    #define KERNEL_USE_MESSAGE          (1)
+    #define KERNEL_USE_MESSAGE           (1)
 #else
-    #define KERNEL_USE_MESSAGE          (0)
+    #define KERNEL_USE_MESSAGE           (0)
+#endif
+
+/*!
+    Do you want to be able to set threads to sleep for a specified time?
+    This enables the Thread::Sleep() API.
+*/
+#if KERNEL_USE_TIMERS && KERNEL_USE_SEMAPHORE
+    #define KERNEL_USE_SLEEP             (1)
+#else
+    #define KERNEL_USE_SLEEP             (0)
 #endif
 
 /*!
@@ -118,7 +119,7 @@ See license.txt for more information
     mechansims is more convenient and automatic.
 */
 #if KERNEL_USE_MESSAGE
-    #define GLOBAL_MESSAGE_POOL_SIZE    (8)
+    #define GLOBAL_MESSAGE_POOL_SIZE     (8)
 #endif
 
 /*!
@@ -127,18 +128,7 @@ See license.txt for more information
     priority inheritence, as declared in mutex.h.  Enabling per-thread mutex
     automatically allocates a mutex for each thread.
  */
-#define KERNEL_USE_MUTEX                (1)
-
-/*!
-    Do you want to be able to set threads to sleep for a specified time?
-    This enables the Thread::Sleep() API.
-*/
-#if KERNEL_USE_TIMERS && KERNEL_USE_SEMAPHORE
-    #define KERNEL_USE_SLEEP            (1)    
-#else
-    #define KERNEL_USE_SLEEP            (0)
-#endif
-
+#define KERNEL_USE_MUTEX                 (1)
 
 /*!
     Enabling device drivers provides a posix-like filesystem interface for 
@@ -146,7 +136,7 @@ See license.txt for more information
     table is specified in DRIVER_TABLE_SIZE.  Permissions are enforced for 
     driver access by thread ID and group when DRIVER_USE_PERMS are enabled.
 */
-#define KERNEL_USE_DRIVER               (1)
+#define KERNEL_USE_DRIVER                (1)
 
 /*!
     Provide Thread method to allow the user to set a name for each
@@ -161,26 +151,48 @@ See license.txt for more information
     designs implementing worker threads, or threads that can be restarted
     after encountering error conditions.
 */
-#define KERNEL_USE_DYNAMIC_THREADS        (1)
+#define KERNEL_USE_DYNAMIC_THREADS       (1)
 
 /*!
     Provides extra classes for profiling the performance of code.  Useful
     for debugging and development, but uses an additional timer.
 */
-#define KERNEL_USE_PROFILER                (1)
+#define KERNEL_USE_PROFILER              (1)
 
 /*!
     Provides extra logic for kernel debugging, and instruments the kernel 
     with extra asserts, and kernel trace functionality.
 */
-#define KERNEL_USE_DEBUG                (0)
-
+#define KERNEL_USE_DEBUG                 (0)
 
 /*!
     Provides additional event-flag based blocking.  This relies on an
     additional per-thread flag-mask to be allocated, which adds 2 bytes
     to the size of each thread object.
 */
-#define KERNEL_USE_EVENTFLAG            (1)
+#define KERNEL_USE_EVENTFLAG             (1)
+
+/*!
+    Provides support for atomic operations, including addition, subtraction,
+    set, and test-and-set.  Add/Sub/Set contain 8, 16, and 32-bit variants.
+*/
+#define KERNEL_USE_ATOMIC                (1)
+
+/*!
+    "Safe unlinking" performs extra checks on data to make sure that there
+    are no consistencies when performing operations on linked lists.  This
+    goes beyond pointer checks, adding a layer of structural and metadata \
+    validation to help detect system corruption early.
+*/
+#define SAFE_UNLINK                      (1)
+
+/*!
+    Defines the size of the kernel transaction queue.  This defines the
+    maximum number of queued operations that can be simultaneously
+    pending on all blocking objects at any given time.  Given that only
+    unblocking operations from an interrupt context can necessitate a
+    value larger than 1, this value really doesn't need to be that large.
+ */
+#define TRANSACTION_QUEUE_SIZE           (3)
 
 #endif

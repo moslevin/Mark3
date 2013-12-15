@@ -109,20 +109,6 @@ protected:
     void UnBlock(Thread *pclThread_);
 
     /*!
-        \brief Lock()
-
-        \return Count of pending locks held on this blocking object
-
-        This function atomically-increments the internal lock count
-        on the object, and returns the new lock count, indicating the
-        number of concurrent accesses on the object.  This may be used
-        in conjunction with a transaction queue to implement blocking
-        and unblocking functions that do not rely on critical sections
-
-    */
-    K_UCHAR Lock();
-
-    /*!
         \brief Unlock
 
         \sa Lock

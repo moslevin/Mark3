@@ -23,6 +23,7 @@ See license.txt for more information
 #include "debug_tokens.h"
 #include "mark3cfg.h"
 #include "tracebuffer.h"
+#include "kernel.h"
 
 //---------------------------------------------------------------------------
 #if KERNEL_USE_DEBUG

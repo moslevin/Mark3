@@ -44,20 +44,12 @@ See license.txt for more information
 #define __LL_H__
 
 #include "kerneltypes.h"
+#include "mark3cfg.h"
 
 //---------------------------------------------------------------------------
 #ifndef NULL
 #define NULL        (0)
 #endif
-
-//---------------------------------------------------------------------------
-/*! 
-    "Safe unlinking" performs extra checks on data to make sure that there 
-    are no consistencies when performing node operations.  This goes beyond
-    pointer checks, adding a layer of structural and metadata validation to
-    help detect system corruption early.
-*/
-#define SAFE_UNLINK        (1)
 
 //---------------------------------------------------------------------------
 /*!
