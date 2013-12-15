@@ -45,10 +45,6 @@ See license.txt for more information
 #include "quantum.h"
 
 //---------------------------------------------------------------------------
-//! Suggested default thread quantum
-#define THREAD_QUANTUM_DEFAULT        (4)
-
-//---------------------------------------------------------------------------
 /*!
     Function pointer type used for thread entrypoint functions
 */

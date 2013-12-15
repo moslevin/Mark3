@@ -25,6 +25,8 @@ See license.txt for more information
 #include "mark3cfg.h"
 #include "threadport.h"
 
+#if KERNEL_USE_ATOMIC
+
 /*!
  * \brief The Atomic class
  *
@@ -83,5 +85,7 @@ public:
      */
     static K_BOOL TestAndSet( K_BOOL *pbLock );
 };
+
+#endif // KERNEL_USE_ATOMIC
 
 #endif //__ATOMIC_H__

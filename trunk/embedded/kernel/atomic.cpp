@@ -23,6 +23,8 @@ See license.txt for more information
 #include "atomic.h"
 #include "threadport.h"
 
+#if KERNEL_USE_ATOMIC
+
 //---------------------------------------------------------------------------
 K_UCHAR Atomic::Set( K_UCHAR *pucSource_, K_UCHAR ucVal_ )
 {
@@ -133,3 +135,5 @@ K_BOOL Atomic::TestAndSet( K_BOOL *pbLock_ )
     CS_EXIT();
     return ucRet;
 }
+
+#endif // KERNEL_USE_ATOMIC
