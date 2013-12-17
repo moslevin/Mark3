@@ -5,11 +5,47 @@
 ###
 
 FORMAT="console"
-if [ $# -eq 1 ]; then
-    if [ "${1}" = "-d" ]; then
+
+if [ $# -lt 3 ]; then
+    echo "Usage: size_profile.sh <ARCH> <VARIANT> <TOOLCHAIN> [-d]"
+    echo " "
+    echo "  Where:"
+    echo "    ARCH = architecture (i.e. avr or cm0)"
+    echo "    VARIANT = device variant (i.e. atmega328p or samd20)"
+    echo "    TOOLCHAIN = compiler toolchain (i.e gcc)"
+    echo "    -d (optional) = Format as doxygen output"
+    exit
+fi
+
+ARCH=$1
+VARIANT=$2
+TOOLCHAIN=$3
+
+if [ $# -eq 4 ]; then
+    if [ "${4}" = "-d" ]; then
         FORMAT="doxygen"
     fi
 fi
+
+### Get the specific compiler/toolchain commands most appropriate for the target
+SIZE_BIN="size"
+COMPILER_BIN="gcc"
+ARCH_STRING="none"
+case ${ARCH} in
+    "avr")
+        SIZE_BIN="avr-size"
+        COMPILER_BIN="avr-gcc"
+        ARCH_STRING="Atmel AVR"
+    ;;
+    "cm0")
+        SIZE_BIN="arm-none-eabi-size"
+        COMPILER_BIN="arm-none-eabi-gcc"
+        ARCH_STRING="ARM Cortex-M0"
+    ;;
+    *)
+    ;;
+esac
+
 
 ### Local variables
 TEXT=""
@@ -45,7 +81,7 @@ elif [ "${FORMAT}" = "doxygen" ]; then
     echo    "additional link-time optimization, and represent the maximum possible"
     echo    "size that any module can take."
     echo    ""
-    echo    "The results below are for profiling on AVR-based targets using GCC. "
+    echo    "The results below are for profiling on ${ARCH_STRING} ${VARIANT}-based targets using ${TOOLCHAIN}. "
     echo    "Results are not necessarily indicative of relative or absolute performance"
     echo    "on other platforms or toolchains."
     echo    "\section SIZEPROFILEINFO Information"
@@ -65,7 +101,7 @@ elif [ "${FORMAT}" = "doxygen" ]; then
     echo    ${DATEINFO}
     echo    ""
     echo    "\section SIZEPROFILEVER  Compiler Version"
-    GCCINFO=$(avr-gcc --version)
+    GCCINFO=$(${COMPILER_BIN} --version)
     echo    ${GCCINFO}
     echo    ""
     echo    "\section SIZEPROFILERES  Profiling Results"
@@ -81,7 +117,7 @@ IFS="
 "
 ### Run the avr-size utility to get a listing of all component sizes (code/data)
 ### data is all 0, which is likely due to the fact that this is a library
-MARK3_DATA=$(avr-size ./stage/lib/avr/atmega328p/gcc/libmark3.a)
+MARK3_DATA=$(${SIZE_BIN} ./stage/lib/${ARCH}/${VARIANT}/${TOOLCHAIN}/libmark3.a)
 
 
 ### Parse through the reported data, line at a time, and convert the data from the
@@ -220,22 +256,22 @@ for LINE in ${MARK3_DATA}; do
             ;;
         "threadport.cpp.o")
             #Ruler:  ----5---10----5---20----5---30----5---40----5---50----5---60"
-            MODNAME="AVR Port - Basic Threading Support.............."
+            MODNAME="${ARCH_STRING} - Basic Threading Support.............."
             PORT_SIZE=$(( PORT_SIZE+${DEC} ))
             ;;
         "kernelswi.cpp.o")
             #Ruler:  ----5---10----5---20----5---30----5---40----5---50----5---60"
-            MODNAME="AVR Port - Kernel Interrupt Implemenation......."
+            MODNAME="${ARCH_STRING} - Kernel Interrupt Implemenation......."
             PORT_SIZE=$(( PORT_SIZE+${DEC} ))
             ;;
         "kerneltimer.cpp.o")
             #Ruler:  ----5---10----5---20----5---30----5---40----5---50----5---60"
-            MODNAME="AVR Port - Kernel Timer Implementation.........."
+            MODNAME="${ARCH_STRING} - Kernel Timer Implementation.........."
             PORT_SIZE=$(( PORT_SIZE+${DEC} ))
             ;;
         "kprofile.cpp.o")
             #Ruler:  ----5---10----5---20----5---30----5---40----5---50----5---60"
-            MODNAME="AVR Port - Profiling Timer Implementation......."
+            MODNAME="${ARCH_STRING} - Profiling Timer Implementation......."
             PORT_SIZE=$(( PORT_SIZE+${DEC} ))
             ;;
          *)
