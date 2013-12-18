@@ -22,6 +22,8 @@ PORT_CPP_OBJ=$(addprefix $(PORT_OBJ_DIR), $(PORT_CPP_SOURCE:%.cpp=%.cpp.o))
 
 USR_OBJS=$(C_OBJ) $(CPP_OBJ) $(PORT_C_OBJ) $(PORT_CPP_OBJ)
 
+CPU_SPEC_HEADERS=$(PORT_DIR)/public/
+
 # Static analysis output
 C_SA_OBJ=$(addprefix $(OBJ_DIR_FINAL), $(C_SOURCE:%.c=%.c.sa))
 CPP_SA_OBJ=$(addprefix $(OBJ_DIR_FINAL), $(CPP_SOURCE:%.cpp=%.cpp.sa))
@@ -91,6 +93,13 @@ headers : headers_banner
 		if test -d $(INC_DIR); then \
 			if test -f $(wildcard *.h); then \
 				$(COPYCMD) $(PUBLIC_DIR)*.h $(INC_DIR); \
+			fi;	\
+		fi; \
+	fi;
+	@if test -d $(CPU_SPEC_HEADERS); then \
+		if test -d $(INC_DIR); then \
+			if test -f $(wildcard *.h); then \
+			    $(COPYCMD) $(CPU_SPEC_HEADERS)*.h $(INC_DIR); \
 			fi;	\
 		fi; \
 	fi;
