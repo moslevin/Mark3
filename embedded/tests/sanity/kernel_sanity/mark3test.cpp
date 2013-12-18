@@ -20,10 +20,10 @@ extern "C" void __cxa_pure_virtual() { }
 
 //---------------------------------------------------------------------------
 static volatile K_UCHAR ucTestVal;
-
+#define TX_BUF_SIZE             (4)
 //---------------------------------------------------------------------------
 static ATMegaUART clUART;
-static K_UCHAR aucTxBuf[64];
+static K_UCHAR aucTxBuf[TX_BUF_SIZE];
 
 #define PROFILE_TEST 0
 #if PROFILE_TEST
@@ -63,11 +63,11 @@ static Mutex clMutex;
 #if UNIT_TEST
 
 //---------------------------------------------------------------------------
-#define TEST_STACK1_SIZE            (256)
-#define TEST_STACK2_SIZE            (256)
-#define TEST_STACK3_SIZE            (256)
-#define MAIN_STACK_SIZE            (256)
-#define IDLE_STACK_SIZE            (256)
+#define TEST_STACK1_SIZE            (224)
+#define TEST_STACK2_SIZE            (224)
+#define TEST_STACK3_SIZE            (224)
+#define MAIN_STACK_SIZE            (224)
+#define IDLE_STACK_SIZE            (224)
 
 static UnitTest clSemTest;
 static UnitTest clSleepTest;
@@ -409,6 +409,7 @@ void Profile_PrintResults()
 
 #if UNIT_TEST
 
+#if 1
 //---------------------------------------------------------------------------
 void TestSemThread(Semaphore *pstSem_)
 {
@@ -454,7 +455,7 @@ void UT_SemaphoreTest(void)
     ucTestVal = 0x12;
     
     clSemaphore.Post();    
-    //PrintWait(&clUART, 1, "a");
+
     if (ucTestVal != 0x21)
     {
         clSemTest.Fail();
@@ -462,7 +463,7 @@ void UT_SemaphoreTest(void)
     
     ucTestVal = 0x32;
     clSemaphore.Post();
-    PrintWait(&clUART, 1, "b");
+
     if (ucTestVal != 0x23)
     {
         clSemTest.Fail();
@@ -470,7 +471,6 @@ void UT_SemaphoreTest(void)
     
     ucTestVal = 0x45;
     clSemaphore.Post();
-    PrintWait(&clUART, 1, "c");
     if (ucTestVal != 0x54)
     {
         clSemTest.Fail();
@@ -873,6 +873,7 @@ void UT_MessageTest(void)
     clMsgQTest.Pass();    
         
 }
+#endif
 
 //---------------------------------------------------------------------------
 void TestRRThread(volatile K_ULONG *pulCounter_)
@@ -889,6 +890,7 @@ void TestRRThread(volatile K_ULONG *pulCounter_)
 //  set their quantums to different values.  Verify that the ratios of their
 //  "work cycles" are close to equivalent.
 //---------------------------------------------------------------------------
+
 void UT_RoundRobinTest(void)
 {
     volatile K_ULONG ulCounter1 = 0;
@@ -1132,7 +1134,7 @@ static void AppMain( void *unused )
     Profile_Init();
 #endif    
 
-    pclUART->Control(CMD_SET_BUFFERS, NULL, 0, aucTxBuf, 64);
+    pclUART->Control(CMD_SET_BUFFERS, NULL, 0, aucTxBuf, TX_BUF_SIZE);
     {
         K_ULONG ulBaudRate = 57600;
         pclUART->Control(CMD_SET_BAUDRATE, &ulBaudRate, 0, 0, 0 );
