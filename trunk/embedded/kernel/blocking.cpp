@@ -75,7 +75,10 @@ K_UCHAR BlockingObject::UnLock()
     K_UCHAR ucRet;
     CS_ENTER();
     ucRet = m_ucLocks;
-    m_ucLocks--;
+    if (m_ucLocks)
+    {
+        m_ucLocks--;
+    }
     CS_EXIT();
     return ucRet;
 }
