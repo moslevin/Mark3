@@ -142,7 +142,7 @@ static const uint8_t PROGMEM
       0x00,                   //     Boost frequency
     ST7735_PWCTR4 , 2      ,  // 10: Power control, 2 args, no delay:
       0x8A,                   //     BCLK/2, Opamp current small & Medium low
-      0x2A,  
+      0x2A,
     ST7735_PWCTR5 , 2      ,  // 11: Power control, 2 args, no delay:
       0x8A, 0xEE,
     ST7735_VMCTR1 , 1      ,  // 12: Power control, 1 arg, no delay:
@@ -187,15 +187,16 @@ static const uint8_t PROGMEM
     ST7735_DISPON ,    DELAY, //  4: Main screen turn on, no args w/delay
       100 };                  //     100 ms delay
 
+
 //---------------------------------------------------------------------------
 // Companion code to the above tables.  Reads and issues
 // a series of LCD commands stored in PROGMEM byte array.
-void GraphicsST7735::CommandList(const K_UCHAR *pucData_) 
+void GraphicsST7735::CommandList(const K_UCHAR *pucData_)
 {
     K_UCHAR ucNumCommands = pgm_read_byte(pucData_++);      // Number of commands to follow
     while (ucNumCommands--)                                 // For each command...
     {
-        writecommand(pgm_read_byte(pucData_++));            // Read, issue command
+        WriteCommand(pgm_read_byte(pucData_++));            // Read, issue command
 
         K_UCHAR     ucNumArgs = pgm_read_byte(pucData_++);  // Number of args to follow
         K_USHORT    usMs      = ucNumArgs & DELAY;          // If hibit set, delay follows args
@@ -209,90 +210,142 @@ void GraphicsST7735::CommandList(const K_UCHAR *pucData_)
 
         if(usMs)                                            // If there's a delay for this command
         {
-            usMs = pgm_read_byte(addr++);                   // Read post-command delay time (ms)
+            usMs = pgm_read_byte(pucData_++);               // Read post-command delay time (ms)
             if(usMs == 255)                                 // If 255, delay for 500 ms
             {
                 usMs = 500;
             }
-            Thread::Sleep(usMs);                            // Sleep for the required time
         }
     }
 }
 
+#if USE_HW_SPI
 //---------------------------------------------------------------------------
 #define TFT_SPI_WRITE(x)	\
     { \
-        while( !(TFT_SPSR & (1 << TFT_SPIF) ) ) { } \
-        TFT_SPDR = (x); \
+        TFT_SPI_SPDR = (x); \
+        while( !(TFT_SPI_SPSR & (1 << TFT_SPI_SPIF) ) ) { } \
     }
+#else
+//---------------------------------------------------------------------------
+#define TFT_SPI_WRITE(x)	\
+{ \
+    K_UCHAR ucMask = 0x80; \
+    while (ucMask) \
+    { \
+        if (ucMask & x) \
+        { \
+            TFT_SPI_MOSI_PORT |= TFT_SPI_MOSI_PIN; \
+        } \
+        else \
+        { \
+            TFT_SPI_MOSI_PORT &= ~TFT_SPI_MOSI_PIN; \
+        } \
+        TFT_SPI_SCLK_OUT |= TFT_SPI_SCLK_PIN; \
+        TFT_SPI_SCLK_OUT &= ~TFT_SPI_SCLK_PIN; \
+        ucMask >>= 1; \
+    } \
+}
+
+#endif
 
 //---------------------------------------------------------------------------
 void GraphicsST7735::WriteCommand( K_UCHAR ucX_ ) 
 {
-    TFT_CD_OUT &= ~TFT_CD_BIT;
-	TFT_CS_OUT &= ~TFT_CS_BIT;
+    TFT_CD_PORT &= ~TFT_CD_PIN;
+    TFT_CS_PORT &= ~TFT_CS_PIN;
 	TFT_SPI_WRITE(ucX_);
-	TFT_CS_OUT |= TFT_CS_BIT;
+    TFT_CS_PORT |= TFT_CS_PIN;
 }
 
 //---------------------------------------------------------------------------
 void GraphicsST7735::WriteData( K_UCHAR ucX_ ) 
 {
-    TFT_CD_OUT |= TFT_CD_BIT;
-	TFT_CS_OUT &= ~TFT_CS_BIT;
+    TFT_CD_PORT |= TFT_CD_PIN;
+    TFT_CS_PORT &= ~TFT_CS_PIN;
 	TFT_SPI_WRITE(ucX_);
-	TFT_CS_OUT |= TFT_CS_BIT;
+    TFT_CS_PORT |= TFT_CS_PIN;
 } 
 
 //---------------------------------------------------------------------------
 void GraphicsST7735::Init()
 {
-    m_usColStart = 0;
-    m_usRowStart = 0;
+    m_ucColStart = 0;
+    m_ucRowStart = 0;
 
     m_usResX = ST7735_TFTWIDTH;
     m_usResY = ST7735_TFTHEIGHT;
     m_ucBPP = 16;
 
-    TFT_CD_DIR |= TFT_CD_BIT;
-    TFT_CS_DIR |= TFT_CS_BIT;
-    TFT_RST_DIR |= TFT_RST_BIT;
+    TFT_CD_DIR |= TFT_CD_PIN;
+    TFT_CS_DIR |= TFT_CS_PIN;
+    TFT_CD_PORT &= ~TFT_CD_PIN;
+    TFT_CS_PORT &= ~TFT_CS_PIN;
 
+#if USE_HW_SPI
     // SPI Slave-select ourput high; guarantee we're the master on the bus, and
     // that the SPI HW behaves as expected
-    SPI_SS_PORT |= SPI_SS_BIT;
-    SPI_SS_DDRB |= SPI_SS_BIT;
+    SPI_SS_PORT |= SPI_SS_PIN;
+    SPI_SS_DIR  |= SPI_SS_PIN;
 
     // Configure SPI as Master, MSB First, and Enable
-    SPCR =  (1 << MSTR) |		// Master-mode
-        (1 << SPE) | 		// Enable
-        // (1 << DORD) |	// MSB First
+    SPCR =  (1 << MSTR) 	// Master-mode
+        | (1 << SPE)  		// Enable
+        //| (1 << DORD) 	// MSB First
         ;
 
     // Implicit - Clock mode 4 (value = 0x00)
-    SPCR = ( SPCR & ~SPI_CLOCK_MASK ) |
+    SPCR = ( SPCR & ~SPI_CLK_MASK ) |
            ( SPI_CLK_DIV_4 & SPI_CLK_MASK )
            ;
 
-    SPSR = (SPSR & ~0x01) |
-           ((SPI_CLK_DIV_4 >> 2) & SPI_CLK_MASK2 )
+    SPSR = ( SPSR & ~0x01) |
+           ( (SPI_CLK_DIV_4 >> 2) & SPI_CLK_MASK_2 )
            ;
-
     // Implicit - Mode0 -> We  cleared the SPCR earlier, so will already be 0
-    TFT_CS_OUT &= ~TFT_CS_BIT;
+#else
+    TFT_SPI_SCLK_DIR |= TFT_SPI_SCLK_PIN;
+    TFT_SPI_MOSI_DIR |= TFT_SPI_MOSI_PIN;
+    TFT_SPI_SCLK_PORT &= ~TFT_SPI_SCLK_PIN;
+    TFT_SPI_MOSI_PORT &= ~TFT_SPI_MOSI_PIN;
+#endif
 
-    TFT_RST_OUT |= TFT_RST_BIT;
-    Thread::Sleep(500);
+    TFT_CS_PORT &= ~TFT_CS_PIN;
 
-    TFT_RST_OUT &= ~TFT_RST_BIT;
-    Thread::Sleep(500);
+#if TFT_RST_PIN
+    if (TFT_RST_PIN)
+    {
+        TFT_RST_DIR  |= TFT_RST_PIN;
+        TFT_RST_PORT |= TFT_RST_PIN;
+        Thread::Sleep(500);
 
-    TFT_RST_OUT |= TFT_RST_BIT;
-    Thread::Sleep(500);
+        TFT_RST_PORT &= ~TFT_RST_PIN;
+        Thread::Sleep(500);
 
-//-- Device-specific commands...
-    // CommandList()?
+        TFT_RST_PORT |= TFT_RST_PIN;
+        Thread::Sleep(500);
+    }
+#endif
+
+//-- Device-specific commands...    
+    CommandList(Rcmd1);
+#if (TAB_COLOR == INITR_GREENTAB)
+    CommandList(Rcmd2green);
+    m_ucColStart = 2;
+    m_ucRowStart = 1;
+#else
+    CommandList(Rcmd2red);
+#endif
+    CommandList(Rcmd3);
+
+#if (TAB_COLOR == INITR_BLACKTAB)
+    // if black, change MADCTL color filter
+    WriteCommand(ST7735_MADCTL);
+    WriteData(0xC0);
+#endif
+
 }
+
 
 //---------------------------------------------------------------------------
 void GraphicsST7735::FastVLine(DrawLine_t *pstLine_)
@@ -316,14 +369,14 @@ void GraphicsST7735::FastVLine(DrawLine_t *pstLine_)
     K_UCHAR ucLow     = (K_UCHAR)(pstLine_->uColor & 0xFF);
 
     // Clock the pixel data out
-    TFT_CD_OUT |= TFT_CD_BIT;
-    TFT_CS_OUT &= ~TFT_CS_BIT;
+    TFT_CD_OUT |= TFT_CD_PIN;
+    TFT_CS_OUT &= ~TFT_CS_PIN;
     while (usPixels--)
     {
         TFT_SPI_WRITE(ucHigh);
         TFT_SPI_WRITE(ucLow);
     }
-    TFT_CS_OUT |= TFT_CS_BIT;
+    TFT_CS_OUT |= TFT_CS_PIN;
 }
 
 //---------------------------------------------------------------------------
@@ -350,14 +403,14 @@ void GraphicsST7735::FastHLine(DrawLine_t *pstLine_)
     K_UCHAR ucLow     = (K_UCHAR)(pstLine_->uColor & 0xFF);
 
     // Clock the pixel data out
-    TFT_CD_OUT |= TFT_CD_BIT;
-    TFT_CS_OUT &= ~TFT_CS_BIT;
+    TFT_CD_OUT |= TFT_CD_PIN;
+    TFT_CS_OUT &= ~TFT_CS_PIN;
     while (usPixels--)
     {
         TFT_SPI_WRITE(ucHigh);
         TFT_SPI_WRITE(ucLow);
     }
-    TFT_CS_OUT |= TFT_CS_BIT;
+    TFT_CS_OUT |= TFT_CS_PIN;
 }
 
 //---------------------------------------------------------------------------
@@ -366,16 +419,16 @@ void GraphicsST7735::SetOpWindow(DrawRectangle_t *pstRectangle_)
     // Set Column limits
     WriteCommand(ST7735_CASET);
 	WriteData(0x00);
-    WriteData(m_ucColStart + pstRectange_->usLeft);
+    WriteData(m_ucColStart + pstRectangle_->usLeft);
 	WriteData(0x00);
-    WriteData(m_ucColStart + pstRectange_->usRight);
+    WriteData(m_ucColStart + pstRectangle_->usRight);
 
     // Set row limits
     WriteCommand(ST7735_RASET);
 	WriteData(0x00);
-    WriteData(m_ucRowStart + pstRectange_->usTop);
+    WriteData(m_ucRowStart + pstRectangle_->usTop);
 	WriteData(0x00);
-    WriteData(m_ucRowStart + pstRectange_->usBottom);
+    WriteData(m_ucRowStart + pstRectangle_->usBottom);
 
     WriteCommand(ST7735_RAMWR);
 }
@@ -395,9 +448,8 @@ void GraphicsST7735::ClearScreen()
     stRect.uLineColor = COLOR_BLACK;
     stRect.uFillColor = COLOR_BLACK;
 
-    Rectangle(pstRectangle_);
+    Rectangle(&stRect);
 }
-
 //---------------------------------------------------------------------------
 void GraphicsST7735::Rectangle(DrawRectangle_t *pstRectangle_)
 {    
@@ -405,30 +457,43 @@ void GraphicsST7735::Rectangle(DrawRectangle_t *pstRectangle_)
     if (pstRectangle_->bFill)
     {
         // Set the window that we're going to set
+        if (pstRectangle_->uLineColor != pstRectangle_->uFillColor)
+        {
+            pstRectangle_->usTop++;
+            pstRectangle_->usBottom--;
+            pstRectangle_->usLeft++;
+            pstRectangle_->usRight--;
+        }
+
         SetOpWindow(pstRectangle_);
 
         K_ULONG ulPixels =  (K_ULONG)(pstRectangle_->usBottom - pstRectangle_->usTop + 1) *
                             (K_ULONG)(pstRectangle_->usRight - pstRectangle_->usLeft + 1);
 
         // Set the high/low bytes of the color that we're going to write
-        K_UCHAR ucHigh   = (K_UCHAR)((pstRectangle_->uColor) >> 8);
-        K_UCHAR ucLow    = (K_UCHAR)(pstRectangle_->uColor & 0xFF);
+        K_UCHAR ucHigh   = (K_UCHAR)((pstRectangle_->uFillColor) >> 8);
+        K_UCHAR ucLow    = (K_UCHAR)(pstRectangle_->uFillColor & 0xFF);
 
         // Clock the pixel data out
-        TFT_CD_OUT |= TFT_CD_BIT;
-        TFT_CS_OUT &= ~TFT_CS_BIT;
+        TFT_CD_OUT |= TFT_CD_PIN;
+        TFT_CS_OUT &= ~TFT_CS_PIN;
         while (ulPixels--)
         {
             TFT_SPI_WRITE(ucHigh);
             TFT_SPI_WRITE(ucLow);
         }
-        TFT_CS_OUT |= TFT_CS_BIT;
+        TFT_CS_OUT |= TFT_CS_PIN;
 
         // If the line/fill colors are the same, then bail here.
         if (pstRectangle_->uLineColor == pstRectangle_->uFillColor)
         {
             return;
         }
+
+        pstRectangle_->usTop--;
+        pstRectangle_->usBottom++;
+        pstRectangle_->usLeft--;
+        pstRectangle_->usRight++;
     }
 
     // Draw the Horizontal/Vertical components.
@@ -503,17 +568,17 @@ void GraphicsST7735::Point(DrawPoint_t *pstPoint_)
     WriteCommand(ST7735_RAMWR);
 
     // Get pixel color data in high/low bytes
-    K_UCHAR ucHigh   = (K_UCHAR)((pstRectangle_->uColor) >> 8);
-    K_UCHAR ucLow    = (K_UCHAR)(pstRectangle_->uColor & 0xFF);
+    K_UCHAR ucHigh   = (K_UCHAR)((pstPoint_->uColor) >> 8);
+    K_UCHAR ucLow    = (K_UCHAR)(pstPoint_->uColor & 0xFF);
 
     // Write the pixel data out
-    TFT_CD_OUT |= TFT_CD_BIT;
-    TFT_CS_OUT &= ~TFT_CS_BIT;
+    TFT_CD_OUT |= TFT_CD_PIN;
+    TFT_CS_OUT &= ~TFT_CS_PIN;
 
     TFT_SPI_WRITE(ucHigh);
     TFT_SPI_WRITE(ucLow);
 
-    TFT_CS_OUT |= TFT_CS_BIT;
+    TFT_CS_OUT |= TFT_CS_PIN;
 }
 
 //---------------------------------------------------------------------------
@@ -537,11 +602,11 @@ void GraphicsST7735::Bitmap(DrawBitmap_t *pstBitmap_)
     K_ULONG ulPixels = (K_ULONG)pstBitmap_->usWidth *
                         (K_ULONG)pstBitmap_->usHeight;
 
-    K_USHORT *pucData = pstBitmap->pucData;
+    K_UCHAR *pucData = pstBitmap_->pucData;
 
     // Write the pixel data out, assuming native 16-bit format.
-    TFT_CD_OUT |= TFT_CD_BIT;
-    TFT_CS_OUT &= ~TFT_CS_BIT;
+    TFT_CD_OUT |= TFT_CD_PIN;
+    TFT_CS_OUT &= ~TFT_CS_PIN;
 
     while (ulPixels--)
     {
@@ -553,5 +618,5 @@ void GraphicsST7735::Bitmap(DrawBitmap_t *pstBitmap_)
         TFT_SPI_WRITE(ucLow);
     }
 
-    TFT_CS_OUT |= TFT_CS_BIT;
+    TFT_CS_OUT |= TFT_CS_PIN;
 }
