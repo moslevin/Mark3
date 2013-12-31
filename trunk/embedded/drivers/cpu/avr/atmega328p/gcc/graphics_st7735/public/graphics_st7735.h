@@ -53,6 +53,12 @@ See license.txt for more information
 #define INITR_REDTAB   	0x1
 #define INITR_BLACKTAB  0x2
 
+//---------------------------------------------------------
+//--[ Define this based on color of display tab ]----------
+#define TAB_COLOR       INITR_BLACKTAB
+
+//---------------------------------------------------------
+
 #define ST7735_TFTWIDTH  128
 #define ST7735_TFTHEIGHT 160
 
@@ -103,52 +109,58 @@ See license.txt for more information
 #define ST7735_GMCTRN1 0xE1
 
 //---------------------------------------------------------
-// Hard-coding register defines for SPEED
+// Hard-coding register/port defines for SPEED
 //---------------------------------------------------------
 
 //--[ RESET pin ]------------------------------------------
-#define TFT_RST_PORT
-#define TFT_RST_PIN
-#define TFT_RST_DIR
-#define TFT_RST_OUT
+#define TFT_RST_PORT        PORTB
+#define TFT_RST_PIN         0
+#define TFT_RST_DIR         DDRB
+#define TFT_RST_OUT         PORTB
 
 //--[ Slave Select pin ]------------------------------------
-#define SPI_SS_PORT	PORTB
-#define SPI_SS_PIN	PINB
-#define SPI_SS_DIR	DDRB
-#define SPI_SS_BIT	(1 << 4)
+#define SPI_SS_PORT         PORTB
+#define SPI_SS_DIR          DDRB
+#define SPI_SS_PIN          (1 << 4)
 
 //--[ Chip Select pin ]------------------------------------
-#define TFT_CS_PORT
-#define TFT_CS_PIN
-#define TFT_CS_DIR
+#define TFT_CS_PORT         PORTB
+#define TFT_CS_PIN          (1 << 2)
+#define TFT_CS_DIR          DDRB
+#define TFT_CS_OUT          PORTB
 
 //--[ Command/Data Select pin ]----------------------------
-#define TFT_CD_PORT
-#define TFT_CD_PIN
-#define TFT_CD_DIR
-#define TFT_CD_OUT
+#define TFT_CD_PORT         PORTB
+#define TFT_CD_PIN          (1 << 0)
+#define TFT_CD_DIR          DDRB
+#define TFT_CD_OUT          PORTB
 
 //--[ SPI Data Out pin ]-----------------------------------
-#define TFT_SPI_MOSI_PORT
-#define TFT_SPI_MOSI_DIR
-#define TFT_SPI_MOSI_BIT
-#define TFT_SPI_MOSI_OUT
+#define TFT_SPI_MOSI_PORT   PORTB
+#define TFT_SPI_MOSI_DIR    DDRB
+#define TFT_SPI_MOSI_PIN    (1 << 3)
+#define TFT_SPI_MOSI_OUT    PORTB
 
 //--[ SPI Serial Clock pin ]-------------------------------
-#define TFT_SPI_SCLK_PORT
-#define TFT_SPI_SCLK_PIN
-#define TFT_SPI_SCLK_BIT
-#define TFT_SPI_SCLK_OUT
+#define TFT_SPI_SCLK_PORT   PORTB
+#define TFT_SPI_SCLK_DIR    DDRB
+#define TFT_SPI_SCLK_PIN    (1 << 5)
+#define TFT_SPI_SCLK_OUT    PORTB
 
 //--[ Misc SPI Registers ]---------------------------------
-#define TFT_SPI_SPDR
-#define TFT_SPI_SPSR
-#define TFT_SPI_SPIF
+#define TFT_SPI_SPDR        SPDR
+#define TFT_SPI_SPSR        SPSR
+#define TFT_SPI_SPIF        SPIF
+
+
+//---------------------------------------------------------
+//--[ Hardware/Software config ]---------------------------
+#define USE_HW_SPI          (0)
 
 //---------------------------------------------------------
 class GraphicsST7735 : public GraphicsDriver 
 {
+public:
 //---------------------------------------------------------
     virtual void Init();
     virtual K_UCHAR Open()
@@ -176,14 +188,14 @@ class GraphicsST7735 : public GraphicsDriver
     virtual void Rectangle(DrawRectangle_t *pstRectangle_);
 
 //    virtual void Circle(DrawCircle_t *pstCircle_);
-//    virtual void Ellipse(DrawEllipse_t *pstEllipse_) {}
+    virtual void Ellipse(DrawEllipse_t *pstEllipse_) {}
 
     virtual void Bitmap(DrawBitmap_t *pstBitmap_);
 //    virtual void Stamp(DrawStamp_t *pstStamp_);
 
-//    virtual void Move(DrawMove_t *pstMove_ ) {}
+    virtual void Move(DrawMove_t *pstMove_ ) {}
 //    virtual void TriangleWire(DrawPoly_t *pstPoly_);
-//    virtual void TriangleFill(DrawPoly_t *pstPoly_) {}
+    virtual void TriangleFill(DrawPoly_t *pstPoly_) {}
 //    virtual void Polygon(DrawPoly_t *pstPoly_);
 
 //    virtual void Text(DrawText_t *pstText_);
@@ -202,7 +214,7 @@ private:
 
     K_UCHAR m_ucColStart;
     K_UCHAR m_ucRowStart;
-}
+};
 
 #endif // __GRAPHICS_ST7735_H__
 
