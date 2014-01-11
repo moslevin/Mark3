@@ -155,7 +155,7 @@ See license.txt for more information
 
 //---------------------------------------------------------
 //--[ Hardware/Software config ]---------------------------
-#define USE_HW_SPI          (0)
+#define USE_HW_SPI          (1)
 
 //---------------------------------------------------------
 class GraphicsST7735 : public GraphicsDriver 

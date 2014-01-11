@@ -45,6 +45,7 @@ See license.txt for more information
 #include <avr/pgmspace.h>
 #include <avr/io.h>
 
+
 // SPI Defines
 #define SPI_CLK_DIV_4			(0x00)
 #define SPI_CLK_MASK			(0x03)
@@ -221,11 +222,11 @@ void GraphicsST7735::CommandList(const K_UCHAR *pucData_)
 
 #if USE_HW_SPI
 //---------------------------------------------------------------------------
-#define TFT_SPI_WRITE(x)	\
-    { \
-        TFT_SPI_SPDR = (x); \
-        while( !(TFT_SPI_SPSR & (1 << TFT_SPI_SPIF) ) ) { } \
-    }
+void TFT_SPI_WRITE(K_UCHAR x)
+{
+    TFT_SPI_SPDR = x;
+    while( !(TFT_SPI_SPSR & (1 << TFT_SPI_SPIF) ) ) { }
+}
 #else
 //---------------------------------------------------------------------------
 #define TFT_SPI_WRITE(x)	\
@@ -289,27 +290,15 @@ void GraphicsST7735::Init()
     SPI_SS_DIR  |= SPI_SS_PIN;
 
     // Configure SPI as Master, MSB First, and Enable
-    SPCR =  (1 << MSTR) 	// Master-mode
-        | (1 << SPE)  		// Enable
-        //| (1 << DORD) 	// MSB First
-        ;
-
-    // Implicit - Clock mode 4 (value = 0x00)
-    SPCR = ( SPCR & ~SPI_CLK_MASK ) |
-           ( SPI_CLK_DIV_4 & SPI_CLK_MASK )
-           ;
-
-    SPSR = ( SPSR & ~0x01) |
-           ( (SPI_CLK_DIV_4 >> 2) & SPI_CLK_MASK_2 )
-           ;
+    SPCR =  (1 << MSTR); 	// Master-mode
+	SPCR |=  (1 << SPE);		// Enable.
+	
     // Implicit - Mode0 -> We  cleared the SPCR earlier, so will already be 0
-#else
+#endif
     TFT_SPI_SCLK_DIR |= TFT_SPI_SCLK_PIN;
     TFT_SPI_MOSI_DIR |= TFT_SPI_MOSI_PIN;
     TFT_SPI_SCLK_PORT &= ~TFT_SPI_SCLK_PIN;
     TFT_SPI_MOSI_PORT &= ~TFT_SPI_MOSI_PIN;
-#endif
-
     TFT_CS_PORT &= ~TFT_CS_PIN;
 
 #if TFT_RST_PIN
