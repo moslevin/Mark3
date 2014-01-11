@@ -222,10 +222,10 @@ void GraphicsST7735::CommandList(const K_UCHAR *pucData_)
 
 #if USE_HW_SPI
 //---------------------------------------------------------------------------
-void TFT_SPI_WRITE(K_UCHAR x)
-{
-    TFT_SPI_SPDR = x;
-    while( !(TFT_SPI_SPSR & (1 << TFT_SPI_SPIF) ) ) { }
+#define TFT_SPI_WRITE(x) \
+{ \
+    TFT_SPI_SPDR = (x); \
+    while( !(TFT_SPI_SPSR & (1 << TFT_SPI_SPIF) ) ) { } \
 }
 #else
 //---------------------------------------------------------------------------
@@ -290,8 +290,10 @@ void GraphicsST7735::Init()
     SPI_SS_DIR  |= SPI_SS_PIN;
 
     // Configure SPI as Master, MSB First, and Enable
-    SPCR =  (1 << MSTR); 	// Master-mode
-	SPCR |=  (1 << SPE);		// Enable.
+    TFT_SPI_SPCR  =  (1 << MSTR); 	    // Master-mode
+	TFT_SPI_SPCR |=  (1 << SPE);		// Enable.
+	
+	TFT_SPI_SPSR = (1 << SPI2X);		// Double-speed SPI, for faster writes
 	
     // Implicit - Mode0 -> We  cleared the SPCR earlier, so will already be 0
 #endif
