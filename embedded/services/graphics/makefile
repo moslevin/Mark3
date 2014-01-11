@@ -8,7 +8,7 @@ IS_LIB=1
 LIBNAME=graphics
 
 #this is the list of the objects required to build the kernel
-CPP_SOURCE=graphics.cpp
+CPP_SOURCE=graphics.cpp bitstream.cpp tiles.cpp
 
 # Include the rest of the script that is actually used for building the 
 # outputs
