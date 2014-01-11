@@ -149,6 +149,7 @@ See license.txt for more information
 
 //--[ Misc SPI Registers ]---------------------------------
 #define TFT_SPI_SPDR        SPDR
+#define TFT_SPI_SPCR		SPCR
 #define TFT_SPI_SPSR        SPSR
 #define TFT_SPI_SPIF        SPIF
 
