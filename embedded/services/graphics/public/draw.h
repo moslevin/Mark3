@@ -34,7 +34,7 @@ typedef enum
     //--[Mandatory for a display driver]-------------------------------------
     DISPLAY_EVENT_SET_PIXEL = 0x00,    
     DISPLAY_EVENT_GET_PIXEL,
-    
+	
     //--[Optional if supported in hardware]----------------------------------
     DISPLAY_EVENT_CLEAR,
     DISPLAY_EVENT_LINE,
@@ -45,7 +45,7 @@ typedef enum
     DISPLAY_EVENT_STAMP,
     DISPLAY_EVENT_TEXT,    
     DISPLAY_EVENT_MOVE,
-    DISPLAY_EVENT_POLY
+	DISPLAY_EVENT_POLY
 } DisplayEvent_t;
 
 //---------------------------------------------------------------------------
@@ -149,6 +149,22 @@ typedef struct
     Font_t *pstFont;  //!< Pointer to the font used to render the text
     const K_CHAR *pcString;     //!< ASCII String to render
 } DrawText_t;
+
+//---------------------------------------------------------------------------
+#define TEXTFX_FLAG_OPAQUE_BG   (0x01)  //!< Use an opaque BG
+#define TEXTFX_FLAG_ROTATE      (0x02)  //!< Apply text rotation
+#define TEXTFX_FLAG_SCALE_X     (0x04)  //!< Scale the text horizontally
+#define TEXTFX_FLAG_SCALE_Y     (0x08)  //!< Scale the text vertically
+
+//---------------------------------------------------------------------------
+typedef struct
+{
+    K_UCHAR ucFlags;        //!< Text effects applied
+    COLOR uBGColor;         //!< Background color for opaque backgrounds
+    K_USHORT usRotateDeg;   //!< Rotation in degrees
+    K_USHORT usScaleX100;   //!< Scaling factor, fixed point modulo 100
+    K_USHORT usScaleY100;   //!< Scaling factor, fixed point modulo 100
+} TextFX_t;
 
 //---------------------------------------------------------------------------
 /*!
