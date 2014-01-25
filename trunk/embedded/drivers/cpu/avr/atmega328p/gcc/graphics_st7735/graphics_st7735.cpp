@@ -602,8 +602,8 @@ void GraphicsST7735::Bitmap(DrawBitmap_t *pstBitmap_)
     while (ulPixels--)
     {
         // Get pixel color data in high/low bytes
-        K_UCHAR ucHigh   = *pucData++;
         K_UCHAR ucLow    = *pucData++;
+		K_UCHAR ucHigh   = *pucData++;        
 
         TFT_SPI_WRITE(ucHigh);
         TFT_SPI_WRITE(ucLow);
