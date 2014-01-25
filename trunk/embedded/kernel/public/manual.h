@@ -2571,6 +2571,32 @@ See license.txt for more information
 	Other mechanisms, such as running make with multiple concurrent jobs (i.e. "make -j4")
 	also helps significantly, especially on systems with multicore CPUs.
 
+    \section EXPS Exporting the Source
+
+    In addition to providing a full recursive-make based build system, the kernel
+    source for a given target can be exported directly to a .zip file for
+    convenience. Run export.sh for any supported target (the full list of targets
+    is listed below) to create a .zip archive of the kernel source and port code.
+    If doxygen and pdflatex are available from your OS, documentation will also be
+    generated (HTML and PDF) on the fly and included in the archive.
+
+    \subsection SUPT Supported targets
+
+    Currently, Mark3 supports the following AVR parts:
+
+    - atmega328p
+    - arduino
+    - atmega644
+    - atmega1284p
+    - atxmega256a3 (*experimental)
+    .
+
+    The following Cortex M0 parts are supported as well:
+
+    - Atmel samd20
+    - ST Micro stm32f0
+    .
+
 */
 /*!
 	\page LICENSE License
