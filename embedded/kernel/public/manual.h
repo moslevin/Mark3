@@ -1598,6 +1598,783 @@ See license.txt for more information
 	with a new interval specified in milliseconds.
 */
 /*!
+    \page SCHEDPAGE Inside The Scheduler
+
+    This section details the inner-working of the Mark3 Scheduler in detail.
+
+    \section SAB A Bit About Threads
+
+    Before we get started talking about the internals of the
+    Mark3 scheduler, it's necessary to go over some background material - starting
+    with: what is a thread, anyway?
+
+    Let's look at a very basic CPU without any sort of RTOS, and without
+    interrupts. When the CPU is powered up, the program counter is loaded with some
+    default location, at which point the processor core will start executing
+    instructions sequentially - running forever and ever according to whatever has
+    been loaded into program memory. This single instance of a simple program
+    sequence is the only thing that runs on the processor, and the execution of the
+    program can be predicted entirely by looking at the CPU's current register
+    state, its program, and any affected system memory (the CPU's "context").
+
+    It's simple enough, and that's exactly the definition we have for a thread in
+    an RTOS.
+
+    Each thread contains an instance of a CPU's register context, its own stack,
+    and any other bookkeeping information necessary to define the minimum unique
+    execution state of a system at runtime. It is the job of a RTOS to multiplex
+    the execution of multiple threads on a single physical CPU, thereby creating
+    the illusion that many programs are being executed simultaneously. In reality
+    there can only ever be one thread truly executing at any given moment on a CPU
+    core, so it's up to the scheduler to set and enforce rules about what thread
+    gets to run when, for how long, and under what conditions. As mentioned
+    earlier, any system without an RTOS exeuctes as a single thread, so at least
+    two threads are required for an RTOS to serve any useful purpose.
+
+    Note that all of this information is is common to pretty well every RTOS in
+    existence - the implementation details, including the scheduler rules, are all
+    part of what differentiates one RTOS from another. THREAD STATES AND THREAD
+    LISTS Since only one thread can run on a CPU at a time, the scheduler relies on
+    thread information to make its decisions. Mark3's scheduler relies on a variety
+    of such information, including: The thread's current priority Round-Robin
+    execution quanta Whether or not the thread is blocked on a synchronization
+    object, such as a mutex or semaphore Whether or not the thread is currently
+    suspended The scheduler further uses this information to logically place each
+    thread into 1 of 4 possible states: Ready - The thread is currently running
+    Running - The thread is able to run Blocked - The thread cannot run until a
+    system condition is met Stopped - The thread cannot run because its execution
+    has been suspended In order to determine a thread's state, threads are placed
+    in "buckets" corresponding to these states. Ready and running threads exist in
+    the scheduler's buckets, blocked threads exist in a buckets belonging to the
+    object they're blocked on, and stopped threads exist in a bucket of all stopped
+    threads.
+
+    In reality, the various buckets are just doubly-linked lists of Thread objects
+    - implemented in something called the ThreadList class. To facilitate this, the
+    Thread class directly inherits from the LinkListNode class, which contains the
+    node pointers required to implement a doubly-linked list. As a result, Threads
+    may be effortlessly moved from one state to another using efficient linked-list
+    operations built into the ThreadList class.
+
+    \section ABB About Blocking and Unblocking
+
+    While many developers new to the concept of an RTOS assume that all threads in
+    a system are entirely separate from eachother, the reality is that practical
+    systems typically involve multiple threads working together, or at the very
+    least sharing resources. In order to synchronize the execution of threads for
+    that purpose, a number of synchronization primatives (blocking objects) are
+    implemented to create specific sets of conditions under which threads can
+    continue execution. The concept of "blocking" a thread until a specific
+    condition is met is fundamental to understanding RTOS applications design, as
+    well as any highly-multithreaded applications.
+
+    Blocking objects and primatives provided by Mark3 include:
+    - Semaphores (binary and counting)
+    - Mutexes
+    - Event Flags
+    - Thread Sleep
+    - Message Queues
+    .
+
+    Each of these objects inherit from the BlockingObject class, which itself
+    contains a ThreadList object. This class contains methods to Block() a thread
+    (remove it from the Scheduler's "Ready" or "Running" ThreadLists), as well as
+    UnBlock() a thread (move a thread back to the "Ready" lists). This object
+    handles transitioning threads from list-to-list (and state-to-state), as well
+    as taking care of any other Scheduler bookkeeping required in the process.
+    While each of the Blocking types implement a different condition, they are
+    effectively variations on the same theme. Many simple Blocking objects are also
+    used to build complex blocking objects - for instance, the Thread Sleep
+    mechanism is essentially a binary semaphore and a timer object, while a message
+    queue is a linked-list of message objects combined with a semaphore.
+
+    \section TSA The Scheduling Alogrithm
+
+    At this point we've covered the following concepts:
+    - Threads
+    - Thread States and Thread Lists
+    - Blocking and Un-Blocking Threads
+    .
+
+    Thankfully, this is all the background required to understand how the Mark3
+    Scheduler works. In technical terms, Mark3 implements "strict priority
+    scheduling, with round-robin scheduling among threads in each priority group".
+    In plain English, this boils down to a scheduler which follows a few simple
+    rules:
+
+    - Find the highest-priority "Ready" list that has at least one Threads.
+    - If the first thread in that bucket is not the current thread, select it to run next
+    - Otherwise, rotate the linked list, and choose the next thread in the list to run
+    .
+
+    Since context switching is one of the most common and frequent operation
+    performed by an RTOS, this needs to be as fast and deterministic as possible.
+    While the logic is simple, a lot of care must be put into optimizing the
+    scheduler to achieve those goals. In the section below we discuss the
+    optimization approaches taken in Mark3.
+
+    There are a number of ways to find the highest-priority thread. The naive
+    approach would be to simply iterate through the scheduler's array of
+    ThreadLists from highest to lowest, stopping when the first non-empty list is
+    found, such as in the following block of code:
+
+    \code
+    for (prio = num_prio - 1; prio >= 0; prio--)
+    {
+        if (thread_list[prio].get_head() != NULL)
+        {
+            break;
+        }
+    }
+    \endcode
+
+    While that would certainly work and be sufficient for a variety of systems,
+    it's a non-deterministic approach (complexity O(n)) whose cost varies
+    substantially based on how many priorities have to be evaluated. It's simple to
+    read and understand, but it's non-optimal.
+
+    Fortunatley, a functionally-equivalent and more deterministic approach can be implemented with a few tricks.
+
+    In addition to maintaining an array of ThreadLists, Mark3 also maintains a
+    bitmap (one bit per priority level) that indicates which thread lists have
+    ready threads. This bitmap is maintained automatically by the ThreadList class,
+    and is updated every time a thread is moved to/from the Scheduler's ready
+    lists.
+
+    By inspecting this bitmap using a technique to count the leading zero bits in
+    the bitmap, we determine which threadlist to choose in fixed time.
+
+    Now, to implement the leading-zeros check, this can once again be performed
+    iteratively using bitshifts and compares (which isn't any more efficient than
+    the raw list traversal), but it can also be evaluated using either a lookup
+    table, or via a special CPU instruction to count the leading zeros in a value.
+    In Mark3, we opt for the lookup-table approach since we have a limited number
+    of priorities and not all supported CPU architectures support a count leading
+    zero instruction. To achieve a balance between performance and memory use, we
+    use a 4-bit lookup table (costing 16 bytes) to perform the lookup.
+
+    (As a sidenote - this is actually a very common approach in OS schedulers. It's
+    actually part of the reason why modern ARM cores implement a dedicated
+    count-leading-zeros [CLZ] instruction!)
+
+    With a 4-bit lookup table and an 8-bit priority-level bitmap, the priority
+    check algorithm looks something like this:
+
+    \code
+    // Check the highest 4 priority levels, represented in the
+    // upper 4 bits in the bitmap
+    priority = priority_lookup_table[(priority_bitmap >> 4)];
+
+    // priority is non-zero if we found something there
+    if( priority )
+    {
+        // Add 4 because we were looking at the higher levels
+        priority += 4;
+    }
+    else
+    {
+        // Nothing in the upper 4, look at the lowest 4 priority levels
+        // represented by the lowest 4 bits in the bitmap
+        priority = priority_lookup_table[priority_bitmap & 0x0F];
+    }
+    \endcode
+
+    Deconstructing this algorithm, you can see that the priority lookup will have
+    on O(1) complexity - and is extremely low-cost. This operation is thus fully
+    deterministic and time bound - no matter how many threads are scheduled, the
+    operation will always be time-bound to the most expensive of these two code
+    paths. Even with only 8 priority levels, this is still much faster than
+    iteratively checking the thread lists manually, compared with the previous
+    example implementation.
+
+    Once the priority level has been found, selecting the next thread to run is
+    trivial, consisting of something like this:
+
+    \code
+    next_thread = thread_list[prio].get_head();
+    \endcode
+
+    In the case of the get_head() calls, this evaluates to an inline-load of the
+    "head" pointer in the particular thread list. One important thing to take away
+    from this analysis is that the scheduler is only responsible for selecting the
+    next-to-run thread. In fact, these two operations are totally decoupled - no
+    context switching is performed by the scheduler, and the scheduler isn't called
+    from the context switch. The scheduler simply produces new "next thread" values
+    that are consumed from within the context switch code.
+
+    \section CRR Considerations For Round-Robin Scheduling
+
+    One thing that isn't considered directly from the scheduler algorithm is the
+    problem of dealing with multiple threads within a single priority group; all of
+    the alorithms that have been explored above simply look at the firstThread in
+    each group.
+
+    Mark3 addresses this issue indirectly, using a software timer to manage
+    round-robin scheduling, as follows. In some instances where the scheduler is
+    run by the kernel directly (typically as a result of calling Thread::Yield()),
+    the kernel will perfom an additional check after running the Scheduler to
+    determine whether or there are multiple ready Threadsin the priority of the
+    next ready thread. If there are multiple threads within that priority, the
+    kernel adds a one-shot software timer which is programmed to expire at the next
+    Thread's configured quantum. When this timer expires, the timer's callback
+    function executes to perform two simple operations: "Pivot" the current
+    Thread's priority list.
+
+    Set a flag telling the kernel to trigger a Yield after exiting the main
+    TimerScheduler processing loop Pivoting the thread list basically moves the
+    head of a circular-linked-list to its next value, which in our case ensures
+    that a new thread will be chosen the next time the scheduler is run (the
+    scheduler only looks at the head node of the priority lists). And by calling
+    Yield, the system forces the scheduler t run, a new round-robin software timer
+    to be installed (if necssary), and triggers a context switch SWI to load the
+    newly-chosen thread. Note that if the thread attached to the round-robin timer
+    is pre-empted, the kernel will take steps to abort and invalidate that
+    round-robin software timer, installing a new one tied to the next thread to run
+    if necessary. Because the round-robin software timer is dynamically installed
+    when there are multiple ready threads at the highest ready priority level,
+    there is no CPU overhead with this feature unless that condition is met. The
+    cost of round-robin scheduling is also fixed - no matter how many threads there
+    are, and the cost is identical to any other one-shot software timer in the
+    system.
+
+    \section CSW Context Switching
+
+    There's really not much to say about the actual context switch operation at a
+    high level. Context switches are triggered whenever it has been determined that
+    a new thread needs to be swapped into the CPU core when the scheduler is run.
+    Mark3 implements also context switches as a call to a software interrupt - on
+    AVR platforms, we typically use INT0 or INT2 for this (although any pin-change
+    GPIO interrupt can be used), and on ARM we achieve this by triggering a PendSV
+    exception.
+
+    However, regardless of the architecture, the contex-switch ISR will perform the
+    following three operations:
+    - Save the current Thread's context to the current Thread stack
+    - Make the "next to run" thread the "currently running" thread
+    - Restore the context of the next Thread from the Thread stack
+    .
+
+    The code to implement the context switch is entirely architecture-specific, so
+    it won't be discussed in detail here. It's almost always gory inline-assembly
+    which is used to load and store various CPU registers, and is highly-optimized
+    for speed. I will dive into how this imporant bit of code works (on ARM
+    Cortex-M0+) in a separate whitepaper.
+
+    \section PAT Putting It All Together
+
+    In short, we can say that the Mark3 scheduler works as follows:
+
+    - The scheduler is run whenever a Thread::Yield() is called by a user, as part of blocking calls, or whenever a new thread is started
+    - The Mark3 scheduler is deterministic, selecting the next thread to run in fixed-time
+    - The scheduler only chooses the next thread to run, the context switch SWI consumes that information to get that thread running
+    - Where there are multiple ready threads in the highest populated priority level, a software timer is used to manage round-robin scheduling
+    .
+
+    While we've covered a lot of ground in this chapter, there's not a whole lot of code involved.
+    However, the code that performs these operations is quite nuanced and subtle.
+    If you're interested in seeing how this all works in practice, I suggest reading
+    through the Mark3 source code (which is heavily annotated), and stepping through
+    the code with a simulator/emulator.
+*/
+/*!
+    \page PCM Porting Mark3 - An Example Using ARM Cortex-M0
+
+    This document serves as both a real-world example of how Mark3 can be ported to
+    new architectures, and as a practical reference for using the RTOS support
+    functionality baked in modern ARM Cortex-M series microcontrollers. Most of
+    this documentation here is taken directly from the source code found in the
+    /kernel/cpu/cm0/ ports directory, with additional annotations to explain the
+    port in more detail. Note that a familiarity with Cortex-M series parts will go
+    a long way to understanding the subject matter presented, especially a basic
+    understanding of the ARM CPU registers, exception models, and OS support
+    features (PendSV, SysTick and SVC).
+
+    Porting Mark3 to a new architecture consists of a few basic pieces; for
+    developers familiar with the target architecture and the porting process, it's
+    not a tremendously onerous endeavour to get Mark3 up-and-running somewhere new.
+    For starters, all non-portable components are completely isolated in the
+    source-tree under /embedded/kernel/<CPU>/<VARIANT>/<TOOLCHAIN>/, where <CPU> is
+    the architecture, <VARIANT> is the vendor/part, and <TOOLCHAIN> is the compiler
+    tool suite used to build the code.
+
+    From within the specific port folder, a developer needs only implement a few
+    classes and headers that define the port-specific behavior of Mark3:
+    - KernelSWI (kernelswi.cpp/kernelswi.h) - Provides a maskable software-triggered interrupt used to perform context switching.
+    - KernelTimer (kerneltimer.cpp/kerneltimer.h) - Provides either a fixed-frequency or programmable-interval timer, which triggers an interrupt on expiry. This is used for implementing round-robin scheduling, thread-sleeps, and generic software timers.
+    - Profiler (kprofile.cpp/kprofile.h) - Contains code for runtime code-profiling.  This is optional and may be stubbed out if left unimplemented (we won't cover profiling timers here).
+    - ThreadPort (threadport.cpp/threadport.h) - The meat-and-potatoes of the port code lives here. This class contains architecture/part-specific code used to initialize threads, implement critical-sections, perform context-switching, and start the kernel. Most of the time spent in this article focuses on the code found here.
+    .
+
+    Summarizing the above, these modules provide the following list of functionality:
+    - Thread stack initialization
+    - Kernel startup and first thread entry
+    - Context switch and SWI
+    - Kernel timers
+    - Critical Sections
+    .
+
+    The implementation of each of these pieces will be analyzed in detail in the sections that follow.
+
+    \section TSI Thread Stack Initialization
+
+    Before a thread can be used, its stack must first be initialized to its default
+    state. This default state ensures that when the thread is scheduled for the
+    first time and its context restored, that it will cause the CPU to jump to the
+    user's specified entry-point function.
+
+    All of the platform independent thread setup is handled by the generic kernel
+    code. However, since every CPU architecture has its own register set, and
+    stacks different information as part of an interrupt/exception, we have to
+    implement this thread setup code for each platform we want the kernel to
+    support (Combination of Architecture + Variant + Toolchain).
+
+    In the ARM Cortex-M0 architecture, the stack frame consists of the following information:
+
+    a) Exception Stack Frame
+
+    Contains the 8 registers which the ARM Cortex-M0 CPU automatically pushes to the stack when entering an exception.  The following registers are included (in stack'd order):
+    \code
+        [ XPSR ] <-- Highest address in context
+        [ PC   ]
+        [ LR   ]
+        [ R12  ]
+        [ R3   ]
+        [ R2   ]
+        [ R1   ]
+        [ R0   ]
+    \endcode
+
+    XPSR – This is the CPU's status register. We need to set this to 0x01000000
+    (the "T" bit), which indicates that the CPU is executing in “thumb” mode. Note
+    that ARMv6m and ARMv7m processors only run thumb2 instructions, so an exception
+    is liable to occur if this bit ever gets cleared.
+
+    PC – Program Counter. This should be set with the initial entry point (function
+    pointer) for that the user wishes to start executing with this thread.
+
+    LR - The base link register. Normally, this register contains the return
+    address of the calling function, which is where the CPU jumps when a function
+    returns. However, our threads generally don't return (and if they do, they're
+    placed into the stop state). As a result we can leave this as 0.
+
+    The other registers in the stack frame are generic working registers, and have
+    no special meaning, with the exception that R0 will hold the user's argument
+    value passed into the entrypoint.
+
+    b) Complimentary CPU Register Context
+    \code
+        [ R11   ]
+        ...
+        [ R4    ] <-- Lowest address in context
+    \endcode
+
+    These are the other general-purpose CPU registers that need to be backed
+    up/restored on a context switch, but aren't stacked by default on a Cortex-M0
+    exception. If there were any additional hardware registers to back up, then
+    we'd also have to include them in this part of the context as well.
+
+    As a result, these registers all need to be manually pushed to the stack on
+    stack creation, and will need to be explicitly pushed and pop as part of a
+    normal context switch.
+
+    With this default exception state in mind, the following code is used to
+    initialize a thread's stack for a Cortex-M0.
+
+    \code
+    void ThreadPort::InitStack(Thread *pclThread_)
+    {
+        K_ULONG *pulStack;
+        K_ULONG *pulTemp;
+        K_ULONG ulAddr;
+        K_USHORT i;
+
+        // Get the entrypoint for the thread
+        ulAddr = (K_ULONG)(pclThread_->m_pfEntryPoint);
+
+        // Get the top-of-stack pointer for the thread
+        pulStack = (K_ULONG*)pclThread_->m_pwStackTop;
+
+        // Initialize the stack to all FF's to aid in stack depth checking
+        pulTemp = (K_ULONG*)pclThread_->m_pwStack;
+        for (i = 0; i < pclThread_->m_usStackSize / sizeof(K_ULONG); i++)
+        {
+            pulTemp[i] = 0xFFFFFFFF;
+        }
+
+        PUSH_TO_STACK(pulStack, 0);             // Apply one word of padding
+
+        //-- Simulated Exception Stack Frame --
+        PUSH_TO_STACK(pulStack, 0x01000000);    // XSPR - set "T" bit for thumb-mode
+        PUSH_TO_STACK(pulStack, ulAddr);        // PC
+        PUSH_TO_STACK(pulStack, 0);             // LR
+        PUSH_TO_STACK(pulStack, 0x12);
+        PUSH_TO_STACK(pulStack, 0x3);
+        PUSH_TO_STACK(pulStack, 0x2);
+        PUSH_TO_STACK(pulStack, 0x1);
+        PUSH_TO_STACK(pulStack, (K_ULONG)pclThread_->m_pvArg);    // R0 = argument
+
+        //-- Simulated Manually-Stacked Registers --
+        PUSH_TO_STACK(pulStack, 0x11);
+        PUSH_TO_STACK(pulStack, 0x10);
+        PUSH_TO_STACK(pulStack, 0x09);
+        PUSH_TO_STACK(pulStack, 0x08);
+        PUSH_TO_STACK(pulStack, 0x07);
+        PUSH_TO_STACK(pulStack, 0x06);
+        PUSH_TO_STACK(pulStack, 0x05);
+        PUSH_TO_STACK(pulStack, 0x04);
+        pulStack++;
+
+        pclThread_->m_pwStackTop = pulStack;
+    }
+    \endcode
+
+    \section KST Kernel Startup
+
+    The same general process applies to starting the kernel on an ARM Cortex-M0 as
+    on other platforms. Here, we initialize and start the platform specific timer
+    and software-interrupt modules, find the first thread to run, and then jump to
+    that first thread.
+
+    Now, to perform that last step, we have two options:
+
+    1) Simulate a return from an exception manually to start the first thread, or..
+    2) Use a software interrupt to trigger the first "Context Restore/Return from Interrupt"
+
+    For 1), we basically have to restore the whole stack manually, not relying on
+    the CPU to do any of this for us. That's certainly doable, but not all Cortex
+    parts support this (other members of the family support privileged modes,
+    etc.). That, and the code required to do this is generally more complex due to
+    all of the exception-state simulation. So, we will opt for the second option
+    instead.
+
+    To implement a software to start our first thread, we will use the SVC
+    instruction to generate an exception. From that exception, we can then restore
+    the context from our first thread, set the CPU up to use the right “process”
+    stack, and return-from-exception back to our first thread. We'll explore the
+    code for that later.
+
+    But, before we can call the SVC exception, we're going to do a couple of things.
+
+    First, we're going to reset the default MSP stack pointer to its original
+    top-of-stack value. The rationale here is that we no longer care about the data
+    on the MSP stack, since calling the SVC instruction triggers a chain of events
+    from which we never return. The MSP is also used by all exception-handling, so
+    regaining a few words of stack here can be useful. We'll also enable all
+    maskable exceptions at this point, since this code results in the kernel being
+    started with the CPU executing the RTOS threads, at which point a user would
+    expect interrupts to be enabled.
+
+    Note, the default stack pointer location is stored at address 0x00000000 on all
+    ARM Cortex M0 parts. That explains the code below.
+
+    \code
+    void ThreadPort_StartFirstThread( void )
+    {
+        asm(
+            " ldr r1, [r0] \n" // Reset the MSP to the default base address
+            " msr msp, r1 \n"
+            " cpsie i \n"      // Enable interrupts
+            " svc 0 \n"        // Jump to SVC Call
+            );
+    }
+    \endcode
+
+    \section FTE First Thread Entry
+
+    This handler has the job of taking the first thread object's stack, and
+    restoring the default state data in a way that ensures that the thread starts
+    executing when returning from the call.
+
+    We also keep in mind that there's an 8-byte offset from the beginning of the
+    thread object to the location of the thread stack pointer. This offset is a
+    result of the thread object inheriting from the linked-list node class, which
+    has 8-bytes of data. This is stored first in the object, before the first
+    element of the class, which is the "stack top" pointer.
+
+    The following assembly code shows how the SVC call is implemented in Mark3 for
+    the purpose of starting the first thread.
+
+    \code
+    get_thread_stack:
+        ; Get the stack pointer for the current thread
+        ldr r0, g_pstCurrent
+        ldr r1, [r0]
+        add r1, #8
+        ldr r2, [r1]         ; r2 contains the current stack-top
+
+    load_manually_placed_context_r11_r8:
+        ; Handle the bottom 32-bytes of the stack frame
+        ; Start with r11-r8, because only r0-r7 can be used
+        ; with ldmia on CM0.
+        add r2, #16
+        ldmia r2!, {r4-r7}
+        mov r11, r7
+        mov r10, r6
+        mov r9, r5
+        mov r8, r4
+
+    set_psp:
+        ; Since r2 is coincidentally back to where the stack pointer should be,
+        ; Set the program stack pointer such that returning from the exception handler
+        msr psp, r2
+
+    load_manually_placed_context_r7_r4:
+        ; Get back to the bottom of the manually stacked registers and pop.
+        sub r2, #32
+        ldmia r2!, {r4-r7}  ; Register r4-r11 are restored.
+
+    set_thread_and_privilege_modes:
+        ; Also modify the control register to force use of thread mode as well
+        ; For CM3 forward-compatibility, also set user mode.
+        mrs r0, control
+        mov r1, #0x03
+        orr r0, r1
+        control, r0
+
+    set_lr:
+        ; Set up the link register such that on return, the code operates in thread mode using the PSP
+        ; To do this, we or 0x0D to the value stored in the lr by the exception hardware EXC_RETURN.
+        ; Alternately, we could just force lr to be 0xFFFFFFFD (we know that's what we want from the hardware, anyway)
+        mov  r0, #0x0D
+        mov  r1, lr
+        orr r0, r1
+
+    exit_exception:
+        ; Return from the exception handler.  The CPU will automagically unstack R0-R3, R12, PC, LR, and xPSR
+        ; for us.  If all goes well, our thread will start execution at the entrypoint, with the us-specified
+        ; argument.
+        bx r0
+
+    \endcode
+
+    \section CSW Context Switching
+
+    On ARM Cortex parts, there's dedicated hardware that's used primarily to
+    support RTOS (or RTOS-like) funcationlity. This functionality includes the
+    SysTick timer, and the PendSV Exception. SysTick is used for a tick-based
+    kernel timer, while the PendSV exception is used for performing context
+    switches. In reality, it's a "special SVC" call that's designed to be
+    lower-overhead, in that it isn't mux'd with a bunch of other system or
+    application functionality.
+
+    So how do we go about actually implementing a context switch here? There are a
+    lot of different parts involved, but it essentially comes down to 3 steps:
+
+    1) Saving the context.  Thread's top-of-stack value is stored, all registers are stacked.  We're good to go!
+
+    2) Swap threads.  We swap the Scheduler's “next” thread with the “current” thread.
+
+    3)  Restore Context.  This is more or less identical to what we did when restoring the first context.  Some operations may be optimized for data already stored in registers.
+
+    The code used to implement these steps on Cortex-M0 is presented below:
+
+    \code
+    void PendSV_Handler(void)
+    {
+        ASM(
+        // Thread_SaveContext()
+        " ldr r1, CURR_ \n"
+        " ldr r1, [r1] \n "
+        " mov r3, r1 \n "
+        " add r3, #8 \n "
+
+        //  Grab the psp and adjust it by 32 based on the extra registers we're going
+        // to be manually stacking.
+        " mrs r2, psp \n "
+        " sub r2, #32 \n "
+
+        // While we're here, store the new top-of-stack value
+        " str r2, [r3] \n "
+
+        // And, while r2 is at the bottom of the stack frame, stack r7-r4
+        " stmia r2!, {r4-r7} \n "
+
+        // Stack r11-r8
+        " mov r7, r11 \n "
+        " mov r6, r10 \n "
+        " mov r5, r9 \n "
+        " mov r4, r8 \n "
+        " stmia r2!, {r4-r7} \n "
+
+        // Equivalent of Thread_Swap() - performs g_pstCurrent = g_pstNext
+        " ldr r1, CURR_ \n"
+        " ldr r0, NEXT_ \n"
+        " ldr r0, [r0] \n"
+        " str r0, [r1] \n"
+
+        // Thread_RestoreContext()
+        // Get the pointer to the next thread's stack
+        " add r0, #8 \n "
+        " ldr r2, [r0] \n "
+
+        // Stack pointer is in r2, start loading registers from the "manually-stacked" set
+        // Start with r11-r8, since these can't be accessed directly.
+        " add r2, #16 \n "
+        " ldmia r2!, {r4-r7} \n "
+        " mov r11, r7 \n "
+        " mov r10, r6 \n "
+        " mov r9, r5 \n "
+        " mov r8, r4 \n "
+
+        // After subbing R2 #16 manually, and #16 through ldmia, our PSP is where it
+        // needs to be when we return from the exception handler
+        " msr psp, r2 \n "
+
+        // Pop manually-stacked R4-R7
+        " sub r2, #32 \n "
+        " ldmia r2!, {r4-r7} \n "
+
+        // lr contains the proper EXC_RETURN value
+        // we're done with the exception, so return back to the newly-chosen thread
+        " bx lr \n "
+        " nop \n "
+
+        // Must be 4-byte aligned.  Also - GNU assembler, I hate you for making me resort to this.
+        " NEXT_: .word g_pstNext \n"
+        " CURR_: .word g_pstCurrent \n"
+        );
+    }
+    \endcode
+
+    \section KTI Kernel Timers
+
+    ARM Cortex-M series microcontrollers each contain a SysTick timer, which was
+    designed to facilitate a fixed-interval RTOS timer-tick. This timer is a
+    precise 24-bit down-count timer, run at the main CPU clock frequency, that can
+    be programmed to trigger an exception when the timer expires. The handler for
+    this exception can thus be used to drive software timers throughout the system
+    on a fixed interval.
+
+    Unfortunately, this hardware is extremely simple, and does not offer the
+    flexibility of other timer hardware commonly implemented by MCU vendors -
+    specifically a suitable timer prescalar that can be used to generate efficient,
+    long-counting intervals. As a result, while the "generic" port of Mark3 for
+    Cortex-M0 leverages the common SysTick timer interface, it only supports the
+    tick-based version of the kernel's timer (note that specific Cortex-M0 ports
+    such as the Atmel SAMD20 do have tickless timers).
+
+    Setting up a tick-based KernelTimer class to use the SysTick timer is, however,
+    extremely easy, as is illustrated below:
+
+    \code
+    void KernelTimer::Start(void)
+    {
+        SysTick_Config(SYSTEM_FREQ / 1000); // 1KHz fixed clock...
+        NVIC_EnableIRQ(SysTick_IRQn);
+    }
+    \endcode
+
+    In this instance, the call to SysTick_Config() generates a 1kHz system-tick
+    signal, and the NVIC_EnableIRQ() call ensures that a SysTick exception is
+    generated for each tick. All other functions in the Cortex version of the
+    KernelTimer class are essentially stubbed out (see the source for more
+    details).
+
+    Note that the functions used in this call are part of the ARM Cortex
+    Microcontroller Software Interface Standard (cmsis), and are supplied by all
+    parts vendors selling Cortex hardware. This greatly simplifies the design of
+    our port-code, since we can be reasonably assured that these APIs will work the
+    same on all devices.
+
+    The handler code called when a SysTick exception occurs is basically the same
+    as on other platforms (such as AVR), except that we explicitly clear the
+    "exception pending" bit before returning. This is implemented in the following
+    code:
+
+    \code
+    void SysTick_Handler(void)
+    {
+    #if KERNEL_USE_TIMERS
+        TimerScheduler::Process();
+    #endif
+    #if KERNEL_USE_QUANTUM
+        Quantum::UpdateTimer();
+    #endif
+
+        // Clear the systick interrupt pending bit.
+        SCB->ICSR |= SCB_ICSR_PENDSTCLR_Msk;
+    }
+    \endcode
+
+    \section CRS Critical Sections
+
+    A "critical section" is a block of code whose execution cannot be interrupted
+    by means of context switches or an interrupt. In a traditional single-core
+    operating system, it is typically implemented as a block of code where the
+    interrupts are disabled - this is also the approach taken by Mark3. Given that
+    every CPU has its own means of disabling/enabling interrupts, the
+    implementation of the critical section APIs is also non-portable.
+
+    In the Cortex-M0 port, we implement the two critical section APIs (CS_ENTER()
+    and CS_EXIT()) as function-like macros containing inline assembly. All uses of
+    these calls are called in pairs within a function and must take place at the
+    same level-of-scope. Also, as nesting may occur (critical section within a
+    critical section), this must be taken into account in the code.
+
+    In general, CS_ENTER() performs the following tasks:
+    - Cache the current interrupt-enabled state within a local variable in the thread's state
+    - Disable interrupts
+    .
+
+    Conversely, CS_EXIT() performs the following tasks:
+    - Read the original interrupt-enabled state from the cached value
+    - Restore interrupts to the original value
+    .
+
+    On Cortex-M series micrcontrollers, the PRIMASK special register contains a
+    single status bit which can be used to enable/disable all maskable interrupts
+    at once. This register can be read directly to examine or modify its state. For
+    convenience, ARMv6m provides two instructions to enable/disable interrupts -
+    cpsid (disable interrupts) and cpsie (enable interrupts). Mark3 Implements
+    these steps according to the following code:
+
+    \code
+    //------------------------------------------------------------------------
+    //! Enter critical section (copy current PRIMASK register value, disable interrupts)
+    #define CS_ENTER()    \
+    {    \
+        K_ULONG __ulRegState;    \
+        asm    ( \
+        " mrs r0, PRIMASK \n"    \
+        " mov %[STATUS], r0 \n" \
+        " cpsid i \n "    \
+        : [STATUS] "=r" (__ulRegState) \
+        );
+
+    //------------------------------------------------------------------------
+    //! Exit critical section (restore previous PRIMASK status register value)
+    #define CS_EXIT() \
+        asm    ( \
+        " mov r0, %[STATUS] \n" \
+        " msr primask, r0 \n"    \
+        : \
+        : [STATUS] "r" (__ulRegState) \
+        ); \
+    }
+    \endcode
+
+    \section CON Conclusion
+
+    In this chapter we have investigated how the main non-portable areas of the
+    Mark3 RTOS are implemented on a Cortex-M0 microcontroller. Mark3 leverages all
+    of the hardware blocks designed to enable RTOS functionality on ARM Cortex-M
+    series microcontrollers: the SVC call provides the mechanism by which we start
+    the kernel, the PendSV exception provides the necessary software interrupt, and
+    the SysTick timer provides an RTOS tick. As a result, Mark3 is a perfect fit
+    for these devices - and as a result of this approach, the same RTOS port code
+    should work with little to no modification on all ARM Cortex-M parts.
+
+    We have discussed what functionality in the RTOS is not portable, and what
+    interfaces must be implemented in order to complete a fully-functional port.
+    The five specific areas which are non-portable (stack initialization, kernel
+    startup/entry, kernel timers, context switching, and critical sections) have
+    been discussed in detail, with the platform-specifc source provided as a
+    practical reference to ARM-specific OS features, as well as Mark3's porting
+    infrastructure. From this example (and the accompanying source), it should be
+    possible for an experienced developers to create a port Mark3 to other
+    microcontroller targets.
+ */
+/*!
 	\page BUILD0 Build System
 	
 	Mark3 is distributed with a recursive makefile build system, allowing 
