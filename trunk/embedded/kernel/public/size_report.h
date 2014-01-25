@@ -10,18 +10,18 @@ maximum size of each module before dead code elimination and any
 additional link-time optimization, and represent the maximum possible
 size that any module can take.
 
-The results below are for profiling on AVR-based targets.  Results are
-not necessarily indicative of relative or absolute performance on other
-platforms or toolchains.
+The results below are for profiling on Atmel AVR atmega328p-based targets using gcc. 
+Results are not necessarily indicative of relative or absolute performance
+on other platforms or toolchains.
 \section SIZEPROFILEINFO Information
 Subversion Repository Information:
-    - Repository Root: https://mark3.googlecode.com/svn
-    - Revision: 139
-    - URL: https://mark3.googlecode.com/svn/trunk/embedded
+    - Repository Root: https://svn.code.sf.net/p/mark3/source
+    - Revision: 154
+    - URL: https://svn.code.sf.net/p/mark3/source/trunk/embedded
     .
 
 Date Profiled:
-Sun Dec 15 09:43:07 EST 2013
+Sat Jan 25 15:29:37 EST 2014
 
 \section SIZEPROFILEVER  Compiler Version
 avr-gcc (GCC) 4.7.2 Copyright (C) 2012 Free Software Foundation, Inc. This is free software; see the source for copying conditions. There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
@@ -29,7 +29,7 @@ avr-gcc (GCC) 4.7.2 Copyright (C) 2012 Free Software Foundation, Inc. This is fr
 \section SIZEPROFILERES  Profiling Results
 Mark3 Module Size Report:
     -  Atomic Operations............................... : 478 Bytes
-    -  Synchronization Objects - Base Class............ : 266 Bytes
+    -  Synchronization Objects - Base Class............ : 270 Bytes
     -  Device Driver Framework (including /dev/null)... : 236 Bytes
     -  Synchronization Object - Event Flag............. : 1160 Bytes
     -  Fundamental Kernel Linked-List Classes.......... : 610 Bytes
@@ -46,18 +46,18 @@ Mark3 Module Size Report:
     -  Kernel Transaction Queues....................... : 308 Bytes
     -  Runtime Kernel Trace Implementation............. : 0 Bytes
     -  Circular Logging Buffer Base Class.............. : 524 Bytes
-    -  AVR Port - Basic Threading Support.............. : 528 Bytes
-    -  AVR Port - Kernel Interrupt Implemenation....... : 56 Bytes
-    -  AVR Port - Kernel Timer Implementation.......... : 338 Bytes
-    -  AVR Port - Profiling Timer Implementation....... : 256 Bytes
+    -  Atmel AVR - Basic Threading Support.............. : 528 Bytes
+    -  Atmel AVR - Kernel Interrupt Implemenation....... : 56 Bytes
+    -  Atmel AVR - Kernel Timer Implementation.......... : 338 Bytes
+    -  Atmel AVR - Profiling Timer Implementation....... : 256 Bytes
     .
 
 Mark3 Kernel Size Summary:
-    - Kernel                   :  3416 Bytes
+    - Kernel                   :  3420 Bytes
     - Synchronization Objects  :  3532 Bytes
     - Port                     :  1178 Bytes
     - Features                 :  2650 Bytes
-    - Total Size               :  10776 Bytes
+    - Total Size               :  10780 Bytes
     .
 */
 #endif // __SIZE_REPORT_H__

@@ -1633,8 +1633,11 @@ See license.txt for more information
 
     Note that all of this information is is common to pretty well every RTOS in
     existence - the implementation details, including the scheduler rules, are all
-    part of what differentiates one RTOS from another. THREAD STATES AND THREAD
-    LISTS Since only one thread can run on a CPU at a time, the scheduler relies on
+    part of what differentiates one RTOS from another. 
+
+    \section TSL Thread States and Thread Lists
+
+    Since only one thread can run on a CPU at a time, the scheduler relies on
     thread information to make its decisions. Mark3's scheduler relies on a variety
     of such information, including: The thread's current priority Round-Robin
     execution quanta Whether or not the thread is blocked on a synchronization
