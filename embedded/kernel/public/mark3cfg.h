@@ -87,20 +87,44 @@ See license.txt for more information
     Do you want the ability to use counting/binary semaphores for thread 
     synchronization?  Enabling this features provides fully-blocking semaphores
     and enables all API functions declared in semaphore.h.  If you have to 
-    pick one blocking mechanism, this is the one to choose.  By also enabling 
-    per-thread semaphores, each thread will receive it's own built-in semaphore. 
+    pick one blocking mechanism, this is the one to choose.
 */
 #define KERNEL_USE_SEMAPHORE             (1)
 
 /*!
-    Enable inter-thread messaging using named mailboxes.  
-    If per-thread mailboxes are defined, each thread is allocated a default
-    mailbox of a depth specified by THREAD_MAILBOX_SIZE.  
+    Do you want the ability to use mutual exclusion semaphores (mutex) for
+    resource/block protection?  Enabling this feature provides mutexes, with
+    priority inheritence, as declared in mutex.h.
+ */
+#define KERNEL_USE_MUTEX                 (1)
+
+/*!
+    Provides additional event-flag based blocking.  This relies on an
+    additional per-thread flag-mask to be allocated, which adds 2 bytes
+    to the size of each thread object.
 */
-#if KERNEL_USE_SEMAPHORE                
+#define KERNEL_USE_EVENTFLAG             (1)
+
+/*!
+    Enable inter-thread messaging using message queues.  This is the preferred
+    mechanism for IPC for serious multi-threaded communications; generally
+    anywhere a semaphore or event-flag is insufficient.
+*/
+#if KERNEL_USE_SEMAPHORE
     #define KERNEL_USE_MESSAGE           (1)
 #else
     #define KERNEL_USE_MESSAGE           (0)
+#endif
+
+/*!
+    If Messages are enabled, define the size of the default kernel message
+    pool.  Messages can be manually added to the message pool, but this
+    mechansims is more convenient and automatic.   All message queues
+    share their message objects from this global pool to maximize efficiency
+    and simplify data management.
+*/
+#if KERNEL_USE_MESSAGE
+    #define GLOBAL_MESSAGE_POOL_SIZE     (8)
 #endif
 
 /*!
@@ -114,34 +138,15 @@ See license.txt for more information
 #endif
 
 /*!
-    If Messages are enabled, define the size of the default kernel message
-    pool.  Messages can be manually added to the message pool, but this
-    mechansims is more convenient and automatic.
-*/
-#if KERNEL_USE_MESSAGE
-    #define GLOBAL_MESSAGE_POOL_SIZE     (8)
-#endif
-
-/*!
-    Do you want the ability to use mutual exclusion semaphores (mutex) for 
-    resource/block protection?  Enabling this feature provides mutexes, with
-    priority inheritence, as declared in mutex.h.  Enabling per-thread mutex
-    automatically allocates a mutex for each thread.
- */
-#define KERNEL_USE_MUTEX                 (1)
-
-/*!
     Enabling device drivers provides a posix-like filesystem interface for 
-    peripheral device drivers.  When enabled, the size of the filesystem 
-    table is specified in DRIVER_TABLE_SIZE.  Permissions are enforced for 
-    driver access by thread ID and group when DRIVER_USE_PERMS are enabled.
+    peripheral device drivers.
 */
 #define KERNEL_USE_DRIVER                (1)
 
 /*!
     Provide Thread method to allow the user to set a name for each
-    thread in the system.  Adds to the size of the thread member 
-    data.
+    thread in the system.  Adds a const K_CHAR* pointer to the size
+    of the thread object.
 */
 #define KERNEL_USE_THREADNAME            (1)
 
@@ -155,7 +160,7 @@ See license.txt for more information
 
 /*!
     Provides extra classes for profiling the performance of code.  Useful
-    for debugging and development, but uses an additional timer.
+    for debugging and development, but uses an additional hardware timer.
 */
 #define KERNEL_USE_PROFILER              (1)
 
@@ -166,13 +171,6 @@ See license.txt for more information
 #define KERNEL_USE_DEBUG                 (0)
 
 /*!
-    Provides additional event-flag based blocking.  This relies on an
-    additional per-thread flag-mask to be allocated, which adds 2 bytes
-    to the size of each thread object.
-*/
-#define KERNEL_USE_EVENTFLAG             (1)
-
-/*!
     Provides support for atomic operations, including addition, subtraction,
     set, and test-and-set.  Add/Sub/Set contain 8, 16, and 32-bit variants.
 */
@@ -181,7 +179,7 @@ See license.txt for more information
 /*!
     "Safe unlinking" performs extra checks on data to make sure that there
     are no consistencies when performing operations on linked lists.  This
-    goes beyond pointer checks, adding a layer of structural and metadata \
+    goes beyond pointer checks, adding a layer of structural and metadata
     validation to help detect system corruption early.
 */
 #define SAFE_UNLINK                      (1)
