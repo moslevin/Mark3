@@ -25,7 +25,7 @@ See license.txt for more information
     data sharing (i.e. Global variables) in that it avoids synchronization
     issues and race conditions common to the practice.  Using IPC also enforces
     a more disciplined coding style that keeps threads decoupled from one
-    another and minimizes global data – preventing careless and hard-to-debug
+    another and minimizes global data preventing careless and hard-to-debug
     errors.
 
     \section MBCreate Using Messages, Queues, and the Global Message Pool 
