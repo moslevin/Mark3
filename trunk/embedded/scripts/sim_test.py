@@ -4,7 +4,7 @@ import pexpect
 
 # Set the environment variables for the test platform
 platform  = "avr"
-cpu       = "atmega328p"
+cpu       = "atmega644"
 toolchain = "gcc"
 stage	= "./stage"
 
