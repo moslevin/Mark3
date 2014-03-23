@@ -1,9 +1,0 @@
-Sanity Report:
-Sun Jan 27 10:35:31 EST 2013
-Basic Timer Sanity : PASS -  137 iterations
-Round-Robin Scheduling - Basic Functionality : PASS -  137 iterations
-Round-Robin Scheduling - Variable Thread Quantums : PASS -  137 iterations
-Semaphore - Binary and Counting Semaphores : FAILED - 137 of 274 iterations passed
-Mutual Exclusion Objects : PASS -  137 iterations
-Thread Sleep Functionality : PASS -  137 iterations
-Message Passing : PASS -  137 iterations
