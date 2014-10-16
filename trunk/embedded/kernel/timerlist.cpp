@@ -26,6 +26,7 @@ See license.txt for more information
 #include "kerneltimer.h"
 #include "threadport.h"
 #include "kernel_debug.h"
+#include "quantum.h"
 //---------------------------------------------------------------------------
 #if defined __FILE_ID__
     #undef __FILE_ID__
@@ -121,6 +122,9 @@ void TimerList::Process(void)
     Timer *pclNode;
     Timer *pclPrev;
 
+#if KERNEL_USE_QUANTUM
+    Quantum::SetInTimer();
+#endif
 #if KERNEL_TIMERS_TICKLESS
     // Clear the timer and its expiry time - keep it running though
     KernelTimer::ClearExpiry();  
@@ -245,6 +249,9 @@ void TimerList::Process(void)
         // overtime has accumulated since the last time we called this handler
         m_ulNextWakeup = KernelTimer::SetExpiry(ulNewExpiry + ulOvertime);        
     }
+#endif
+#if KERNEL_USE_QUANTUM
+    Quantum::ClearInTimer();
 #endif
 }
 
