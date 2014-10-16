@@ -22,24 +22,25 @@ See license.txt for more information
 #include "kerneltypes.h"
 #include "mark3cfg.h"
 
-#include "timerlist.h"
 #include "thread.h"
+#include "timerlist.h"
 #include "quantum.h"
 #include "kernel_debug.h"
 //---------------------------------------------------------------------------
 #if defined __FILE_ID__
-    #undef __FILE_ID__
+	#undef __FILE_ID__
 #endif
-#define __FILE_ID__     QUANTUM_CPP
+#define __FILE_ID__ 	QUANTUM_CPP
 
 #if KERNEL_USE_QUANTUM
 
 //---------------------------------------------------------------------------
-static volatile K_BOOL bAddQuantumTimer;    // Indicates that a timer add is pending
+static volatile K_BOOL bAddQuantumTimer;	// Indicates that a timer add is pending
 
 //---------------------------------------------------------------------------
-Timer Quantum::m_clQuantumTimer;    // The global timernodelist_t object
+Timer Quantum::m_clQuantumTimer;	// The global timernodelist_t object
 K_UCHAR Quantum::m_bActive;
+K_UCHAR Quantum::m_bInTimer;
 //---------------------------------------------------------------------------
 static void QuantumCallback(Thread *pclThread_, void *pvData_)
 {
@@ -69,31 +70,40 @@ void Quantum::SetTimer(Thread *pclThread_)
 //---------------------------------------------------------------------------
 void Quantum::AddThread(Thread *pclThread_)
 {
-    if (m_bActive)
-    {
-        return;    
-    }        
+	if (m_bActive)
+	{
+		return;	
+	}		
+	
+	// If this is called from the timer callback, queue a timer add...
+	if (m_bInTimer)
+	{
+		bAddQuantumTimer = true;
+		return;
+	}
+	
     // If this isn't the only thread in the list.
     if ( pclThread_->GetCurrent()->GetHead() != 
-           pclThread_->GetCurrent()->GetTail() )       
-    { 
+           pclThread_->GetCurrent()->GetTail() )	   
+    {
+		
         Quantum::SetTimer(pclThread_);   
         TimerScheduler::Add(&m_clQuantumTimer);
-        m_bActive = 1;
+		m_bActive = 1;
     }
 }
 
 //---------------------------------------------------------------------------
 void Quantum::RemoveThread(void)
 {
-    if (!m_bActive)
-    {
-        return;
-    }        
-    
+	if (!m_bActive)
+	{
+		return;
+	}		
+	
     // Cancel the current timer
     TimerScheduler::Remove(&m_clQuantumTimer);
-    m_bActive = 0;
+	m_bActive = 0;
 }
 
 //---------------------------------------------------------------------------
@@ -104,9 +114,9 @@ void Quantum::UpdateTimer(void)
     if (bAddQuantumTimer)
     {
         // Trigger a thread yield - this will also re-schedule the 
-        // thread *and* reset the round-robin scheduler. 
+		// thread *and* reset the round-robin scheduler. 
         Thread::Yield();
-        bAddQuantumTimer = false;        
+		bAddQuantumTimer = false;		
     }    
 }
 
