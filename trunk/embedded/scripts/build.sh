@@ -1,7 +1,13 @@
-#!/bin/sh
+#!/bin/bash
 
 # Shell script to build a clean Mark3 kernel, all demo and test apps, with
 # full Doxygen documentation.
+if [ "${ROOT_DIR}" == "" ]; then
+    ROOT_DIR=$(pwd)
+fi
+echo "ROOT=${ROOT_DIR}"
+
+export ROOT_DIR=${ROOT_DIR}
 
 # Clean out development stage
 rm ./stage/inc/*

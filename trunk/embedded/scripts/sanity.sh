@@ -25,7 +25,7 @@ check_sanity()
     pass_count=0
 	event_sum=0
 	
-	for line in `cat ./sanity.txt | grep ${metric} | sed -e "s/${metric}//"`;
+	for line in `cat ./sanity.txt | grep ${metric} --text | sed -e "s/${metric}//"`;
 	do
 		if [ "${line}" = "PASS" ]; then 
 		    pass_count=`expr $pass_count + 1`

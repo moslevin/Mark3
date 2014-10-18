@@ -121,6 +121,7 @@ case ${TARGET} in
 	"arduino" )
 		cp -f ./arduino/mark3cfg.h_arduino ${TARGET_DIR}/Mark3/mark3cfg.h
 		cp -f ./arduino/keywords.txt ${TARGET_DIR}/Mark3
+		cp -f ./arduino/kerneltypes.h ${TARGET_DIR}/Mark3/kerneltypes.h
 		;;
 	"samd20" )
 		cp -f ./drivers/cpu/cm0/samd20/gcc/system/*.cpp ${TARGET_DIR}/Mark3/
