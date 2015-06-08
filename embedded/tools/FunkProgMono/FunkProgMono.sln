@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "FunkProgMono", "FunkProgMono\FunkProgMono.vbproj", "{7E74DE25-CA32-4B35-966F-A7F11A42128C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7E74DE25-CA32-4B35-966F-A7F11A42128C}.Debug|x86.ActiveCfg = Debug|x86
+		{7E74DE25-CA32-4B35-966F-A7F11A42128C}.Debug|x86.Build.0 = Debug|x86
+		{7E74DE25-CA32-4B35-966F-A7F11A42128C}.Release|x86.ActiveCfg = Release|x86
+		{7E74DE25-CA32-4B35-966F-A7F11A42128C}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = FunkProgMono\FunkProgMono.vbproj
+	EndGlobalSection
+EndGlobal
