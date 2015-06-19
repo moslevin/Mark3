@@ -1,10 +1,31 @@
+/*===========================================================================
+     _____        _____        _____        _____
+ ___|    _|__  __|_    |__  __|__   |__  __| __  |__  ______
+|    \  /  | ||    \      ||     |     ||  |/ /     ||___   |
+|     \/   | ||     \     ||     \     ||     \     ||___   |
+|__/\__/|__|_||__|\__\  __||__|\__\  __||__|\__\  __||______|
+    |_____|      |_____|      |_____|      |_____|
+
+--[Mark3 Realtime Platform]--------------------------------------------------
+
+Copyright (c) 2012-2015 Funkenstein Software Consulting, all rights reserved.
+See license.txt for more information
+===========================================================================*/
+/*!
+
+    \file   heapblock.cpp
+
+    \brief  Metadata object used to manage a heap allocation
+*/
+
+
 #include "heapblock.h"
 
 //---------------------------------------------------------------------------
-void HeapBlock::RootInit( uint32_t u32Size_ )
+void HeapBlock::RootInit( PTR_INT uSize_ )
 {
     Init();
-    m_u32DataSize = ROUND_DOWN_U32(u32Size_);
+    m_uDataSize = ROUND_DOWN(uSize_);
 
     SetCookie( HEAP_COOKIE_FREE );
 
@@ -13,22 +34,22 @@ void HeapBlock::RootInit( uint32_t u32Size_ )
 }
 
 //---------------------------------------------------------------------------
-HeapBlock *HeapBlock::Split( uint32_t u32Size_ )
+HeapBlock *HeapBlock::Split( PTR_INT uSize_ )
 {
     // Allocate minimum amount of data for this operation on the left side
 
-    uint32_t u32LeftBlockSize = ROUND_UP_U32(u32Size_) + sizeof(HeapBlock);
+    PTR_INT uLeftBlockSize = ROUND_UP(uSize_) + sizeof(HeapBlock);
 
-    uint32_t u32ThisBlockSize = m_u32DataSize + sizeof(HeapBlock);
-    uint32_t u32RightBlockSize = u32ThisBlockSize - u32LeftBlockSize;
+    PTR_INT uThisBlockSize = m_uDataSize + sizeof(HeapBlock);
+    PTR_INT uRightBlockSize = uThisBlockSize - uLeftBlockSize;
 
-    m_u32DataSize = ROUND_UP_U32(u32Size_);
+    m_uDataSize = ROUND_UP(uSize_);
 
-    PTR_INT uNewAddr = (PTR_INT)this + u32LeftBlockSize;
+    PTR_INT uNewAddr = (PTR_INT)this + uLeftBlockSize;
     HeapBlock *pclRightBlock = (HeapBlock*)uNewAddr;
 
     pclRightBlock->Init();
-    pclRightBlock->SetDataSize( u32RightBlockSize - sizeof(HeapBlock) );
+    pclRightBlock->SetDataSize( uRightBlockSize - sizeof(HeapBlock) );
     pclRightBlock->SetCookie( HEAP_COOKIE_FREE );
 
     pclRightBlock->SetLeftSibling( this );
@@ -66,33 +87,68 @@ void *HeapBlock::GetDataPointer( void )
 }
 
 //---------------------------------------------------------------------------
-uint32_t HeapBlock::GetDataSize( void )
+PTR_INT HeapBlock::GetDataSize( void )
 {
-    return m_u32DataSize;
+    return m_uDataSize;
 }
 
 //---------------------------------------------------------------------------
-uint32_t HeapBlock::GetBlockSize( void )
+PTR_INT HeapBlock::GetBlockSize( void )
 {
-    return ( sizeof(HeapBlock) + m_u32DataSize );
+    return ( sizeof(HeapBlock) + m_uDataSize );
 }
 
 //---------------------------------------------------------------------------
-void HeapBlock::SetArenaIndex( uint32_t u32List_ )
+void HeapBlock::SetArenaIndex( uint8_t u8List_ )
 {
-    m_u32ArenaIndex = u32List_;
+    m_u8ArenaIndex = u8List_;
 }
 
 //---------------------------------------------------------------------------
-uint32_t HeapBlock::GetArenaIndex( void )
+uint8_t HeapBlock::GetArenaIndex( void )
 {
-    return m_u32ArenaIndex;
+    return m_u8ArenaIndex;
 }
 
 //---------------------------------------------------------------------------
-void HeapBlock::SetDataSize( uint32_t u32BlockSize_ )
+void HeapBlock::SetDataSize( PTR_INT uBlockSize )
 {
-    m_u32DataSize = u32BlockSize_;
+    m_uDataSize = uBlockSize;
 }
 
+//---------------------------------------------------------------------------
+void HeapBlock::SetCookie( uint16_t u16Cookie_ )
+{
+    m_u16Cookie = u16Cookie_;
+}
+
+//---------------------------------------------------------------------------
+uint16_t HeapBlock::GetCookie( void )
+{
+    return m_u16Cookie;
+}
+
+//---------------------------------------------------------------------------
+HeapBlock *HeapBlock::GetLeftSibling( void )
+{
+    return m_pclLeft;
+}
+
+//---------------------------------------------------------------------------
+HeapBlock *HeapBlock::GetRightSibling( void )
+{
+    return m_pclRight;
+}
+
+//---------------------------------------------------------------------------
+void HeapBlock::SetRightSibling( HeapBlock *pclRight_ )
+{
+    m_pclRight = pclRight_;
+}
+
+//---------------------------------------------------------------------------
+void HeapBlock::SetLeftSibling( HeapBlock * pclLeft_ )
+{
+    m_pclLeft = pclLeft_;
+}
 

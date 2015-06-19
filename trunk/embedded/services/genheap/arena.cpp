@@ -22,13 +22,13 @@ See license.txt for more information
 
 #include "arena.h"
 
-//#include <stdlib.h>
-//#include <stdio.h>
+#include <stdlib.h>
+#include <stdio.h>
 //#define DEBUG_PRINT(...)        fprintf(stderr, "[%s: %d] ", __FILE__, __LINE__); fprintf(stderr, __VA_ARGS__ );
 #define DEBUG_PRINT(...)
 
 //---------------------------------------------------------------------------
-const static uint32_t au32ArenaSizes[ ARENA_LIST_COUNT ] =
+const static PTR_INT au32ArenaSizes[ ARENA_LIST_COUNT ] =
 {
     ARENA_SIZE_0,
     ARENA_SIZE_1,
@@ -45,7 +45,7 @@ const static uint32_t au32ArenaSizes[ ARENA_LIST_COUNT ] =
 };
 
 //---------------------------------------------------------------------------
-int Arena::Init( void *pvBuffer_, uint32_t u32Size_ )
+void Arena::Init( void *pvBuffer_, PTR_INT u32Size_ )
 {
     // Initialize the array of blocklists used in this Arena
     m_pvData = pvBuffer_;
@@ -96,11 +96,11 @@ int Arena::Init( void *pvBuffer_, uint32_t u32Size_ )
 }
 
 //---------------------------------------------------------------------------
-void *Arena::Allocate( uint32_t u32Size_ )
+void *Arena::Allocate( PTR_INT uSize_ )
 {
     // Figure out which list to grab the buffer from.
-    DEBUG_PRINT("Request to allocate %d bytes\n", u32Size_ );
-    uint32_t uList = ListToSatisfy( u32Size_ );
+    DEBUG_PRINT("Request to allocate %d bytes\n", uSize_ );
+    uint8_t uList = ListToSatisfy( uSize_ );
 
     if (uList == ARENA_EXHAUSTED)
     {
@@ -117,10 +117,10 @@ void *Arena::Allocate( uint32_t u32Size_ )
     // enough to accommodate both the allocation request, and
     // another block, then split the block and add the
     // remainder back into the arena list.
-    if (pclRet->GetDataSize() >= (MIN_ALLOC_SIZE + u32Size_ ))
+    if (pclRet->GetDataSize() >= (MIN_ALLOC_SIZE + uSize_ ))
     {
         DEBUG_PRINT("  Block size %d is large enough to split (min size: %d)\n", pclRet->GetDataSize(), MIN_ALLOC_SIZE );
-        HeapBlock *pclNew = pclRet->Split(u32Size_);
+        HeapBlock *pclNew = pclRet->Split(uSize_);
 
         uList = ListForSize( pclNew->GetDataSize() );
         pclNew->SetArenaIndex( uList );
@@ -141,7 +141,7 @@ void Arena::Free( void *pvBlock_ )
     HeapBlock *pclRight = pclBlock->GetRightSibling();
     HeapBlock *pclTemp = pclRight;
 
-    uint32_t u32ArenaIndex;
+    uint8_t u8ArenaIndex;
 
     // Block coalescing
     //   Merge right, absorb into current-node
@@ -151,8 +151,8 @@ void Arena::Free( void *pvBlock_ )
     while (pclTemp && (pclTemp->GetCookie() == HEAP_COOKIE_FREE))
     {
         // Remove this free block from its currently allocated arena
-        u32ArenaIndex = pclTemp->GetArenaIndex();
-        m_aclBlockList[u32ArenaIndex].RemoveBlock( pclTemp );
+        u8ArenaIndex = pclTemp->GetArenaIndex();
+        m_aclBlockList[u8ArenaIndex].RemoveBlock( pclTemp );
 
         pclBlock->Coalesce();
 
@@ -166,8 +166,8 @@ void Arena::Free( void *pvBlock_ )
     while (pclTemp && (pclTemp->GetCookie() == HEAP_COOKIE_FREE))
     {
         // Remove this free block from its currently allocated arena
-        u32ArenaIndex = pclTemp->GetArenaIndex();
-        m_aclBlockList[u32ArenaIndex].RemoveBlock( pclTemp );
+        u8ArenaIndex = pclTemp->GetArenaIndex();
+        m_aclBlockList[u8ArenaIndex].RemoveBlock( pclTemp );
 
         pclTemp->Coalesce();
 
@@ -179,43 +179,43 @@ void Arena::Free( void *pvBlock_ )
 
     // Now that all adjacent blocks have been coalesced, add the single block
     // back to the correct arena, and we're done!
-    u32ArenaIndex = ListForSize( pclBlock->GetDataSize() );
-    if (u32ArenaIndex == ARENA_EXHAUSTED)
+    u8ArenaIndex = ListForSize( pclBlock->GetDataSize() );
+    if (u8ArenaIndex == ARENA_EXHAUSTED)
     {
         // Big error...
     }
-    pclBlock->SetArenaIndex(u32ArenaIndex);
-    m_aclBlockList[u32ArenaIndex].PushBlock( pclBlock );
+    pclBlock->SetArenaIndex(u8ArenaIndex);
+    m_aclBlockList[u8ArenaIndex].PushBlock( pclBlock );
 }
 
 //---------------------------------------------------------------------------
-uint32_t Arena::ListForSize( uint32_t u32Size_ )
+uint8_t Arena::ListForSize( PTR_INT uSize_ )
 {
-    if (u32Size_ < ARENA_SIZE_0)
+    if (uSize_ < ARENA_SIZE_0)
     {
         return ARENA_EXHAUSTED;
     }
 
     for (int i = 0; i < ARENA_LIST_COUNT; i++)
     {
-        if (u32Size_ < m_aclBlockList[i].GetBlockSize())
+        if (uSize_ < m_aclBlockList[i].GetBlockSize())
         {
-            DEBUG_PRINT("   Size %d goes in List: %d\n", u32Size_, i - 1);
-            return i -  1;
+            DEBUG_PRINT("   Size %d goes in List: %d\n", uSize_, i - 1);
+            return (uint8_t)(i -  1);
         }
     }
     return ARENA_LIST_COUNT-1;
 }
 //---------------------------------------------------------------------------
-uint32_t Arena::ListToSatisfy( uint32_t u32Size_ )
+uint8_t Arena::ListToSatisfy( PTR_INT uSize_ )
 {
     for (int i = 0; i < ARENA_LIST_COUNT; i++)
     {
-        if ( (u32Size_ <= m_aclBlockList[i].GetBlockSize()) &&
+        if ( (uSize_ <= m_aclBlockList[i].GetBlockSize()) &&
              (m_aclBlockList[i].GetBlockCount()) )
         {
             DEBUG_PRINT("  Allocate from List : %d (%d bytes, %d blocks)\n", i, m_aclBlockList[i].GetBlockSize(), m_aclBlockList[i].GetBlockCount() );
-            return i;
+            return (uint8_t)i;
         }
     }
     DEBUG_PRINT("  Arena Exhausted\n" );

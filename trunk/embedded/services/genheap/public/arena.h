@@ -52,24 +52,83 @@ See license.txt for more information
 #define MIN_ALLOC_SIZE          (sizeof(HeapBlock) + ARENA_SIZE_0)
 
 //---------------------------------------------------------------------------
+/*!
+ * \brief The Arena class
+ *
+ * This implements a heap composed of a blob of contiguous memory, managed
+ * in a series of lists, where each list corresponds to a minimum allocation
+ * size for blocks within the list.
+ *
+ * As a general-purpose heap, it offers basic "malloc/free" style dynamic
+ * memory allocation, with few bells or whistles.
+ *
+ */
 class Arena
 {
 public:
+    /*!
+     * \brief Init
+     *
+     * Initialize the arena prior to use.
+     *
+     * \param pvBuffer_ Pointer to the memory blob to manage as a heap
+     *                  from this object.
+     * \param u32Size_ Size of the heap memory blob in bytes
+     * \return
+     */
     int Init( void *pvBuffer_, uint32_t u32Size_ );
 
+    /*!
+     * \brief Allocate
+     *
+     * Allocate a block of dynamic memory from the heap.
+     *
+     * \param u32Size_ Size of object to allocate (in bytes)
+     * \return pointer to a chunk of dynamic memory, or 0 on exhaustion.
+     */
     void *Allocate( uint32_t u32Size_ );
 
+    /*!
+     * \brief Free
+     *
+     * Free the block of memory, returning it back to the pool for use.
+     *
+     * \param pvBlock_ Pointer to the beginning of the object to be freed.
+     */
     void Free( void *pvBlock_ );
 
+    /*!
+     * \brief Print
+     *
+     * Show details about the print via standard output.
+     */
     void Print( void );
 private:
 
-    uint32_t ListForSize( uint32_t u32Size_ );
+    /*!
+     * \brief ListForSize
+     *
+     * Determine the arena list with the smallest allocation size
+     * to handle an allocation of a given size.
+     *
+     * \param u32Size_ Size of the object to check
+     * \return INdex representing the arena/arena-size
+     */
+    uint8_t ListForSize( uint32_t u32Size_ );
 
-    uint32_t ListToSatisfy( uint32_t u32Size_ );
+    /*!
+     * \brief ListToSatisfy
+     *
+     * Determine the arena list that can satisfy the size request,
+     * and has vacant objects available to be allocated.
+     *
+     * \param u32Size_ Size of data to check
+     * \return Index representing the arena/arena-size, or 0xF...F on invalid
+     */
+    uint8_t ListToSatisfy( uint32_t u32Size_ );
 
-    ArenaList  m_aclBlockList[ARENA_LIST_COUNT + 1];
-    void      *m_pvData;
+    ArenaList  m_aclBlockList[ARENA_LIST_COUNT + 1];    //!< Arena linked-list data
+    void      *m_pvData;    //!< Pointer to the raw memory blob managed by this object as a heap.
 };
 
 #endif
