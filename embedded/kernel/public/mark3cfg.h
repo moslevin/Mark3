@@ -101,6 +101,12 @@ See license.txt for more information
 #define THREAD_QUANTUM_DEFAULT           (4)
 
 /*!
+    This is a simple blocking object, where a thread (or threads) are guaranteed
+    to block until an asynchronous event signals the object.
+*/
+#define KERNEL_USE_NOTIFY                (1)
+
+/*!
     Do you want the ability to use counting/binary semaphores for thread 
     synchronization?  Enabling this features provides fully-blocking semaphores
     and enables all API functions declared in semaphore.h.  If you have to 

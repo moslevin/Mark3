@@ -37,6 +37,7 @@ See license.txt for more information
 #include "mutex.h"
 #include "eventflag.h"
 #include "message.h"
+#include "notify.h"
 
 #include "atomic.h"
 #include "driver.h"

@@ -19,6 +19,7 @@ CPP_SOURCE= \
 	quantum.cpp \
 	scheduler.cpp \
 	ksemaphore.cpp \
+	notify.cpp \
 	thread.cpp \
 	threadlist.cpp \
 	kernel.cpp \
