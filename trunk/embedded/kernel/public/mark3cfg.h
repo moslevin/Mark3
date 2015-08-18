@@ -151,6 +151,21 @@ See license.txt for more information
 #endif
 
 /*!
+    Enable inter-thread messaging using mailboxes.  A mailbox manages a blob
+    of data provided by the user, that is partitioned into fixed-size blocks
+    called envelopes.  The size of an envelope is set by the user when the
+    mailbox is initialized.  Any number of threads can read-from and write-to
+    the mailbox.  Envelopes can be sent-to or received-from the mailbox at
+    the head or tail.  In this way, mailboxes essentially act as a circular
+    buffer that can be used as a blocking FIFO or LIFO queue.
+*/
+#if KERNEL_USE_SEMAPHORE
+    #define KERNEL_USE_MAILBOX           (1)
+#else
+    #define KERNEL_USE_MAILBOX           (0)
+#endif
+
+/*!
     Do you want to be able to set threads to sleep for a specified time?
     This enables the Thread::Sleep() API.
 */
