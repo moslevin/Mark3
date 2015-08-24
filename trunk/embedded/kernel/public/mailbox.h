@@ -73,6 +73,40 @@ public:
      */
     bool SendTail( void *pvData_ );
 
+#if KERNEL_USE_TIMEOUTS
+    /*!
+     * \brief Send
+     *
+     * Send an envelope to the mailbox.  This safely copies the data contents of the
+     * datastructure to the previously-initialized mailbox buffer.  If there is a
+     * thread already blocking, awaiting delivery to the mailbox, it will be unblocked
+     * at this time.
+     *
+     * This method delivers the envelope at the head of the mailbox.
+     *
+     * \param pvData_           Pointer to the data object to send to the mailbox.
+     * \param ulTimeoutMS_      Maximum time to wait for a free transmit slot
+     * \return                  true - envelope was delivered, false - mailbox is full.
+     */
+    bool Send( void *pvData_, K_ULONG ulTimeoutMS_ );
+
+    /*!
+     * \brief SendTail
+     *
+     * Send an envelope to the mailbox.  This safely copies the data contents of the
+     * datastructure to the previously-initialized mailbox buffer.  If there is a
+     * thread already blocking, awaiting delivery to the mailbox, it will be unblocked
+     * at this time.
+     *
+     * This method delivers the envelope at the tail of the mailbox.
+     *
+     * \param pvData_           Pointer to the data object to send to the mailbox.
+     * \param ulTimeoutMS_      Maximum time to wait for a free transmit slot
+     * \return                  true - envelope was delivered, false - mailbox is full.
+     */
+    bool SendTail( void *pvData_, K_ULONG ulTimeoutMS_ );
+ #endif
+
     /*!
      * \brief Receive
      *
@@ -97,7 +131,7 @@ public:
 
 #if KERNEL_USE_TIMEOUTS
     /*!
-     * \brief Read
+     * \brief Receive
      *
      * Read one envelope from the head of the mailbox.  If the mailbox is currently
      * empty, the calling thread will block until an envelope is delivered, or the
@@ -232,6 +266,19 @@ private:
         m_usHead--;
     }
 
+#if KERNEL_USE_TIMEOUTS
+    /*!
+     * \brief Send_i
+     *
+     * Internal method which implements all Send() methods in the class.
+     *
+     * \param pvData_   Pointer to the envelope data
+     * \param bTail_    true - write to tail, false - write to head
+     * \param ulWaitTimeMS_ Time to wait before timeout (in ms).
+     * \return          true - data successfully written, false - buffer full
+     */
+    bool Send_i( const void *pvData_, bool bTail_, K_ULONG ulWaitTimeMS_ );
+#else
     /*!
      * \brief Send_i
      *
@@ -241,7 +288,8 @@ private:
      * \param bTail_    true - write to tail, false - write to head
      * \return          true - data successfully written, false - buffer full
      */
-    bool Send_i( const void *pvData_, bool bTail_);
+    bool Send_i( const void *pvData_, bool bTail_ );
+#endif
 
 #if KERNEL_USE_TIMEOUTS
     /*!
@@ -267,16 +315,21 @@ private:
     void Receive_i( const void *pvData_, bool bTail_ );
 #endif
 
-    K_USHORT m_usHead;         //!< Current head index
-    K_USHORT m_usTail;         //!< Current tail index
+    K_USHORT m_usHead;          //!< Current head index
+    K_USHORT m_usTail;          //!< Current tail index
 
-    K_USHORT m_usCount;        //!< Count of items in the mailbox
-    K_USHORT m_usFree;         //!< Current number of free slots in the mailbox
+    K_USHORT m_usCount;         //!< Count of items in the mailbox
+    volatile K_USHORT m_usFree; //!< Current number of free slots in the mailbox
 
-    K_USHORT m_usElementSize;  //!< Size of the objects tracked in this mailbox
+    K_USHORT m_usElementSize;   //!< Size of the objects tracked in this mailbox
     const void *m_pvBuffer;     //!< Pointer to the data-buffer managed by this mailbox
 
-    Semaphore m_clSem;          //!< Counting semaphore used to synchronize threads on the object
+    Semaphore m_clRecvSem;      //!< Counting semaphore used to synchronize threads on the object
+
+#if KERNEL_USE_TIMEOUTS
+    Semaphore m_clSendSem;      //!< Binary semaphore for send-blocked threads.
+#endif
+
 };
 
 #endif
