@@ -36,10 +36,10 @@ class Thread;
 #define TIMERLIST_FLAG_EXPIRED          (0x08)    //!< Timer is actually expired.
 
 //---------------------------------------------------------------------------
-#if KERNEL_TIMERS_TICKLESS
+#define MAX_TIMER_TICKS                 (0x7FFFFFFF)    //!< Maximum value to set
 
 //---------------------------------------------------------------------------
-#define MAX_TIMER_TICKS                 (0x7FFFFFFF)    //!< Maximum value to set
+#if KERNEL_TIMERS_TICKLESS
 
 //---------------------------------------------------------------------------
 /*
@@ -64,9 +64,6 @@ class Thread;
 //---------------------------------------------------------------------------
 
 #else
-//---------------------------------------------------------------------------
-// Tick-based timers, assuming 1khz tick rate
-#define MAX_TIMER_TICKS                 (0x7FFFFFFF)    //!< Maximum value to set
 
 //---------------------------------------------------------------------------
 // add time because we don't know how far in an epoch we are when a call is made.
