@@ -31,12 +31,13 @@ static K_UCHAR aucMBoxBuffer[128];
 
 static volatile K_UCHAR aucTxBuf[17] = "abcdefghijklmnop"; //allocate a byte of slack for null-termination
 static volatile K_UCHAR aucRxBuf[16];
+static volatile bool exit_flag;
 //===========================================================================
 // Define Test Cases Here
 //===========================================================================
 
 void mbox_test(void *unused_)
-{
+{    
     while(1)
     {
         clMbox.Receive((void*)aucRxBuf);
@@ -66,13 +67,15 @@ volatile K_USHORT usTimeouts = 0;
 void mbox_timed_test(void *param)
 {
     usTimeouts = 0;
-    while(1)
+    exit_flag = false;
+    while(!exit_flag)
     {
         if (!clMbox.Receive((void*)aucRxBuf, 10))
         {
             usTimeouts++;
         }
     }
+    clMBoxThread.Exit();
 }
 
 TEST(mailbox_blocking_timed)
@@ -100,12 +103,10 @@ TEST(mailbox_blocking_timed)
         }
         Thread::Sleep(5);
     }
-
-    clMBoxThread.Exit();
+    exit_flag = true;
+    Thread::Sleep(100);
 }
 TEST_END
-
-
 
 TEST(mailbox_send_recv)
 {
@@ -136,11 +137,12 @@ TEST_END
 
 void mbox_recv_test(void *unused)
 {
-    while(1)
+    exit_flag = false;
+    while(!exit_flag)
     {
-        Thread::Sleep(15);
-        clMbox.Receive(aucRxBuf, 10);
+        clMbox.Receive((void*)aucRxBuf, 10);
     }
+    clMBoxThread.Exit();
 }
 
 TEST(mailbox_send_blocking)
@@ -169,7 +171,9 @@ TEST(mailbox_send_blocking)
     {
         EXPECT_TRUE(clMbox.Send((void*)aucTxBuf, 20));
     }
-    clMBoxThread.Exit();
+
+    exit_flag = true;
+    Thread::Sleep(100);
 }
 TEST_END
 
@@ -180,4 +184,5 @@ TEST_CASE_START
   TEST_CASE(mailbox_send_recv),
   TEST_CASE(mailbox_blocking_receive),
   TEST_CASE(mailbox_blocking_timed),
+  TEST_CASE(mailbox_send_blocking),
 TEST_CASE_END
