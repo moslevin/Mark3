@@ -116,39 +116,3 @@ void HeapBlock::SetDataSize( PTR_INT uBlockSize )
     m_uDataSize = uBlockSize;
 }
 
-//---------------------------------------------------------------------------
-void HeapBlock::SetCookie( uint16_t u16Cookie_ )
-{
-    m_u16Cookie = u16Cookie_;
-}
-
-//---------------------------------------------------------------------------
-uint16_t HeapBlock::GetCookie( void )
-{
-    return m_u16Cookie;
-}
-
-//---------------------------------------------------------------------------
-HeapBlock *HeapBlock::GetLeftSibling( void )
-{
-    return m_pclLeft;
-}
-
-//---------------------------------------------------------------------------
-HeapBlock *HeapBlock::GetRightSibling( void )
-{
-    return m_pclRight;
-}
-
-//---------------------------------------------------------------------------
-void HeapBlock::SetRightSibling( HeapBlock *pclRight_ )
-{
-    m_pclRight = pclRight_;
-}
-
-//---------------------------------------------------------------------------
-void HeapBlock::SetLeftSibling( HeapBlock * pclLeft_ )
-{
-    m_pclLeft = pclLeft_;
-}
-

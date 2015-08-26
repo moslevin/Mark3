@@ -22,11 +22,13 @@ See license.txt for more information
 
 #include "arena.h"
 
-#include <stdlib.h>
-#include <stdio.h>
-//#define DEBUG_PRINT(...)        fprintf(stderr, "[%s: %d] ", __FILE__, __LINE__); fprintf(stderr, __VA_ARGS__ );
-#define DEBUG_PRINT(...)
-
+#if DEBUG
+  #include <stdlib.h>
+  #include <stdio.h>
+  #define DEBUG_PRINT(...)        fprintf(stderr, "[%s: %d] ", __FILE__, __LINE__); fprintf(stderr, __VA_ARGS__ );
+#else
+  #define DEBUG_PRINT(...)
+#endif
 //---------------------------------------------------------------------------
 const static PTR_INT au32ArenaSizes[ ARENA_LIST_COUNT ] =
 {
@@ -218,16 +220,19 @@ uint8_t Arena::ListToSatisfy( PTR_INT uSize_ )
             return (uint8_t)i;
         }
     }
-    DEBUG_PRINT("  Arena Exhausted\n" );
+    
+DEBUG_PRINT("  Arena Exhausted\n" );
     return ARENA_EXHAUSTED;
 }
 
 //---------------------------------------------------------------------------
 void Arena::Print( void )
 {
+#if DEBUG
     for (int i = 0; i < ARENA_LIST_COUNT; i++)
     {
         printf( " List %d (%d bytes): %d blocks free\n",
                 i, m_aclBlockList[i].GetBlockSize(), m_aclBlockList[i].GetBlockCount() );
     }
+#endif
 }

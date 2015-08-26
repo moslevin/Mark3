@@ -21,29 +21,41 @@ See license.txt for more information
 #ifndef __HEAPBLOCK_H__
 #define __HEAPBLOCK_H__
 
-#include <stdint.h>
-#include "ll.h"
+#include "mark3cfg.h"
+#include "kerneltypes.h"
+#include "mark3.h"
 //---------------------------------------------------------------------------
-#define PTR_SIZE    (4)
+#if defined(AVR) || defined (MSP430)
+  #define PTR_SIZE	(2)
+#else
+  #define PTR_SIZE	(4)
+#endif
 
 //---------------------------------------------------------------------------
 #if (PTR_SIZE == 2)
   #define PTR_INT       uint16_t
+  #define HEAP_COOKIE_FREE                (0xCAFE)
+  #define HEAP_COOKIE_ALLOCATED           (0xDEAD)
 #elif (PTR_SIZE == 4)
   #define PTR_INT       uint32_t
+  #define HEAP_COOKIE_FREE                (0xCAFED00D)
+  #define HEAP_COOKIE_ALLOCATED           (0xDEADBEEF)
 #elif (PTR_SIZE == 8)
   #define PTR_INT       uint64_t
+  #define HEAP_COOKIE_FREE                (0xCAFED00DFEEDBABE)
+  #define HEAP_COOKIE_ALLOCATED           (0xDEADBEEFABACABB0)
+#else 
+  #error PTR_SIZE invalid!
 #endif
 
 //---------------------------------------------------------------------------
-#define HEAP_COOKIE_FREE                (0xCAFED00D)
-#define HEAP_COOKIE_ALLOCATED           (0xDEADBEEF)
+
 
 //---------------------------------------------------------------------------
-#define ROUND_UP_U32(x)                  ((((uint32_t)x) + 3) & ~0x03)
-#define ROUND_DOWN_U32(x)                (((uint32_t)x) & ~0x3)
+#define ROUND_UP(x)                  ((((PTR_INT)x) + (PTR_SIZE-1)) & ~(PTR_SIZE-1))
+#define ROUND_DOWN(x)                (((PTR_INT)x) & ~(PTR_SIZE-1))
 
-#define BLOCK_DATA_SIZE(x)               (ROUND_DOWN_U32(x) - sizeof(HeapBlock))
+#define BLOCK_DATA_SIZE(x)           (ROUND_DOWN(x) - sizeof(HeapBlock))
 
 //---------------------------------------------------------------------------
 // LinkListNode, because that's what's used in arena list management
@@ -57,31 +69,31 @@ class HeapBlock : public LinkListNode
 {
 
 public:
-    void RootInit( uint32_t u32Size_ );
+    void RootInit( PTR_INT uSize_ );
 
-    HeapBlock *Split( uint32_t u32Size_ );
+    HeapBlock *Split( PTR_INT uSize_ );
 
     // Merge this block with RIGHT neighbor.
     void Coalesce( void );
 
     void *GetDataPointer( void );
 
-    uint32_t GetDataSize( void );
+    PTR_INT GetDataSize( void );
 
-    uint32_t GetBlockSize( void );
+    PTR_INT GetBlockSize( void );
 
-    void SetArenaIndex( uint32_t u32List_ );
+    void SetArenaIndex( uint8_t u8List_ );
 
-    uint32_t GetArenaIndex( void );
+    uint8_t GetArenaIndex( void );
 
-    void SetCookie( uint32_t u32Cookie_ )
+    void SetCookie( PTR_INT uCookie_ )
     {
-        m_u32Cookie = u32Cookie_;
+        m_uCookie = uCookie_;
     }
 
-    uint32_t GetCookie( void )
+    PTR_INT GetCookie( void )
     {
-        return m_u32Cookie;
+        return m_uCookie;
     }
 
     HeapBlock *GetLeftSibling( void )
@@ -107,20 +119,20 @@ public:
 private:
     void Init(void)
     {
-        m_u32DataSize = 0;
-        m_u32ArenaIndex = 0;
-        m_u32Cookie = 0;
+        m_uDataSize = 0;
+        m_u8ArenaIndex = 0;
+        m_uCookie = 0;
         m_pclRight = 0;
         m_pclLeft = 0;
         LinkListNode::ClearNode();
     }
 
-    void SetDataSize( uint32_t u32BlockSize_ );
+    void SetDataSize( PTR_INT uBlockSize_ );
 
-    uint32_t  m_u32DataSize;
-    uint32_t  m_u32ArenaIndex;
+    PTR_INT   m_uDataSize;
+    PTR_INT   m_uCookie; 
 
-    uint32_t  m_u32Cookie;
+    uint8_t   m_u8ArenaIndex;
 
     HeapBlock *m_pclRight;
     HeapBlock *m_pclLeft;
