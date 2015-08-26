@@ -8,7 +8,7 @@ cpu       = "atmega328p"
 toolchain = "gcc"
 stage	= "./stage"
 # List of unit tests to run
-test_list = ["ut_logic", "ut_thread", "ut_semaphore", "ut_mutex", "ut_eventflag", "ut_heap", "ut_message", "ut_timers", "ut_sanity", "ut_timer_precision" ]
+test_list = ["ut_logic", "ut_thread", "ut_semaphore", "ut_mutex", "ut_eventflag", "ut_heap", "ut_message", "ut_mailbox", "ut_timers", "ut_sanity" ]
 
 # Run each test in succession
 for test in test_list:

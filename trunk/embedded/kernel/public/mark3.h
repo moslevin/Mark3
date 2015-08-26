@@ -38,6 +38,7 @@ See license.txt for more information
 #include "eventflag.h"
 #include "message.h"
 #include "notify.h"
+#include "mailbox.h"
 
 #include "atomic.h"
 #include "driver.h"
