@@ -11,7 +11,7 @@ LIBNAME=mark3
 CPP_SOURCE= \
 	blocking.cpp \
 	driver.cpp \
-    eventflag.cpp \
+	eventflag.cpp \
 	ll.cpp \
 	message.cpp \
 	mutex.cpp \
@@ -27,8 +27,8 @@ CPP_SOURCE= \
 	timer.cpp \
 	timerlist.cpp \
 	tracebuffer.cpp \
-    writebuf16.cpp \
-    kernelaware.cpp
+	writebuf16.cpp \
+	kernelaware.cpp
 
 # These files are built from source files in their respective 
 # subdirectories under ./cpu/arch/variant/toolchain
