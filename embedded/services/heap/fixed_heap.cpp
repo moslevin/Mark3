@@ -45,10 +45,19 @@ See license.txt for more information
 #include "threadport.h"
 
 //---------------------------------------------------------------------------
+class BlockHeapNode : public LinkListNode
+{
+friend class BlockHeap;
+friend class FixedHeap;
+protected:
+    BlockHeap *m_clHeap;
+};
+
+//---------------------------------------------------------------------------
 void *BlockHeap::Create( void *pvHeap_, K_USHORT usSize_, K_USHORT usBlockSize_ )
 {
-    K_USHORT usNodeCount = usSize_ / 
-                                 (usBlockSize_ + sizeof(LinkListNode) + sizeof(void*));
+    K_USHORT usNodeCount = usSize_ / (sizeof(BlockHeapNode) + usBlockSize_);
+
     K_ADDR adNode = (K_ADDR)pvHeap_;
     K_ADDR adMaxNode = (K_ADDR)((K_ADDR)pvHeap_ + (K_ADDR)usSize_);
     m_clList.Init();
@@ -58,17 +67,17 @@ void *BlockHeap::Create( void *pvHeap_, K_USHORT usSize_, K_USHORT usBlockSize_ 
     for (K_USHORT i = 0; i < usNodeCount; i++ )
     {
         // Create a pointer back to the source list.  
-        BlockHeap **pclTemp = (BlockHeap**)(adNode + sizeof(LinkListNode));
-        *pclTemp = (BlockHeap*)(this);
-        
+        BlockHeapNode *pclTemp = (BlockHeapNode*)adNode;
+        pclTemp->m_clHeap = this;
+
         // Add the node to the block list
-        m_clList.Add( (LinkListNode*)adNode );
+        m_clList.Add( (LinkListNode*)pclTemp);
         
         // Move the pointer in the pool to point to the next block to allocate
-        adNode += (usBlockSize_ + sizeof(LinkListNode) + sizeof(BlockHeap*));
+        adNode += (sizeof(BlockHeapNode) + usBlockSize_);
         
         // Bail if we would be going past the end of the allocated space...
-        if ((K_ULONG)adNode >= (K_ULONG)adMaxNode)
+        if (adNode >= adMaxNode)
         {
             break;
         }
@@ -91,7 +100,7 @@ void *BlockHeap::Alloc()
         m_usBlocksFree--;
         
         // Account for block-management metadata
-        return (void*)((K_ADDR)pclNode + sizeof(LinkListNode) + sizeof(void*));
+        return (void*)((K_ADDR)pclNode + sizeof(BlockHeapNode));
     }
     
     // Or null, if the heap is empty.
@@ -102,7 +111,7 @@ void *BlockHeap::Alloc()
 void BlockHeap::Free( void* pvData_ )
 {
     // Compute the address of the original object (class metadata included)
-    LinkListNode *pclNode = (LinkListNode*)((K_ADDR)pvData_ - sizeof(LinkListNode) - sizeof(void*));
+    LinkListNode *pclNode = (LinkListNode*)((K_ADDR)pvData_ - sizeof(BlockHeapNode));
     
     // Add the object back to the block data pool
     m_clList.Add(pclNode);
@@ -116,10 +125,9 @@ void FixedHeap::Create( void *pvHeap_, HeapConfig *pclHeapConfig_ )
     void *pvTemp = pvHeap_;
     while( pclHeapConfig_[i].m_usBlockSize != 0)
     {
-        pvTemp = pclHeapConfig_[i].m_clHeap.Create
-                    (pvTemp, 
-                     (pclHeapConfig_[i].m_usBlockSize +sizeof(LinkListNode) + sizeof(void*)) *
-                     pclHeapConfig_[i].m_usBlockCount,
+        pvTemp = pclHeapConfig_[i].m_clHeap.Create( pvTemp,
+                    ((pclHeapConfig_[i].m_usBlockSize + sizeof(BlockHeapNode))
+                     * pclHeapConfig_[i].m_usBlockCount),
                      pclHeapConfig_[i].m_usBlockSize );
         i++;
     }
@@ -162,8 +170,8 @@ void FixedHeap::Free( void *pvNode_ )
     // Compute the pointer to the block-heap this block belongs to, and
     // return it.
     CS_ENTER();
-    BlockHeap **pclHeap = (BlockHeap**)((K_ADDR)pvNode_ - sizeof(BlockHeap*));
-    (*pclHeap)->Free(pvNode_);
+    BlockHeapNode *pclNode = (BlockHeapNode*)((K_ADDR)pvNode_ - sizeof(BlockHeapNode));
+    pclNode->m_clHeap->Free( pvNode_ );
     CS_EXIT();
 }
 

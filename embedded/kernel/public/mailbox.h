@@ -159,6 +159,25 @@ public:
     bool ReceiveTail( void *pvData_, K_ULONG ulTimeoutMS_ );
 #endif
 
+    K_USHORT GetFreeSlots( void )
+    {
+        K_USHORT rc;
+        CS_ENTER();
+        rc = m_usFree;
+        CS_EXIT();
+        return rc;
+    }
+
+    bool IsFull( void )
+    {
+        return (GetFreeSlots() == 0);
+    }
+
+    bool IsEmpty( void )
+    {
+        return (GetFreeSlots() == m_usCount);
+    }
+
 private:
 
     /*!

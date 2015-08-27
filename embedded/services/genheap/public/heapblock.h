@@ -33,15 +33,12 @@ See license.txt for more information
 
 //---------------------------------------------------------------------------
 #if (PTR_SIZE == 2)
-  #define PTR_INT       uint16_t
   #define HEAP_COOKIE_FREE                (0xCAFE)
   #define HEAP_COOKIE_ALLOCATED           (0xDEAD)
-#elif (PTR_SIZE == 4)
-  #define PTR_INT       uint32_t
+#elif (PTR_SIZE == 4)  
   #define HEAP_COOKIE_FREE                (0xCAFED00D)
   #define HEAP_COOKIE_ALLOCATED           (0xDEADBEEF)
-#elif (PTR_SIZE == 8)
-  #define PTR_INT       uint64_t
+#elif (PTR_SIZE == 8)  
   #define HEAP_COOKIE_FREE                (0xCAFED00DFEEDBABE)
   #define HEAP_COOKIE_ALLOCATED           (0xDEADBEEFABACABB0)
 #else 
@@ -52,8 +49,8 @@ See license.txt for more information
 
 
 //---------------------------------------------------------------------------
-#define ROUND_UP(x)                  ((((PTR_INT)x) + (PTR_SIZE-1)) & ~(PTR_SIZE-1))
-#define ROUND_DOWN(x)                (((PTR_INT)x) & ~(PTR_SIZE-1))
+#define ROUND_UP(x)                  ((((K_ADDR)x) + (PTR_SIZE-1)) & ~(PTR_SIZE-1))
+#define ROUND_DOWN(x)                (((K_ADDR)x) & ~(PTR_SIZE-1))
 
 #define BLOCK_DATA_SIZE(x)           (ROUND_DOWN(x) - sizeof(HeapBlock))
 
@@ -106,7 +103,7 @@ public:
      * \param uSize_ Size of the memory blob (in bytes) that the HeapBlock
      *        object occupies.
      */
-    void RootInit( PTR_INT uSize_ );
+    void RootInit( K_ADDR uSize_ );
 
     /*!
      * \brief Split
@@ -120,7 +117,7 @@ public:
      *
      * \return Newly created object.
      */
-    HeapBlock *Split( PTR_INT uSize_ );
+    HeapBlock *Split( K_ADDR uSize_ );
 
     /*!
      * \brief Coalesce
@@ -142,13 +139,13 @@ public:
      * \brief GetDataSize
      * \return Size of the data-section of this block
      */
-    PTR_INT GetDataSize( void );
+    K_ADDR GetDataSize( void );
 
     /*!
      * \brief GetBlockSize
      * \return Size of the block, including data-section and metadata
      */
-    PTR_INT GetBlockSize( void );
+    K_ADDR GetBlockSize( void );
 
     /*!
      * \brief SetArenaIndex
@@ -166,7 +163,7 @@ public:
      * \brief SetCookie
      * \param uCookie_ Cookie used to tag the object's state
      */
-    void SetCookie( PTR_INT uCookie_ )
+    void SetCookie( K_ADDR uCookie_ )
     {
         m_uCookie = uCookie_;
     }
@@ -175,7 +172,7 @@ public:
      * \brief GetCookie
      * \return Return the object's current state-cookie
      */
-    PTR_INT GetCookie( void )
+    K_ADDR GetCookie( void )
     {
         return m_uCookie;
     }
@@ -250,10 +247,10 @@ private:
      * \param uBlockSize_ Size of the data portion of this allocatable
      *        object (in bytes).
      */
-    void SetDataSize( PTR_INT uBlockSize_ );
+    void SetDataSize( K_ADDR uBlockSize_ );
 
-    PTR_INT   m_uDataSize;
-    PTR_INT   m_uCookie; 
+    K_ADDR   m_uDataSize;
+    K_ADDR   m_uCookie;
 
     uint8_t   m_u8ArenaIndex;
 

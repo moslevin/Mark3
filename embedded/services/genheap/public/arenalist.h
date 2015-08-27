@@ -46,7 +46,7 @@ public:
      *
      * \param uBlockSize_ Minimum data size for blocks.
      */
-    void Init( PTR_INT uBlockSize_ )
+    void Init( K_ADDR uBlockSize_ )
     {
         m_u16Count = 0;
         m_uBlockSize = uBlockSize_;
@@ -58,7 +58,7 @@ public:
      * \brief GetBlockSize
      * \return The minimum block size for objects in this structure
      */
-    PTR_INT GetBlockSize( void )
+    K_ADDR GetBlockSize( void )
     {
         return m_uBlockSize;
     }
@@ -129,7 +129,7 @@ public:
     }
 
 private:
-    PTR_INT    m_uBlockSize;    //!< The minimum data-size for blocks held in this arena
+    K_ADDR    m_uBlockSize;    //!< The minimum data-size for blocks held in this arena
     uint16_t   m_u16Count;      //!< Current number of available blocks in this list
 };
 

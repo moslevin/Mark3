@@ -47,11 +47,11 @@ See license.txt for more information
 
 //---------------------------------------------------------------------------
 #if (PTR_SIZE == 2)
-#define ARENA_EXHAUSTED         ((PTR_INT)0xC0FE)
+#define ARENA_EXHAUSTED         ((K_ADDR)0xC0FE)
 #elif (PTR_SIZE == 4)
-#define ARENA_EXHAUSTED         ((PTR_INT)0xC0FFEEEE)
+#define ARENA_EXHAUSTED         ((K_ADDR)0xC0FFEEEE)
 #elif (PTR_SIZE == 8)
-#define ARENA_EXHAUSTED         ((PTR_INT)0xC0FFEEEEC0FFEEEE)
+#define ARENA_EXHAUSTED         ((K_ADDR)0xC0FFEEEEC0FFEEEE)
 #endif
 
 //---------------------------------------------------------------------------
@@ -82,7 +82,7 @@ public:
      * \param uSize_ Size of the heap memory blob in bytes
      * \return
      */
-    void Init( void *pvBuffer_, PTR_INT uSize_ );
+    void Init( void *pvBuffer_, K_ADDR uSize_ );
 
     /*!
      * \brief Allocate
@@ -92,7 +92,7 @@ public:
      * \param uSize_ Size of object to allocate (in bytes)
      * \return pointer to a chunk of dynamic memory, or 0 on exhaustion.
      */
-    void *Allocate( PTR_INT uSize_ );
+    void *Allocate( K_ADDR uSize_ );
 
     /*!
      * \brief Free
@@ -120,7 +120,7 @@ private:
      * \param uSize_ Size of the object to check
      * \return INdex representing the arena/arena-size
      */
-    uint8_t ListForSize( PTR_INT uSize_ );
+    uint8_t ListForSize( K_ADDR uSize_ );
 
     /*!
      * \brief ListToSatisfy
@@ -131,7 +131,7 @@ private:
      * \param uSize_ Size of data to check
      * \return Index representing the arena/arena-size, or 0xF...F on invalid
      */
-    uint8_t ListToSatisfy( PTR_INT uSize_ );
+    uint8_t ListToSatisfy( K_ADDR uSize_ );
 
     ArenaList  m_aclBlockList[ARENA_LIST_COUNT + 1];    //!< Arena linked-list data
     void      *m_pvData;    //!< Pointer to the raw memory blob managed by this object as a heap.
