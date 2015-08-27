@@ -91,7 +91,7 @@ class HeapConfig
 {
 public:
     K_USHORT m_usBlockSize;        //!< Block size in bytes
-    K_USHORT m_usBlockCount;    //!< Number of blocks to create @ this size
+    K_USHORT m_usBlockCount;       //!< Number of blocks to create @ this size
     friend class FixedHeap;
 protected:
     BlockHeap m_clHeap;            //!< BlockHeap object used by the allocator

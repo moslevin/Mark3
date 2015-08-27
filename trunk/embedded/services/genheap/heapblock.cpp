@@ -22,7 +22,7 @@ See license.txt for more information
 #include "heapblock.h"
 
 //---------------------------------------------------------------------------
-void HeapBlock::RootInit( PTR_INT uSize_ )
+void HeapBlock::RootInit( K_ADDR uSize_ )
 {
     Init();
     m_uDataSize = ROUND_DOWN(uSize_);
@@ -34,18 +34,18 @@ void HeapBlock::RootInit( PTR_INT uSize_ )
 }
 
 //---------------------------------------------------------------------------
-HeapBlock *HeapBlock::Split( PTR_INT uSize_ )
+HeapBlock *HeapBlock::Split( K_ADDR uSize_ )
 {
     // Allocate minimum amount of data for this operation on the left side
 
-    PTR_INT uLeftBlockSize = ROUND_UP(uSize_) + sizeof(HeapBlock);
+    K_ADDR uLeftBlockSize = ROUND_UP(uSize_) + sizeof(HeapBlock);
 
-    PTR_INT uThisBlockSize = m_uDataSize + sizeof(HeapBlock);
-    PTR_INT uRightBlockSize = uThisBlockSize - uLeftBlockSize;
+    K_ADDR uThisBlockSize = m_uDataSize + sizeof(HeapBlock);
+    K_ADDR uRightBlockSize = uThisBlockSize - uLeftBlockSize;
 
     m_uDataSize = ROUND_UP(uSize_);
 
-    PTR_INT uNewAddr = (PTR_INT)this + uLeftBlockSize;
+    K_ADDR uNewAddr = (K_ADDR)this + uLeftBlockSize;
     HeapBlock *pclRightBlock = (HeapBlock*)uNewAddr;
 
     pclRightBlock->Init();
@@ -81,19 +81,19 @@ void HeapBlock::Coalesce( void )
 //---------------------------------------------------------------------------
 void *HeapBlock::GetDataPointer( void )
 {
-    PTR_INT uAddr = (PTR_INT)this;
+    K_ADDR uAddr = (K_ADDR)this;
     uAddr += sizeof(HeapBlock);
     return (void*)uAddr;
 }
 
 //---------------------------------------------------------------------------
-PTR_INT HeapBlock::GetDataSize( void )
+K_ADDR HeapBlock::GetDataSize( void )
 {
     return m_uDataSize;
 }
 
 //---------------------------------------------------------------------------
-PTR_INT HeapBlock::GetBlockSize( void )
+K_ADDR HeapBlock::GetBlockSize( void )
 {
     return ( sizeof(HeapBlock) + m_uDataSize );
 }
@@ -111,7 +111,7 @@ uint8_t HeapBlock::GetArenaIndex( void )
 }
 
 //---------------------------------------------------------------------------
-void HeapBlock::SetDataSize( PTR_INT uBlockSize )
+void HeapBlock::SetDataSize( K_ADDR uBlockSize )
 {
     m_uDataSize = uBlockSize;
 }

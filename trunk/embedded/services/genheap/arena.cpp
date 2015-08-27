@@ -30,7 +30,7 @@ See license.txt for more information
   #define DEBUG_PRINT(...)
 #endif
 //---------------------------------------------------------------------------
-const static PTR_INT au32ArenaSizes[ ARENA_LIST_COUNT ] =
+const static K_ADDR au32ArenaSizes[ ARENA_LIST_COUNT ] =
 {
     ARENA_SIZE_0,
     ARENA_SIZE_1,
@@ -47,7 +47,7 @@ const static PTR_INT au32ArenaSizes[ ARENA_LIST_COUNT ] =
 };
 
 //---------------------------------------------------------------------------
-void Arena::Init( void *pvBuffer_, PTR_INT u32Size_ )
+void Arena::Init( void *pvBuffer_, K_ADDR u32Size_ )
 {
     // Initialize the array of blocklists used in this Arena
     m_pvData = pvBuffer_;
@@ -61,7 +61,7 @@ void Arena::Init( void *pvBuffer_, PTR_INT u32Size_ )
     // possible, until the whole contiguous buffer is completely
     // accounted for.
     uint32_t u32SizeRemain = u32Size_;
-    PTR_INT uPtr = (PTR_INT)pvBuffer_;
+    K_ADDR uPtr = (K_ADDR)pvBuffer_;
     while (u32SizeRemain >= MIN_ALLOC_SIZE)
     {
         HeapBlock *pclBlock = (HeapBlock*)uPtr;
@@ -98,7 +98,7 @@ void Arena::Init( void *pvBuffer_, PTR_INT u32Size_ )
 }
 
 //---------------------------------------------------------------------------
-void *Arena::Allocate( PTR_INT uSize_ )
+void *Arena::Allocate( K_ADDR uSize_ )
 {
     // Figure out which list to grab the buffer from.
     DEBUG_PRINT("Request to allocate %d bytes\n", uSize_ );
@@ -138,7 +138,7 @@ void *Arena::Allocate( PTR_INT uSize_ )
 //---------------------------------------------------------------------------
 void Arena::Free( void *pvBlock_ )
 {
-    PTR_INT uBlockAddr = (PTR_INT)pvBlock_ - sizeof(HeapBlock);
+    K_ADDR uBlockAddr = (K_ADDR)pvBlock_ - sizeof(HeapBlock);
     HeapBlock *pclBlock = (HeapBlock*)uBlockAddr;
     HeapBlock *pclRight = pclBlock->GetRightSibling();
     HeapBlock *pclTemp = pclRight;
@@ -191,7 +191,7 @@ void Arena::Free( void *pvBlock_ )
 }
 
 //---------------------------------------------------------------------------
-uint8_t Arena::ListForSize( PTR_INT uSize_ )
+uint8_t Arena::ListForSize( K_ADDR uSize_ )
 {
     if (uSize_ < ARENA_SIZE_0)
     {
@@ -209,7 +209,7 @@ uint8_t Arena::ListForSize( PTR_INT uSize_ )
     return ARENA_LIST_COUNT-1;
 }
 //---------------------------------------------------------------------------
-uint8_t Arena::ListToSatisfy( PTR_INT uSize_ )
+uint8_t Arena::ListToSatisfy( K_ADDR uSize_ )
 {
     for (int i = 0; i < ARENA_LIST_COUNT; i++)
     {

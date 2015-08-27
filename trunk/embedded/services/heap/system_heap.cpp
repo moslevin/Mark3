@@ -28,7 +28,7 @@ See license.txt for more information
 K_UCHAR    SystemHeap::m_pucRawHeap[ HEAP_RAW_SIZE ];
 HeapConfig SystemHeap::m_pclSystemHeapConfig[ HEAP_NUM_SIZES + 1];
 FixedHeap  SystemHeap::m_clSystemHeap;
-K_BOOL       SystemHeap::m_bInit;
+K_BOOL     SystemHeap::m_bInit;
 
 //---------------------------------------------------------------------------
 void SystemHeap::Init(void)
