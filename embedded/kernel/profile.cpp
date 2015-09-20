@@ -36,9 +36,9 @@ See license.txt for more information
 //---------------------------------------------------------------------------
 void ProfileTimer::Init()
 {
-    m_ulCumulative = 0;
-    m_ulCurrentIteration = 0;
-    m_usIterations = 0;
+    m_u32Cumulative = 0;
+    m_u32CurrentIteration = 0;
+    m_u16Iterations = 0;
     m_bActive = 0;
 }
 
@@ -48,9 +48,9 @@ void ProfileTimer::Start()
     if (!m_bActive)
     {
         CS_ENTER();
-        m_ulCurrentIteration = 0;
-		m_ulInitialEpoch = Profiler::GetEpoch();		
-        m_usInitial = Profiler::Read();        
+        m_u32CurrentIteration = 0;
+		m_u32InitialEpoch = Profiler::GetEpoch();		
+        m_u16Initial = Profiler::Read();        
         CS_EXIT();
         m_bActive = 1;
     }
@@ -61,75 +61,75 @@ void ProfileTimer::Stop()
 {
     if (m_bActive)
     {
-        K_USHORT usFinal;
-        K_ULONG ulEpoch;
+        uint16_t u16Final;
+        uint32_t u32Epoch;
         CS_ENTER();
-        usFinal = Profiler::Read();
-        ulEpoch = Profiler::GetEpoch();
+        u16Final = Profiler::Read();
+        u32Epoch = Profiler::GetEpoch();
         // Compute total for current iteration...
-        m_ulCurrentIteration = ComputeCurrentTicks(usFinal, ulEpoch);
-        m_ulCumulative += m_ulCurrentIteration;
-        m_usIterations++;        
+        m_u32CurrentIteration = ComputeCurrentTicks(u16Final, u32Epoch);
+        m_u32Cumulative += m_u32CurrentIteration;
+        m_u16Iterations++;        
         CS_EXIT();
         m_bActive = 0;
     }
 }
 
 //---------------------------------------------------------------------------    
-K_ULONG ProfileTimer::GetAverage()
+uint32_t ProfileTimer::GetAverage()
 {
-    if (m_usIterations)
+    if (m_u16Iterations)
     {
-        return m_ulCumulative / (K_ULONG)m_usIterations;
+        return m_u32Cumulative / (uint32_t)m_u16Iterations;
     }
     return 0;
 }
  
 //---------------------------------------------------------------------------     
-K_ULONG ProfileTimer::GetCurrent()
+uint32_t ProfileTimer::GetCurrent()
 {
 	
     if (m_bActive)
     {
-		K_USHORT usCurrent;
-		K_ULONG ulEpoch;
+		uint16_t u16Current;
+		uint32_t u32Epoch;
 		CS_ENTER();
-		usCurrent = Profiler::Read();
-		ulEpoch = Profiler::GetEpoch();
+		u16Current = Profiler::Read();
+		u32Epoch = Profiler::GetEpoch();
 		CS_EXIT();
-        return ComputeCurrentTicks(usCurrent, ulEpoch);
+        return ComputeCurrentTicks(u16Current, u32Epoch);
     }
-	return m_ulCurrentIteration;
+	return m_u32CurrentIteration;
 }
 
 //---------------------------------------------------------------------------
-K_ULONG ProfileTimer::ComputeCurrentTicks(K_USHORT usCurrent_, K_ULONG ulEpoch_)
+uint32_t ProfileTimer::ComputeCurrentTicks(uint16_t u16Current_, uint32_t u32Epoch_)
 {    
-    K_ULONG ulTotal;
-	K_ULONG ulOverflows;
+    uint32_t u32Total;
+	uint32_t u32Overflows;
 	
-	ulOverflows = ulEpoch_ - m_ulInitialEpoch;
+	u32Overflows = u32Epoch_ - m_u32InitialEpoch;
 	
 	// More than one overflow...
-	if (ulOverflows > 1)
+	if (u32Overflows > 1)
 	{
-        ulTotal = ((K_ULONG)(ulOverflows-1) * TICKS_PER_OVERFLOW)
-				+ (K_ULONG)(TICKS_PER_OVERFLOW - m_usInitial) +
-				(K_ULONG)usCurrent_;		
+        u32Total = ((uint32_t)(u32Overflows-1) * TICKS_PER_OVERFLOW)
+				+ (uint32_t)(TICKS_PER_OVERFLOW - m_u16Initial) +
+				(uint32_t)u16Current_;		
 	}
 	// Only one overflow, or one overflow that has yet to be processed
-	else if (ulOverflows || (usCurrent_ < m_usInitial))
+	else if (u32Overflows || (u16Current_ < m_u16Initial))
 	{
-		ulTotal = (K_ULONG)(TICKS_PER_OVERFLOW - m_usInitial) +
-				(K_ULONG)usCurrent_;		
+		u32Total = (uint32_t)(TICKS_PER_OVERFLOW - m_u16Initial) +
+				(uint32_t)u16Current_;		
 	}
 	// No overflows, none pending.
 	else
 	{
-		ulTotal = (K_ULONG)(usCurrent_ - m_usInitial);					
+		u32Total = (uint32_t)(u16Current_ - m_u16Initial);					
 	}
 
-    return ulTotal;
+    return u32Total;
 }
 
 #endif

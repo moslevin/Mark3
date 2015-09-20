@@ -34,56 +34,56 @@ See license.txt for more information
 #include <in430.h>
 
 //---------------------------------------------------------------------------
-volatile K_UCHAR g_ucCSCount;
-volatile K_USHORT g_usSR;
+volatile uint8_t g_u8CSCount;
+volatile uint16_t g_u16SR;
 //---------------------------------------------------------------------------
 void ThreadPort::InitStack(Thread *pclThread_)
 {
     // Initialize the stack for a Thread
-    K_USHORT usAddr;
-    K_USHORT *pusStack;
-    K_USHORT i;
+    uint16_t u16Addr;
+    uint16_t *pu16Stack;
+    uint16_t i;
 
     // Get the address of the thread's entry function
-    usAddr = (K_USHORT)(pclThread_->m_pfEntryPoint);
+    u16Addr = (uint16_t)(pclThread_->m_pfEntryPoint);
 
     // Start by finding the bottom of the stack
-    pusStack = (K_USHORT*)pclThread_->m_pwStackTop;
+    pu16Stack = (uint16_t*)pclThread_->m_pwStackTop;
 
     // clear the stack, and initialize it to a known-default value (easier
     // to debug when things go sour with stack corruption or overflow)
-    for (i = 0; i < pclThread_->m_usStackSize; i++)
+    for (i = 0; i < pclThread_->m_u16StackSize; i++)
     {
         pclThread_->m_pwStack[i] = 0xFFFF;
     }
 
     // 1st - push start address... (R0/PC)
-    PUSH_TO_STACK(pusStack, usAddr);
+    PUSH_TO_STACK(pu16Stack, u16Addr);
 
     //!! Note - R1 is the dedicted stack pointer (not in context)
 
     // 2nd - Interrupts enabled status register (R2/SR)
-    PUSH_TO_STACK(pusStack, 0x08);
+    PUSH_TO_STACK(pu16Stack, 0x08);
 
     //!! Note - R3 is a zero register (not in context)
 
     // Push other registers  (R4-R11)
     for (i = 4; i < 12; i++)
     {
-        PUSH_TO_STACK(pusStack, i);
+        PUSH_TO_STACK(pu16Stack, i);
     }
 
     // Function parameter (R12)
-    PUSH_TO_STACK(pusStack, (K_USHORT)pclThread_->m_pvArg);
+    PUSH_TO_STACK(pu16Stack, (uint16_t)pclThread_->m_pvArg);
 
     // Push other registers (R13-R15)
     for (i = 13; i < 16; i++)
     {
-        PUSH_TO_STACK(pusStack, i);
+        PUSH_TO_STACK(pu16Stack, i);
     }
 
     // Set the top o' the stack.
-    pclThread_->m_pwStackTop = (K_USHORT*)(pusStack+1);
+    pclThread_->m_pwStackTop = (uint16_t*)(pu16Stack+1);
 }
 
 //---------------------------------------------------------------------------
@@ -91,9 +91,9 @@ static void Thread_Switch(void)
 {
 #if KERNEL_USE_IDLE_FUNC
     // If there's no next-thread-to-run...
-    if (g_pstNext == Kernel::GetIdleThread())
+    if (g_pclNext == Kernel::GetIdleThread())
     {
-        g_pstCurrent = Kernel::GetIdleThread();
+        g_pclCurrent = Kernel::GetIdleThread();
 
         // Disable the SWI, and re-enable interrupts -- enter nested interrupt
         // mode.
@@ -101,7 +101,7 @@ static void Thread_Switch(void)
 
         // So long as there's no "next-to-run" thread, keep executing the Idle
         // function to conclusion...
-        while (g_pstNext == Kernel::GetIdleThread())
+        while (g_pclNext == Kernel::GetIdleThread())
         {
            // Ensure that we run this block in an interrupt enabled context (but
            // with the rest of the checks being performed in an interrupt disabled
@@ -120,7 +120,7 @@ static void Thread_Switch(void)
     }
 #endif
     KernelSWI::Clear();
-    g_pstCurrent = (Thread*)g_pstNext;
+    g_pclCurrent = (Thread*)g_pclNext;
 }
 
 
@@ -140,8 +140,8 @@ void ThreadPort::StartThreads()
 #endif
     KernelSWI::Start();                  // enable the task switch SWI
 
-    g_ucCSCount = 0;                     // Reset the critical section counter
-    g_usSR = 0;
+    g_u8CSCount = 0;                     // Reset the critical section counter
+    g_u16SR = 0;
     // Restore the context...
     Thread_RestoreContext();        // restore the context of the first running thread
     ASM("reti");                    // return from interrupt - will return to the first scheduled thread

@@ -25,13 +25,13 @@ See license.txt for more information
 #include "font.h"
 
 //---------------------------------------------------------------------------
-K_BOOL GraphicsSlip::FindStamp(K_UCHAR *pucStamp_)
+bool GraphicsSlip::FindStamp(uint8_t *pu8Stamp_)
 {
-    K_UCHAR i;
+    uint8_t i;
     // iterate through to see if the stamp already exists
     for (i=0; i < STAMP_CACHE_SIZE; i++)
     {
-        if (m_astStampCache[i].pucData == pucStamp_)
+        if (m_astStampCache[i].pu8Data == pu8Stamp_)
         {
             return true;
         }
@@ -40,42 +40,42 @@ K_BOOL GraphicsSlip::FindStamp(K_UCHAR *pucStamp_)
 }
 
 //---------------------------------------------------------------------------
-void GraphicsSlip::AddStamp(K_UCHAR *pucStamp_)
+void GraphicsSlip::AddStamp(uint8_t *pu8Stamp_)
 {
     // Update the stamp cache with the new stuff
-    m_astStampCache[m_ucStampCacheIndex].pucData = pucStamp_;
+    m_astStampCache[m_u8StampCacheIndex].pu8Data = pu8Stamp_;
         
     // 32 element cache.
-    m_ucStampCacheIndex = (m_ucStampCacheIndex + 1);
-    if (m_ucStampCacheIndex >= STAMP_CACHE_SIZE)
+    m_u8StampCacheIndex = (m_u8StampCacheIndex + 1);
+    if (m_u8StampCacheIndex >= STAMP_CACHE_SIZE)
     {
-        m_ucStampCacheIndex = 0;
+        m_u8StampCacheIndex = 0;
     }
 }
 
 //---------------------------------------------------------------------------
-void GraphicsSlip::AddIfNecessary(K_UCHAR *pucStamp_, K_UCHAR ucSize_)
+void GraphicsSlip::AddIfNecessary(uint8_t *pu8Stamp_, uint8_t u8Size_)
 {
-    if (!FindStamp(pucStamp_))
+    if (!FindStamp(pu8Stamp_))
     {
         // Send a copy of the stamp to the host
-        m_pclSlip->WriteData(SLIP_CHANNEL_GRAPHICS, (K_CHAR*)pucStamp_, ucSize_);
+        m_pclSlip->WriteData(SLIP_CHANNEL_GRAPHICS, (char*)pu8Stamp_, u8Size_);
 
         // Update the cache
-        AddStamp(pucStamp_);
+        AddStamp(pu8Stamp_);
     }
 }
 
 //---------------------------------------------------------------------------
 void GraphicsSlip::Init(void)
 {
-    m_usResX = 240;
-    m_usResY = 192;
-    m_ucBPP = 16;
-    m_usLeft = 0;
-    m_usRight = 239;
-    m_usTop = 0;
-    m_usBottom = 191;
+    m_u16Res16X = 240;
+    m_u16Res16Y = 192;
+    m_u8BPP = 16;
+    m_u16Left = 0;
+    m_u16Right = 239;
+    m_u16Top = 0;
+    m_u16Bottom = 191;
     
     m_pclSlip->SetDriver( DriverList::FindByPath("/dev/tty" ) );                            
 }
@@ -84,12 +84,12 @@ void GraphicsSlip::Init(void)
 void GraphicsSlip::DrawPixel(DrawPoint_t *pstPoint_)
 {
     SlipDataVector astSlipData[2];
-    K_UCHAR ucEventType = DISPLAY_EVENT_SET_PIXEL;
+    uint8_t u8EventType = DISPLAY_EVENT_SET_PIXEL;
     
-    astSlipData[0].pucData = &ucEventType;
-    astSlipData[0].ucSize = 1;
-    astSlipData[1].pucData = (K_UCHAR*)pstPoint_;
-    astSlipData[1].ucSize = sizeof(DrawPoint_t);
+    astSlipData[0].pu8Data = &u8EventType;
+    astSlipData[0].u8Size = 1;
+    astSlipData[1].pu8Data = (uint8_t*)pstPoint_;
+    astSlipData[1].u8Size = sizeof(DrawPoint_t);
     
     m_pclSlip->WriteVector(SLIP_CHANNEL_GRAPHICS, astSlipData, 2);
 }
@@ -97,22 +97,22 @@ void GraphicsSlip::DrawPixel(DrawPoint_t *pstPoint_)
 //---------------------------------------------------------------------------
 void GraphicsSlip::ClearScreen(void)
 {
-    K_UCHAR ucData;
-    ucData = DISPLAY_EVENT_CLEAR;
+    uint8_t u8Data;
+    u8Data = DISPLAY_EVENT_CLEAR;
     
-    m_pclSlip->WriteData(SLIP_CHANNEL_GRAPHICS, (K_CHAR*)&ucData, 1);
+    m_pclSlip->WriteData(SLIP_CHANNEL_GRAPHICS, (char*)&u8Data, 1);
 }
 
 //---------------------------------------------------------------------------
 void GraphicsSlip::Line(DrawLine_t *pstLine_)
 {
     SlipDataVector astSlipData[2];
-    K_UCHAR ucEventType = DISPLAY_EVENT_LINE;
+    uint8_t u8EventType = DISPLAY_EVENT_LINE;
     
-    astSlipData[0].pucData = &ucEventType;
-    astSlipData[0].ucSize = 1;
-    astSlipData[1].pucData = (K_UCHAR*)pstLine_;
-    astSlipData[1].ucSize = sizeof(DrawLine_t);
+    astSlipData[0].pu8Data = &u8EventType;
+    astSlipData[0].u8Size = 1;
+    astSlipData[1].pu8Data = (uint8_t*)pstLine_;
+    astSlipData[1].u8Size = sizeof(DrawLine_t);
     
     m_pclSlip->WriteVector(SLIP_CHANNEL_GRAPHICS, astSlipData, 2);
 }
@@ -121,12 +121,12 @@ void GraphicsSlip::Line(DrawLine_t *pstLine_)
 void GraphicsSlip::Rectangle(DrawRectangle_t *pstRectangle_)
 {
     SlipDataVector astSlipData[2];
-    K_UCHAR ucEventType = DISPLAY_EVENT_RECTANGLE;
+    uint8_t u8EventType = DISPLAY_EVENT_RECTANGLE;
     
-    astSlipData[0].pucData = &ucEventType;
-    astSlipData[0].ucSize = 1;
-    astSlipData[1].pucData = (K_UCHAR*)pstRectangle_;
-    astSlipData[1].ucSize = sizeof(DrawRectangle_t);
+    astSlipData[0].pu8Data = &u8EventType;
+    astSlipData[0].u8Size = 1;
+    astSlipData[1].pu8Data = (uint8_t*)pstRectangle_;
+    astSlipData[1].u8Size = sizeof(DrawRectangle_t);
     
     m_pclSlip->WriteVector(SLIP_CHANNEL_GRAPHICS, astSlipData, 2);
 }
@@ -135,12 +135,12 @@ void GraphicsSlip::Rectangle(DrawRectangle_t *pstRectangle_)
 void GraphicsSlip::Circle(DrawCircle_t *pstCircle_)
 {
     SlipDataVector astSlipData[2];
-    K_UCHAR ucEventType = DISPLAY_EVENT_CIRCLE;
+    uint8_t u8EventType = DISPLAY_EVENT_CIRCLE;
     
-    astSlipData[0].pucData = &ucEventType;
-    astSlipData[0].ucSize = 1;
-    astSlipData[1].pucData = (K_UCHAR*)pstCircle_;
-    astSlipData[1].ucSize = sizeof(DrawCircle_t);
+    astSlipData[0].pu8Data = &u8EventType;
+    astSlipData[0].u8Size = 1;
+    astSlipData[1].pu8Data = (uint8_t*)pstCircle_;
+    astSlipData[1].u8Size = sizeof(DrawCircle_t);
     
     m_pclSlip->WriteVector(SLIP_CHANNEL_GRAPHICS, astSlipData, 2);
 }
@@ -149,12 +149,12 @@ void GraphicsSlip::Circle(DrawCircle_t *pstCircle_)
 void GraphicsSlip::Ellipse(DrawEllipse_t *pstEllipse_)
 {
     SlipDataVector astSlipData[2];
-    K_UCHAR ucEventType = DISPLAY_EVENT_ELLIPSE;
+    uint8_t u8EventType = DISPLAY_EVENT_ELLIPSE;
     
-    astSlipData[0].pucData = &ucEventType;
-    astSlipData[0].ucSize = 1;
-    astSlipData[1].pucData = (K_UCHAR*)pstEllipse_;
-    astSlipData[1].ucSize = sizeof(DrawEllipse_t);
+    astSlipData[0].pu8Data = &u8EventType;
+    astSlipData[0].u8Size = 1;
+    astSlipData[1].pu8Data = (uint8_t*)pstEllipse_;
+    astSlipData[1].u8Size = sizeof(DrawEllipse_t);
     
     m_pclSlip->WriteVector(SLIP_CHANNEL_GRAPHICS, astSlipData, 2);
 }
@@ -164,28 +164,28 @@ void GraphicsSlip::Stamp(DrawStamp_t *pstStamp_)
 {
     SlipDataVector astSlipData[3];
     
-    K_UCHAR ucEventType = DISPLAY_EVENT_STAMP;
+    uint8_t u8EventType = DISPLAY_EVENT_STAMP;
     
-    astSlipData[0].pucData = &ucEventType;
-    astSlipData[0].ucSize = 1;
-    astSlipData[1].pucData = (K_UCHAR*)pstStamp_;
-    astSlipData[1].ucSize = sizeof(DrawStamp_t) - 2;
-    astSlipData[2].pucData = pstStamp_->pucData;
-    astSlipData[2].ucSize = (K_UCHAR)(((pstStamp_->usWidth + 7) / 8) 
-                                            * pstStamp_->usHeight);
+    astSlipData[0].pu8Data = &u8EventType;
+    astSlipData[0].u8Size = 1;
+    astSlipData[1].pu8Data = (uint8_t*)pstStamp_;
+    astSlipData[1].u8Size = sizeof(DrawStamp_t) - 2;
+    astSlipData[2].pu8Data = pstStamp_->pu8Data;
+    astSlipData[2].u8Size = (uint8_t)(((pstStamp_->u16Width + 7) / 8)
+                                            * pstStamp_->u16Height);
 
     m_pclSlip->WriteVector(SLIP_CHANNEL_GRAPHICS, astSlipData, 3);
 }
 
 //---------------------------------------------------------------------------
-K_UCHAR GraphicsSlip::Strlen(K_CHAR *szData_)
+uint8_t GraphicsSlip::Strlen(char *szData_)
 {
-    K_UCHAR ucRetval = 0;
+    uint8_t u8Retval = 0;
     while(*szData_++)
     {
-        ucRetval++;
+        u8Retval++;
     }
-    return ucRetval + 1;
+    return u8Retval + 1;
 }
 
 #if 0
@@ -194,18 +194,18 @@ void GraphicsSlip::Text(DrawText_t *pstText_)
 {
     SlipDataVector astSlipData[5];
     
-    K_UCHAR ucEventType = DISPLAY_EVENT_TEXT;
+    uint8_t u8EventType = DISPLAY_EVENT_TEXT;
     
-    astSlipData[0].pucData = &ucEventType;
-    astSlipData[0].ucSize = 1;
-    astSlipData[1].pucData = (K_UCHAR*)pstText_;
-    astSlipData[1].ucSize = sizeof(DrawText_t) - 4;
-    astSlipData[2].pucData = &(pstText_->pstFont->ucSize);
-    astSlipData[2].ucSize = 1;
-    astSlipData[3].pucData = (K_UCHAR*) pstText_->pstFont->szName;
-    astSlipData[3].ucSize = Strlen((K_CHAR*)pstText_->pstFont->szName);
-    astSlipData[4].pucData = (K_UCHAR*)pstText_->pcString;
-    astSlipData[4].ucSize = Strlen((K_CHAR*)pstText_->pcString);
+    astSlipData[0].pu8Data = &u8EventType;
+    astSlipData[0].u8Size = 1;
+    astSlipData[1].pu8Data = (uint8_t*)pstText_;
+    astSlipData[1].u8Size = sizeof(DrawText_t) - 4;
+    astSlipData[2].pu8Data = &(pstText_->pstFont->u8Size);
+    astSlipData[2].u8Size = 1;
+    astSlipData[3].pu8Data = (uint8_t*) pstText_->pstFont->szName;
+    astSlipData[3].u8Size = Strlen((char*)pstText_->pstFont->szName);
+    astSlipData[4].pu8Data = (uint8_t*)pstText_->pcString;
+    astSlipData[4].u8Size = Strlen((char*)pstText_->pcString);
 
     m_pclSlip->WriteVector(SLIP_CHANNEL_GRAPHICS, astSlipData, 5);
 }

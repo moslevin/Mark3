@@ -25,61 +25,61 @@ See license.txt for more information
 #include <avr/eeprom.h>
 
 //---------------------------------------------------------------------------
-void NLFS_EEPROM::Read_Node( K_USHORT usNode_, NLFS_Node_t *pstFileNode_)
+void NLFS_EEPROM::Read_Node( uint16_t u16Node_, NLFS_Node_t *pstFileNode_)
 {
     NLFS_Node_t *pstFileNode =  (NLFS_Node_t*)(m_puHost->kaData
-                                                    + (usNode_ * sizeof(NLFS_Node_t)));
+                                                    + (u16Node_ * sizeof(NLFS_Node_t)));
 
     eeprom_read_block((void*)pstFileNode_, (const void*)pstFileNode, sizeof(NLFS_Node_t) );
 }
 
 //---------------------------------------------------------------------------
-void NLFS_EEPROM::Write_Node(K_USHORT usNode_, NLFS_Node_t *pstFileNode_)
+void NLFS_EEPROM::Write_Node(uint16_t u16Node_, NLFS_Node_t *pstFileNode_)
 {
     NLFS_Node_t *pstFileNode =  (NLFS_Node_t*)(m_puHost->kaData
-                                                    + (usNode_ * sizeof(NLFS_Node_t)));
+                                                    + (u16Node_ * sizeof(NLFS_Node_t)));
 
     eeprom_write_block((void*)pstFileNode_, (void*)pstFileNode, sizeof(NLFS_Node_t) );
 }
 
 //---------------------------------------------------------------------------
-void NLFS_EEPROM::Read_Block_Header(K_ULONG ulBlock_, NLFS_Block_t *pstFileBlock_)
+void NLFS_EEPROM::Read_Block_Header(uint32_t u32Block_, NLFS_Block_t *pstFileBlock_)
 {
     NLFS_Block_t *pstFileBlock =  (NLFS_Block_t*)(m_puHost->kaData
-                                                    + m_stLocalRoot.ulBlockOffset
-                                                    + (ulBlock_ * sizeof(NLFS_Block_t)));
+                                                    + m_stLocalRoot.u32BlockOffset
+                                                    + (u32Block_ * sizeof(NLFS_Block_t)));
 
     eeprom_read_block((void*)pstFileBlock_, (const void*)pstFileBlock, sizeof(NLFS_Block_t) );
 }
 
 //---------------------------------------------------------------------------
-void NLFS_EEPROM::Write_Block_Header(K_ULONG ulBlock_, NLFS_Block_t *pstFileBlock_)
+void NLFS_EEPROM::Write_Block_Header(uint32_t u32Block_, NLFS_Block_t *pstFileBlock_)
 {
     NLFS_Block_t *pstFileBlock =  (NLFS_Block_t*)(m_puHost->kaData
-                                                    + m_stLocalRoot.ulBlockOffset
-                                                    + (ulBlock_ * sizeof(NLFS_Block_t)));
+                                                    + m_stLocalRoot.u32BlockOffset
+                                                    + (u32Block_ * sizeof(NLFS_Block_t)));
 
     eeprom_write_block((void*)pstFileBlock_, (void*)pstFileBlock, sizeof(NLFS_Block_t) );
 }
 
 //---------------------------------------------------------------------------
-void NLFS_EEPROM::Read_Block(K_ULONG ulBlock_, K_ULONG ulOffset_, void *pvData_, K_ULONG ulLen_)
+void NLFS_EEPROM::Read_Block(uint32_t u32Block_, uint32_t u32Offset_, void *pvData_, uint32_t u32Len_)
 {
     const void* pvAddr = (const void*)( m_puHost->kaData
-                            + m_stLocalRoot.ulDataOffset
-                            + ulOffset_
-                            + (ulBlock_ * m_stLocalRoot.ulBlockSize) );
+                            + m_stLocalRoot.u32DataOffset
+                            + u32Offset_
+                            + (u32Block_ * m_stLocalRoot.u32BlockSize) );
 
-    eeprom_read_block(pvData_, pvAddr, (size_t)ulLen_ );
+    eeprom_read_block(pvData_, pvAddr, (size_t)u32Len_ );
 }
 
 //---------------------------------------------------------------------------
-void NLFS_EEPROM::Write_Block(K_ULONG ulBlock_, K_ULONG ulOffset_, void *pvData_, K_ULONG ulLen_)
+void NLFS_EEPROM::Write_Block(uint32_t u32Block_, uint32_t u32Offset_, void *pvData_, uint32_t u32Len_)
 {
     void* pvAddr = (void*)( m_puHost->kaData
-                            + m_stLocalRoot.ulDataOffset
-                            + ulOffset_
-                            + (ulBlock_ * m_stLocalRoot.ulBlockSize) );
+                            + m_stLocalRoot.u32DataOffset
+                            + u32Offset_
+                            + (u32Block_ * m_stLocalRoot.u32BlockSize) );
 
-    eeprom_write_block(pvData_, pvAddr, (size_t)ulLen_ );
+    eeprom_write_block(pvData_, pvAddr, (size_t)u32Len_ );
 }

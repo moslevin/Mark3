@@ -11,9 +11,9 @@
 class BrBall
 {
 public:
-    void SetPosition( K_USHORT usX_, K_USHORT usY_ );
+    void SetPosition( uint16_t u16X_, uint16_t u16Y_ );
 
-    void SetVelocity( K_SHORT sVelX100_, K_SHORT sVelY100_ );
+    void SetVelocity( int16_t s16VelX100_, int16_t s16VelY100_ );
 
     void ToggleDirX(void);
 
@@ -21,35 +21,35 @@ public:
 
     void Update(void);
 
-    K_BOOL MoveNextPixel(K_USHORT *pusX_, K_USHORT *pusY_);
+    bool MoveNextPixel(uint16_t *pu16X_, uint16_t *pu16Y_);
 
-    void SetX( K_USHORT usX_ );
+    void SetX( uint16_t u16X_ );
 
-    void SetY( K_USHORT usY_ );
+    void SetY( uint16_t u16Y_ );
 
-    K_SHORT GetVelX(void);
+    int16_t GetVelX(void);
 
-    K_SHORT GetVelY(void);
+    int16_t GetVelY(void);
 
     void Clear(void);
 
     void Draw(void);
 
-    K_SHORT GetX(void) { return (m_sX100 + 50) / 100; }
-    K_SHORT GetY(void) { return (m_sY100 + 50) / 100; }
+    int16_t GetX(void) { return (m_s16X100 + 50) / 100; }
+    int16_t GetY(void) { return (m_s16Y100 + 50) / 100; }
 
 private:
-    K_SHORT m_sX100;
-    K_SHORT m_sY100;
+    int16_t m_s16X100;
+    int16_t m_s16Y100;
 
-    K_SHORT m_sVelX100;
-    K_SHORT m_sVelY100;
+    int16_t m_s16VelX100;
+    int16_t m_s16VelY100;
 
-    K_USHORT m_usPixelUpdates;
-    K_USHORT m_usUpdatesLeft;
+    uint16_t m_u16PixelUpdates;
+    uint16_t m_u16UpdatesLeft;
 
-    K_USHORT m_usLastX;
-    K_USHORT m_usLastY;
+    uint16_t m_u16LastX;
+    uint16_t m_u16LastY;
 };
 
 

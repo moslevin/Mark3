@@ -50,10 +50,10 @@ public:
      * Initialize the LFSR registers in the object, seeding the random
      * number generator.
      *
-     * \param ulSeed1_ Seed value for LFSR register 1
-     * \param ulSeed2_ Seed value for LFSR register 2
+     * \param u32Seed1_ Seed value for LFSR register 1
+     * \param u32Seed2_ Seed value for LFSR register 2
      */
-    void Seed( K_ULONG ulSeed1_, K_ULONG ulSeed2_ );
+    void Seed( uint32_t u32Seed1_, uint32_t u32Seed2_ );
 
     /*!
      * \brief GetRandom
@@ -62,7 +62,7 @@ public:
      *
      * \return 16-bit random number
      */
-    K_USHORT GetRandom();
+    uint16_t GetRandom();
 
 private:
 
@@ -71,14 +71,14 @@ private:
      *
      * Deep magic to drive the the LFSR state machine
      *
-     * \param pulLFSR_ Pointer to the register to drive
-     * \param ulMask_ Bitmask to apply as an XOR
+     * \param pu32LFSR_ Pointer to the register to drive
+     * \param u32Mask_ Bitmask to apply as an XOR
      * \return new value in the LFSR register
      */
-    K_ULONG Shift( K_ULONG *pulLFSR_, K_ULONG ulMask_ );
+    uint32_t Shift( uint32_t *pu32LFSR_, uint32_t u32Mask_ );
 
-    K_ULONG m_ulLFSR1;
-    K_ULONG m_ulLFSR2;
+    uint32_t m_u32LFSR1;
+    uint32_t m_u32LFSR2;
 
 };
 

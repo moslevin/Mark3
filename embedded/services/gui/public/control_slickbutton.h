@@ -36,20 +36,20 @@ public:
     virtual void Init();
     virtual void Draw();
     virtual GuiReturn_t ProcessEvent( GuiEvent_t *pstEvent_ );
-    virtual void Activate( K_BOOL bActivate_ );
+    virtual void Activate( bool bActivate_ );
 
     void SetFont( Font_t *pstFont_ )        { m_pstFont = pstFont_; }
 
-    void SetCaption( const K_CHAR *szCaption_ )     { m_szCaption = szCaption_;}
+    void SetCaption( const char *szCaption_ )     { m_szCaption = szCaption_;}
 
     void SetCallback( ButtonCallback pfCallback_, void *pvData_ )
         { m_pfCallback = pfCallback_; m_pvCallbackData = pvData_; }
 private:
 
-    const K_CHAR *m_szCaption;
+    const char *m_szCaption;
     Font_t *m_pstFont;
-    K_BOOL    m_bState;
-    K_UCHAR m_ucTimeout;
+    bool    m_bState;
+    uint8_t m_u8Timeout;
 
     void *m_pvCallbackData;
     ButtonCallback m_pfCallback;

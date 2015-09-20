@@ -37,7 +37,7 @@ void KernelTimer::Config(void)
 #if KERNEL_TIMERS_TICKLESS
     TACTL |= ID_3; // Divide-by-8
 #else
-    TACCR0 = (K_USHORT)TIMER_FREQ; // Set interrupts to occur at tick freq.
+    TACCR0 = (uint16_t)TIMER_FREQ; // Set interrupts to occur at tick freq.
 #endif
 }
 
@@ -67,75 +67,75 @@ void KernelTimer::Stop(void)
 }
 
 //---------------------------------------------------------------------------
-K_USHORT KernelTimer::Read(void)
+uint16_t KernelTimer::Read(void)
 {
 #if KERNEL_TIMERS_TICKLESS
-	K_USHORT usVal;
+	uint16_t u16Val;
 	TACCTL0 &= ~MC_1;
-	usVal = TAR;
+	u16Val = TAR;
 	TACCTL0 |= MC_1;
-	return usVal;
+	return u16Val;
 #else
 	return 0;
 #endif
 }
 
 //---------------------------------------------------------------------------
-K_ULONG KernelTimer::SubtractExpiry(K_ULONG ulInterval_)
+uint32_t KernelTimer::SubtractExpiry(uint32_t u32Interval_)
 {
 #if KERNEL_TIMERS_TICKLESS
-	TACCR0 -= ulInterval_;
-	return (K_ULONG)TACCR0;
+	TACCR0 -= u32Interval_;
+	return (uint32_t)TACCR0;
 #else
     return 0;
 #endif
 }
 
 //---------------------------------------------------------------------------
-K_ULONG KernelTimer::TimeToExpiry(void)
+uint32_t KernelTimer::TimeToExpiry(void)
 {
 #if KERNEL_TIMERS_TICKLESS
-	K_USHORT usCurrent = KernelTimer::Read();
-	K_USHORT usMax = TACCR0;
-	if (usMax >= usCurrent)
+	uint16_t u16Current = KernelTimer::Read();
+	uint16_t u16Max = TACCR0;
+	if (u16Max >= u16Current)
 	{
 		return 0;
 	}
-	return (usMax - usCurrent);
+	return (u16Max - u16Current);
 #else
     return 0;
 #endif
 }
 
 //---------------------------------------------------------------------------
-K_ULONG KernelTimer::GetOvertime(void)
+uint32_t KernelTimer::GetOvertime(void)
 {
 #if KERNEL_TIMERS_TICKLESS
-    (K_ULONG)KernelTimer::Read();
+    (uint32_t)KernelTimer::Read();
 #else
     return 0;
 #endif
 }
 
 //---------------------------------------------------------------------------
-K_ULONG KernelTimer::SetExpiry(K_ULONG ulInterval_)
+uint32_t KernelTimer::SetExpiry(uint32_t u32Interval_)
 {
 #if KERNEL_TIMERS_TICKLESS
-	K_ULONG ulRet;
-	if (ulInterval_ >= 65535)
+	uint32_t u32Ret;
+	if (u32Interval_ >= 65535)
 	{
-		ulRet = 65535;
+		u32Ret = 65535;
 	}
 	else
 	{
-		ulRet = ulInterval_;
+		u32Ret = u32Interval_;
 	}
 
-	TACCR0 = (K_USHORT)ulRet;
+	TACCR0 = (uint16_t)u32Ret;
 	TACCTL0 |= CCIE;                // Enable interrupts on TimerA0 CCR
 	TACTL |= MC_1;
 
-	return ulRet;
+	return u32Ret;
 #else
 	return 0;
 #endif
@@ -150,13 +150,13 @@ void KernelTimer::ClearExpiry(void)
 }
 
 //---------------------------------------------------------------------------
-K_UCHAR KernelTimer::DI(void)
+uint8_t KernelTimer::DI(void)
 {
 #if KERNEL_TIMERS_TICKLESS
-	K_UCHAR ucRet = ((TACCTL0 & CCIE) != 0);
+	uint8_t u8Ret = ((TACCTL0 & CCIE) != 0);
 	TACCTL0 &= ~CCIE;
 	TACCTL0 &= ~CCIFG;
-	return ucRet;
+	return u8Ret;
 #else
     return 0;
 #endif
@@ -169,7 +169,7 @@ void KernelTimer::EI(void)
 }
 
 //---------------------------------------------------------------------------
-void KernelTimer::RI(K_BOOL bEnable_)
+void KernelTimer::RI(bool bEnable_)
 {
 #if KERNEL_TIMERS_TICKLESS
 	if (bEnable_)

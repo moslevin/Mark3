@@ -26,7 +26,7 @@ static Thread clMsgThread;
 static K_WORD aucMsgStack[MSG_STACK_SIZE];
 
 static MessageQueue clMsgQ;
-static volatile K_UCHAR ucPassCount = 0;
+static volatile uint8_t u8PassCount = 0;
 
 //===========================================================================
 // Local Defines
@@ -35,20 +35,20 @@ static volatile K_UCHAR ucPassCount = 0;
 void MsgConsumer(void *unused_)
 {
     Message *pclMsg;
-    K_UCHAR i;
+    uint8_t i;
 
     for (i = 0; i < 20; i++)
     {
         pclMsg = clMsgQ.Receive();
-        ucPassCount = 0;
+        u8PassCount = 0;
 
         if (pclMsg)
         {
-            ucPassCount++;
+            u8PassCount++;
         }
         else
         {
-            ucPassCount = 0;
+            u8PassCount = 0;
             continue;
         }
 
@@ -57,31 +57,31 @@ void MsgConsumer(void *unused_)
             case 0:
                 if (0 == pclMsg->GetCode())
                 {
-                    ucPassCount++;
+                    u8PassCount++;
                 }
                 if (0 == pclMsg->GetData())
                 {
-                    ucPassCount++;
+                    u8PassCount++;
                 }
                 break;
             case 1:
                 if (1337 == (pclMsg->GetCode()) )
                 {
-                    ucPassCount++;
+                    u8PassCount++;
                 }
-                if (7331 == (K_USHORT)(pclMsg->GetData()))
+                if (7331 == (uint16_t)(pclMsg->GetData()))
                 {
-                    ucPassCount++;
+                    u8PassCount++;
                 }
 
             case 2:
                 if (0xA0A0== (pclMsg->GetCode()) )
                 {
-                    ucPassCount++;
+                    u8PassCount++;
                 }
-                if (0xC0C0 == (K_USHORT)(pclMsg->GetData()))
+                if (0xC0C0 == (uint16_t)(pclMsg->GetData()))
                 {
-                    ucPassCount++;
+                    u8PassCount++;
                 }
 
                 break;
@@ -121,7 +121,7 @@ TEST(ut_message_tx_rx)
 
     clMsgQ.Send(pclMsg);
 
-    EXPECT_EQUALS(ucPassCount, 3);
+    EXPECT_EQUALS(u8PassCount, 3);
 
     pclMsg = GlobalMessagePool::Pop();
     EXPECT_FAIL_FALSE( pclMsg );
@@ -132,7 +132,7 @@ TEST(ut_message_tx_rx)
 
     clMsgQ.Send(pclMsg);
 
-    EXPECT_EQUALS(ucPassCount, 3);
+    EXPECT_EQUALS(u8PassCount, 3);
 
     pclMsg = GlobalMessagePool::Pop();
     EXPECT_FAIL_FALSE( pclMsg );
@@ -143,7 +143,7 @@ TEST(ut_message_tx_rx)
 
     clMsgQ.Send(pclMsg);
 
-    EXPECT_EQUALS(ucPassCount, 3);
+    EXPECT_EQUALS(u8PassCount, 3);
 
     clMsgThread.Exit();
 }
@@ -166,16 +166,16 @@ TEST(ut_message_exhaust)
 }
 TEST_END
 
-static volatile K_BOOL bTimedOut = false;
+static volatile bool bTimedOut = false;
 //===========================================================================
 void MsgTimed(void *unused)
 {
     Message *pclRet;
-    ucPassCount = 0;
+    u8PassCount = 0;
     pclRet = clMsgQ.Receive(10);
     if (0 == pclRet)
     {
-        ucPassCount++;
+        u8PassCount++;
     }
     else
     {
@@ -185,7 +185,7 @@ void MsgTimed(void *unused)
     pclRet = clMsgQ.Receive(1000);
     if (0 != pclRet)
     {
-        ucPassCount++;
+        u8PassCount++;
     }
     else
     {
@@ -217,12 +217,12 @@ TEST(ut_message_timed_rx)
 
     // Just let the timeout expire
     Thread::Sleep(11);
-    EXPECT_EQUALS( ucPassCount, 1 );
+    EXPECT_EQUALS( u8PassCount, 1 );
 
     // other thread has a timeout set... Don't leave them waiting!
     clMsgQ.Send(pclMsg);
 
-    EXPECT_EQUALS( ucPassCount, 2 );
+    EXPECT_EQUALS( u8PassCount, 2 );
 
     clMsgQ.Send(pclMsg);
 

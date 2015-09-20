@@ -58,8 +58,8 @@ typedef enum
 */
 typedef struct  
 {
-    K_UCHAR ucSize;             //!< Size of the data buffer
-    K_UCHAR *pucData;           //!< Pointer to the data buffer
+    uint8_t u8Size;             //!< Size of the data buffer
+    uint8_t *pu8Data;           //!< Pointer to the data buffer
 }SlipDataVector;
 
 //---------------------------------------------------------------------------
@@ -85,20 +85,20 @@ public:
     Driver *GetDriver() { return m_pclDriver; }
 
     /*!
-        \fn K_USHORT EncodeByte( K_UCHAR ucChar_, K_UCHAR *aucBuf_ )    
+        \fn uint16_t EncodeByte( uint8_t u8Char_, uint8_t *aucBuf_ )    
         
         Encode a single byte into a stream, returning the size of
         the encoded value (either 1 or 2 bytes).
     
-        \param ucChar_ Character to encode
+        \param u8Char_ Character to encode
         \param aucBuf_ Buffer to encode into
         
         \return # bytes read
     */
-    static K_USHORT EncodeByte( K_UCHAR ucChar_, K_UCHAR *aucBuf_ );
+    static uint16_t EncodeByte( uint8_t u8Char_, uint8_t *aucBuf_ );
 
     /*!
-        \fn K_USHORT DecodeByte( K_UCHAR *ucChar_, const K_UCHAR *aucBuf_ )
+        \fn uint16_t DecodeByte( uint8_t *ucChar_, const uint8_t *aucBuf_ )
         
         Decode a byte from a stream into a specified value
         
@@ -106,54 +106,54 @@ public:
         (1 or 2), or 0 if an end-of-packet (192) was encountered.
         
         
-        \param ucChar_ Destination K_CHAR
+        \param u8Char_ Destination char
         \param aucBuf_ Source buffer
         
         \return # bytes read, or 0 on terminating character (192)
     */
-    static K_USHORT DecodeByte( K_UCHAR *ucChar_, const K_UCHAR *aucBuf_ );
+    static uint16_t DecodeByte( uint8_t *ucChar_, const uint8_t *aucBuf_ );
     
     /*!
-        \fn void WriteData( K_UCHAR ucChannel_, const K_CHAR *aucBuf_, K_UCHAR ucLen_ )
+        \fn void WriteData( uint8_t u8Channel_, const char *aucBuf_, uint8_t u8Len_ )
         
         Write a packet of data in the FunkenSlip format.
         
         Returns    the number of bytes from the source array that were processed,
         (1 or 2), or 0 if an end-of-packet (192) was encountered.
         
-        \param ucChannel_ Channel to encode the packet to
+        \param u8Channel_ Channel to encode the packet to
         \param aucBuf_ Payload to encode
-        \param usLen_ Length of payload data
+        \param u16Len_ Length of payload data
     */
-    void WriteData( K_UCHAR ucChannel_, const K_CHAR *aucBuf_, K_USHORT usLen_ );
+    void WriteData( uint8_t u8Channel_, const char *aucBuf_, uint16_t u16Len_ );
 
     /*!
-        \fn K_USHORT ReadData( K_UCHAR *pucChannel_, K_CHAR *aucBuf_, K_USHORT usLen_ )
+        \fn uint16_t ReadData( uint8_t *pu8Channel_, char *aucBuf_, uint16_t u16Len_ )
         
         Read a packet from a specified device, parse, and copy to a specified 
         output buffer.
         
-        \param pucChannel_ Pointer to a uchar that stores the message channel
+        \param pu8Channel_ Pointer to a u8har that stores the message channel
         \param aucBuf_ Buffer where the message will be decoded
-        \param usLen_ Length of the buffer to decode
+        \param u16Len_ Length of the buffer to decode
         
         \return data bytes read, 0 on failure.
     */
-    K_USHORT ReadData( K_UCHAR *pucChannel_, K_CHAR *aucBuf_, K_USHORT usLen_ );
+    uint16_t ReadData( uint8_t *pu8Channel_, char *aucBuf_, uint16_t u16Len_ );
 
     /*!
-        \fn void WriteVector( K_UCHAR ucChannel_, SlipDataVector_t *astData, K_USHORT usLen_ )
+        \fn void WriteVector( uint8_t u8Channel_, SlipDataVector_t *astData, uint16_t u16Len_ )
         
         Write a single message composed of multiple data-vector fragments.  
         
         Allows for transmitting complex data structures without requiring buffering.
         This operation is zero-copy.
         
-        \param ucChannel_ Message channel
+        \param u8Channel_ Message channel
         \param astData_ Pointer to the data vector 
-        \param usLen_ Number of elements in the data vector
+        \param u16Len_ Number of elements in the data vector
     */
-    void WriteVector( K_UCHAR ucChannel_, SlipDataVector *astData_, K_USHORT usLen_ );
+    void WriteVector( uint8_t u8Channel_, SlipDataVector *astData_, uint16_t u16Len_ );
     
     /*!
         \fn void SendAck()        
@@ -170,7 +170,7 @@ public:
     void SendNack();
     
 private:
-    void WriteByte(K_UCHAR ucData_);    
+    void WriteByte(uint8_t u8Data_);    
     Driver *m_pclDriver;    
 };
 

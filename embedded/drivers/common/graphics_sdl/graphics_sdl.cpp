@@ -27,17 +27,17 @@ See license.txt for more information
 //---------------------------------------------------------------------------
 void GraphicsSDL::Init(void)
 {
-    m_usResX = 128;
-    m_usResY = 128;
-    m_ucBPP = 32;
-    m_usLeft = 0;
-    m_usRight = 127;
-    m_usTop = 0;
-    m_usBottom = 127;
+    m_u16Res16X = 128;
+    m_u16Res16Y = 128;
+    m_u8BPP = 32;
+    m_u16Left = 0;
+    m_u16Right = 127;
+    m_u16Top = 0;
+    m_u16Bottom = 127;
 }
 
 //---------------------------------------------------------------------------
-K_UCHAR GraphicsSDL::Open()
+uint8_t GraphicsSDL::Open()
 {
     SDL_Init( SDL_INIT_EVERYTHING );
     m_pstScreen = SDL_SetVideoMode( 128, 128, 32, SDL_SWSURFACE );
@@ -45,7 +45,7 @@ K_UCHAR GraphicsSDL::Open()
 }
 
 //---------------------------------------------------------------------------
-K_UCHAR GraphicsSDL::Close()
+uint8_t GraphicsSDL::Close()
 {
     if (m_pstScreen)
     {
@@ -59,11 +59,11 @@ K_UCHAR GraphicsSDL::Close()
 void GraphicsSDL::DrawPixel(DrawPoint_t *pstPoint_)
 {
     uint32_t *pixels = (uint32_t*)m_pstScreen->pixels;
-    if (((pstPoint_->usX < m_usResX) && (pstPoint_->usY < m_usResY)) &&
-        ((pstPoint_->usX >= m_usLeft ) && (pstPoint_->usY >= m_usTop)) &&
-        ((pstPoint_->usX <= m_usRight) && (pstPoint_->usY <= m_usBottom)))
+    if (((pstPoint_->u16X < m_u16Res16X) && (pstPoint_->u16Y < m_u16Res16Y)) &&
+        ((pstPoint_->u16X >= m_u16Left ) && (pstPoint_->u16Y >= m_u16Top)) &&
+        ((pstPoint_->u16X <= m_u16Right) && (pstPoint_->u16Y <= m_u16Bottom)))
     {
-        pixels[ ((uint32_t)(pstPoint_->usY) * m_pstScreen->w) + (uint32_t)(pstPoint_->usX) ] = (uint32_t)pstPoint_->uColor;
+        pixels[ ((uint32_t)(pstPoint_->u16Y) * m_pstScreen->w) + (uint32_t)(pstPoint_->u16X) ] = (uint32_t)pstPoint_->uColor;
     }
 }
 
@@ -71,7 +71,7 @@ void GraphicsSDL::DrawPixel(DrawPoint_t *pstPoint_)
 void GraphicsSDL::ReadPixel(DrawPoint_t *pstPoint_)
 {
     uint32_t *pixels = (uint32_t*)m_pstScreen->pixels;
-    pstPoint_->uColor = (COLOR)pixels[ ((uint32_t)(pstPoint_->usY) * m_pstScreen->w) + (uint32_t)(pstPoint_->usX) ];
+    pstPoint_->uColor = (COLOR)pixels[ ((uint32_t)(pstPoint_->u16Y) * m_pstScreen->w) + (uint32_t)(pstPoint_->u16X) ];
 }
 
 //---------------------------------------------------------------------------

@@ -61,62 +61,62 @@ void KernelTimer::Stop(void)
 }
 
 //---------------------------------------------------------------------------
-K_USHORT KernelTimer::Read(void)
+uint16_t KernelTimer::Read(void)
 {
-    volatile K_USHORT usRead1;
-    volatile K_USHORT usRead2;
+    volatile uint16_t u16Read1;
+    volatile uint16_t u16Read2;
     
     do {
-        usRead1 = TCC1.CNT;
-        usRead2 = TCC1.CNT;            
-    } while (usRead1 != usRead2);
+        u16Read1 = TCC1.CNT;
+        u16Read2 = TCC1.CNT;            
+    } while (u16Read1 != u16Read2);
     
-    return usRead1;    
+    return u16Read1;    
 }
 
 //---------------------------------------------------------------------------
-K_ULONG KernelTimer::SubtractExpiry(K_ULONG ulInterval_)
+uint32_t KernelTimer::SubtractExpiry(uint32_t u32Interval_)
 {
-    TCC1.PER -= (K_USHORT)ulInterval_;        
-    return (K_ULONG)TCC1.PER;
+    TCC1.PER -= (uint16_t)u32Interval_;        
+    return (uint32_t)TCC1.PER;
 }
 
 //---------------------------------------------------------------------------
-K_ULONG KernelTimer::TimeToExpiry(void)
+uint32_t KernelTimer::TimeToExpiry(void)
 {
-    K_USHORT usRead = KernelTimer::Read();
-    K_USHORT usOCR1A = TCC1.PER;
+    uint16_t u16Read = KernelTimer::Read();
+    uint16_t u16OCR1A = TCC1.PER;
 
-    if (usRead >= usOCR1A)
+    if (u16Read >= u16OCR1A)
     {
         return 0;
     }
     else
     {
-        return (K_ULONG)(usOCR1A - usRead);    
+        return (uint32_t)(u16OCR1A - u16Read);    
     }
 }
 
 //---------------------------------------------------------------------------
-K_ULONG KernelTimer::GetOvertime(void)
+uint32_t KernelTimer::GetOvertime(void)
 {
     return KernelTimer::Read();
 }
 
 //---------------------------------------------------------------------------
-K_ULONG KernelTimer::SetExpiry(K_ULONG ulInterval_)
+uint32_t KernelTimer::SetExpiry(uint32_t u32Interval_)
 {
-    K_USHORT usSetInterval;    
-    if (ulInterval_ > 65535)
+    uint16_t u16SetInterval;    
+    if (u32Interval_ > 65535)
     {
-        usSetInterval = 65535;
+        u16SetInterval = 65535;
     } 
     else 
     {
-        usSetInterval = (K_USHORT)ulInterval_ ;        
+        u16SetInterval = (uint16_t)u32Interval_ ;        
     }    
-    TCC1.PER = usSetInterval;
-    return (K_ULONG)usSetInterval;
+    TCC1.PER = u16SetInterval;
+    return (uint32_t)u16SetInterval;
 }
 
 //---------------------------------------------------------------------------
@@ -126,9 +126,9 @@ void KernelTimer::ClearExpiry(void)
 }
 
 //---------------------------------------------------------------------------
-K_UCHAR KernelTimer::DI(void)
+uint8_t KernelTimer::DI(void)
 {
-    K_BOOL bEnabled = ((TCC1.INTCTRLA & 0X01) != 0);
+    bool bEnabled = ((TCC1.INTCTRLA & 0X01) != 0);
     TCC1.INTCTRLA &= ~(0x01); // Disable the interrupt
     return bEnabled;
 }
@@ -140,7 +140,7 @@ void KernelTimer::EI(void)
 }
 
 //---------------------------------------------------------------------------
-void KernelTimer::RI(K_BOOL bEnable_)
+void KernelTimer::RI(bool bEnable_)
 {
     if (bEnable_)    
     {

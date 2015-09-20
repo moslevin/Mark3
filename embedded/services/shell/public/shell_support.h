@@ -56,13 +56,13 @@ See license.txt for more information
     The possible Option_t structures would be:
 
         pstStart => Array containing tokens for -opt1, a, b, c
-        ucCount  => 4 (4 tokens, including the option token, "-opt1")
+        u8Count  => 4 (4 tokens, including the option token, "-opt1")
 
         pstStart => Array containing tokens for -opt2, d, e, f
-        ucCount  => 4 (4 tokens, including the option token, "-opt2")
+        u8Count  => 4 (4 tokens, including the option token, "-opt2")
 
         pstStart => Array containing tokens for -opt, 3
-        ucCount  => 2 (2 tokens, including the option token, "-opt3")
+        u8Count  => 2 (2 tokens, including the option token, "-opt3")
 
     in the case of:
 
@@ -71,19 +71,19 @@ See license.txt for more information
     Possible token values would be:
 
         pstStart => Array containing tokens for a
-        ucCount  => 1
+        u8Count  => 1
 
         pstStart => Array containing tokens for b
-        ucCount  => 1
+        u8Count  => 1
 
         pstStart => Array containing tokens for c
-        ucCount  => 1
+        u8Count  => 1
 
 */
 typedef struct
 {
     Token_t *pstStart;  //!< Pointer to the beginning of a token array contain the option and its arguments
-    K_UCHAR ucCount;    //!< Number of tokens in the token array
+    uint8_t u8Count;    //!< Number of tokens in the token array
 } Option_t;
 
 //---------------------------------------------------------------------------
@@ -93,12 +93,12 @@ typedef struct
 typedef struct
 {
     Token_t *pastTokenList;      //!< Pointer to the list of tokens in the commandline
-    K_UCHAR ucTokenCount;        //!< Count of tokens in the token list
+    uint8_t u8TokenCount;        //!< Count of tokens in the token list
 
     Token_t *pstCommand;        //!< Pointer to the token corresponding to the shell command
 
     Option_t astOptions[12];    //!< Option strucure array built from the token list
-    K_UCHAR ucNumOptions;       //!< Number of options parsed from the token list
+    uint8_t u8NumOptions;       //!< Number of options parsed from the token list
 } CommandLine_t;
 
 //---------------------------------------------------------------------------
@@ -107,7 +107,7 @@ typedef struct
  * by users of this infrastructure.  Commands return a signed 8-bit result,
  * and take a command-line argument structure as the first and only argument.
  */
-typedef K_CHAR (*fp_internal_command)( CommandLine_t *pstCommandLine_ );
+typedef char (*fp_internal_command)( CommandLine_t *pstCommandLine_ );
 
 //---------------------------------------------------------------------------
 /*!
@@ -116,7 +116,7 @@ typedef K_CHAR (*fp_internal_command)( CommandLine_t *pstCommandLine_ );
 */
 typedef struct
 {
-    const K_CHAR *szCommand;        //!< Command name
+    const char *szCommand;        //!< Command name
     fp_internal_command pfHandler;  //!< Command handler function
 } ShellCommand_t;
 
@@ -139,7 +139,7 @@ public:
      * \param pstCommands_  Pointer to an array of shell commands to execute against
      * \return 1 on success, 0 on error (command not found)
      */
-    static K_CHAR RunCommand( CommandLine_t *pstCommand_, const ShellCommand_t *pastShellCommands_ );
+    static char RunCommand( CommandLine_t *pstCommand_, const ShellCommand_t *pastShellCommands_ );
 
     //---------------------------------------------------------------------------
     /*!
@@ -152,7 +152,7 @@ public:
      * \param szDest_       Pointer to a destination string which will contain the
      *                      parsed result string
      */
-    static void UnescapeToken( Token_t *pstToken_, K_CHAR *szDest_ );
+    static void UnescapeToken( Token_t *pstToken_, char *szDest_ );
 
     //---------------------------------------------------------------------------
     /*!
@@ -167,7 +167,7 @@ public:
      * \return               Pointer to the command line option on match, or 0 on
      *                       faiulre.
      */
-    static Option_t *CheckForOption( CommandLine_t *pstCommand_, const K_CHAR *szOption_ );
+    static Option_t *CheckForOption( CommandLine_t *pstCommand_, const char *szOption_ );
 
     //---------------------------------------------------------------------------
     /*!
@@ -175,12 +175,12 @@ public:
      *                              This operation is non-destructive to the source token
      *                              array.
      * \param pastTokens_           Pointer to the token array to process
-     * \param ucTokens_             Number of tokens in the token array
+     * \param u8Tokens_             Number of tokens in the token array
      * \param pstCommand_           Pointer to the CommandLine_t object which will represent
      *                              the shell command and its arguments.
      * \return  Number of options processed
      */
-    static K_CHAR TokensToCommandLine(Token_t *pastTokens_, K_UCHAR ucTokens_, CommandLine_t *pstCommand_);
+    static char TokensToCommandLine(Token_t *pastTokens_, uint8_t u8Tokens_, CommandLine_t *pstCommand_);
 
 };
 

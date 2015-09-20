@@ -37,14 +37,14 @@ static Semaphore clTimerSem;
 static ProfileTimer clProfileTimer;
 static ProfileTimer clProfileTimer2;
 static ProfileTimer clProfileTimer3;
-static K_ULONG ulTimeVal;
-static K_ULONG ulTempTime;
-static volatile K_ULONG ulCallbackCount = 0;
+static uint32_t u32TimeVal;
+static uint32_t u32TempTime;
+static volatile uint32_t u32CallbackCount = 0;
 
 static void TimerCallback( Thread *pclOwner_, void *pvVal_ )
 {
     clTimerSem.Post();
-    ulCallbackCount++;
+    u32CallbackCount++;
 }
 
 //===========================================================================
@@ -62,13 +62,13 @@ TEST(ut_timer_tolerance)
     clTimerSem.Pend();
     clProfileTimer.Stop();
 
-    ulTimeVal = clProfileTimer.GetCurrent() * CLOCK_DIVIDE;
-    ulTempTime = SYSTEM_FREQ / 1000;
-    EXPECT_GT(ulTimeVal, ulTempTime);
+    u32TimeVal = clProfileTimer.GetCurrent() * CLOCK_DIVIDE;
+    u32TempTime = SYSTEM_FREQ / 1000;
+    EXPECT_GT(u32TimeVal, u32TempTime);
 
     // Test point - 1ms timer should be no more than 3ms
-    ulTempTime *= 3;
-    EXPECT_LT(ulTimeVal, ulTempTime);
+    u32TempTime *= 3;
+    EXPECT_LT(u32TimeVal, u32TempTime);
 
     // Test point - 10ms timer should take at least 10ms
     clProfileTimer.Init();
@@ -77,14 +77,14 @@ TEST(ut_timer_tolerance)
     clTimerSem.Pend();
     clProfileTimer.Stop();
 
-    ulTimeVal = clProfileTimer.GetCurrent() * CLOCK_DIVIDE;
-    ulTempTime = SYSTEM_FREQ / 100;
+    u32TimeVal = clProfileTimer.GetCurrent() * CLOCK_DIVIDE;
+    u32TempTime = SYSTEM_FREQ / 100;
 
-    EXPECT_GT(ulTimeVal, ulTempTime);
+    EXPECT_GT(u32TimeVal, u32TempTime);
 
     // Test point - 10ms timer should be no more than 12ms
-    ulTempTime += 2* (SYSTEM_FREQ / 1000);
-    EXPECT_LT(ulTimeVal, ulTempTime);
+    u32TempTime += 2* (SYSTEM_FREQ / 1000);
+    EXPECT_LT(u32TimeVal, u32TempTime);
 
     // Test point - 100ms timer should take at least 100ms
     clProfileTimer.Init();
@@ -93,14 +93,14 @@ TEST(ut_timer_tolerance)
     clTimerSem.Pend();
     clProfileTimer.Stop();
 
-    ulTimeVal = clProfileTimer.GetCurrent() * CLOCK_DIVIDE;
-    ulTempTime = SYSTEM_FREQ / 10;
+    u32TimeVal = clProfileTimer.GetCurrent() * CLOCK_DIVIDE;
+    u32TempTime = SYSTEM_FREQ / 10;
 
-    EXPECT_GT(ulTimeVal, ulTempTime);
+    EXPECT_GT(u32TimeVal, u32TempTime);
 
     // Test point - 100ms timer should be no more than 102ms
-    ulTempTime += 2 * (SYSTEM_FREQ / 1000);
-    EXPECT_LT(ulTimeVal, ulTempTime);
+    u32TempTime += 2 * (SYSTEM_FREQ / 1000);
+    EXPECT_LT(u32TimeVal, u32TempTime);
 
     // Test point - 1000ms timer should take at least 100ms
     clProfileTimer.Init();
@@ -109,14 +109,14 @@ TEST(ut_timer_tolerance)
     clTimerSem.Pend();
     clProfileTimer.Stop();
 
-    ulTimeVal = clProfileTimer.GetCurrent() * CLOCK_DIVIDE;
-    ulTempTime = SYSTEM_FREQ;
+    u32TimeVal = clProfileTimer.GetCurrent() * CLOCK_DIVIDE;
+    u32TempTime = SYSTEM_FREQ;
 
-    EXPECT_GT(ulTimeVal, ulTempTime);
+    EXPECT_GT(u32TimeVal, u32TempTime);
 
     // Test point - 1000ms timer should be no more than 1002ms
-    ulTempTime += 2* (SYSTEM_FREQ / 1000);
-    EXPECT_LT(ulTimeVal, ulTempTime);
+    u32TempTime += 2* (SYSTEM_FREQ / 1000);
+    EXPECT_LT(u32TimeVal, u32TempTime);
 
     Profiler::Stop();
 }
@@ -130,7 +130,7 @@ TEST(ut_timer_longrun)
     // so high resolution).  So, use sleeps and multiple iterations
     // w/averaging in order to verify.
 
-    K_ULONG ulSleepCount = 0;
+    uint32_t u32SleepCount = 0;
     Profiler::Start();
     clTimerSem.Init(0, 1);
 
@@ -138,26 +138,26 @@ TEST(ut_timer_longrun)
     // expires after 10 seconds.
     clProfileTimer.Init();
     clTimer1.Start( false, 10000, TimerCallback, 0 );
-    ulCallbackCount = 0;
+    u32CallbackCount = 0;
 
-    while (!ulCallbackCount)
+    while (!u32CallbackCount)
     {
         clProfileTimer.Start();
         Thread::Sleep(100);
         clProfileTimer.Stop();
-        ulSleepCount++;
+        u32SleepCount++;
     }
 
     clProfileTimer.Stop();
 
-    ulTimeVal = clProfileTimer.GetAverage() * CLOCK_DIVIDE * ulSleepCount;
-    ulTempTime = SYSTEM_FREQ * 10;
+    u32TimeVal = clProfileTimer.GetAverage() * CLOCK_DIVIDE * u32SleepCount;
+    u32TempTime = SYSTEM_FREQ * 10;
 
-    EXPECT_GT(ulTimeVal, ulTempTime);
+    EXPECT_GT(u32TimeVal, u32TempTime);
 
     // Test point - 100ms accuracy over 10 seconds
-    ulTempTime += SYSTEM_FREQ / 10;
-    EXPECT_LT(ulTimeVal, ulTempTime);
+    u32TempTime += SYSTEM_FREQ / 10;
+    EXPECT_LT(u32TimeVal, u32TempTime);
 
     Profiler::Stop();
 }
@@ -169,20 +169,20 @@ TEST(ut_timer_repeat)
     // operations (1.2 seconds is about as high as we get, since it's
     // so high resolution).  So, use sleeps and multiple iterations
     // w/averaging in order to verify.
-    K_ULONG ulSleepCount = 0;
+    uint32_t u32SleepCount = 0;
     Profiler::Start();
     clTimerSem.Init(0, 1);
 
     // Repeated timer case - run a 10ms timer 100 times and measure
     // accuracy.  Average iteration must be > 10ms
-    ulCallbackCount = 0;
+    u32CallbackCount = 0;
 
     clProfileTimer.Init();
     clProfileTimer.Start();
 
     clTimer1.Start( true, 10, TimerCallback, 0 );
 
-    while (ulCallbackCount < 100)
+    while (u32CallbackCount < 100)
     {
         clTimerSem.Pend();
     }
@@ -190,30 +190,30 @@ TEST(ut_timer_repeat)
     clProfileTimer.Stop();
     clTimer1.Stop();
 
-    ulTimeVal = clProfileTimer.GetCurrent() * CLOCK_DIVIDE;
-    ulTempTime = SYSTEM_FREQ;
+    u32TimeVal = clProfileTimer.GetCurrent() * CLOCK_DIVIDE;
+    u32TempTime = SYSTEM_FREQ;
 
-    EXPECT_GT(ulTimeVal, ulTempTime);
+    EXPECT_GT(u32TimeVal, u32TempTime);
 
 #if KERNEL_TIMERS_TICKLESS
     // Test point - 50ms (5%) maximum tolerance for callback overhead, etc.
-    ulTempTime += SYSTEM_FREQ / 20;
-    EXPECT_LT(ulTimeVal, ulTempTime);
+    u32TempTime += SYSTEM_FREQ / 20;
+    EXPECT_LT(u32TimeVal, u32TempTime);
 #else
     // Test point - 100ms (10%) maximum tolerance for callback overhead, etc.
-    ulTempTime += SYSTEM_FREQ / 10;
-    EXPECT_LT(ulTimeVal, ulTempTime);
+    u32TempTime += SYSTEM_FREQ / 10;
+    EXPECT_LT(u32TimeVal, u32TempTime);
 #endif
 
 #if 0
     // Debug code to print out the profiling times
     Driver *pclDriver = DriverList::FindByPath("/dev/tty");
-    K_CHAR acData[13];
-    MemUtil::DecimalToString(ulTimeVal, acData);
-    pclDriver->Write( MemUtil::StringLength(acData), (K_UCHAR*)acData);
-    pclDriver->Write(1, (K_UCHAR*)(" "));
-    MemUtil::DecimalToString(ulTempTime, acData);
-    pclDriver->Write( MemUtil::StringLength(acData), (K_UCHAR*)acData);
+    char acData[13];
+    MemUtil::DecimalToString(u32TimeVal, acData);
+    pclDriver->Write( MemUtil::StringLength(acData), (uint8_t*)acData);
+    pclDriver->Write(1, (uint8_t*)(" "));
+    MemUtil::DecimalToString(u32TempTime, acData);
+    pclDriver->Write( MemUtil::StringLength(acData), (uint8_t*)acData);
 #endif
 
     Profiler::Stop();
@@ -252,28 +252,28 @@ TEST(ut_timer_multi)
     clProfileTimer2.Stop();
 
     // Test Point - Timer 1 expired @ 100ms, with a 1 ms tolerance
-    ulTimeVal = clProfileTimer.GetCurrent() * CLOCK_DIVIDE;
-    ulTempTime = SYSTEM_FREQ / 10;
-    EXPECT_GT(ulTimeVal, ulTempTime);
+    u32TimeVal = clProfileTimer.GetCurrent() * CLOCK_DIVIDE;
+    u32TempTime = SYSTEM_FREQ / 10;
+    EXPECT_GT(u32TimeVal, u32TempTime);
 
-    ulTempTime += SYSTEM_FREQ / 1000;
-    EXPECT_LT(ulTimeVal, ulTempTime);
+    u32TempTime += SYSTEM_FREQ / 1000;
+    EXPECT_LT(u32TimeVal, u32TempTime);
 
     // Test Point - Timer 2 expired @ 200ms, with a 1 ms tolerance
-    ulTimeVal = clProfileTimer2.GetCurrent() * CLOCK_DIVIDE;
-    ulTempTime = SYSTEM_FREQ / 5;
-    EXPECT_GT(ulTimeVal, ulTempTime);
+    u32TimeVal = clProfileTimer2.GetCurrent() * CLOCK_DIVIDE;
+    u32TempTime = SYSTEM_FREQ / 5;
+    EXPECT_GT(u32TimeVal, u32TempTime);
 
-    ulTempTime += SYSTEM_FREQ / 1000;
-    EXPECT_LT(ulTimeVal, ulTempTime);
+    u32TempTime += SYSTEM_FREQ / 1000;
+    EXPECT_LT(u32TimeVal, u32TempTime);
 
     // Test Point - Timer 3 expired @ 50ms, with a 1 ms tolerance
-    ulTimeVal = clProfileTimer3.GetCurrent() * CLOCK_DIVIDE;
-    ulTempTime = SYSTEM_FREQ / 20;
-    EXPECT_GT(ulTimeVal, ulTempTime);
+    u32TimeVal = clProfileTimer3.GetCurrent() * CLOCK_DIVIDE;
+    u32TempTime = SYSTEM_FREQ / 20;
+    EXPECT_GT(u32TimeVal, u32TempTime);
 
-    ulTempTime += SYSTEM_FREQ / 1000;
-    EXPECT_LT(ulTimeVal, ulTempTime);
+    u32TempTime += SYSTEM_FREQ / 1000;
+    EXPECT_LT(u32TimeVal, u32TempTime);
 
     Profiler::Stop();
 }

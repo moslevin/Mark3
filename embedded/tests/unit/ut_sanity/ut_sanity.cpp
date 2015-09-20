@@ -20,7 +20,7 @@
 #include <avr/sleep.h>
 
 //---------------------------------------------------------------------------
-static volatile K_UCHAR ucTestVal;
+static volatile uint8_t u8TestVal;
 
 //---------------------------------------------------------------------------
 static Mutex clMutex;
@@ -45,34 +45,34 @@ static K_WORD aucTestStack3[TEST_STACK3_SIZE];
 void TestSemThread(Semaphore *pstSem_)
 {
     pstSem_->Pend();    
-    if (ucTestVal != 0x12)
+    if (u8TestVal != 0x12)
     {
-        ucTestVal = 0xFF;
+        u8TestVal = 0xFF;
     }
     else
     {
-        ucTestVal = 0x21;
+        u8TestVal = 0x21;
     }
 
     pstSem_->Pend();    
-    if (ucTestVal != 0x32)
+    if (u8TestVal != 0x32)
     {
-        ucTestVal = 0xFF;
+        u8TestVal = 0xFF;
     }
     else
     {
-        ucTestVal = 0x23;
+        u8TestVal = 0x23;
     }
 
     pstSem_->Pend();
 
-    if (ucTestVal != 0x45)
+    if (u8TestVal != 0x45)
     {
-        ucTestVal = 0xFF;
+        u8TestVal = 0xFF;
     }
     else
     {
-        ucTestVal = 0x54;
+        u8TestVal = 0x54;
     }
     pstSem_->Pend();
 }
@@ -92,21 +92,21 @@ TEST(ut_sanity_sem)
     clTestThread1.Init(aucTestStack1, TEST_STACK1_SIZE, 1, (ThreadEntry_t)TestSemThread, (void*)&clSemaphore);
     clTestThread1.Start();
 
-    ucTestVal = 0x12;
+    u8TestVal = 0x12;
 
     clSemaphore.Post();    
 
-    EXPECT_EQUALS(ucTestVal, 0x21);
+    EXPECT_EQUALS(u8TestVal, 0x21);
 
-    ucTestVal = 0x32;
+    u8TestVal = 0x32;
     clSemaphore.Post();
 
-    EXPECT_EQUALS(ucTestVal, 0x23);
+    EXPECT_EQUALS(u8TestVal, 0x23);
 
-    ucTestVal = 0x45;
+    u8TestVal = 0x45;
     clSemaphore.Post();
 
-    EXPECT_EQUALS(ucTestVal, 0x54);
+    EXPECT_EQUALS(u8TestVal, 0x54);
 
     clTestThread1.Stop();
     clTestThread1.Exit();
@@ -167,7 +167,7 @@ void TestSleepThread(void *pvArg_)
 {
     while(1)
     {
-        ucTestVal = 0xAA;
+        u8TestVal = 0xAA;
     }
 }
 
@@ -182,7 +182,7 @@ TEST(ut_sanity_sleep)
 {
     Scheduler::GetCurrentThread()->SetPriority(3);
     
-    ucTestVal = 0x00;
+    u8TestVal = 0x00;
     
     // Create a lower-priority thread that sets the test value to a known
     // cookie.
@@ -192,7 +192,7 @@ TEST(ut_sanity_sleep)
     // Sleep, when we wake up check the test value
     Thread::Sleep(5);
 
-    EXPECT_EQUALS(ucTestVal, 0xAA);
+    EXPECT_EQUALS(u8TestVal, 0xAA);
 
     clTestThread1.Exit();
     
@@ -206,13 +206,13 @@ void TestMutexThread(Mutex *pclMutex_)
 {
     pclMutex_->Claim();
     
-    if (ucTestVal != 0xDC)
+    if (u8TestVal != 0xDC)
     {
-        ucTestVal = 0xAA;
+        u8TestVal = 0xAA;
     }
     else
     {
-        ucTestVal = 0xAC;
+        u8TestVal = 0xAC;
     }
     pclMutex_->Release();
 
@@ -245,7 +245,7 @@ void TestTimedMutexThreadLong(Mutex *pclMutex_)
 // Mutex test
 //  Create a mutex and claim it.  While the mutex is owned, create a new
 //  thread at a higher priority, which tries to claim the mutex itself.
-//  Use a global variable to verify that the threads do not proceed outside
+//  use a global variable to verify that the threads do not proceed outside
 //  of the control.
 //---------------------------------------------------------------------------
 //void UT_MutexTest(void)
@@ -253,17 +253,17 @@ TEST(ut_sanity_mutex)
 {
     clMutex.Init();
 
-    ucTestVal = 0x10;
+    u8TestVal = 0x10;
     clMutex.Claim();
 
     clTestThread1.Init(aucTestStack1, TEST_STACK1_SIZE, 2, (ThreadEntry_t)TestMutexThread, (void*)&clMutex );
     clTestThread1.Start();
     
-    ucTestVal = 0xDC;
+    u8TestVal = 0xDC;
     
     clMutex.Release();
 
-    EXPECT_EQUALS(ucTestVal, 0xAC);
+    EXPECT_EQUALS(u8TestVal, 0xAC);
 
     clMutex.Init();
     
@@ -478,11 +478,11 @@ TEST(ut_sanity_msg)
 TEST_END
 
 //---------------------------------------------------------------------------
-void TestRRThread(volatile K_ULONG *pulCounter_)
+void TestRRThread(volatile uint32_t *pu32Counter_)
 {
     while (1)
     {
-        (*pulCounter_)++;
+        (*pu32Counter_)++;
     }
 }
 
@@ -496,16 +496,16 @@ void TestRRThread(volatile K_ULONG *pulCounter_)
 //void UT_RoundRobinTest(void)
 TEST(ut_sanity_rr)
 {
-    volatile K_ULONG ulCounter1 = 0;
-    volatile K_ULONG ulCounter2 = 0;
-    volatile K_ULONG ulCounter3 = 0;
-    K_ULONG ulDelta;
+    volatile uint32_t u32Counter1 = 0;
+    volatile uint32_t u32Counter2 = 0;
+    volatile uint32_t u32Counter3 = 0;
+    uint32_t u32Delta;
 
     Scheduler::GetCurrentThread()->SetPriority(3);
     
-    clTestThread1.Init(aucTestStack1, TEST_STACK1_SIZE, 2, (ThreadEntry_t)TestRRThread, (void*)&ulCounter1 );
-    clTestThread2.Init(aucTestStack2, TEST_STACK2_SIZE, 2, (ThreadEntry_t)TestRRThread, (void*)&ulCounter2 );
-    clTestThread3.Init(aucTestStack3, TEST_STACK3_SIZE, 2, (ThreadEntry_t)TestRRThread, (void*)&ulCounter3 );
+    clTestThread1.Init(aucTestStack1, TEST_STACK1_SIZE, 2, (ThreadEntry_t)TestRRThread, (void*)&u32Counter1 );
+    clTestThread2.Init(aucTestStack2, TEST_STACK2_SIZE, 2, (ThreadEntry_t)TestRRThread, (void*)&u32Counter2 );
+    clTestThread3.Init(aucTestStack3, TEST_STACK3_SIZE, 2, (ThreadEntry_t)TestRRThread, (void*)&u32Counter3 );
     
     clTestThread1.Start();
     clTestThread2.Start();
@@ -514,29 +514,29 @@ TEST(ut_sanity_rr)
     // Sleep for a while to let the other threads execute
     Thread::Sleep(120);  // Must be modal to the worker thread quantums
 
-    if (ulCounter1 > ulCounter2)
+    if (u32Counter1 > u32Counter2)
     {
-        ulDelta = ulCounter1 - ulCounter2;
+        u32Delta = u32Counter1 - u32Counter2;
     }
     else
     {
-        ulDelta = ulCounter2 - ulCounter1;
+        u32Delta = u32Counter2 - u32Counter1;
     }
 
     // Give or take...
-    EXPECT_FALSE(ulDelta > ulCounter1/2);
+    EXPECT_FALSE(u32Delta > u32Counter1/2);
 
-    if (ulCounter1 > ulCounter3)
+    if (u32Counter1 > u32Counter3)
     {
-        ulDelta = ulCounter1 - ulCounter3;
+        u32Delta = u32Counter1 - u32Counter3;
     }
     else
     {
-        ulDelta = ulCounter3 - ulCounter1;
+        u32Delta = u32Counter3 - u32Counter1;
     }
 
     // Give or take...
-    EXPECT_FALSE(ulDelta > ulCounter1/2);
+    EXPECT_FALSE(u32Delta > u32Counter1/2);
 
     clTestThread1.Exit();
     clTestThread2.Exit();
@@ -550,16 +550,16 @@ TEST_END
 //void UT_QuantumTest(void)
 TEST(ut_sanity_quantum)
 {
-    volatile K_ULONG ulCounter1 = 0;
-    volatile K_ULONG ulCounter2 = 0;
-    volatile K_ULONG ulCounter3 = 0;
-    K_ULONG ulDelta;
+    volatile uint32_t u32Counter1 = 0;
+    volatile uint32_t u32Counter2 = 0;
+    volatile uint32_t u32Counter3 = 0;
+    uint32_t u32Delta;
 
     Scheduler::GetCurrentThread()->SetPriority(3);
     
-    clTestThread1.Init(aucTestStack1, TEST_STACK1_SIZE, 2, (ThreadEntry_t)TestRRThread, (void*)&ulCounter1 );
-    clTestThread2.Init(aucTestStack2, TEST_STACK2_SIZE, 2, (ThreadEntry_t)TestRRThread, (void*)&ulCounter2 );
-    clTestThread3.Init(aucTestStack3, TEST_STACK3_SIZE, 2, (ThreadEntry_t)TestRRThread, (void*)&ulCounter3 );
+    clTestThread1.Init(aucTestStack1, TEST_STACK1_SIZE, 2, (ThreadEntry_t)TestRRThread, (void*)&u32Counter1 );
+    clTestThread2.Init(aucTestStack2, TEST_STACK2_SIZE, 2, (ThreadEntry_t)TestRRThread, (void*)&u32Counter2 );
+    clTestThread3.Init(aucTestStack3, TEST_STACK3_SIZE, 2, (ThreadEntry_t)TestRRThread, (void*)&u32Counter3 );
     
     clTestThread1.SetQuantum(10);
     clTestThread2.SetQuantum(20);
@@ -573,32 +573,32 @@ TEST(ut_sanity_quantum)
     Thread::Sleep(180);  // Must be modal to the worker thread quantums
 
     // Kill the worker threads
-    ulCounter2 /= 2;
-    ulCounter3 /= 3;
+    u32Counter2 /= 2;
+    u32Counter3 /= 3;
     
-    if (ulCounter1 > ulCounter2)
+    if (u32Counter1 > u32Counter2)
     {
-        ulDelta = ulCounter1 - ulCounter2;
+        u32Delta = u32Counter1 - u32Counter2;
     }
     else
     {
-        ulDelta = ulCounter2 - ulCounter1;
+        u32Delta = u32Counter2 - u32Counter1;
     }
 
     // Give or take...
-    EXPECT_FALSE(ulDelta > ulCounter1/2);
+    EXPECT_FALSE(u32Delta > u32Counter1/2);
 
-    if (ulCounter1 > ulCounter3)
+    if (u32Counter1 > u32Counter3)
     {
-        ulDelta = ulCounter1 - ulCounter3;
+        u32Delta = u32Counter1 - u32Counter3;
     }
     else
     {
-        ulDelta = ulCounter3 - ulCounter1;
+        u32Delta = u32Counter3 - u32Counter1;
     }
 
     // Give or take...
-    EXPECT_FALSE(ulDelta > ulCounter1/2);
+    EXPECT_FALSE(u32Delta > u32Counter1/2);
 
     clTestThread1.Exit();
     clTestThread2.Exit();
@@ -610,7 +610,7 @@ TEST_END
 
 void TimerTestCallback(Thread *pclOwner_, void *pvData_)
 {
-    ucTestVal++;
+    u8TestVal++;
 }
 
 //void UT_TimerTest(void)
@@ -618,22 +618,22 @@ TEST(ut_sanity_timer)
 {
     Timer clTimer;
 
-    ucTestVal = 0;
+    u8TestVal = 0;
 
     clTimer.Init();
     clTimer.Start(1, 2, TimerTestCallback, NULL);
     
     Thread::Sleep(3);
-    EXPECT_EQUALS(ucTestVal, 1);
+    EXPECT_EQUALS(u8TestVal, 1);
 
-    ucTestVal = 0;
+    u8TestVal = 0;
     clTimer.Stop();
 
     clTimer.Start(1, 1, TimerTestCallback, NULL);
     
     Thread::Sleep(10);
     
-    EXPECT_GTE(ucTestVal, 9);
+    EXPECT_GTE(u8TestVal, 9);
 
     clTimer.Stop();
 }

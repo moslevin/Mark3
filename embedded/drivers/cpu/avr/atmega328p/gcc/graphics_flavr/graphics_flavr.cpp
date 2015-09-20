@@ -23,18 +23,18 @@ See license.txt for more information
 #include "colorspace.h"
 #include "draw.h"
 
-volatile K_UCHAR g_ucGfxCommand = 0;
-volatile DrawPoint_t *g_pstPoint = 0;
+volatile uint8_t g_u8GfxCommand = 0;
+volatile DrawPoint_t *g_pclPoint = 0;
 
 //---------------------------------------------------------------------------
 void GraphicsFlavr::DrawPixel(DrawPoint_t *pstPoint_)
 {
-    g_pstPoint = pstPoint_;
-    g_ucGfxCommand = 1;
+    g_pclPoint = pstPoint_;
+    g_u8GfxCommand = 1;
 }
 
 //---------------------------------------------------------------------------
 void GraphicsFlavr::Flip(void)
 {
-    g_ucGfxCommand = 2;
+    g_u8GfxCommand = 2;
 }

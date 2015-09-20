@@ -25,13 +25,13 @@ See license.txt for more information
 #include "shell_support.h"
 
 //---------------------------------------------------------------------------
-K_CHAR ShellSupport::RunCommand( CommandLine_t *pstCommand_, const ShellCommand_t *pastShellCommands_ )
+char ShellSupport::RunCommand( CommandLine_t *pstCommand_, const ShellCommand_t *pastShellCommands_ )
 {
-    K_UCHAR i = 0;
-    K_UCHAR tmp_len;
+    uint8_t i = 0;
+    uint8_t tmp_len;
     while (pastShellCommands_[i].szCommand)
     {
-        tmp_len = MIN(pstCommand_->pstCommand->ucLen, MemUtil::StringLength(pastShellCommands_[i].szCommand));
+        tmp_len = MIN(pstCommand_->pstCommand->u8Len, MemUtil::StringLength(pastShellCommands_[i].szCommand));
 
         if (true == MemUtil::CompareMemory( (const void*)pastShellCommands_[i].szCommand,
                                             (const void*)(pstCommand_->pstCommand->pcToken),
@@ -46,18 +46,18 @@ K_CHAR ShellSupport::RunCommand( CommandLine_t *pstCommand_, const ShellCommand_
 }
 
 //---------------------------------------------------------------------------
-void ShellSupport::UnescapeToken( Token_t *pstToken_, K_CHAR *szDest_ )
+void ShellSupport::UnescapeToken( Token_t *pstToken_, char *szDest_ )
 {
-    const K_CHAR *szSrc = pstToken_->pcToken;
+    const char *szSrc = pstToken_->pcToken;
     int i;
     int j = 0;
-    for (i = 0; i < pstToken_->ucLen; i++)
+    for (i = 0; i < pstToken_->u8Len; i++)
     {
         //-- Escape characters
         if ('\\' == szSrc[i])
         {
             i++;
-            if (i >= pstToken_->ucLen)
+            if (i >= pstToken_->u8Len)
             {
                 break;
             }
@@ -101,13 +101,13 @@ void ShellSupport::UnescapeToken( Token_t *pstToken_, K_CHAR *szDest_ )
 }
 
 //---------------------------------------------------------------------------
-Option_t *ShellSupport::CheckForOption( CommandLine_t *pstCommand_, const K_CHAR *szOption_ )
+Option_t *ShellSupport::CheckForOption( CommandLine_t *pstCommand_, const char *szOption_ )
 {
-    K_CHAR i;
-    K_UCHAR tmp_len;
-    for (i = 0; i < pstCommand_->ucNumOptions; i++)
+    char i;
+    uint8_t tmp_len;
+    for (i = 0; i < pstCommand_->u8NumOptions; i++)
     {
-        tmp_len = MIN(MemUtil::StringLength(szOption_), pstCommand_->astOptions[i].pstStart->ucLen);
+        tmp_len = MIN(MemUtil::StringLength(szOption_), pstCommand_->astOptions[i].pstStart->u8Len);
 
         if (true == MemUtil::CompareMemory( (const void*)szOption_,
                                    (const void*)(pstCommand_->astOptions[i].pstStart->pcToken),
@@ -120,14 +120,14 @@ Option_t *ShellSupport::CheckForOption( CommandLine_t *pstCommand_, const K_CHAR
 }
 
 //---------------------------------------------------------------------------
-K_CHAR ShellSupport::TokensToCommandLine(Token_t *pastTokens_, K_UCHAR ucTokens_, CommandLine_t *pstCommand_)
+char ShellSupport::TokensToCommandLine(Token_t *pastTokens_, uint8_t u8Tokens_, CommandLine_t *pstCommand_)
 {
-    K_CHAR count = 0;
-    K_CHAR token = 0;
-    K_CHAR option = 0;
-    pstCommand_->ucNumOptions = 0;
+    char count = 0;
+    char token = 0;
+    char option = 0;
+    pstCommand_->u8NumOptions = 0;
 
-    if (!ucTokens_)
+    if (!u8Tokens_)
     {
         return -1;
     }
@@ -137,22 +137,22 @@ K_CHAR ShellSupport::TokensToCommandLine(Token_t *pastTokens_, K_UCHAR ucTokens_
 
     // Parse out options
     token = 1;
-    while (token < ucTokens_ && option < 12)
+    while (token < u8Tokens_ && option < 12)
     {
         pstCommand_->astOptions[option].pstStart = &pastTokens_[token];
         count = 1;
         token++;
-        while (token < ucTokens_ && pastTokens_[token].pcToken[0] != '-')
+        while (token < u8Tokens_ && pastTokens_[token].pcToken[0] != '-')
         {
             token++;
             count++;
         }
-        pstCommand_->astOptions[option].ucCount = count;
+        pstCommand_->astOptions[option].u8Count = count;
         option++;
     }
 
-    pstCommand_->ucNumOptions = option;
-    pstCommand_->ucTokenCount = ucTokens_;
+    pstCommand_->u8NumOptions = option;
+    pstCommand_->u8TokenCount = u8Tokens_;
     pstCommand_->pastTokenList = pastTokens_;
     return option;
 }

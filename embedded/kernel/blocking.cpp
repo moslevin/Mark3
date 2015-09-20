@@ -36,7 +36,7 @@ See license.txt for more information
 void BlockingObject::Block(Thread *pclThread_)
 {
 	KERNEL_ASSERT( pclThread_ );
-	KERNEL_TRACE_1( STR_THREAD_BLOCK_1, (K_USHORT)pclThread_->GetID() );
+	KERNEL_TRACE_1( STR_THREAD_BLOCK_1, (uint16_t)pclThread_->GetID() );
 	
     // Remove the thread from its current thread list (the "owner" list)
     // ... And add the thread to this object's block list    
@@ -52,7 +52,7 @@ void BlockingObject::Block(Thread *pclThread_)
 void BlockingObject::UnBlock(Thread *pclThread_)
 {
 	KERNEL_ASSERT( pclThread_ );
-	KERNEL_TRACE_1( STR_THREAD_UNBLOCK_1, (K_USHORT)pclThread_->GetID() );
+	KERNEL_TRACE_1( STR_THREAD_UNBLOCK_1, (uint16_t)pclThread_->GetID() );
     
 	// Remove the thread from its current thread list (the "owner" list)
     pclThread_->GetCurrent()->Remove(pclThread_);

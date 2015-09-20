@@ -18,8 +18,8 @@ typedef enum
 //---------------------------------------------------------------------------
 typedef struct
 {
-    K_CHAR *acLevelName;
-    K_USHORT ausData[LEVEL_NUM_ROWS];
+    char *acLevelName;
+    uint16_t au16Data[LEVEL_NUM_ROWS];
     BrLevelType_t eLevelType;
 } BrLevelData_t;
 
@@ -33,11 +33,11 @@ public:
 
     void Draw(void);
 
-    K_UCHAR GetLevel(void);
+    uint8_t GetLevel(void);
 
 private:
-    K_UCHAR	m_ucLevel;
-    K_BOOL	m_bUpdate;
+    uint8_t	m_u8Level;
+    bool	m_bUpdate;
 };
 
 #endif

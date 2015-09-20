@@ -3,8 +3,8 @@
 CC=avr-gcc
 CPP=avr-gcc
 
-CFLAGS=-funsigned-char -funsigned-bitfields -Os -fpack-struct -fshort-enums -g2 -Wall -c  -mmcu=$(VARIANT) -DAVR -DK_ADDR=K_USHORT -DK_WORD=uint8_t
-CPPFLAGS=-funsigned-char -funsigned-bitfields -Os -fpack-struct -ffunction-sections -fshort-enums -g2 -Wall -c -mmcu=$(VARIANT) -DAVR -DK_ADDR=K_USHORT -DK_WORD=uint8_t
+CFLAGS=-funsigned-char -funsigned-bitfields -Os -fpack-struct -fshort-enums -g2 -Wall -c  -mmcu=$(VARIANT) -DAVR -DK_ADDR=uint16_t -DK_WORD=uint8_t
+CPPFLAGS=-funsigned-char -funsigned-bitfields -Os -fpack-struct -ffunction-sections -fshort-enums -g2 -Wall -c -mmcu=$(VARIANT) -DAVR -DK_ADDR=uint16_t -DK_WORD=uint8_t
 
 LINK=avr-gcc
 LFLAGS= -Wl,--start-group -Wl,-lm  -Wl,--end-group -Wl,--gc-sections  -mmcu=$(VARIANT)

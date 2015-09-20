@@ -55,7 +55,7 @@ static Thread clThread;
 static K_WORD aucStack[SEM_STACK_SIZE];
 static Semaphore clSem1;
 static Semaphore clSem2;
-static volatile K_UCHAR ucCounter = 0;
+static volatile uint8_t u8Counter = 0;
 
 //===========================================================================
 void PostPendFunction(void *param_)
@@ -64,7 +64,7 @@ void PostPendFunction(void *param_)
     while(1)
     {
         pclSem->Pend();
-        ucCounter++;
+        u8Counter++;
     }
 }
 
@@ -89,7 +89,7 @@ TEST(ut_semaphore_post_pend)
     KernelAware::ProfileReport();
 
     // Verify all 10 posts have been acknowledged by the high-priority thread
-    EXPECT_EQUALS(ucCounter, 10);
+    EXPECT_EQUALS(u8Counter, 10);
 
     // After the test is over, kill the test thread.
     clThread.Exit();
@@ -99,7 +99,7 @@ TEST(ut_semaphore_post_pend)
     clSem2.Init(10, 10);
 
     // Restart the test thread.
-    ucCounter = 0;
+    u8Counter = 0;
     clThread.Init(aucStack, SEM_STACK_SIZE, 7, PostPendFunction, (void*)&clSem2);
     clThread.Start();
 
@@ -107,7 +107,7 @@ TEST(ut_semaphore_post_pend)
     clThread.Exit();
 
     // semaphore should have pended 10 times before returning.
-    EXPECT_EQUALS(ucCounter, 10);
+    EXPECT_EQUALS(u8Counter, 10);
 }
 TEST_END
 

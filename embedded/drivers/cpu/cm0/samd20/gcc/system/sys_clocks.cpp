@@ -59,13 +59,13 @@ ClockError_t SysClock::SetGenerator( ClockGenerator_t eClockGen_ )
 }
 
 //---------------------------------------------------------------------------
-void SysClock::LockOnEnable( K_BOOL bLock_ )
+void SysClock::LockOnEnable( bool bLock_ )
 {
     m_bLock = bLock_;
 }
 
 //---------------------------------------------------------------------------
-ClockError_t SysClock::Setup( Clock_t eClock_, ClockGenerator_t eClockGen_, K_BOOL bLock_ )
+ClockError_t SysClock::Setup( Clock_t eClock_, ClockGenerator_t eClockGen_, bool bLock_ )
 {
     ClockError_t eErr;
     eErr = SetClockID(eClock_);
@@ -85,19 +85,19 @@ ClockError_t SysClock::Setup( Clock_t eClock_, ClockGenerator_t eClockGen_, K_BO
 //---------------------------------------------------------------------------
 void SysClock::CommitConfig( void )
 {
-    K_ULONG ulConfig = 0;
-    ulConfig |= ((K_ULONG)m_eClock) << GCLK_CLKCTRL_ID_Pos;
-    ulConfig |= ((K_ULONG)m_eClockGen) << GCLK_CLKCTRL_GEN_Pos;
+    uint32_t u32Config = 0;
+    u32Config |= ((uint32_t)m_eClock) << GCLK_CLKCTRL_ID_Pos;
+    u32Config |= ((uint32_t)m_eClockGen) << GCLK_CLKCTRL_GEN_Pos;
     if (m_bLock)
     {
-        ulConfig |= GCLK_CLKCTRL_WRTLOCK;
+        u32Config |= GCLK_CLKCTRL_WRTLOCK;
     }
     Enable(false);
-    GCLK->CLKCTRL.reg = ulConfig;
+    GCLK->CLKCTRL.reg = u32Config;
 }
 
 //---------------------------------------------------------------------------
-void SysClock::Enable( K_BOOL bEnable_ )
+void SysClock::Enable( bool bEnable_ )
 {
     WriteChannel();
     if (bEnable_)
@@ -123,7 +123,7 @@ SysClockGenerator::SysClockGenerator()
     m_eClockGen			= GCLK_0;
     m_eDivMode			= DIV_MODE_LINEAR;
     m_eClockSrc			= GCLK_SRC_OSC8M;
-    m_usDivisor			= 0;
+    m_u16Divisor			= 0;
     m_bRunInStandby		= true;
     m_bOutputToPin		= false;
     m_bOutputOffValue	= false;
@@ -155,82 +155,82 @@ void SysClockGenerator::SetClockSource( ClockGenSource_t eClockSrc_ )
 }
 
 //---------------------------------------------------------------------------
-void SysClockGenerator::OutputOffState( K_BOOL bState_ )
+void SysClockGenerator::OutputOffState( bool bState_ )
 {
     m_bOutputOffValue = bState_;
 }
 
 //---------------------------------------------------------------------------
-void SysClockGenerator::PinOutput( K_BOOL bOutput_ )
+void SysClockGenerator::PinOutput( bool bOutput_ )
 {
     m_bOutputToPin = bOutput_;
 }
 
 //---------------------------------------------------------------------------
-void SysClockGenerator::RunInStandby( K_BOOL bOutput_ )
+void SysClockGenerator::RunInStandby( bool bOutput_ )
 {
     m_bRunInStandby = bOutput_;
 }
 
 //---------------------------------------------------------------------------
-void SysClockGenerator::ImproveDutyCycle( K_BOOL bImprove_ )
+void SysClockGenerator::ImproveDutyCycle( bool bImprove_ )
 {
     m_bImproveDutyCycle = bImprove_;
 }
 
 //---------------------------------------------------------------------------
-void SysClockGenerator::SetDivisor( ClockDivideMode_t eMode_, K_USHORT usDivisor_ )
+void SysClockGenerator::SetDivisor( ClockDivideMode_t eMode_, uint16_t u16Divisor_ )
 {
     m_eDivMode = eMode_;
-    m_usDivisor = usDivisor_;
+    m_u16Divisor = u16Divisor_;
 }
 
 //---------------------------------------------------------------------------
 void SysClockGenerator::CommitConfig(void)
 {
-    K_ULONG ulGenCtrl = 0;
-    K_ULONG ulGenDiv = 0;
+    uint32_t u32GenCtrl = 0;
+    uint32_t u32GenDiv = 0;
 
-    ulGenCtrl = m_eClockGen << GCLK_GENCTRL_ID_Pos
+    u32GenCtrl = m_eClockGen << GCLK_GENCTRL_ID_Pos
               | m_eClockSrc << GCLK_GENCTRL_SRC_Pos;
 
     if (m_bImproveDutyCycle)
     {
-        ulGenCtrl |= GCLK_GENCTRL_IDC;
+        u32GenCtrl |= GCLK_GENCTRL_IDC;
     }
     if (m_bRunInStandby)
     {
-        ulGenCtrl |= GCLK_GENCTRL_RUNSTDBY;
+        u32GenCtrl |= GCLK_GENCTRL_RUNSTDBY;
     }
     if (m_eDivMode)
     {
-        ulGenCtrl |= GCLK_GENCTRL_DIVSEL;
+        u32GenCtrl |= GCLK_GENCTRL_DIVSEL;
     }
     if (m_bOutputToPin)
     {
-        ulGenCtrl |= GCLK_GENCTRL_OE;
+        u32GenCtrl |= GCLK_GENCTRL_OE;
     }
     if (m_bOutputOffValue)
     {
-        ulGenCtrl |= GCLK_GENCTRL_OOV;
+        u32GenCtrl |= GCLK_GENCTRL_OOV;
     }
 
-    ulGenDiv = m_eClockGen << GCLK_GENDIV_ID_Pos
-             | m_usDivisor << GCLK_GENDIV_DIV_Pos;
+    u32GenDiv = m_eClockGen << GCLK_GENDIV_ID_Pos
+             | m_u16Divisor << GCLK_GENDIV_DIV_Pos;
 
     WriteSync();
     WriteGeneratorDiv();
     WriteSync();
 
-    GCLK->GENDIV.reg = ulGenDiv;
+    GCLK->GENDIV.reg = u32GenDiv;
 
     WriteSync();
 
-    GCLK->GENCTRL.reg = ulGenCtrl | (GCLK->GENCTRL.reg & GCLK_GENCTRL_GENEN);
+    GCLK->GENCTRL.reg = u32GenCtrl | (GCLK->GENCTRL.reg & GCLK_GENCTRL_GENEN);
 }
 
 //---------------------------------------------------------------------------
-K_BOOL SysClockGenerator::IsSyncing()
+bool SysClockGenerator::IsSyncing()
 {
     if (GCLK->STATUS.reg & GCLK_STATUS_SYNCBUSY)
     {
@@ -272,13 +272,13 @@ void Source_OSC8M::Prescalar(OSC8M_Prescaler_t ePrescalar_)
 }
 
 //---------------------------------------------------------------------------
-void Source_OSC8M::RunOnDemand(K_BOOL bRunOnDemand_)
+void Source_OSC8M::RunOnDemand(bool bRunOnDemand_)
 {
 	m_bOnDemand = bRunOnDemand_;
 }
 
 //---------------------------------------------------------------------------
-void Source_OSC8M::RunInStandby(K_BOOL bRunInStandby_)
+void Source_OSC8M::RunInStandby(bool bRunInStandby_)
 {
 	m_bRunStandby = bRunInStandby_;
 }
@@ -286,31 +286,31 @@ void Source_OSC8M::RunInStandby(K_BOOL bRunInStandby_)
 //---------------------------------------------------------------------------
 void Source_OSC8M::CommitConfig()
 {
-	K_ULONG ulReg;
-	ulReg = SYSCTRL->OSC8M.reg;
-	ulReg &= ~( SYSCTRL_OSC8M_PRESC_Msk
+	uint32_t u32Reg;
+	u32Reg = SYSCTRL->OSC8M.reg;
+	u32Reg &= ~( SYSCTRL_OSC8M_PRESC_Msk
 				| SYSCTRL_OSC8M_ONDEMAND
 				| SYSCTRL_OSC8M_RUNSTDBY
 			  );
 
 	if (m_ePrescalar)
 	{
-		ulReg |= (((K_ULONG)m_ePrescalar) << SYSCTRL_OSC8M_PRESC_Pos);
+		u32Reg |= (((uint32_t)m_ePrescalar) << SYSCTRL_OSC8M_PRESC_Pos);
 	}
 	if (m_bRunStandby)
 	{
-		ulReg |= SYSCTRL_OSC8M_RUNSTDBY;
+		u32Reg |= SYSCTRL_OSC8M_RUNSTDBY;
 	}
 	if (m_bOnDemand)
 	{
-		ulReg |= SYSCTRL_OSC8M_ONDEMAND;
+		u32Reg |= SYSCTRL_OSC8M_ONDEMAND;
 	}
 
-	SYSCTRL->OSC8M.reg = ulReg;
+	SYSCTRL->OSC8M.reg = u32Reg;
 }
 
 //---------------------------------------------------------------------------
-void Source_OSC8M::Enable(K_BOOL bEnable_)
+void Source_OSC8M::Enable(bool bEnable_)
 {
 	if (bEnable_)
 	{
@@ -341,37 +341,37 @@ void Source_XOSC32K::StartupTime(XOSC32K_StartupTime_t eTime_)
 }
 
 //---------------------------------------------------------------------------
-void Source_XOSC32K::Enable32KHz(K_BOOL bEnable_)
+void Source_XOSC32K::Enable32KHz(bool bEnable_)
 {
 	m_bEnable32KHz = bEnable_;
 }
 
 //---------------------------------------------------------------------------
-void Source_XOSC32K::Enable1KHz(K_BOOL bEnable_)
+void Source_XOSC32K::Enable1KHz(bool bEnable_)
 {
 	m_bEnable1KHz = bEnable_;
 }
 
 //---------------------------------------------------------------------------
-void Source_XOSC32K::GainAmplifier(K_BOOL bEnable_)
+void Source_XOSC32K::GainAmplifier(bool bEnable_)
 {
 	m_bAutoAmp = bEnable_;
 }
 
 //---------------------------------------------------------------------------
-void Source_XOSC32K::ExternalCrystal(K_BOOL bEnable_)
+void Source_XOSC32K::ExternalCrystal(bool bEnable_)
 {
 	m_bExternalXtal = bEnable_;
 }
 
 //---------------------------------------------------------------------------
-void Source_XOSC32K::RunOnDemand(K_BOOL bRunOnDemand_)
+void Source_XOSC32K::RunOnDemand(bool bRunOnDemand_)
 {
 	m_bOnDemand = bRunOnDemand_;
 }
 
 //---------------------------------------------------------------------------
-void Source_XOSC32K::RunInStandby(K_BOOL bRunInStandby_)
+void Source_XOSC32K::RunInStandby(bool bRunInStandby_)
 {
 	m_bRunStandby = bRunInStandby_;
 }
@@ -379,9 +379,9 @@ void Source_XOSC32K::RunInStandby(K_BOOL bRunInStandby_)
 //---------------------------------------------------------------------------
 void Source_XOSC32K::CommitConfig()
 {
-	K_ULONG ulReg;
-	ulReg = SYSCTRL->XOSC32K.reg;
-	ulReg &= ~( SYSCTRL_XOSC32K_STARTUP_Msk
+	uint32_t u32Reg;
+	u32Reg = SYSCTRL->XOSC32K.reg;
+	u32Reg &= ~( SYSCTRL_XOSC32K_STARTUP_Msk
 				| SYSCTRL_XOSC32K_EN1K
 				| SYSCTRL_XOSC32K_EN32K
 				| SYSCTRL_XOSC32K_AAMPEN
@@ -391,36 +391,36 @@ void Source_XOSC32K::CommitConfig()
 				| SYSCTRL_XOSC32K_RUNSTDBY
 				);
 
-	ulReg |= ((K_ULONG)m_eStartupTime << SYSCTRL_XOSC32K_STARTUP_Pos);
+	u32Reg |= ((uint32_t)m_eStartupTime << SYSCTRL_XOSC32K_STARTUP_Pos);
 
 	if (m_bAutoAmp)
 	{
-		ulReg |= SYSCTRL_XOSC32K_AAMPEN;
+		u32Reg |= SYSCTRL_XOSC32K_AAMPEN;
 	}
 	if (m_bEnable1KHz)
 	{
-		ulReg |= SYSCTRL_XOSC32K_EN1K;
+		u32Reg |= SYSCTRL_XOSC32K_EN1K;
 	}
 	if (m_bEnable32KHz)
 	{
-		ulReg |= SYSCTRL_XOSC32K_EN32K;
+		u32Reg |= SYSCTRL_XOSC32K_EN32K;
 	}
 	if (m_bExternalXtal)
 	{
-		ulReg |= SYSCTRL_XOSC32K_XTALEN;
+		u32Reg |= SYSCTRL_XOSC32K_XTALEN;
 	}
 	if (m_bOnDemand)
 	{
-		ulReg |= SYSCTRL_XOSC32K_ONDEMAND;
+		u32Reg |= SYSCTRL_XOSC32K_ONDEMAND;
 	}
 	if (m_bRunStandby)
 	{
-		ulReg |= SYSCTRL_XOSC32K_RUNSTDBY;
+		u32Reg |= SYSCTRL_XOSC32K_RUNSTDBY;
 	}
 }
 
 //---------------------------------------------------------------------------
-void Source_XOSC32K::Enable(K_BOOL bEnable_)
+void Source_XOSC32K::Enable(bool bEnable_)
 {
 	if (bEnable_)
 	{
@@ -442,143 +442,143 @@ Source_DFLL48M::Source_DFLL48M()
 	m_bLoseLockAfterWake = true;
 	m_bClockMode = true;
 	
-	m_usMultiplier = 6;
-	m_ucMaxCoarseStep = 1;
-	m_usMaxFineStep = 1;
+	m_u16Multiplier = 6;
+	m_u8MaxCoarseStep = 1;
+	m_u16MaxFineStep = 1;
 	
-	m_ucCoarseAdjust = (0x1F / 4);
-	m_usFineAdjust = (0xFF / 4);
+	m_u8CoarseAdjust = (0x1F / 4);
+	m_u16FineAdjust = (0xFF / 4);
 }
 
 //---------------------------------------------------------------------------
-void Source_DFLL48M::ClockMode(K_BOOL bClosedLoop_)
+void Source_DFLL48M::ClockMode(bool bClosedLoop_)
 {
 	m_bClockMode = bClosedLoop_;
 }
 
 //---------------------------------------------------------------------------
-void Source_DFLL48M::RunOnDemand(K_BOOL bRunOnDemand_)
+void Source_DFLL48M::RunOnDemand(bool bRunOnDemand_)
 {
 	m_bOnDemand = bRunOnDemand_;
 }
 
 //---------------------------------------------------------------------------
-void Source_DFLL48M::RunInStandby(K_BOOL bRunInStandby_)
+void Source_DFLL48M::RunInStandby(bool bRunInStandby_)
 {
 	m_bRunStandby = bRunInStandby_;
 }
 
 //---------------------------------------------------------------------------
-void Source_DFLL48M::ChillCycle(K_BOOL bEnable_)
+void Source_DFLL48M::ChillCycle(bool bEnable_)
 {
 	m_bChillCycle = bEnable_;
 }
 
 //---------------------------------------------------------------------------
-void Source_DFLL48M::LoseLockAfterWakeup(K_BOOL bEnable_)
+void Source_DFLL48M::LoseLockAfterWakeup(bool bEnable_)
 {
 	m_bLoseLockAfterWake = bEnable_;
 }
 
 //---------------------------------------------------------------------------
-void Source_DFLL48M::QuickLock(K_BOOL bEnable_)
+void Source_DFLL48M::QuickLock(bool bEnable_)
 {
 	m_bQuickLock = bEnable_;
 }
 
 //---------------------------------------------------------------------------
-void Source_DFLL48M::Multiplier(K_USHORT usMultiplier_)
+void Source_DFLL48M::Multiplier(uint16_t u16Multiplier_)
 {
-	m_usMultiplier = usMultiplier_;
+	m_u16Multiplier = u16Multiplier_;
 }
 
 //---------------------------------------------------------------------------
-void Source_DFLL48M::MaxCoarseStep(K_UCHAR ucStep_)
+void Source_DFLL48M::MaxCoarseStep(uint8_t u8Step_)
 {
-	m_ucMaxCoarseStep = ucStep_;
+	m_u8MaxCoarseStep = u8Step_;
 }
 
 //---------------------------------------------------------------------------
-void Source_DFLL48M::MaxFineStep(K_USHORT usStep_)
+void Source_DFLL48M::MaxFineStep(uint16_t u16Step_)
 {
-	m_usMaxFineStep = usStep_;
+	m_u16MaxFineStep = u16Step_;
 }
 
 //---------------------------------------------------------------------------
-void Source_DFLL48M::CoarseAdjust(K_UCHAR ucVal_)
+void Source_DFLL48M::CoarseAdjust(uint8_t u8Val_)
 {
-	m_ucCoarseAdjust = ucVal_;
+	m_u8CoarseAdjust = u8Val_;
 }
 
 //---------------------------------------------------------------------------
-void Source_DFLL48M::FineAdjust(K_USHORT usVal_)
+void Source_DFLL48M::FineAdjust(uint16_t u16Val_)
 {
-	m_usFineAdjust = usVal_;
+	m_u16FineAdjust = u16Val_;
 }
 
 //---------------------------------------------------------------------------
 void Source_DFLL48M::CommitConfig()
 {
-	K_ULONG ulMul = 0;
-	K_ULONG ulVal = 0;
-	K_ULONG ulCtrl = 0;
+	uint32_t u32Mul = 0;
+	uint32_t u32Val = 0;
+	uint32_t u32Ctrl = 0;
 	SysClock clClock;
 	
 	if (m_bClockMode)
 	{
-		ulCtrl |= SYSCTRL_DFLLCTRL_MODE;
+		u32Ctrl |= SYSCTRL_DFLLCTRL_MODE;
 	}
 	
 	if (!m_bChillCycle)	// In the register,  Disabled = 1
 	{
-		ulCtrl |= SYSCTRL_DFLLCTRL_CCDIS;
+		u32Ctrl |= SYSCTRL_DFLLCTRL_CCDIS;
 	}
 	
 	if (!m_bQuickLock) // In the register, Disabled = 1
 	{
-		ulCtrl |= SYSCTRL_DFLLCTRL_QLDIS;
+		u32Ctrl |= SYSCTRL_DFLLCTRL_QLDIS;
 	}
 	
 	if (m_bLoseLockAfterWake)
 	{
-		ulCtrl |= SYSCTRL_DFLLCTRL_LLAW;
+		u32Ctrl |= SYSCTRL_DFLLCTRL_LLAW;
 	}
 	
 	if (m_bOnDemand)
 	{
-		ulCtrl |= SYSCTRL_DFLLCTRL_ONDEMAND;
+		u32Ctrl |= SYSCTRL_DFLLCTRL_ONDEMAND;
 	}
 	
 	if (m_bRunStandby)
 	{
-		ulCtrl |= SYSCTRL_DFLLCTRL_RUNSTDBY;
+		u32Ctrl |= SYSCTRL_DFLLCTRL_RUNSTDBY;
 	}
 	
 	// Only set multiplier in closed-loop mode.
 	if (m_bClockMode)
 	{
-		ulMul = ( ((K_ULONG)m_usMultiplier) << SYSCTRL_DFLLMUL_MUL_Pos )
-		| (((K_ULONG)m_ucMaxCoarseStep) << SYSCTRL_DFLLMUL_CSTEP_Pos)
-		| (((K_ULONG)m_usMaxFineStep) << SYSCTRL_DFLLMUL_FSTEP_Pos)
+		u32Mul = ( ((uint32_t)m_u16Multiplier) << SYSCTRL_DFLLMUL_MUL_Pos )
+		| (((uint32_t)m_u8MaxCoarseStep) << SYSCTRL_DFLLMUL_CSTEP_Pos)
+		| (((uint32_t)m_u16MaxFineStep) << SYSCTRL_DFLLMUL_FSTEP_Pos)
 		;
 	}
 	
-	ulVal =   ( ((K_ULONG)m_ucCoarseAdjust) << SYSCTRL_DFLLVAL_COARSE_Pos)
-	| ( ((K_ULONG)m_usFineAdjust) << SYSCTRL_DFLLVAL_FINE_Pos)
+	u32Val =   ( ((uint32_t)m_u8CoarseAdjust) << SYSCTRL_DFLLVAL_COARSE_Pos)
+	| ( ((uint32_t)m_u16FineAdjust) << SYSCTRL_DFLLVAL_FINE_Pos)
 	;
 
-	SYSCTRL->DFLLCTRL.reg = ulCtrl & ~SYSCTRL_DFLLCTRL_ONDEMAND;
+	SYSCTRL->DFLLCTRL.reg = u32Ctrl & ~SYSCTRL_DFLLCTRL_ONDEMAND;
 
 	WaitSync();
 	
-	SYSCTRL->DFLLMUL.reg = ulMul;
-	SYSCTRL->DFLLVAL.reg = ulVal;
+	SYSCTRL->DFLLMUL.reg = u32Mul;
+	SYSCTRL->DFLLVAL.reg = u32Val;
 	
-	SYSCTRL->DFLLCTRL.reg = ulCtrl;
+	SYSCTRL->DFLLCTRL.reg = u32Ctrl;
 	WaitSync();
 }
 
-void Source_DFLL48M::Enable(K_BOOL bEnable_)
+void Source_DFLL48M::Enable(bool bEnable_)
 {
 	WaitSync();
 	if (bEnable_)

@@ -25,10 +25,10 @@ See license.txt for more information
 //---------------------------------------------------------------------------
 typedef struct
 {
-    K_UCHAR ucWidth;        //!< Width of this font glyph in pixels
-    K_UCHAR ucHeight;        //!< Height of this font glyph in pixels
-    K_UCHAR ucVOffset;        //!< Vertical offset of this glyph
-    K_UCHAR aucData[1];        //!< Glyph data array
+    uint8_t u8Width;        //!< Width of this font glyph in pixels
+    uint8_t u8Height;        //!< Height of this font glyph in pixels
+    uint8_t u8VOffset;        //!< Vertical offset of this glyph
+    uint8_t aucData[1];        //!< Glyph data array
 } Glyph_t;
 
 //---------------------------------------------------------------------------
@@ -37,17 +37,17 @@ typedef struct
     of the struct parameters.
 */
 #define GLYPH_SIZE(x) \
-    (((K_USHORT)((x->ucWidth + 7) >> 3) * (K_USHORT)(x->ucHeight)) + sizeof(Glyph_t) - 1)
+    (((uint16_t)((x->u8Width + 7) >> 3) * (uint16_t)(x->u8Height)) + sizeof(Glyph_t) - 1)
 
 //---------------------------------------------------------------------------
 typedef struct
 {
-    K_UCHAR ucSize;
-    K_UCHAR ucFlags;
-    K_UCHAR ucStartChar;
-    K_UCHAR ucMaxChar;
-    const K_CHAR *szName;
-    const FONT_STORAGE_TYPE *pucFontData;    
+    uint8_t u8Size;
+    uint8_t u8Flags;
+    uint8_t u8StartChar;
+    uint8_t u8MaxChar;
+    const char *szName;
+    const FONT_STORAGE_TYPE *pu8FontData;    
 } Font_t;
 
 #endif

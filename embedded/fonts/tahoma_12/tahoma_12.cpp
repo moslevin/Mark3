@@ -7,240 +7,240 @@
 const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 
 //-- Glyph for ASCII Character code: 0
-	0,  /* ucWidth */
-	0,  /* ucHeight */
-	0,  /* ucVOffset */
+	0,  /* u8Width */
+	0,  /* u8Height */
+	0,  /* u8VOffset */
 	//--[Glyph Data]--
 	/* No glyph data*/
 
 //-- Glyph for ASCII Character code: 1
-	0,  /* ucWidth */
-	0,  /* ucHeight */
-	0,  /* ucVOffset */
+	0,  /* u8Width */
+	0,  /* u8Height */
+	0,  /* u8VOffset */
 	//--[Glyph Data]--
 	/* No glyph data*/
 
 //-- Glyph for ASCII Character code: 2
-	0,  /* ucWidth */
-	0,  /* ucHeight */
-	0,  /* ucVOffset */
+	0,  /* u8Width */
+	0,  /* u8Height */
+	0,  /* u8VOffset */
 	//--[Glyph Data]--
 	/* No glyph data*/
 
 //-- Glyph for ASCII Character code: 3
-	0,  /* ucWidth */
-	0,  /* ucHeight */
-	0,  /* ucVOffset */
+	0,  /* u8Width */
+	0,  /* u8Height */
+	0,  /* u8VOffset */
 	//--[Glyph Data]--
 	/* No glyph data*/
 
 //-- Glyph for ASCII Character code: 4
-	0,  /* ucWidth */
-	0,  /* ucHeight */
-	0,  /* ucVOffset */
+	0,  /* u8Width */
+	0,  /* u8Height */
+	0,  /* u8VOffset */
 	//--[Glyph Data]--
 	/* No glyph data*/
 
 //-- Glyph for ASCII Character code: 5
-	0,  /* ucWidth */
-	0,  /* ucHeight */
-	0,  /* ucVOffset */
+	0,  /* u8Width */
+	0,  /* u8Height */
+	0,  /* u8VOffset */
 	//--[Glyph Data]--
 	/* No glyph data*/
 
 //-- Glyph for ASCII Character code: 6
-	0,  /* ucWidth */
-	0,  /* ucHeight */
-	0,  /* ucVOffset */
+	0,  /* u8Width */
+	0,  /* u8Height */
+	0,  /* u8VOffset */
 	//--[Glyph Data]--
 	/* No glyph data*/
 
 //-- Glyph for ASCII Character code: 7
-	0,  /* ucWidth */
-	0,  /* ucHeight */
-	0,  /* ucVOffset */
+	0,  /* u8Width */
+	0,  /* u8Height */
+	0,  /* u8VOffset */
 	//--[Glyph Data]--
 	/* No glyph data*/
 
 //-- Glyph for ASCII Character code: 8
-	0,  /* ucWidth */
-	0,  /* ucHeight */
-	0,  /* ucVOffset */
+	0,  /* u8Width */
+	0,  /* u8Height */
+	0,  /* u8VOffset */
 	//--[Glyph Data]--
 	/* No glyph data*/
 
 //-- Glyph for ASCII Character code: 9
-	0,  /* ucWidth */
-	0,  /* ucHeight */
-	0,  /* ucVOffset */
+	0,  /* u8Width */
+	0,  /* u8Height */
+	0,  /* u8VOffset */
 	//--[Glyph Data]--
 	/* No glyph data*/
 
 //-- Glyph for ASCII Character code: 10
-	0,  /* ucWidth */
-	0,  /* ucHeight */
-	0,  /* ucVOffset */
+	0,  /* u8Width */
+	0,  /* u8Height */
+	0,  /* u8VOffset */
 	//--[Glyph Data]--
 	/* No glyph data*/
 
 //-- Glyph for ASCII Character code: 11
-	0,  /* ucWidth */
-	0,  /* ucHeight */
-	0,  /* ucVOffset */
+	0,  /* u8Width */
+	0,  /* u8Height */
+	0,  /* u8VOffset */
 	//--[Glyph Data]--
 	/* No glyph data*/
 
 //-- Glyph for ASCII Character code: 12
-	0,  /* ucWidth */
-	0,  /* ucHeight */
-	0,  /* ucVOffset */
+	0,  /* u8Width */
+	0,  /* u8Height */
+	0,  /* u8VOffset */
 	//--[Glyph Data]--
 	/* No glyph data*/
 
 //-- Glyph for ASCII Character code: 13
-	0,  /* ucWidth */
-	0,  /* ucHeight */
-	0,  /* ucVOffset */
+	0,  /* u8Width */
+	0,  /* u8Height */
+	0,  /* u8VOffset */
 	//--[Glyph Data]--
 	/* No glyph data*/
 
 //-- Glyph for ASCII Character code: 14
-	0,  /* ucWidth */
-	0,  /* ucHeight */
-	0,  /* ucVOffset */
+	0,  /* u8Width */
+	0,  /* u8Height */
+	0,  /* u8VOffset */
 	//--[Glyph Data]--
 	/* No glyph data*/
 
 //-- Glyph for ASCII Character code: 15
-	0,  /* ucWidth */
-	0,  /* ucHeight */
-	0,  /* ucVOffset */
+	0,  /* u8Width */
+	0,  /* u8Height */
+	0,  /* u8VOffset */
 	//--[Glyph Data]--
 	/* No glyph data*/
 
 //-- Glyph for ASCII Character code: 16
-	0,  /* ucWidth */
-	0,  /* ucHeight */
-	0,  /* ucVOffset */
+	0,  /* u8Width */
+	0,  /* u8Height */
+	0,  /* u8VOffset */
 	//--[Glyph Data]--
 	/* No glyph data*/
 
 //-- Glyph for ASCII Character code: 17
-	0,  /* ucWidth */
-	0,  /* ucHeight */
-	0,  /* ucVOffset */
+	0,  /* u8Width */
+	0,  /* u8Height */
+	0,  /* u8VOffset */
 	//--[Glyph Data]--
 	/* No glyph data*/
 
 //-- Glyph for ASCII Character code: 18
-	0,  /* ucWidth */
-	0,  /* ucHeight */
-	0,  /* ucVOffset */
+	0,  /* u8Width */
+	0,  /* u8Height */
+	0,  /* u8VOffset */
 	//--[Glyph Data]--
 	/* No glyph data*/
 
 //-- Glyph for ASCII Character code: 19
-	0,  /* ucWidth */
-	0,  /* ucHeight */
-	0,  /* ucVOffset */
+	0,  /* u8Width */
+	0,  /* u8Height */
+	0,  /* u8VOffset */
 	//--[Glyph Data]--
 	/* No glyph data*/
 
 //-- Glyph for ASCII Character code: 20
-	0,  /* ucWidth */
-	0,  /* ucHeight */
-	0,  /* ucVOffset */
+	0,  /* u8Width */
+	0,  /* u8Height */
+	0,  /* u8VOffset */
 	//--[Glyph Data]--
 	/* No glyph data*/
 
 //-- Glyph for ASCII Character code: 21
-	0,  /* ucWidth */
-	0,  /* ucHeight */
-	0,  /* ucVOffset */
+	0,  /* u8Width */
+	0,  /* u8Height */
+	0,  /* u8VOffset */
 	//--[Glyph Data]--
 	/* No glyph data*/
 
 //-- Glyph for ASCII Character code: 22
-	0,  /* ucWidth */
-	0,  /* ucHeight */
-	0,  /* ucVOffset */
+	0,  /* u8Width */
+	0,  /* u8Height */
+	0,  /* u8VOffset */
 	//--[Glyph Data]--
 	/* No glyph data*/
 
 //-- Glyph for ASCII Character code: 23
-	0,  /* ucWidth */
-	0,  /* ucHeight */
-	0,  /* ucVOffset */
+	0,  /* u8Width */
+	0,  /* u8Height */
+	0,  /* u8VOffset */
 	//--[Glyph Data]--
 	/* No glyph data*/
 
 //-- Glyph for ASCII Character code: 24
-	0,  /* ucWidth */
-	0,  /* ucHeight */
-	0,  /* ucVOffset */
+	0,  /* u8Width */
+	0,  /* u8Height */
+	0,  /* u8VOffset */
 	//--[Glyph Data]--
 	/* No glyph data*/
 
 //-- Glyph for ASCII Character code: 25
-	0,  /* ucWidth */
-	0,  /* ucHeight */
-	0,  /* ucVOffset */
+	0,  /* u8Width */
+	0,  /* u8Height */
+	0,  /* u8VOffset */
 	//--[Glyph Data]--
 	/* No glyph data*/
 
 //-- Glyph for ASCII Character code: 26
-	0,  /* ucWidth */
-	0,  /* ucHeight */
-	0,  /* ucVOffset */
+	0,  /* u8Width */
+	0,  /* u8Height */
+	0,  /* u8VOffset */
 	//--[Glyph Data]--
 	/* No glyph data*/
 
 //-- Glyph for ASCII Character code: 27
-	0,  /* ucWidth */
-	0,  /* ucHeight */
-	0,  /* ucVOffset */
+	0,  /* u8Width */
+	0,  /* u8Height */
+	0,  /* u8VOffset */
 	//--[Glyph Data]--
 	/* No glyph data*/
 
 //-- Glyph for ASCII Character code: 28
-	0,  /* ucWidth */
-	0,  /* ucHeight */
-	0,  /* ucVOffset */
+	0,  /* u8Width */
+	0,  /* u8Height */
+	0,  /* u8VOffset */
 	//--[Glyph Data]--
 	/* No glyph data*/
 
 //-- Glyph for ASCII Character code: 29
-	0,  /* ucWidth */
-	0,  /* ucHeight */
-	0,  /* ucVOffset */
+	0,  /* u8Width */
+	0,  /* u8Height */
+	0,  /* u8VOffset */
 	//--[Glyph Data]--
 	/* No glyph data*/
 
 //-- Glyph for ASCII Character code: 30
-	0,  /* ucWidth */
-	0,  /* ucHeight */
-	0,  /* ucVOffset */
+	0,  /* u8Width */
+	0,  /* u8Height */
+	0,  /* u8VOffset */
 	//--[Glyph Data]--
 	/* No glyph data*/
 
 //-- Glyph for ASCII Character code: 31
-	0,  /* ucWidth */
-	0,  /* ucHeight */
-	0,  /* ucVOffset */
+	0,  /* u8Width */
+	0,  /* u8Height */
+	0,  /* u8VOffset */
 	//--[Glyph Data]--
 	/* No glyph data*/
 
 //-- Glyph for ASCII Character code: 32
-	0,  /* ucWidth */
-	0,  /* ucHeight */
-	0,  /* ucVOffset */
+	0,  /* u8Width */
+	0,  /* u8Height */
+	0,  /* u8VOffset */
 	//--[Glyph Data]--
 	/* No glyph data*/
 
 //-- Glyph for ASCII Character code: 33
-	1, /* ucWidth */
-	12, /* ucHeight */
-	4, /* ucVOffset */
+	1, /* u8Width */
+	12, /* u8Height */
+	4, /* u8VOffset */
 	//--[Glyph Data]--
 	128,	 /* 1 */
 	128,	 /* 1 */
@@ -256,9 +256,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	128,	 /* 1 */
 	
 //-- Glyph for ASCII Character code: 34
-	4, /* ucWidth */
-	5, /* ucHeight */
-	3, /* ucVOffset */
+	4, /* u8Width */
+	5, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	144,	 /* 1001 */
 	144,	 /* 1001 */
@@ -267,9 +267,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	144,	 /* 1001 */
 	
 //-- Glyph for ASCII Character code: 35
-	11, /* ucWidth */
-	12, /* ucHeight */
-	4, /* ucVOffset */
+	11, /* u8Width */
+	12, /* u8Height */
+	4, /* u8VOffset */
 	//--[Glyph Data]--
 	8,	64,	 /* 00001000010 */
 	8,	64,	 /* 00001000010 */
@@ -285,9 +285,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	66,	0,	 /* 01000010000 */
 	
 //-- Glyph for ASCII Character code: 36
-	7, /* ucWidth */
-	15, /* ucHeight */
-	4, /* ucVOffset */
+	7, /* u8Width */
+	15, /* u8Height */
+	4, /* u8VOffset */
 	//--[Glyph Data]--
 	16,	 /* 0001000 */
 	16,	 /* 0001000 */
@@ -306,9 +306,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	16,	 /* 0001000 */
 	
 //-- Glyph for ASCII Character code: 37
-	14, /* ucWidth */
-	12, /* ucHeight */
-	4, /* ucVOffset */
+	14, /* u8Width */
+	12, /* u8Height */
+	4, /* u8VOffset */
 	//--[Glyph Data]--
 	120,	32,	 /* 01111000001000 */
 	132,	64,	 /* 10000100010000 */
@@ -324,9 +324,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	16,	120,	 /* 00010000011110 */
 	
 //-- Glyph for ASCII Character code: 38
-	10, /* ucWidth */
-	12, /* ucHeight */
-	4, /* ucVOffset */
+	10, /* u8Width */
+	12, /* u8Height */
+	4, /* u8VOffset */
 	//--[Glyph Data]--
 	60,	0,	 /* 0011110000 */
 	66,	0,	 /* 0100001000 */
@@ -342,9 +342,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	60,	64,	 /* 0011110001 */
 	
 //-- Glyph for ASCII Character code: 39
-	1, /* ucWidth */
-	5, /* ucHeight */
-	3, /* ucVOffset */
+	1, /* u8Width */
+	5, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	128,	 /* 1 */
 	128,	 /* 1 */
@@ -353,9 +353,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	128,	 /* 1 */
 	
 //-- Glyph for ASCII Character code: 40
-	4, /* ucWidth */
-	16, /* ucHeight */
-	3, /* ucVOffset */
+	4, /* u8Width */
+	16, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	16,	 /* 0001 */
 	32,	 /* 0010 */
@@ -375,9 +375,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	16,	 /* 0001 */
 	
 //-- Glyph for ASCII Character code: 41
-	4, /* ucWidth */
-	16, /* ucHeight */
-	3, /* ucVOffset */
+	4, /* u8Width */
+	16, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	128,	 /* 1000 */
 	64,	 /* 0100 */
@@ -397,9 +397,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	128,	 /* 1000 */
 	
 //-- Glyph for ASCII Character code: 42
-	7, /* ucWidth */
-	7, /* ucHeight */
-	3, /* ucVOffset */
+	7, /* u8Width */
+	7, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	16,	 /* 0001000 */
 	146,	 /* 1001001 */
@@ -410,9 +410,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	16,	 /* 0001000 */
 	
 //-- Glyph for ASCII Character code: 43
-	9, /* ucWidth */
-	9, /* ucHeight */
-	6, /* ucVOffset */
+	9, /* u8Width */
+	9, /* u8Height */
+	6, /* u8VOffset */
 	//--[Glyph Data]--
 	8,	0,	 /* 000010000 */
 	8,	0,	 /* 000010000 */
@@ -425,9 +425,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	8,	0,	 /* 000010000 */
 	
 //-- Glyph for ASCII Character code: 44
-	2, /* ucWidth */
-	5, /* ucHeight */
-	14, /* ucVOffset */
+	2, /* u8Width */
+	5, /* u8Height */
+	14, /* u8VOffset */
 	//--[Glyph Data]--
 	64,	 /* 01 */
 	64,	 /* 01 */
@@ -436,24 +436,24 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	128,	 /* 10 */
 	
 //-- Glyph for ASCII Character code: 45
-	5, /* ucWidth */
-	1, /* ucHeight */
-	10, /* ucVOffset */
+	5, /* u8Width */
+	1, /* u8Height */
+	10, /* u8VOffset */
 	//--[Glyph Data]--
 	248,	 /* 11111 */
 	
 //-- Glyph for ASCII Character code: 46
-	1, /* ucWidth */
-	2, /* ucHeight */
-	14, /* ucVOffset */
+	1, /* u8Width */
+	2, /* u8Height */
+	14, /* u8VOffset */
 	//--[Glyph Data]--
 	128,	 /* 1 */
 	128,	 /* 1 */
 	
 //-- Glyph for ASCII Character code: 47
-	6, /* ucWidth */
-	16, /* ucHeight */
-	3, /* ucVOffset */
+	6, /* u8Width */
+	16, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	4,	 /* 000001 */
 	4,	 /* 000001 */
@@ -473,9 +473,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	128,	 /* 100000 */
 	
 //-- Glyph for ASCII Character code: 48
-	8, /* ucWidth */
-	12, /* ucHeight */
-	4, /* ucVOffset */
+	8, /* u8Width */
+	12, /* u8Height */
+	4, /* u8VOffset */
 	//--[Glyph Data]--
 	60,	 /* 00111100 */
 	66,	 /* 01000010 */
@@ -491,9 +491,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	60,	 /* 00111100 */
 	
 //-- Glyph for ASCII Character code: 49
-	5, /* ucWidth */
-	12, /* ucHeight */
-	4, /* ucVOffset */
+	5, /* u8Width */
+	12, /* u8Height */
+	4, /* u8VOffset */
 	//--[Glyph Data]--
 	32,	 /* 00100 */
 	32,	 /* 00100 */
@@ -509,9 +509,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	248,	 /* 11111 */
 	
 //-- Glyph for ASCII Character code: 50
-	7, /* ucWidth */
-	12, /* ucHeight */
-	4, /* ucVOffset */
+	7, /* u8Width */
+	12, /* u8Height */
+	4, /* u8VOffset */
 	//--[Glyph Data]--
 	120,	 /* 0111100 */
 	132,	 /* 1000010 */
@@ -527,9 +527,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	254,	 /* 1111111 */
 	
 //-- Glyph for ASCII Character code: 51
-	7, /* ucWidth */
-	12, /* ucHeight */
-	4, /* ucVOffset */
+	7, /* u8Width */
+	12, /* u8Height */
+	4, /* u8VOffset */
 	//--[Glyph Data]--
 	120,	 /* 0111100 */
 	132,	 /* 1000010 */
@@ -545,9 +545,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	120,	 /* 0111100 */
 	
 //-- Glyph for ASCII Character code: 52
-	8, /* ucWidth */
-	12, /* ucHeight */
-	4, /* ucVOffset */
+	8, /* u8Width */
+	12, /* u8Height */
+	4, /* u8VOffset */
 	//--[Glyph Data]--
 	2,	 /* 00000010 */
 	6,	 /* 00000110 */
@@ -563,9 +563,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	2,	 /* 00000010 */
 	
 //-- Glyph for ASCII Character code: 53
-	7, /* ucWidth */
-	12, /* ucHeight */
-	4, /* ucVOffset */
+	7, /* u8Width */
+	12, /* u8Height */
+	4, /* u8VOffset */
 	//--[Glyph Data]--
 	254,	 /* 1111111 */
 	128,	 /* 1000000 */
@@ -581,9 +581,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	120,	 /* 0111100 */
 	
 //-- Glyph for ASCII Character code: 54
-	8, /* ucWidth */
-	12, /* ucHeight */
-	4, /* ucVOffset */
+	8, /* u8Width */
+	12, /* u8Height */
+	4, /* u8VOffset */
 	//--[Glyph Data]--
 	30,	 /* 00011110 */
 	32,	 /* 00100000 */
@@ -599,9 +599,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	60,	 /* 00111100 */
 	
 //-- Glyph for ASCII Character code: 55
-	7, /* ucWidth */
-	12, /* ucHeight */
-	4, /* ucVOffset */
+	7, /* u8Width */
+	12, /* u8Height */
+	4, /* u8VOffset */
 	//--[Glyph Data]--
 	254,	 /* 1111111 */
 	2,	 /* 0000001 */
@@ -617,9 +617,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	64,	 /* 0100000 */
 	
 //-- Glyph for ASCII Character code: 56
-	8, /* ucWidth */
-	12, /* ucHeight */
-	4, /* ucVOffset */
+	8, /* u8Width */
+	12, /* u8Height */
+	4, /* u8VOffset */
 	//--[Glyph Data]--
 	60,	 /* 00111100 */
 	66,	 /* 01000010 */
@@ -635,9 +635,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	60,	 /* 00111100 */
 	
 //-- Glyph for ASCII Character code: 57
-	8, /* ucWidth */
-	12, /* ucHeight */
-	4, /* ucVOffset */
+	8, /* u8Width */
+	12, /* u8Height */
+	4, /* u8VOffset */
 	//--[Glyph Data]--
 	60,	 /* 00111100 */
 	66,	 /* 01000010 */
@@ -653,9 +653,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	120,	 /* 01111000 */
 	
 //-- Glyph for ASCII Character code: 58
-	1, /* ucWidth */
-	9, /* ucHeight */
-	7, /* ucVOffset */
+	1, /* u8Width */
+	9, /* u8Height */
+	7, /* u8VOffset */
 	//--[Glyph Data]--
 	128,	 /* 1 */
 	128,	 /* 1 */
@@ -668,9 +668,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	128,	 /* 1 */
 	
 //-- Glyph for ASCII Character code: 59
-	2, /* ucWidth */
-	12, /* ucHeight */
-	7, /* ucVOffset */
+	2, /* u8Width */
+	12, /* u8Height */
+	7, /* u8VOffset */
 	//--[Glyph Data]--
 	64,	 /* 01 */
 	64,	 /* 01 */
@@ -686,9 +686,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	128,	 /* 10 */
 	
 //-- Glyph for ASCII Character code: 60
-	8, /* ucWidth */
-	9, /* ucHeight */
-	6, /* ucVOffset */
+	8, /* u8Width */
+	9, /* u8Height */
+	6, /* u8VOffset */
 	//--[Glyph Data]--
 	1,	 /* 00000001 */
 	6,	 /* 00000110 */
@@ -701,9 +701,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	1,	 /* 00000001 */
 	
 //-- Glyph for ASCII Character code: 61
-	9, /* ucWidth */
-	4, /* ucHeight */
-	9, /* ucVOffset */
+	9, /* u8Width */
+	4, /* u8Height */
+	9, /* u8VOffset */
 	//--[Glyph Data]--
 	255,	128,	 /* 111111111 */
 	0,	0,	 /* 000000000 */
@@ -711,9 +711,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	255,	128,	 /* 111111111 */
 	
 //-- Glyph for ASCII Character code: 62
-	8, /* ucWidth */
-	9, /* ucHeight */
-	6, /* ucVOffset */
+	8, /* u8Width */
+	9, /* u8Height */
+	6, /* u8VOffset */
 	//--[Glyph Data]--
 	128,	 /* 10000000 */
 	96,	 /* 01100000 */
@@ -726,9 +726,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	128,	 /* 10000000 */
 	
 //-- Glyph for ASCII Character code: 63
-	6, /* ucWidth */
-	12, /* ucHeight */
-	4, /* ucVOffset */
+	6, /* u8Width */
+	12, /* u8Height */
+	4, /* u8VOffset */
 	//--[Glyph Data]--
 	112,	 /* 011100 */
 	136,	 /* 100010 */
@@ -744,9 +744,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	32,	 /* 001000 */
 	
 //-- Glyph for ASCII Character code: 64
-	13, /* ucWidth */
-	14, /* ucHeight */
-	4, /* ucVOffset */
+	13, /* u8Width */
+	14, /* u8Height */
+	4, /* u8VOffset */
 	//--[Glyph Data]--
 	15,	128,	 /* 0000111110000 */
 	48,	96,	 /* 0011000001100 */
@@ -764,9 +764,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	15,	128,	 /* 0000111110000 */
 	
 //-- Glyph for ASCII Character code: 65
-	10, /* ucWidth */
-	12, /* ucHeight */
-	4, /* ucVOffset */
+	10, /* u8Width */
+	12, /* u8Height */
+	4, /* u8VOffset */
 	//--[Glyph Data]--
 	12,	0,	 /* 0000110000 */
 	18,	0,	 /* 0001001000 */
@@ -782,9 +782,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	128,	64,	 /* 1000000001 */
 	
 //-- Glyph for ASCII Character code: 66
-	8, /* ucWidth */
-	12, /* ucHeight */
-	4, /* ucVOffset */
+	8, /* u8Width */
+	12, /* u8Height */
+	4, /* u8VOffset */
 	//--[Glyph Data]--
 	252,	 /* 11111100 */
 	130,	 /* 10000010 */
@@ -800,9 +800,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	252,	 /* 11111100 */
 	
 //-- Glyph for ASCII Character code: 67
-	9, /* ucWidth */
-	12, /* ucHeight */
-	4, /* ucVOffset */
+	9, /* u8Width */
+	12, /* u8Height */
+	4, /* u8VOffset */
 	//--[Glyph Data]--
 	31,	0,	 /* 000111110 */
 	96,	128,	 /* 011000001 */
@@ -818,9 +818,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	31,	0,	 /* 000111110 */
 	
 //-- Glyph for ASCII Character code: 68
-	10, /* ucWidth */
-	12, /* ucHeight */
-	4, /* ucVOffset */
+	10, /* u8Width */
+	12, /* u8Height */
+	4, /* u8VOffset */
 	//--[Glyph Data]--
 	252,	0,	 /* 1111110000 */
 	131,	0,	 /* 1000001100 */
@@ -836,9 +836,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	252,	0,	 /* 1111110000 */
 	
 //-- Glyph for ASCII Character code: 69
-	8, /* ucWidth */
-	12, /* ucHeight */
-	4, /* ucVOffset */
+	8, /* u8Width */
+	12, /* u8Height */
+	4, /* u8VOffset */
 	//--[Glyph Data]--
 	255,	 /* 11111111 */
 	128,	 /* 10000000 */
@@ -854,9 +854,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	255,	 /* 11111111 */
 	
 //-- Glyph for ASCII Character code: 70
-	7, /* ucWidth */
-	12, /* ucHeight */
-	4, /* ucVOffset */
+	7, /* u8Width */
+	12, /* u8Height */
+	4, /* u8VOffset */
 	//--[Glyph Data]--
 	254,	 /* 1111111 */
 	128,	 /* 1000000 */
@@ -872,9 +872,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	128,	 /* 1000000 */
 	
 //-- Glyph for ASCII Character code: 71
-	10, /* ucWidth */
-	12, /* ucHeight */
-	4, /* ucVOffset */
+	10, /* u8Width */
+	12, /* u8Height */
+	4, /* u8VOffset */
 	//--[Glyph Data]--
 	31,	128,	 /* 0001111110 */
 	96,	64,	 /* 0110000001 */
@@ -890,9 +890,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	31,	128,	 /* 0001111110 */
 	
 //-- Glyph for ASCII Character code: 72
-	10, /* ucWidth */
-	12, /* ucHeight */
-	4, /* ucVOffset */
+	10, /* u8Width */
+	12, /* u8Height */
+	4, /* u8VOffset */
 	//--[Glyph Data]--
 	128,	64,	 /* 1000000001 */
 	128,	64,	 /* 1000000001 */
@@ -908,9 +908,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	128,	64,	 /* 1000000001 */
 	
 //-- Glyph for ASCII Character code: 73
-	3, /* ucWidth */
-	12, /* ucHeight */
-	4, /* ucVOffset */
+	3, /* u8Width */
+	12, /* u8Height */
+	4, /* u8VOffset */
 	//--[Glyph Data]--
 	224,	 /* 111 */
 	64,	 /* 010 */
@@ -926,9 +926,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	224,	 /* 111 */
 	
 //-- Glyph for ASCII Character code: 74
-	6, /* ucWidth */
-	12, /* ucHeight */
-	4, /* ucVOffset */
+	6, /* u8Width */
+	12, /* u8Height */
+	4, /* u8VOffset */
 	//--[Glyph Data]--
 	60,	 /* 001111 */
 	4,	 /* 000001 */
@@ -944,9 +944,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	248,	 /* 111110 */
 	
 //-- Glyph for ASCII Character code: 75
-	8, /* ucWidth */
-	12, /* ucHeight */
-	4, /* ucVOffset */
+	8, /* u8Width */
+	12, /* u8Height */
+	4, /* u8VOffset */
 	//--[Glyph Data]--
 	129,	 /* 10000001 */
 	130,	 /* 10000010 */
@@ -962,9 +962,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	129,	 /* 10000001 */
 	
 //-- Glyph for ASCII Character code: 76
-	7, /* ucWidth */
-	12, /* ucHeight */
-	4, /* ucVOffset */
+	7, /* u8Width */
+	12, /* u8Height */
+	4, /* u8VOffset */
 	//--[Glyph Data]--
 	128,	 /* 1000000 */
 	128,	 /* 1000000 */
@@ -980,9 +980,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	254,	 /* 1111111 */
 	
 //-- Glyph for ASCII Character code: 77
-	11, /* ucWidth */
-	12, /* ucHeight */
-	4, /* ucVOffset */
+	11, /* u8Width */
+	12, /* u8Height */
+	4, /* u8VOffset */
 	//--[Glyph Data]--
 	192,	96,	 /* 11000000011 */
 	192,	96,	 /* 11000000011 */
@@ -998,9 +998,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	128,	32,	 /* 10000000001 */
 	
 //-- Glyph for ASCII Character code: 78
-	10, /* ucWidth */
-	12, /* ucHeight */
-	4, /* ucVOffset */
+	10, /* u8Width */
+	12, /* u8Height */
+	4, /* u8VOffset */
 	//--[Glyph Data]--
 	128,	64,	 /* 1000000001 */
 	192,	64,	 /* 1100000001 */
@@ -1016,9 +1016,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	128,	64,	 /* 1000000001 */
 	
 //-- Glyph for ASCII Character code: 79
-	11, /* ucWidth */
-	12, /* ucHeight */
-	4, /* ucVOffset */
+	11, /* u8Width */
+	12, /* u8Height */
+	4, /* u8VOffset */
 	//--[Glyph Data]--
 	31,	0,	 /* 00011111000 */
 	96,	192,	 /* 01100000110 */
@@ -1034,9 +1034,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	31,	0,	 /* 00011111000 */
 	
 //-- Glyph for ASCII Character code: 80
-	8, /* ucWidth */
-	12, /* ucHeight */
-	4, /* ucVOffset */
+	8, /* u8Width */
+	12, /* u8Height */
+	4, /* u8VOffset */
 	//--[Glyph Data]--
 	252,	 /* 11111100 */
 	130,	 /* 10000010 */
@@ -1052,9 +1052,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	128,	 /* 10000000 */
 	
 //-- Glyph for ASCII Character code: 81
-	11, /* ucWidth */
-	15, /* ucHeight */
-	4, /* ucVOffset */
+	11, /* u8Width */
+	15, /* u8Height */
+	4, /* u8VOffset */
 	//--[Glyph Data]--
 	31,	0,	 /* 00011111000 */
 	96,	192,	 /* 01100000110 */
@@ -1073,9 +1073,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	1,	224,	 /* 00000001111 */
 	
 //-- Glyph for ASCII Character code: 82
-	9, /* ucWidth */
-	12, /* ucHeight */
-	4, /* ucVOffset */
+	9, /* u8Width */
+	12, /* u8Height */
+	4, /* u8VOffset */
 	//--[Glyph Data]--
 	252,	0,	 /* 111111000 */
 	130,	0,	 /* 100000100 */
@@ -1091,9 +1091,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	128,	128,	 /* 100000001 */
 	
 //-- Glyph for ASCII Character code: 83
-	8, /* ucWidth */
-	12, /* ucHeight */
-	4, /* ucVOffset */
+	8, /* u8Width */
+	12, /* u8Height */
+	4, /* u8VOffset */
 	//--[Glyph Data]--
 	62,	 /* 00111110 */
 	65,	 /* 01000001 */
@@ -1109,9 +1109,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	124,	 /* 01111100 */
 	
 //-- Glyph for ASCII Character code: 84
-	9, /* ucWidth */
-	12, /* ucHeight */
-	4, /* ucVOffset */
+	9, /* u8Width */
+	12, /* u8Height */
+	4, /* u8VOffset */
 	//--[Glyph Data]--
 	255,	128,	 /* 111111111 */
 	8,	0,	 /* 000010000 */
@@ -1127,9 +1127,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	8,	0,	 /* 000010000 */
 	
 //-- Glyph for ASCII Character code: 85
-	10, /* ucWidth */
-	12, /* ucHeight */
-	4, /* ucVOffset */
+	10, /* u8Width */
+	12, /* u8Height */
+	4, /* u8VOffset */
 	//--[Glyph Data]--
 	128,	64,	 /* 1000000001 */
 	128,	64,	 /* 1000000001 */
@@ -1145,9 +1145,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	63,	0,	 /* 0011111100 */
 	
 //-- Glyph for ASCII Character code: 86
-	9, /* ucWidth */
-	12, /* ucHeight */
-	4, /* ucVOffset */
+	9, /* u8Width */
+	12, /* u8Height */
+	4, /* u8VOffset */
 	//--[Glyph Data]--
 	128,	128,	 /* 100000001 */
 	128,	128,	 /* 100000001 */
@@ -1163,9 +1163,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	8,	0,	 /* 000010000 */
 	
 //-- Glyph for ASCII Character code: 87
-	13, /* ucWidth */
-	12, /* ucHeight */
-	4, /* ucVOffset */
+	13, /* u8Width */
+	12, /* u8Height */
+	4, /* u8VOffset */
 	//--[Glyph Data]--
 	130,	8,	 /* 1000001000001 */
 	133,	8,	 /* 1000010100001 */
@@ -1181,9 +1181,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	16,	64,	 /* 0001000001000 */
 	
 //-- Glyph for ASCII Character code: 88
-	8, /* ucWidth */
-	12, /* ucHeight */
-	4, /* ucVOffset */
+	8, /* u8Width */
+	12, /* u8Height */
+	4, /* u8VOffset */
 	//--[Glyph Data]--
 	129,	 /* 10000001 */
 	66,	 /* 01000010 */
@@ -1199,9 +1199,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	129,	 /* 10000001 */
 	
 //-- Glyph for ASCII Character code: 89
-	9, /* ucWidth */
-	12, /* ucHeight */
-	4, /* ucVOffset */
+	9, /* u8Width */
+	12, /* u8Height */
+	4, /* u8VOffset */
 	//--[Glyph Data]--
 	128,	128,	 /* 100000001 */
 	65,	0,	 /* 010000010 */
@@ -1217,9 +1217,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	8,	0,	 /* 000010000 */
 	
 //-- Glyph for ASCII Character code: 90
-	8, /* ucWidth */
-	12, /* ucHeight */
-	4, /* ucVOffset */
+	8, /* u8Width */
+	12, /* u8Height */
+	4, /* u8VOffset */
 	//--[Glyph Data]--
 	255,	 /* 11111111 */
 	1,	 /* 00000001 */
@@ -1235,9 +1235,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	255,	 /* 11111111 */
 	
 //-- Glyph for ASCII Character code: 91
-	4, /* ucWidth */
-	16, /* ucHeight */
-	3, /* ucVOffset */
+	4, /* u8Width */
+	16, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	240,	 /* 1111 */
 	128,	 /* 1000 */
@@ -1257,9 +1257,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	240,	 /* 1111 */
 	
 //-- Glyph for ASCII Character code: 92
-	6, /* ucWidth */
-	16, /* ucHeight */
-	3, /* ucVOffset */
+	6, /* u8Width */
+	16, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	128,	 /* 100000 */
 	128,	 /* 100000 */
@@ -1279,9 +1279,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	4,	 /* 000001 */
 	
 //-- Glyph for ASCII Character code: 93
-	4, /* ucWidth */
-	16, /* ucHeight */
-	3, /* ucVOffset */
+	4, /* u8Width */
+	16, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	240,	 /* 1111 */
 	16,	 /* 0001 */
@@ -1301,9 +1301,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	240,	 /* 1111 */
 	
 //-- Glyph for ASCII Character code: 94
-	10, /* ucWidth */
-	6, /* ucHeight */
-	4, /* ucVOffset */
+	10, /* u8Width */
+	6, /* u8Height */
+	4, /* u8VOffset */
 	//--[Glyph Data]--
 	12,	0,	 /* 0000110000 */
 	18,	0,	 /* 0001001000 */
@@ -1313,25 +1313,25 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	128,	64,	 /* 1000000001 */
 	
 //-- Glyph for ASCII Character code: 95
-	9, /* ucWidth */
-	1, /* ucHeight */
-	17, /* ucVOffset */
+	9, /* u8Width */
+	1, /* u8Height */
+	17, /* u8VOffset */
 	//--[Glyph Data]--
 	255,	128,	 /* 111111111 */
 	
 //-- Glyph for ASCII Character code: 96
-	2, /* ucWidth */
-	3, /* ucHeight */
-	3, /* ucVOffset */
+	2, /* u8Width */
+	3, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	128,	 /* 10 */
 	128,	 /* 10 */
 	64,	 /* 01 */
 	
 //-- Glyph for ASCII Character code: 97
-	7, /* ucWidth */
-	9, /* ucHeight */
-	7, /* ucVOffset */
+	7, /* u8Width */
+	9, /* u8Height */
+	7, /* u8VOffset */
 	//--[Glyph Data]--
 	60,	 /* 0011110 */
 	66,	 /* 0100001 */
@@ -1344,9 +1344,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	122,	 /* 0111101 */
 	
 //-- Glyph for ASCII Character code: 98
-	8, /* ucWidth */
-	13, /* ucHeight */
-	3, /* ucVOffset */
+	8, /* u8Width */
+	13, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	128,	 /* 10000000 */
 	128,	 /* 10000000 */
@@ -1363,9 +1363,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	252,	 /* 11111100 */
 	
 //-- Glyph for ASCII Character code: 99
-	6, /* ucWidth */
-	9, /* ucHeight */
-	7, /* ucVOffset */
+	6, /* u8Width */
+	9, /* u8Height */
+	7, /* u8VOffset */
 	//--[Glyph Data]--
 	56,	 /* 001110 */
 	68,	 /* 010001 */
@@ -1378,9 +1378,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	56,	 /* 001110 */
 	
 //-- Glyph for ASCII Character code: 100
-	8, /* ucWidth */
-	13, /* ucHeight */
-	3, /* ucVOffset */
+	8, /* u8Width */
+	13, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	1,	 /* 00000001 */
 	1,	 /* 00000001 */
@@ -1397,9 +1397,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	61,	 /* 00111101 */
 	
 //-- Glyph for ASCII Character code: 101
-	7, /* ucWidth */
-	9, /* ucHeight */
-	7, /* ucVOffset */
+	7, /* u8Width */
+	9, /* u8Height */
+	7, /* u8VOffset */
 	//--[Glyph Data]--
 	56,	 /* 0011100 */
 	68,	 /* 0100010 */
@@ -1412,9 +1412,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	60,	 /* 0011110 */
 	
 //-- Glyph for ASCII Character code: 102
-	5, /* ucWidth */
-	13, /* ucHeight */
-	3, /* ucVOffset */
+	5, /* u8Width */
+	13, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	56,	 /* 00111 */
 	64,	 /* 01000 */
@@ -1431,9 +1431,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	64,	 /* 01000 */
 	
 //-- Glyph for ASCII Character code: 103
-	8, /* ucWidth */
-	12, /* ucHeight */
-	7, /* ucVOffset */
+	8, /* u8Width */
+	12, /* u8Height */
+	7, /* u8VOffset */
 	//--[Glyph Data]--
 	63,	 /* 00111111 */
 	65,	 /* 01000001 */
@@ -1449,9 +1449,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	60,	 /* 00111100 */
 	
 //-- Glyph for ASCII Character code: 104
-	8, /* ucWidth */
-	13, /* ucHeight */
-	3, /* ucVOffset */
+	8, /* u8Width */
+	13, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	128,	 /* 10000000 */
 	128,	 /* 10000000 */
@@ -1468,9 +1468,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	129,	 /* 10000001 */
 	
 //-- Glyph for ASCII Character code: 105
-	1, /* ucWidth */
-	12, /* ucHeight */
-	4, /* ucVOffset */
+	1, /* u8Width */
+	12, /* u8Height */
+	4, /* u8VOffset */
 	//--[Glyph Data]--
 	128,	 /* 1 */
 	128,	 /* 1 */
@@ -1486,9 +1486,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	128,	 /* 1 */
 	
 //-- Glyph for ASCII Character code: 106
-	4, /* ucWidth */
-	15, /* ucHeight */
-	4, /* ucVOffset */
+	4, /* u8Width */
+	15, /* u8Height */
+	4, /* u8VOffset */
 	//--[Glyph Data]--
 	16,	 /* 0001 */
 	16,	 /* 0001 */
@@ -1507,9 +1507,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	224,	 /* 1110 */
 	
 //-- Glyph for ASCII Character code: 107
-	7, /* ucWidth */
-	13, /* ucHeight */
-	3, /* ucVOffset */
+	7, /* u8Width */
+	13, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	128,	 /* 1000000 */
 	128,	 /* 1000000 */
@@ -1526,9 +1526,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	130,	 /* 1000001 */
 	
 //-- Glyph for ASCII Character code: 108
-	1, /* ucWidth */
-	13, /* ucHeight */
-	3, /* ucVOffset */
+	1, /* u8Width */
+	13, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	128,	 /* 1 */
 	128,	 /* 1 */
@@ -1545,9 +1545,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	128,	 /* 1 */
 	
 //-- Glyph for ASCII Character code: 109
-	11, /* ucWidth */
-	9, /* ucHeight */
-	7, /* ucVOffset */
+	11, /* u8Width */
+	9, /* u8Height */
+	7, /* u8VOffset */
 	//--[Glyph Data]--
 	185,	192,	 /* 10111001110 */
 	198,	32,	 /* 11000110001 */
@@ -1560,9 +1560,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	132,	32,	 /* 10000100001 */
 	
 //-- Glyph for ASCII Character code: 110
-	8, /* ucWidth */
-	9, /* ucHeight */
-	7, /* ucVOffset */
+	8, /* u8Width */
+	9, /* u8Height */
+	7, /* u8VOffset */
 	//--[Glyph Data]--
 	188,	 /* 10111100 */
 	194,	 /* 11000010 */
@@ -1575,9 +1575,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	129,	 /* 10000001 */
 	
 //-- Glyph for ASCII Character code: 111
-	8, /* ucWidth */
-	9, /* ucHeight */
-	7, /* ucVOffset */
+	8, /* u8Width */
+	9, /* u8Height */
+	7, /* u8VOffset */
 	//--[Glyph Data]--
 	60,	 /* 00111100 */
 	66,	 /* 01000010 */
@@ -1590,9 +1590,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	60,	 /* 00111100 */
 	
 //-- Glyph for ASCII Character code: 112
-	8, /* ucWidth */
-	12, /* ucHeight */
-	7, /* ucVOffset */
+	8, /* u8Width */
+	12, /* u8Height */
+	7, /* u8VOffset */
 	//--[Glyph Data]--
 	188,	 /* 10111100 */
 	194,	 /* 11000010 */
@@ -1608,9 +1608,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	128,	 /* 10000000 */
 	
 //-- Glyph for ASCII Character code: 113
-	8, /* ucWidth */
-	12, /* ucHeight */
-	7, /* ucVOffset */
+	8, /* u8Width */
+	12, /* u8Height */
+	7, /* u8VOffset */
 	//--[Glyph Data]--
 	63,	 /* 00111111 */
 	65,	 /* 01000001 */
@@ -1626,9 +1626,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	1,	 /* 00000001 */
 	
 //-- Glyph for ASCII Character code: 114
-	5, /* ucWidth */
-	9, /* ucHeight */
-	7, /* ucVOffset */
+	5, /* u8Width */
+	9, /* u8Height */
+	7, /* u8VOffset */
 	//--[Glyph Data]--
 	184,	 /* 10111 */
 	192,	 /* 11000 */
@@ -1641,9 +1641,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	128,	 /* 10000 */
 	
 //-- Glyph for ASCII Character code: 115
-	6, /* ucWidth */
-	9, /* ucHeight */
-	7, /* ucVOffset */
+	6, /* u8Width */
+	9, /* u8Height */
+	7, /* u8VOffset */
 	//--[Glyph Data]--
 	120,	 /* 011110 */
 	132,	 /* 100001 */
@@ -1656,9 +1656,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	120,	 /* 011110 */
 	
 //-- Glyph for ASCII Character code: 116
-	5, /* ucWidth */
-	12, /* ucHeight */
-	4, /* ucVOffset */
+	5, /* u8Width */
+	12, /* u8Height */
+	4, /* u8VOffset */
 	//--[Glyph Data]--
 	64,	 /* 01000 */
 	64,	 /* 01000 */
@@ -1674,9 +1674,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	56,	 /* 00111 */
 	
 //-- Glyph for ASCII Character code: 117
-	8, /* ucWidth */
-	9, /* ucHeight */
-	7, /* ucVOffset */
+	8, /* u8Width */
+	9, /* u8Height */
+	7, /* u8VOffset */
 	//--[Glyph Data]--
 	129,	 /* 10000001 */
 	129,	 /* 10000001 */
@@ -1689,9 +1689,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	61,	 /* 00111101 */
 	
 //-- Glyph for ASCII Character code: 118
-	7, /* ucWidth */
-	9, /* ucHeight */
-	7, /* ucVOffset */
+	7, /* u8Width */
+	9, /* u8Height */
+	7, /* u8VOffset */
 	//--[Glyph Data]--
 	130,	 /* 1000001 */
 	130,	 /* 1000001 */
@@ -1704,9 +1704,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	16,	 /* 0001000 */
 	
 //-- Glyph for ASCII Character code: 119
-	11, /* ucWidth */
-	9, /* ucHeight */
-	7, /* ucVOffset */
+	11, /* u8Width */
+	9, /* u8Height */
+	7, /* u8VOffset */
 	//--[Glyph Data]--
 	132,	32,	 /* 10000100001 */
 	132,	32,	 /* 10000100001 */
@@ -1719,9 +1719,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	32,	128,	 /* 00100000100 */
 	
 //-- Glyph for ASCII Character code: 120
-	7, /* ucWidth */
-	9, /* ucHeight */
-	7, /* ucVOffset */
+	7, /* u8Width */
+	9, /* u8Height */
+	7, /* u8VOffset */
 	//--[Glyph Data]--
 	130,	 /* 1000001 */
 	68,	 /* 0100010 */
@@ -1734,9 +1734,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	130,	 /* 1000001 */
 	
 //-- Glyph for ASCII Character code: 121
-	7, /* ucWidth */
-	12, /* ucHeight */
-	7, /* ucVOffset */
+	7, /* u8Width */
+	12, /* u8Height */
+	7, /* u8VOffset */
 	//--[Glyph Data]--
 	130,	 /* 1000001 */
 	130,	 /* 1000001 */
@@ -1752,9 +1752,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	32,	 /* 0010000 */
 	
 //-- Glyph for ASCII Character code: 122
-	6, /* ucWidth */
-	9, /* ucHeight */
-	7, /* ucVOffset */
+	6, /* u8Width */
+	9, /* u8Height */
+	7, /* u8VOffset */
 	//--[Glyph Data]--
 	252,	 /* 111111 */
 	4,	 /* 000001 */
@@ -1767,9 +1767,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	252,	 /* 111111 */
 	
 //-- Glyph for ASCII Character code: 123
-	7, /* ucWidth */
-	16, /* ucHeight */
-	3, /* ucVOffset */
+	7, /* u8Width */
+	16, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	14,	 /* 0000111 */
 	16,	 /* 0001000 */
@@ -1789,9 +1789,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	14,	 /* 0000111 */
 	
 //-- Glyph for ASCII Character code: 124
-	1, /* ucWidth */
-	16, /* ucHeight */
-	3, /* ucVOffset */
+	1, /* u8Width */
+	16, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	128,	 /* 1 */
 	128,	 /* 1 */
@@ -1811,9 +1811,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	128,	 /* 1 */
 	
 //-- Glyph for ASCII Character code: 125
-	7, /* ucWidth */
-	16, /* ucHeight */
-	3, /* ucVOffset */
+	7, /* u8Width */
+	16, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	224,	 /* 1110000 */
 	16,	 /* 0001000 */
@@ -1833,9 +1833,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	224,	 /* 1110000 */
 	
 //-- Glyph for ASCII Character code: 126
-	10, /* ucWidth */
-	4, /* ucHeight */
-	9, /* ucVOffset */
+	10, /* u8Width */
+	4, /* u8Height */
+	9, /* u8VOffset */
 	//--[Glyph Data]--
 	48,	64,	 /* 0011000001 */
 	72,	64,	 /* 0100100001 */
@@ -1843,16 +1843,16 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	131,	0,	 /* 1000001100 */
 	
 //-- Glyph for ASCII Character code: 127
-	0,  /* ucWidth */
-	0,  /* ucHeight */
-	0,  /* ucVOffset */
+	0,  /* u8Width */
+	0,  /* u8Height */
+	0,  /* u8VOffset */
 	//--[Glyph Data]--
 	/* No glyph data*/
 
 //-- Glyph for ASCII Character code: 128
-	8, /* ucWidth */
-	12, /* ucHeight */
-	4, /* ucVOffset */
+	8, /* u8Width */
+	12, /* u8Height */
+	4, /* u8VOffset */
 	//--[Glyph Data]--
 	14,	 /* 00001110 */
 	17,	 /* 00010001 */
@@ -1868,16 +1868,16 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	14,	 /* 00001110 */
 	
 //-- Glyph for ASCII Character code: 129
-	0,  /* ucWidth */
-	0,  /* ucHeight */
-	0,  /* ucVOffset */
+	0,  /* u8Width */
+	0,  /* u8Height */
+	0,  /* u8VOffset */
 	//--[Glyph Data]--
 	/* No glyph data*/
 
 //-- Glyph for ASCII Character code: 130
-	2, /* ucWidth */
-	4, /* ucHeight */
-	14, /* ucVOffset */
+	2, /* u8Width */
+	4, /* u8Height */
+	14, /* u8VOffset */
 	//--[Glyph Data]--
 	64,	 /* 01 */
 	64,	 /* 01 */
@@ -1885,9 +1885,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	128,	 /* 10 */
 	
 //-- Glyph for ASCII Character code: 131
-	9, /* ucWidth */
-	14, /* ucHeight */
-	4, /* ucVOffset */
+	9, /* u8Width */
+	14, /* u8Height */
+	4, /* u8VOffset */
 	//--[Glyph Data]--
 	3,	128,	 /* 000000111 */
 	4,	0,	 /* 000001000 */
@@ -1905,9 +1905,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	224,	0,	 /* 111000000 */
 	
 //-- Glyph for ASCII Character code: 132
-	5, /* ucWidth */
-	4, /* ucHeight */
-	14, /* ucVOffset */
+	5, /* u8Width */
+	4, /* u8Height */
+	14, /* u8VOffset */
 	//--[Glyph Data]--
 	72,	 /* 01001 */
 	72,	 /* 01001 */
@@ -1915,17 +1915,17 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	144,	 /* 10010 */
 	
 //-- Glyph for ASCII Character code: 133
-	9, /* ucWidth */
-	2, /* ucHeight */
-	14, /* ucVOffset */
+	9, /* u8Width */
+	2, /* u8Height */
+	14, /* u8VOffset */
 	//--[Glyph Data]--
 	136,	128,	 /* 100010001 */
 	136,	128,	 /* 100010001 */
 	
 //-- Glyph for ASCII Character code: 134
-	7, /* ucWidth */
-	12, /* ucHeight */
-	3, /* ucVOffset */
+	7, /* u8Width */
+	12, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	16,	 /* 0001000 */
 	16,	 /* 0001000 */
@@ -1941,9 +1941,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	16,	 /* 0001000 */
 	
 //-- Glyph for ASCII Character code: 135
-	7, /* ucWidth */
-	12, /* ucHeight */
-	3, /* ucVOffset */
+	7, /* u8Width */
+	12, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	16,	 /* 0001000 */
 	16,	 /* 0001000 */
@@ -1959,18 +1959,18 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	16,	 /* 0001000 */
 	
 //-- Glyph for ASCII Character code: 136
-	5, /* ucWidth */
-	3, /* ucHeight */
-	3, /* ucVOffset */
+	5, /* u8Width */
+	3, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	32,	 /* 00100 */
 	80,	 /* 01010 */
 	136,	 /* 10001 */
 	
 //-- Glyph for ASCII Character code: 137
-	21, /* ucWidth */
-	12, /* ucHeight */
-	4, /* ucVOffset */
+	21, /* u8Width */
+	12, /* u8Height */
+	4, /* u8VOffset */
 	//--[Glyph Data]--
 	120,	32,	0,	 /* 011110000010000000000 */
 	132,	64,	0,	 /* 100001000100000000000 */
@@ -1986,9 +1986,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	16,	120,	240,	 /* 000100000111100011110 */
 	
 //-- Glyph for ASCII Character code: 138
-	8, /* ucWidth */
-	16, /* ucHeight */
-	0, /* ucVOffset */
+	8, /* u8Width */
+	16, /* u8Height */
+	0, /* u8VOffset */
 	//--[Glyph Data]--
 	34,	 /* 00100010 */
 	20,	 /* 00010100 */
@@ -2008,9 +2008,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	124,	 /* 01111100 */
 	
 //-- Glyph for ASCII Character code: 139
-	4, /* ucWidth */
-	8, /* ucHeight */
-	7, /* ucVOffset */
+	4, /* u8Width */
+	8, /* u8Height */
+	7, /* u8VOffset */
 	//--[Glyph Data]--
 	16,	 /* 0001 */
 	32,	 /* 0010 */
@@ -2022,9 +2022,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	16,	 /* 0001 */
 	
 //-- Glyph for ASCII Character code: 140
-	15, /* ucWidth */
-	12, /* ucHeight */
-	4, /* ucVOffset */
+	15, /* u8Width */
+	12, /* u8Height */
+	4, /* u8VOffset */
 	//--[Glyph Data]--
 	31,	254,	 /* 000111111111111 */
 	97,	0,	 /* 011000010000000 */
@@ -2040,16 +2040,16 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	31,	254,	 /* 000111111111111 */
 	
 //-- Glyph for ASCII Character code: 141
-	0,  /* ucWidth */
-	0,  /* ucHeight */
-	0,  /* ucVOffset */
+	0,  /* u8Width */
+	0,  /* u8Height */
+	0,  /* u8VOffset */
 	//--[Glyph Data]--
 	/* No glyph data*/
 
 //-- Glyph for ASCII Character code: 142
-	8, /* ucWidth */
-	16, /* ucHeight */
-	0, /* ucVOffset */
+	8, /* u8Width */
+	16, /* u8Height */
+	0, /* u8VOffset */
 	//--[Glyph Data]--
 	34,	 /* 00100010 */
 	20,	 /* 00010100 */
@@ -2069,23 +2069,23 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	255,	 /* 11111111 */
 	
 //-- Glyph for ASCII Character code: 143
-	0,  /* ucWidth */
-	0,  /* ucHeight */
-	0,  /* ucVOffset */
+	0,  /* u8Width */
+	0,  /* u8Height */
+	0,  /* u8VOffset */
 	//--[Glyph Data]--
 	/* No glyph data*/
 
 //-- Glyph for ASCII Character code: 144
-	0,  /* ucWidth */
-	0,  /* ucHeight */
-	0,  /* ucVOffset */
+	0,  /* u8Width */
+	0,  /* u8Height */
+	0,  /* u8VOffset */
 	//--[Glyph Data]--
 	/* No glyph data*/
 
 //-- Glyph for ASCII Character code: 145
-	2, /* ucWidth */
-	4, /* ucHeight */
-	3, /* ucVOffset */
+	2, /* u8Width */
+	4, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	128,	 /* 10 */
 	128,	 /* 10 */
@@ -2093,9 +2093,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	64,	 /* 01 */
 	
 //-- Glyph for ASCII Character code: 146
-	2, /* ucWidth */
-	4, /* ucHeight */
-	3, /* ucVOffset */
+	2, /* u8Width */
+	4, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	64,	 /* 01 */
 	64,	 /* 01 */
@@ -2103,9 +2103,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	128,	 /* 10 */
 	
 //-- Glyph for ASCII Character code: 147
-	5, /* ucWidth */
-	4, /* ucHeight */
-	3, /* ucVOffset */
+	5, /* u8Width */
+	4, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	144,	 /* 10010 */
 	144,	 /* 10010 */
@@ -2113,9 +2113,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	72,	 /* 01001 */
 	
 //-- Glyph for ASCII Character code: 148
-	5, /* ucWidth */
-	4, /* ucHeight */
-	3, /* ucVOffset */
+	5, /* u8Width */
+	4, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	72,	 /* 01001 */
 	72,	 /* 01001 */
@@ -2123,9 +2123,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	144,	 /* 10010 */
 	
 //-- Glyph for ASCII Character code: 149
-	5, /* ucWidth */
-	5, /* ucHeight */
-	8, /* ucVOffset */
+	5, /* u8Width */
+	5, /* u8Height */
+	8, /* u8VOffset */
 	//--[Glyph Data]--
 	112,	 /* 01110 */
 	248,	 /* 11111 */
@@ -2134,31 +2134,31 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	112,	 /* 01110 */
 	
 //-- Glyph for ASCII Character code: 150
-	9, /* ucWidth */
-	1, /* ucHeight */
-	10, /* ucVOffset */
+	9, /* u8Width */
+	1, /* u8Height */
+	10, /* u8VOffset */
 	//--[Glyph Data]--
 	255,	128,	 /* 111111111 */
 	
 //-- Glyph for ASCII Character code: 151
-	15, /* ucWidth */
-	1, /* ucHeight */
-	10, /* ucVOffset */
+	15, /* u8Width */
+	1, /* u8Height */
+	10, /* u8VOffset */
 	//--[Glyph Data]--
 	255,	254,	 /* 111111111111111 */
 	
 //-- Glyph for ASCII Character code: 152
-	6, /* ucWidth */
-	2, /* ucHeight */
-	4, /* ucVOffset */
+	6, /* u8Width */
+	2, /* u8Height */
+	4, /* u8VOffset */
 	//--[Glyph Data]--
 	100,	 /* 011001 */
 	152,	 /* 100110 */
 	
 //-- Glyph for ASCII Character code: 153
-	12, /* ucWidth */
-	5, /* ucHeight */
-	4, /* ucVOffset */
+	12, /* u8Width */
+	5, /* u8Height */
+	4, /* u8VOffset */
 	//--[Glyph Data]--
 	250,	16,	 /* 111110100001 */
 	35,	48,	 /* 001000110011 */
@@ -2167,9 +2167,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	34,	16,	 /* 001000100001 */
 	
 //-- Glyph for ASCII Character code: 154
-	6, /* ucWidth */
-	13, /* ucHeight */
-	3, /* ucVOffset */
+	6, /* u8Width */
+	13, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	68,	 /* 010001 */
 	40,	 /* 001010 */
@@ -2186,9 +2186,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	120,	 /* 011110 */
 	
 //-- Glyph for ASCII Character code: 155
-	4, /* ucWidth */
-	8, /* ucHeight */
-	7, /* ucVOffset */
+	4, /* u8Width */
+	8, /* u8Height */
+	7, /* u8VOffset */
 	//--[Glyph Data]--
 	128,	 /* 1000 */
 	64,	 /* 0100 */
@@ -2200,9 +2200,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	128,	 /* 1000 */
 	
 //-- Glyph for ASCII Character code: 156
-	14, /* ucWidth */
-	9, /* ucHeight */
-	7, /* ucVOffset */
+	14, /* u8Width */
+	9, /* u8Height */
+	7, /* u8VOffset */
 	//--[Glyph Data]--
 	60,	112,	 /* 00111100011100 */
 	66,	136,	 /* 01000010100010 */
@@ -2215,16 +2215,16 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	60,	120,	 /* 00111100011110 */
 	
 //-- Glyph for ASCII Character code: 157
-	0,  /* ucWidth */
-	0,  /* ucHeight */
-	0,  /* ucVOffset */
+	0,  /* u8Width */
+	0,  /* u8Height */
+	0,  /* u8VOffset */
 	//--[Glyph Data]--
 	/* No glyph data*/
 
 //-- Glyph for ASCII Character code: 158
-	6, /* ucWidth */
-	13, /* ucHeight */
-	3, /* ucVOffset */
+	6, /* u8Width */
+	13, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	68,	 /* 010001 */
 	40,	 /* 001010 */
@@ -2241,9 +2241,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	252,	 /* 111111 */
 	
 //-- Glyph for ASCII Character code: 159
-	9, /* ucWidth */
-	15, /* ucHeight */
-	1, /* ucVOffset */
+	9, /* u8Width */
+	15, /* u8Height */
+	1, /* u8VOffset */
 	//--[Glyph Data]--
 	34,	0,	 /* 001000100 */
 	34,	0,	 /* 001000100 */
@@ -2262,16 +2262,16 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	8,	0,	 /* 000010000 */
 	
 //-- Glyph for ASCII Character code: 160
-	0,  /* ucWidth */
-	0,  /* ucHeight */
-	0,  /* ucVOffset */
+	0,  /* u8Width */
+	0,  /* u8Height */
+	0,  /* u8VOffset */
 	//--[Glyph Data]--
 	/* No glyph data*/
 
 //-- Glyph for ASCII Character code: 161
-	1, /* ucWidth */
-	12, /* ucHeight */
-	4, /* ucVOffset */
+	1, /* u8Width */
+	12, /* u8Height */
+	4, /* u8VOffset */
 	//--[Glyph Data]--
 	128,	 /* 1 */
 	128,	 /* 1 */
@@ -2287,9 +2287,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	128,	 /* 1 */
 	
 //-- Glyph for ASCII Character code: 162
-	7, /* ucWidth */
-	15, /* ucHeight */
-	4, /* ucVOffset */
+	7, /* u8Width */
+	15, /* u8Height */
+	4, /* u8VOffset */
 	//--[Glyph Data]--
 	8,	 /* 0000100 */
 	8,	 /* 0000100 */
@@ -2308,9 +2308,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	8,	 /* 0000100 */
 	
 //-- Glyph for ASCII Character code: 163
-	7, /* ucWidth */
-	12, /* ucHeight */
-	4, /* ucVOffset */
+	7, /* u8Width */
+	12, /* u8Height */
+	4, /* u8VOffset */
 	//--[Glyph Data]--
 	28,	 /* 0001110 */
 	34,	 /* 0010001 */
@@ -2326,9 +2326,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	254,	 /* 1111111 */
 	
 //-- Glyph for ASCII Character code: 164
-	7, /* ucWidth */
-	7, /* ucHeight */
-	7, /* ucVOffset */
+	7, /* u8Width */
+	7, /* u8Height */
+	7, /* u8VOffset */
 	//--[Glyph Data]--
 	130,	 /* 1000001 */
 	124,	 /* 0111110 */
@@ -2339,9 +2339,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	130,	 /* 1000001 */
 	
 //-- Glyph for ASCII Character code: 165
-	9, /* ucWidth */
-	12, /* ucHeight */
-	4, /* ucVOffset */
+	9, /* u8Width */
+	12, /* u8Height */
+	4, /* u8VOffset */
 	//--[Glyph Data]--
 	128,	128,	 /* 100000001 */
 	65,	0,	 /* 010000010 */
@@ -2357,9 +2357,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	8,	0,	 /* 000010000 */
 	
 //-- Glyph for ASCII Character code: 166
-	1, /* ucWidth */
-	16, /* ucHeight */
-	3, /* ucVOffset */
+	1, /* u8Width */
+	16, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	128,	 /* 1 */
 	128,	 /* 1 */
@@ -2379,9 +2379,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	128,	 /* 1 */
 	
 //-- Glyph for ASCII Character code: 167
-	7, /* ucWidth */
-	15, /* ucHeight */
-	4, /* ucVOffset */
+	7, /* u8Width */
+	15, /* u8Height */
+	4, /* u8VOffset */
 	//--[Glyph Data]--
 	60,	 /* 0011110 */
 	66,	 /* 0100001 */
@@ -2400,17 +2400,17 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	120,	 /* 0111100 */
 	
 //-- Glyph for ASCII Character code: 168
-	5, /* ucWidth */
-	2, /* ucHeight */
-	4, /* ucVOffset */
+	5, /* u8Width */
+	2, /* u8Height */
+	4, /* u8VOffset */
 	//--[Glyph Data]--
 	136,	 /* 10001 */
 	136,	 /* 10001 */
 	
 //-- Glyph for ASCII Character code: 169
-	14, /* ucWidth */
-	14, /* ucHeight */
-	4, /* ucVOffset */
+	14, /* u8Width */
+	14, /* u8Height */
+	4, /* u8VOffset */
 	//--[Glyph Data]--
 	15,	192,	 /* 00001111110000 */
 	16,	32,	 /* 00010000001000 */
@@ -2428,9 +2428,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	15,	192,	 /* 00001111110000 */
 	
 //-- Glyph for ASCII Character code: 170
-	6, /* ucWidth */
-	8, /* ucHeight */
-	4, /* ucVOffset */
+	6, /* u8Width */
+	8, /* u8Height */
+	4, /* u8VOffset */
 	//--[Glyph Data]--
 	120,	 /* 011110 */
 	4,	 /* 000001 */
@@ -2442,9 +2442,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	116,	 /* 011101 */
 	
 //-- Glyph for ASCII Character code: 171
-	7, /* ucWidth */
-	8, /* ucHeight */
-	7, /* ucVOffset */
+	7, /* u8Width */
+	8, /* u8Height */
+	7, /* u8VOffset */
 	//--[Glyph Data]--
 	18,	 /* 0001001 */
 	36,	 /* 0010010 */
@@ -2456,9 +2456,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	18,	 /* 0001001 */
 	
 //-- Glyph for ASCII Character code: 172
-	9, /* ucWidth */
-	5, /* ucHeight */
-	10, /* ucVOffset */
+	9, /* u8Width */
+	5, /* u8Height */
+	10, /* u8VOffset */
 	//--[Glyph Data]--
 	255,	128,	 /* 111111111 */
 	0,	128,	 /* 000000001 */
@@ -2467,16 +2467,16 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	0,	128,	 /* 000000001 */
 	
 //-- Glyph for ASCII Character code: 173
-	0,  /* ucWidth */
-	0,  /* ucHeight */
-	0,  /* ucVOffset */
+	0,  /* u8Width */
+	0,  /* u8Height */
+	0,  /* u8VOffset */
 	//--[Glyph Data]--
 	/* No glyph data*/
 
 //-- Glyph for ASCII Character code: 174
-	14, /* ucWidth */
-	14, /* ucHeight */
-	4, /* ucVOffset */
+	14, /* u8Width */
+	14, /* u8Height */
+	4, /* u8VOffset */
 	//--[Glyph Data]--
 	15,	192,	 /* 00001111110000 */
 	16,	32,	 /* 00010000001000 */
@@ -2494,16 +2494,16 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	15,	192,	 /* 00001111110000 */
 	
 //-- Glyph for ASCII Character code: 175
-	9, /* ucWidth */
-	1, /* ucHeight */
-	2, /* ucVOffset */
+	9, /* u8Width */
+	1, /* u8Height */
+	2, /* u8VOffset */
 	//--[Glyph Data]--
 	255,	128,	 /* 111111111 */
 	
 //-- Glyph for ASCII Character code: 176
-	6, /* ucWidth */
-	6, /* ucHeight */
-	4, /* ucVOffset */
+	6, /* u8Width */
+	6, /* u8Height */
+	4, /* u8VOffset */
 	//--[Glyph Data]--
 	120,	 /* 011110 */
 	132,	 /* 100001 */
@@ -2513,9 +2513,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	120,	 /* 011110 */
 	
 //-- Glyph for ASCII Character code: 177
-	9, /* ucWidth */
-	10, /* ucHeight */
-	5, /* ucVOffset */
+	9, /* u8Width */
+	10, /* u8Height */
+	5, /* u8VOffset */
 	//--[Glyph Data]--
 	8,	0,	 /* 000010000 */
 	8,	0,	 /* 000010000 */
@@ -2529,9 +2529,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	255,	128,	 /* 111111111 */
 	
 //-- Glyph for ASCII Character code: 178
-	5, /* ucWidth */
-	7, /* ucHeight */
-	4, /* ucVOffset */
+	5, /* u8Width */
+	7, /* u8Height */
+	4, /* u8VOffset */
 	//--[Glyph Data]--
 	112,	 /* 01110 */
 	136,	 /* 10001 */
@@ -2542,9 +2542,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	248,	 /* 11111 */
 	
 //-- Glyph for ASCII Character code: 179
-	5, /* ucWidth */
-	7, /* ucHeight */
-	4, /* ucVOffset */
+	5, /* u8Width */
+	7, /* u8Height */
+	4, /* u8VOffset */
 	//--[Glyph Data]--
 	112,	 /* 01110 */
 	136,	 /* 10001 */
@@ -2555,18 +2555,18 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	112,	 /* 01110 */
 	
 //-- Glyph for ASCII Character code: 180
-	2, /* ucWidth */
-	3, /* ucHeight */
-	3, /* ucVOffset */
+	2, /* u8Width */
+	3, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	64,	 /* 01 */
 	64,	 /* 01 */
 	128,	 /* 10 */
 	
 //-- Glyph for ASCII Character code: 181
-	8, /* ucWidth */
-	12, /* ucHeight */
-	7, /* ucVOffset */
+	8, /* u8Width */
+	12, /* u8Height */
+	7, /* u8VOffset */
 	//--[Glyph Data]--
 	129,	 /* 10000001 */
 	129,	 /* 10000001 */
@@ -2582,9 +2582,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	128,	 /* 10000000 */
 	
 //-- Glyph for ASCII Character code: 182
-	8, /* ucWidth */
-	15, /* ucHeight */
-	4, /* ucVOffset */
+	8, /* u8Width */
+	15, /* u8Height */
+	4, /* u8VOffset */
 	//--[Glyph Data]--
 	63,	 /* 00111111 */
 	121,	 /* 01111001 */
@@ -2603,26 +2603,26 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	9,	 /* 00001001 */
 	
 //-- Glyph for ASCII Character code: 183
-	1, /* ucWidth */
-	2, /* ucHeight */
-	7, /* ucVOffset */
+	1, /* u8Width */
+	2, /* u8Height */
+	7, /* u8VOffset */
 	//--[Glyph Data]--
 	128,	 /* 1 */
 	128,	 /* 1 */
 	
 //-- Glyph for ASCII Character code: 184
-	4, /* ucWidth */
-	3, /* ucHeight */
-	16, /* ucVOffset */
+	4, /* u8Width */
+	3, /* u8Height */
+	16, /* u8VOffset */
 	//--[Glyph Data]--
 	16,	 /* 0001 */
 	16,	 /* 0001 */
 	224,	 /* 1110 */
 	
 //-- Glyph for ASCII Character code: 185
-	5, /* ucWidth */
-	7, /* ucHeight */
-	4, /* ucVOffset */
+	5, /* u8Width */
+	7, /* u8Height */
+	4, /* u8VOffset */
 	//--[Glyph Data]--
 	32,	 /* 00100 */
 	224,	 /* 11100 */
@@ -2633,9 +2633,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	248,	 /* 11111 */
 	
 //-- Glyph for ASCII Character code: 186
-	7, /* ucWidth */
-	8, /* ucHeight */
-	4, /* ucVOffset */
+	7, /* u8Width */
+	8, /* u8Height */
+	4, /* u8VOffset */
 	//--[Glyph Data]--
 	56,	 /* 0011100 */
 	68,	 /* 0100010 */
@@ -2647,9 +2647,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	56,	 /* 0011100 */
 	
 //-- Glyph for ASCII Character code: 187
-	7, /* ucWidth */
-	8, /* ucHeight */
-	7, /* ucVOffset */
+	7, /* u8Width */
+	8, /* u8Height */
+	7, /* u8VOffset */
 	//--[Glyph Data]--
 	144,	 /* 1001000 */
 	72,	 /* 0100100 */
@@ -2661,9 +2661,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	144,	 /* 1001000 */
 	
 //-- Glyph for ASCII Character code: 188
-	13, /* ucWidth */
-	12, /* ucHeight */
-	4, /* ucVOffset */
+	13, /* u8Width */
+	12, /* u8Height */
+	4, /* u8VOffset */
 	//--[Glyph Data]--
 	32,	64,	 /* 0010000001000 */
 	224,	128,	 /* 1110000010000 */
@@ -2679,9 +2679,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	16,	16,	 /* 0001000000010 */
 	
 //-- Glyph for ASCII Character code: 189
-	14, /* ucWidth */
-	12, /* ucHeight */
-	4, /* ucVOffset */
+	14, /* u8Width */
+	12, /* u8Height */
+	4, /* u8VOffset */
 	//--[Glyph Data]--
 	32,	64,	 /* 00100000010000 */
 	224,	128,	 /* 11100000100000 */
@@ -2697,9 +2697,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	16,	124,	 /* 00010000011111 */
 	
 //-- Glyph for ASCII Character code: 190
-	14, /* ucWidth */
-	12, /* ucHeight */
-	4, /* ucVOffset */
+	14, /* u8Width */
+	12, /* u8Height */
+	4, /* u8VOffset */
 	//--[Glyph Data]--
 	112,	32,	 /* 01110000001000 */
 	136,	64,	 /* 10001000010000 */
@@ -2715,9 +2715,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	8,	8,	 /* 00001000000010 */
 	
 //-- Glyph for ASCII Character code: 191
-	6, /* ucWidth */
-	12, /* ucHeight */
-	4, /* ucVOffset */
+	6, /* u8Width */
+	12, /* u8Height */
+	4, /* u8VOffset */
 	//--[Glyph Data]--
 	16,	 /* 000100 */
 	16,	 /* 000100 */
@@ -2733,9 +2733,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	56,	 /* 001110 */
 	
 //-- Glyph for ASCII Character code: 192
-	10, /* ucWidth */
-	16, /* ucHeight */
-	0, /* ucVOffset */
+	10, /* u8Width */
+	16, /* u8Height */
+	0, /* u8VOffset */
 	//--[Glyph Data]--
 	8,	0,	 /* 0000100000 */
 	8,	0,	 /* 0000100000 */
@@ -2755,9 +2755,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	128,	64,	 /* 1000000001 */
 	
 //-- Glyph for ASCII Character code: 193
-	10, /* ucWidth */
-	16, /* ucHeight */
-	0, /* ucVOffset */
+	10, /* u8Width */
+	16, /* u8Height */
+	0, /* u8VOffset */
 	//--[Glyph Data]--
 	4,	0,	 /* 0000010000 */
 	4,	0,	 /* 0000010000 */
@@ -2777,9 +2777,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	128,	64,	 /* 1000000001 */
 	
 //-- Glyph for ASCII Character code: 194
-	10, /* ucWidth */
-	16, /* ucHeight */
-	0, /* ucVOffset */
+	10, /* u8Width */
+	16, /* u8Height */
+	0, /* u8VOffset */
 	//--[Glyph Data]--
 	4,	0,	 /* 0000010000 */
 	10,	0,	 /* 0000101000 */
@@ -2799,9 +2799,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	128,	64,	 /* 1000000001 */
 	
 //-- Glyph for ASCII Character code: 195
-	10, /* ucWidth */
-	15, /* ucHeight */
-	1, /* ucVOffset */
+	10, /* u8Width */
+	15, /* u8Height */
+	1, /* u8VOffset */
 	//--[Glyph Data]--
 	25,	0,	 /* 0001100100 */
 	38,	0,	 /* 0010011000 */
@@ -2820,9 +2820,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	128,	64,	 /* 1000000001 */
 	
 //-- Glyph for ASCII Character code: 196
-	10, /* ucWidth */
-	15, /* ucHeight */
-	1, /* ucVOffset */
+	10, /* u8Width */
+	15, /* u8Height */
+	1, /* u8VOffset */
 	//--[Glyph Data]--
 	33,	0,	 /* 0010000100 */
 	33,	0,	 /* 0010000100 */
@@ -2841,9 +2841,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	128,	64,	 /* 1000000001 */
 	
 //-- Glyph for ASCII Character code: 197
-	10, /* ucWidth */
-	16, /* ucHeight */
-	0, /* ucVOffset */
+	10, /* u8Width */
+	16, /* u8Height */
+	0, /* u8VOffset */
 	//--[Glyph Data]--
 	30,	0,	 /* 0001111000 */
 	33,	0,	 /* 0010000100 */
@@ -2863,9 +2863,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	128,	64,	 /* 1000000001 */
 	
 //-- Glyph for ASCII Character code: 198
-	14, /* ucWidth */
-	12, /* ucHeight */
-	4, /* ucVOffset */
+	14, /* u8Width */
+	12, /* u8Height */
+	4, /* u8VOffset */
 	//--[Glyph Data]--
 	15,	252,	 /* 00001111111111 */
 	9,	0,	 /* 00001001000000 */
@@ -2881,9 +2881,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	129,	252,	 /* 10000001111111 */
 	
 //-- Glyph for ASCII Character code: 199
-	9, /* ucWidth */
-	15, /* ucHeight */
-	4, /* ucVOffset */
+	9, /* u8Width */
+	15, /* u8Height */
+	4, /* u8VOffset */
 	//--[Glyph Data]--
 	31,	0,	 /* 000111110 */
 	96,	128,	 /* 011000001 */
@@ -2902,9 +2902,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	28,	0,	 /* 000111000 */
 	
 //-- Glyph for ASCII Character code: 200
-	8, /* ucWidth */
-	16, /* ucHeight */
-	0, /* ucVOffset */
+	8, /* u8Width */
+	16, /* u8Height */
+	0, /* u8VOffset */
 	//--[Glyph Data]--
 	16,	 /* 00010000 */
 	16,	 /* 00010000 */
@@ -2924,9 +2924,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	255,	 /* 11111111 */
 	
 //-- Glyph for ASCII Character code: 201
-	8, /* ucWidth */
-	16, /* ucHeight */
-	0, /* ucVOffset */
+	8, /* u8Width */
+	16, /* u8Height */
+	0, /* u8VOffset */
 	//--[Glyph Data]--
 	4,	 /* 00000100 */
 	4,	 /* 00000100 */
@@ -2946,9 +2946,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	255,	 /* 11111111 */
 	
 //-- Glyph for ASCII Character code: 202
-	8, /* ucWidth */
-	16, /* ucHeight */
-	0, /* ucVOffset */
+	8, /* u8Width */
+	16, /* u8Height */
+	0, /* u8VOffset */
 	//--[Glyph Data]--
 	8,	 /* 00001000 */
 	20,	 /* 00010100 */
@@ -2968,9 +2968,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	255,	 /* 11111111 */
 	
 //-- Glyph for ASCII Character code: 203
-	8, /* ucWidth */
-	15, /* ucHeight */
-	1, /* ucVOffset */
+	8, /* u8Width */
+	15, /* u8Height */
+	1, /* u8VOffset */
 	//--[Glyph Data]--
 	34,	 /* 00100010 */
 	34,	 /* 00100010 */
@@ -2989,9 +2989,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	255,	 /* 11111111 */
 	
 //-- Glyph for ASCII Character code: 204
-	3, /* ucWidth */
-	16, /* ucHeight */
-	0, /* ucVOffset */
+	3, /* u8Width */
+	16, /* u8Height */
+	0, /* u8VOffset */
 	//--[Glyph Data]--
 	128,	 /* 100 */
 	128,	 /* 100 */
@@ -3011,9 +3011,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	224,	 /* 111 */
 	
 //-- Glyph for ASCII Character code: 205
-	3, /* ucWidth */
-	16, /* ucHeight */
-	0, /* ucVOffset */
+	3, /* u8Width */
+	16, /* u8Height */
+	0, /* u8VOffset */
 	//--[Glyph Data]--
 	32,	 /* 001 */
 	32,	 /* 001 */
@@ -3033,9 +3033,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	224,	 /* 111 */
 	
 //-- Glyph for ASCII Character code: 206
-	5, /* ucWidth */
-	16, /* ucHeight */
-	0, /* ucVOffset */
+	5, /* u8Width */
+	16, /* u8Height */
+	0, /* u8VOffset */
 	//--[Glyph Data]--
 	32,	 /* 00100 */
 	80,	 /* 01010 */
@@ -3055,9 +3055,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	112,	 /* 01110 */
 	
 //-- Glyph for ASCII Character code: 207
-	5, /* ucWidth */
-	15, /* ucHeight */
-	1, /* ucVOffset */
+	5, /* u8Width */
+	15, /* u8Height */
+	1, /* u8VOffset */
 	//--[Glyph Data]--
 	136,	 /* 10001 */
 	136,	 /* 10001 */
@@ -3076,9 +3076,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	112,	 /* 01110 */
 	
 //-- Glyph for ASCII Character code: 208
-	10, /* ucWidth */
-	12, /* ucHeight */
-	4, /* ucVOffset */
+	10, /* u8Width */
+	12, /* u8Height */
+	4, /* u8VOffset */
 	//--[Glyph Data]--
 	126,	0,	 /* 0111111000 */
 	65,	128,	 /* 0100000110 */
@@ -3094,9 +3094,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	126,	0,	 /* 0111111000 */
 	
 //-- Glyph for ASCII Character code: 209
-	10, /* ucWidth */
-	15, /* ucHeight */
-	1, /* ucVOffset */
+	10, /* u8Width */
+	15, /* u8Height */
+	1, /* u8VOffset */
 	//--[Glyph Data]--
 	25,	0,	 /* 0001100100 */
 	38,	0,	 /* 0010011000 */
@@ -3115,9 +3115,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	128,	64,	 /* 1000000001 */
 	
 //-- Glyph for ASCII Character code: 210
-	11, /* ucWidth */
-	16, /* ucHeight */
-	0, /* ucVOffset */
+	11, /* u8Width */
+	16, /* u8Height */
+	0, /* u8VOffset */
 	//--[Glyph Data]--
 	8,	0,	 /* 00001000000 */
 	8,	0,	 /* 00001000000 */
@@ -3137,9 +3137,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	31,	0,	 /* 00011111000 */
 	
 //-- Glyph for ASCII Character code: 211
-	11, /* ucWidth */
-	16, /* ucHeight */
-	0, /* ucVOffset */
+	11, /* u8Width */
+	16, /* u8Height */
+	0, /* u8VOffset */
 	//--[Glyph Data]--
 	2,	0,	 /* 00000010000 */
 	2,	0,	 /* 00000010000 */
@@ -3159,9 +3159,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	31,	0,	 /* 00011111000 */
 	
 //-- Glyph for ASCII Character code: 212
-	11, /* ucWidth */
-	16, /* ucHeight */
-	0, /* ucVOffset */
+	11, /* u8Width */
+	16, /* u8Height */
+	0, /* u8VOffset */
 	//--[Glyph Data]--
 	4,	0,	 /* 00000100000 */
 	10,	0,	 /* 00001010000 */
@@ -3181,9 +3181,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	31,	0,	 /* 00011111000 */
 	
 //-- Glyph for ASCII Character code: 213
-	11, /* ucWidth */
-	15, /* ucHeight */
-	1, /* ucVOffset */
+	11, /* u8Width */
+	15, /* u8Height */
+	1, /* u8VOffset */
 	//--[Glyph Data]--
 	12,	128,	 /* 00001100100 */
 	19,	0,	 /* 00010011000 */
@@ -3202,9 +3202,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	31,	0,	 /* 00011111000 */
 	
 //-- Glyph for ASCII Character code: 214
-	11, /* ucWidth */
-	15, /* ucHeight */
-	1, /* ucVOffset */
+	11, /* u8Width */
+	15, /* u8Height */
+	1, /* u8VOffset */
 	//--[Glyph Data]--
 	17,	0,	 /* 00010001000 */
 	17,	0,	 /* 00010001000 */
@@ -3223,9 +3223,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	31,	0,	 /* 00011111000 */
 	
 //-- Glyph for ASCII Character code: 215
-	7, /* ucWidth */
-	7, /* ucHeight */
-	7, /* ucVOffset */
+	7, /* u8Width */
+	7, /* u8Height */
+	7, /* u8VOffset */
 	//--[Glyph Data]--
 	130,	 /* 1000001 */
 	68,	 /* 0100010 */
@@ -3236,9 +3236,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	130,	 /* 1000001 */
 	
 //-- Glyph for ASCII Character code: 216
-	11, /* ucWidth */
-	14, /* ucHeight */
-	3, /* ucVOffset */
+	11, /* u8Width */
+	14, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	0,	32,	 /* 00000000001 */
 	31,	64,	 /* 00011111010 */
@@ -3256,9 +3256,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	128,	0,	 /* 10000000000 */
 	
 //-- Glyph for ASCII Character code: 217
-	10, /* ucWidth */
-	16, /* ucHeight */
-	0, /* ucVOffset */
+	10, /* u8Width */
+	16, /* u8Height */
+	0, /* u8VOffset */
 	//--[Glyph Data]--
 	8,	0,	 /* 0000100000 */
 	8,	0,	 /* 0000100000 */
@@ -3278,9 +3278,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	63,	0,	 /* 0011111100 */
 	
 //-- Glyph for ASCII Character code: 218
-	10, /* ucWidth */
-	16, /* ucHeight */
-	0, /* ucVOffset */
+	10, /* u8Width */
+	16, /* u8Height */
+	0, /* u8VOffset */
 	//--[Glyph Data]--
 	4,	0,	 /* 0000010000 */
 	4,	0,	 /* 0000010000 */
@@ -3300,9 +3300,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	63,	0,	 /* 0011111100 */
 	
 //-- Glyph for ASCII Character code: 219
-	10, /* ucWidth */
-	16, /* ucHeight */
-	0, /* ucVOffset */
+	10, /* u8Width */
+	16, /* u8Height */
+	0, /* u8VOffset */
 	//--[Glyph Data]--
 	4,	0,	 /* 0000010000 */
 	10,	0,	 /* 0000101000 */
@@ -3322,9 +3322,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	63,	0,	 /* 0011111100 */
 	
 //-- Glyph for ASCII Character code: 220
-	10, /* ucWidth */
-	15, /* ucHeight */
-	1, /* ucVOffset */
+	10, /* u8Width */
+	15, /* u8Height */
+	1, /* u8VOffset */
 	//--[Glyph Data]--
 	33,	0,	 /* 0010000100 */
 	33,	0,	 /* 0010000100 */
@@ -3343,9 +3343,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	63,	0,	 /* 0011111100 */
 	
 //-- Glyph for ASCII Character code: 221
-	9, /* ucWidth */
-	16, /* ucHeight */
-	0, /* ucVOffset */
+	9, /* u8Width */
+	16, /* u8Height */
+	0, /* u8VOffset */
 	//--[Glyph Data]--
 	4,	0,	 /* 000001000 */
 	4,	0,	 /* 000001000 */
@@ -3365,9 +3365,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	8,	0,	 /* 000010000 */
 	
 //-- Glyph for ASCII Character code: 222
-	8, /* ucWidth */
-	12, /* ucHeight */
-	4, /* ucVOffset */
+	8, /* u8Width */
+	12, /* u8Height */
+	4, /* u8VOffset */
 	//--[Glyph Data]--
 	128,	 /* 10000000 */
 	128,	 /* 10000000 */
@@ -3383,9 +3383,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	128,	 /* 10000000 */
 	
 //-- Glyph for ASCII Character code: 223
-	8, /* ucWidth */
-	13, /* ucHeight */
-	3, /* ucVOffset */
+	8, /* u8Width */
+	13, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	60,	 /* 00111100 */
 	66,	 /* 01000010 */
@@ -3402,9 +3402,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	188,	 /* 10111100 */
 	
 //-- Glyph for ASCII Character code: 224
-	7, /* ucWidth */
-	13, /* ucHeight */
-	3, /* ucVOffset */
+	7, /* u8Width */
+	13, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	16,	 /* 0001000 */
 	16,	 /* 0001000 */
@@ -3421,9 +3421,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	122,	 /* 0111101 */
 	
 //-- Glyph for ASCII Character code: 225
-	7, /* ucWidth */
-	13, /* ucHeight */
-	3, /* ucVOffset */
+	7, /* u8Width */
+	13, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	8,	 /* 0000100 */
 	8,	 /* 0000100 */
@@ -3440,9 +3440,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	122,	 /* 0111101 */
 	
 //-- Glyph for ASCII Character code: 226
-	7, /* ucWidth */
-	13, /* ucHeight */
-	3, /* ucVOffset */
+	7, /* u8Width */
+	13, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	16,	 /* 0001000 */
 	40,	 /* 0010100 */
@@ -3459,9 +3459,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	122,	 /* 0111101 */
 	
 //-- Glyph for ASCII Character code: 227
-	7, /* ucWidth */
-	12, /* ucHeight */
-	4, /* ucVOffset */
+	7, /* u8Width */
+	12, /* u8Height */
+	4, /* u8VOffset */
 	//--[Glyph Data]--
 	50,	 /* 0011001 */
 	76,	 /* 0100110 */
@@ -3477,9 +3477,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	122,	 /* 0111101 */
 	
 //-- Glyph for ASCII Character code: 228
-	7, /* ucWidth */
-	12, /* ucHeight */
-	4, /* ucVOffset */
+	7, /* u8Width */
+	12, /* u8Height */
+	4, /* u8VOffset */
 	//--[Glyph Data]--
 	68,	 /* 0100010 */
 	68,	 /* 0100010 */
@@ -3495,9 +3495,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	122,	 /* 0111101 */
 	
 //-- Glyph for ASCII Character code: 229
-	7, /* ucWidth */
-	14, /* ucHeight */
-	2, /* ucVOffset */
+	7, /* u8Width */
+	14, /* u8Height */
+	2, /* u8VOffset */
 	//--[Glyph Data]--
 	56,	 /* 0011100 */
 	68,	 /* 0100010 */
@@ -3515,9 +3515,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	122,	 /* 0111101 */
 	
 //-- Glyph for ASCII Character code: 230
-	13, /* ucWidth */
-	9, /* ucHeight */
-	7, /* ucVOffset */
+	13, /* u8Width */
+	9, /* u8Height */
+	7, /* u8VOffset */
 	//--[Glyph Data]--
 	60,	224,	 /* 0011110011100 */
 	67,	16,	 /* 0100001100010 */
@@ -3530,9 +3530,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	120,	240,	 /* 0111100011110 */
 	
 //-- Glyph for ASCII Character code: 231
-	6, /* ucWidth */
-	12, /* ucHeight */
-	7, /* ucVOffset */
+	6, /* u8Width */
+	12, /* u8Height */
+	7, /* u8VOffset */
 	//--[Glyph Data]--
 	56,	 /* 001110 */
 	68,	 /* 010001 */
@@ -3548,9 +3548,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	112,	 /* 011100 */
 	
 //-- Glyph for ASCII Character code: 232
-	7, /* ucWidth */
-	13, /* ucHeight */
-	3, /* ucVOffset */
+	7, /* u8Width */
+	13, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	16,	 /* 0001000 */
 	16,	 /* 0001000 */
@@ -3567,9 +3567,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	60,	 /* 0011110 */
 	
 //-- Glyph for ASCII Character code: 233
-	7, /* ucWidth */
-	13, /* ucHeight */
-	3, /* ucVOffset */
+	7, /* u8Width */
+	13, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	8,	 /* 0000100 */
 	8,	 /* 0000100 */
@@ -3586,9 +3586,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	60,	 /* 0011110 */
 	
 //-- Glyph for ASCII Character code: 234
-	7, /* ucWidth */
-	13, /* ucHeight */
-	3, /* ucVOffset */
+	7, /* u8Width */
+	13, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	16,	 /* 0001000 */
 	40,	 /* 0010100 */
@@ -3605,9 +3605,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	60,	 /* 0011110 */
 	
 //-- Glyph for ASCII Character code: 235
-	7, /* ucWidth */
-	12, /* ucHeight */
-	4, /* ucVOffset */
+	7, /* u8Width */
+	12, /* u8Height */
+	4, /* u8VOffset */
 	//--[Glyph Data]--
 	68,	 /* 0100010 */
 	68,	 /* 0100010 */
@@ -3623,9 +3623,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	60,	 /* 0011110 */
 	
 //-- Glyph for ASCII Character code: 236
-	2, /* ucWidth */
-	13, /* ucHeight */
-	3, /* ucVOffset */
+	2, /* u8Width */
+	13, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	128,	 /* 10 */
 	128,	 /* 10 */
@@ -3642,9 +3642,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	64,	 /* 01 */
 	
 //-- Glyph for ASCII Character code: 237
-	2, /* ucWidth */
-	13, /* ucHeight */
-	3, /* ucVOffset */
+	2, /* u8Width */
+	13, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	64,	 /* 01 */
 	64,	 /* 01 */
@@ -3661,9 +3661,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	128,	 /* 10 */
 	
 //-- Glyph for ASCII Character code: 238
-	5, /* ucWidth */
-	13, /* ucHeight */
-	3, /* ucVOffset */
+	5, /* u8Width */
+	13, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	32,	 /* 00100 */
 	80,	 /* 01010 */
@@ -3680,9 +3680,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	32,	 /* 00100 */
 	
 //-- Glyph for ASCII Character code: 239
-	3, /* ucWidth */
-	12, /* ucHeight */
-	4, /* ucVOffset */
+	3, /* u8Width */
+	12, /* u8Height */
+	4, /* u8VOffset */
 	//--[Glyph Data]--
 	160,	 /* 101 */
 	160,	 /* 101 */
@@ -3698,9 +3698,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	64,	 /* 010 */
 	
 //-- Glyph for ASCII Character code: 240
-	8, /* ucWidth */
-	12, /* ucHeight */
-	4, /* ucVOffset */
+	8, /* u8Width */
+	12, /* u8Height */
+	4, /* u8VOffset */
 	//--[Glyph Data]--
 	54,	 /* 00110110 */
 	12,	 /* 00001100 */
@@ -3716,9 +3716,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	60,	 /* 00111100 */
 	
 //-- Glyph for ASCII Character code: 241
-	8, /* ucWidth */
-	12, /* ucHeight */
-	4, /* ucVOffset */
+	8, /* u8Width */
+	12, /* u8Height */
+	4, /* u8VOffset */
 	//--[Glyph Data]--
 	50,	 /* 00110010 */
 	76,	 /* 01001100 */
@@ -3734,9 +3734,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	129,	 /* 10000001 */
 	
 //-- Glyph for ASCII Character code: 242
-	8, /* ucWidth */
-	13, /* ucHeight */
-	3, /* ucVOffset */
+	8, /* u8Width */
+	13, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	32,	 /* 00100000 */
 	32,	 /* 00100000 */
@@ -3753,9 +3753,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	60,	 /* 00111100 */
 	
 //-- Glyph for ASCII Character code: 243
-	8, /* ucWidth */
-	13, /* ucHeight */
-	3, /* ucVOffset */
+	8, /* u8Width */
+	13, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	4,	 /* 00000100 */
 	4,	 /* 00000100 */
@@ -3772,9 +3772,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	60,	 /* 00111100 */
 	
 //-- Glyph for ASCII Character code: 244
-	8, /* ucWidth */
-	13, /* ucHeight */
-	3, /* ucVOffset */
+	8, /* u8Width */
+	13, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	8,	 /* 00001000 */
 	20,	 /* 00010100 */
@@ -3791,9 +3791,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	60,	 /* 00111100 */
 	
 //-- Glyph for ASCII Character code: 245
-	8, /* ucWidth */
-	12, /* ucHeight */
-	4, /* ucVOffset */
+	8, /* u8Width */
+	12, /* u8Height */
+	4, /* u8VOffset */
 	//--[Glyph Data]--
 	50,	 /* 00110010 */
 	76,	 /* 01001100 */
@@ -3809,9 +3809,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	60,	 /* 00111100 */
 	
 //-- Glyph for ASCII Character code: 246
-	8, /* ucWidth */
-	12, /* ucHeight */
-	4, /* ucVOffset */
+	8, /* u8Width */
+	12, /* u8Height */
+	4, /* u8VOffset */
 	//--[Glyph Data]--
 	66,	 /* 01000010 */
 	66,	 /* 01000010 */
@@ -3827,9 +3827,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	60,	 /* 00111100 */
 	
 //-- Glyph for ASCII Character code: 247
-	9, /* ucWidth */
-	9, /* ucHeight */
-	6, /* ucVOffset */
+	9, /* u8Width */
+	9, /* u8Height */
+	6, /* u8VOffset */
 	//--[Glyph Data]--
 	8,	0,	 /* 000010000 */
 	8,	0,	 /* 000010000 */
@@ -3842,9 +3842,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	8,	0,	 /* 000010000 */
 	
 //-- Glyph for ASCII Character code: 248
-	8, /* ucWidth */
-	11, /* ucHeight */
-	6, /* ucVOffset */
+	8, /* u8Width */
+	11, /* u8Height */
+	6, /* u8VOffset */
 	//--[Glyph Data]--
 	1,	 /* 00000001 */
 	62,	 /* 00111110 */
@@ -3859,9 +3859,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	128,	 /* 10000000 */
 	
 //-- Glyph for ASCII Character code: 249
-	8, /* ucWidth */
-	13, /* ucHeight */
-	3, /* ucVOffset */
+	8, /* u8Width */
+	13, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	16,	 /* 00010000 */
 	16,	 /* 00010000 */
@@ -3878,9 +3878,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	61,	 /* 00111101 */
 	
 //-- Glyph for ASCII Character code: 250
-	8, /* ucWidth */
-	13, /* ucHeight */
-	3, /* ucVOffset */
+	8, /* u8Width */
+	13, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	8,	 /* 00001000 */
 	8,	 /* 00001000 */
@@ -3897,9 +3897,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	61,	 /* 00111101 */
 	
 //-- Glyph for ASCII Character code: 251
-	8, /* ucWidth */
-	13, /* ucHeight */
-	3, /* ucVOffset */
+	8, /* u8Width */
+	13, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	8,	 /* 00001000 */
 	20,	 /* 00010100 */
@@ -3916,9 +3916,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	61,	 /* 00111101 */
 	
 //-- Glyph for ASCII Character code: 252
-	8, /* ucWidth */
-	12, /* ucHeight */
-	4, /* ucVOffset */
+	8, /* u8Width */
+	12, /* u8Height */
+	4, /* u8VOffset */
 	//--[Glyph Data]--
 	34,	 /* 00100010 */
 	34,	 /* 00100010 */
@@ -3934,9 +3934,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	61,	 /* 00111101 */
 	
 //-- Glyph for ASCII Character code: 253
-	7, /* ucWidth */
-	16, /* ucHeight */
-	3, /* ucVOffset */
+	7, /* u8Width */
+	16, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	8,	 /* 0000100 */
 	8,	 /* 0000100 */
@@ -3956,9 +3956,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	32,	 /* 0010000 */
 	
 //-- Glyph for ASCII Character code: 254
-	8, /* ucWidth */
-	16, /* ucHeight */
-	3, /* ucVOffset */
+	8, /* u8Width */
+	16, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	128,	 /* 10000000 */
 	128,	 /* 10000000 */
@@ -3978,9 +3978,9 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	128,	 /* 10000000 */
 	
 //-- Glyph for ASCII Character code: 255
-	7, /* ucWidth */
-	15, /* ucHeight */
-	4, /* ucVOffset */
+	7, /* u8Width */
+	15, /* u8Height */
+	4, /* u8VOffset */
 	//--[Glyph Data]--
 	68,	 /* 0100010 */
 	68,	 /* 0100010 */
@@ -4002,11 +4002,11 @@ const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 };
 
 Font_t fntTahoma_12_False_False_False_ = {
-	12, /* ucSize */
-	0, /* ucFlags */
-	0, /* ucStartChar */
-	255, /* ucMaxChar */
+	12, /* u8Size */
+	0, /* u8Flags */
+	0, /* u8StartChar */
+	255, /* u8MaxChar */
 	"Tahoma", /* szName */
-	Tahoma_12_False_False_False_ /* pucData */
+	Tahoma_12_False_False_False_ /* pu8Data */
 };
 

@@ -71,7 +71,7 @@ void Mutex::WakeMe(Thread *pclOwner_)
 #endif
 
 //---------------------------------------------------------------------------
-K_UCHAR Mutex::WakeNext()
+uint8_t Mutex::WakeNext()
 {
     Thread *pclChosenOne = NULL;
 
@@ -97,23 +97,23 @@ void Mutex::Init()
 {
     // Reset the data in the mutex
     m_bReady = 1;             // The mutex is free.
-    m_ucMaxPri = 0;           // Set the maximum priority inheritence state
+    m_u8MaxPri = 0;           // Set the maximum priority inheritence state
     m_pclOwner = NULL;        // Clear the mutex owner
-    m_ucRecurse = 0;          // Reset recurse count
+    m_u8Recurse = 0;          // Reset recurse count
 }
 
 //---------------------------------------------------------------------------
 #if KERNEL_USE_TIMEOUTS
-K_BOOL Mutex::Claim_i(K_ULONG ulWaitTimeMS_)
+bool Mutex::Claim_i(uint32_t u32WaitTimeMS_)
 #else
 void Mutex::Claim_i(void)
 #endif
 {
-    KERNEL_TRACE_1( STR_MUTEX_CLAIM_1, (K_USHORT)g_pstCurrent->GetID() );
+    KERNEL_TRACE_1( STR_MUTEX_CLAIM_1, (uint16_t)g_pclCurrent->GetID() );
 
 #if KERNEL_USE_TIMEOUTS
     Timer clTimer;
-    K_BOOL bUseTimer = false;
+    bool bUseTimer = false;
 #endif
 
     // Disable the scheduler while claiming the mutex - we're dealing with all
@@ -126,9 +126,9 @@ void Mutex::Claim_i(void)
     {
         // Mutex isn't claimed, claim it.
         m_bReady = 0;
-        m_ucRecurse = 0;
-        m_ucMaxPri = g_pstCurrent->GetPriority();
-        m_pclOwner = g_pstCurrent;
+        m_u8Recurse = 0;
+        m_u8MaxPri = g_pclCurrent->GetPriority();
+        m_pclOwner = g_pclCurrent;
 
         Scheduler::SetScheduler(1);
 
@@ -141,11 +141,11 @@ void Mutex::Claim_i(void)
 
     // If the mutex is already claimed, check to see if this is the owner thread,
     // since we allow the mutex to be claimed recursively.
-    if (g_pstCurrent == m_pclOwner)
+    if (g_pclCurrent == m_pclOwner)
     {
         // Ensure that we haven't exceeded the maximum recursive-lock count
-        KERNEL_ASSERT( (m_ucRecurse < 255) );
-        m_ucRecurse++;
+        KERNEL_ASSERT( (m_u8Recurse < 255) );
+        m_u8Recurse++;
 
         // Increment the lock count and bail
         Scheduler::SetScheduler(1);
@@ -159,34 +159,34 @@ void Mutex::Claim_i(void)
     // The mutex is claimed already - we have to block now.  Move the
     // current thread to the list of threads waiting on the mutex.
 #if KERNEL_USE_TIMEOUTS
-    if (ulWaitTimeMS_)
+    if (u32WaitTimeMS_)
     {
-        g_pstCurrent->SetExpired(false);
+        g_pclCurrent->SetExpired(false);
         clTimer.Init();
-        clTimer.Start(0, ulWaitTimeMS_, (TimerCallback_t)TimedMutex_Calback, (void*)this);
+        clTimer.Start(0, u32WaitTimeMS_, (TimerCallback_t)TimedMutex_Calback, (void*)this);
         bUseTimer = true;
     }
 #endif
-    Block(g_pstCurrent);
+    Block(g_pclCurrent);
 
     // Check if priority inheritence is necessary.  We do this in order
     // to ensure that we don't end up with priority inversions in case
     // multiple threads are waiting on the same resource.
-    if(m_ucMaxPri <= g_pstCurrent->GetPriority())
+    if(m_u8MaxPri <= g_pclCurrent->GetPriority())
     {
-        m_ucMaxPri = g_pstCurrent->GetPriority();
+        m_u8MaxPri = g_pclCurrent->GetPriority();
 
         Thread *pclTemp = static_cast<Thread*>(m_clBlockList.GetHead());
         while(pclTemp)
         {
-            pclTemp->InheritPriority(m_ucMaxPri);
+            pclTemp->InheritPriority(m_u8MaxPri);
             if(pclTemp == static_cast<Thread*>(m_clBlockList.GetTail()) )
             {
                 break;
             }
             pclTemp = static_cast<Thread*>(pclTemp->GetNext());
         }
-        m_pclOwner->InheritPriority(m_ucMaxPri);
+        m_pclOwner->InheritPriority(m_u8MaxPri);
     }
 
     // Done with thread data -reenable the scheduler
@@ -199,7 +199,7 @@ void Mutex::Claim_i(void)
     if (bUseTimer)
     {
         clTimer.Stop();
-        return (g_pstCurrent->GetExpired() == 0);
+        return (g_pclCurrent->GetExpired() == 0);
     }
     return true;
 #endif
@@ -217,38 +217,38 @@ void Mutex::Claim(void)
 
 //---------------------------------------------------------------------------
 #if KERNEL_USE_TIMEOUTS
-K_BOOL Mutex::Claim(K_ULONG ulWaitTimeMS_)
+bool Mutex::Claim(uint32_t u32WaitTimeMS_)
 {
-    return Claim_i(ulWaitTimeMS_);
+    return Claim_i(u32WaitTimeMS_);
 }
 #endif
 
 //---------------------------------------------------------------------------
 void Mutex::Release()
 {
-	KERNEL_TRACE_1( STR_MUTEX_RELEASE_1, (K_USHORT)g_pstCurrent->GetID() );
+	KERNEL_TRACE_1( STR_MUTEX_RELEASE_1, (uint16_t)g_pclCurrent->GetID() );
 
-    K_BOOL bSchedule = 0;
+    bool bSchedule = 0;
 
     // Disable the scheduler while we deal with internal data structures.
     Scheduler::SetScheduler(0);
 
     // This thread had better be the one that owns the mutex currently...
-    KERNEL_ASSERT( (g_pstCurrent == m_pclOwner) );
+    KERNEL_ASSERT( (g_pclCurrent == m_pclOwner) );
 
     // If the owner had claimed the lock multiple times, decrease the lock
     // count and return immediately.
-    if (m_ucRecurse)
+    if (m_u8Recurse)
     {
-        m_ucRecurse--;
+        m_u8Recurse--;
         Scheduler::SetScheduler(1);
         return;
     }
 
     // Restore the thread's original priority
-    if (g_pstCurrent->GetCurPriority() != g_pstCurrent->GetPriority())
+    if (g_pclCurrent->GetCurPriority() != g_pclCurrent->GetPriority())
     {
-        g_pstCurrent->SetPriority(g_pstCurrent->GetPriority());
+        g_pclCurrent->SetPriority(g_pclCurrent->GetPriority());
         
         // In this case, we want to reschedule
         bSchedule = 1;
@@ -259,7 +259,7 @@ void Mutex::Release()
     {
         // Re-initialize the mutex to its default values
         m_bReady = 1;
-        m_ucMaxPri = 0;
+        m_u8MaxPri = 0;
         m_pclOwner = NULL;
     }
     else

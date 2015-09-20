@@ -20,7 +20,7 @@ extern "C" void __cxa_pure_virtual() { }
 #include <avr/sleep.h>
 
 //---------------------------------------------------------------------------
-static volatile K_UCHAR ucTestVal;
+static volatile uint8_t u8TestVal;
 
 //---------------------------------------------------------------------------
 #define TEST_STACK1_SIZE            (384)
@@ -40,9 +40,9 @@ static Thread clIdleThread;
 static Thread clTestThread1;
 
 //---------------------------------------------------------------------------
-static K_UCHAR aucMainStack[MAIN_STACK_SIZE];
-static K_UCHAR aucIdleStack[IDLE_STACK_SIZE];
-static K_UCHAR aucTestStack1[TEST_STACK1_SIZE];
+static uint8_t aucMainStack[MAIN_STACK_SIZE];
+static uint8_t aucIdleStack[IDLE_STACK_SIZE];
+static uint8_t aucTestStack1[TEST_STACK1_SIZE];
 
 //---------------------------------------------------------------------------
 static void AppMain( void *unused );
@@ -167,7 +167,7 @@ static void Semaphore_Profiling()
 //---------------------------------------------------------------------------
 static void Mutex_Profiling()
 {
-    K_USHORT i;
+    uint16_t i;
     Mutex clMutex;
     
     CS_ENTER();
@@ -258,7 +258,7 @@ static void Thread_Profiling()
         KernelAware::ProfileStart();
         {
             Thread_SaveContext();
-            g_pstNext = g_pstCurrent;
+            g_pclNext = g_pclCurrent;
             Thread_RestoreContext();
         }
         KernelAware::ProfileStop();

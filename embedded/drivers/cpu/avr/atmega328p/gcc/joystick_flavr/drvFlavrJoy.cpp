@@ -24,8 +24,8 @@ See license.txt for more information
 #include "drvFlavrJoy.h"
 
 
-volatile K_UCHAR g_ucFlavrJoy = 0;
-volatile K_UCHAR g_ucFlavrJoyUp = 0;
+volatile uint8_t g_u8FlavrJoy = 0;
+volatile uint8_t g_u8FlavrJoyUp = 0;
 //---------------------------------------------------------------------------
 #define FLAVR_JOY_UP		0x01
 #define FLAVR_JOY_DOWN		0x02
@@ -39,17 +39,17 @@ void FlavrJoystick::Init()
 } 
 
 //---------------------------------------------------------------------------
-K_UCHAR FlavrJoystick::Open()
+uint8_t FlavrJoystick::Open()
 {
 	
     return 0;
 }
 
 //---------------------------------------------------------------------------
-K_USHORT FlavrJoystick::Control( K_USHORT usEvent_, void *pvIn_, K_USHORT usSizeIn_,
-                                                  void *pvOut_, K_USHORT usSizeOut_ )
+uint16_t FlavrJoystick::Control( uint16_t u16Event_, void *pvIn_, uint16_t u16SizeIn_,
+                                                  void *pvOut_, uint16_t u16SizeOut_ )
 {    
-    switch(usEvent_)
+    switch(u16Event_)
     {
         // Main event - poll joypad.
         case JOYSTICK_SCAN:
@@ -66,12 +66,12 @@ K_USHORT FlavrJoystick::Control( K_USHORT usEvent_, void *pvIn_, K_USHORT usSize
 //---------------------------------------------------------------------------
 void FlavrJoystick::ScanInternal()
 {
-	K_UCHAR ucTmp;
+	uint8_t u8Tmp;
 
-	g_ucFlavrJoyUp = 1; //!! This command triggers the kernel-aware simulator to update g_ucFlavrJoy.
-	ucTmp = g_ucFlavrJoy;
+	g_u8FlavrJoyUp = 1; //!! This command triggers the kernel-aware simulator to update g_u8FlavrJoy.
+	u8Tmp = g_u8FlavrJoy;
 
-	if (ucTmp & FLAVR_JOY_LEFT)
+	if (u8Tmp & FLAVR_JOY_LEFT)
 	{
 		m_stCurrentReport.bLeft = true;
 	}
@@ -80,7 +80,7 @@ void FlavrJoystick::ScanInternal()
 		m_stCurrentReport.bLeft = false;
 	}
 	
-	if (ucTmp & FLAVR_JOY_RIGHT)
+	if (u8Tmp & FLAVR_JOY_RIGHT)
 	{
 		m_stCurrentReport.bRight = true;
 	}
@@ -89,7 +89,7 @@ void FlavrJoystick::ScanInternal()
 		m_stCurrentReport.bRight = false;
 	}
 	
-	if (ucTmp & FLAVR_JOY_UP)
+	if (u8Tmp & FLAVR_JOY_UP)
 	{
 		m_stCurrentReport.bUp = true;
 	}
@@ -98,7 +98,7 @@ void FlavrJoystick::ScanInternal()
 		m_stCurrentReport.bUp = false;
 	}
 	
-	if (ucTmp & FLAVR_JOY_DOWN)
+	if (u8Tmp & FLAVR_JOY_DOWN)
 	{
 		m_stCurrentReport.bDown = true;
 	}
@@ -107,7 +107,7 @@ void FlavrJoystick::ScanInternal()
 		m_stCurrentReport.bDown = false;
 	}
 	
-	if (ucTmp & FLAVR_JOY_FIRE)
+	if (u8Tmp & FLAVR_JOY_FIRE)
 	{
 		m_stCurrentReport.bButton1 = true;
 	}

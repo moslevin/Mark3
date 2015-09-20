@@ -45,7 +45,7 @@ void SlickButtonControl::Init()
     m_bState = false;
     m_pfCallback = NULL;
     m_pvCallbackData = NULL;
-    m_ucTimeout = 0;
+    m_u8Timeout = 0;
     SetAcceptFocus(true);
 }
 //---------------------------------------------------------------------------
@@ -57,128 +57,128 @@ void SlickButtonControl::Draw()
 
     GraphicsDriver *pclDriver = GetParentWindow()->GetDriver();
 
-    K_USHORT usXOffset = 0;
-    K_USHORT usHalfWidth = 0;
-    K_USHORT usYOffset = 0;
+    uint16_t u16XOffset = 0;
+    uint16_t u16HalfWidth = 0;
+    uint16_t u16YOffset = 0;
 
     // Get the location of the control relative to elements higher in the heirarchy
-    GetControlOffset(&usXOffset, &usYOffset);
+    GetControlOffset(&u16XOffset, &u16YOffset);
 
     // Draw the rounded-off rectangle
-    stLine.usX1 = GetLeft() + usXOffset + 1;
-    stLine.usX2 = stLine.usX1 + GetWidth() - 3;
-    stLine.usY1 = GetTop() + usYOffset;
-    stLine.usY2 = stLine.usY1;
+    stLine.u16X1 = GetLeft() + u16XOffset + 1;
+    stLine.u16X2 = stLine.u16X1 + GetWidth() - 3;
+    stLine.u16Y1 = GetTop() + u16YOffset;
+    stLine.u16Y2 = stLine.u16Y1;
     stLine.uColor = COLOR_GREY50;
     pclDriver->Line(&stLine);
 
-    stLine.usY1 = GetTop() + usYOffset + GetHeight() - 1;
-    stLine.usY2 = stLine.usY1;
+    stLine.u16Y1 = GetTop() + u16YOffset + GetHeight() - 1;
+    stLine.u16Y2 = stLine.u16Y1;
     pclDriver->Line(&stLine);
 
     // Draw the rounded-off rectangle
-    stLine.usX1 = GetLeft() + usXOffset ;
-    stLine.usX2 = stLine.usX1;
+    stLine.u16X1 = GetLeft() + u16XOffset ;
+    stLine.u16X2 = stLine.u16X1;
 
-    stLine.usY1 = GetTop() + usYOffset + 1;
-    stLine.usY2 = stLine.usY1 + GetHeight() - 3;
+    stLine.u16Y1 = GetTop() + u16YOffset + 1;
+    stLine.u16Y2 = stLine.u16Y1 + GetHeight() - 3;
     pclDriver->Line(&stLine);
 
     // Draw the rounded-off rectangle
-    stLine.usX1 = GetLeft() + usXOffset + GetWidth() - 1;
-    stLine.usX2 = stLine.usX1;
+    stLine.u16X1 = GetLeft() + u16XOffset + GetWidth() - 1;
+    stLine.u16X2 = stLine.u16X1;
     pclDriver->Line(&stLine);
 
     // Draw the two-tone button
 
-    stRect.usTop = GetTop() + usYOffset + 1;
-    stRect.usBottom = stRect.usTop + ((GetHeight() - 1) / 2) - 1;
-    stRect.usLeft = GetLeft() + usXOffset + 1;
-    stRect.usRight = stRect.usLeft + GetWidth() - 3;
+    stRect.u16Top = GetTop() + u16YOffset + 1;
+    stRect.u16Bottom = stRect.u16Top + ((GetHeight() - 1) / 2) - 1;
+    stRect.u16Left = GetLeft() + u16XOffset + 1;
+    stRect.u16Right = stRect.u16Left + GetWidth() - 3;
     stRect.bFill = true;
 
-    if (m_ucTimeout)
+    if (m_u8Timeout)
     {
-        if (m_ucTimeout & 1)
+        if (m_u8Timeout & 1)
         {
-            stRect.uLineColor = COLOR_WHITE;
+            stRect.u32ineColor = COLOR_WHITE;
         }
         else
         {
-            stRect.uLineColor = COLOR_BLACK;
+            stRect.u32ineColor = COLOR_BLACK;
         }
     }
     else
     {
         if (IsInFocus())
         {
-            stRect.uLineColor = RGB_COLOR((K_ULONG)(MAX_RED * 0.10),(K_ULONG)(MAX_RED * 0.10),(K_ULONG)(MAX_BLUE * 0.65) );
+            stRect.u32ineColor = RGB_COLOR((uint32_t)(MAX_RED * 0.10),(uint32_t)(MAX_RED * 0.10),(uint32_t)(MAX_BLUE * 0.65) );
         }
         else
         {
-            stRect.uLineColor = RGB_COLOR( (K_ULONG)(MAX_RED * 0.10),(K_ULONG)(MAX_GREEN * 0.10),(K_ULONG)(MAX_BLUE * 0.10));;
+            stRect.u32ineColor = RGB_COLOR( (uint32_t)(MAX_RED * 0.10),(uint32_t)(MAX_GREEN * 0.10),(uint32_t)(MAX_BLUE * 0.10));;
         }
     }
-    stRect.uFillColor = stRect.uLineColor;
+    stRect.uFillColor = stRect.u32ineColor;
     pclDriver->Rectangle(&stRect);
 
-    stRect.usTop = stRect.usBottom + 1;
-    stRect.usBottom = stRect.usTop + ((GetHeight() - 1) / 2 ) - 1;
+    stRect.u16Top = stRect.u16Bottom + 1;
+    stRect.u16Bottom = stRect.u16Top + ((GetHeight() - 1) / 2 ) - 1;
 
-    if (m_ucTimeout)
+    if (m_u8Timeout)
     {
-        if (m_ucTimeout & 1)
+        if (m_u8Timeout & 1)
         {
-            stRect.uLineColor = COLOR_WHITE;
+            stRect.u32ineColor = COLOR_WHITE;
         }
         else
         {
-            stRect.uLineColor = COLOR_BLACK;
+            stRect.u32ineColor = COLOR_BLACK;
         }
     }
     else
     {
         if (IsInFocus())
         {
-            stRect.uLineColor = RGB_COLOR((K_ULONG)(MAX_RED * 0.20),(K_ULONG)(MAX_RED * 0.20),(K_ULONG)(MAX_BLUE * 0.75) );
+            stRect.u32ineColor = RGB_COLOR((uint32_t)(MAX_RED * 0.20),(uint32_t)(MAX_RED * 0.20),(uint32_t)(MAX_BLUE * 0.75) );
         }
         else
         {
-            stRect.uLineColor = RGB_COLOR( (K_ULONG)(MAX_RED * 0.20),(K_ULONG)(MAX_GREEN * 0.20),(K_ULONG)(MAX_BLUE * 0.20));
+            stRect.u32ineColor = RGB_COLOR( (uint32_t)(MAX_RED * 0.20),(uint32_t)(MAX_GREEN * 0.20),(uint32_t)(MAX_BLUE * 0.20));
         }
     }
 
-    stRect.uFillColor = stRect.uLineColor;
+    stRect.uFillColor = stRect.u32ineColor;
     pclDriver->Rectangle(&stRect);
     // Draw the Text
     stText.pstFont = m_pstFont;
     stText.pcString = m_szCaption;
     stText.uColor = COLOR_GREY75;
-    usHalfWidth = pclDriver->TextWidth(&stText);
-    usHalfWidth >>= 1;
-    stText.usLeft = GetLeft() + (GetWidth()>>1) - usHalfWidth + usXOffset;
-    stText.usTop = GetTop() + usYOffset;
+    u16HalfWidth = pclDriver->TextWidth(&stText);
+    u16HalfWidth >>= 1;
+    stText.u16Left = GetLeft() + (GetWidth()>>1) - u16HalfWidth + u16XOffset;
+    stText.u16Top = GetTop() + u16YOffset;
     pclDriver->Text(&stText);
 }
 
 //---------------------------------------------------------------------------
 GuiReturn_t SlickButtonControl::ProcessEvent( GuiEvent_t *pstEvent_ )
 {
-    K_USHORT usXOffset, usYOffset;
+    uint16_t u16XOffset, u16YOffset;
 
-    GetControlOffset(&usXOffset, &usYOffset);
+    GetControlOffset(&u16XOffset, &u16YOffset);
 
     GUI_DEBUG_PRINT("ButtonControl::ProcessEvent\n");
 
-    switch (pstEvent_->ucEventType)
+    switch (pstEvent_->u8EventType)
     {
         case EVENT_TYPE_TIMER:
         {
-            if (m_ucTimeout)
+            if (m_u8Timeout)
             {
                 SetStale();
-                m_ucTimeout--;
-                if (!m_ucTimeout)
+                m_u8Timeout--;
+                if (!m_u8Timeout)
                 {
                     if (m_pfCallback)
                     {
@@ -191,14 +191,14 @@ GuiReturn_t SlickButtonControl::ProcessEvent( GuiEvent_t *pstEvent_ )
         }
         case EVENT_TYPE_JOYSTICK:
         {
-            if (!m_ucTimeout)
+            if (!m_u8Timeout)
             {
                 // If this is a space bar or an enter key, behave like a mouse click.
                 if( pstEvent_->stJoystick.Current.bButton1 && (!pstEvent_->stJoystick.Previous.bButton1))
                 {
 
                     m_bState = false;
-                    m_ucTimeout = 10;
+                    m_u8Timeout = 10;
                     // SetAcceptFocus(false);
                     //GetParentWindow()->SetFocus(NULL);
                     SetStale();
@@ -209,8 +209,8 @@ GuiReturn_t SlickButtonControl::ProcessEvent( GuiEvent_t *pstEvent_ )
         case EVENT_TYPE_KEYBOARD:
         {
             // If this is a space bar or an enter key, behave like a mouse click.
-            if ((KEYCODE_SPACE == pstEvent_->stKey.ucKeyCode) ||
-                (KEYCODE_RETURN == pstEvent_->stKey.ucKeyCode))
+            if ((KEYCODE_SPACE == pstEvent_->stKey.u8KeyCode) ||
+                (KEYCODE_RETURN == pstEvent_->stKey.u8KeyCode))
             {
                 if (pstEvent_->stKey.bKeyState)
                 {
@@ -219,7 +219,7 @@ GuiReturn_t SlickButtonControl::ProcessEvent( GuiEvent_t *pstEvent_ )
                 else
                 {
                     m_bState = false;
-                    m_ucTimeout = 10;
+                    m_u8Timeout = 10;
                     //SetAcceptFocus(false);
                     //GetParentWindow()->SetFocus(NULL);
                     SetStale();
@@ -231,7 +231,7 @@ GuiReturn_t SlickButtonControl::ProcessEvent( GuiEvent_t *pstEvent_ )
             break;
         case EVENT_TYPE_MOUSE:
         {
-            if (m_ucTimeout)
+            if (m_u8Timeout)
             {
                 break;
             }
@@ -242,10 +242,10 @@ GuiReturn_t SlickButtonControl::ProcessEvent( GuiEvent_t *pstEvent_ )
                 // If so, de-activate the control
                 if (pstEvent_->stMouse.bLeftState)
                 {
-                    if ((pstEvent_->stMouse.usX < GetLeft() + usXOffset) ||
-                        (pstEvent_->stMouse.usX >= GetLeft() + usXOffset + GetWidth()-1) ||
-                        (pstEvent_->stMouse.usY < GetTop() + usYOffset) ||
-                        (pstEvent_->stMouse.usY >= GetTop() + usYOffset + GetHeight() - 1))
+                    if ((pstEvent_->stMouse.u16X < GetLeft() + u16XOffset) ||
+                        (pstEvent_->stMouse.u16X >= GetLeft() + u16XOffset + GetWidth()-1) ||
+                        (pstEvent_->stMouse.u16Y < GetTop() + u16YOffset) ||
+                        (pstEvent_->stMouse.u16Y >= GetTop() + u16YOffset + GetHeight() - 1))
                     {
                         m_bState = false;
                         SetStale();
@@ -255,13 +255,13 @@ GuiReturn_t SlickButtonControl::ProcessEvent( GuiEvent_t *pstEvent_ )
                 // Run the event callback for the mouse, and go from there.
                 else
                 {
-                    if ((pstEvent_->stMouse.usX >= GetLeft() + usXOffset) &&
-                        (pstEvent_->stMouse.usX < GetLeft() + usXOffset + GetWidth()-1) &&
-                        (pstEvent_->stMouse.usY >= GetTop() + usYOffset) &&
-                        (pstEvent_->stMouse.usY < GetTop() + usYOffset + GetHeight() - 1))
+                    if ((pstEvent_->stMouse.u16X >= GetLeft() + u16XOffset) &&
+                        (pstEvent_->stMouse.u16X < GetLeft() + u16XOffset + GetWidth()-1) &&
+                        (pstEvent_->stMouse.u16Y >= GetTop() + u16YOffset) &&
+                        (pstEvent_->stMouse.u16Y < GetTop() + u16YOffset + GetHeight() - 1))
                     {
                         m_bState = false;
-                        m_ucTimeout = 10;
+                        m_u8Timeout = 10;
                         SetAcceptFocus(false);
                         GetParentWindow()->SetFocus(NULL);
                         SetStale();
@@ -275,10 +275,10 @@ GuiReturn_t SlickButtonControl::ProcessEvent( GuiEvent_t *pstEvent_ )
                 // control to activated.
                 if (pstEvent_->stMouse.bLeftState)
                 {
-                    if ((pstEvent_->stMouse.usX >= GetLeft() + usXOffset) &&
-                        (pstEvent_->stMouse.usX < GetLeft() + usXOffset + GetWidth()-1) &&
-                        (pstEvent_->stMouse.usY >= GetTop() + usYOffset) &&
-                        (pstEvent_->stMouse.usY < GetTop() + usYOffset + GetHeight() - 1))
+                    if ((pstEvent_->stMouse.u16X >= GetLeft() + u16XOffset) &&
+                        (pstEvent_->stMouse.u16X < GetLeft() + u16XOffset + GetWidth()-1) &&
+                        (pstEvent_->stMouse.u16Y >= GetTop() + u16YOffset) &&
+                        (pstEvent_->stMouse.u16Y < GetTop() + u16YOffset + GetHeight() - 1))
                     {
                         m_bState = true;
                         SetStale();
@@ -299,7 +299,7 @@ GuiReturn_t SlickButtonControl::ProcessEvent( GuiEvent_t *pstEvent_ )
 }
 
 //---------------------------------------------------------------------------
-void SlickButtonControl::Activate( K_BOOL bActivate_ )
+void SlickButtonControl::Activate( bool bActivate_ )
 {
     // When we de-activate the control, simply disarm the control and force
     // a redraw

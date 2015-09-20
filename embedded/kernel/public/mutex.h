@@ -87,14 +87,14 @@ public:
 #if KERNEL_USE_TIMEOUTS
 
 	/*!
-        \fn K_BOOL Claim(K_ULONG ulWaitTimeMS_)
+        \fn bool Claim(uint32_t u32WaitTimeMS_)
 		
-		\param ulWaitTimeMS_
+		\param u32WaitTimeMS_
 		
 		\return true - mutex was claimed within the time period specified
 				false - mutex operation timed-out before the claim operation.
 	*/
-    K_BOOL Claim(K_ULONG ulWaitTimeMS_);
+    bool Claim(uint32_t u32WaitTimeMS_);
 	
 	/*!
 		\fn void WakeMe( Thread *pclOwner_ )
@@ -123,11 +123,11 @@ public:
 private:
 
     /*!
-        \fn K_UCHAR WakeNext();
+        \fn uint8_t WakeNext();
         
         Wake the next thread waiting on the Mutex.
     */
-    K_UCHAR WakeNext();
+    uint8_t WakeNext();
     
 
 #if KERNEL_USE_TIMEOUTS
@@ -136,10 +136,10 @@ private:
      *
      * Abstracts out timed/non-timed mutex claim operations.
      *
-     * \param ulWaitTimeMS_ Time in MS to wait, 0 for infinite
+     * \param u32WaitTimeMS_ Time in MS to wait, 0 for infinite
      * \return true on successful claim, false otherwise
      */
-    K_BOOL Claim_i( K_ULONG ulWaitTimeMS_ );
+    bool Claim_i( uint32_t u32WaitTimeMS_ );
 #else
     /*!
      * \brief Claim_i
@@ -150,9 +150,9 @@ private:
     void Claim_i(void);
 #endif
 
-    K_UCHAR m_ucRecurse;    //!< The recursive lock-count when a mutex is claimed multiple times by the same owner
-    K_UCHAR m_bReady;       //!< State of the mutex - true = ready, false = claimed
-    K_UCHAR m_ucMaxPri;     //!< Maximum priority of thread in queue, used for priority inheritence
+    uint8_t m_u8Recurse;    //!< The recursive lock-count when a mutex is claimed multiple times by the same owner
+    bool m_bReady;       //!< State of the mutex - true = ready, false = claimed
+    uint8_t m_u8MaxPri;     //!< Maximum priority of thread in queue, used for priority inheritence
     Thread *m_pclOwner;     //!< Pointer to the thread that owns the mutex (when claimed)
 	
 };

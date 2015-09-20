@@ -13,17 +13,17 @@ class BrLives
 public:
     void Reset(void);
 
-    K_BOOL Decrement(void);
+    bool Decrement(void);
 
     void Increment(void);
 
     void Draw(void);
 
-    K_UCHAR GetLives(void);
+    uint8_t GetLives(void);
 
 private:
-    K_UCHAR m_ucLives;
-    K_BOOL	m_bUpdate;
+    uint8_t m_u8Lives;
+    bool	m_bUpdate;
 };
 
 

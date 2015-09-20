@@ -32,9 +32,9 @@ void GamePanelControl::Draw()
 //---------------------------------------------------------------------------
 GuiReturn_t GamePanelControl::ProcessEvent( GuiEvent_t *pstEvent_ )
 {
-    K_USHORT usXOffset, usYOffset;
+    uint16_t u16XOffset, u16YOffset;
 
-    switch (pstEvent_->ucEventType)
+    switch (pstEvent_->u8EventType)
     {
         case EVENT_TYPE_TIMER:
             // Every tick, call Draw().  This is used to kick the state
@@ -46,8 +46,8 @@ GuiReturn_t GamePanelControl::ProcessEvent( GuiEvent_t *pstEvent_ )
         case EVENT_TYPE_MOUSE:
             break;
         case EVENT_TYPE_JOYSTICK:
-            m_stJoy.Current.usRawData = pstEvent_->stJoystick.Current.usRawData;
-            m_stJoy.Previous.usRawData = pstEvent_->stJoystick.Previous.usRawData;
+            m_stJoy.Current.u16RawData = pstEvent_->stJoystick.Current.u16RawData;
+            m_stJoy.Previous.u16RawData = pstEvent_->stJoystick.Previous.u16RawData;
             break;
     }
     return GUI_EVENT_OK;

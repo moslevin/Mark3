@@ -59,7 +59,7 @@ typedef struct
 {
     union
     {
-        K_USHORT usDigital;
+        uint16_t u16Digital;
         struct
         {
             unsigned int bUp         : 1;
@@ -80,10 +80,10 @@ typedef struct
             unsigned int bStart        : 1;
         };
     };
-    K_SHORT usAnalogX1;
-    K_SHORT usAnalogY1;
-    K_SHORT usAnalogX2;
-    K_SHORT usAnalogY2;
+    int16_t u16AnalogX1;
+    int16_t u16AnalogY1;
+    int16_t u16AnalogX2;
+    int16_t u16AnalogY2;
 } JoystickReport;
 
 //---------------------------------------------------------------------------

@@ -39,7 +39,7 @@ See license.txt for more information
 
 //---------------------------------------------------------------------------
 //! Macro to find the top of a stack given its size and top address
-#define TOP_OF_STACK(x, y)        (K_UCHAR*) ( ((K_USHORT)x) + (y-1) )
+#define TOP_OF_STACK(x, y)        (uint8_t*) ( ((uint16_t)x) + (y-1) )
 //! Push a value y to the stack pointer x and decrement the stack pointer
 #define PUSH_TO_STACK(x, y)        *x = y; x--;
 
@@ -94,8 +94,8 @@ ASM("in r0, 0x38"); \
 ASM("push r0");\
 ASM("in r0, 0x3C"); \
 ASM("push r0");\
-ASM("lds r26, g_pstCurrent"); \
-ASM("lds r27, g_pstCurrent + 1"); \
+ASM("lds r26, g_pclCurrent"); \
+ASM("lds r27, g_pclCurrent + 1"); \
 ASM("adiw r26, 4"); \
 ASM("in    r0, 0x3D"); \
 ASM("st    x+, r0"); \
@@ -105,8 +105,8 @@ ASM("st    x+, r0");
 //---------------------------------------------------------------------------
 //! Restore the context of the Thread
 #define Thread_RestoreContext() \
-ASM("lds r26, g_pstCurrent"); \
-ASM("lds r27, g_pstCurrent + 1");\
+ASM("lds r26, g_pclCurrent"); \
+ASM("lds r27, g_pclCurrent + 1");\
 ASM("adiw r26, 4"); \
 ASM("ld     r28, x+"); \
 ASM("out 0x3D, r28"); \
@@ -163,7 +163,7 @@ ASM("pop r0");
 //! Enter critical section (copy status register, disable interrupts)
 #define CS_ENTER()    \
 { \
-volatile K_UCHAR x; \
+volatile uint8_t x; \
 x = _SFR_IO8(SR_); \
 ASM("cli");
 //------------------------------------------------------------------------

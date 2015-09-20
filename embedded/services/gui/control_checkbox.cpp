@@ -29,7 +29,7 @@ See license.txt for more information
 #define TEXT_X_OFFSET        (13)
 
 //---------------------------------------------------------------------------
-static const K_UCHAR aucBox[] =
+static const uint8_t aucBox[] =
 { 0xE7,
   0x81,
   0x81,
@@ -40,7 +40,7 @@ static const K_UCHAR aucBox[] =
   0xE7 };
 
 //---------------------------------------------------------------------------
-static const K_UCHAR aucCheck[] =
+static const uint8_t aucCheck[] =
 { 0,
   0,
   0x3C,
@@ -64,10 +64,10 @@ void CheckBoxControl::Init()
 void CheckBoxControl::Draw()
 {
     GraphicsDriver *pclDriver = GetParentWindow()->GetDriver();
-    K_USHORT usX, usY;
-    K_USHORT usTextWidth;
+    uint16_t u16X, u16Y;
+    uint16_t u16TextWidth;
 
-    GetControlOffset(&usX, &usY);
+    GetControlOffset(&u16X, &u16Y);
 
     // Draw the box, (and check, if necessary)
     {
@@ -75,18 +75,18 @@ void CheckBoxControl::Draw()
 
         if (GetParentWindow()->IsInFocus(this))
         {
-            stRect.uLineColor = m_uBoxColor;
+            stRect.u32ineColor = m_uBoxColor;
         }
         else
         {
-            stRect.uLineColor = m_uBackColor;
+            stRect.u32ineColor = m_uBackColor;
         }
 
         stRect.uFillColor = m_uBackColor;
-        stRect.usTop = usY + GetTop();
-        stRect.usLeft = usX + GetLeft();
-        stRect.usRight = stRect.usLeft + GetWidth() - 1;
-        stRect.usBottom = stRect.usTop + GetHeight() - 1;
+        stRect.u16Top = u16Y + GetTop();
+        stRect.u16Left = u16X + GetLeft();
+        stRect.u16Right = stRect.u16Left + GetWidth() - 1;
+        stRect.u16Bottom = stRect.u16Top + GetHeight() - 1;
         stRect.bFill = true;
         pclDriver->Rectangle(&stRect);
     }
@@ -94,11 +94,11 @@ void CheckBoxControl::Draw()
     {
         DrawStamp_t stStamp;
         stStamp.uColor = m_uBoxColor;
-        stStamp.usY = usY + GetTop() + ((GetHeight() - 5) >> 1) - 1;
-        stStamp.usX = usX + GetLeft() + 2;
-        stStamp.usWidth = 8;
-        stStamp.usHeight = 8;
-        stStamp.pucData = (K_UCHAR*)aucBox;
+        stStamp.u16Y = u16Y + GetTop() + ((GetHeight() - 5) >> 1) - 1;
+        stStamp.u16X = u16X + GetLeft() + 2;
+        stStamp.u16Width = 8;
+        stStamp.u16Height = 8;
+        stStamp.pu8Data = (uint8_t*)aucBox;
         pclDriver->Stamp(&stStamp);
 
         if (m_bChecked)
@@ -109,20 +109,20 @@ void CheckBoxControl::Draw()
         {
             stStamp.uColor = m_uBackColor;
         }
-        stStamp.pucData = (K_UCHAR*)aucCheck;
+        stStamp.pu8Data = (uint8_t*)aucCheck;
         pclDriver->Stamp(&stStamp);
     }
 
     // Draw the caption
     {
         DrawText_t stText;
-        stText.usLeft = usX + GetLeft() + TEXT_X_OFFSET;
-        stText.usTop = usY + GetTop();
+        stText.u16Left = u16X + GetLeft() + TEXT_X_OFFSET;
+        stText.u16Top = u16Y + GetTop();
         stText.uColor = m_uFontColor;
         stText.pstFont = m_pstFont;
         stText.pcString = m_szCaption;
 
-        usTextWidth = pclDriver->TextWidth(&stText);
+        u16TextWidth = pclDriver->TextWidth(&stText);
         pclDriver->Text(&stText);
     }
 }
@@ -130,13 +130,13 @@ void CheckBoxControl::Draw()
 //---------------------------------------------------------------------------
 GuiReturn_t CheckBoxControl::ProcessEvent( GuiEvent_t *pstEvent_ )
 {
-    K_USHORT usXOffset, usYOffset;
+    uint16_t u16XOffset, u16YOffset;
 
-    GetControlOffset(&usXOffset, &usYOffset);
+    GetControlOffset(&u16XOffset, &u16YOffset);
 
     GUI_DEBUG_PRINT("ButtonControl::ProcessEvent\n");
 
-    switch (pstEvent_->ucEventType)
+    switch (pstEvent_->u8EventType)
     {
         case EVENT_TYPE_JOYSTICK:
         {
@@ -163,8 +163,8 @@ GuiReturn_t CheckBoxControl::ProcessEvent( GuiEvent_t *pstEvent_ )
         case EVENT_TYPE_KEYBOARD:
         {
             // If this is a space bar or an enter key, behave like a mouse click.
-            if ((KEYCODE_SPACE == pstEvent_->stKey.ucKeyCode) ||
-                (KEYCODE_RETURN == pstEvent_->stKey.ucKeyCode))
+            if ((KEYCODE_SPACE == pstEvent_->stKey.u8KeyCode) ||
+                (KEYCODE_RETURN == pstEvent_->stKey.u8KeyCode))
             {
                 if (pstEvent_->stKey.bKeyState)
                 {
@@ -192,10 +192,10 @@ GuiReturn_t CheckBoxControl::ProcessEvent( GuiEvent_t *pstEvent_ )
                 // If so, de-activate the control
                 if (pstEvent_->stMouse.bLeftState)
                 {
-                    if ((pstEvent_->stMouse.usX >= GetLeft() + usXOffset) &&
-                        (pstEvent_->stMouse.usX < GetLeft() + usXOffset + GetWidth()-1) &&
-                        (pstEvent_->stMouse.usY >= GetTop() + usYOffset) &&
-                        (pstEvent_->stMouse.usY < GetTop() + usYOffset + GetHeight() - 1))
+                    if ((pstEvent_->stMouse.u16X >= GetLeft() + u16XOffset) &&
+                        (pstEvent_->stMouse.u16X < GetLeft() + u16XOffset + GetWidth()-1) &&
+                        (pstEvent_->stMouse.u16Y >= GetTop() + u16YOffset) &&
+                        (pstEvent_->stMouse.u16Y < GetTop() + u16YOffset + GetHeight() - 1))
                     {
                         m_bChecked = false;
                         SetStale();
@@ -212,10 +212,10 @@ GuiReturn_t CheckBoxControl::ProcessEvent( GuiEvent_t *pstEvent_ )
                 // control to activated.
                 if (pstEvent_->stMouse.bLeftState)
                 {
-                    if ((pstEvent_->stMouse.usX >= GetLeft() + usXOffset) &&
-                        (pstEvent_->stMouse.usX < GetLeft() + usXOffset + GetWidth()-1) &&
-                        (pstEvent_->stMouse.usY >= GetTop() + usYOffset) &&
-                        (pstEvent_->stMouse.usY < GetTop() + usYOffset + GetHeight() - 1))
+                    if ((pstEvent_->stMouse.u16X >= GetLeft() + u16XOffset) &&
+                        (pstEvent_->stMouse.u16X < GetLeft() + u16XOffset + GetWidth()-1) &&
+                        (pstEvent_->stMouse.u16Y >= GetTop() + u16YOffset) &&
+                        (pstEvent_->stMouse.u16Y < GetTop() + u16YOffset + GetHeight() - 1))
                     {
                         m_bChecked = true;
                         SetStale();

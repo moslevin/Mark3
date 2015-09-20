@@ -91,7 +91,7 @@ See license.txt for more information
 
 //---------------------------------------------------------------------------
 // This macro expands a Note + Octave value into an integer frequency representing
-// that note with our hardware.  This allows us to create accurate, easy-to-use,
+// that note with our hardware.  This allows u16 to create accurate, easy-to-use,
 // compile-time constants for notes...  i.e., you can write TONE(A,4), which 
 // evaluates at build-time to a numeric constant representing a 440Hz output,
 // adjusted for the hardware timer's configuration.
@@ -119,35 +119,35 @@ See license.txt for more information
 //---------------------------------------------------------------------------
 typedef struct
 {
-	K_USHORT usFreq;		//!< Frequency of the square wave (in Hz)
-	K_USHORT usDurationMS;	//!< Duration of the tone (in ms)
-	K_UCHAR  ucLevel;		//!< Output level (0 == off, 255 == max)
+	uint16_t u16Freq;		//!< Frequency of the square wave (in Hz)
+	uint16_t u16DurationMS;	//!< Duration of the tone (in ms)
+	uint8_t  u8Level;		//!< Output level (0 == off, 255 == max)
 } SquareWave_t;
 
 //---------------------------------------------------------------------------
 // 
 typedef struct
 {
-	K_USHORT usFreq;			//!< Frequency of the note (in Hz)
-	K_USHORT usDurationBPM32;	//!< Duration of the note (in beats)
-	K_UCHAR	 ucLevel;			//!< Output level (0 == off, 255 == max)
+	uint16_t u16Freq;			//!< Frequency of the note (in Hz)
+	uint16_t u16DurationBPM32;	//!< Duration of the note (in beats)
+	uint8_t	 u8Level;			//!< Output level (0 == off, 255 == max)
 } SongNote_t;
 
 //---------------------------------------------------------------------------
 typedef struct  
 {
-	K_UCHAR ucTempoBPM;			//!< Tempo of the song in BPM
+	uint8_t u8TempoBPM;			//!< Tempo of the song in BPM
 	SongNote_t *astNotes;		//!< Pointer to an array of notes making up the song
 } Song_t;
 
 //---------------------------------------------------------------------------
 typedef struct  
 {
-	K_USHORT usFreqStart;		//!< Starting frequency
-	K_USHORT usSpeed;			//!< Time (in ms) between steps in the sweep
-	K_USHORT usDuration;		//!< Duration of the sweep (in ms)
-	K_BOOL  bDir;				//!< Direction of the sweep (false == low, true == high)
-	K_UCHAR ucLevel;			//!< Output level (0 == off, 255 == max)
+	uint16_t u16FreqStart;		//!< Starting frequency
+	uint16_t u16Speed;			//!< Time (in ms) between steps in the sweep
+	uint16_t u16Duration;		//!< Duration of the sweep (in ms)
+	bool  bDir;				//!< Direction of the sweep (false == low, true == high)
+	uint8_t u8Level;			//!< Output level (0 == off, 255 == max)
 } Sweep_t;
 
 //---------------------------------------------------------------------------
@@ -156,15 +156,15 @@ class SoundDriver : public Driver
 public:
 	virtual void Init();
 
-	virtual K_UCHAR Open();
-	virtual K_UCHAR Close();
+	virtual uint8_t Open();
+	virtual uint8_t Close();
 
-	virtual K_USHORT Read( K_USHORT usBytes_, K_UCHAR *pucData_ )
+	virtual uint16_t Read( uint16_t u16Bytes_, uint8_t *pu8Data_ )
 	{ return 0; }
-	virtual K_USHORT Write( K_USHORT usBytes_, K_UCHAR *pucData_ )
+	virtual uint16_t Write( uint16_t u16Bytes_, uint8_t *pu8Data_ )
 	{ return 0; }
 
-	virtual K_USHORT Control( K_USHORT usEvent_, void *pvDataIn_, K_USHORT usSizeIn_, void *pvDataOut_, K_USHORT usSizeOut_ );
+	virtual uint16_t Control( uint16_t u16Event_, void *pvDataIn_, uint16_t u16SizeIn_, void *pvDataOut_, uint16_t u16SizeOut_ );
 	
 private:
 	void SetTone( SquareWave_t *pstWave_ );

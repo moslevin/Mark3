@@ -36,12 +36,12 @@ See license.txt for more information
 #if KERNEL_USE_QUANTUM
 
 //---------------------------------------------------------------------------
-static volatile K_BOOL bAddQuantumTimer;	// Indicates that a timer add is pending
+static volatile bool bAddQuantumTimer;	// Indicates that a timer add is pending
 
 //---------------------------------------------------------------------------
 Timer   Quantum::m_clQuantumTimer;	// The global timernodelist_t object
-K_UCHAR Quantum::m_bActive;
-K_UCHAR Quantum::m_bInTimer;
+bool Quantum::m_bActive;
+bool Quantum::m_bInTimer;
 //---------------------------------------------------------------------------
 /*!
  * \brief QuantumCallback

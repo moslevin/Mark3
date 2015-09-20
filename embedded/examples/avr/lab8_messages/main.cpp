@@ -15,15 +15,15 @@ See license.txt for more information
 
 /*===========================================================================
 
-Lab Example 8:  Using messages for IPC.
+Lab Example 8:  using messages for IPC.
 
 In this example, we present a typical asynchronous producer/consumer pattern
 using Mark3's message-driven IPC.
 
 
 Lessons covered in this example include:
-- Use of Message and MessageQueue objects to send data between threads
-- Use of GlobalMessagePool to allocate and free message objects
+- use of Message and MessageQueue objects to send data between threads
+- use of GlobalMessagePool to allocate and free message objects
 
 Takeaway:
 
@@ -79,7 +79,7 @@ int main(void)
 //---------------------------------------------------------------------------
 void App1Main(void *unused_)
 {
-    K_USHORT usData = 0;
+    uint16_t u16Data = 0;
     while(1)
     {
         // This thread grabs a message from the global message pool, sets a
@@ -92,8 +92,8 @@ void App1Main(void *unused_)
 
         // Set the message object's data (contrived in this example)
         pclMsg->SetCode(0x1337);
-        usData++;
-        pclMsg->SetData(&usData);
+        u16Data++;
+        pclMsg->SetData(&u16Data);
 
         // Send the message to the shared message queue
         clMsgQ.Send(pclMsg);
@@ -124,7 +124,7 @@ void App2Main(void *unused_)
 
         // We received a message, now print out its information
         KernelAware::Print("Received Message\n");
-        KernelAware::Trace(0, __LINE__, pclMsg->GetCode(), *((K_USHORT*)pclMsg->GetData()) );
+        KernelAware::Trace(0, __LINE__, pclMsg->GetCode(), *((uint16_t*)pclMsg->GetData()) );
 
         // Done with the message, return it back to the global message queue.
         GlobalMessagePool::Push(pclMsg);

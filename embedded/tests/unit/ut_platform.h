@@ -46,7 +46,7 @@ typedef void (*TestFunc)(void);
 //---------------------------------------------------------------------------
 typedef struct
 {
-    const K_CHAR *szName;
+    const char *szName;
     MyUnitTest *pclTestCase;
     TestFunc pfTestFunc;
 } MyTestCase;
@@ -66,20 +66,20 @@ static void TestFunc_##x(void) \
 //---------------------------------------------------------------------------
 #define EXPECT_TRUE(x)      pclCurrent->Start(); pclCurrent->ExpectTrue(x)
 #define EXPECT_FALSE(x)     pclCurrent->Start(); pclCurrent->ExpectFalse(x)
-#define EXPECT_EQUALS(x,y)  pclCurrent->Start(); pclCurrent->ExpectEquals((K_LONG)(x), (K_LONG)(y))
-#define EXPECT_GT(x,y)      pclCurrent->Start(); pclCurrent->ExpectGreaterThan((K_LONG)(x), (K_LONG)(y))
-#define EXPECT_LT(x,y)      pclCurrent->Start(); pclCurrent->ExpectLessThan((K_LONG)(x), (K_LONG)(y))
-#define EXPECT_GTE(x,y)     pclCurrent->Start(); pclCurrent->ExpectGreaterThanEquals((K_LONG)(x), (K_LONG)(y))
-#define EXPECT_LTE(x,y)     pclCurrent->Start(); pclCurrent->ExpectLessThanEquals((K_LONG)(x), (K_LONG)(y))
+#define EXPECT_EQUALS(x,y)  pclCurrent->Start(); pclCurrent->ExpectEquals((int32_t)(x), (int32_t)(y))
+#define EXPECT_GT(x,y)      pclCurrent->Start(); pclCurrent->ExpectGreaterThan((int32_t)(x), (int32_t)(y))
+#define EXPECT_LT(x,y)      pclCurrent->Start(); pclCurrent->ExpectLessThan((int32_t)(x), (int32_t)(y))
+#define EXPECT_GTE(x,y)     pclCurrent->Start(); pclCurrent->ExpectGreaterThanEquals((int32_t)(x), (int32_t)(y))
+#define EXPECT_LTE(x,y)     pclCurrent->Start(); pclCurrent->ExpectLessThanEquals((int32_t)(x), (int32_t)(y))
 
 //---------------------------------------------------------------------------
 #define EXPECT_FAIL_TRUE(x)      pclCurrent->Start(); pclCurrent->ExpectFailTrue(x)
 #define EXPECT_FAIL_FALSE(x)     pclCurrent->Start(); pclCurrent->ExpectFailFalse(x)
-#define EXPECT_FAIL_EQUALS(x,y)  pclCurrent->Start(); pclCurrent->ExpectFailEquals((K_LONG)(x), (K_LONG)(y))
-#define EXPECT_FAIL_GT(x,y)      pclCurrent->Start(); pclCurrent->ExpectFailGreaterThan((K_LONG)(x), (K_LONG)(y))
-#define EXPECT_FAIL_LT(x,y)      pclCurrent->Start(); pclCurrent->ExpectFailLessThan((K_LONG)(x), (K_LONG)(y))
-#define EXPECT_FAIL_GTE(x,y)     pclCurrent->Start(); pclCurrent->ExpectFailGreaterThanEquals((K_LONG)(x), (K_LONG)(y))
-#define EXPECT_FAIL_LTE(x,y)     pclCurrent->Start(); pclCurrent->ExpectFailLessThanEquals((K_LONG)(x), (K_LONG)(y))
+#define EXPECT_FAIL_EQUALS(x,y)  pclCurrent->Start(); pclCurrent->ExpectFailEquals((int32_t)(x), (int32_t)(y))
+#define EXPECT_FAIL_GT(x,y)      pclCurrent->Start(); pclCurrent->ExpectFailGreaterThan((int32_t)(x), (int32_t)(y))
+#define EXPECT_FAIL_LT(x,y)      pclCurrent->Start(); pclCurrent->ExpectFailLessThan((int32_t)(x), (int32_t)(y))
+#define EXPECT_FAIL_GTE(x,y)     pclCurrent->Start(); pclCurrent->ExpectFailGreaterThanEquals((int32_t)(x), (int32_t)(y))
+#define EXPECT_FAIL_LTE(x,y)     pclCurrent->Start(); pclCurrent->ExpectFailLessThanEquals((int32_t)(x), (int32_t)(y))
 
 //---------------------------------------------------------------------------
 #define TEST_NAME_EVALUATE(name)       #name
@@ -95,7 +95,7 @@ extern MyTestCase astTestCases[];
 extern void run_tests();
 
 //---------------------------------------------------------------------------
-void PrintString(const K_CHAR *szStr_);
+void PrintString(const char *szStr_);
 
 
 #endif //__UT_PLATFORM_H__

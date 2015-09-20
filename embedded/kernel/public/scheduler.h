@@ -50,13 +50,13 @@ See license.txt for more information
 #include "thread.h"
 #include "threadport.h"
 
-extern volatile Thread *g_pstNext;
-extern Thread *g_pstCurrent;
+extern volatile Thread *g_pclNext;
+extern Thread *g_pclCurrent;
 
 #define NUM_PRIORITIES              (8)     //!< Defines the maximum number of thread priorities supported in the scheduler
 //---------------------------------------------------------------------------
 /*!
-    Priority-based round-robin Thread scheduling, using ThreadLists for 
+    Priority-based round-robin Thread scheduling, using ThreadLists for
     housekeeping.
 */
 class Scheduler
@@ -98,7 +98,7 @@ public:
     static void Remove(Thread *pclThread_);
     
     /*!
-        \fn void SetScheduler(K_BOOL bEnable_)
+        \fn void SetScheduler(bool bEnable_)
         
         Set the active state of the scheduler.  When the scheduler is 
         disabled, the *next thread* is never set; the currently
@@ -109,14 +109,14 @@ public:
         
         \param bEnable_ true to enable, false to disable the scheduler 
     */
-    static K_BOOL SetScheduler(K_BOOL bEnable_);
+    static bool SetScheduler(bool bEnable_);
 
     /*!
         Return the pointer to the currently-running thread.
         
         \return Pointer to the currently-running thread
     */
-    static Thread *GetCurrentThread(){ return g_pstCurrent; }
+    static Thread *GetCurrentThread(){ return g_pclCurrent; }
     
     /*!
         Return the pointer to the thread that should run next, according
@@ -124,17 +124,17 @@ public:
         
         \return Pointer to the next-running thread
     */
-    static volatile Thread *GetNextThread(){ return g_pstNext; }
+    static volatile Thread *GetNextThread(){ return g_pclNext; }
     
     /*!
         Return the pointer to the active list of threads that are at the 
         given priority level in the scheduler.
         
-        \param ucPriority_ Priority level of 
+        \param u8Priority_ Priority level of 
         
         \return Pointer to the ThreadList for the given priority level
     */
-    static ThreadList *GetThreadList(K_UCHAR ucPriority_){ return &m_aclPriorities[ucPriority_]; }
+    static ThreadList *GetThreadList(uint8_t u8Priority_){ return &m_aclPriorities[u8Priority_]; }
     
     /*!
         Return the pointer to the list of threads that are in the 
@@ -145,14 +145,14 @@ public:
     static ThreadList *GetStopList(){ return &m_clStopList; }
     
     /*!
-        \fn K_UCHAR IsEnabled()
+        \fn uint8_t IsEnabled()
         
         Return the current state of the scheduler - whether or not scheudling
         is enabled or disabled.
         
         \return true - scheduler enabled, false - disabled
     */
-    static K_UCHAR IsEnabled(){ return m_bEnabled; }
+    static uint8_t IsEnabled(){ return m_bEnabled; }
 
     /*!
      * \brief QueueScheduler
@@ -164,10 +164,10 @@ public:
 
 private:
     //! Scheduler's state - enabled or disabled
-    static K_BOOL m_bEnabled;
+    static bool m_bEnabled;
 
     //! Variable representing whether or not there's a queued scheduler operation
-    static K_BOOL m_bQueuedSchedule;
+    static bool m_bQueuedSchedule;
 
     //! ThreadList for all stopped threads
     static ThreadList m_clStopList;
@@ -176,7 +176,7 @@ private:
     static ThreadList m_aclPriorities[NUM_PRIORITIES];
     
     //! Bitmap flag for each
-    static K_UCHAR m_ucPriFlag;
+    static uint8_t m_u8PriFlag;
 };
 #endif
 

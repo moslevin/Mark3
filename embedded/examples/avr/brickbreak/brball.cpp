@@ -15,7 +15,7 @@ static COLOR auBallPalette[4] =
 };
 
 //---------------------------------------------------------------------------
-static K_UCHAR aucBallTile[] =
+static uint8_t aucBallTile[] =
 {
     0x14, //0110 = 00 01 01 00 = 0x14
     0x79, //1321 = 01 11 10 01 = 0x79
@@ -24,94 +24,94 @@ static K_UCHAR aucBallTile[] =
 };
 
 //---------------------------------------------------------------------------
-void BrBall::SetPosition( K_USHORT usX_, K_USHORT usY_ )
+void BrBall::SetPosition( uint16_t u16X_, uint16_t u16Y_ )
 {
-    m_usLastX = m_sX100 / 100;
-    m_usLastY = m_sY100 / 100;
+    m_u16LastX = m_s16X100 / 100;
+    m_u16LastY = m_s16Y100 / 100;
 
-    m_sX100 = usX_ * 100;
-    m_sY100 = usY_ * 100;
+    m_s16X100 = u16X_ * 100;
+    m_s16Y100 = u16Y_ * 100;
 }
 
 //---------------------------------------------------------------------------
-void BrBall::SetVelocity( K_SHORT sVelX100_, K_SHORT sVelY100_ )
+void BrBall::SetVelocity( int16_t s16VelX100_, int16_t s16VelY100_ )
 {
-    m_sVelX100 = sVelX100_;
-    m_sVelY100 = sVelY100_;
+    m_s16VelX100 = s16VelX100_;
+    m_s16VelY100 = s16VelY100_;
 }
 
 //---------------------------------------------------------------------------
 void BrBall::ToggleDirX(void)
 {
-    m_sVelX100 *= -1;
+    m_s16VelX100 *= -1;
 }
 
 //---------------------------------------------------------------------------
 void BrBall::ToggleDirY(void)
 {
-    m_sVelY100 *= -1;
+    m_s16VelY100 *= -1;
 }
 
 //---------------------------------------------------------------------------
 void BrBall::Update(void)
 {
     // Compute number of pixel updates to take place this frame
-    K_USHORT usXUpdates = (ABS(m_sVelX100) + 50) / 100;
-    K_USHORT usYUpdates = (ABS(m_sVelY100) + 50) / 100;
+    uint16_t u16XUpdates = (ABS(m_s16VelX100) + 50) / 100;
+    uint16_t u16YUpdates = (ABS(m_s16VelY100) + 50) / 100;
 
-    if (usXUpdates > usYUpdates)
+    if (u16XUpdates > u16YUpdates)
     {
-        m_usPixelUpdates = usXUpdates;
+        m_u16PixelUpdates = u16XUpdates;
     }
     else
     {
-        m_usPixelUpdates = usYUpdates;
+        m_u16PixelUpdates = u16YUpdates;
     }
-    m_usUpdatesLeft = m_usPixelUpdates;
+    m_u16UpdatesLeft = m_u16PixelUpdates;
 }
 
 //---------------------------------------------------------------------------
-K_BOOL BrBall::MoveNextPixel(K_USHORT *pusX_, K_USHORT *pusY_)
+bool BrBall::MoveNextPixel(uint16_t *pu16X_, uint16_t *pu16Y_)
 {
-    if (!m_usUpdatesLeft)
+    if (!m_u16UpdatesLeft)
     {
-        *pusX_ = (K_USHORT)(m_sX100 / 100);
-        *pusY_ = (K_USHORT)(m_sY100 / 100);
+        *pu16X_ = (uint16_t)(m_s16X100 / 100);
+        *pu16Y_ = (uint16_t)(m_s16Y100 / 100);
         return false;
     }
 
-    m_sX100 +=  m_sVelX100 / (K_SHORT)m_usPixelUpdates;
-    m_sY100 +=  m_sVelY100 / (K_SHORT)m_usPixelUpdates;
+    m_s16X100 +=  m_s16VelX100 / (int16_t)m_u16PixelUpdates;
+    m_s16Y100 +=  m_s16VelY100 / (int16_t)m_u16PixelUpdates;
 
-    m_usUpdatesLeft--;
+    m_u16UpdatesLeft--;
 
-    *pusX_ = (K_USHORT)(m_sX100 / 100);
-    *pusY_ = (K_USHORT)(m_sY100 / 100);
+    *pu16X_ = (uint16_t)(m_s16X100 / 100);
+    *pu16Y_ = (uint16_t)(m_s16Y100 / 100);
     return true;
 }
 
 //---------------------------------------------------------------------------
-void BrBall::SetX( K_USHORT usX_ )
+void BrBall::SetX( uint16_t u16X_ )
 {
-    m_sX100 = (K_SHORT)(usX_ * 100);
+    m_s16X100 = (int16_t)(u16X_ * 100);
 }
 
 //---------------------------------------------------------------------------
-void BrBall::SetY( K_USHORT usY_ )
+void BrBall::SetY( uint16_t u16Y_ )
 {
-    m_sY100 = (K_SHORT)(usY_ * 100);
+    m_s16Y100 = (int16_t)(u16Y_ * 100);
 }
 
 //---------------------------------------------------------------------------
-K_SHORT BrBall::GetVelX()
+int16_t BrBall::GetVelX()
 {
-    return m_sVelX100;
+    return m_s16VelX100;
 }
 
 //---------------------------------------------------------------------------
-K_SHORT BrBall::GetVelY()
+int16_t BrBall::GetVelY()
 {
-    return m_sVelY100;
+    return m_s16VelY100;
 }
 
 //---------------------------------------------------------------------------
@@ -122,23 +122,23 @@ void BrBall::Clear(void)
 
     // Undraw previous rectangle
     stRect.uFillColor = COLOR_BLACK;
-    stRect.uLineColor = COLOR_BLACK;
+    stRect.u32ineColor = COLOR_BLACK;
 
-    stRect.usTop = m_usLastY;
-    stRect.usBottom = stRect.usTop + BALL_SIZE - 1;
-    stRect.usLeft = m_usLastX;
-    stRect.usRight = stRect.usLeft + BALL_SIZE - 1;
-    if (stRect.usLeft < PLAYFIELD_BORDER_WIDTH)
+    stRect.u16Top = m_u16LastY;
+    stRect.u16Bottom = stRect.u16Top + BALL_SIZE - 1;
+    stRect.u16Left = m_u16LastX;
+    stRect.u16Right = stRect.u16Left + BALL_SIZE - 1;
+    if (stRect.u16Left < PLAYFIELD_BORDER_WIDTH)
     {
-        stRect.usLeft = PLAYFIELD_BORDER_WIDTH;
+        stRect.u16Left = PLAYFIELD_BORDER_WIDTH;
     }
-    if (stRect.usRight >= (SCREEN_WIDTH - PLAYFIELD_BORDER_WIDTH))
+    if (stRect.u16Right >= (SCREEN_WIDTH - PLAYFIELD_BORDER_WIDTH))
     {
-        stRect.usRight = SCREEN_WIDTH - PLAYFIELD_BORDER_WIDTH - 1;
+        stRect.u16Right = SCREEN_WIDTH - PLAYFIELD_BORDER_WIDTH - 1;
     }
-    if (stRect.usTop <= PLAYFIELD_BORDER_WIDTH + HUD_HEIGHT)
+    if (stRect.u16Top <= PLAYFIELD_BORDER_WIDTH + HUD_HEIGHT)
     {
-        stRect.usTop = PLAYFIELD_BORDER_WIDTH + HUD_HEIGHT + 1;
+        stRect.u16Top = PLAYFIELD_BORDER_WIDTH + HUD_HEIGHT + 1;
     }
 
     pclDisplay->Rectangle(&stRect);
@@ -149,14 +149,14 @@ void BrBall::Draw(void)
 {
     TileDef_t stTile;
     stTile.m_eFormat = TILE_2BPP;
-    stTile.m_pucData = aucBallTile;
+    stTile.m_pu8Data = aucBallTile;
     stTile.m_puPalette = auBallPalette;
-    stTile.m_ucWidth = 4;
-    stTile.m_ucHeight = 4;
+    stTile.m_u8Width = 4;
+    stTile.m_u8Height = 4;
 
     clMyTile.LoadTile(&stTile);
-    clMyTile.Render(pclDisplay, m_sX100/100, m_sY100/100 );
+    clMyTile.Render(pclDisplay, m_s16X100/100, m_s16Y100/100 );
 
-    m_usLastX = m_sX100 / 100;
-    m_usLastY = m_sY100 / 100;
+    m_u16LastX = m_s16X100 / 100;
+    m_u16LastY = m_s16Y100 / 100;
 }

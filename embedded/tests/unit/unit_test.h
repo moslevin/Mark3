@@ -31,14 +31,14 @@ public:
     UnitTest();
     
     /*!
-        \fn void SetName( const K_CHAR *szName_ )
+        \fn void SetName( const char *szName_ )
         
         Set the name of the test object
         
         \param szName_ Name of the tests associated with this object
         
     */
-    void SetName( const K_CHAR *szName_ ) { m_szName = szName_; }    
+    void SetName( const char *szName_ ) { m_szName = szName_; }    
     
     /*!
         \fn void Start() 
@@ -72,22 +72,22 @@ public:
     void ExpectEquals( bool bVal_, bool bExpression_ )
         { (bVal_ == bExpression_) ? Pass() : Fail(); }
 
-    void ExpectEquals( K_UCHAR ucVal_, K_UCHAR ucExpression_ )
-        { (ucVal_ == ucExpression_) ? Pass() : Fail(); }
+    void ExpectEquals( uint8_t u8Val_, uint8_t u8Expression_ )
+        { (u8Val_ == u8Expression_) ? Pass() : Fail(); }
 
-    void ExpectEquals( K_USHORT usVal_, K_USHORT usExpression_ )
-        { (usVal_ == usExpression_) ? Pass() : Fail(); }
+    void ExpectEquals( uint16_t u16Val_, uint16_t usexpression_ )
+        { (u16Val_ == usexpression_) ? Pass() : Fail(); }
 
-    void ExpectEquals( K_ULONG ulVal_, K_ULONG ulExpression_ )
-        { (ulVal_ == ulExpression_) ? Pass() : Fail(); }
+    void ExpectEquals( uint32_t u32Val_, uint32_t u32Expression_ )
+        { (u32Val_ == u32Expression_) ? Pass() : Fail(); }
 
-    void ExpectEquals( K_CHAR cVal_, K_CHAR cExpression_ )
+    void ExpectEquals( char cVal_, char cExpression_ )
         { (cVal_ == cExpression_) ? Pass() : Fail(); }
 
-    void ExpectEquals( K_SHORT sVal_, K_SHORT sExpression_ )
-        { (sVal_ == sExpression_) ? Pass() : Fail(); }
+    void ExpectEquals( int16_t s16Val_, int16_t s16Expression_ )
+        { (s16Val_ == s16Expression_) ? Pass() : Fail(); }
 
-    void ExpectEquals( K_LONG lVal_, K_LONG lExpression_ )
+    void ExpectEquals( int32_t lVal_, int32_t lExpression_ )
         { (lVal_ == lExpression_) ? Pass() : Fail(); }
 
     void ExpectEquals( void* pvVal_, void* pvExpression_ )
@@ -103,49 +103,49 @@ public:
     void ExpectFailEquals( bool bVal_, bool bExpression_ )
         { (bVal_ == bExpression_) ? Fail() : Pass(); }
 
-    void ExpectFailEquals( K_UCHAR ucVal_, K_UCHAR ucExpression_ )
-        { (ucVal_ == ucExpression_) ? Fail() : Pass(); }
+    void ExpectFailEquals( uint8_t u8Val_, uint8_t u8Expression_ )
+        { (u8Val_ == u8Expression_) ? Fail() : Pass(); }
 
-    void ExpectFailEquals( K_USHORT usVal_, K_USHORT usExpression_ )
-        { (usVal_ == usExpression_) ? Fail() : Pass(); }
+    void ExpectFailEquals( uint16_t u16Val_, uint16_t usexpression_ )
+        { (u16Val_ == usexpression_) ? Fail() : Pass(); }
 
-    void ExpectFailEquals( K_ULONG ulVal_, K_ULONG ulExpression_ )
-        { (ulVal_ == ulExpression_) ? Fail() : Pass(); }
+    void ExpectFailEquals( uint32_t u32Val_, uint32_t u32Expression_ )
+        { (u32Val_ == u32Expression_) ? Fail() : Pass(); }
 
-    void ExpectFailEquals( K_CHAR cVal_, K_CHAR cExpression_ )
+    void ExpectFailEquals( char cVal_, char cExpression_ )
         { (cVal_ == cExpression_) ? Fail() : Pass(); }
 
-    void ExpectFailEquals( K_SHORT sVal_, K_SHORT sExpression_ )
-        { (sVal_ == sExpression_) ? Fail() : Pass(); }
+    void ExpectFailEquals( int16_t s16Val_, int16_t s16Expression_ )
+        { (s16Val_ == s16Expression_) ? Fail() : Pass(); }
 
-    void ExpectFailEquals( K_LONG lVal_, K_LONG lExpression_ )
+    void ExpectFailEquals( int32_t lVal_, int32_t lExpression_ )
         { (lVal_ == lExpression_) ? Fail() : Pass(); }
 
     void ExpectFailEquals( void* pvVal_, void* pvExpression_ )
         { (pvVal_ == pvExpression_) ? Fail() : Pass(); }
 
-    void ExpectGreaterThan( K_LONG lVal_, K_LONG lExpression_ )
+    void ExpectGreaterThan( int32_t lVal_, int32_t lExpression_ )
         { (lVal_ > lExpression_) ? Pass() : Fail(); }
 
-    void ExpectLessThan( K_LONG lVal_, K_LONG lExpression_ )
+    void ExpectLessThan( int32_t lVal_, int32_t lExpression_ )
         { (lVal_ < lExpression_) ? Pass() : Fail(); }
 
-    void ExpectGreaterThanEquals( K_LONG lVal_, K_LONG lExpression_ )
+    void ExpectGreaterThanEquals( int32_t lVal_, int32_t lExpression_ )
         { (lVal_ >= lExpression_) ? Pass() : Fail(); }
 
-    void ExpectLessThanEquals( K_LONG lVal_, K_LONG lExpression_ )
+    void ExpectLessThanEquals( int32_t lVal_, int32_t lExpression_ )
         { (lVal_ <= lExpression_) ? Pass() : Fail(); }
 
-    void ExpectFailGreaterThan( K_LONG lVal_, K_LONG lExpression_ )
+    void ExpectFailGreaterThan( int32_t lVal_, int32_t lExpression_ )
         { (lVal_ > lExpression_) ? Fail() : Pass(); }
 
-    void ExpectFailLessThan( K_LONG lVal_, K_LONG lExpression_ )
+    void ExpectFailLessThan( int32_t lVal_, int32_t lExpression_ )
         { (lVal_ < lExpression_) ? Fail() : Pass(); }
 
-    void ExpectFailGreaterThanEquals( K_LONG lVal_, K_LONG lExpression_ )
+    void ExpectFailGreaterThanEquals( int32_t lVal_, int32_t lExpression_ )
         { (lVal_ >= lExpression_) ? Fail() : Pass(); }
 
-    void ExpectFailLessThanEquals( K_LONG lVal_, K_LONG lExpression_ )
+    void ExpectFailLessThanEquals( int32_t lVal_, int32_t lExpression_ )
         { (lVal_ <= lExpression_) ? Fail() : Pass(); }
 
     /*!
@@ -157,13 +157,13 @@ public:
     void Complete() { m_bComplete = 1; }
     
     /*!
-        \fn const K_CHAR *GetName()
+        \fn const char *GetName()
         
         Get the name of the tests associated with this object
         
         \return Name of the test
     */
-    const K_CHAR *GetName(){ return m_szName; }
+    const char *GetName(){ return m_szName; }
     
     /*!
         \fn bool GetResult()
@@ -175,39 +175,39 @@ public:
     bool GetResult() { return m_bStatus; }
 
     /*!
-        \fn K_USHORT GetPassed()
+        \fn uint16_t GetPassed()
         
         Return the total number of test points/iterations passed
         
         \return Count of all successful test points/iterations
     */
-    K_USHORT GetPassed() { return m_usPassed; }
+    uint16_t GetPassed() { return m_u16Passed; }
     
     /*!
-        \fn K_USHORT GetFailed()
+        \fn uint16_t GetFailed()
         
         Return the number of failed test points/iterations
         
         \return Failed test point/iteration count
     */
-    K_USHORT GetFailed() { return m_usIterations - m_usPassed; }
+    uint16_t GetFailed() { return m_u16Iterations - m_u16Passed; }
     
     /*!
-        \fn K_USHORT GetTotal()
+        \fn uint16_t GetTotal()
         
         Return the total number of iterations/test-points executed
         
         \return Total number of ierations/test-points executed
     */
-    K_USHORT GetTotal() { return m_usIterations; }
+    uint16_t GetTotal() { return m_u16Iterations; }
     
 private:
-    const K_CHAR *m_szName;        //!< Name of the tests performed
+    const char *m_szName;        //!< Name of the tests performed
     bool m_bIsActive;            //!< Whether or not the test is active
-    K_UCHAR m_bComplete;        //!< Whether or not the test is complete
+    bool m_bComplete;        //!< Whether or not the test is complete
     bool m_bStatus;            //!< Status of the last-run test
-    K_USHORT m_usIterations;    //!< Number of iterations executed
-    K_USHORT m_usPassed;        //!< Number of iterations that have passed
+    uint16_t m_u16Iterations;    //!< Number of iterations executed
+    uint16_t m_u16Passed;        //!< Number of iterations that have passed
 };
 
 #endif

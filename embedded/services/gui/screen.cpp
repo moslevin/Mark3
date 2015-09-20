@@ -28,19 +28,19 @@ void Screen::SetManager( ScreenManager *pclScreenManager_ )
 }
 
 //---------------------------------------------------------------------------
-void Screen::SetWindowAffinity( const K_CHAR *szWindowName_ )
+void Screen::SetWindowAffinity( const char *szWindowName_ )
 {
     m_pclWindow = m_pclScreenManager->FindWindowByName( szWindowName_ );
 }
 
 //---------------------------------------------------------------------------
-GuiWindow *ScreenManager::FindWindowByName( const K_CHAR *m_szName_ )
+GuiWindow *ScreenManager::FindWindowByName( const char *m_szName_ )
 {
     return m_pclSurface->FindWindowByName( m_szName_ );
 }
 
 //---------------------------------------------------------------------------
-Screen *ScreenManager::FindScreenByName( const K_CHAR *szName_ )
+Screen *ScreenManager::FindScreenByName( const char *szName_ )
 {
     LinkListNode *pclTempNode = static_cast<LinkListNode*>(m_clScreenList.GetHead());
 

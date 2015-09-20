@@ -26,11 +26,11 @@ and should be well understood before moving on to other examples.
 
 Lessons covered in this example include:
 
-- Usage of the Kernel class - configuring and starting the kernel
-- Usage of the Thread class - initializing and starting static threads.
+- usage of the Kernel class - configuring and starting the kernel
+- usage of the Thread class - initializing and starting static threads.
 - Demonstrate the relationship between Thread objects, stacks, and entry
   functions.
-- Usage of Thread::Sleep() to block execution of a thread for a period of time
+- usage of Thread::Sleep() to block execution of a thread for a period of time
 - When using an idle thread, the idle thread MUST not block.
 
 Exercise:

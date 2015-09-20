@@ -27,13 +27,13 @@ See license.txt for more information
 SysUART::SysUART()
 {
     m_eInterface    = SERCOM_IF_0;
-    m_ulBaud        = SYSUART_DEFAULT_BAUD;
-    m_ucStopBits    = 1;
+    m_u32Baud        = SYSUART_DEFAULT_BAUD;
+    m_u8StopBits    = 1;
     m_eMux          = SERCOM_MUX_C;
     m_eTxPad        = SERCOM_PAD_2;
     m_eRxPad        = SERCOM_PAD_3;
     m_bParity       = false;
-    m_ulClockFreqHz = SYSUART_DEFAULT_CLOCKFREQ;
+    m_u32ClockFreqHz = SYSUART_DEFAULT_CLOCKFREQ;
     m_eClockGen     = GCLK_1;
 }
 
@@ -58,20 +58,20 @@ void SysUART::Open(void)
 }
 
 //---------------------------------------------------------------------------
-K_BOOL SysUART::Write(K_CHAR cChar_)
+bool SysUART::Write(char cChar_)
 {
     SercomUsart *pstPort = GetPort();
 
-    if(!(pstPort->INTFLAG.reg & SERCOM_USART_INTFLAG_DRE))
+    if(!(pstPort->INTFLAG.reg & SERCOm_UART_INTFLAG_DRE))
     {
         return false;
     }
 
     WriteSync();
 
-    pstPort->DATA.reg = (K_USHORT)cChar_;
+    pstPort->DATA.reg = (uint16_t)cChar_;
 
-    while (!(pstPort->INTFLAG.reg & SERCOM_USART_INTFLAG_TXC))
+    while (!(pstPort->INTFLAG.reg & SERCOm_UART_INTFLAG_TXC))
     {
         // Wait for data to complete transmission
     }
@@ -85,10 +85,10 @@ void SysUART::SetupClocks(void)
     SysClock clClock;
 
     // Enable the clock in the power-management module...
-    PM->APBCMASK.reg |= 1 << (PM_APBCMASK_SERCOM0_Pos + (K_ULONG)m_eInterface);
+    PM->APBCMASK.reg |= 1 << (PM_APBCMASK_SERCOM0_Pos + (uint32_t)m_eInterface);
 
     // Enable the SERCOM Core Clock for the specified interface
-    eClockID = (Clock_t)((K_UCHAR)CLK_SERCOM0_CORE + (K_UCHAR)m_eInterface);
+    eClockID = (Clock_t)((uint8_t)CLK_SERCOM0_CORE + (uint8_t)m_eInterface);
 
     // Hook the SERCOM Core Clock to the appropriate generator
     clClock.SetClockID(eClockID);
@@ -122,17 +122,17 @@ void SysUART::SetupPin(const SERCOM_Lookup_t *pstLUT_)
         eMux = PIN_MUX_D;
     }
 
-    // Set the pins as inputs, pulled high.
-    pclPort->SetDir(pstLUT_->ucIndex, false);
-    pclPort->SetPinConfig(pstLUT_->ucIndex, true, true, true);
+    // Set the pins as inputs, pu32led high.
+    pclPort->SetDir(pstLUT_->u8Index, false);
+    pclPort->SetPinConfig(pstLUT_->u8Index, true, true, true);
 
     // Set the pinmux values for the port to the right value for the
     // peripheral
-    pclPort->SetPortMux(pstLUT_->ucIndex, eMux);
+    pclPort->SetPortMux(pstLUT_->u8Index, eMux);
 }
 
 //---------------------------------------------------------------------------
-K_ULONG SysUART::CalculateBaud(void)
+uint32_t SysUART::CalculateBaud(void)
 {
     /* Temporary variables  */
     uint64_t ratio = 0;
@@ -140,7 +140,7 @@ K_ULONG SysUART::CalculateBaud(void)
     uint64_t baud_calculated = 0;
 
     /* Calculate the BAUD value */
-    ratio = ((16 * (uint64_t)m_ulBaud) << 32) / m_ulClockFreqHz;
+    ratio = ((16 * (uint64_t)m_u32Baud) << 32) / m_u32ClockFreqHz;
     scale = ((uint64_t)1 << 32) - ratio;
     baud_calculated = (65536 * scale) >> 32;
 
@@ -151,20 +151,20 @@ K_ULONG SysUART::CalculateBaud(void)
 void SysUART::SetupRegisters(void)
 {
     SercomUsart *pstUART = GetPort();
-    K_ULONG ulCtrlA = 0;
-    K_ULONG ulCtrlB = 0;
-    K_ULONG ulBaud = 0;
+    uint32_t u32CtrlA = 0;
+    uint32_t u32CtrlB = 0;
+    uint32_t u32Baud = 0;
 
     // Register A fields
     // DORD - Data order: 0 = MSB first, 1 = LSB first
     // CPOL - Clock Polarity (N/A for UART)
     // CMODE - 0 = Async
-    // FORM[3:0] Frame Format - 0 = USART, 1 = USART w/Parity
+    // FORM[3:0] Frame Format - 0 = UART, 1 = UART w/Parity
     // RXPO[1:0] Receive Data Pin
     // TXPO Tx Data Pinout
     // IBON Buffer Overflow Notification
     // RUNSTDBY Run in Standby
-    // MODE - 0 = USART with external clock, 1 = internal
+    // MODE - 0 = UART with external clock, 1 = internal
     // ENABLE - 1 = Peripheral enabled
     // SWRST - Software reset
 
@@ -177,53 +177,53 @@ void SysUART::SetupRegisters(void)
 
     // Default to RX/TX enabled, user-selected parity & stop bits
     // 8-bit character width.
-    ulCtrlB |= SERCOM_USART_CTRLB_RXEN | SERCOM_USART_CTRLB_TXEN;
-    if (2 == m_ucStopBits)
+    u32CtrlB |= SERCOm_UART_CTRLB_RXEN | SERCOm_UART_CTRLB_TXEN;
+    if (2 == m_u8StopBits)
     {
-        ulCtrlB |= SERCOM_USART_CTRLB_SBMODE;
+        u32CtrlB |= SERCOm_UART_CTRLB_SBMODE;
     }
 
     if (m_bParity)
     {
-        ulCtrlA |= (1 << SERCOM_USART_CTRLA_FORM_Pos);
-        ulCtrlB |= SERCOM_USART_CTRLB_PMODE;
+        u32CtrlA |= (1 << SERCOm_UART_CTRLA_FORM_Pos);
+        u32CtrlB |= SERCOm_UART_CTRLB_PMODE;
     }
 
-    ulCtrlA |= SERCOM_USART_CTRLA_DORD; // LSB first!
-    ulCtrlA |= 1 << SERCOM_USART_CTRLA_MODE_Pos; // internal clock
-    ulCtrlA |= ((K_ULONG)m_eRxPad << SERCOM_USART_CTRLA_RXPO_Pos);
+    u32CtrlA |= SERCOm_UART_CTRLA_DORD; // LSB first!
+    u32CtrlA |= 1 << SERCOm_UART_CTRLA_MODE_Pos; // internal clock
+    u32CtrlA |= ((uint32_t)m_eRxPad << SERCOm_UART_CTRLA_RXPO_Pos);
     if (SERCOM_PAD_2 == m_eTxPad)
     {
-        ulCtrlA |= SERCOM_USART_CTRLA_TXPO;
+        u32CtrlA |= SERCOm_UART_CTRLA_TXPO;
     }
 
     WriteSync();
-    ulBaud = CalculateBaud();
-    pstUART->BAUD.reg = ulBaud;
+    u32Baud = CalculateBaud();
+    pstUART->BAUD.reg = u32Baud;
     WriteSync();
-    pstUART->CTRLA.reg = ulCtrlA;
+    pstUART->CTRLA.reg = u32CtrlA;
     WriteSync();
-    pstUART->CTRLB.reg = ulCtrlB;
+    pstUART->CTRLB.reg = u32CtrlB;
 
     WriteSync();
-    ulCtrlA |= SERCOM_USART_CTRLA_ENABLE;
-    pstUART->CTRLA.reg = ulCtrlA;
+    u32CtrlA |= SERCOm_UART_CTRLA_ENABLE;
+    pstUART->CTRLA.reg = u32CtrlA;
 }
 
 //---------------------------------------------------------------------------
 void SysUART::SetupPort(void)
 {
-    K_USHORT usBaseIdx;
+    uint16_t u16BaseIdx;
 
     // Figure out (based on config) where in the LUT to look for our pin configuration
-    usBaseIdx =   ((K_USHORT)m_eMux * (K_USHORT)SERCOM_PAD_COUNT * (K_USHORT)SERCOM_IF_COUNT)
-                + ((K_USHORT)m_eInterface * (K_USHORT)SERCOM_PAD_COUNT);
+    u16BaseIdx =   ((uint16_t)m_eMux * (uint16_t)SERCOM_PAD_COUNT * (uint16_t)SERCOM_IF_COUNT)
+                + ((uint16_t)m_eInterface * (uint16_t)SERCOM_PAD_COUNT);
 
     // Setup TX pin as input
-    SetupPin(&g_astLookup[usBaseIdx + (K_USHORT)m_eTxPad]);
+    SetupPin(&g_astLookup[u16BaseIdx + (uint16_t)m_eTxPad]);
 
     // Setup RX pin as input
-    SetupPin(&g_astLookup[usBaseIdx + (K_USHORT)m_eRxPad]);
+    SetupPin(&g_astLookup[u16BaseIdx + (uint16_t)m_eRxPad]);
 }
 
 //---------------------------------------------------------------------------
@@ -254,7 +254,7 @@ SercomUsart *SysUART::GetPort(void)
 void SysUART::WriteSync()
 {
     SercomUsart *pstPort = GetPort();
-    while (pstPort->STATUS.reg & SERCOM_USART_STATUS_SYNCBUSY)
+    while (pstPort->STATUS.reg & SERCOm_UART_STATUS_SYNCBUSY)
     {
         /* Do Nothing */
     }

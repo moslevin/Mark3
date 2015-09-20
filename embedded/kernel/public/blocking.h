@@ -20,7 +20,7 @@ See license.txt for more information
     A Blocking object in Mark3 is essentially a thread list.  Any blocking
     object implementation (being a semaphore, mutex, event flag, etc.) can
     be built on top of this class, utilizing the provided functions to 
-    manipulate thread location within the Kernel.  
+    manipu32ate thread location within the Kernel.  
     
     Blocking a thread results in that thread becoming de-scheduled, placed
     in the blocking object's own private list of threads which are waiting 
@@ -58,7 +58,7 @@ See license.txt for more information
 
 //---------------------------------------------------------------------------
 /*!
-    Class implementing thread-blocking primatives.  Used for implementing 
+    Class implementing thread-blocking primatives.  used for implementing 
     things like semaphores, mutexes, message queues, or anything else that
     could cause a thread to suspend execution on some external stimulus.
 */

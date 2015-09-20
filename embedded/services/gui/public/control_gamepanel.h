@@ -32,10 +32,10 @@ See license.txt for more information
 class GamePanelControl : public GuiControl
 {
 public:
-    virtual void Init() { SetAcceptFocus(false); m_stJoy.Current.usRawData = 0; m_stJoy.Previous.usRawData = 0;}
+    virtual void Init() { SetAcceptFocus(false); m_stJoy.Current.u16RawData = 0; m_stJoy.Previous.u16RawData = 0;}
     virtual void Draw();
     virtual GuiReturn_t ProcessEvent( GuiEvent_t *pstEvent_ );
-    virtual void Activate( K_BOOL bActivate_ ) {}
+    virtual void Activate( bool bActivate_ ) {}
 
 private:
     JoystickEvent_t m_stJoy;

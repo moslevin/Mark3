@@ -17,34 +17,34 @@
 class BrPaddle
 {
 public:
-	BrPaddle() { m_ucMode = PADDLE_MODE_NORMAL; m_ucWidth = PADDLE_WIDTH; }
-    void Init( K_UCHAR ucMode_ );
+	BrPaddle() { m_u8Mode = PADDLE_MODE_NORMAL; m_u8Width = PADDLE_WIDTH; }
+    void Init( uint8_t u8Mode_ );
 
-    void SetPosition(K_USHORT usX_);
+    void SetPosition(uint16_t u16X_);
     void MoveLeft(void);
 
     void MoveRight(void);
-    void SetVelocity( K_SHORT sVel_ );
-    K_SHORT GetVelocity() { return m_sVel; }
+    void SetVelocity( int16_t s16Vel_ );
+    int16_t GetVelocity() { return m_s16Vel; }
     void Decel(void);
     void Update(void);
 
     void Draw(void);
     void Clear(void);
-    K_UCHAR GetMode(void)   { return m_ucMode; }
+    uint8_t GetMode(void)   { return m_u8Mode; }
 
-    K_USHORT GetLeft(void) { return (K_USHORT)m_sX; }
-    K_USHORT GetRight(void) { return (K_USHORT)m_sX + m_ucWidth - 1; }
+    uint16_t GetLeft(void) { return (uint16_t)m_s16X; }
+    uint16_t GetRight(void) { return (uint16_t)m_s16X + m_u8Width - 1; }
 
-    K_UCHAR GetWidth() { return m_ucWidth; }
+    uint8_t GetWidth() { return m_u8Width; }
 private:
-    K_SHORT m_sX;
-    K_SHORT m_sLastX;
-    K_SHORT m_sVel;
-    K_BOOL	m_bUpdate;
+    int16_t m_s16X;
+    int16_t m_sLastX;
+    int16_t m_s16Vel;
+    bool	m_bUpdate;
 
-    K_UCHAR m_ucMode;
-    K_UCHAR m_ucWidth;
+    uint8_t m_u8Mode;
+    uint8_t m_u8Width;
 };
 
 #endif

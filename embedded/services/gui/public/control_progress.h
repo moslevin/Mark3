@@ -33,19 +33,19 @@ public:
     virtual void Init();
     virtual void Draw();
     virtual GuiReturn_t ProcessEvent( GuiEvent_t *pstEvent_ );
-    virtual void Activate( K_BOOL bActivate_ ) {}
+    virtual void Activate( bool bActivate_ ) {}
 
     void SetBackColor( COLOR eColor_ )     { m_uBackColor = eColor_; }
     void SetProgressColor( COLOR eColor_ )  { m_uProgressColor = eColor_; }
     void SetBorderColor( COLOR eColor_ )    { m_uBorderColor = eColor_; }
 
-    void SetProgress( K_UCHAR ucProgress_ );
+    void SetProgress( uint8_t u8Progress_ );
 
 private:
     COLOR m_uBackColor;
     COLOR m_uProgressColor;
     COLOR m_uBorderColor;
-    K_UCHAR m_ucProgress;
+    uint8_t m_u8Progress;
 };
 
 #endif

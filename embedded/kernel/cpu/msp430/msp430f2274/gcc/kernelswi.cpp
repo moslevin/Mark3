@@ -42,15 +42,15 @@ void KernelSWI::Stop(void)
 }
 
 //---------------------------------------------------------------------------
-K_UCHAR KernelSWI::DI()
+uint8_t KernelSWI::DI()
 {
-    K_UCHAR ucRet = ((P1IE & 0x04) == 0x04);
+    uint8_t u8Ret = ((P1IE & 0x04) == 0x04);
     P1IE &= ~0x04;
-    return ucRet;
+    return u8Ret;
 }
 
 //---------------------------------------------------------------------------
-void KernelSWI::RI(K_BOOL bEnable_)
+void KernelSWI::RI(bool bEnable_)
 {
     if (bEnable_)
     {

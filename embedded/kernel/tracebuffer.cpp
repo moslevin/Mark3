@@ -25,27 +25,27 @@ See license.txt for more information
 #if KERNEL_USE_DEBUG && !KERNEL_AWARE_SIMULATION
 //---------------------------------------------------------------------------
 WriteBuffer16 TraceBuffer::m_clBuffer;
-volatile K_USHORT TraceBuffer::m_usIndex;
-K_USHORT TraceBuffer::m_ausBuffer[ (TRACE_BUFFER_SIZE/sizeof(K_USHORT)) ];
+volatile uint16_t TraceBuffer::m_u16Index;
+uint16_t TraceBuffer::m_au16Buffer[ (TRACE_BUFFER_SIZE/sizeof(uint16_t)) ];
 
 //---------------------------------------------------------------------------
 void TraceBuffer::Init()
 {
-	m_clBuffer.SetBuffers(m_ausBuffer, TRACE_BUFFER_SIZE/sizeof(K_USHORT));
-	m_usIndex = 0;
+	m_clBuffer.SetBuffers(m_au16Buffer, TRACE_BUFFER_SIZE/sizeof(uint16_t));
+	m_u16Index = 0;
 }
 
 //---------------------------------------------------------------------------
-K_USHORT TraceBuffer::Increment()
+uint16_t TraceBuffer::Increment()
 {
-	return m_usIndex++;	
+	return m_u16Index++;	
 }
 
 //---------------------------------------------------------------------------
-void TraceBuffer::Write( K_USHORT *pusData_, K_USHORT usSize_ )
+void TraceBuffer::Write( uint16_t *pu16Data_, uint16_t u16Size_ )
 {
 	// Pipe the data directly to the circular buffer
-	m_clBuffer.WriteData(pusData_, usSize_);
+	m_clBuffer.WriteData(pu16Data_, u16Size_);
 }
 
 #endif

@@ -22,59 +22,59 @@ See license.txt for more information
 #include "nlfs_config.h"
 
 //---------------------------------------------------------------------------
-void NLFS_RAM::Read_Node( K_USHORT usNode_, NLFS_Node_t *pstFileNode_)
+void NLFS_RAM::Read_Node( uint16_t u16Node_, NLFS_Node_t *pstFileNode_)
 {
     NLFS_Node_t *pstFileNode =  (NLFS_Node_t*)(m_puHost->kaData
-                                                    + (usNode_ * sizeof(NLFS_Node_t)));
+                                                    + (u16Node_ * sizeof(NLFS_Node_t)));
 
     MemUtil::CopyMemory(pstFileNode_, pstFileNode, sizeof(NLFS_Node_t));
 }
 
 //---------------------------------------------------------------------------
-void NLFS_RAM::Write_Node(K_USHORT usNode_, NLFS_Node_t *pstFileNode_)
+void NLFS_RAM::Write_Node(uint16_t u16Node_, NLFS_Node_t *pstFileNode_)
 {
     NLFS_Node_t *pstFileNode =  (NLFS_Node_t*)(m_puHost->kaData
-                                                    + (usNode_ * sizeof(NLFS_Node_t)));
+                                                    + (u16Node_ * sizeof(NLFS_Node_t)));
 
     MemUtil::CopyMemory(pstFileNode, pstFileNode_, sizeof(NLFS_Node_t));
 }
 
 //---------------------------------------------------------------------------
-void NLFS_RAM::Read_Block_Header(K_ULONG ulBlock_, NLFS_Block_t *pstFileBlock_)
+void NLFS_RAM::Read_Block_Header(uint32_t u32Block_, NLFS_Block_t *pstFileBlock_)
 {
     NLFS_Block_t *pstFileBlock =  (NLFS_Block_t*)(m_puHost->kaData
-                                                    + m_stLocalRoot.ulBlockOffset
-                                                    + (ulBlock_ * sizeof(NLFS_Block_t)));
+                                                    + m_stLocalRoot.u32BlockOffset
+                                                    + (u32Block_ * sizeof(NLFS_Block_t)));
 
     MemUtil::CopyMemory(pstFileBlock_, pstFileBlock, sizeof(NLFS_Block_t));
 }
 
 //---------------------------------------------------------------------------
-void NLFS_RAM::Write_Block_Header(K_ULONG ulBlock_, NLFS_Block_t *pstFileBlock_)
+void NLFS_RAM::Write_Block_Header(uint32_t u32Block_, NLFS_Block_t *pstFileBlock_)
 {
     NLFS_Block_t *pstFileBlock =  (NLFS_Block_t*)(m_puHost->kaData
-                                                    + m_stLocalRoot.ulBlockOffset
-                                                    + (ulBlock_ * sizeof(NLFS_Block_t)));
+                                                    + m_stLocalRoot.u32BlockOffset
+                                                    + (u32Block_ * sizeof(NLFS_Block_t)));
 
     MemUtil::CopyMemory(pstFileBlock, pstFileBlock_, sizeof(NLFS_Block_t));
 }
 
 //---------------------------------------------------------------------------
-void NLFS_RAM::Read_Block(K_ULONG ulBlock_, K_ULONG ulOffset_, void *pvData_, K_ULONG ulLen_)
+void NLFS_RAM::Read_Block(uint32_t u32Block_, uint32_t u32Offset_, void *pvData_, uint32_t u32Len_)
 {
     void *pvSrc_ = (void*)( m_puHost->kaData
-                            + m_stLocalRoot.ulDataOffset
-                            + ulOffset_
-                            + (ulBlock_ * m_stLocalRoot.ulBlockSize) );
-    MemUtil::CopyMemory(pvData_, pvSrc_, (K_USHORT)ulLen_);    
+                            + m_stLocalRoot.u32DataOffset
+                            + u32Offset_
+                            + (u32Block_ * m_stLocalRoot.u32BlockSize) );
+    MemUtil::CopyMemory(pvData_, pvSrc_, (uint16_t)u32Len_);    
 }
 
 //---------------------------------------------------------------------------
-void NLFS_RAM::Write_Block(K_ULONG ulBlock_, K_ULONG ulOffset_, void *pvData_, K_ULONG ulLen_)
+void NLFS_RAM::Write_Block(uint32_t u32Block_, uint32_t u32Offset_, void *pvData_, uint32_t u32Len_)
 {
     void *pvDst_ = (void*)( m_puHost->kaData
-                            + m_stLocalRoot.ulDataOffset
-                            + ulOffset_
-                            + (ulBlock_ * m_stLocalRoot.ulBlockSize) );
-    MemUtil::CopyMemory(pvDst_, pvData_, (K_USHORT)ulLen_);    
+                            + m_stLocalRoot.u32DataOffset
+                            + u32Offset_
+                            + (u32Block_ * m_stLocalRoot.u32BlockSize) );
+    MemUtil::CopyMemory(pvDst_, pvData_, (uint16_t)u32Len_);    
 }

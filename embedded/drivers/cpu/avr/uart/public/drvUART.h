@@ -40,7 +40,7 @@ See license.txt for more information
 #define UART_UDRE               (UDRE0)
 #define UART_RXC                (RXC0)
 
-#define UART_DEFAULT_BAUD       ((K_ULONG)57600)
+#define UART_DEFAULT_BAUD       ((uint32_t)57600)
 
 #define UART_RX_ISR             (USART_RX_vect)
 #define UART_TX_ISR             (USART_TX_vect)
@@ -73,19 +73,19 @@ class ATMegaUART : public Driver
 	
 public:		
 	virtual void Init();
-	virtual K_UCHAR Open();
-	virtual K_UCHAR Close();
-	virtual K_USHORT Read( K_USHORT usBytes_, 
-								 K_UCHAR *pucData_ );
+	virtual uint8_t Open();
+	virtual uint8_t Close();
+	virtual uint16_t Read( uint16_t u16Bytes_, 
+								 uint8_t *pu8Data_ );
 								 
-	virtual K_USHORT Write( K_USHORT usBytes_, 
-								  K_UCHAR *pucData_ );
+	virtual uint16_t Write( uint16_t u16Bytes_, 
+								  uint8_t *pu8Data_ );
 								  
-	virtual K_USHORT Control( K_USHORT usEvent_, 
+	virtual uint16_t Control( uint16_t u16Event_, 
 									void *pvIn_, 
-									K_USHORT usSizeIn_, 
+									uint16_t u16SizeIn_, 
 									void *pvOut_, 
-									K_USHORT usSizeOut_ );
+									uint16_t u16SizeOut_ );
 	/*!
 		Called from the transmit complete ISR - implements a 
 		callback/transmit state-machine
@@ -99,45 +99,45 @@ public:
 	void RxISR();
 	
 	/*! 		
-		\fn K_UCHAR *GetRxBuffer(void)
+		\fn uint8_t *GetRxBuffer(void)
 		
 		Return a pointer to the receive buffer for this UART.
 
 		\return pointer to the driver's RX buffer
 	*/
-	K_UCHAR *GetRxBuffer(void) { return m_pucRxBuffer; }
+	uint8_t *GetRxBuffer(void) { return m_pu8RxBuffer; }
 	
 	/*! 
-		\fn K_UCHAR *GetTxBuffer(void)
+		\fn uint8_t *GetTxBuffer(void)
 		
 		Return a pointer to the transmit buffer for this UART.
 		
 		\return pointer to the driver's TX buffer
 	*/
-	K_UCHAR *GetTxBuffer(void) { return m_pucTxBuffer; }
+	uint8_t *GetTxBuffer(void) { return m_pu8TxBuffer; }
 
 private:
 
 	void SetBaud(void);
 	void StartTx(void);
 	
-    K_UCHAR m_ucTxSize;                //!< Size of the TX Buffer
-    K_UCHAR m_ucTxHead;                //!< Head index
-    K_UCHAR m_ucTxTail;                //!< Tail index
+    uint8_t m_u8TxSize;                //!< Size of the TX Buffer
+    uint8_t m_u8TxHead;                //!< Head index
+    uint8_t m_u8TxTail;                //!< Tail index
     
-    K_UCHAR m_ucRxSize;                //!< Size of the RX Buffer
-    K_UCHAR m_ucRxHead;                //!< Head index
-    K_UCHAR m_ucRxTail;                //!< Tail index
+    uint8_t m_u8RxSize;                //!< Size of the RX Buffer
+    uint8_t m_u8RxHead;                //!< Head index
+    uint8_t m_u8RxTail;                //!< Tail index
     
-    K_UCHAR m_bRxOverflow;              //!< Receive buffer overflow
-    K_UCHAR m_bEcho;                    //!< Whether or not to echo RX characters to TX
+    bool m_bRxOverflow;              //!< Receive buffer overflow
+    bool m_bEcho;                    //!< Whether or not to echo RX characters to TX
     
-    K_UCHAR *m_pucRxBuffer;            //!< Receive buffer pointer
-    K_UCHAR *m_pucTxBuffer;            //!< Transmit buffer pointer
+    uint8_t *m_pu8RxBuffer;            //!< Receive buffer pointer
+    uint8_t *m_pu8TxBuffer;            //!< Transmit buffer pointer
     
-    K_ULONG m_ulBaudRate;              //!< Baud rate
+    uint32_t m_u32BaudRate;              //!< Baud rate
     
-    K_UCHAR m_ucRxEscape;              //!< Escape character
+    uint8_t m_u8RxEscape;              //!< Escape character
     
     UART_Rx_Callback_t    pfCallback;    //!< Callback function on matched escape character		
 };

@@ -11,7 +11,7 @@
 Breakout::Breakout()
 {
     m_eState = GAME_STATE_TITLE;
-    m_usCounter = 0;
+    m_u16Counter = 0;
 }
 
 //---------------------------------------------------------------------------
@@ -81,7 +81,7 @@ void Breakout::TransitionToState( GameState_t eState_ )
     }
 
     m_eState = eState_;
-    m_usCounter = 0;
+    m_u16Counter = 0;
 
     // Code to prepare for new state.
     switch (eState_)
@@ -113,7 +113,7 @@ void Breakout::TransitionToState( GameState_t eState_ )
     }
 }
 //---------------------------------------------------------------------------
-K_BOOL Breakout::ButtonDown()
+bool Breakout::ButtonDown()
 {
     JoystickReport stCurrent;
     JoystickReport stPrevious;
@@ -129,7 +129,7 @@ K_BOOL Breakout::ButtonDown()
 }
 
 //---------------------------------------------------------------------------
-K_BOOL Breakout::ButtonUp()
+bool Breakout::ButtonUp()
 {
     JoystickReport stCurrent;
     JoystickReport stPrevious;
@@ -146,7 +146,7 @@ K_BOOL Breakout::ButtonUp()
 
 //---------------------------------------------------------------------------
 
-K_BOOL Breakout::LeftDown()
+bool Breakout::LeftDown()
 {
     JoystickReport stCurrent;
     JoystickReport stPrevious;
@@ -163,7 +163,7 @@ K_BOOL Breakout::LeftDown()
 
 //---------------------------------------------------------------------------
 
-K_BOOL Breakout::RightDown()
+bool Breakout::RightDown()
 {
     JoystickReport stCurrent;
     JoystickReport stPrevious;
@@ -179,15 +179,15 @@ K_BOOL Breakout::RightDown()
 }
 
 //---------------------------------------------------------------------------
-K_UCHAR Breakout::CheckBrickHit(K_USHORT usX_, K_USHORT usY_)
+uint8_t Breakout::CheckBrickHit(uint16_t u16X_, uint16_t u16Y_)
 {
-    K_UCHAR ucHitFlags = 0;
-    if (m_clPlayField.CheckBrickExists(usX_, usY_))
+    uint8_t u8HitFlags = 0;
+    if (m_clPlayField.CheckBrickExists(u16X_, u16Y_))
     {
         m_clScore.AddScore(30);
-        ucHitFlags = m_clPlayField.ClearBrick(usX_, usY_);
+        u8HitFlags = m_clPlayField.ClearBrick(u16X_, u16Y_);
     }
-    return ucHitFlags;
+    return u8HitFlags;
 }
 
 //---------------------------------------------------------------------------
@@ -196,7 +196,7 @@ void Breakout::GameEnter()
     // Clear the screen
     pclDisplay->ClearScreen();
 
-    m_usCounter = 300;
+    m_u16Counter = 300;
 
     m_clPaddle.SetPosition(60);
     m_clBall.SetPosition(64, 110);
@@ -220,18 +220,18 @@ void Breakout::GameEnter()
 //---------------------------------------------------------------------------
 void Breakout::GameOverLoop()
 {
-    if (m_usCounter == 0)
+    if (m_u16Counter == 0)
     {
-        m_usCounter = 90;
+        m_u16Counter = 90;
     }
 
     DrawText_t stText;
     stText.pcString = "GAME OVER";
-    stText.usLeft = 12;
-    stText.usTop = 48;
+    stText.u16Left = 12;
+    stText.u16Top = 48;
     stText.pstFont = &fntPrint_Char_21_6_False_False_False_;
 
-    switch (m_usCounter & 0x03)
+    switch (m_u16Counter & 0x03)
     {
         case 0: stText.uColor = COLOR_RED;	break;
         case 1: stText.uColor = COLOR_BLUE; break;
@@ -241,13 +241,13 @@ void Breakout::GameOverLoop()
     }
 
     TextFX_t stTextFX;
-    stTextFX.ucFlags = TEXTFX_FLAG_SCALE_X | TEXTFX_FLAG_SCALE_Y;
-    stTextFX.usScaleX100 = 200;
-    stTextFX.usScaleY100 = 200;
+    stTextFX.u8Flags = TEXTFX_FLAG_SCALE_X | TEXTFX_FLAG_SCALE_Y;
+    stTextFX.u16ScaleX100 = 200;
+    stTextFX.u16ScaleY100 = 200;
     pclDisplay->TextFX(&stText, &stTextFX);
-    m_usCounter--;
+    m_u16Counter--;
 
-    if (!m_usCounter)
+    if (!m_u16Counter)
     {
         HighScore clHS;
         HighScore_t stLastHigh;
@@ -255,7 +255,7 @@ void Breakout::GameOverLoop()
         clHS.CheckInit();
         clHS.ReadScore(4, &stLastHigh);
 
-        if (stLastHigh.ulScore < m_clScore.GetScore())
+        if (stLastHigh.u32Score < m_clScore.GetScore())
         {
             TransitionToState(GAME_STATE_HIGH_SCORE);
         }
@@ -267,77 +267,77 @@ void Breakout::GameOverLoop()
 }
 
 //---------------------------------------------------------------------------
-void Breakout::UpdateBallVelocity( K_SHORT sDelta_)
+void Breakout::UpdateBallVelocity( int16_t s16Delta_)
 {
 
-    K_SHORT sVelX, sVelY;
+    int16_t s16VelX, s16VelY;
 
-    K_SHORT sBaseWidth = m_clPaddle.GetWidth() / 5;
+    int16_t s16BaseWidth = m_clPaddle.GetWidth() / 5;
 
-    if (ABS(sDelta_) <= sBaseWidth)
+    if (ABS(s16Delta_) <= s16BaseWidth)
     {
-        sVelX = 141;
-        sVelY = 141;
+        s16VelX = 141;
+        s16VelY = 141;
     }
-    else if (ABS(sDelta_) <= (sBaseWidth * 3 / 2))
+    else if (ABS(s16Delta_) <= (s16BaseWidth * 3 / 2))
     {
-        sVelX = 154;
-        sVelY = 117;
+        s16VelX = 154;
+        s16VelY = 117;
     }
-    else if (ABS(sDelta_) <= (sBaseWidth *2) )
+    else if (ABS(s16Delta_) <= (s16BaseWidth *2) )
     {
-        sVelX = 167;
-        sVelY = 100;
+        s16VelX = 167;
+        s16VelY = 100;
     }
     else
     {
-        sVelX = 181;
-        sVelY = 85;
+        s16VelX = 181;
+        s16VelY = 85;
     }
 
     // Difficulty based on stage...
     if (m_clLevel.GetLevel() >= 7)
     {
-        sVelX += 75;
-        sVelY += 75;
+        s16VelX += 75;
+        s16VelY += 75;
     }
     else if (m_clLevel.GetLevel() >= 5)
     {
-        sVelX += 50;
-        sVelY += 50;
+        s16VelX += 50;
+        s16VelY += 50;
     }
     else if (m_clLevel.GetLevel() >= 3)
     {
-        sVelX += 25;
-        sVelY += 25;
+        s16VelX += 25;
+        s16VelY += 25;
     }
 
     if (m_clPlayField.HasHitCieling())
     {
-        sVelX = ((sVelX * 5) + 2) / 4;
-        sVelY = ((sVelY * 5) + 2) / 4;
+        s16VelX = ((s16VelX * 5) + 2) / 4;
+        s16VelY = ((s16VelY * 5) + 2) / 4;
     }
 
     // Cut speed in half if the current special mode is SLOW
     if (m_clPlayField.GetCurrentSpecial() == SPECIAL_SLOW)
     {
-        sVelX = (sVelX * 2) / 3;
-        sVelY = (sVelY * 2) / 3;
+        s16VelX = (s16VelX * 2) / 3;
+        s16VelY = (s16VelY * 2) / 3;
     }
 
     // Swap sign based on current direction
-	sVelX *= 2;
-	sVelY *= 2;
+	s16VelX *= 2;
+	s16VelY *= 2;
     if (m_clBall.GetVelX() < 0)
     {
-        sVelX *= -1;
+        s16VelX *= -1;
     }
     if (m_clBall.GetVelY() < 0)
     {
-        sVelY *= -1;
+        s16VelY *= -1;
     }
 
-    m_clBall.SetVelocity(sVelX, sVelY);
+    m_clBall.SetVelocity(s16VelX, s16VelY);
 }
 
 //---------------------------------------------------------------------------
@@ -352,7 +352,7 @@ void Breakout::LoseALife()
     }
     else
     {
-        m_usCounter = 300;
+        m_u16Counter = 300;
         m_sBallOffset = 6;
         m_clPlayField.ResetBonus();
         m_clBall.Clear();
@@ -391,9 +391,9 @@ void Breakout::UpdateLazer()
 //---------------------------------------------------------------------------
 void Breakout::GameLoop()
 {
-    K_USHORT usPixX, usPixY;
-    K_BOOL bContinue;
-    K_BOOL bFirstUpdate = true;
+    uint16_t u16PixX, u16PixY;
+    bool bContinue;
+    bool bFirstUpdate = true;
 
     // Compute velocity to integrate this frame
     m_clBall.Update();
@@ -419,7 +419,7 @@ void Breakout::GameLoop()
 
 
     // If this is a "normal" frame - and not a "get-ready" frame...
-    if (!m_usCounter)
+    if (!m_u16Counter)
     {
         // Update the lazer location (if active)
         UpdateLazer();
@@ -427,13 +427,13 @@ void Breakout::GameLoop()
         m_clPlayField.LevelAction(LEVEL_ACTION_STEP);
         do
         {
-            K_UCHAR ucFlags = 0;
+            uint8_t u8Flags = 0;
 
-            K_BOOL bFlipX = false;
-            K_BOOL bFlipY = false;
+            bool bFlipX = false;
+            bool bFlipY = false;
 
             // Check to see if this is the last ball update to make this frame.
-            bContinue = m_clBall.MoveNextPixel(&usPixX, &usPixY);
+            bContinue = m_clBall.MoveNextPixel(&u16PixX, &u16PixY);
             if (bFirstUpdate)
             {
                 m_clBall.Clear();
@@ -441,25 +441,25 @@ void Breakout::GameLoop()
             }
 
             // Hit detection - ball/bricks
-            ucFlags |= CheckBrickHit(usPixX, usPixY);
-            ucFlags |= CheckBrickHit(usPixX, usPixY + BALL_SIZE - 1);
-            ucFlags |= CheckBrickHit(usPixX + BALL_SIZE - 1, usPixY);
-            ucFlags |= CheckBrickHit(usPixX + BALL_SIZE - 1, usPixY + BALL_SIZE - 1);
+            u8Flags |= CheckBrickHit(u16PixX, u16PixY);
+            u8Flags |= CheckBrickHit(u16PixX, u16PixY + BALL_SIZE - 1);
+            u8Flags |= CheckBrickHit(u16PixX + BALL_SIZE - 1, u16PixY);
+            u8Flags |= CheckBrickHit(u16PixX + BALL_SIZE - 1, u16PixY + BALL_SIZE - 1);
 
             // Hit detection - lazer/bricks
-            K_UCHAR ucLazerFlags = 0;
+            uint8_t u8LazerFlags = 0;
             {
-                K_USHORT usX = m_clLazer.GetX();
-                ucLazerFlags|= CheckBrickHit( usX - 7, m_clLazer.GetY() );
-                ucLazerFlags |= CheckBrickHit( usX + 6, m_clLazer.GetY() );
-                if (ucLazerFlags)
+                uint16_t u16X = m_clLazer.GetX();
+                u8LazerFlags|= CheckBrickHit( u16X - 7, m_clLazer.GetY() );
+                u8LazerFlags |= CheckBrickHit( u16X + 6, m_clLazer.GetY() );
+                if (u8LazerFlags)
                 {
                     m_clLazer.Destroy();
                 }
             }
 
             // Check for bonus brick
-            if ((ucFlags | ucLazerFlags) & BRICK_HIT_SPECIAL)
+            if ((u8Flags | u8LazerFlags) & BRICK_HIT_SPECIAL)
             {
                 Special_t eBonus = m_clPlayField.SelectBonus();
 
@@ -496,58 +496,58 @@ void Breakout::GameLoop()
 					m_clPlayField.ResetBonus();
                     m_clPlayField.LoadLevel( m_clLevel.GetLevel() );
                     m_clPlayField.Draw();
-                    m_usCounter = 300;
+                    m_u16Counter = 300;
                     return;
                 }
             }
 
             // Hit detection - playfield boundary
-            if (usPixX >= (PLAYFIELD_RIGHT_BORDER - BALL_SIZE))
+            if (u16PixX >= (PLAYFIELD_RIGHT_BORDER - BALL_SIZE))
             {
                 m_clBall.ToggleDirX();                
-                m_clBall.SetPosition(PLAYFIELD_RIGHT_BORDER - BALL_SIZE - 1, usPixY);
+                m_clBall.SetPosition(PLAYFIELD_RIGHT_BORDER - BALL_SIZE - 1, u16PixY);
                 m_clPlayField.LevelAction(LEVEL_ACTION_WALL_HIT);
                 bFlipX = true;
             }
-            else if (usPixX <= PLAYFIELD_BORDER_WIDTH)
+            else if (u16PixX <= PLAYFIELD_BORDER_WIDTH)
             {
                 m_clBall.ToggleDirX();                
-                m_clBall.SetPosition(PLAYFIELD_BORDER_WIDTH + 1, usPixY);
+                m_clBall.SetPosition(PLAYFIELD_BORDER_WIDTH + 1, u16PixY);
                 m_clPlayField.LevelAction(LEVEL_ACTION_WALL_HIT);
                 bFlipX = true;
             }
-            if (usPixY <= (PLAYFIELD_BORDER_HEIGHT + HUD_HEIGHT))
+            if (u16PixY <= (PLAYFIELD_BORDER_HEIGHT + HUD_HEIGHT))
             {
                 m_clBall.ToggleDirY();
-                m_clBall.SetPosition(usPixX, PLAYFIELD_BORDER_HEIGHT + HUD_HEIGHT + 1);
+                m_clBall.SetPosition(u16PixX, PLAYFIELD_BORDER_HEIGHT + HUD_HEIGHT + 1);
                 m_clPlayField.LevelAction(LEVEL_ACTION_CIELING_HIT);
                 bFlipY = true;
 				{
 					SquareWave_t stWave;
-					stWave.ucLevel = 64;
-					stWave.usFreq = TONE(C,5);
-					stWave.usDurationMS = 300;
+					stWave.u8Level = 64;
+					stWave.u16Freq = TONE(C,5);
+					stWave.u16DurationMS = 300;
 					pclSound->Control(SOUND_EVENT_SQUAREWAVE, &stWave, 0,0,0);
 				}
             }
 
             // Hit detection - paddle/ball
-            if ((usPixY > (PADDLE_YPOS - BALL_SIZE)) && (m_clBall.GetVelY() > 0))
+            if ((u16PixY > (PADDLE_YPOS - BALL_SIZE)) && (m_clBall.GetVelY() > 0))
             {                
-                if ( ((usPixX + BALL_SIZE - 1) >= m_clPaddle.GetLeft()) &&
-                     (usPixX <= m_clPaddle.GetRight()) )
+                if ( ((u16PixX + BALL_SIZE - 1) >= m_clPaddle.GetLeft()) &&
+                     (u16PixX <= m_clPaddle.GetRight()) )
                 {            
                     // Ball hit the paddle, reflect with a specific angle..
-                    K_SHORT sDelta = (K_SHORT)usPixX - (K_SHORT)((m_clPaddle.GetRight() + m_clPaddle.GetLeft()) / 2);
+                    int16_t s16Delta = (int16_t)u16PixX - (int16_t)((m_clPaddle.GetRight() + m_clPaddle.GetLeft()) / 2);
 
                     m_clBall.Clear();
-                    m_clBall.SetPosition(usPixX, (PADDLE_YPOS - BALL_SIZE));
+                    m_clBall.SetPosition(u16PixX, (PADDLE_YPOS - BALL_SIZE));
 
                     // Ball is 6 pixels wide - adjust so that we compare absolute values from
                     // Ball's midpoint.
-                    if (sDelta < 0)
+                    if (s16Delta < 0)
                     {
-                        sDelta += 3;
+                        s16Delta += 3;
                     }
 
                     m_clPlayField.LevelAction(LEVEL_ACTION_PADDLE_HIT);
@@ -562,13 +562,13 @@ void Breakout::GameLoop()
                         m_clBall.ToggleDirX();
                     }
                     // Otherwise, if paddle is stationary, but ball hits too far off-center
-                    else if ( ((m_clBall.GetVelX() > 0) && ((sDelta) <= -6)) ||
-                              ((m_clBall.GetVelX() < 0) && ((sDelta) >= 6)) )
+                    else if ( ((m_clBall.GetVelX() > 0) && ((s16Delta) <= -6)) ||
+                              ((m_clBall.GetVelX() < 0) && ((s16Delta) >= 6)) )
                     {
                         m_clBall.ToggleDirX();
                     }
 
-                    UpdateBallVelocity(sDelta);
+                    UpdateBallVelocity(s16Delta);
 
                     // Special handling if we're in "ball catch" mode.
                     if (m_clPlayField.GetCurrentSpecial() == SPECIAL_CATCH)
@@ -576,7 +576,7 @@ void Breakout::GameLoop()
                         m_clBall.Update();
                         m_sBallOffset = m_clBall.GetX() - m_clPaddle.GetLeft();
 
-                        m_usCounter = 300;
+                        m_u16Counter = 300;
                         m_clPaddle.SetPosition(m_clPaddle.GetLeft());
                         m_clPaddle.Draw();
                         return;
@@ -588,7 +588,7 @@ void Breakout::GameLoop()
                     m_clPaddle.Draw();                    
 
                 }
-                else if (usPixY > PADDLE_YPOS)
+                else if (u16PixY > PADDLE_YPOS)
                 {
                     // Lose a life...
                     LoseALife();
@@ -602,11 +602,11 @@ void Breakout::GameLoop()
             {
                 if (!bFlipX)
                 {
-                    if ((ucFlags & BRICK_HIT_LEFT) && (m_clBall.GetVelX() > 0))
+                    if ((u8Flags & BRICK_HIT_LEFT) && (m_clBall.GetVelX() > 0))
                     {
                         m_clBall.ToggleDirX();
                     }
-                    if ((ucFlags & BRICK_HIT_RIGHT) && (m_clBall.GetVelX() < 0))
+                    if ((u8Flags & BRICK_HIT_RIGHT) && (m_clBall.GetVelX() < 0))
                     {
                         m_clBall.ToggleDirX();
                     }
@@ -614,11 +614,11 @@ void Breakout::GameLoop()
 
                 if (!bFlipY)
                 {
-                    if ((ucFlags & BRICK_HIT_TOP) && (m_clBall.GetVelY() > 0))
+                    if ((u8Flags & BRICK_HIT_TOP) && (m_clBall.GetVelY() > 0))
                     {
                         m_clBall.ToggleDirY();
                     }
-                    if ((ucFlags & BRICK_HIT_BOTTOM) && (m_clBall.GetVelY() < 0))
+                    if ((u8Flags & BRICK_HIT_BOTTOM) && (m_clBall.GetVelY() < 0))
                     {
                         m_clBall.ToggleDirY();
                     }
@@ -634,11 +634,11 @@ void Breakout::GameLoop()
 
         m_clBall.SetPosition(m_clPaddle.GetLeft() + m_sBallOffset, PADDLE_YPOS - 4);
         m_clBall.Draw();
-        m_usCounter--;
+        m_u16Counter--;
 
         if (ButtonDown())
         {
-            m_usCounter = 0;
+            m_u16Counter = 0;
         }
     }
 
@@ -662,7 +662,7 @@ void Breakout::GameLoop()
         m_clPlayField.LoadLevel( m_clLevel.GetLevel() );
         m_clPlayField.Draw();
         m_clPlayField.ResetBonus();
-        m_usCounter = 300;
+        m_u16Counter = 300;
     }
 }
 
@@ -674,73 +674,73 @@ void Breakout::TitleEnter()
 
     pclDisplay->ClearScreen();
 
-    m_usCounter = 15 * 60;
+    m_u16Counter = 15 * 60;
 
-    stRect.usLeft = 8;
-    stRect.usRight = SCREEN_WIDTH - 9;
-    stRect.usTop = 24;
-    stRect.usBottom = 80;
+    stRect.u16Left = 8;
+    stRect.u16Right = SCREEN_WIDTH - 9;
+    stRect.u16Top = 24;
+    stRect.u16Bottom = 80;
     stRect.bFill = true;
-    stRect.uLineColor = RGB_COLOR(MAX_RED / 4, 0, MAX_BLUE / 4);
-    stRect.uFillColor = stRect.uLineColor;
+    stRect.u32ineColor = RGB_COLOR(MAX_RED / 4, 0, MAX_BLUE / 4);
+    stRect.uFillColor = stRect.u32ineColor;
 
     pclDisplay->Rectangle(&stRect);
 
     stRect.bFill = true;
     stRect.uFillColor = COLOR_PURPLE;
-    stRect.uLineColor = COLOR_WHITE;
+    stRect.u32ineColor = COLOR_WHITE;
 
-    for (K_UCHAR ucCol = 0; ucCol < 10; ucCol++)
+    for (uint8_t u8Col = 0; u8Col < 10; u8Col++)
     {
-        K_UCHAR ucHeight;
-        switch (ucCol)
+        uint8_t u8Height;
+        switch (u8Col)
         {
         case 0:
-            ucHeight = 7;
+            u8Height = 7;
             break;
         case 1:
-            ucHeight = 3;
+            u8Height = 3;
             break;
         case 2:
-            ucHeight = 6;
+            u8Height = 6;
             break;
         case 3:
-            ucHeight = 4;
+            u8Height = 4;
             break;
         case 4:
-            ucHeight = 8;
+            u8Height = 8;
             break;
         case 5:
-            ucHeight = 2;
+            u8Height = 2;
             break;
         case 6:
-            ucHeight = 5;
+            u8Height = 5;
             break;
         case 7:
-            ucHeight = 1;
+            u8Height = 1;
             break;
         case 8:
-            ucHeight = 4;
+            u8Height = 4;
             break;
         case 9:
-            ucHeight = 7;
+            u8Height = 7;
             break;
         default:
             break;
         }
 
-        stRect.usLeft = 8 + (ucCol * (((SCREEN_WIDTH - 16)+5)/10));
-        stRect.usRight = stRect.usLeft + (((SCREEN_WIDTH - 16)+5)/10);
+        stRect.u16Left = 8 + (u8Col * (((SCREEN_WIDTH - 16)+5)/10));
+        stRect.u16Right = stRect.u16Left + (((SCREEN_WIDTH - 16)+5)/10);
 
-        while (ucHeight)
+        while (u8Height)
         {
-            stRect.uFillColor = RGB_COLOR( (MAX_RED * ucHeight) / 10, 0, (MAX_BLUE * ucHeight) / 10);
-            stRect.uLineColor = RGB_COLOR( (MAX_RED * ucHeight) / 10, (MAX_GREEN * ucHeight) / 10, (MAX_BLUE * ucHeight) / 10);
-            stRect.usTop = 80 - (ucHeight * 6);
-            stRect.usBottom = stRect.usTop + 5;
+            stRect.uFillColor = RGB_COLOR( (MAX_RED * u8Height) / 10, 0, (MAX_BLUE * u8Height) / 10);
+            stRect.u32ineColor = RGB_COLOR( (MAX_RED * u8Height) / 10, (MAX_GREEN * u8Height) / 10, (MAX_BLUE * u8Height) / 10);
+            stRect.u16Top = 80 - (u8Height * 6);
+            stRect.u16Bottom = stRect.u16Top + 5;
 
             pclDisplay->Rectangle(&stRect);
-            ucHeight--;
+            u8Height--;
         }
     }
 
@@ -748,52 +748,52 @@ void Breakout::TitleEnter()
 
     stText.pstFont = &fntPrint_Char_21_6_False_False_False_;
     stText.pcString = "(C)2014 - FUNKENSTEIN";
-    stText.usLeft = 5;
-    stText.usTop = SCREEN_HEIGHT - 8;
+    stText.u16Left = 5;
+    stText.u16Top = SCREEN_HEIGHT - 8;
     stText.uColor = COLOR_GREY25;
 
     pclDisplay->Text(&stText);
 
     stText.pcString = "BRICK";
-    stText.usTop = 41;
-    stText.usLeft = 23;
+    stText.u16Top = 41;
+    stText.u16Left = 23;
     stText.uColor = COLOR_BLACK;
 
-    stTextFX.ucFlags = TEXTFX_FLAG_SCALE_X | TEXTFX_FLAG_SCALE_Y;
-    stTextFX.usScaleX100 = 300;
-    stTextFX.usScaleY100 = 200;
+    stTextFX.u8Flags = TEXTFX_FLAG_SCALE_X | TEXTFX_FLAG_SCALE_Y;
+    stTextFX.u16ScaleX100 = 300;
+    stTextFX.u16ScaleY100 = 200;
 
     pclDisplay->TextFX(&stText, &stTextFX);
 
     stText.uColor = COLOR_YELLOW;
-    stText.usTop -= 2;
-    stText.usLeft -= 2;
+    stText.u16Top -= 2;
+    stText.u16Left -= 2;
 
     pclDisplay->TextFX(&stText, &stTextFX);
 
     stText.pcString = "BREAK";
 
     stText.uColor = COLOR_BLACK;
-    stText.usTop += 20;
-    stText.usLeft += 2;
+    stText.u16Top += 20;
+    stText.u16Left += 2;
 
     pclDisplay->TextFX(&stText, &stTextFX);
 
     stText.uColor = COLOR_YELLOW;
-    stText.usTop -= 2;
-    stText.usLeft -= 2;
+    stText.u16Top -= 2;
+    stText.u16Left -= 2;
 
     pclDisplay->TextFX(&stText, &stTextFX);
 
-    stText.usTop = 26;
-    stText.usLeft = 10;
+    stText.u16Top = 26;
+    stText.u16Left = 10;
     stText.pcString = "SUPER!";
     stText.uColor = COLOR_GREY25;
     pclDisplay->Text(&stText);
 
     stText.uColor = COLOR_RED;
-    stText.usTop --;
-    stText.usLeft --;
+    stText.u16Top --;
+    stText.u16Left --;
     pclDisplay->Text(&stText);
 }
 
@@ -808,24 +808,24 @@ void Breakout::TitleLoop()
 {
     DrawText_t stText;
     stText.pcString = "PRESS START";
-    stText.usLeft = 32;
-    stText.usTop = 110;
+    stText.u16Left = 32;
+    stText.u16Top = 110;
     stText.pstFont = &fntPrint_Char_21_6_False_False_False_;
 
-    if ((m_usCounter % 120) == 0)
+    if ((m_u16Counter % 120) == 0)
     {
         stText.uColor = COLOR_WHITE;
         pclDisplay->Text(&stText);
     }
-    else if ((m_usCounter % 60) == 0)
+    else if ((m_u16Counter % 60) == 0)
     {
         stText.uColor = COLOR_BLACK;
         pclDisplay->Text(&stText);
     }
 
-    m_usCounter--;
+    m_u16Counter--;
 
-    if (!m_usCounter)
+    if (!m_u16Counter)
     {
         TransitionToState(GAME_STATE_ATTRACT);
     }
@@ -840,44 +840,44 @@ void Breakout::TitleLoop()
 void Breakout::AttractLoopEnter()
 {
 
-    static K_UCHAR ucAttract = 0;
-    K_SHORT sVelX, sVelY;
+    static uint8_t u8Attract = 0;
+    int16_t s16VelX, s16VelY;
 
-    m_usCounter = 3600; // One minute @ 60fps
+    m_u16Counter = 3600; // One minute @ 60fps
 
     // Clear the screen
     pclDisplay->ClearScreen();
 
     // Have a few different variants for fun.
-    switch (ucAttract)
+    switch (u8Attract)
     {
         case 0:
-            sVelX = 141;
-            sVelY = 141;
+            s16VelX = 141;
+            s16VelY = 141;
             break;
         case 1:
-            sVelX = 154;
-            sVelY = 117;
+            s16VelX = 154;
+            s16VelY = 117;
             break;
         case 2:
-            sVelX = 167;
-            sVelY = 100;
+            s16VelX = 167;
+            s16VelY = 100;
             break;
         case 3:
-            sVelX = 181;
-            sVelY = 85;
+            s16VelX = 181;
+            s16VelY = 85;
             break;
         default:
             break;
     }
 
-    ucAttract = (ucAttract + 1) ;
+    u8Attract = (u8Attract + 1) ;
 
     m_clPaddle.SetPosition(60);
     m_clBall.SetPosition(64, 130);
-    m_clBall.SetVelocity(sVelX * 2, sVelY * 2);
+    m_clBall.SetVelocity(s16VelX * 2, s16VelY * 2);
 
-    m_clPlayField.LoadLevel(ucAttract * 3);
+    m_clPlayField.LoadLevel(u8Attract * 3);
     m_clPlayField.Draw();
 
     m_clLevel.Reset();
@@ -900,7 +900,7 @@ void Breakout::AttractLoop()
     }
 
 
-    K_USHORT usPixX, usPixY;
+    uint16_t u16PixX, u16PixY;
 
     if (m_clPlayField.IsPlayFieldEmpty())
     {
@@ -912,41 +912,41 @@ void Breakout::AttractLoop()
 
     m_clBall.Update();
     m_clBall.Clear();
-    K_BOOL bContinue;
+    bool bContinue;
 
     do
     {
-        K_UCHAR ucFlags = 0;
-        bContinue = m_clBall.MoveNextPixel(&usPixX, &usPixY);
+        uint8_t u8Flags = 0;
+        bContinue = m_clBall.MoveNextPixel(&u16PixX, &u16PixY);
 
-        ucFlags |= CheckBrickHit(usPixX, usPixY);
-        ucFlags |= CheckBrickHit(usPixX, usPixY + BALL_SIZE - 1);
-        ucFlags |= CheckBrickHit(usPixX + BALL_SIZE - 1, usPixY);
-        ucFlags |= CheckBrickHit(usPixX + BALL_SIZE - 1, usPixY + BALL_SIZE - 1);
+        u8Flags |= CheckBrickHit(u16PixX, u16PixY);
+        u8Flags |= CheckBrickHit(u16PixX, u16PixY + BALL_SIZE - 1);
+        u8Flags |= CheckBrickHit(u16PixX + BALL_SIZE - 1, u16PixY);
+        u8Flags |= CheckBrickHit(u16PixX + BALL_SIZE - 1, u16PixY + BALL_SIZE - 1);
 
-        K_BOOL bFlipX = false;
-        K_BOOL bFlipY = false;
+        bool bFlipX = false;
+        bool bFlipY = false;
 
-        if (usPixX >= (PLAYFIELD_RIGHT_BORDER - BALL_SIZE))
+        if (u16PixX >= (PLAYFIELD_RIGHT_BORDER - BALL_SIZE))
         {
             m_clBall.ToggleDirX();
             m_clBall.SetX(PLAYFIELD_RIGHT_BORDER - BALL_SIZE-1);
             bFlipX = true;
         }
-        else if (usPixX <= PLAYFIELD_BORDER_WIDTH)
+        else if (u16PixX <= PLAYFIELD_BORDER_WIDTH)
         {
             m_clBall.ToggleDirX();
             m_clBall.SetX(PLAYFIELD_BORDER_WIDTH + 1);
             bFlipX = true;
         }
 
-        if (usPixY >= (PADDLE_YPOS - BALL_SIZE))
+        if (u16PixY >= (PADDLE_YPOS - BALL_SIZE))
         {
             m_clBall.ToggleDirY();
             m_clBall.SetY(PADDLE_YPOS - BALL_SIZE - 1);
             bFlipY = true;
         }
-        else if (usPixY <= (PLAYFIELD_BORDER_HEIGHT + HUD_HEIGHT))
+        else if (u16PixY <= (PLAYFIELD_BORDER_HEIGHT + HUD_HEIGHT))
         {
             m_clBall.ToggleDirY();
             m_clBall.SetY(PLAYFIELD_BORDER_HEIGHT + HUD_HEIGHT + 1);
@@ -955,35 +955,35 @@ void Breakout::AttractLoop()
 
         if (!bFlipX)
         {
-            if ((ucFlags & BRICK_HIT_LEFT) && (m_clBall.GetVelX() > 0))
+            if ((u8Flags & BRICK_HIT_LEFT) && (m_clBall.GetVelX() > 0))
             {
                 m_clBall.ToggleDirX();
             }
-            if ((ucFlags & BRICK_HIT_RIGHT) && (m_clBall.GetVelX() < 0))
+            if ((u8Flags & BRICK_HIT_RIGHT) && (m_clBall.GetVelX() < 0))
             {
                 m_clBall.ToggleDirX();
             }
         }
         if (!bFlipY)
         {
-            if ((ucFlags & BRICK_HIT_TOP) && (m_clBall.GetVelY() > 0))
+            if ((u8Flags & BRICK_HIT_TOP) && (m_clBall.GetVelY() > 0))
             {
                 m_clBall.ToggleDirY();
             }
-            if ((ucFlags & BRICK_HIT_BOTTOM) && (m_clBall.GetVelY() < 0))
+            if ((u8Flags & BRICK_HIT_BOTTOM) && (m_clBall.GetVelY() < 0))
             {
                 m_clBall.ToggleDirY();
             }
         }
 
     } while (bContinue);
-    if (usPixX < m_clPaddle.GetLeft())
+    if (u16PixX < m_clPaddle.GetLeft())
     {
-        m_clPaddle.SetVelocity((K_SHORT)usPixX - (K_SHORT)m_clPaddle.GetLeft());
+        m_clPaddle.SetVelocity((int16_t)u16PixX - (int16_t)m_clPaddle.GetLeft());
     }
-    if (usPixX > m_clPaddle.GetRight())
+    if (u16PixX > m_clPaddle.GetRight())
     {
-        m_clPaddle.SetVelocity((K_SHORT)usPixX - (K_SHORT)m_clPaddle.GetRight());
+        m_clPaddle.SetVelocity((int16_t)u16PixX - (int16_t)m_clPaddle.GetRight());
     }
 
     m_clPaddle.Update();
@@ -995,18 +995,18 @@ void Breakout::AttractLoop()
 
     DrawText_t stText;
 
-    stText.usLeft = 40;
-    stText.usTop = 60;
+    stText.u16Left = 40;
+    stText.u16Top = 60;
     stText.uColor = COLOR_RED;
 
     stText.pstFont = &fntPrint_Char_21_6_False_False_False_;
     stText.pcString = "GAME OVER";
     pclDisplay->Text(&stText);
 
-    m_usCounter--;
-    if (0 == m_usCounter)
+    m_u16Counter--;
+    if (0 == m_u16Counter)
     {
-        static K_BOOL bNextIsScores = false;
+        static bool bNextIsScores = false;
         if (bNextIsScores)
         {
             TransitionToState(GAME_STATE_LIST_SCORES);
@@ -1029,10 +1029,10 @@ void Breakout::HighScoreLoop()
 
     bool bRedraw = true;
 
-    if (!m_usCounter)
+    if (!m_u16Counter)
     {
-        m_usCounter = 1800; //3600; // 60 seconds to enter high score;
-        m_ucInitialId = 0;
+        m_u16Counter = 1800; //3600; // 60 seconds to enter high score;
+        m_u8InitialId = 0;
 
         m_acInitials[0] = 'A';
         m_acInitials[1] = 'A';
@@ -1042,8 +1042,8 @@ void Breakout::HighScoreLoop()
         pclDisplay->ClearScreen();
 
         stText.pcString = "TIME";
-        stText.usLeft = (SCREEN_WIDTH/2) - 20;
-        stText.usTop = 8;
+        stText.u16Left = (SCREEN_WIDTH/2) - 20;
+        stText.u16Top = 8;
         stText.uColor = COLOR_RED;
         pclDisplay->Text(&stText);
     }
@@ -1057,17 +1057,17 @@ void Breakout::HighScoreLoop()
     {
         if (bLeft)
         {
-            if (m_acInitials[m_ucInitialId] > 'A')
+            if (m_acInitials[m_u8InitialId] > 'A')
             {
-                m_acInitials[m_ucInitialId]--;
+                m_acInitials[m_u8InitialId]--;
                 bRedraw = true;
             }
         }
         if (bRight)
         {
-            if (m_acInitials[m_ucInitialId] < 'Z')
+            if (m_acInitials[m_u8InitialId] < 'Z')
             {
-                m_acInitials[m_ucInitialId]++;
+                m_acInitials[m_u8InitialId]++;
                 bRedraw = true;
             }
         }
@@ -1076,8 +1076,8 @@ void Breakout::HighScoreLoop()
     // Check to see if we have to progress to the next letter
     if (ButtonDown())
     {
-        m_ucInitialId ++;
-        if(m_ucInitialId == 3)
+        m_u8InitialId ++;
+        if(m_u8InitialId == 3)
         {
             bExit = true;
         }
@@ -1092,28 +1092,28 @@ void Breakout::HighScoreLoop()
 
         stRect.bFill = true;
         stRect.uFillColor = COLOR_BLACK;
-        stRect.uLineColor = COLOR_BLACK;
-        stRect.usTop = 60;
-        stRect.usBottom = 76;
-        stRect.usLeft = (SCREEN_WIDTH/2) - 18;
-        stRect.usRight = stRect.usLeft + 36;
+        stRect.u32ineColor = COLOR_BLACK;
+        stRect.u16Top = 60;
+        stRect.u16Bottom = 76;
+        stRect.u16Left = (SCREEN_WIDTH/2) - 18;
+        stRect.u16Right = stRect.u16Left + 36;
         pclDisplay->Rectangle(&stRect);
 
-        stTextFX.ucFlags = TEXTFX_FLAG_SCALE_X | TEXTFX_FLAG_SCALE_Y;
-        stTextFX.usScaleX100 = 200;
-        stTextFX.usScaleY100 = 200;
+        stTextFX.u8Flags = TEXTFX_FLAG_SCALE_X | TEXTFX_FLAG_SCALE_Y;
+        stTextFX.u16ScaleX100 = 200;
+        stTextFX.u16ScaleY100 = 200;
 
-        K_UCHAR i;
+        uint8_t i;
         for (i = 0; i < 3; i++)
         {
-            K_CHAR acTmp[2];
+            char acTmp[2];
             acTmp[0] = m_acInitials[i];
             acTmp[1] = 0;
 
             stText.pcString = acTmp;
-            stText.usLeft = (SCREEN_WIDTH/2) - 18 + (12*i);
-            stText.usTop = 60;
-            if (i == m_ucInitialId)
+            stText.u16Left = (SCREEN_WIDTH/2) - 18 + (12*i);
+            stText.u16Top = 60;
+            if (i == m_u8InitialId)
             {
                 stText.uColor = COLOR_WHITE;
             }
@@ -1129,9 +1129,9 @@ void Breakout::HighScoreLoop()
     if (!bExit)
     {
         stText.pcString = "HIGH SCORE!";
-        stText.usLeft = (SCREEN_WIDTH/2) - 28;
-        stText.usTop = 40;
-        switch (m_usCounter % 0x03)
+        stText.u16Left = (SCREEN_WIDTH/2) - 28;
+        stText.u16Top = 40;
+        switch (m_u16Counter % 0x03)
         {
             case 0: stText.uColor = COLOR_RED; break;
             case 1: stText.uColor = COLOR_GREEN; break;
@@ -1141,31 +1141,31 @@ void Breakout::HighScoreLoop()
         pclDisplay->Text(&stText);
     }
 
-    if (((m_usCounter % 60) == 0) && !bExit)
+    if (((m_u16Counter % 60) == 0) && !bExit)
     {
         DrawRectangle_t stRect;
 
         stRect.bFill = true;
         stRect.uFillColor = COLOR_BLACK;
-        stRect.uLineColor = COLOR_BLACK;
-        stRect.usTop = 8;
-        stRect.usBottom = 15;
-        stRect.usLeft = (SCREEN_WIDTH/2);
-        stRect.usRight = stRect.usLeft + 15;
+        stRect.u32ineColor = COLOR_BLACK;
+        stRect.u16Top = 8;
+        stRect.u16Bottom = 15;
+        stRect.u16Left = (SCREEN_WIDTH/2);
+        stRect.u16Right = stRect.u16Left + 15;
         pclDisplay->Rectangle(&stRect);
 
-        K_CHAR acTimeStr[4];
-        MemUtil::DecimalToString((K_USHORT)(m_usCounter/60), (K_CHAR*)acTimeStr);
+        char acTimeStr[4];
+        MemUtil::DecimalToString((uint16_t)(m_u16Counter/60), (char*)acTimeStr);
 
         stText.pcString = acTimeStr;
-        stText.usLeft = (SCREEN_WIDTH/2) + 5;
-        stText.usTop = 8;
+        stText.u16Left = (SCREEN_WIDTH/2) + 5;
+        stText.u16Top = 8;
         stText.uColor = COLOR_RED;
         pclDisplay->Text(&stText);
     }
-    m_usCounter--;
+    m_u16Counter--;
 
-    if (!m_usCounter)
+    if (!m_u16Counter)
     {
         bExit = true;
     }
@@ -1174,7 +1174,7 @@ void Breakout::HighScoreLoop()
     {
         HighScore clHS;
         HighScore_t myScore;
-        myScore.ulScore = m_clScore.GetScore();
+        myScore.u32Score = m_clScore.GetScore();
         myScore.acName[0] = m_acInitials[0];
         myScore.acName[1] = m_acInitials[1];
         myScore.acName[2] = m_acInitials[2];
@@ -1191,7 +1191,7 @@ void Breakout::ListScoreEnter()
 {
     DrawText_t stText;
 
-    m_usCounter = 600;
+    m_u16Counter = 600;
 
     // Draw list of high scores
     pclDisplay->ClearScreen();
@@ -1199,27 +1199,27 @@ void Breakout::ListScoreEnter()
     HighScore clHS;
     clHS.CheckInit();
 
-    stText.usLeft = 35;
+    stText.u16Left = 35;
     stText.pstFont = &fntPrint_Char_21_6_False_False_False_;
     stText.uColor = COLOR_WHITE;
 
-    for (K_UCHAR i = 0; i < 5; i++)
+    for (uint8_t i = 0; i < 5; i++)
     {
         HighScore_t stScore;
         clHS.ReadScore(i, &stScore);
-        stText.usTop = 64 + (i * 8);
-        stText.usLeft = 35;
+        stText.u16Top = 64 + (i * 8);
+        stText.u16Left = 35;
         stText.pcString = stScore.acName;
 
         pclDisplay->Text(&stText);
 
-        stText.usLeft = 55;
+        stText.u16Left = 55;
         stText.pcString = "-";
         pclDisplay->Text(&stText);
 
-        K_CHAR acStr[11];
-        MemUtil::DecimalToString(stScore.ulScore, acStr);
-        stText.usLeft = 65;
+        char acStr[11];
+        MemUtil::DecimalToString(stScore.u32Score, acStr);
+        stText.u16Left = 65;
         stText.pcString = acStr;
         pclDisplay->Text(&stText);
     }
@@ -1235,14 +1235,14 @@ void Breakout::ListScoreLoop()
     }
 
     DrawText_t stText;
-    m_usCounter--;
+    m_u16Counter--;
 
     stText.pcString = "HIGH SCORES";
-    stText.usLeft = 35;
-    stText.usTop = 40;
+    stText.u16Left = 35;
+    stText.u16Top = 40;
     stText.pstFont = &fntPrint_Char_21_6_False_False_False_;
 
-    switch (m_usCounter & 0x03)
+    switch (m_u16Counter & 0x03)
     {
         case 0: stText.uColor = COLOR_RED;	break;
         case 1: stText.uColor = COLOR_BLUE; break;
@@ -1256,58 +1256,58 @@ void Breakout::ListScoreLoop()
     DrawRectangle_t stRect;
     stRect.bFill = true;
 
-    switch (m_usCounter % 5)
+    switch (m_u16Counter % 5)
     {
-        case 0: stRect.uLineColor = COLOR_ORANGE; break;
-        case 1: stRect.uLineColor = COLOR_GREEN; break;
-        case 2: stRect.uLineColor = COLOR_BLUE; break;
-        case 3: stRect.uLineColor = COLOR_RED; break;
-        case 4: stRect.uLineColor = COLOR_YELLOW; break;
+        case 0: stRect.u32ineColor = COLOR_ORANGE; break;
+        case 1: stRect.u32ineColor = COLOR_GREEN; break;
+        case 2: stRect.u32ineColor = COLOR_BLUE; break;
+        case 3: stRect.u32ineColor = COLOR_RED; break;
+        case 4: stRect.u32ineColor = COLOR_YELLOW; break;
         default: break;
     }
 
-    stRect.uFillColor = stRect.uLineColor;
+    stRect.uFillColor = stRect.u32ineColor;
 
     // Colorful borders - top
-    stRect.usTop = 0;
-    stRect.usBottom = 7;
-    stRect.usLeft = (m_usCounter << 3) & (SCREEN_WIDTH - 1);
-    stRect.usRight = stRect.usLeft + 7;
+    stRect.u16Top = 0;
+    stRect.u16Bottom = 7;
+    stRect.u16Left = (m_u16Counter << 3) & (SCREEN_WIDTH - 1);
+    stRect.u16Right = stRect.u16Left + 7;
     pclDisplay->Rectangle(&stRect);
 
     // Bottom
-    stRect.usTop = SCREEN_HEIGHT - 8;
-    stRect.usBottom = SCREEN_HEIGHT - 1;
-    stRect.usRight = (SCREEN_WIDTH - (m_usCounter << 3)) & (SCREEN_WIDTH - 1);
-    if (stRect.usRight == 0)
+    stRect.u16Top = SCREEN_HEIGHT - 8;
+    stRect.u16Bottom = SCREEN_HEIGHT - 1;
+    stRect.u16Right = (SCREEN_WIDTH - (m_u16Counter << 3)) & (SCREEN_WIDTH - 1);
+    if (stRect.u16Right == 0)
     {
-        stRect.usRight = SCREEN_WIDTH - 1;
+        stRect.u16Right = SCREEN_WIDTH - 1;
     }
     else
     {
-        stRect.usRight--;
+        stRect.u16Right--;
     }
-    stRect.usLeft = stRect.usRight - 7;
+    stRect.u16Left = stRect.u16Right - 7;
     pclDisplay->Rectangle(&stRect);
 
     // Left
-    stRect.usLeft = 0;
-    stRect.usRight = 7;
-    stRect.usTop = 8 + ((m_usCounter << 3) % (SCREEN_HEIGHT - 16));
-    stRect.usBottom = stRect.usTop + 7;
+    stRect.u16Left = 0;
+    stRect.u16Right = 7;
+    stRect.u16Top = 8 + ((m_u16Counter << 3) % (SCREEN_HEIGHT - 16));
+    stRect.u16Bottom = stRect.u16Top + 7;
     pclDisplay->Rectangle(&stRect);
 
     // Right
-    stRect.usLeft = SCREEN_WIDTH - 8;
-    stRect.usRight = SCREEN_WIDTH - 1;
-    stRect.usTop = (SCREEN_HEIGHT - 16) - ((m_usCounter << 3) % (SCREEN_HEIGHT -16));
-    if (0 == stRect.usTop)
+    stRect.u16Left = SCREEN_WIDTH - 8;
+    stRect.u16Right = SCREEN_WIDTH - 1;
+    stRect.u16Top = (SCREEN_HEIGHT - 16) - ((m_u16Counter << 3) % (SCREEN_HEIGHT -16));
+    if (0 == stRect.u16Top)
     {
-        stRect.usTop = SCREEN_HEIGHT - 16;
+        stRect.u16Top = SCREEN_HEIGHT - 16;
     }
-    stRect.usBottom = stRect.usTop + 7;
+    stRect.u16Bottom = stRect.u16Top + 7;
     pclDisplay->Rectangle(&stRect);
-    if (!m_usCounter)
+    if (!m_u16Counter)
     {
         TransitionToState(GAME_STATE_ATTRACT);
     }

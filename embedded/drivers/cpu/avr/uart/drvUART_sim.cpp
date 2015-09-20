@@ -43,21 +43,21 @@ void ATMegaUART::Init(void)
 }
 
 //---------------------------------------------------------------------------
-K_UCHAR ATMegaUART::Open()
+uint8_t ATMegaUART::Open()
 {
 	return 0;
 }
 
 //---------------------------------------------------------------------------
-K_UCHAR ATMegaUART::Close(void)
+uint8_t ATMegaUART::Close(void)
 {
     return 0;
 }
 
 //---------------------------------------------------------------------------
-K_USHORT ATMegaUART::Control( K_USHORT usCmdId_, void *pvIn_, K_USHORT usSizeIn_, void *pvOut_, K_USHORT usSizeOut_)
+uint16_t ATMegaUART::Control( uint16_t u16CmdId_, void *pvIn_, uint16_t u16SizeIn_, void *pvOut_, uint16_t u16SizeOut_)
 {
-    switch ((CMD_UART)usCmdId_)
+    switch ((CMD_UART)u16CmdId_)
     {
         case CMD_SET_BAUDRATE:
         {
@@ -94,15 +94,15 @@ K_USHORT ATMegaUART::Control( K_USHORT usCmdId_, void *pvIn_, K_USHORT usSizeIn_
 }
 
 //---------------------------------------------------------------------------
-K_USHORT ATMegaUART::Read( K_USHORT usSizeIn_, K_UCHAR *pvData_ )
+uint16_t ATMegaUART::Read( uint16_t u16SizeIn_, uint8_t *pvData_ )
 {
-    return fread( pvData_, 1, usSizeIn_, stderr );
+    return fread( pvData_, 1, u16SizeIn_, stderr );
 }
 
 //---------------------------------------------------------------------------
-K_USHORT ATMegaUART::Write(K_USHORT usSizeOut_, K_UCHAR *pvData_)
+uint16_t ATMegaUART::Write(uint16_t u16SizeOut_, uint8_t *pvData_)
 {
-    return fwrite( pvData_, 1, usSizeOut_, stderr );
+    return fwrite( pvData_, 1, u16SizeOut_, stderr );
 }
 
 //---------------------------------------------------------------------------

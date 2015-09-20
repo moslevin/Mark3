@@ -34,36 +34,36 @@ void D20_UART::Init(void)
 }
 
 //---------------------------------------------------------------------------
-K_UCHAR D20_UART::Open()
+uint8_t D20_UART::Open()
 {
     m_clUART.Open();
     return 0;
 }
 
 //---------------------------------------------------------------------------
-K_UCHAR D20_UART::Close(void)
+uint8_t D20_UART::Close(void)
 {
     return 0;
 }
 
 //---------------------------------------------------------------------------
-K_USHORT D20_UART::Control( K_USHORT usCmdId_, void *pvIn_, K_USHORT usSizeIn_, void *pvOut_, K_USHORT usSizeOut_)
+uint16_t D20_UART::Control( uint16_t u16CmdId_, void *pvIn_, uint16_t u16SizeIn_, void *pvOut_, uint16_t u16SizeOut_)
 {
     return 0;
 }
 
 //---------------------------------------------------------------------------
-K_USHORT D20_UART::Read( K_USHORT usSizeIn_, K_UCHAR *pvData_ )
+uint16_t D20_UART::Read( uint16_t u16SizeIn_, uint8_t *pvData_ )
 {
-    return usSizeIn_;
+    return u16SizeIn_;
 }
 
 //---------------------------------------------------------------------------
-K_USHORT D20_UART::Write(K_USHORT usSizeOut_, K_UCHAR *pvData_)
+uint16_t D20_UART::Write(uint16_t u16SizeOut_, uint8_t *pvData_)
 {
-    for (K_USHORT i = 0; i < usSizeOut_; i++)
+    for (uint16_t i = 0; i < u16SizeOut_; i++)
     {
         m_clUART.Write(pvData_[i]);
     }
-	return usSizeOut_;
+	return u16SizeOut_;
 }

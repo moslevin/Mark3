@@ -49,11 +49,11 @@ typedef struct
 {
     TileFormat_t m_eFormat;     //!< Color-indexing of the tile (bits-per-pixel)
 
-    K_UCHAR *m_pucData;         //!< Pointer to color-indexed tile data
+    uint8_t *m_pu8Data;         //!< Pointer to color-indexed tile data
     COLOR   *m_puPalette;       //!< Pointer to a palette assigned to this tile
 
-    K_UCHAR m_ucHeight;         //!< Height of the tile (in pixels)
-    K_UCHAR m_ucWidth;          //!< Width of the tile (in pixels)
+    uint8_t m_u8Height;         //!< Height of the tile (in pixels)
+    uint8_t m_u8Width;          //!< Width of the tile (in pixels)
 } TileDef_t;
 
 //---------------------------------------------------------------------------
@@ -84,10 +84,10 @@ public:
      *
      * \param pclDriver_ Pointer to the graphics driver to render with
      *
-     * \param usX_ Leftmost pixel index
-     * \param usY_ Topmost pixel index
+     * \param u16X_ Leftmost pixel index
+     * \param u16Y_ Topmost pixel index
      */
-    void Render(GraphicsDriver *pclDriver_, K_USHORT usX_, K_USHORT usY_);
+    void Render(GraphicsDriver *pclDriver_, uint16_t u16X_, uint16_t u16Y_);
 
 private:
     /*!
@@ -96,14 +96,14 @@ private:
     COLOR m_auTileBuffer[ TILE_8x8_BUFFER_SIZE ];
 
     /*!
-     * \brief m_ucWidth Width of the tile (may be smaller than width of buffer)
+     * \brief m_u8Width Width of the tile (may be smaller than width of buffer)
      */
-    K_UCHAR m_ucWidth;
+    uint8_t m_u8Width;
 
     /*!
-     * \brief m_ucHeight Height of the tile (may be smaler than the height of buffer)
+     * \brief m_u8Height Height of the tile (may be smaler than the height of buffer)
      */
-    K_UCHAR m_ucHeight;
+    uint8_t m_u8Height;
 };
 
 #endif // __TILES_H__

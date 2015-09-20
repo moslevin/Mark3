@@ -38,10 +38,10 @@ public:
      * any calls can be made to the object.
      *
      * \param pvBuffer_         Pointer to the static buffer to use for the mailbox
-     * \param usBufferSize_    Size of the mailbox buffer, in bytes
-     * \param usElementSize_   Size of each envelope, in bytes
+     * \param u16BufferSize_    Size of the mailbox buffer, in bytes
+     * \param uselementSize_   Size of each envelope, in bytes
      */
-    void Init( void *pvBuffer_, K_USHORT usBufferSize_, K_USHORT usElementSize_ );
+    void Init( void *pvBuffer_, uint16_t u16BufferSize_, uint16_t uselementSize_ );
 
     /*!
      * \brief Send
@@ -85,10 +85,10 @@ public:
      * This method delivers the envelope at the head of the mailbox.
      *
      * \param pvData_           Pointer to the data object to send to the mailbox.
-     * \param ulTimeoutMS_      Maximum time to wait for a free transmit slot
+     * \param u32TimeoutMS_      Maximum time to wait for a free transmit slot
      * \return                  true - envelope was delivered, false - mailbox is full.
      */
-    bool Send( void *pvData_, K_ULONG ulTimeoutMS_ );
+    bool Send( void *pvData_, uint32_t u32TimeoutMS_ );
 
     /*!
      * \brief SendTail
@@ -101,10 +101,10 @@ public:
      * This method delivers the envelope at the tail of the mailbox.
      *
      * \param pvData_           Pointer to the data object to send to the mailbox.
-     * \param ulTimeoutMS_      Maximum time to wait for a free transmit slot
+     * \param u32TimeoutMS_      Maximum time to wait for a free transmit slot
      * \return                  true - envelope was delivered, false - mailbox is full.
      */
-    bool SendTail( void *pvData_, K_ULONG ulTimeoutMS_ );
+    bool SendTail( void *pvData_, uint32_t u32TimeoutMS_ );
  #endif
 
     /*!
@@ -139,10 +139,10 @@ public:
      *
      * \param pvData_ Pointer to a buffer that will have the envelope's contents
      *                copied into upon delivery.
-     * \param ulTimeoutMS_ Maximum time to wait for delivery.
+     * \param u32TimeoutMS_ Maximum time to wait for delivery.
      * \return true - envelope was delivered, false - delivery timed out.
      */
-    bool Receive( void *pvData_, K_ULONG ulTimeoutMS_ );
+    bool Receive( void *pvData_, uint32_t u32TimeoutMS_ );
 
     /*!
      * \brief ReceiveTail
@@ -153,17 +153,17 @@ public:
      *
      * \param pvData_ Pointer to a buffer that will have the envelope's contents
      *                copied into upon delivery.
-     * \param ulTimeoutMS_ Maximum time to wait for delivery.
+     * \param u32TimeoutMS_ Maximum time to wait for delivery.
      * \return true - envelope was delivered, false - delivery timed out.
      */
-    bool ReceiveTail( void *pvData_, K_ULONG ulTimeoutMS_ );
+    bool ReceiveTail( void *pvData_, uint32_t u32TimeoutMS_ );
 #endif
 
-    K_USHORT GetFreeSlots( void )
+    uint16_t GetFreeSlots( void )
     {
-        K_USHORT rc;
+        uint16_t rc;
         CS_ENTER();
-        rc = m_usFree;
+        rc = m_u16Free;
         CS_EXIT();
         return rc;
     }
@@ -175,7 +175,7 @@ public:
 
     bool IsEmpty( void )
     {
-        return (GetFreeSlots() == m_usCount);
+        return (GetFreeSlots() == m_u16Count);
     }
 
 private:
@@ -191,7 +191,7 @@ private:
     void *GetHeadPointer(void)
     {
         K_ADDR uAddr = (K_ADDR)m_pvBuffer;
-        uAddr += m_usElementSize * m_usHead;
+        uAddr += (K_ADDR)(m_uselementSize) * (K_ADDR)(m_u16Head);
         return (void*)uAddr;
     }
 
@@ -206,7 +206,7 @@ private:
     void *GetTailPointer(void)
     {
         K_ADDR uAddr = (K_ADDR)m_pvBuffer;
-        uAddr += (K_ADDR)(m_usElementSize * m_usTail);
+        uAddr += (K_ADDR)(m_uselementSize) * (K_ADDR)(m_u16Tail);
         return (void*)uAddr;
     }
 
@@ -219,7 +219,7 @@ private:
      * \param dst_  Pointer to an object to write to
      * \param len_  Length to copy (in bytes)
      */
-    void CopyData( const void *src_, const void *dst_, K_USHORT len_ )
+    void CopyData( const void *src_, const void *dst_, uint16_t len_ )
     {
         uint8_t *u8Src = (uint8_t*)src_;
         uint8_t *u8Dst = (uint8_t*)dst_;
@@ -236,10 +236,10 @@ private:
      */
     void MoveTailForward(void)
     {
-        m_usTail++;
-        if (m_usTail == m_usCount)
+        m_u16Tail++;
+        if (m_u16Tail == m_u16Count)
         {
-            m_usTail = 0;
+            m_u16Tail = 0;
         }
     }
 
@@ -250,10 +250,10 @@ private:
      */
     void MoveHeadForward(void)
     {
-        m_usHead++;
-        if (m_usHead == m_usCount)
+        m_u16Head++;
+        if (m_u16Head == m_u16Count)
         {
-            m_usHead = 0;
+            m_u16Head = 0;
         }
     }
 
@@ -264,11 +264,11 @@ private:
      */
     void MoveTailBackward(void)
     {
-        if (m_usTail == 0)
+        if (m_u16Tail == 0)
         {
-            m_usTail = m_usCount;
+            m_u16Tail = m_u16Count;
         }
-        m_usTail--;
+        m_u16Tail--;
     }
 
     /*!
@@ -278,11 +278,11 @@ private:
      */
     void MoveHeadBackward(void)
     {
-        if (m_usHead == 0)
+        if (m_u16Head == 0)
         {
-            m_usHead = m_usCount;
+            m_u16Head = m_u16Count;
         }
-        m_usHead--;
+        m_u16Head--;
     }
 
 #if KERNEL_USE_TIMEOUTS
@@ -293,10 +293,10 @@ private:
      *
      * \param pvData_   Pointer to the envelope data
      * \param bTail_    true - write to tail, false - write to head
-     * \param ulWaitTimeMS_ Time to wait before timeout (in ms).
+     * \param u32WaitTimeMS_ Time to wait before timeout (in ms).
      * \return          true - data successfully written, false - buffer full
      */
-    bool Send_i( const void *pvData_, bool bTail_, K_ULONG ulWaitTimeMS_ );
+    bool Send_i( const void *pvData_, bool bTail_, uint32_t u32WaitTimeMS_ );
 #else
     /*!
      * \brief Send_i
@@ -318,10 +318,10 @@ private:
      *
      * \param pvData_       Pointer to the envelope data
      * \param bTail_        true - read from tail, false - read from head
-     * \param ulWaitTimeMS_ Time to wait before timeout (in ms).
+     * \param u32WaitTimeMS_ Time to wait before timeout (in ms).
      * \return              true - read successfully, false - timeout.
      */
-    bool Receive_i( const void *pvData_, bool bTail_, K_ULONG ulWaitTimeMS_ );
+    bool Receive_i( const void *pvData_, bool bTail_, uint32_t u32WaitTimeMS_ );
 #else
     /*!
      * \brief Receive_i
@@ -334,19 +334,19 @@ private:
     void Receive_i( const void *pvData_, bool bTail_ );
 #endif
 
-    K_USHORT m_usHead;          //!< Current head index
-    K_USHORT m_usTail;          //!< Current tail index
+    uint16_t m_u16Head;          //!< Current head index
+    uint16_t m_u16Tail;          //!< Current tail index
 
-    K_USHORT m_usCount;         //!< Count of items in the mailbox
-    volatile K_USHORT m_usFree; //!< Current number of free slots in the mailbox
+    uint16_t m_u16Count;         //!< Count of items in the mailbox
+    volatile uint16_t m_u16Free; //!< Current number of free slots in the mailbox
 
-    K_USHORT m_usElementSize;   //!< Size of the objects tracked in this mailbox
-    const void *m_pvBuffer;     //!< Pointer to the data-buffer managed by this mailbox
+    uint16_t m_uselementSize;   //!< Size of the objects tracked in this mailbox
+    const void *m_pvBuffer;      //!< Pointer to the data-buffer managed by this mailbox
 
-    Semaphore m_clRecvSem;      //!< Counting semaphore used to synchronize threads on the object
+    Semaphore m_clRecvSem;       //!< Counting semaphore used to synchronize threads on the object
 
 #if KERNEL_USE_TIMEOUTS
-    Semaphore m_clSendSem;      //!< Binary semaphore for send-blocked threads.
+    Semaphore m_clSendSem;       //!< Binary semaphore for send-blocked threads.
 #endif
 
 };

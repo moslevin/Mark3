@@ -29,7 +29,7 @@ static Thread clMutexThread;
 
 static K_WORD aucTestStack2[MUTEX_STACK_SIZE];
 static Thread clTestThread2;
-static volatile K_UCHAR ucToken;
+static volatile uint8_t u8Token;
 
 //===========================================================================
 // Define Test Cases Here
@@ -40,7 +40,7 @@ void TypicalMutexTest(void *mutex_)
     Mutex *pclMutex = (Mutex*)mutex_;
 
     pclMutex->Claim();
-    ucToken = 0x69;
+    u8Token = 0x69;
     pclMutex->Release();
 
     // Exit the thread when we're done this operation.
@@ -55,14 +55,14 @@ TEST(ut_typical_mutex)
 
     clMutex.Init();
 
-    // Create a higher-priority thread that will immediately pre-empt us.
+    // Create a higher-priority thread that will immediately pre-empt u16.
     // Verify that while we have the mutex held, that the high-priority thread
-    // is blocked waiting for us to relinquish access.
+    // is blocked waiting for u16 to relinquish access.
     clMutexThread.Init(aucTestStack, MUTEX_STACK_SIZE, 7, TypicalMutexTest, (void*)&clMutex);
 
     clMutex.Claim();
 
-    ucToken = 0x96;
+    u8Token = 0x96;
     clMutexThread.Start();
 
     // Spend some time sleeping, just to drive the point home...
@@ -70,7 +70,7 @@ TEST(ut_typical_mutex)
 
     // Test Point - Verify that the token value hasn't changed (which would
     // indicate the high-priority thread held the mutex...)
-    EXPECT_EQUALS( ucToken, 0x96 );
+    EXPECT_EQUALS( u8Token, 0x96 );
 
     // Relese the mutex, see what happens.
     clMutex.Release();
@@ -78,7 +78,7 @@ TEST(ut_typical_mutex)
     // Test Point - Verify that after releasing the mutex, the higher-priority
     // thread immediately resumes, claiming the mutex, and adjusting the
     // token value to its value.  Check the new token value here.
-    EXPECT_EQUALS( ucToken, 0x69 );
+    EXPECT_EQUALS( u8Token, 0x69 );
 
 }
 TEST_END

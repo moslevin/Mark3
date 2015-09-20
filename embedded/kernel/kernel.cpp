@@ -33,8 +33,8 @@ See license.txt for more information
 #include "tracebuffer.h"
 #include "kerneldebug.h"
 
-K_BOOL Kernel::m_bIsStarted;
-K_BOOL Kernel::m_bIsPanic;
+bool Kernel::m_bIsStarted;
+bool Kernel::m_bIsPanic;
 panic_func_t Kernel::m_pfPanic;
 
 #if KERNEL_USE_IDLE_FUNC
@@ -92,12 +92,12 @@ void Kernel::Start(void)
 }
 
 //---------------------------------------------------------------------------
-void Kernel::Panic(K_USHORT usCause_)
+void Kernel::Panic(uint16_t u16Cause_)
 {
     m_bIsPanic = true;
     if (m_pfPanic)
     {
-        m_pfPanic(usCause_);
+        m_pfPanic(u16Cause_);
     }
     else
     {

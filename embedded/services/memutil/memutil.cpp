@@ -25,226 +25,226 @@ See license.txt for more information
 #include "memutil.h"
 
 //---------------------------------------------------------------------------
-void MemUtil::DecimalToHex( K_UCHAR ucData_, char *szText_ )
+void MemUtil::DecimalToHex( uint8_t u8Data_, char *szText_ )
 {
-    K_UCHAR ucTmp = ucData_;
-    K_UCHAR ucMax;
+    uint8_t u8Tmp = u8Data_;
+    uint8_t u8Max;
 
     KERNEL_ASSERT( szText_ );
 
-    if (ucTmp >= 0x10) 
+    if (u8Tmp >= 0x10) 
     {
-        ucMax = 2;
+        u8Max = 2;
     } 
     else 
     {
-        ucMax = 1;
+        u8Max = 1;
     }
 
-    ucTmp = ucData_;
-    szText_[ucMax] = 0;
-    while (ucMax--)
+    u8Tmp = u8Data_;
+    szText_[u8Max] = 0;
+    while (u8Max--)
     {
-        if ((ucTmp & 0x0F) <= 9) 
+        if ((u8Tmp & 0x0F) <= 9) 
         {
-            szText_[ucMax] = '0' + (ucTmp & 0x0F);
+            szText_[u8Max] = '0' + (u8Tmp & 0x0F);
         } 
         else 
         {
-            szText_[ucMax] = 'A' + ((ucTmp & 0x0F) - 10);
+            szText_[u8Max] = 'A' + ((u8Tmp & 0x0F) - 10);
         }
-        ucTmp>>=4;
+        u8Tmp>>=4;
     }
 }
 
 //---------------------------------------------------------------------------
-void MemUtil::DecimalToHex( K_USHORT usData_, char *szText_ )
+void MemUtil::DecimalToHex( uint16_t u16Data_, char *szText_ )
 {
-    K_USHORT usTmp = usData_;
-    K_USHORT usMax = 1;
-    K_USHORT usCompare = 0x0010;
+    uint16_t u16Tmp = u16Data_;
+    uint16_t u16Max = 1;
+    uint16_t u16Compare = 0x0010;
 
     KERNEL_ASSERT( szText_ );
 
-    while (usData_ > usCompare && usMax < 4)
+    while (u16Data_ > u16Compare && u16Max < 4)
     {
-        usMax++;
-        usCompare <<= 4;
+        u16Max++;
+        u16Compare <<= 4;
     }
 
-    usTmp = usData_;
-    szText_[usMax] = 0;
-    while (usMax--)
+    u16Tmp = u16Data_;
+    szText_[u16Max] = 0;
+    while (u16Max--)
     {
-        if ((usTmp & 0x0F) <= 9)
+        if ((u16Tmp & 0x0F) <= 9)
         {
-            szText_[usMax] = '0' + (usTmp & 0x0F);
+            szText_[u16Max] = '0' + (u16Tmp & 0x0F);
         }
         else
         {
-            szText_[usMax] = 'A' + ((usTmp & 0x0F) - 10);
+            szText_[u16Max] = 'A' + ((u16Tmp & 0x0F) - 10);
         }
-        usTmp>>=4;
+        u16Tmp>>=4;
     }
 }
 
 //---------------------------------------------------------------------------
-void MemUtil::DecimalToHex( K_ULONG ulData_, char *szText_ )
+void MemUtil::DecimalToHex( uint32_t u32Data_, char *szText_ )
 {
-    K_ULONG ulTmp = ulData_;
-    K_ULONG ulMax = 1;
-    K_ULONG ulCompare = 0x0010;
+    uint32_t u32Tmp = u32Data_;
+    uint32_t u32Max = 1;
+    uint32_t u32Compare = 0x0010;
 
     KERNEL_ASSERT( szText_ );
 
-    while (ulData_ > ulCompare && ulMax < 8)
+    while (u32Data_ > u32Compare && u32Max < 8)
     {
-        ulMax++;
-        ulCompare <<= 4;
+        u32Max++;
+        u32Compare <<= 4;
     }
 
-    ulTmp = ulData_;
-    szText_[ulMax] = 0;
-    while (ulMax--)
+    u32Tmp = u32Data_;
+    szText_[u32Max] = 0;
+    while (u32Max--)
     {
-        if ((ulTmp & 0x0F) <= 9)
+        if ((u32Tmp & 0x0F) <= 9)
         {
-            szText_[ulMax] = '0' + (ulTmp & 0x0F);
+            szText_[u32Max] = '0' + (u32Tmp & 0x0F);
         }
         else
         {
-            szText_[ulMax] = 'A' + ((ulTmp & 0x0F) - 10);
+            szText_[u32Max] = 'A' + ((u32Tmp & 0x0F) - 10);
         }
-        ulTmp>>=4;
+        u32Tmp>>=4;
     }
 }
 //--------------------------------------------------------------------------- 
-void MemUtil::DecimalToString( K_UCHAR ucData_, char *szText_ )
+void MemUtil::DecimalToString( uint8_t u8Data_, char *szText_ )
 {
-    K_UCHAR ucTmp = ucData_;
-    K_UCHAR ucMax;
+    uint8_t u8Tmp = u8Data_;
+    uint8_t u8Max;
 
     KERNEL_ASSERT(szText_);
 
     // Find max index to print...
-    if (ucData_ >= 100)
+    if (u8Data_ >= 100)
     {
-        ucMax = 3;
+        u8Max = 3;
     } 
-    else if (ucData_ >= 10)
+    else if (u8Data_ >= 10)
     {
-        ucMax = 2;
+        u8Max = 2;
     }
     else 
     {
-        ucMax = 1;
+        u8Max = 1;
     }
 
-    szText_[ucMax] = 0;
-    while (ucMax--)
+    szText_[u8Max] = 0;
+    while (u8Max--)
     {
-        szText_[ucMax] = '0' + (ucTmp % 10);
-        ucTmp/=10;
-    }
-}
-
-//---------------------------------------------------------------------------
-void MemUtil::DecimalToString( K_USHORT usData_, char *szText_ )
-{
-    K_USHORT usTmp = usData_;
-    K_USHORT usMax = 1;
-    K_USHORT usCompare = 10;
-
-    KERNEL_ASSERT(szText_);
-
-    while (usData_ >= usCompare && usMax < 5)
-    {
-        usCompare *= 10;
-        usMax++;
-    }
-
-    szText_[usMax] = 0;
-    while (usMax--)
-    {
-        szText_[usMax] = '0' + (usTmp % 10);
-        usTmp/=10;
+        szText_[u8Max] = '0' + (u8Tmp % 10);
+        u8Tmp/=10;
     }
 }
 
 //---------------------------------------------------------------------------
-void MemUtil::DecimalToString( K_ULONG ulData_, char *szText_ )
+void MemUtil::DecimalToString( uint16_t u16Data_, char *szText_ )
 {
-    K_ULONG ulTmp = ulData_;
-    K_ULONG ulMax = 1;
-    K_ULONG ulCompare = 10;
+    uint16_t u16Tmp = u16Data_;
+    uint16_t u16Max = 1;
+    uint16_t u16Compare = 10;
 
     KERNEL_ASSERT(szText_);
 
-    while (ulData_ >= ulCompare && ulMax < 12)
+    while (u16Data_ >= u16Compare && u16Max < 5)
     {
-        ulCompare *= 10;
-        ulMax++;
+        u16Compare *= 10;
+        u16Max++;
     }
 
-    szText_[ulMax] = 0;
-    while (ulMax--)
+    szText_[u16Max] = 0;
+    while (u16Max--)
     {
-        szText_[ulMax] = '0' + (ulTmp % 10);
-        ulTmp/=10;
+        szText_[u16Max] = '0' + (u16Tmp % 10);
+        u16Tmp/=10;
+    }
+}
+
+//---------------------------------------------------------------------------
+void MemUtil::DecimalToString( uint32_t u32Data_, char *szText_ )
+{
+    uint32_t u32Tmp = u32Data_;
+    uint32_t u32Max = 1;
+    uint32_t u32Compare = 10;
+
+    KERNEL_ASSERT(szText_);
+
+    while (u32Data_ >= u32Compare && u32Max < 12)
+    {
+        u32Compare *= 10;
+        u32Max++;
+    }
+
+    szText_[u32Max] = 0;
+    while (u32Max--)
+    {
+        szText_[u32Max] = '0' + (u32Tmp % 10);
+        u32Tmp/=10;
     }
 }
 
 //---------------------------------------------------------------------------
 // Basic checksum routines
-K_UCHAR  MemUtil::Checksum8( const void *pvSrc_, K_USHORT usLen_ )
+uint8_t  MemUtil::Checksum8( const void *pvSrc_, uint16_t u16Len_ )
 {
-    K_UCHAR ucRet = 0;
-    K_UCHAR *pcData = (K_UCHAR*)pvSrc_;
+    uint8_t u8Ret = 0;
+    uint8_t *pcData = (uint8_t*)pvSrc_;
 
     KERNEL_ASSERT(pvSrc_);
 
     // 8-bit CRC, computed byte at a time
-    while (usLen_--)
+    while (u16Len_--)
     {
-        ucRet += *pcData++;
+        u8Ret += *pcData++;
     }
-    return ucRet;
+    return u8Ret;
 }
 
 //---------------------------------------------------------------------------
-K_USHORT MemUtil::Checksum16( const void *pvSrc_, K_USHORT usLen_ )
+uint16_t MemUtil::Checksum16( const void *pvSrc_, uint16_t u16Len_ )
 {
-    K_USHORT usRet = 0;
-    K_UCHAR *pcData = (K_UCHAR*)pvSrc_;
+    uint16_t u16Ret = 0;
+    uint8_t *pcData = (uint8_t*)pvSrc_;
 
     KERNEL_ASSERT(pvSrc_);
 
     // 16-bit CRC, computed byte at a time
-    while (usLen_--)
+    while (u16Len_--)
     {
-        usRet += *pcData++;
+        u16Ret += *pcData++;
     }
-    return usRet;
+    return u16Ret;
 }
 
 //---------------------------------------------------------------------------
 // Basic string routines
-K_USHORT MemUtil::StringLength( const char *szStr_ )
+uint16_t MemUtil::StringLength( const char *szStr_ )
 {
-    K_UCHAR *pcData = (K_UCHAR*)szStr_;
-    K_USHORT usLen = 0;
+    uint8_t *pcData = (uint8_t*)szStr_;
+    uint16_t u16Len = 0;
 
     KERNEL_ASSERT(szStr_);
 
     while (*pcData++)
     {
-        usLen++;
+        u16Len++;
     }
-    return usLen;
+    return u16Len;
 }
 
 //---------------------------------------------------------------------------
-K_BOOL   MemUtil::CompareStrings( const char *szStr1_, const char *szStr2_ )
+bool   MemUtil::CompareStrings( const char *szStr1_, const char *szStr2_ )
 {
     char *szTmp1 = (char*) szStr1_;
     char *szTmp2 = (char*) szStr2_;
@@ -270,7 +270,7 @@ K_BOOL   MemUtil::CompareStrings( const char *szStr1_, const char *szStr2_ )
 }
 
 //---------------------------------------------------------------------------
-void MemUtil::CopyMemory( void *pvDst_, const void *pvSrc_, K_USHORT usLen_ )
+void MemUtil::CopyMemory( void *pvDst_, const void *pvSrc_, uint16_t u16Len_ )
 {
     char *szDst = (char*) pvDst_;
     char *szSrc = (char*) pvSrc_;
@@ -280,7 +280,7 @@ void MemUtil::CopyMemory( void *pvDst_, const void *pvSrc_, K_USHORT usLen_ )
 
     // Run through the strings verifying that each character matches
     // and the lengths are the same.
-    while (usLen_--)
+    while (u16Len_--)
     {
         *szDst++ = *szSrc++;
     }
@@ -304,11 +304,11 @@ void MemUtil::CopyString( char *szDst_, const char *szSrc_ )
 }
 
 //---------------------------------------------------------------------------
-K_SHORT MemUtil::StringSearch( const char *szBuffer_, const char *szPattern_ )
+int16_t MemUtil::StringSearch( const char *szBuffer_, const char *szPattern_ )
 {
     char *szTmpPat = (char*)szPattern_;
-    K_SHORT i16Idx = 0;
-    K_SHORT i16Start;
+    int16_t i16Idx = 0;
+    int16_t i16Start;
     KERNEL_ASSERT( szBuffer_ );
     KERNEL_ASSERT( szPattern_ );
 
@@ -339,7 +339,7 @@ K_SHORT MemUtil::StringSearch( const char *szBuffer_, const char *szPattern_ )
 }
 
 //---------------------------------------------------------------------------
-K_BOOL MemUtil::CompareMemory( const void *pvMem1_, const void *pvMem2_, K_USHORT usLen_ )
+bool MemUtil::CompareMemory( const void *pvMem1_, const void *pvMem2_, uint16_t u16Len_ )
 {
     char *szTmp1 = (char*) pvMem1_;
     char *szTmp2 = (char*) pvMem2_;
@@ -349,7 +349,7 @@ K_BOOL MemUtil::CompareMemory( const void *pvMem1_, const void *pvMem2_, K_USHOR
 
     // Run through the strings verifying that each character matches
     // and the lengths are the same.
-    while (usLen_--)
+    while (u16Len_--)
     {
         if (*szTmp1++ != *szTmp2++)
         {
@@ -360,26 +360,26 @@ K_BOOL MemUtil::CompareMemory( const void *pvMem1_, const void *pvMem2_, K_USHOR
 }
 
 //---------------------------------------------------------------------------
-void MemUtil::SetMemory( void *pvDst_, K_UCHAR ucVal_, K_USHORT usLen_ )
+void MemUtil::SetMemory( void *pvDst_, uint8_t u8Val_, uint16_t u16Len_ )
 {
     char *szDst = (char*)pvDst_;
 
     KERNEL_ASSERT(pvDst_);
     
-    while (usLen_--)
+    while (u16Len_--)
     {
-        *szDst++ = ucVal_;
+        *szDst++ = u8Val_;
     }
 }
 
 //---------------------------------------------------------------------------
-K_UCHAR MemUtil::Tokenize( const K_CHAR *szBuffer_, Token_t *pastTokens_, K_UCHAR ucMaxTokens_)
+uint8_t MemUtil::Tokenize( const char *szBuffer_, Token_t *pastTokens_, uint8_t u8MaxTokens_)
 {
-    K_UCHAR ucCurrArg = 0;
-    K_UCHAR ucLastArg = 0;
-    K_UCHAR i = 0;
+    uint8_t u8CurrArg = 0;
+    uint8_t u8LastArg = 0;
+    uint8_t i = 0;
 
-    K_BOOL bEscape = false;
+    bool bEscape = false;
 
     KERNEL_ASSERT(szBuffer_);
     KERNEL_ASSERT(pastTokens_);
@@ -427,12 +427,12 @@ K_UCHAR MemUtil::Tokenize( const K_CHAR *szBuffer_, Token_t *pastTokens_, K_UCHA
             continue;
         }
 
-        pastTokens_[ucCurrArg].pcToken = &(szBuffer_[ucLastArg]);
-        pastTokens_[ucCurrArg].ucLen = i - ucLastArg;
-        ucCurrArg++;
-        if (ucCurrArg >= ucMaxTokens_)
+        pastTokens_[u8CurrArg].pcToken = &(szBuffer_[u8LastArg]);
+        pastTokens_[u8CurrArg].u8Len = i - u8LastArg;
+        u8CurrArg++;
+        if (u8CurrArg >= u8MaxTokens_)
         {
-            return ucMaxTokens_;
+            return u8MaxTokens_;
         }
 
         i++;
@@ -441,15 +441,15 @@ K_UCHAR MemUtil::Tokenize( const K_CHAR *szBuffer_, Token_t *pastTokens_, K_UCHA
             i++;
         }
 
-        ucLastArg = i;
+        u8LastArg = i;
     }
-    if (i && !szBuffer_[i] && (i - ucLastArg))
+    if (i && !szBuffer_[i] && (i - u8LastArg))
     {
-        pastTokens_[ucCurrArg].pcToken = &(szBuffer_[ucLastArg]);
-        pastTokens_[ucCurrArg].ucLen = i - ucLastArg;
-        ucCurrArg++;
+        pastTokens_[u8CurrArg].pcToken = &(szBuffer_[u8LastArg]);
+        pastTokens_[u8CurrArg].u8Len = i - u8LastArg;
+        u8CurrArg++;
     }
-    return ucCurrArg;
+    return u8CurrArg;
 }
 
 

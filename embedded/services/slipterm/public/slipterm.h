@@ -60,36 +60,36 @@ public:
     void PrintLn( const char *szLine_ );
 
     /*!
-        \fn void PrintLn( K_UCHAR ucSeverity_, const char *szLine_ )
+        \fn void PrintLn( uint8_t u8Severity_, const char *szLine_ )
         
         Print a string of text to the SLIP interface, but only if the 
         current logging verbosity level is greater than or equal to the 
         specified message severity
         
-        \param ucSeverity_ Message severity level, 0 = highest severity
+        \param u8Severity_ Message severity level, 0 = highest severity
         \param szLine_ String to print
     */
-    void PrintLn( K_UCHAR ucSeverity_, const char *szLine_ );
+    void PrintLn( uint8_t u8Severity_, const char *szLine_ );
     
     /*!        
-        \fn void SetVerbosity( K_UCHAR ucLevel_ )
+        \fn void SetVerbosity( uint8_t u8Level_ )
         
         Set the logging verbosity level - the minimum severity level that
         will be printed to the terminal.  The higher the number, the 
         more chatty the output.
     */
-    void SetVerbosity( K_UCHAR ucLevel_ ) { m_ucVerbosity = ucLevel_; }
+    void SetVerbosity( uint8_t u8Level_ ) { m_u8Verbosity = u8Level_; }
 private:
     /*!
-        \fn K_USHORT StrLen( const char *szString_ )
+        \fn uint16_t StrLen( const char *szString_ )
         
         Quick 'n' dirty StrLen functionality used for printing the string.
         
         \return Length of the string (in bytes)
     */
-    K_USHORT StrLen( const char *szString_ );
+    uint16_t StrLen( const char *szString_ );
     
-    K_UCHAR m_ucVerbosity;     //!< Verbosity level.  Messages with a severity 
+    uint8_t m_u8Verbosity;     //!< Verbosity level.  Messages with a severity 
                             //!< level greater than this Are not displayed.
     
     Slip m_clSlip;        //!< Slip object that this module interfaces with

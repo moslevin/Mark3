@@ -63,48 +63,48 @@ void KernelTimer::Stop(void)
 }
 
 //---------------------------------------------------------------------------
-K_USHORT KernelTimer::Read(void)
+uint16_t KernelTimer::Read(void)
 {
 #if KERNEL_TIMERS_TICKLESS
-    volatile K_USHORT usRead1;
-    volatile K_USHORT usRead2;
+    volatile uint16_t u16Read1;
+    volatile uint16_t u16Read2;
     
     do {
-        usRead1 = TCNT1;
-        usRead2 = TCNT1;            
-    } while (usRead1 != usRead2);
+        u16Read1 = TCNT1;
+        u16Read2 = TCNT1;            
+    } while (u16Read1 != u16Read2);
     
-    return usRead1;    
+    return u16Read1;    
 #else
     return 0;
 #endif
 }
 
 //---------------------------------------------------------------------------
-K_ULONG KernelTimer::SubtractExpiry(K_ULONG ulInterval_)
+uint32_t KernelTimer::SubtractExpiry(uint32_t u32Interval_)
 {
 #if KERNEL_TIMERS_TICKLESS
-    OCR1A -= (K_USHORT)ulInterval_;        
-    return (K_ULONG)OCR1A;
+    OCR1A -= (uint16_t)u32Interval_;        
+    return (uint32_t)OCR1A;
 #else
     return 0;
 #endif
 }
 
 //---------------------------------------------------------------------------
-K_ULONG KernelTimer::TimeToExpiry(void)
+uint32_t KernelTimer::TimeToExpiry(void)
 {
 #if KERNEL_TIMERS_TICKLESS
-    K_USHORT usRead = KernelTimer::Read();
-    K_USHORT usOCR1A = OCR1A;
+    uint16_t u16Read = KernelTimer::Read();
+    uint16_t u16OCR1A = OCR1A;
 
-    if (usRead >= usOCR1A)
+    if (u16Read >= u16OCR1A)
     {
         return 0;
     }
     else
     {
-        return (K_ULONG)(usOCR1A - usRead);    
+        return (uint32_t)(u16OCR1A - u16Read);    
     }
 #else
     return 0;
@@ -112,27 +112,27 @@ K_ULONG KernelTimer::TimeToExpiry(void)
 }
 
 //---------------------------------------------------------------------------
-K_ULONG KernelTimer::GetOvertime(void)
+uint32_t KernelTimer::GetOvertime(void)
 {
     return KernelTimer::Read();
 }
 
 //---------------------------------------------------------------------------
-K_ULONG KernelTimer::SetExpiry(K_ULONG ulInterval_)
+uint32_t KernelTimer::SetExpiry(uint32_t u32Interval_)
 {
 #if KERNEL_TIMERS_TICKLESS
-    K_USHORT usSetInterval;
-    if (ulInterval_ > 65535)
+    uint16_t u16SetInterval;
+    if (u32Interval_ > 65535)
     {
-        usSetInterval = 65535;
+        u16SetInterval = 65535;
     } 
     else 
     {
-        usSetInterval = (K_USHORT)ulInterval_ ;
+        u16SetInterval = (uint16_t)u32Interval_ ;
     }
 
-    OCR1A = usSetInterval;
-    return (K_ULONG)usSetInterval;
+    OCR1A = u16SetInterval;
+    return (uint32_t)u16SetInterval;
 #else
     return 0;
 #endif
@@ -147,10 +147,10 @@ void KernelTimer::ClearExpiry(void)
 }
 
 //---------------------------------------------------------------------------
-K_UCHAR KernelTimer::DI(void)
+uint8_t KernelTimer::DI(void)
 {
 #if KERNEL_TIMERS_TICKLESS
-    K_BOOL bEnabled = ((TIMSK1 & (TIMER_IMSK)) != 0);
+    bool bEnabled = ((TIMSK1 & (TIMER_IMSK)) != 0);
     TIFR1 &= ~TIMER_IFR;      // Clear interrupt flags
     TIMSK1 &= ~TIMER_IMSK;    // Disable interrupt
     return bEnabled;
@@ -166,7 +166,7 @@ void KernelTimer::EI(void)
 }
 
 //---------------------------------------------------------------------------
-void KernelTimer::RI(K_BOOL bEnable_)
+void KernelTimer::RI(bool bEnable_)
 {
 #if KERNEL_TIMERS_TICKLESS
     if (bEnable_)    

@@ -40,61 +40,61 @@ void ProgressControl::Draw()
     DrawRectangle_t stRect;
     DrawLine_t stLine;
 
-    K_USHORT usX, usY;
-    K_USHORT usProgressWidth;
+    uint16_t u16X, u16Y;
+    uint16_t u16ProgressWidth;
 
-    GetControlOffset(&usX, &usY);
+    GetControlOffset(&u16X, &u16Y);
 
     // Draw the outside of the progress bar region
     stLine.uColor = m_uBorderColor;
-    stLine.usX1 = usX + GetLeft() + 1;
-    stLine.usX2 = usX + GetLeft() + GetWidth() - 2;
-    stLine.usY1 = usY + GetTop();
-    stLine.usY2 = usY + GetTop();
+    stLine.u16X1 = u16X + GetLeft() + 1;
+    stLine.u16X2 = u16X + GetLeft() + GetWidth() - 2;
+    stLine.u16Y1 = u16Y + GetTop();
+    stLine.u16Y2 = u16Y + GetTop();
     pclDriver->Line(&stLine);
 
-    stLine.usY1 = usY + GetTop() + GetHeight() - 1;
-    stLine.usY2 = usY + GetTop() + GetHeight() - 1;
+    stLine.u16Y1 = u16Y + GetTop() + GetHeight() - 1;
+    stLine.u16Y2 = u16Y + GetTop() + GetHeight() - 1;
     pclDriver->Line(&stLine);
 
-    stLine.usY1 = usY + GetTop() + 1;
-    stLine.usY2 = usY + GetTop() + GetHeight() - 2;
-    stLine.usX1 = usX + GetLeft();
-    stLine.usX2 = usX + GetLeft();
+    stLine.u16Y1 = u16Y + GetTop() + 1;
+    stLine.u16Y2 = u16Y + GetTop() + GetHeight() - 2;
+    stLine.u16X1 = u16X + GetLeft();
+    stLine.u16X2 = u16X + GetLeft();
     pclDriver->Line(&stLine);
 
-    stLine.usX1 = usX + GetLeft() + GetWidth() - 1;
-    stLine.usX2 = usX + GetLeft() + GetWidth() - 1;
+    stLine.u16X1 = u16X + GetLeft() + GetWidth() - 1;
+    stLine.u16X2 = u16X + GetLeft() + GetWidth() - 1;
     pclDriver->Line(&stLine);
 
     // Draw the "completed" portion
-    usProgressWidth = (K_USHORT)( ( ( ( (K_ULONG)m_ucProgress) * (GetWidth()-2) ) + 50 ) / 100);
-    stRect.usTop = usY + GetTop() + 1;
-    stRect.usBottom = usY + GetTop() + GetHeight() - 2;
-    stRect.usLeft = usX + GetLeft() + 1;
-    stRect.usRight = stRect.usLeft + usProgressWidth - 1;
+    u16ProgressWidth = (uint16_t)( ( ( ( (uint32_t)m_u8Progress) * (GetWidth()-2) ) + 50 ) / 100);
+    stRect.u16Top = u16Y + GetTop() + 1;
+    stRect.u16Bottom = u16Y + GetTop() + GetHeight() - 2;
+    stRect.u16Left = u16X + GetLeft() + 1;
+    stRect.u16Right = stRect.u16Left + u16ProgressWidth - 1;
     stRect.bFill = true;
-    stRect.uLineColor = m_uProgressColor;
+    stRect.u32ineColor = m_uProgressColor;
     stRect.uFillColor = m_uProgressColor;
     pclDriver->Rectangle(&stRect);
 
     // Draw the "incomplete" portion
-    stRect.usLeft = stRect.usRight + 1;
-    stRect.usRight = usX + GetLeft() + GetWidth() - 2;
+    stRect.u16Left = stRect.u16Right + 1;
+    stRect.u16Right = u16X + GetLeft() + GetWidth() - 2;
     stRect.bFill = true;
-    stRect.uLineColor = m_uBackColor;
+    stRect.u32ineColor = m_uBackColor;
     stRect.uFillColor = m_uBackColor;
     pclDriver->Rectangle(&stRect);
 
 }
 
 //---------------------------------------------------------------------------
-void ProgressControl::SetProgress( K_UCHAR ucProgress_ )
+void ProgressControl::SetProgress( uint8_t u8Progress_ )
 {
-    m_ucProgress = ucProgress_;
-    if (m_ucProgress > 100)
+    m_u8Progress = u8Progress_;
+    if (m_u8Progress > 100)
     {
-        m_ucProgress = 100;
+        m_u8Progress = 100;
     }
     SetStale();
 }

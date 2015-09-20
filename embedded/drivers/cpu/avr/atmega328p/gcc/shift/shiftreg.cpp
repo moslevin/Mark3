@@ -23,61 +23,61 @@ See license.txt for more information
 #include <avr/interrupt.h>
 
 //---------------------------------------------------------------------------
-K_UCHAR ShiftDriver::Open()
+uint8_t ShiftDriver::Open()
 {
-    *m_pucEnablePort |= m_ucEnableBit;
+    *m_pu8EnablePort |= m_u8EnableBit;
     return 0;
 }
 
 //---------------------------------------------------------------------------
-K_UCHAR ShiftDriver::Close()
+uint8_t ShiftDriver::Close()
 {
-    *m_pucEnablePort &= ~m_ucEnableBit;
+    *m_pu8EnablePort &= ~m_u8EnableBit;
     return 0;
 }
 
 //---------------------------------------------------------------------------
-K_USHORT ShiftDriver::Write( K_USHORT usBytes_, 
-                              K_UCHAR *pucData_)
+uint16_t ShiftDriver::Write( uint16_t u16Bytes_, 
+                              uint8_t *pu8Data_)
 {
-    K_USHORT i;
+    uint16_t i;
     
     // Only update the strobe after clocking out all of the required bytes.
     // This allows the user to make the scan chain as long as possible without
     // having to modify the driver.
-    *m_pucStrobePort &= ~m_ucStrobeBit;    
-    for (i = 0; i < usBytes_; i++)
+    *m_pu8StrobePort &= ~m_u8StrobeBit;    
+    for (i = 0; i < u16Bytes_; i++)
     {
-        WriteByte(pucData_[i]);
+        WriteByte(pu8Data_[i]);
     }    
-    *m_pucStrobePort |= m_ucStrobeBit;
-    return usBytes_;
+    *m_pu8StrobePort |= m_u8StrobeBit;
+    return u16Bytes_;
     
 }                              
 //---------------------------------------------------------------------------
-K_USHORT ShiftDriver::Control( K_USHORT usEvent_, 
+uint16_t ShiftDriver::Control( uint16_t u16Event_, 
                                 void *pvDataIn_, 
-                                K_USHORT usSizeIn_, 
+                                uint16_t u16SizeIn_, 
                                 void *pvDataOut_, 
-                                K_USHORT usSizeOut_ )                                
+                                uint16_t u16SizeOut_ )                                
 {
-    switch (usEvent_)
+    switch (u16Event_)
     {
         case SHIFT_SET_CLOCK:
-            m_pucClockPort = (volatile K_UCHAR*)pvDataIn_;
-            m_ucClockBit = (K_UCHAR)usSizeIn_;
+            m_pu8ClockPort = (volatile uint8_t*)pvDataIn_;
+            m_u8ClockBit = (uint8_t)u16SizeIn_;
         break;
         case SHIFT_SET_DATA:
-            m_pucDataPort = (volatile K_UCHAR*)pvDataIn_;
-            m_ucDataBit = (K_UCHAR)usSizeIn_;
+            m_pu8DataPort = (volatile uint8_t*)pvDataIn_;
+            m_u8DataBit = (uint8_t)u16SizeIn_;
         break;
         case SHIFT_SET_STROBE:
-            m_pucStrobePort = (volatile K_UCHAR*)pvDataIn_;
-            m_ucStrobeBit = (K_UCHAR)usSizeIn_;
+            m_pu8StrobePort = (volatile uint8_t*)pvDataIn_;
+            m_u8StrobeBit = (uint8_t)u16SizeIn_;
         break;
         case SHIFT_SET_ENABLE:
-            m_pucEnablePort = (volatile K_UCHAR*)pvDataIn_;
-            m_ucEnableBit = (K_UCHAR)usSizeIn_;
+            m_pu8EnablePort = (volatile uint8_t*)pvDataIn_;
+            m_u8EnableBit = (uint8_t)u16SizeIn_;
         break;
         default:
             break;
@@ -85,43 +85,43 @@ K_USHORT ShiftDriver::Control( K_USHORT usEvent_,
     return 0;
 }
 //---------------------------------------------------------------------------
-void ShiftDriver::SetClock( volatile K_UCHAR *pucPort_, K_UCHAR ucBit_ )
+void ShiftDriver::SetClock( volatile uint8_t *pu8Port_, uint8_t u8Bit_ )
 {
-    Control( SHIFT_SET_CLOCK, (void*)pucPort_, (K_USHORT)ucBit_, 0, 0 );
+    Control( SHIFT_SET_CLOCK, (void*)pu8Port_, (uint16_t)u8Bit_, 0, 0 );
 }
 //---------------------------------------------------------------------------
-void ShiftDriver::SetData( volatile K_UCHAR *pucPort_, K_UCHAR ucBit_ )
+void ShiftDriver::SetData( volatile uint8_t *pu8Port_, uint8_t u8Bit_ )
 {
-    Control( SHIFT_SET_DATA, (void*)pucPort_, (K_USHORT)ucBit_, 0, 0 );
+    Control( SHIFT_SET_DATA, (void*)pu8Port_, (uint16_t)u8Bit_, 0, 0 );
 }
 //---------------------------------------------------------------------------
-void ShiftDriver::SetStrobe( volatile K_UCHAR *pucPort_, K_UCHAR ucBit_ )
+void ShiftDriver::SetStrobe( volatile uint8_t *pu8Port_, uint8_t u8Bit_ )
 {
-    Control( SHIFT_SET_STROBE, (void*)pucPort_, (K_USHORT)ucBit_, 0, 0 );
+    Control( SHIFT_SET_STROBE, (void*)pu8Port_, (uint16_t)u8Bit_, 0, 0 );
 }
 //---------------------------------------------------------------------------
-void ShiftDriver::SetEnable( volatile K_UCHAR *pucPort_, K_UCHAR ucBit_ )
+void ShiftDriver::SetEnable( volatile uint8_t *pu8Port_, uint8_t u8Bit_ )
 {
-    Control( SHIFT_SET_ENABLE, (void*)pucPort_, (K_USHORT)ucBit_, 0, 0 );
+    Control( SHIFT_SET_ENABLE, (void*)pu8Port_, (uint16_t)u8Bit_, 0, 0 );
 }
 //---------------------------------------------------------------------------
-void ShiftDriver::WriteByte( K_UCHAR ucByte_ )
+void ShiftDriver::WriteByte( uint8_t u8Byte_ )
 {
-    K_UCHAR ucMask = 0x80;
+    uint8_t u8Mask = 0x80;
     
     // Clock data out, MSB first, data latched on the RISING clock edge.
-    while (ucMask)
+    while (u8Mask)
     {
-        *m_pucClockPort &= ~m_ucClockBit;
-        if (ucByte_ & ucMask)
+        *m_pu8ClockPort &= ~m_u8ClockBit;
+        if (u8Byte_ & u8Mask)
         {
-            *m_pucDataPort |= m_ucDataBit;
+            *m_pu8DataPort |= m_u8DataBit;
         }
         else
         {
-            *m_pucDataPort &= ~m_ucDataBit;
+            *m_pu8DataPort &= ~m_u8DataBit;
         }
-        ucMask >>= 1;
+        u8Mask >>= 1;
         asm volatile("nop");
         asm volatile("nop");
         asm volatile("nop");
@@ -130,7 +130,7 @@ void ShiftDriver::WriteByte( K_UCHAR ucByte_ )
         asm volatile("nop");
         asm volatile("nop");
         asm volatile("nop");
-        *m_pucClockPort |= m_ucClockBit;
+        *m_pu8ClockPort |= m_u8ClockBit;
         asm volatile("nop");
         asm volatile("nop");
         asm volatile("nop");

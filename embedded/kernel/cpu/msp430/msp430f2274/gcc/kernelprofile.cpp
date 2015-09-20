@@ -25,7 +25,7 @@ See license.txt for more information
 
 
 #if KERNEL_USE_PROFILER
-K_ULONG Profiler::m_ulEpoch;
+uint32_t Profiler::m_u32Epoch;
 
 //---------------------------------------------------------------------------
 void Profiler::Init()
@@ -45,7 +45,7 @@ void Profiler::Stop()
 
 }    
 //---------------------------------------------------------------------------
-K_USHORT Profiler::Read()
+uint16_t Profiler::Read()
 {
     return 0;
 }
@@ -54,7 +54,7 @@ K_USHORT Profiler::Read()
 void Profiler::Process()
 {
     CS_ENTER();
-    m_ulEpoch++;
+    m_u32Epoch++;
     CS_EXIT();
 }
 

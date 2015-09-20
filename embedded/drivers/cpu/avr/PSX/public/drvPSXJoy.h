@@ -70,24 +70,24 @@ class PSXJoystick : public JoystickDriver
 {
 public:
     virtual void Init();
-    virtual K_UCHAR Open();
-    virtual K_USHORT Control( K_USHORT usEvent_,
+    virtual uint8_t Open();
+    virtual uint16_t Control( uint16_t u16Event_,
                                 void *pvDataIn_, 
-                                K_USHORT usSizeIn_, 
+                                uint16_t u16SizeIn_, 
                                 void *pvDataOut_, 
-                                K_USHORT usSizeOut_ );
-    virtual K_UCHAR Close() { return 0; }
-    virtual K_USHORT Read( K_USHORT usBytes_, K_UCHAR *pucData_ ) { return usBytes_; }
-    virtual K_USHORT Write( K_USHORT usBytes_, K_UCHAR pucData_ ) { return usBytes_; }
+                                uint16_t u16SizeOut_ );
+    virtual uint8_t Close() { return 0; }
+    virtual uint16_t Read( uint16_t u16Bytes_, uint8_t *pu8Data_ ) { return u16Bytes_; }
+    virtual uint16_t Write( uint16_t u16Bytes_, uint8_t pu8Data_ ) { return u16Bytes_; }
     
 private:
     /*!
-        \fn void JoyDelay(K_USHORT usTime_)
+        \fn void JoyDelay(uint16_t u16Time_)
         
         Simple delay implementation.  Not instrumented.  This is a
         busy-waiting delay.
     */
-    void JoyDelay(K_USHORT usTime_);
+    void JoyDelay(uint16_t u16Time_);
     
     /*!
         \fn void ScanInternal();
@@ -99,32 +99,32 @@ private:
     void ScanInternal();
     
     /*!
-        \fn K_UCHAR CmdByte(K_UCHAR ucCmd_, K_BOOL bWaitAck_)
+        \fn uint8_t CmdByte(uint8_t u8Cmd_, bool bWaitAck_)
         
         Function that scans a single byte from the joystick interface.
         
-        \param ucCmd_ Command to issue on the interface
+        \param u8Cmd_ Command to issue on the interface
         \param bWaitAck_ Wait for acknowledgment on the interface if
                true, false to not wait.
     */
-    K_UCHAR CmdByte(K_UCHAR ucCmd_, K_BOOL bWaitAck_);
+    uint8_t CmdByte(uint8_t u8Cmd_, bool bWaitAck_);
     
     /*!
-        \fn void Decode(K_UCHAR ucJoyMode_, K_UCHAR *pucData_)
+        \fn void Decode(uint8_t u8JoyMode_, uint8_t *pu8Data_)
         
         Decode the bytestream read from the joystick interafce, and 
         convert it into the regular joystick report format.
         
-        \param ucJoyMode_ Joystick mode byte, read from the HW interface
-        \param pucData_ Pointer to the bytestream containing the joystick
+        \param u8JoyMode_ Joystick mode byte, read from the HW interface
+        \param pu8Data_ Pointer to the bytestream containing the joystick
                         state information, relative to the joystick mode.
     */
-    void Decode(K_UCHAR ucJoyMode_, K_UCHAR *pucData_);
+    void Decode(uint8_t u8JoyMode_, uint8_t *pu8Data_);
     
-    K_UCHAR m_ucType;        //!< Joystick type identifier
-    K_BOOL m_bConnected;    //!< Whether or not the joystick is connected
+    uint8_t m_u8Type;        //!< Joystick type identifier
+    bool m_bConnected;    //!< Whether or not the joystick is connected
     
-    K_UCHAR m_aucRaw[6];    //!< Raw Joystick Data
+    uint8_t m_aucRaw[6];    //!< Raw Joystick Data
 };
 
 #endif 

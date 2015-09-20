@@ -40,12 +40,12 @@ static ATMegaUART clUART;			//!< UART device driver object
 //---------------------------------------------------------------------------
 #if !KERNEL_USE_IDLE_FUNC
 static Thread IdleThread;			//!< Idle thread - runs when app can't
-static K_UCHAR aucIdleStack[STACK_SIZE_IDLE];
+static uint8_t aucIdleStack[STACK_SIZE_IDLE];
 #endif
 
 //---------------------------------------------------------------------------
-static K_UCHAR aucTxBuffer[UART_SIZE_TX];
-static K_UCHAR aucRxBuffer[UART_SIZE_RX];
+static uint8_t aucTxBuffer[UART_SIZE_TX];
+static uint8_t aucRxBuffer[UART_SIZE_RX];
 
 //---------------------------------------------------------------------------
 static void AppEntry(void);
@@ -54,7 +54,7 @@ static void IdleEntry(void);
 //---------------------------------------------------------------------------
 void MyUnitTest::PrintTestResult()
 {
-    K_CHAR acTemp[6];
+    char acTemp[6];
     int iLen;
 
     PrintString("Test ");
@@ -77,11 +77,11 @@ void MyUnitTest::PrintTestResult()
     {
         PrintString("(FAIL)[");
     }
-    MemUtil::DecimalToString(GetPassed(), (K_CHAR*)acTemp);
-    PrintString((const K_CHAR*)acTemp);
+    MemUtil::DecimalToString(GetPassed(), (char*)acTemp);
+    PrintString((const char*)acTemp);
     PrintString("/");
-    MemUtil::DecimalToString(GetTotal(), (K_CHAR*)acTemp);
-    PrintString((const K_CHAR*)acTemp);
+    MemUtil::DecimalToString(GetTotal(), (char*)acTemp);
+    PrintString((const char*)acTemp);
     PrintString("]\n");
 }
 
@@ -118,12 +118,12 @@ void init_tests()
 }
 
 //---------------------------------------------------------------------------
-void PrintString(const K_CHAR *szStr_)
+void PrintString(const char *szStr_)
 {
-    K_CHAR *szTemp = (K_CHAR*)szStr_;
+    char *szTemp = (char*)szStr_;
     while (*szTemp)
     {
-        while( 1 != clUART.Write( 1, (K_UCHAR*)szTemp ) ) { /* Do nothing */ }
+        while( 1 != clUART.Write( 1, (uint8_t*)szTemp ) ) { /* Do nothing */ }
         szTemp++;
     }
 }

@@ -8,16 +8,16 @@
 void BrLives::Reset(void)
 {
     m_bUpdate = true;
-    m_ucLives = 5;
+    m_u8Lives = 5;
 }
 
 //---------------------------------------------------------------------------
 
-K_BOOL BrLives::Decrement(void)
+bool BrLives::Decrement(void)
 {
     m_bUpdate = true;
-    m_ucLives--;
-    if (!m_ucLives)
+    m_u8Lives--;
+    if (!m_u8Lives)
     {
         return false;
     }
@@ -29,7 +29,7 @@ K_BOOL BrLives::Decrement(void)
 void BrLives::Increment(void)
 {
     m_bUpdate = true;
-    m_ucLives++;
+    m_u8Lives++;
 }
 
 
@@ -45,26 +45,26 @@ void BrLives::Draw(void)
     stText.pcString = "1UP";
     stText.pstFont = &fntPrint_Char_21_6_False_False_False_;
     stText.uColor = COLOR_RED;
-    stText.usLeft = LIVES_X;
-    stText.usTop = 0;
+    stText.u16Left = LIVES_X;
+    stText.u16Top = 0;
 
     pclDisplay->Text(&stText);
 
     DrawRectangle_t stRect;
-    stRect.usTop = 8;
-    stRect.usBottom = 15;
-    stRect.usLeft = LIVES_X;
-    stRect.usRight = stRect.usLeft + 23;
+    stRect.u16Top = 8;
+    stRect.u16Bottom = 15;
+    stRect.u16Left = LIVES_X;
+    stRect.u16Right = stRect.u16Left + 23;
     stRect.bFill = true;
     stRect.uFillColor = COLOR_BLACK;
-    stRect.uLineColor = COLOR_BLACK;
+    stRect.u32ineColor = COLOR_BLACK;
     pclDisplay->Rectangle(&stRect);
 
-    K_CHAR acStr[4];
+    char acStr[4];
 
-    MemUtil::DecimalToString(m_ucLives, acStr);
+    MemUtil::DecimalToString(m_u8Lives, acStr);
 
-    stText.usTop = 8;
+    stText.u16Top = 8;
     stText.uColor = COLOR_WHITE;
     stText.pcString = acStr;
 
@@ -74,8 +74,8 @@ void BrLives::Draw(void)
 }
 
 //---------------------------------------------------------------------------
-K_UCHAR BrLives::GetLives(void)
+uint8_t BrLives::GetLives(void)
 {
-    return m_ucLives;
+    return m_u8Lives;
 }
 

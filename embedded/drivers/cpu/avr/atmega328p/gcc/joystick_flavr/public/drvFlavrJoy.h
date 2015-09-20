@@ -37,15 +37,15 @@ class FlavrJoystick : public JoystickDriver
 {
 public:
     virtual void Init();
-    virtual K_UCHAR Open();
-    virtual K_USHORT Control( K_USHORT usEvent_,
+    virtual uint8_t Open();
+    virtual uint16_t Control( uint16_t u16Event_,
                                 void *pvDataIn_, 
-                                K_USHORT usSizeIn_, 
+                                uint16_t u16SizeIn_, 
                                 void *pvDataOut_, 
-                                K_USHORT usSizeOut_ );
-    virtual K_UCHAR Close() { return 0; }
-    virtual K_USHORT Read( K_USHORT usBytes_, K_UCHAR *pucData_ ) { return usBytes_; }
-    virtual K_USHORT Write( K_USHORT usBytes_, K_UCHAR *pucData_ ) { return usBytes_; }
+                                uint16_t u16SizeOut_ );
+    virtual uint8_t Close() { return 0; }
+    virtual uint16_t Read( uint16_t u16Bytes_, uint8_t *pu8Data_ ) { return u16Bytes_; }
+    virtual uint16_t Write( uint16_t u16Bytes_, uint8_t *pu8Data_ ) { return u16Bytes_; }
     
 private:
   

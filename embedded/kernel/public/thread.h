@@ -72,9 +72,9 @@ class Thread : public LinkListNode
 {
 public:    
     /*!
-        \fn void Init(K_UCHAR *paucStack_, 
-              K_USHORT usStackSize_,
-              K_UCHAR ucPriority_,              
+        \fn void Init(uint8_t *paucStack_, 
+              uint16_t u16StackSize_,
+              uint8_t u8Priority_,              
               ThreadEntry_t pfEntryPoint_,
               void *pvArg_ );
               
@@ -83,16 +83,16 @@ public:
         thread's start method has been invoked first.
         
         \param paucStack_    Pointer to the stack to use for the thread
-        \param usStackSize_  Size of the stack (in bytes)
-        \param ucPriority_   Priority of the thread (0 = idle, 7 = max)
+        \param u16StackSize_  Size of the stack (in bytes)
+        \param u8Priority_   Priority of the thread (0 = idle, 7 = max)
         \param pfEntryPoint_ This is the function that gets called when the
                              thread is started
         \param pvArg_        Pointer to the argument passed into the thread's
                              entrypoint function.
     */
     void Init(K_WORD *paucStack_, 
-              K_USHORT usStackSize_,
-              K_UCHAR ucPriority_,
+              uint16_t u16StackSize_,
+              uint8_t u8Priority_,
               ThreadEntry_t pfEntryPoint_,
               void *pvArg_ );
 
@@ -116,7 +116,7 @@ public:
 
 #if KERNEL_USE_THREADNAME    
     /*!
-        \fn void SetName(const K_CHAR *szName_)
+        \fn void SetName(const char *szName_)
         
         Set the name of the thread - this is purely optional, but can be 
         useful when identifying issues that come along when multiple threads
@@ -124,15 +124,15 @@ public:
         
         \param szName_ Char string containing the thread name
     */
-    void SetName(const K_CHAR *szName_) { m_szName = szName_; }
+    void SetName(const char *szName_) { m_szName = szName_; }
 
     /*!
-        \fn const K_CHAR* GetName()
+        \fn const char* GetName()
 
         \return Pointer to the name of the thread.  If this is not set, 
                 will be NULL.
     */
-    const K_CHAR* GetName() { return m_szName; }
+    const char* GetName() { return m_szName; }
 #endif
     
     /*!
@@ -155,42 +155,42 @@ public:
     ThreadList *GetCurrent(void) { return m_pclCurrent; }
     
     /*!
-        \fn K_UCHAR GetPriority(void)
+        \fn uint8_t GetPriority(void)
         
         Return the priority of the current thread
         
         \return Priority of the current thread
     */
 
-    K_UCHAR GetPriority(void) { return m_ucPriority; }
+    uint8_t GetPriority(void) { return m_u8Priority; }
 
     /*!
-        \fn K_UCHAR GetCurPriority(void)
+        \fn uint8_t GetCurPriority(void)
         
         Return the priority of the current thread
         
         \return Priority of the current thread
     */
-    K_UCHAR GetCurPriority(void) { return m_ucCurPriority; }
+    uint8_t GetCurPriority(void) { return m_u8CurPriority; }
     
 #if KERNEL_USE_QUANTUM    
     /*!
-        \fn void SetQuantum( K_USHORT usQuantum_ )
+        \fn void SetQuantum( uint16_t u16Quantum_ )
         
         Set the thread's round-robin execution quantum.
         
-        \param usQuantum_ Thread's execution quantum (in milliseconds)
+        \param u16Quantum_ Thread's execution quantum (in milliseconds)
     */
-    void SetQuantum( K_USHORT usQuantum_ ) { m_usQuantum = usQuantum_; }
+    void SetQuantum( uint16_t u16Quantum_ ) { m_u16Quantum = u16Quantum_; }
 
     /*!
-        \fn K_USHORT GetQuantum(void)
+        \fn uint16_t GetQuantum(void)
         
         Get the thread's round-robin execution quantum.
         
         \return The thread's quantum
     */
-    K_USHORT GetQuantum(void) { return m_usQuantum; }
+    uint16_t GetQuantum(void) { return m_u16Quantum; }
 #endif
 
     /*!
@@ -213,7 +213,7 @@ public:
     
     
     /*!
-        \fn void SetPriority( K_UCHAR ucPriority_ )
+        \fn void SetPriority( uint8_t u8Priority_ )
         
         Set the priority of the Thread (running or otherwise) to a different
         level.  This activity involves re-scheduling, and must be done so 
@@ -222,20 +222,20 @@ public:
         This should *always* be called from within a critical section to
         prevent system issues.
         
-        \param ucPriority_ New priority of the thread
+        \param u8Priority_ New priority of the thread
     */
-    void SetPriority(K_UCHAR ucPriority_);
+    void SetPriority(uint8_t u8Priority_);
     
     /*!
-        \fn void InheritPriority(K_UCHAR ucPriority_)
+        \fn void InheritPriority(uint8_t u8Priority_)
         
         Allow the thread to run at a different priority level (temporarily)
         for the purpose of avoiding priority inversions.  This should
         only be called from within the implementation of blocking-objects.
         
-        \param ucPriority_  New Priority to boost to.        
+        \param u8Priority_  New Priority to boost to.        
     */
-    void InheritPriority(K_UCHAR ucPriority_); 
+    void InheritPriority(uint8_t u8Priority_); 
     
 #if KERNEL_USE_DYNAMIC_THREADS    
     /*!
@@ -254,24 +254,24 @@ public:
 
 #if KERNEL_USE_SLEEP    
     /*!
-        \fn void Sleep(K_ULONG ulTimeMs_);
+        \fn void Sleep(uint32_t u32TimeMs_);
         
         Put the thread to sleep for the specified time (in milliseconds).
         Actual time slept may be longer (but not less than) the interval specified.
         
-        \param ulTimeMs_ Time to sleep (in ms)
+        \param u32TimeMs_ Time to sleep (in ms)
     */
-    static void Sleep(K_ULONG ulTimeMs_);
+    static void Sleep(uint32_t u32TimeMs_);
 
     /*!
-        \fn void USleep(K_ULONG ulTimeUs_);
+        \fn void USleep(uint32_t u32TimeUs_);
 
         Put the thread to sleep for the specified time (in microseconds).
         Actual time slept may be longer (but not less than) the interval specified.
 
-        \param ulTimeUs_ Time to sleep (in microseconds)
+        \param u32TimeUs_ Time to sleep (in microseconds)
     */
-    static void USleep(K_ULONG ulTimeUs_);
+    static void USleep(uint32_t u32TimeUs_);
 #endif
     
     /*!
@@ -284,26 +284,26 @@ public:
     static void Yield(void);
     
     /*!
-        \fn void SetID( K_UCHAR ucID_ )
+        \fn void SetID( uint8_t u8ID_ )
         
         Set an 8-bit ID to uniquely identify this thread.
         
-        \param ucID_ 8-bit Thread ID, set by the user
+        \param u8ID_ 8-bit Thread ID, set by the user
     */
-    void SetID( K_UCHAR ucID_ ) { m_ucThreadID = ucID_; }
+    void SetID( uint8_t u8ID_ ) { m_u8ThreadID = u8ID_; }
     
     /*!
-        \fn K_UCHAR GetID()
+        \fn uint8_t GetID()
         
         Return the 8-bit ID corresponding to this thread.
         
         \return Thread's 8-bit ID, set by the user
     */
-    K_UCHAR GetID() { return m_ucThreadID; }
+    uint8_t GetID() { return m_u8ThreadID; }
     
     
     /*!
-        \fn K_USHORT GetStackSlack()
+        \fn uint16_t GetStackSlack()
         
         Performs a (somewhat lengthy) check on the thread stack to check the
         amount of stack margin (or "slack") remaining on the stack. If you're
@@ -314,7 +314,7 @@ public:
         
         \return The amount of slack (unused bytes) on the stack
     */
-    K_USHORT GetStackSlack();
+    uint16_t GetStackSlack();
     
 #if KERNEL_USE_EVENTFLAG
     /*!
@@ -324,13 +324,13 @@ public:
 
         \return A copy of the thread's event flag mask
      */
-    K_USHORT GetEventFlagMask() { return m_usFlagMask; }
+    uint16_t GetEventFlagMask() { return m_u16FlagMask; }
 
     /*!
         \brief SetEventFlagMask Sets the active event flag bitfield mask
-        \param usMask_
+        \param u16Mask_
      */
-    void SetEventFlagMask(K_USHORT usMask_) { m_usFlagMask = usMask_; }
+    void SetEventFlagMask(uint16_t u16Mask_) { m_u16FlagMask = u16Mask_; }
 
     /*!
      * \brief SetEventFlagMode Sets the active event flag operation mode
@@ -361,7 +361,7 @@ public:
      *
      * \param bExpired_ true - call expired, false - call did not expire
      */
-	void SetExpired( K_BOOL bExpired_ );
+	void SetExpired( bool bExpired_ );
 
     /*!
      * \brief GetExpired
@@ -369,7 +369,7 @@ public:
      * Return the status of the most-recent blocking call on the thread.
      * \return true - call expired, false - call did not expire
      */
-	K_BOOL GetExpired();
+	bool GetExpired();
 #endif
 
 #if KERNEL_USE_IDLE_FUNC
@@ -411,10 +411,10 @@ private:
     static void ContextSwitchSWI(void);
 
     /*!
-        \fn void SetPriorityBase(K_UCHAR ucPriority_)
-        \param ucPriority_
+        \fn void SetPriorityBase(uint8_t u8Priority_)
+        \param u8Priority_
      */
-    void SetPriorityBase(K_UCHAR ucPriority_);
+    void SetPriorityBase(uint8_t u8Priority_);
 
     //! Pointer to the top of the thread's stack
     K_WORD *m_pwStackTop;
@@ -423,24 +423,24 @@ private:
     K_WORD *m_pwStack;
 
     //! Thread ID
-    K_UCHAR m_ucThreadID;
+    uint8_t m_u8ThreadID;
     
     //! Default priority of the thread
-    K_UCHAR m_ucPriority;     
+    uint8_t m_u8Priority;     
     
     //! Current priority of the thread (priority inheritence)
-    K_UCHAR m_ucCurPriority;  
+    uint8_t m_u8CurPriority;  
 
     //! Enum indicating the thread's current state
     ThreadState_t m_eState;
 
 #if KERNEL_USE_THREADNAME
     //! Thread name
-    const K_CHAR *m_szName;
+    const char *m_szName;
 #endif
 
     //! Size of the stack (in bytes)
-    K_USHORT m_usStackSize;
+    uint16_t m_u16StackSize;
 
     //! Pointer to the thread-list where the thread currently resides
     ThreadList *m_pclCurrent;
@@ -456,12 +456,12 @@ private:
 
 #if KERNEL_USE_QUANTUM
     //! Thread quantum (in milliseconds)
-    K_USHORT m_usQuantum;
+    uint16_t m_u16Quantum;
 #endif
 
 #if KERNEL_USE_EVENTFLAG
     //! Event-flag mask
-    K_USHORT m_usFlagMask;
+    uint16_t m_u16FlagMask;
 
     //! Event-flag mode
     EventFlagOperation_t m_eFlagMode;
@@ -473,7 +473,7 @@ private:
 #endif
 #if KERNEL_USE_TIMEOUTS
     //! Indicate whether or not a blocking-object timeout has occurred
-	K_BOOL	m_bExpired;
+	bool	m_bExpired;
 #endif
     
 };
@@ -503,20 +503,20 @@ typedef struct
     K_WORD *m_pwStack;
 
     //! Thread ID
-    K_UCHAR m_ucThreadID;
+    uint8_t m_u8ThreadID;
 
     //! Default priority of the thread
-    K_UCHAR m_ucPriority;
+    uint8_t m_u8Priority;
 
     //! Current priority of the thread (priority inheritence)
-    K_UCHAR m_ucCurPriority;
+    uint8_t m_u8CurPriority;
 
     //! Enum indicating the thread's current state
     ThreadState_t m_eState;
 
 #if KERNEL_USE_THREADNAME
     //! Thread name
-    const K_CHAR *m_szName;
+    const char *m_szName;
 #endif
 
 } FakeThread_t;

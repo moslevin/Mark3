@@ -27,10 +27,10 @@ static Thread clMBoxThread;
 static K_WORD akMBoxStack[160];
 
 static Mailbox clMbox;
-static K_UCHAR aucMBoxBuffer[128];
+static uint8_t aucMBoxBuffer[128];
 
-static volatile K_UCHAR aucTxBuf[17] = "abcdefghijklmnop"; //allocate a byte of slack for null-termination
-static volatile K_UCHAR aucRxBuf[16];
+static volatile uint8_t aucTxBuf[17] = "abcdefghijklmnop"; //allocate a byte of slack for null-termination
+static volatile uint8_t aucRxBuf[16];
 static volatile bool exit_flag;
 //===========================================================================
 // Define Test Cases Here
@@ -63,16 +63,16 @@ TEST(mailbox_blocking_receive)
 }
 TEST_END
 
-volatile K_USHORT usTimeouts = 0;
+volatile uint16_t u16Timeouts = 0;
 void mbox_timed_test(void *param)
 {
-    usTimeouts = 0;
+    u16Timeouts = 0;
     exit_flag = false;
     while(!exit_flag)
     {
         if (!clMbox.Receive((void*)aucRxBuf, 10))
         {
-            usTimeouts++;
+            u16Timeouts++;
         }
     }
     clMBoxThread.Exit();
@@ -80,9 +80,9 @@ void mbox_timed_test(void *param)
 
 TEST(mailbox_blocking_timed)
 {
-    usTimeouts = 0;
+    u16Timeouts = 0;
     clMbox.Init((void*)aucMBoxBuffer, 128, 16);
-    clMBoxThread.Init(akMBoxStack, 160, 7, mbox_timed_test, (void*)&usTimeouts);
+    clMBoxThread.Init(akMBoxStack, 160, 7, mbox_timed_test, (void*)&u16Timeouts);
     clMBoxThread.Start();
 
     for (int j = 0; j < 16; j++)
@@ -91,7 +91,7 @@ TEST(mailbox_blocking_timed)
     }
 
     Thread::Sleep(105);
-    EXPECT_EQUALS(usTimeouts, 10);
+    EXPECT_EQUALS(u16Timeouts, 10);
 
     for (int i = 0; i < 10; i++)
     {
@@ -147,9 +147,9 @@ void mbox_recv_test(void *unused)
 
 TEST(mailbox_send_blocking)
 {
-    usTimeouts = 0;
+    u16Timeouts = 0;
     clMbox.Init((void*)aucMBoxBuffer, 128, 16);
-    clMBoxThread.Init(akMBoxStack, 160, 7, mbox_recv_test, (void*)&usTimeouts);
+    clMBoxThread.Init(akMBoxStack, 160, 7, mbox_recv_test, (void*)&u16Timeouts);
 
     for (int j = 0; j < 16; j++)
     {

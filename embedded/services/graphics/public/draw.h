@@ -54,8 +54,8 @@ typedef enum
 */
 typedef struct
 {
-    K_USHORT usX;       //!< X coordinate of the pixel
-    K_USHORT usY;       //!< Y coordinate of the pixel
+    uint16_t u16X;       //!< X coordinate of the pixel
+    uint16_t u16Y;       //!< Y coordinate of the pixel
     COLOR uColor;       //!< Color of the pixel
 } DrawPoint_t;
 
@@ -65,10 +65,10 @@ typedef struct
 */
 typedef struct
 {
-    K_USHORT usX1;      //!< Starting X coordinate
-    K_USHORT usX2;      //!< Ending X coordinate
-    K_USHORT usY1;      //!< Starting Y Coordinate
-    K_USHORT usY2;      //!< Ending Y coordinate
+    uint16_t u16X1;      //!< Starting X coordinate
+    uint16_t u16X2;      //!< Ending X coordinate
+    uint16_t u16Y1;      //!< Starting Y Coordinate
+    uint16_t u16Y2;      //!< Ending Y coordinate
     COLOR uColor;       //!< Color of the pixel
 } DrawLine_t;
 //---------------------------------------------------------------------------
@@ -77,12 +77,12 @@ typedef struct
 */
 typedef struct
 {
-    K_USHORT usLeft;    //!< Leftmost pixel of the rectangle
-    K_USHORT usTop;     //!< Topmost pixel of the rectangle
-    K_USHORT usRight;   //!< Rightmost pixel of the rectangle
-    K_USHORT usBottom;  //!< Bottom pixel of the rectangle
-    COLOR uLineColor;   //!< Color of the line
-    K_BOOL bFill;       //!< Whether or not to floodfill the interior
+    uint16_t u16Left;    //!< Leftmost pixel of the rectangle
+    uint16_t u16Top;     //!< Topmost pixel of the rectangle
+    uint16_t u16Right;   //!< Rightmost pixel of the rectangle
+    uint16_t u16Bottom;  //!< Bottom pixel of the rectangle
+    COLOR u32ineColor;   //!< Color of the line
+    bool bFill;       //!< Whether or not to floodfill the interior
     COLOR uFillColor;   //!< Color of the interior of the rectangle
 } DrawRectangle_t;
 //---------------------------------------------------------------------------
@@ -91,11 +91,11 @@ typedef struct
 */
 typedef struct
 {
-    K_USHORT usX;       //!< Center X pixel
-    K_USHORT usY;       //!< Center Y pixel
-    K_USHORT usRadius;  //!< Radius in pixels
-    COLOR uLineColor;   //!< Color of the circle perimeter
-    K_BOOL bFill;       //!< Whether or not to fill the interior of the circle
+    uint16_t u16X;       //!< Center X pixel
+    uint16_t u16Y;       //!< Center Y pixel
+    uint16_t u16Radius;  //!< Radius in pixels
+    COLOR u32ineColor;   //!< Color of the circle perimeter
+    bool bFill;       //!< Whether or not to fill the interior of the circle
     COLOR uFillColor;   //!< Fill color for the circle
 } DrawCircle_t;
 //---------------------------------------------------------------------------
@@ -104,10 +104,10 @@ typedef struct
 */
 typedef struct
 {
-    K_USHORT usX;       //!< Center X pixel
-    K_USHORT usY;       //!< Center Y pixel
-    K_USHORT usHeight;  //!< Height of the ellipse
-    K_USHORT usWidth;   //!< Width of the ellipse
+    uint16_t u16X;       //!< Center X pixel
+    uint16_t u16Y;       //!< Center Y pixel
+    uint16_t u16Height;  //!< Height of the ellipse
+    uint16_t u16Width;   //!< Width of the ellipse
     COLOR uColor;       //!< Color of the ellipse perimeter
 } DrawEllipse_t;
 //---------------------------------------------------------------------------
@@ -116,12 +116,12 @@ typedef struct
 */
 typedef struct
 {
-    K_USHORT usX;       //!< Leftmost pixel
-    K_USHORT usY;       //!< Uppermost pixel
-    K_USHORT usWidth;   //!< Width of the bitmap in pixels
-    K_USHORT usHeight;  //!< Height of the bitmap in pixels
-    K_UCHAR ucBPP;      //!< Bits-per-pixel
-    K_UCHAR *pucData;   //!< Pixel data pointer
+    uint16_t u16X;       //!< Leftmost pixel
+    uint16_t u16Y;       //!< Uppermost pixel
+    uint16_t u16Width;   //!< Width of the bitmap in pixels
+    uint16_t u16Height;  //!< Height of the bitmap in pixels
+    uint8_t u8BPP;      //!< Bits-per-pixel
+    uint8_t *pu8Data;   //!< Pixel data pointer
 } DrawBitmap_t;
 //---------------------------------------------------------------------------
 /*!
@@ -129,12 +129,12 @@ typedef struct
 */
 typedef struct
 {
-    K_USHORT usX;       //!< Leftmost pixel
-    K_USHORT usY;       //!< Uppermost pixel
-    K_USHORT usWidth;   //!< Width of the stamp
-    K_USHORT usHeight;  //!< Height of the stamp
+    uint16_t u16X;       //!< Leftmost pixel
+    uint16_t u16Y;       //!< Uppermost pixel
+    uint16_t u16Width;   //!< Width of the stamp
+    uint16_t u16Height;  //!< Height of the stamp
     COLOR uColor;       //!< Color of the stamp
-    K_UCHAR *pucData;   //!< Pointer to the stamp data
+    uint8_t *pu8Data;   //!< Pointer to the stamp data
 } DrawStamp_t;    // monochrome stamp, bitpacked 8bpp
 
 //---------------------------------------------------------------------------
@@ -143,15 +143,15 @@ typedef struct
 */
 typedef struct
 {
-    K_USHORT usLeft;           //!< Leftmost pixel of the text
-    K_USHORT usTop;           //!< Uppermost pixel of the text
+    uint16_t u16Left;           //!< Leftmost pixel of the text
+    uint16_t u16Top;           //!< Uppermost pixel of the text
     COLOR uColor;           //!< Color of the text
     Font_t *pstFont;  //!< Pointer to the font used to render the text
-    const K_CHAR *pcString;     //!< ASCII String to render
+    const char *pcString;     //!< ASCII String to render
 } DrawText_t;
 
 //---------------------------------------------------------------------------
-#define TEXTFX_FLAG_OPAQUE_BG   (0x01)  //!< Use an opaque BG
+#define TEXTFX_FLAG_OPAQUE_BG   (0x01)  //!< use an opaque BG
 #define TEXTFX_FLAG_ROTATE      (0x02)  //!< Apply text rotation
 #define TEXTFX_FLAG_SCALE_X     (0x04)  //!< Scale the text horizontally
 #define TEXTFX_FLAG_SCALE_Y     (0x08)  //!< Scale the text vertically
@@ -159,11 +159,11 @@ typedef struct
 //---------------------------------------------------------------------------
 typedef struct
 {
-    K_UCHAR ucFlags;        //!< Text effects applied
+    uint8_t u8Flags;        //!< Text effects applied
     COLOR uBGColor;         //!< Background color for opaque backgrounds
-    K_USHORT usRotateDeg;   //!< Rotation in degrees
-    K_USHORT usScaleX100;   //!< Scaling factor, fixed point modulo 100
-    K_USHORT usScaleY100;   //!< Scaling factor, fixed point modulo 100
+    uint16_t u16RotateDeg;   //!< Rotation in degrees
+    uint16_t u16ScaleX100;   //!< Scaling factor, fixed point modulo 100
+    uint16_t u16ScaleY100;   //!< Scaling factor, fixed point modulo 100
 } TextFX_t;
 
 //---------------------------------------------------------------------------
@@ -174,10 +174,10 @@ typedef struct
 */
 typedef struct
 {
-    K_USHORT usLeft;        //!< Left boundary
-    K_USHORT usRight;       //!< Right boundary
-    K_USHORT usTop;         //!< Upper boundary
-    K_USHORT usBottom;      //!< Bottom boundary
+    uint16_t u16Left;        //!< Left boundary
+    uint16_t u16Right;       //!< Right boundary
+    uint16_t u16Top;         //!< Upper boundary
+    uint16_t u16Bottom;      //!< Bottom boundary
 } DrawWindow_t;
 
 //---------------------------------------------------------------------------
@@ -187,12 +187,12 @@ typedef struct
 */
 typedef struct
 {
-    K_USHORT usSrcX;        //!< Source X pixel (leftmost)
-    K_USHORT usSrcY;        //!< Source Y pixel (topmost)
-    K_USHORT usDstX;        //!< Destination X pixel (leftmost)
-    K_USHORT usDstY;        //!< Destination Y pixel (topmost)
-    K_USHORT usCopyHeight;  //!< Number of rows to copy 
-    K_USHORT usCopyWidth;   //!< Number of columns to copy
+    uint16_t u16SrcX;        //!< Source X pixel (leftmost)
+    uint16_t u16SrcY;        //!< Source Y pixel (topmost)
+    uint16_t u16DstX;        //!< Destination X pixel (leftmost)
+    uint16_t u16DstY;        //!< Destination Y pixel (topmost)
+    uint16_t u16CopyHeight;  //!< Number of rows to copy 
+    uint16_t u16CopyWidth;   //!< Number of columns to copy
 } DrawMove_t;
 
 //---------------------------------------------------------------------------
@@ -203,8 +203,8 @@ typedef struct
 */
 typedef struct
 {
-    K_USHORT usX;
-    K_USHORT usY;
+    uint16_t u16X;
+    uint16_t u16Y;
 } DrawVector_t;
 
 //---------------------------------------------------------------------------
@@ -214,9 +214,9 @@ typedef struct
 */
 typedef struct
 {
-    K_USHORT     usNumPoints;   //!< Number of points in the polygon
+    uint16_t     u16NumPoints;   //!< Number of points in the polygon
     COLOR        uColor;        //!< Color to use for lines/fill
-    K_BOOL       bFill;         //!< Display as wireframe or filled
+    bool       bFill;         //!< Display as wireframe or filled
     DrawVector_t *pstVector;    //!< Vector points making the polygon
 } DrawPoly_t;
 

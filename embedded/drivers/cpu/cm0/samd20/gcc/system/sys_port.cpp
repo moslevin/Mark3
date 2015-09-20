@@ -39,90 +39,90 @@ SysPort::SysPort(PortIdentity_t ePort_)
 }
 
 //---------------------------------------------------------------------------
-void SysPort::SetDir(K_UCHAR ucPinIndex_, K_BOOL bOutput_)
+void SysPort::SetDir(uint8_t u8PinIndex_, bool bOutput_)
 {
     if (bOutput_)
     {
-        m_pstPort->DIRSET.reg = (1 << ucPinIndex_);
+        m_pstPort->DIRSET.reg = (1 << u8PinIndex_);
     }
     else
     {
-        m_pstPort->DIRCLR.reg = (1 << ucPinIndex_);
+        m_pstPort->DIRCLR.reg = (1 << u8PinIndex_);
     }
 }
 
 //---------------------------------------------------------------------------
-void SysPort::SetOut(K_UCHAR ucPinIndex_, K_BOOL bLevel_)
+void SysPort::SetOut(uint8_t u8PinIndex_, bool bLevel_)
 {
     if (bLevel_)
     {
-        m_pstPort->OUTSET.reg = (1 << ucPinIndex_);
+        m_pstPort->OUTSET.reg = (1 << u8PinIndex_);
     }
     else
     {
-        m_pstPort->OUTCLR.reg = (1 << ucPinIndex_);
+        m_pstPort->OUTCLR.reg = (1 << u8PinIndex_);
     }
 }
 
 //---------------------------------------------------------------------------
-void SysPort::ToggleOut(K_UCHAR ucPinIndex_)
+void SysPort::ToggleOut(uint8_t u8PinIndex_)
 {
-    m_pstPort->OUTTGL.reg = (1 << ucPinIndex_);
+    m_pstPort->OUTTGL.reg = (1 << u8PinIndex_);
 }
 
 //---------------------------------------------------------------------------
-K_BOOL SysPort::GetIn(K_UCHAR ucPinIndex_)
+bool SysPort::GetIn(uint8_t u8PinIndex_)
 {
-    return ((m_pstPort->IN.reg >> ucPinIndex_) & 0x1);
+    return ((m_pstPort->IN.reg >> u8PinIndex_) & 0x1);
 }
 
 //---------------------------------------------------------------------------
-void SysPort::SetPinConfig(K_UCHAR ucPinIndex_, K_BOOL bPullUp_, K_BOOL bInputEnable_, K_BOOL bMuxWithPeripheral_)
+void SysPort::SetPinConfig(uint8_t u8PinIndex_, bool bpu32lUp_, bool bInputEnable_, bool bMuxWithPeripheral_)
 {
-    K_ULONG ulReg;
-    K_ULONG ulPinBit = 1 << ((K_ULONG)(ucPinIndex_ & 0x0F));
+    uint32_t u32Reg;
+    uint32_t u32PinBit = 1 << ((uint32_t)(u8PinIndex_ & 0x0F));
 
-    ulReg = PORT_WRCONFIG_WRPINCFG
-            | (ulPinBit << PORT_WRCONFIG_PINMASK_Pos)
+    u32Reg = PORT_WRCONFIG_WRPINCFG
+            | (u32PinBit << PORT_WRCONFIG_PINMASK_Pos)
             ;
 
-    if (ucPinIndex_ >= 16)
+    if (u8PinIndex_ >= 16)
     {
-        ulReg |= PORT_WRCONFIG_HWSEL; // Accessing upper bits in the register
+        u32Reg |= PORT_WRCONFIG_HWSEL; // Accessing upper bits in the register
     }
-    if (bPullUp_)
+    if (bpu32lUp_)
     {
-        ulReg |= PORT_WRCONFIG_PULLEN;
+        u32Reg |= PORT_WRCONFIG_pu32LEN;
     }
     if (bInputEnable_)
     {
-        ulReg |= PORT_WRCONFIG_INEN;
+        u32Reg |= PORT_WRCONFIG_INEN;
     }
     if (bMuxWithPeripheral_)
     {
-        ulReg |= PORT_WRCONFIG_PMUXEN;
+        u32Reg |= PORT_WRCONFIG_PMUXEN;
     }
 
-    m_pstPort->WRCONFIG.reg = ulReg;
+    m_pstPort->WRCONFIG.reg = u32Reg;
 }
 
 //---------------------------------------------------------------------------
-void SysPort::SetPortMux(K_UCHAR ucPinIndex_, PinMux_t eMuxFunction_)
+void SysPort::SetPortMux(uint8_t u8PinIndex_, PinMux_t eMuxFunction_)
 {
-    K_ULONG ulReg;
-    K_ULONG ulPinBit = 1 << ((K_ULONG)(ucPinIndex_ & 0x0F));
+    uint32_t u32Reg;
+    uint32_t u32PinBit = 1 << ((uint32_t)(u8PinIndex_ & 0x0F));
 
-    ulReg =  PORT_WRCONFIG_WRPMUX
-            | (ulPinBit << PORT_WRCONFIG_PINMASK_Pos)
+    u32Reg =  PORT_WRCONFIG_WRPMUX
+            | (u32PinBit << PORT_WRCONFIG_PINMASK_Pos)
             | (eMuxFunction_ << PORT_WRCONFIG_PMUX_Pos)
             ;
 
-    if (ucPinIndex_ >= 16)
+    if (u8PinIndex_ >= 16)
     {
-        ulReg |= PORT_WRCONFIG_HWSEL; // Accessing upper bits in the register
+        u32Reg |= PORT_WRCONFIG_HWSEL; // Accessing upper bits in the register
     }
 
-    m_pstPort->WRCONFIG.reg = ulReg;
+    m_pstPort->WRCONFIG.reg = u32Reg;
 }
 
 //---------------------------------------------------------------------------

@@ -28,16 +28,16 @@ void PanelControl::Draw()
     GUI_DEBUG_PRINT( "PanelControl::Draw()\n");
     GraphicsDriver *pclDriver = GetParentWindow()->GetDriver();
     DrawRectangle_t stRectangle;    
-    K_USHORT usX, usY;
+    uint16_t u16X, u16Y;
     
-    GetControlOffset(&usX, &usY);
+    GetControlOffset(&u16X, &u16Y);
     
-    stRectangle.usTop = GetTop() + usY;
-    stRectangle.usBottom = stRectangle.usTop + GetHeight() -1;
-    stRectangle.usLeft = GetLeft() + usX;
-    stRectangle.usRight = stRectangle.usLeft + GetWidth() -1;
+    stRectangle.u16Top = GetTop() + u16Y;
+    stRectangle.u16Bottom = stRectangle.u16Top + GetHeight() -1;
+    stRectangle.u16Left = GetLeft() + u16X;
+    stRectangle.u16Right = stRectangle.u16Left + GetWidth() -1;
     stRectangle.bFill = true;
-    stRectangle.uLineColor = m_uColor;
+    stRectangle.u32ineColor = m_uColor;
     stRectangle.uFillColor = m_uColor;
     
     pclDriver->Rectangle(&stRectangle);

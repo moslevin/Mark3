@@ -48,21 +48,21 @@ public:
 
 private:
 
-    K_BOOL ButtonDown();
+    bool ButtonDown();
 
-    K_BOOL ButtonUp();
+    bool ButtonUp();
 
-    K_BOOL LeftDown();
+    bool LeftDown();
 
-    K_BOOL RightDown();
+    bool RightDown();
 
-    K_UCHAR CheckBrickHit(K_USHORT usX_, K_USHORT usY_);
+    uint8_t CheckBrickHit(uint16_t u16X_, uint16_t u16Y_);
 
     void UpdateLazer();
 
     void LoseALife();
 
-    void UpdateBallVelocity( K_SHORT sDelta_);
+    void UpdateBallVelocity( int16_t s16Delta_);
 
     void GameEnter();
 
@@ -87,7 +87,7 @@ private:
     void ListScoreLoop();
 
 	GameState_t m_eState;
-	K_USHORT m_usCounter;
+	uint16_t m_u16Counter;
 	
 	BrBall			m_clBall;		//!< Ball Sprite
 	BrPaddle		m_clPaddle;		//!< Paddle sprite defines
@@ -97,9 +97,9 @@ private:
 	BrLevel			m_clLevel;		//!< Current level + HUD
     BrLazer         m_clLazer;      //!< Lazor dabs!
 
-	K_CHAR			m_acInitials[4];	//!< High-score initials
-	K_UCHAR			m_ucInitialId;		//!< Current initial entered in high-score	
-    K_USHORT        m_sBallOffset;     //!< Offset between ball and paddle on start
+	char			m_acInitials[4];	//!< High-score initials
+	uint8_t			m_u8InitialId;		//!< Current initial entered in high-score	
+    uint16_t        m_sBallOffset;     //!< Offset between ball and paddle on start
 };
 
 

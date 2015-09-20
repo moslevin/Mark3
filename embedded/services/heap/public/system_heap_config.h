@@ -27,7 +27,7 @@ See license.txt for more information
     Set this to "1" if you want the system heap to be built as part of this
     library.
 */
-#define USE_SYSTEM_HEAP        (1)
+#define use_SYSTEM_HEAP        (1)
 
 //---------------------------------------------------------------------------
 /*!
@@ -41,32 +41,32 @@ See license.txt for more information
     Define the block sizes for each of the fixed-size blocks that will be 
     managed by our heaps.  Must be defined in incrementing order.
 */
-#define HEAP_BLOCK_SIZE_1        ((K_USHORT) 8)
-#define HEAP_BLOCK_SIZE_2        ((K_USHORT) 16)
-#define HEAP_BLOCK_SIZE_3        ((K_USHORT) 24)
-#define HEAP_BLOCK_SIZE_4        ((K_USHORT) 32)
-#define HEAP_BLOCK_SIZE_5        ((K_USHORT) 48)
-#define HEAP_BLOCK_SIZE_6        ((K_USHORT) 64)
-#define HEAP_BLOCK_SIZE_7        ((K_USHORT) 96)
-#define HEAP_BLOCK_SIZE_8        ((K_USHORT) 128)
-#define HEAP_BLOCK_SIZE_9        ((K_USHORT) 192)
-#define HEAP_BLOCK_SIZE_10        ((K_USHORT) 256)
+#define HEAP_BLOCK_SIZE_1        ((uint16_t) 8)
+#define HEAP_BLOCK_SIZE_2        ((uint16_t) 16)
+#define HEAP_BLOCK_SIZE_3        ((uint16_t) 24)
+#define HEAP_BLOCK_SIZE_4        ((uint16_t) 32)
+#define HEAP_BLOCK_SIZE_5        ((uint16_t) 48)
+#define HEAP_BLOCK_SIZE_6        ((uint16_t) 64)
+#define HEAP_BLOCK_SIZE_7        ((uint16_t) 96)
+#define HEAP_BLOCK_SIZE_8        ((uint16_t) 128)
+#define HEAP_BLOCK_SIZE_9        ((uint16_t) 192)
+#define HEAP_BLOCK_SIZE_10        ((uint16_t) 256)
 
 //---------------------------------------------------------------------------
 /*!
     Define the number of blocks in each bin, tailored for a particular 
     application
 */
-#define HEAP_BLOCK_COUNT_1        ((K_USHORT) 4)
-#define HEAP_BLOCK_COUNT_2        ((K_USHORT) 4)
-#define HEAP_BLOCK_COUNT_3        ((K_USHORT) 2)
-#define HEAP_BLOCK_COUNT_4        ((K_USHORT) 2)
-#define HEAP_BLOCK_COUNT_5        ((K_USHORT) 2)
-#define HEAP_BLOCK_COUNT_6        ((K_USHORT) 2)
-#define HEAP_BLOCK_COUNT_7        ((K_USHORT) 1)
-#define HEAP_BLOCK_COUNT_8        ((K_USHORT) 1)
-#define HEAP_BLOCK_COUNT_9        ((K_USHORT) 1)
-#define HEAP_BLOCK_COUNT_10        ((K_USHORT) 1)
+#define HEAP_BLOCK_COUNT_1        ((uint16_t) 4)
+#define HEAP_BLOCK_COUNT_2        ((uint16_t) 4)
+#define HEAP_BLOCK_COUNT_3        ((uint16_t) 2)
+#define HEAP_BLOCK_COUNT_4        ((uint16_t) 2)
+#define HEAP_BLOCK_COUNT_5        ((uint16_t) 2)
+#define HEAP_BLOCK_COUNT_6        ((uint16_t) 2)
+#define HEAP_BLOCK_COUNT_7        ((uint16_t) 1)
+#define HEAP_BLOCK_COUNT_8        ((uint16_t) 1)
+#define HEAP_BLOCK_COUNT_9        ((uint16_t) 1)
+#define HEAP_BLOCK_COUNT_10        ((uint16_t) 1)
 
 #endif
 

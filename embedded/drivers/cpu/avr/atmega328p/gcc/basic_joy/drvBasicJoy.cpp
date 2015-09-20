@@ -30,7 +30,7 @@ void BasicJoystick::Init()
 } 
 
 //---------------------------------------------------------------------------
-K_UCHAR BasicJoystick::Open()
+uint8_t BasicJoystick::Open()
 {
 	JOY_DDR  &= ~JOY_LEFT;
 	JOY_DDR &= ~JOY_RIGHT;
@@ -48,10 +48,10 @@ K_UCHAR BasicJoystick::Open()
 }
 
 //---------------------------------------------------------------------------
-K_USHORT BasicJoystick::Control( K_USHORT usEvent_, void *pvIn_, K_USHORT usSizeIn_,
-                                                  void *pvOut_, K_USHORT usSizeOut_ )
+uint16_t BasicJoystick::Control( uint16_t u16Event_, void *pvIn_, uint16_t u16SizeIn_,
+                                                  void *pvOut_, uint16_t u16SizeOut_ )
 {    
-    switch(usEvent_)
+    switch(u16Event_)
     {
         // Main event - poll joypad.
         case JOYSTICK_SCAN:

@@ -1,5 +1,5 @@
 ### Quick script to automate the execution of all unit tests
-### using FunkProgMono to load the test code, and FunkTermMono
+### u16ing FunkProgMono to load the test code, and FunkTermMono
 ### to read the test results - all on real hardware connected
 ### to the device.
 

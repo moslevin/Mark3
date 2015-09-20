@@ -23,8 +23,8 @@ See license.txt for more information
 UnitTest::UnitTest()
 {
     m_bIsActive = false;
-    m_usIterations = 0;
-    m_usPassed = 0;
+    m_u16Iterations = 0;
+    m_u16Passed = 0;
     m_bComplete = false;
 }
 
@@ -39,8 +39,8 @@ void UnitTest::Pass()
     if (m_bIsActive)
     { 
         m_bIsActive = false; 
-        m_usIterations++;
-        m_usPassed++;
+        m_u16Iterations++;
+        m_u16Passed++;
         m_bStatus = true;
     }        
 }    
@@ -56,7 +56,7 @@ void UnitTest::Fail()
     if (m_bIsActive)
     {
         m_bIsActive = false;
-        m_usIterations++;            
+        m_u16Iterations++;            
         m_bStatus = false;
     }
 }

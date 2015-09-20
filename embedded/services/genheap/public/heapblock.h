@@ -100,24 +100,24 @@ public:
      * A heap may have many root blocks, depending on its configuration, and
      * the size of the buffer used for the heap.
      *
-     * \param uSize_ Size of the memory blob (in bytes) that the HeapBlock
+     * \param usize_ Size of the memory blob (in bytes) that the HeapBlock
      *        object occupies.
      */
-    void RootInit( K_ADDR uSize_ );
+    void RootInit( K_ADDR usize_ );
 
     /*!
      * \brief Split
      *
      * Split the current HeapBlock object into two objects.  The current
-     * HeapBlock is resized to uSize_ bytes of data, while any remaining
+     * HeapBlock is resized to usize_ bytes of data, while any remaining
      * slack is allocated to a newly-created object.
      *
-     * \param uSize_ Size (in bytes) to reserve for the current object,
+     * \param usize_ Size (in bytes) to reserve for the current object,
      *        with the remaining slack allocated towards
      *
      * \return Newly created object.
      */
-    HeapBlock *Split( K_ADDR uSize_ );
+    HeapBlock *Split( K_ADDR usize_ );
 
     /*!
      * \brief Coalesce
@@ -224,7 +224,7 @@ private:
     /*!
      * \brief Init
      *
-     * Used as a pseudo-constructor function, as we create HeapBlocks
+     * used as a pseudo-constructor function, as we create HeapBlocks
      * dynamically from an existing, unmanaged blob of memory.  We could
      * also use a constructor and placement-new, but this is just simpler.
      */

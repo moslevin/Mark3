@@ -30,16 +30,16 @@ class GraphicsFlavr : public GraphicsDriver
 {
 public:
 //---------------------------------------------------------
-    virtual void Init() { m_usResX = 128; m_usResY = 160; }
-    virtual K_UCHAR Open()
+    virtual void Init() { m_u16Res16X = 128; m_u16Res16Y = 160; }
+    virtual uint8_t Open()
         { return 0; }
-    virtual K_UCHAR Close()
+    virtual uint8_t Close()
         { return 0; }
-    virtual K_USHORT Read( K_USHORT usBytes_, K_UCHAR *pucData_ )
-        { return usBytes_; }
-    virtual K_USHORT Write( K_USHORT usBytes_, K_UCHAR *pucData_ )
-        { return usBytes_; }
-    virtual K_USHORT Control( K_USHORT usEvent_, void *pvDataIn_, K_USHORT usSizeIn_, void *pvDataOut_, K_USHORT usSizeOut_ )
+    virtual uint16_t Read( uint16_t u16Bytes_, uint8_t *pu8Data_ )
+        { return u16Bytes_; }
+    virtual uint16_t Write( uint16_t u16Bytes_, uint8_t *pu8Data_ )
+        { return u16Bytes_; }
+    virtual uint16_t Control( uint16_t u16Event_, void *pvDataIn_, uint16_t u16SizeIn_, void *pvDataOut_, uint16_t u16SizeOut_ )
         { return 0; }        
         
 //---------------------------------------------------------
@@ -67,7 +67,7 @@ public:
 //    virtual void Polygon(DrawPoly_t *pstPoly_);
 
 //    virtual void Text(DrawText_t *pstText_);
-//    virtual K_USHORT TextWidth(DrawText_t *pstText_);
+//    virtual uint16_t TextWidth(DrawText_t *pstText_);
       void Flip(void);
 };
 

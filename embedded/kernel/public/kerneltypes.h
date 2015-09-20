@@ -22,19 +22,6 @@ See license.txt for more information
 #define __KERNELTYPES_H__
 
 //---------------------------------------------------------------------------
-#if defined(bool)
-    #define K_BOOL            bool          //!< Basic boolean data type (true = 1, false = 0)
-#else
-    #define K_BOOL            uint8_t       //!< Basic boolean data type (true = 1, false = 0)
-#endif
-    
-#define K_CHAR          char                //!< The 8-bit signed integer type used by Mark3
-#define K_UCHAR         uint8_t             //!< The 8-bit unsigned integer type used by Mark3
-#define K_USHORT        uint16_t            //!< The 16-bit unsigned integer type used by Mark3
-#define K_SHORT         int16_t             //!< The 16-bit signed integer type used by Mark3
-#define K_ULONG         uint32_t            //!< The 32-bit unsigned integer type used by Mark3
-#define K_LONG          int32_t             //!< The 32-bit signed integer type used by Mark3
-
 #if !defined(K_ADDR)
     #define K_ADDR      uint32_t            //!< Primative datatype representing address-size
 #endif
@@ -46,7 +33,7 @@ See license.txt for more information
 /*!
  * Function pointer type used to implement kernel-panic handlers.
  */
-typedef void (*panic_func_t)( K_USHORT usPanicCode_ );
+typedef void (*panic_func_t)( uint16_t u16PanicCode_ );
 
 //---------------------------------------------------------------------------
 /*!
@@ -63,6 +50,5 @@ typedef enum
     EVENT_FLAG_MODES,           //!< Count of event-flag modes.  Not used by user
     EVENT_FLAG_PENDING_UNBLOCK  //!< Special code.  Not used by user
 } EventFlagOperation_t;
-
 
 #endif

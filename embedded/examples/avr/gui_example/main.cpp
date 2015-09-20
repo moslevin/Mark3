@@ -54,7 +54,7 @@ static void TickTimerCallback( Thread *pclOwner_, void *pvData_ );
 
 //---------------------------------------------------------------------------
 // Checkbox callback declarations
-static K_UCHAR ucProgressVal = 50;
+static uint8_t u8Progress16Val = 50;
 static void CheckBox1Callback( bool bChecked_ );
 static void CheckBox2Callback( bool bChecked_ );
 
@@ -84,17 +84,17 @@ void JoyTimerCallback( Thread *pclOwner_, void *pvData_ )
     // Read the joystick, and send the event to the "event surface" that
     // manages events for our application window.
     GuiEvent_t stEvent;
-    stEvent.ucEventType = EVENT_TYPE_JOYSTICK;
-    stEvent.ucTargetID = TARGET_ID_FOCUS;
+    stEvent.u8EventType = EVENT_TYPE_JOYSTICK;
+    stEvent.u8TargetID = TARGET_ID_FOCUS;
 
     JoystickReport stReport;
     clJoystick.Scan();
 
     clJoystick.ReadPrevious(&stReport);
-    stEvent.stJoystick.Previous.usRawData = stReport.usDigital;
+    stEvent.stJoystick.Previous.u16RawData = stReport.u16Digital;
 
     clJoystick.ReadCurrent(&stReport);
-    stEvent.stJoystick.Current.usRawData = stReport.usDigital;
+    stEvent.stJoystick.Current.u16RawData = stReport.u16Digital;
 
     clEventSurface.SendEvent(&stEvent);
 }
@@ -120,9 +120,9 @@ void TickTimerCallback( Thread *pclOwner_, void *pvData_ )
     }
 
     GuiEvent_t stEvent;
-    stEvent.ucEventType = EVENT_TYPE_TIMER;
-    stEvent.ucTargetID = TARGET_ID_BROADCAST;
-    stEvent.stTimer.usTicks = 1;
+    stEvent.u8EventType = EVENT_TYPE_TIMER;
+    stEvent.u8TargetID = TARGET_ID_BROADCAST;
+    stEvent.stTimer.u16Ticks = 1;
     bFlip = true;
     clEventSurface.SendEvent(&stEvent);
 
@@ -150,14 +150,14 @@ static void CheckBox1Callback( bool bChecked_ )
     if (bChecked_)
     {
         KernelAware::Print("CB1_Chk\n");
-        ucProgressVal += 50;
+        u8Progress16Val += 50;
     }
     else
     {
         KernelAware::Print("CB1_NCh\n");
-        ucProgressVal -=50;
+        u8Progress16Val -=50;
     }
-    clProgress.SetProgress(ucProgressVal);
+    clProgress.SetProgress(u8Progress16Val);
 }
 
 //---------------------------------------------------------------------------
@@ -166,14 +166,14 @@ static void CheckBox2Callback( bool bChecked_ )
     if (bChecked_)
     {
         KernelAware::Print("CB2_Chk\n");
-        ucProgressVal += 25;
+        u8Progress16Val += 25;
     }
     else
     {
         KernelAware::Print("CB2_NCh\n");
-        ucProgressVal -= 25;
+        u8Progress16Val -= 25;
     }
-    clProgress.SetProgress(ucProgressVal);
+    clProgress.SetProgress(u8Progress16Val);
 }
 
 //---------------------------------------------------------------------------
@@ -204,10 +204,10 @@ void AppMain(void *unused_)
 
     {
         DrawWindow_t stWindow;
-        stWindow.usTop = 0;
-        stWindow.usBottom = 159;
-        stWindow.usLeft = 0;
-        stWindow.usRight = 127;
+        stWindow.u16Top = 0;
+        stWindow.u16Bottom = 159;
+        stWindow.u16Left = 0;
+        stWindow.u16Right = 127;
         clGfx.SetWindow(&stWindow);
     }
 

@@ -37,13 +37,13 @@ static MessageQueue clMsgQ;              //!< Message Queue for timers
 
 //---------------------------------------------------------------------------
 
-void MemSet( void *pvData_, unsigned char ucValue_, unsigned short usCount_ )
+void MemSet( void *pvData_, unsigned char u8Value_, unsigned short u16Count_ )
 {
-    unsigned char *pucData = (unsigned char*)pvData_;
+    unsigned char *pu8Data = (unsigned char*)pvData_;
     unsigned short i;
-    for (i = 0; i < usCount_; i++)
+    for (i = 0; i < u16Count_; i++)
     {
-        pucData[i]= ucValue_;
+        pu8Data[i]= u8Value_;
     }
 }
 
@@ -83,11 +83,11 @@ static void TCallbackMulti3( Thread *pclOwner_, void *data_ )
     clMsgQ.Send(pclMsg);
 }
 
-volatile K_ULONG aulDelta[3];
+volatile uint32_t aulDelta[3];
 //---------------------------------------------------------------------------
 TEST(ut_timer_sanity_multi)
 {
-    K_ULONG i;
+    uint32_t i;
     clProfiler1m.Init();
     clProfiler10m.Init();
     clProfiler100m.Init();
@@ -102,7 +102,7 @@ TEST(ut_timer_sanity_multi)
     Profiler::Init();
     Profiler::Start();
 
-    // Use prime numbers for extra random interaction.
+    // use prime numbers for extra random interaction.
     clTimer1.Start(true, 7, TCallbackMulti1, NULL);
     clProfiler1.Start();
     clTimer2.Start(true, 13, TCallbackMulti2, NULL);
@@ -171,7 +171,7 @@ TEST(ut_timer_sanity_multi)
 }
 TEST_END
 //---------------------------------------------------------------------------
-volatile K_ULONG ulDelta = 0;
+volatile uint32_t u32Delta = 0;
 
 TEST(ut_timer_sanity_precision)
 {
@@ -189,7 +189,7 @@ TEST(ut_timer_sanity_precision)
     Profiler::Init();
     Profiler::Start();
 
-    K_ULONG i;
+    uint32_t i;
     bool bPass = true;
     // 1ms repeated counter
     clTimer.Start(true, 1, TCallback, NULL);
@@ -199,8 +199,8 @@ TEST(ut_timer_sanity_precision)
 
         clTimerSem.Pend();
         clProfiler1m.Stop();
-        ulDelta = clProfiler1m.GetCurrent() * 8;
-        if ((ulDelta < 12000) || (ulDelta > 20000))
+        u32Delta = clProfiler1m.GetCurrent() * 8;
+        if ((u32Delta < 12000) || (u32Delta > 20000))
         {
             // Write error...
             bPass = false;
@@ -218,8 +218,8 @@ TEST(ut_timer_sanity_precision)
         clProfiler10m.Start();
         clTimerSem.Pend();
         clProfiler10m.Stop();
-        ulDelta = clProfiler10m.GetCurrent() * 8;
-        if ((ulDelta < 155000) || (ulDelta > 165000))
+        u32Delta = clProfiler10m.GetCurrent() * 8;
+        if ((u32Delta < 155000) || (u32Delta > 165000))
         {
             // Write error...
             bPass = false;
@@ -237,8 +237,8 @@ TEST(ut_timer_sanity_precision)
         clProfiler100m.Start();
         clTimerSem.Pend();
         clProfiler100m.Stop();
-        ulDelta = clProfiler100m.GetCurrent() * 8;
-        if ((ulDelta < 1595000) || (ulDelta > 1605000))
+        u32Delta = clProfiler100m.GetCurrent() * 8;
+        if ((u32Delta < 1595000) || (u32Delta > 1605000))
         {
             // Write error...
             bPass = false;

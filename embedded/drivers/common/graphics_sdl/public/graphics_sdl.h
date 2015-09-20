@@ -37,13 +37,13 @@ class GraphicsSDL : public GraphicsDriver
 public:
 //---------------------------------------------------------
     virtual void Init();
-    virtual K_UCHAR Open();
-    virtual K_UCHAR Close();
-    virtual K_USHORT Read( K_USHORT usBytes_, K_UCHAR *pucData_ )
+    virtual uint8_t Open();
+    virtual uint8_t Close();
+    virtual uint16_t Read( uint16_t u16Bytes_, uint8_t *pu8Data_ )
         { return 0; }
-    virtual K_USHORT Write( K_USHORT usBytes_, K_UCHAR *pucData_ )
+    virtual uint16_t Write( uint16_t u16Bytes_, uint8_t *pu8Data_ )
         { return 0; }
-    virtual K_USHORT Control( K_USHORT usEvent_, void *pvDataIn_, K_USHORT usSizeIn_, void *pvDataOut_, K_USHORT usSizeOut_ )
+    virtual uint16_t Control( uint16_t u16Event_, void *pvDataIn_, uint16_t u16SizeIn_, void *pvDataOut_, uint16_t u16SizeOut_ )
         { return 0; }        
         
 //---------------------------------------------------------
@@ -68,7 +68,7 @@ public:
     // virtual void Polygon(DrawPoly_t *pstPoly_);
 
     // virtual void Text(DrawText_t *pstText_);
-    // virtual K_USHORT TextWidth(DrawText_t *pstText_) {return 0;}
+    // virtual uint16_t TextWidth(DrawText_t *pstText_) {return 0;}
 
     void Flip();
     

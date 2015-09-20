@@ -42,38 +42,38 @@ void LabelControl::Draw()
 
     DrawWindow_t stWindow;
 
-    K_USHORT usX, usY;
+    uint16_t u16X, u16Y;
 
-    GetControlOffset(&usX, &usY);
+    GetControlOffset(&u16X, &u16Y);
 
     DrawText_t stText;
     DrawRectangle_t stRect;
-    K_USHORT usTextWidth;
+    uint16_t u16TextWidth;
 
-    stText.usTop = GetTop() + usY;
-    stText.usLeft = GetLeft() + usX;
+    stText.u16Top = GetTop() + u16Y;
+    stText.u16Left = GetLeft() + u16X;
     stText.uColor = m_uFontColor;
     stText.pcString = m_pcCaption;
     stText.pstFont = m_pstFont;
-    usTextWidth = pclDriver->TextWidth(&stText);
+    u16TextWidth = pclDriver->TextWidth(&stText);
 
     if (false == m_bTransparent)
     {
 
-        stRect.usLeft = GetLeft() + usX;
-        stRect.usRight = stRect.usLeft + GetWidth() - 1;
-        stRect.usTop = GetTop() + usY;
-        stRect.usBottom = stRect.usTop + GetHeight() - 1;
-        stRect.uLineColor = m_uBackColor;
+        stRect.u16Left = GetLeft() + u16X;
+        stRect.u16Right = stRect.u16Left + GetWidth() - 1;
+        stRect.u16Top = GetTop() + u16Y;
+        stRect.u16Bottom = stRect.u16Top + GetHeight() - 1;
+        stRect.u32ineColor = m_uBackColor;
         stRect.uFillColor = m_uBackColor;
         stRect.bFill = true;
         pclDriver->Rectangle(&stRect);
     }
 
-    stWindow.usLeft = stText.usLeft;
-    stWindow.usRight = stText.usLeft+ GetWidth() - 1;
-    stWindow.usTop = stText.usTop;
-    stWindow.usBottom = stText.usTop + GetHeight() - 1;
+    stWindow.u16Left = stText.u16Left;
+    stWindow.u16Right = stText.u16Left+ GetWidth() - 1;
+    stWindow.u16Top = stText.u16Top;
+    stWindow.u16Bottom = stText.u16Top + GetHeight() - 1;
 
     if (!stText.pstFont)
     {

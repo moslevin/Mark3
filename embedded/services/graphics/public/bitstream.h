@@ -26,10 +26,10 @@ public:
      *
      * Initialize the BitStreamer object prior to use
      *
-     * \param pucData_ Pointer to raw data to be streamed
-     * \param usSize_ Size of pucData_ in bytes
+     * \param pu8Data_ Pointer to raw data to be streamed
+     * \param u16Size_ Size of pu8Data_ in bytes
      */
-    void Init(K_UCHAR *pucData_, K_USHORT usSize_);
+    void Init(uint8_t *pu8Data_, uint16_t u16Size_);
 
     /*!
      * \brief AdvanceByte
@@ -46,16 +46,16 @@ public:
      * Read the next "n" bits from the stream, returning the result into an
      * 8-bit unsigned integer.
      *
-     * \param ucNumBits_ Number of bits to read (less than 8)
+     * \param u8NumBits_ Number of bits to read (less than 8)
      * \return Bits read as an 8-bit unsigned integer.
      */
-    K_UCHAR ReadBits(K_UCHAR ucNumBits_);
+    uint8_t ReadBits(uint8_t u8NumBits_);
 
 private:
-    K_UCHAR *m_pucData;     //!< Pointer to the data being streamed
-    K_UCHAR m_ucBitIndex;   //!< Current "bit" index in the current byte
-    K_USHORT m_usByteIndex;	//!< Current "byte" index in the stream
-    K_USHORT m_usSize;      //!< Length of data (in bytes)
+    uint8_t *m_pu8Data;     //!< Pointer to the data being streamed
+    uint8_t m_u8BitIndex;   //!< Current "bit" index in the current byte
+    uint16_t m_u16ByteIndex;	//!< Current "byte" index in the stream
+    uint16_t m_u16Size;      //!< Length of data (in bytes)
 };
 
 #endif // __BITSTREAM_H__

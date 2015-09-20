@@ -31,19 +31,19 @@ class BlockHeap
 public:
     /*!
     
-        \fn void *Create( void *pvHeap_, K_USHORT usSize_, K_USHORT usBlockSize_ )
+        \fn void *Create( void *pvHeap_, uint16_t u16Size_, uint16_t u16BlockSize_ )
         
         Create a single list heap in the blob of memory provided, with the 
         selected heap size, and the selected number of blocks.  Will create
-        as many blocks as will fit in the usSize_ parameter
+        as many blocks as will fit in the u16Size_ parameter
         
         \param pvHeap_ Pointer to the heap data to initialize
-        \param usSize_ Size of the heap range in bytes
-        \param usBlockSize_ Size of each heap block in bytes
+        \param u16Size_ Size of the heap range in bytes
+        \param u16BlockSize_ Size of each heap block in bytes
         
         \return Pointer to the next heap element to initialize
     */
-    void *Create( void *pvHeap_, K_USHORT usSize_, K_USHORT usBlockSize_ );
+    void *Create( void *pvHeap_, uint16_t u16Size_, uint16_t u16BlockSize_ );
     
     /*! 
         \fn void *Alloc()
@@ -65,16 +65,16 @@ public:
     void Free( void* pvData_ );
     
     /*!
-        \fn K_BOOL IsFree() 
+        \fn bool IsFree() 
         
         Returns the state of a heap - whether or not it has free elements.
         
         \return true if the heap is not full, false if the heap is full
     */
-    K_BOOL IsFree() { return m_usBlocksFree != 0; }
+    bool IsFree() { return m_u16BlocksFree != 0; }
     
 protected:
-    K_USHORT m_usBlocksFree;    //!< Number of blocks free in the heap
+    uint16_t m_u16BlocksFree;    //!< Number of blocks free in the heap
     
 private:    
     DoubleLinkList m_clList;    //!< Linked list used to manage the blocks
@@ -90,8 +90,8 @@ class FixedHeap;
 class HeapConfig
 {
 public:
-    K_USHORT m_usBlockSize;        //!< Block size in bytes
-    K_USHORT m_usBlockCount;       //!< Number of blocks to create @ this size
+    uint16_t m_u16BlockSize;        //!< Block size in bytes
+    uint16_t m_u16BlockCount;       //!< Number of blocks to create @ this size
     friend class FixedHeap;
 protected:
     BlockHeap m_clHeap;            //!< BlockHeap object used by the allocator
@@ -122,17 +122,17 @@ public:
     void Create( void *pvHeap_, HeapConfig *pclHeapConfig_ );
 
     /*!
-        \fn void *Alloc( K_USHORT usSize_ )
+        \fn void *Alloc( uint16_t u16Size_ )
         
         Allocate a blob of memory from the heap.  If no appropriately-sized
         data block is available, will return NULL.  Note, this API is thread-
         safe, and interrupt safe.
                 
-        \param usSize_ Size (in bytes) to allocate from the heap
+        \param u16Size_ Size (in bytes) to allocate from the heap
         
         \return Pointer to a block of data allocated, or 0 on error.
     */
-    void *Alloc( K_USHORT usSize_ );
+    void *Alloc( uint16_t u16Size_ );
     
     /*!
         \fn void Free( void *pvNode_ )

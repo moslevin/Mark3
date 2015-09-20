@@ -25,45 +25,45 @@ See license.txt for more information
 #if KERNEL_USE_DEBUG && !KERNEL_AWARE_SIMULATION
 
 //---------------------------------------------------------------------------
-void WriteBuffer16::WriteData( K_USHORT *pusBuf_, K_USHORT usLen_ )
+void WriteBuffer16::WriteData( uint16_t *pu16Buf_, uint16_t u16Len_ )
 {
-	K_USHORT *apusBuf[1];
-	K_USHORT ausLen[1];
+	uint16_t *apu16Buf[1];
+    uint16_t au16Len[1];
 	
-	apusBuf[0] = pusBuf_;
-	ausLen[0] = usLen_;
+	apu16Buf[0] = pu16Buf_;
+    au16Len[0] = u16Len_;
 	
-	WriteVector( apusBuf, ausLen, 1 );
+    WriteVector( apu16Buf, au16Len, 1 );
 }
 
 //---------------------------------------------------------------------------
-void WriteBuffer16::WriteVector( K_USHORT **ppusBuf_, K_USHORT *pusLen_, K_UCHAR ucCount_ )
+void WriteBuffer16::WriteVector( uint16_t **ppu16Buf_, uint16_t *pu16Len_, uint8_t u8Count_ )
 {
-	K_USHORT usTempHead;	
-	K_UCHAR i;
-	K_UCHAR j;
-	K_USHORT usTotalLen = 0;
-    K_BOOL bCallback = false;
-    K_BOOL bRollover = false;
-	// Update the head pointer synchronously, using a small 
+	uint16_t u16TempHead;	
+	uint8_t i;
+	uint8_t j;
+	uint16_t u16TotalLen = 0;
+    bool bCallback = false;
+    bool bRollover = false;
+    // Update the head pointer synchronously, using a small
 	// critical section in order to provide thread safety without
 	// compromising on responsiveness by adding lots of extra
 	// interrupt latency.
 	
 	CS_ENTER();
 	
-	usTempHead = m_usHead;
+	u16TempHead = m_u16Head;
 	{		
-		for (i = 0; i < ucCount_; i++)
+		for (i = 0; i < u8Count_; i++)
 		{
-			usTotalLen += pusLen_[i];
+            u16TotalLen += pu16Len_[i];
 		}
-		m_usHead = (usTempHead + usTotalLen) % m_usSize;
+		m_u16Head = (u16TempHead + u16TotalLen) % m_u16Size;
 	}	
 	CS_EXIT();
 	
 	// Call the callback if we cross the 50% mark or rollover 
-	if (m_usHead < usTempHead)
+	if (m_u16Head < u16TempHead)
 	{
 		if (m_pfCallback)
 		{
@@ -71,7 +71,7 @@ void WriteBuffer16::WriteVector( K_USHORT **ppusBuf_, K_USHORT *pusLen_, K_UCHAR
 			bRollover = true;
 		}
 	}
-	else if ((usTempHead < (m_usSize >> 1)) && (m_usHead >= (m_usSize >> 1)))
+	else if ((u16TempHead < (m_u16Size >> 1)) && (m_u16Head >= (m_u16Size >> 1)))
 	{
 		// Only trigger the callback if it's non-null
 		if (m_pfCallback)
@@ -81,37 +81,37 @@ void WriteBuffer16::WriteVector( K_USHORT **ppusBuf_, K_USHORT *pusLen_, K_UCHAR
 	}	
 	
 	// Are we going to roll-over?
-	for (j = 0; j < ucCount_; j++)
+	for (j = 0; j < u8Count_; j++)
 	{
-		K_USHORT usSegmentLength = pusLen_[j];
-		if (usSegmentLength + usTempHead >= m_usSize)
+        uint16_t u16SegmentLength = pu16Len_[j];
+		if (u16SegmentLength + u16TempHead >= m_u16Size)
 		{	
 			// We need to two-part this... First part: before the rollover
-			K_USHORT usTempLen;
-			K_USHORT *pusTmp = &m_pusData[ usTempHead ];
-			K_USHORT *pusSrc = ppusBuf_[j];
-			usTempLen = m_usSize - usTempHead;
-			for (i = 0; i < usTempLen; i++)
+			uint16_t u16TempLen;
+			uint16_t *pu16Tmp = &m_pu16Data[ u16TempHead ];
+			uint16_t *pu16Src = ppu16Buf_[j];
+			u16TempLen = m_u16Size - u16TempHead;
+			for (i = 0; i < u16TempLen; i++)
 			{
-				*pusTmp++ = *pusSrc++;
+				*pu16Tmp++ = *pu16Src++;
 			}
 
 			// Second part: after the rollover
-			usTempLen = usSegmentLength - usTempLen;
-			pusTmp = m_pusData;
-			for (i = 0; i < usTempLen; i++)
+			u16TempLen = u16SegmentLength - u16TempLen;
+			pu16[A-Z]mp = m_pu16Data;
+			for (i = 0; i < u16TempLen; i++)
 			{		
-				*pusTmp++ = *pusSrc++;
+				*pu16Tmp++ = *pu16Src++;
 			}
 		}
 		else
 		{	
 			// No rollover - do the copy all at once.
-			K_USHORT *pusSrc = ppusBuf_[j];
-			K_USHORT *pusTmp = &m_pusData[ usTempHead ];
-			for (K_USHORT i = 0; i < usSegmentLength; i++)
+			uint16_t *pu16Src = ppu16Buf_[j];
+			uint16_t *pu16Tmp = &m_pu16Data[ u16TempHead ];
+			for (uint16_t i = 0; i < u16SegmentLength; i++)
 			{		
-				*pusTmp++ = *pusSrc++;
+				*pu16Tmp++ = *pu16Src++;
 			}
 		}
 	}
@@ -123,12 +123,12 @@ void WriteBuffer16::WriteVector( K_USHORT **ppusBuf_, K_USHORT *pusLen_, K_UCHAR
 		if (bRollover)
 		{
 			// Rollover - process the back-half of the buffer
-			m_pfCallback( &m_pusData[ m_usSize >> 1], m_usSize >> 1 );
+			m_pfCallback( &m_pu16Data[ m_u16Size >> 1], m_u16Size >> 1 );
 		} 
 		else 
 		{
 			// 50% point - process the front-half of the buffer
-			m_pfCallback( m_pusData, m_usSize >> 1);
+			m_pfCallback( m_pu16Data, m_u16Size >> 1);
 		}
 	}
 }

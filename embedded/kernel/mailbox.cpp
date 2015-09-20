@@ -27,24 +27,24 @@ See license.txt for more information
 #if KERNEL_USE_MAILBOX
 
 //---------------------------------------------------------------------------
-void Mailbox::Init( void *pvBuffer_, K_USHORT usBufferSize_, K_USHORT usElementSize_ )
+void Mailbox::Init( void *pvBuffer_, uint16_t u16BufferSize_, uint16_t uselementSize_ )
 {
-    KERNEL_ASSERT(usBufferSize_);
-    KERNEL_ASSERT(usElementSize_);
+    KERNEL_ASSERT(u16BufferSize_);
+    KERNEL_ASSERT(u16ElementSize_);
     KERNEL_ASSERT(pvBuffer_);
 
     m_pvBuffer = pvBuffer_;
-    m_usElementSize = usElementSize_;
+    m_uselementSize = uselementSize_;
 
-    m_usCount = (usBufferSize_ / usElementSize_);
-    m_usFree = m_usCount;
+    m_u16Count = (u16BufferSize_ / uselementSize_);
+    m_u16Free = m_u16Count;
 
-    m_usHead = 0;
-    m_usTail = 0;
+    m_u16Head = 0;
+    m_u16Tail = 0;
 
     // We use the counting semaphore to implement blocking - with one element
     // in the mailbox corresponding to a post/pend operation in the semaphore.
-    m_clRecvSem.Init(0, m_usFree);
+    m_clRecvSem.Init(0, m_u16Free);
 
 #if KERNEL_USE_TIMEOUTS
     // Binary semaphore is used to track any threads that are blocked on a
@@ -67,10 +67,10 @@ void Mailbox::Receive( void *pvData_ )
 
 #if KERNEL_USE_TIMEOUTS
 //---------------------------------------------------------------------------
-bool Mailbox::Receive( void *pvData_, K_ULONG ulTimeoutMS_ )
+bool Mailbox::Receive( void *pvData_, uint32_t u32TimeoutMS_ )
 {
     KERNEL_ASSERT( pvData_ );
-    return Receive_i( pvData_, false, ulTimeoutMS_ );
+    return Receive_i( pvData_, false, u32TimeoutMS_ );
 }
 #endif
 
@@ -88,10 +88,10 @@ void Mailbox::ReceiveTail( void *pvData_ )
 
 #if KERNEL_USE_TIMEOUTS
 //---------------------------------------------------------------------------
-bool Mailbox::ReceiveTail( void *pvData_, K_ULONG ulTimeoutMS_ )
+bool Mailbox::ReceiveTail( void *pvData_, uint32_t u32TimeoutMS_ )
 {
     KERNEL_ASSERT( pvData_ );
-    return Receive_i( pvData_, true, ulTimeoutMS_ );
+    return Receive_i( pvData_, true, u32TimeoutMS_ );
 }
 #endif
 
@@ -121,25 +121,25 @@ bool Mailbox::SendTail( void *pvData_ )
 
 #if KERNEL_USE_TIMEOUTS
 //---------------------------------------------------------------------------
-bool Mailbox::Send( void *pvData_, K_ULONG ulTimeoutMS_ )
+bool Mailbox::Send( void *pvData_, uint32_t u32TimeoutMS_ )
 {
     KERNEL_ASSERT( pvData_ );
 
-    return Send_i( pvData_, false, ulTimeoutMS_ );
+    return Send_i( pvData_, false, u32TimeoutMS_ );
 }
 
 //---------------------------------------------------------------------------
-bool Mailbox::SendTail( void *pvData_, K_ULONG ulTimeoutMS_ )
+bool Mailbox::SendTail( void *pvData_, uint32_t u32TimeoutMS_ )
 {
     KERNEL_ASSERT( pvData_ );
 
-    return Send_i( pvData_, true, ulTimeoutMS_ );
+    return Send_i( pvData_, true, u32TimeoutMS_ );
 }
 #endif
 
 //---------------------------------------------------------------------------
 #if KERNEL_USE_TIMEOUTS
-bool Mailbox::Send_i( const void *pvData_, bool bTail_, K_ULONG ulTimeoutMS_)
+bool Mailbox::Send_i( const void *pvData_, bool bTail_, uint32_t u32TimeoutMS_)
 #else
 bool Mailbox::Send_i( const void *pvData_, bool bTail_)
 #endif
@@ -159,16 +159,16 @@ bool Mailbox::Send_i( const void *pvData_, bool bTail_)
         {
             bDone = true;
             Scheduler::SetScheduler( bSchedState );
-            m_clSendSem.Pend( ulTimeoutMS_ );
+            m_clSendSem.Pend( u32TimeoutMS_ );
             Scheduler::SetScheduler( false );
         }
 #endif
 
         CS_ENTER();
         // Ensure we have a free slot before we attempt to write data
-        if (m_usFree)
+        if (m_u16Free)
         {
-            m_usFree--;
+            m_u16Free--;
 
             if (bTail_)
             {
@@ -187,7 +187,7 @@ bool Mailbox::Send_i( const void *pvData_, bool bTail_)
         }
 
 #if KERNEL_USE_TIMEOUTS
-        else if (ulTimeoutMS_)
+        else if (u32TimeoutMS_)
         {
             bBlock = true;
         }
@@ -206,7 +206,7 @@ bool Mailbox::Send_i( const void *pvData_, bool bTail_)
     // Copy data to the claimed slot, and post the counting semaphore
     if (bRet)
     {
-        CopyData( pvData_, pvDst, m_usElementSize );
+        CopyData( pvData_, pvDst, m_uselementSize );
     }
 
     Scheduler::SetScheduler( bSchedState );
@@ -221,7 +221,7 @@ bool Mailbox::Send_i( const void *pvData_, bool bTail_)
 
 //---------------------------------------------------------------------------
 #if KERNEL_USE_TIMEOUTS
-bool Mailbox::Receive_i( const void *pvData_, bool bTail_, K_ULONG ulWaitTimeMS_ )
+bool Mailbox::Receive_i( const void *pvData_, bool bTail_, uint32_t u32WaitTimeMS_ )
 #else
 void Mailbox::Receive_i( const void *pvData_, bool bTail_ )
 #endif
@@ -229,7 +229,7 @@ void Mailbox::Receive_i( const void *pvData_, bool bTail_ )
     const void *pvSrc;
 
 #if KERNEL_USE_TIMEOUTS
-    if (!m_clRecvSem.Pend( ulWaitTimeMS_ ))
+    if (!m_clRecvSem.Pend( u32WaitTimeMS_ ))
     {
         // Failed to get the notification from the counting semaphore in the
         // time allotted.  Bail.
@@ -248,7 +248,7 @@ void Mailbox::Receive_i( const void *pvData_, bool bTail_ )
     // the read operation.
     CS_ENTER();
 
-    m_usFree++;
+    m_u16Free++;
     if (bTail_)
     {
         MoveTailForward();
@@ -262,7 +262,7 @@ void Mailbox::Receive_i( const void *pvData_, bool bTail_ )
 
     CS_EXIT();
 
-    CopyData( pvSrc, pvData_, m_usElementSize );
+    CopyData( pvSrc, pvData_, m_uselementSize );
 
     Scheduler::SetScheduler( bSchedState );
 

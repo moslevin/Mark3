@@ -39,16 +39,16 @@ static Thread clThread3;
 static Semaphore clSem1;
 static Semaphore clSem2;
 
-static volatile K_ULONG ulRR1;
-static volatile K_ULONG ulRR2;
-static volatile K_ULONG ulRR3;
+static volatile uint32_t u32RR1;
+static volatile uint32_t u32RR2;
+static volatile uint32_t u32RR3;
 
 //===========================================================================
 static void ThreadEntryPoint1(void *unused_)
 {
     while(1)
     {
-        clSem2.Pend(); // block until the test thread kicks us
+        clSem2.Pend(); // block until the test thread kicks u16
         clSem1.Post();
     }
 
@@ -75,7 +75,7 @@ TEST(ut_threadcreate)
     clSem1.Pend(10);
 
     // Ensure that the semaphore was posted before we got to the 10ms timeout
-    EXPECT_FALSE(g_pstCurrent->GetExpired());
+    EXPECT_FALSE(g_pclCurrent->GetExpired());
 }
 TEST_END
 
@@ -91,7 +91,7 @@ TEST(ut_threadstop)
     clSem2.Post();
     clSem1.Pend(10);
 
-    EXPECT_FALSE(g_pstCurrent->GetExpired());
+    EXPECT_FALSE(g_pclCurrent->GetExpired());
 }
 TEST_END
 
@@ -104,7 +104,7 @@ TEST(ut_threadexit)
     clSem2.Post();
     clSem1.Pend(10);
 
-    EXPECT_TRUE(g_pstCurrent->GetExpired());
+    EXPECT_TRUE(g_pclCurrent->GetExpired());
 }
 TEST_END
 
@@ -183,31 +183,31 @@ TEST_END
 //===========================================================================
 void RR_EntryPoint(void *value_)
 {
-    volatile K_ULONG *pulValue = (K_ULONG*)value_;
+    volatile uint32_t *pu32Value = (uint32_t*)value_;
     while(1)
     {
-        (*pulValue)++;
+        (*pu32Value)++;
     }
 }
 
 //===========================================================================
 TEST(ut_roundrobin)
 {
-    K_ULONG ulAvg;
-    K_ULONG ulMax;
-    K_ULONG ulMin;
-    K_ULONG ulRange;
+    uint32_t u32Avg;
+    uint32_t u32Max;
+    uint32_t u32Min;
+    uint32_t u32Range;
 
     // Create three threads that only increment counters, and keep them at
     // the same priority in order to test the roundrobin functionality of
     // the scheduler
-    clThread1.Init( aucStack1, TEST_STACK_SIZE, 1, RR_EntryPoint, (void*)&ulRR1);
-    clThread2.Init( aucStack2, TEST_STACK_SIZE, 1, RR_EntryPoint, (void*)&ulRR2);
-    clThread3.Init( aucStack3, TEST_STACK_SIZE, 1, RR_EntryPoint, (void*)&ulRR3);
+    clThread1.Init( aucStack1, TEST_STACK_SIZE, 1, RR_EntryPoint, (void*)&u32RR1);
+    clThread2.Init( aucStack2, TEST_STACK_SIZE, 1, RR_EntryPoint, (void*)&u32RR2);
+    clThread3.Init( aucStack3, TEST_STACK_SIZE, 1, RR_EntryPoint, (void*)&u32RR3);
 
-    ulRR1 = 0;
-    ulRR2 = 0;
-    ulRR3 = 0;
+    u32RR1 = 0;
+    u32RR2 = 0;
+    u32RR3 = 0;
 
     // Adjust thread priority before starting test threads to ensure
     // they all start at the same time (when we hit the 1 second sleep)
@@ -219,48 +219,48 @@ TEST(ut_roundrobin)
     Thread::Sleep(5000);
 
     // When the sleep ends, this will preempt the thread in progress,
-    // allowing us to stop them, and drop priority.
+    // allowing u16 to stop them, and drop priority.
     clThread1.Stop();
     clThread2.Stop();
     clThread3.Stop();
     Scheduler::GetCurrentThread()->SetPriority(1);
 
     // Compare the three counters - they should be nearly identical
-    if (ulRR1 > ulRR2)
+    if (u32RR1 > u32RR2)
     {
-        ulMax = ulRR1;
+        u32Max = u32RR1;
     }
     else
     {
-        ulMax = ulRR2;
+        u32Max = u32RR2;
     }
-    if (ulMax < ulRR3)
+    if (u32Max < u32RR3)
     {
-        ulMax = ulRR3;
+        u32Max = u32RR3;
     }
 
-    if (ulRR1 < ulRR2)
+    if (u32RR1 < u32RR2)
     {
-        ulMin = ulRR1;
+        u32Min = u32RR1;
     }
     else
     {
-        ulMin = ulRR2;
+        u32Min = u32RR2;
     }
-    if (ulMin > ulRR3)
+    if (u32Min > u32RR3)
     {
-        ulMin = ulRR3;
+        u32Min = u32RR3;
     }
-    ulRange = ulMax - ulMin;
-    ulAvg = (ulRR1 + ulRR2 + ulRR3) / 3;
+    u32Range = u32Max - u32Min;
+    u32Avg = (u32RR1 + u32RR2 + u32RR3) / 3;
 
     // Max-Min delta should not exceed 1% of average for this simple test
-    EXPECT_LT( ulRange, ulAvg / 100);
+    EXPECT_LT( u32Range, u32Avg / 100);
 
     // Make sure none of the component values are 0
-    EXPECT_FAIL_EQUALS( ulRR1, 0 );
-    EXPECT_FAIL_EQUALS( ulRR2, 0 );
-    EXPECT_FAIL_EQUALS( ulRR3, 0 );
+    EXPECT_FAIL_EQUALS( u32RR1, 0 );
+    EXPECT_FAIL_EQUALS( u32RR2, 0 );
+    EXPECT_FAIL_EQUALS( u32RR3, 0 );
 
 }
 TEST_END
@@ -268,21 +268,21 @@ TEST_END
 //===========================================================================
 TEST(ut_quanta)
 {
-    K_ULONG ulAvg;
-    K_ULONG ulMax;
-    K_ULONG ulMin;
-    K_ULONG ulRange;
+    uint32_t u32Avg;
+    uint32_t u32Max;
+    uint32_t u32Min;
+    uint32_t u32Range;
 
     // Create three threads that only increment counters - similar to the
     // previous test.  However, modify the thread quanta such that each thread
     // will get a different proportion of the CPU cycles.
-    clThread1.Init( aucStack1, TEST_STACK_SIZE, 1, RR_EntryPoint, (void*)&ulRR1);
-    clThread2.Init( aucStack2, TEST_STACK_SIZE, 1, RR_EntryPoint, (void*)&ulRR2);
-    clThread3.Init( aucStack3, TEST_STACK_SIZE, 1, RR_EntryPoint, (void*)&ulRR3);
+    clThread1.Init( aucStack1, TEST_STACK_SIZE, 1, RR_EntryPoint, (void*)&u32RR1);
+    clThread2.Init( aucStack2, TEST_STACK_SIZE, 1, RR_EntryPoint, (void*)&u32RR2);
+    clThread3.Init( aucStack3, TEST_STACK_SIZE, 1, RR_EntryPoint, (void*)&u32RR3);
 
-    ulRR1 = 0;
-    ulRR2 = 0;
-    ulRR3 = 0;
+    u32RR1 = 0;
+    u32RR2 = 0;
+    u32RR3 = 0;
 
     // Adjust thread priority before starting test threads to ensure
     // they all start at the same time (when we hit the 1 second sleep)
@@ -300,64 +300,64 @@ TEST(ut_quanta)
     Thread::Sleep(1800);
 
     // When the sleep ends, this will preempt the thread in progress,
-    // allowing us to stop them, and drop priority.
+    // allowing u16 to stop them, and drop priority.
     clThread1.Stop();
     clThread2.Stop();
     clThread3.Stop();
     Scheduler::GetCurrentThread()->SetPriority(1);
 
     // Test point - make sure that Q3 > Q2 > Q1
-    EXPECT_GT( ulRR2, ulRR1 );
-    EXPECT_GT( ulRR3, ulRR2 );
+    EXPECT_GT( u32RR2, u32RR1 );
+    EXPECT_GT( u32RR3, u32RR2 );
 
     // scale the counters relative to the largest value, and compare.
-    ulRR1 *= 3;
-    ulRR2 *= 3;
-    ulRR2 = (ulRR2 + 1) / 2;
+    u32RR1 *= 3;
+    u32RR2 *= 3;
+    u32RR2 = (u32RR2 + 1) / 2;
 
     // After scaling, they should be nearly identical (well, close at least)
-    if (ulRR1 > ulRR2)
+    if (u32RR1 > u32RR2)
     {
-        ulMax = ulRR1;
+        u32Max = u32RR1;
     }
     else
     {
-        ulMax = ulRR2;
+        u32Max = u32RR2;
     }
-    if (ulMax < ulRR3)
+    if (u32Max < u32RR3)
     {
-        ulMax = ulRR3;
+        u32Max = u32RR3;
     }
 
-    if (ulRR1 < ulRR2)
+    if (u32RR1 < u32RR2)
     {
-        ulMin = ulRR1;
+        u32Min = u32RR1;
     }
     else
     {
-        ulMin = ulRR2;
+        u32Min = u32RR2;
     }
-    if (ulMin > ulRR3)
+    if (u32Min > u32RR3)
     {
-        ulMin = ulRR3;
+        u32Min = u32RR3;
     }
-    ulRange = ulMax - ulMin;
-    ulAvg = (ulRR1 + ulRR2 + ulRR3) / 3;
+    u32Range = u32Max - u32Min;
+    u32Avg = (u32RR1 + u32RR2 + u32RR3) / 3;
 
 #if KERNEL_TIMERS_TICKLESS
     // Max-Min delta should not exceed 5% of average for this test
-    EXPECT_LT( ulRange, ulAvg / 20);
+    EXPECT_LT( u32Range, u32Avg / 20);
 #else
     // Max-Min delta should not exceed 20% of average for this test -- tick-based timers
     // are coarse, and prone to thread preference due to phase.
-    EXPECT_LT( ulRange, ulAvg / 5);
+    EXPECT_LT( u32Range, u32Avg / 5);
 #endif
 
 
     // Make sure none of the component values are 0
-    EXPECT_FAIL_EQUALS( ulRR1, 0 );
-    EXPECT_FAIL_EQUALS( ulRR2, 0 );
-    EXPECT_FAIL_EQUALS( ulRR3, 0 );
+    EXPECT_FAIL_EQUALS( u32RR1, 0 );
+    EXPECT_FAIL_EQUALS( u32RR2, 0 );
+    EXPECT_FAIL_EQUALS( u32RR3, 0 );
 }
 TEST_END
 

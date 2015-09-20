@@ -27,15 +27,15 @@ See license.txt for more information
 //---------------------------------------------------------------------------
 void PSXJoystick::Init()
 {
-    m_ucType = 0;
+    m_u8Type = 0;
     m_bConnected = false;
 }
 
 //---------------------------------------------------------------------------
-K_UCHAR PSXJoystick::Open()
+uint8_t PSXJoystick::Open()
 {
     PSX_DDR  &= ~PSX_DATA_BIT;  // We receive data (act like PSX)    
-    PSX_PORT |= PSX_DATA_BIT;   // Set internal pullup
+    PSX_PORT |= PSX_DATA_BIT;   // Set internal pu32lup
 
     PSX_PORT |= PSX_CLK_BIT;    // Clock output (we control?)
     PSX_DDR  |= PSX_CLK_BIT;    // Clock output high
@@ -46,17 +46,17 @@ K_UCHAR PSXJoystick::Open()
     PSX_DDR  |= PSX_ATT_BIT;    // Attention bit (master ctrld)
     PSX_PORT |= PSX_ATT_BIT;    // Attention bit high until CS
 
-    PSX_PORT |= PSX_ACK_BIT;    // Set internal pullup    
+    PSX_PORT |= PSX_ACK_BIT;    // Set internal pu32lup    
     PSX_DDR  &= ~PSX_ACK_BIT;   // Ack controlled by ctrlr    
     
     return 0;
 }
 
 //---------------------------------------------------------------------------
-K_USHORT PSXJoystick::Control( K_USHORT usEvent_, void *pvIn_, K_USHORT usSizeIn_,
-                                                  void *pvOut_, K_USHORT usSizeOut_ )
+uint16_t PSXJoystick::Control( uint16_t u16Event_, void *pvIn_, uint16_t u16SizeIn_,
+                                                  void *pvOut_, uint16_t u16SizeOut_ )
 {    
-    switch(usEvent_)
+    switch(u16Event_)
     {
         // Main event - poll joypad.
         case JOYSTICK_SCAN:
@@ -71,23 +71,23 @@ K_USHORT PSXJoystick::Control( K_USHORT usEvent_, void *pvIn_, K_USHORT usSizeIn
 }
 
 //---------------------------------------------------------------------------
-void PSXJoystick::JoyDelay(K_USHORT usTime_)
+void PSXJoystick::JoyDelay(uint16_t u16Time_)
 {
-    volatile K_USHORT usTime = 0;
-    while (usTime < (usTime_ << 4))
+    volatile uint16_t u16Time = 0;
+    while (u16Time < (u16Time_ << 4))
     {
-        usTime++;
+        u16Time++;
     }
 }
 
 //---------------------------------------------------------------------------
 void PSXJoystick::ScanInternal()
 {
-    K_UCHAR ucBytesLeft;
-    K_UCHAR ucJoyMode;
-    K_UCHAR ucJoyIndex;
+    uint8_t u8BytesLeft;
+    uint8_t u8JoyMode;
+    uint8_t u8JoyIndex;
     
-    K_UCHAR aucData[MAX_PSX_DATA_BYTES];
+    uint8_t aucData[MAX_PSX_DATA_BYTES];
     
     // Signal attention - time to read out data
     PSX_PORT |= PSX_CMD_BIT;
@@ -100,58 +100,58 @@ void PSXJoystick::ScanInternal()
     CmdByte(PSX_CMD_START, true); 
         
     // Get the joypad mode
-    ucJoyMode = CmdByte(PSX_CMD_POLL, false);
-    m_aucRaw[0] = ucJoyMode;
+    u8JoyMode = CmdByte(PSX_CMD_POLL, false);
+    m_aucRaw[0] = u8JoyMode;
 
     // Idle - Joypad ready to talk...
     m_aucRaw[1] = CmdByte(PSX_CMD_IDLE, false);
 
     // # bytes remaining based on Joypad mode:
-    switch (ucJoyMode)
+    switch (u8JoyMode)
     {
         case PSX_TYPE_DIGITAL:    // Digital Mode
         {
-            ucBytesLeft = PSX_SIZE_DIGITAL;
+            u8BytesLeft = PSX_SIZE_DIGITAL;
         }
             break;
         case PSX_TYPE_ANALOG_GREEN:    // Analog Green Mode
         {
-            ucBytesLeft = PSX_SIZE_ANALOG;
+            u8BytesLeft = PSX_SIZE_ANALOG;
         }
             break;
         case PSX_TYPE_ANALOG_RED:    // Analog Red Mode
         {
-            ucBytesLeft = PSX_SIZE_ANALOG;
+            u8BytesLeft = PSX_SIZE_ANALOG;
         }
             break;
         default:
         {
             // Disconnect.
-            ucBytesLeft = 0;
+            u8BytesLeft = 0;
             m_bConnected = false;
         }
     }
     
     // Array index for the raw PSX joypad input
-    ucJoyIndex = 0;
+    u8JoyIndex = 0;
     
     // Read the rest of the bytes.
-    while (ucBytesLeft && m_bConnected)
+    while (u8BytesLeft && m_bConnected)
     {
-        if (ucBytesLeft != 1)
+        if (u8BytesLeft != 1)
         {
-            aucData[ucJoyIndex] = CmdByte(PSX_CMD_IDLE, false);
-            m_aucRaw[3] = aucData[ucJoyIndex];
+            aucData[u8JoyIndex] = CmdByte(PSX_CMD_IDLE, false);
+            m_aucRaw[3] = aucData[u8JoyIndex];
         }
         else
         {
-            aucData[ucJoyIndex] = CmdByte(PSX_CMD_IDLE, true);
-            m_aucRaw[4] = aucData[ucJoyIndex];
+            aucData[u8JoyIndex] = CmdByte(PSX_CMD_IDLE, true);
+            m_aucRaw[4] = aucData[u8JoyIndex];
         }
         
         // Update indexes.
-        ucBytesLeft--;
-        ucJoyIndex++;
+        u8BytesLeft--;
+        u8JoyIndex++;
     }
     
     // Set attention high.
@@ -159,23 +159,23 @@ void PSXJoystick::ScanInternal()
     if (m_bConnected)
     {
         // Decode the joypad data if it's connected.
-        Decode(ucJoyMode, aucData);
+        Decode(u8JoyMode, aucData);
     }
 }
 
 //---------------------------------------------------------------------------
-K_UCHAR PSXJoystick::CmdByte(K_UCHAR ucCmd_, K_BOOL bWaitAck_)
+uint8_t PSXJoystick::CmdByte(uint8_t u8Cmd_, bool bWaitAck_)
 {
-    K_UCHAR ucReturnVal = 0;
-    K_UCHAR ucBitMask = 0x01;
-    K_UCHAR ucSpin = 0;
+    uint8_t u8ReturnVal = 0;
+    uint8_t u8BitMask = 0x01;
+    uint8_t u8Spin = 0;
     
     // Wait for ack to go high...
     while ((PSX_PORT & PSX_ACK_BIT) == 0)
     {
-        ucSpin++;
+        u8Spin++;
         JoyDelay(1);
-        if (ucSpin > POLL_SPIN_COUNT)
+        if (u8Spin > POLL_SPIN_COUNT)
         {
             m_bConnected = false;
             return 0;
@@ -185,9 +185,9 @@ K_UCHAR PSXJoystick::CmdByte(K_UCHAR ucCmd_, K_BOOL bWaitAck_)
     m_bConnected = true;
     JoyDelay(2);
     
-    while (ucBitMask)
+    while (u8BitMask)
     {
-        if ((ucCmd_ & ucBitMask) != 0)
+        if ((u8Cmd_ & u8BitMask) != 0)
         {
             // Clock command out.
             PSX_PORT |= PSX_CMD_BIT;
@@ -204,7 +204,7 @@ K_UCHAR PSXJoystick::CmdByte(K_UCHAR ucCmd_, K_BOOL bWaitAck_)
         // Read the input data pin.
         if ((PSX_PIN & PSX_DATA_BIT) != 0)
         {
-            ucReturnVal    |= ucBitMask;
+            u8ReturnVal    |= u8BitMask;
         }
         
         // data high phase
@@ -212,91 +212,91 @@ K_UCHAR PSXJoystick::CmdByte(K_UCHAR ucCmd_, K_BOOL bWaitAck_)
         JoyDelay(5);
         
         // Next bit
-        ucBitMask <<= 1;
+        u8BitMask <<= 1;
     }
 
     // If this current byte requires acknowledgement
     if (bWaitAck_)
     {
-        K_UCHAR ucCounter = 0;
+        uint8_t u8Counter = 0;
         
         // Retry loop for waiting on ACK
-        while(ucCounter < POLL_SPIN_COUNT)
+        while(u8Counter < POLL_SPIN_COUNT)
         {
             // Poll for ACK...
             if ((PSX_PIN & PSX_ACK_BIT) == 0)
             {                
                 break;
             }            
-            ucCounter++;
+            u8Counter++;
             JoyDelay(1);
         }    
     }
 
-    return ucReturnVal;
+    return u8ReturnVal;
 }
 //---------------------------------------------------------------------------
-void PSXJoystick::Decode(K_UCHAR ucJoyMode_, K_UCHAR *pucData_)
+void PSXJoystick::Decode(uint8_t u8JoyMode_, uint8_t *pu8Data_)
 {
     // Common to all supported modes...
-    m_stCurrentReport.bSelect   = ((pucData_[0] & 0x01) == 0);
-    m_stCurrentReport.bButton10 = ((pucData_[0] & 0x02) == 0);    //L3
-    m_stCurrentReport.bButton9  = ((pucData_[0] & 0x04) == 0);    //R3
-    m_stCurrentReport.bStart    = ((pucData_[0] & 0x08) == 0);
-    m_stCurrentReport.bUp         = ((pucData_[0] & 0x10) == 0);
-    m_stCurrentReport.bRight     = ((pucData_[0] & 0x20) == 0);
-    m_stCurrentReport.bDown     = ((pucData_[0] & 0x40) == 0);
-    m_stCurrentReport.bLeft     = ((pucData_[0] & 0x80) == 0);
+    m_stCurrentReport.bSelect   = ((pu8Data_[0] & 0x01) == 0);
+    m_stCurrentReport.bButton10 = ((pu8Data_[0] & 0x02) == 0);    //L3
+    m_stCurrentReport.bButton9  = ((pu8Data_[0] & 0x04) == 0);    //R3
+    m_stCurrentReport.bStart    = ((pu8Data_[0] & 0x08) == 0);
+    m_stCurrentReport.bUp         = ((pu8Data_[0] & 0x10) == 0);
+    m_stCurrentReport.bRight     = ((pu8Data_[0] & 0x20) == 0);
+    m_stCurrentReport.bDown     = ((pu8Data_[0] & 0x40) == 0);
+    m_stCurrentReport.bLeft     = ((pu8Data_[0] & 0x80) == 0);
     
     // Decode the message data into the appropriate joypad report format
-    switch (ucJoyMode_)
+    switch (u8JoyMode_)
     {
         case PSX_TYPE_DIGITAL:    // Digital Mode
         {            
-            m_stCurrentReport.bButton6  = ((pucData_[1] & 0x01) == 0);    //L1
-            m_stCurrentReport.bButton5  = ((pucData_[1] & 0x02) == 0);    //R1
-            m_stCurrentReport.bButton8  = ((pucData_[1] & 0x04) == 0);    //L2
-            m_stCurrentReport.bButton7  = ((pucData_[1] & 0x08) == 0);    //R2
-            m_stCurrentReport.bButton1  = ((pucData_[1] & 0x10) == 0);    //Triangle
-            m_stCurrentReport.bButton2  = ((pucData_[1] & 0x20) == 0);    //O
-            m_stCurrentReport.bButton3  = ((pucData_[1] & 0x40) == 0);  //X
-            m_stCurrentReport.bButton4  = ((pucData_[1] & 0x80) == 0);  //[]
+            m_stCurrentReport.bButton6  = ((pu8Data_[1] & 0x01) == 0);    //L1
+            m_stCurrentReport.bButton5  = ((pu8Data_[1] & 0x02) == 0);    //R1
+            m_stCurrentReport.bButton8  = ((pu8Data_[1] & 0x04) == 0);    //L2
+            m_stCurrentReport.bButton7  = ((pu8Data_[1] & 0x08) == 0);    //R2
+            m_stCurrentReport.bButton1  = ((pu8Data_[1] & 0x10) == 0);    //Triangle
+            m_stCurrentReport.bButton2  = ((pu8Data_[1] & 0x20) == 0);    //O
+            m_stCurrentReport.bButton3  = ((pu8Data_[1] & 0x40) == 0);  //X
+            m_stCurrentReport.bButton4  = ((pu8Data_[1] & 0x80) == 0);  //[]
         }
             break;
 
         case PSX_TYPE_ANALOG_GREEN:    // Analog Green Mode
         {           
-            m_stCurrentReport.bButton8 = ((pucData_[1] & 0x01) == 0);
-            m_stCurrentReport.bButton7 = ((pucData_[1] & 0x02) == 0);
-            m_stCurrentReport.bButton4 = ((pucData_[1] & 0x04) == 0);
-            m_stCurrentReport.bButton1 = ((pucData_[1] & 0x08) == 0);
-            m_stCurrentReport.bButton5 = ((pucData_[1] & 0x10) == 0);
-            m_stCurrentReport.bButton2 = ((pucData_[1] & 0x20) == 0);
-            m_stCurrentReport.bButton3 = ((pucData_[1] & 0x40) == 0);
-            m_stCurrentReport.bButton7 = ((pucData_[1] & 0x80) == 0);
+            m_stCurrentReport.bButton8 = ((pu8Data_[1] & 0x01) == 0);
+            m_stCurrentReport.bButton7 = ((pu8Data_[1] & 0x02) == 0);
+            m_stCurrentReport.bButton4 = ((pu8Data_[1] & 0x04) == 0);
+            m_stCurrentReport.bButton1 = ((pu8Data_[1] & 0x08) == 0);
+            m_stCurrentReport.bButton5 = ((pu8Data_[1] & 0x10) == 0);
+            m_stCurrentReport.bButton2 = ((pu8Data_[1] & 0x20) == 0);
+            m_stCurrentReport.bButton3 = ((pu8Data_[1] & 0x40) == 0);
+            m_stCurrentReport.bButton7 = ((pu8Data_[1] & 0x80) == 0);
 
-            m_stCurrentReport.usAnalogX2 = pucData_[2];
-            m_stCurrentReport.usAnalogY2 = pucData_[3];
-            m_stCurrentReport.usAnalogX1 = pucData_[4];
-            m_stCurrentReport.usAnalogY1 = pucData_[5];
+            m_stCurrentReport.u16AnalogX2 = pu8Data_[2];
+            m_stCurrentReport.u16AnalogY2 = pu8Data_[3];
+            m_stCurrentReport.u16AnalogX1 = pu8Data_[4];
+            m_stCurrentReport.u16AnalogY1 = pu8Data_[5];
         }
             break;
             
         case PSX_TYPE_ANALOG_RED:    // Analog Red Mode
         {
-            m_stCurrentReport.bButton6  = ((pucData_[1] & 0x01) == 0);    //L1
-            m_stCurrentReport.bButton5  = ((pucData_[1] & 0x02) == 0);    //R1
-            m_stCurrentReport.bButton8  = ((pucData_[1] & 0x04) == 0);    //L2
-            m_stCurrentReport.bButton7  = ((pucData_[1] & 0x08) == 0);    //R2
-            m_stCurrentReport.bButton1  = ((pucData_[1] & 0x10) == 0);    //Triangle
-            m_stCurrentReport.bButton2  = ((pucData_[1] & 0x20) == 0);    //O
-            m_stCurrentReport.bButton3  = ((pucData_[1] & 0x40) == 0);  //X
-            m_stCurrentReport.bButton4  = ((pucData_[1] & 0x80) == 0);  //[]
+            m_stCurrentReport.bButton6  = ((pu8Data_[1] & 0x01) == 0);    //L1
+            m_stCurrentReport.bButton5  = ((pu8Data_[1] & 0x02) == 0);    //R1
+            m_stCurrentReport.bButton8  = ((pu8Data_[1] & 0x04) == 0);    //L2
+            m_stCurrentReport.bButton7  = ((pu8Data_[1] & 0x08) == 0);    //R2
+            m_stCurrentReport.bButton1  = ((pu8Data_[1] & 0x10) == 0);    //Triangle
+            m_stCurrentReport.bButton2  = ((pu8Data_[1] & 0x20) == 0);    //O
+            m_stCurrentReport.bButton3  = ((pu8Data_[1] & 0x40) == 0);  //X
+            m_stCurrentReport.bButton4  = ((pu8Data_[1] & 0x80) == 0);  //[]
         
-            m_stCurrentReport.usAnalogX2 = pucData_[2];
-            m_stCurrentReport.usAnalogY2 = pucData_[3];
-            m_stCurrentReport.usAnalogX1 = pucData_[4];
-            m_stCurrentReport.usAnalogY1 = pucData_[5];
+            m_stCurrentReport.u16AnalogX2 = pu8Data_[2];
+            m_stCurrentReport.u16AnalogY2 = pu8Data_[3];
+            m_stCurrentReport.u16AnalogX1 = pu8Data_[4];
+            m_stCurrentReport.u16AnalogY1 = pu8Data_[5];
         }
             break;
         default:

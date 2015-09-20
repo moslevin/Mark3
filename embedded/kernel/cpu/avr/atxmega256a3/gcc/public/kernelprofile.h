@@ -60,11 +60,11 @@ public:
     static void Stop();
     
     /*!
-        \fn K_USHORT Read()
+        \fn uint16_t Read()
         
         Read the current tick count in the timer.  
     */
-    static K_USHORT Read();
+    static uint16_t Read();
     
     /*!
         Process the profiling counters from ISR.
@@ -74,10 +74,10 @@ public:
     /*!
         Return the current timer epoch    
     */
-    static K_ULONG GetEpoch(){ return m_ulEpoch; }
+    static uint32_t GetEpoch(){ return m_u32Epoch; }
 private:
 
-    static K_ULONG m_ulEpoch;
+    static uint32_t m_u32Epoch;
 };
 
 #endif //KERNEL_USE_PROFILER

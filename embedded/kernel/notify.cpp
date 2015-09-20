@@ -76,7 +76,7 @@ void Notify::Signal(void)
 void Notify::Wait( bool *pbFlag_ )
 {
     CS_ENTER();
-    Block(g_pstCurrent);
+    Block(g_pclCurrent);
     if (pbFlag_)
     {
         *pbFlag_ = false;
@@ -91,23 +91,23 @@ void Notify::Wait( bool *pbFlag_ )
 }
 
 //---------------------------------------------------------------------------
-#if KERNEL_USER_TIMEOUTS
-bool Notify::Wait( K_ULONG ulWaitTimeMS_, bool *pbFlag_ )
+#if KERNEL_USE_TIMEOUTS
+bool Notify::Wait( uint32_t u32WaitTimeMS_, bool *pbFlag_ )
 {
     bool bUseTimer = false;
     Timer clNotifyTimer;
 
     CS_ENTER();
-    if (ulWaitTimeMS_)
+    if (u32WaitTimeMS_)
     {
         bUseTimer = true;
-        g_pstCurrent->SetExpired(false);
+        g_pclCurrent->SetExpired(false);
 
         clNotifyTimer.Init();
-        clNotifyTimer.Start(0, ulWaitTimeMS_, TimedNotify_Callback, (void*)this);
+        clNotifyTimer.Start(0, u32WaitTimeMS_, TimedNotify_Callback, (void*)this);
     }
 
-    Block(g_pstCurrent);
+    Block(g_pclCurrent);
 
     if (pbFlag_)
     {
@@ -120,7 +120,7 @@ bool Notify::Wait( K_ULONG ulWaitTimeMS_, bool *pbFlag_ )
     if (bUseTimer)
     {
         clNotifyTimer.Stop();
-        return (g_pstCurrent->GetExpired() == 0);
+        return (g_pclCurrent->GetExpired() == 0);
     }
 
     if (pbFlag_)

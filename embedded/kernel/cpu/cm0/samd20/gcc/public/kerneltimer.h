@@ -23,8 +23,8 @@ See license.txt for more information
 #define __KERNELTIMER_H_
 
 //---------------------------------------------------------------------------
-#define SYSTEM_FREQ        ((K_ULONG)20000000)
-#define TIMER_FREQ        ((K_ULONG)(SYSTEM_FREQ/256)) // Timer ticks per second...
+#define SYSTEM_FREQ        ((uint32_t)20000000)
+#define TIMER_FREQ        ((uint32_t)(SYSTEM_FREQ/256)) // Timer ticks per second...
 
 //---------------------------------------------------------------------------
 /*!
@@ -55,20 +55,20 @@ public:
     static void Stop(void);
     
     /*!
-        \fn K_UCHAR DI(void)
+        \fn uint8_t DI(void)
         
         Disable the kernel timer's expiry interrupt
     */
-    static K_UCHAR DI(void);
+    static uint8_t DI(void);
     
     /*!
-        \fn void RI(K_BOOL bEnable_)
+        \fn void RI(bool bEnable_)
         
         Retstore the state of the kernel timer's expiry interrupt.
         
         \param bEnable_ 1 enable, 0 disable
     */
-    static void RI(K_BOOL bEnable_);
+    static void RI(bool bEnable_);
     
     /*!
         \fn void EI(void)
@@ -78,46 +78,46 @@ public:
     static void EI(void);
 
     /*!
-        \fn K_ULONG SubtractExpiry(K_ULONG ulInterval_)
+        \fn uint32_t SubtractExpiry(uint32_t u32Interval_)
         
         Subtract the specified number of ticks from the timer's 
         expiry count register.  Returns the new expiry value stored in 
         the register.
         
-        \param ulInterval_ Time (in HW-specific) ticks to subtract
+        \param u32Interval_ Time (in HW-specific) ticks to subtract
         \return Value in ticks stored in the timer's expiry register
     */
-    static K_ULONG SubtractExpiry(K_ULONG ulInterval_);
+    static uint32_t SubtractExpiry(uint32_t u32Interval_);
     
     /*!
-        \fn K_ULONG TimeToExpiry(void)
+        \fn uint32_t TimeToExpiry(void)
         
         Returns the number of ticks remaining before the next timer 
         expiry.
         
         \return Time before next expiry in platform-specific ticks
     */
-    static K_ULONG TimeToExpiry(void);
+    static uint32_t TimeToExpiry(void);
     
     /*!
-        \fn K_ULONG SetExpiry(K_ULONG ulInterval_)
+        \fn uint32_t SetExpiry(uint32_t u32Interval_)
         
         Resets the kernel timer's expiry interval to the specified value
         
-        \param ulInterval_ Desired interval in ticks to set the timer for
+        \param u32Interval_ Desired interval in ticks to set the timer for
         \return Actual number of ticks set (may be less than desired)        
     */
-    static K_ULONG SetExpiry(K_ULONG ulInterval_);
+    static uint32_t SetExpiry(uint32_t u32Interval_);
     
     /*!
-        \fn K_ULONG GetOvertime(void)
+        \fn uint32_t GetOvertime(void)
         
         Return the number of ticks that have elapsed since the last
         expiry.
         
         \return Number of ticks that have elapsed after last timer expiration
     */
-    static K_ULONG GetOvertime(void);
+    static uint32_t GetOvertime(void);
     
     /*!
         \fn void ClearExpiry(void)
@@ -128,13 +128,13 @@ public:
     
 private:
     /*!
-        \fn K_USHORT Read(void)
+        \fn uint16_t Read(void)
         
         Safely read the current value in the timer register
         
         \return Value held in the timer register
     */
-    static K_USHORT Read(void);
+    static uint16_t Read(void);
     
 };
 
