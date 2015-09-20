@@ -15,7 +15,7 @@ See license.txt for more information
 
 /*===========================================================================
 
-Lab Example 5:  Using Mutexes.
+Lab Example 5:  using Mutexes.
 
 Lessons covered in this example include:
 -You can use mutexes to lock accesses to a shared resource
@@ -50,7 +50,7 @@ static Mutex   clMyMutex;
 // This counter variable is the "shared resource" in the example, protected
 // by the mutex.  Only one thread should be given access to the counter at
 // any time.
-static volatile K_ULONG ulCounter = 0;
+static volatile uint32_t u32Counter = 0;
 
 //---------------------------------------------------------------------------
 int main(void)
@@ -89,12 +89,12 @@ void App1Main(void *unused_)
         // Done prints wind up as a pair when simuated with flAVR.
 
         KernelAware::Print("Thread1: Start\n");
-        ulCounter++;
-        while (ulCounter <= 1000000)
+        u32Counter++;
+        while (u32Counter <= 1000000)
         {
-            ulCounter++;
+            u32Counter++;
         }
-        ulCounter = 0;
+        u32Counter = 0;
         KernelAware::Print("Thread1: Done\n");
 
         // Release the lock, allowing the other thread to do its thing.
@@ -119,12 +119,12 @@ void App2Main(void *unused_)
         // Done prints wind up as a pair when simuated with flAVR.
 
         KernelAware::Print("Thread2: Start\n");
-        ulCounter++;
-        while (ulCounter <= 1000000)
+        u32Counter++;
+        while (u32Counter <= 1000000)
         {
-            ulCounter++;
+            u32Counter++;
         }
-        ulCounter = 0;
+        u32Counter = 0;
         KernelAware::Print("Thread2: Done\n");
 
         // Release the lock, allowing the other thread to do its thing.

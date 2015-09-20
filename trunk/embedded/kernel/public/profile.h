@@ -41,10 +41,10 @@ See license.txt for more information
 	}
 	
 	// Get the average execution time of all iterations
-	ulAverageTimer = clMyTimer.GetAverage();
+	u32AverageTimer = clMyTimer.GetAverage();
 	
 	// Get the execution time from the last iteration
-	ulLastTimer = clMyTimer.GetCurrent();
+	u32LastTimer = clMyTimer.GetCurrent();
 	
 	\endcode
 */
@@ -62,7 +62,7 @@ See license.txt for more information
 /*!
     Profiling timer.
     This class is used to perform high-performance profiling of
-    code to see how K_LONG certain operations take.  Useful in instrumenting
+    code to see how int32_t certain operations take.  useful in instrumenting
 	the performance of key algorithms and time-critical operations to ensure
 	real-timer behavior.
 */
@@ -95,42 +95,42 @@ public:
     void Stop();
         
     /*!
-        \fn K_ULONG GetAverage()
+        \fn uint32_t GetAverage()
         
         Get the average time associated with this operation.
         
         \return Average tick count normalized over all iterations
     */
-    K_ULONG GetAverage();
+    uint32_t GetAverage();
     
     /*!
-        \fn K_ULONG GetCurrent()
+        \fn uint32_t GetCurrent()
         
         Return the current tick count held by the profiler.  Valid
         for both active and stopped timers.
         
         \return The currently held tick count.
     */
-    K_ULONG GetCurrent();
+    uint32_t GetCurrent();
     
 private:
 
     /*!
         Figure out how many ticks have elapsed in this iteration
 		
-		\param usCount_ Current timer count
-		\param ulEpoch_ Current timer epoch
+		\param u16Count_ Current timer count
+		\param u32Epoch_ Current timer epoch
 		
 		\return Current tick count
     */
-    K_ULONG ComputeCurrentTicks(K_USHORT usCount_, K_ULONG ulEpoch_);
+    uint32_t ComputeCurrentTicks(uint16_t u16Count_, uint32_t u32Epoch_);
     
-    K_ULONG m_ulCumulative;  //!< Cumulative tick-count for this timer        
-    K_ULONG m_ulCurrentIteration; //!< Tick-count for the current iteration
-    K_USHORT m_usInitial;	   //!< Initial count 
-	K_ULONG m_ulInitialEpoch; //!< Initial Epoch           
-    K_USHORT m_usIterations; //!< Number of iterations executed for this profiling timer
-    K_UCHAR m_bActive;	   //!< Wheter or not the timer is active or stopped
+    uint32_t m_u32Cumulative;  //!< Cumulative tick-count for this timer        
+    uint32_t m_u32CurrentIteration; //!< Tick-count for the current iteration
+    uint16_t m_u16Initial;	   //!< Initial count 
+	uint32_t m_u32InitialEpoch; //!< Initial Epoch           
+    uint16_t m_u16Iterations; //!< Number of iterations executed for this profiling timer
+    bool m_bActive;	   //!< Wheter or not the timer is active or stopped
 };
 
 #endif // KERNEL_USE_PROFILE

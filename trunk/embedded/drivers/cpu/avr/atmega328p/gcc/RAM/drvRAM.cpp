@@ -26,94 +26,94 @@ See license.txt for more information
 //---------------------------------------------------------------------------
 void RAMDriver::Init()
 {
-    m_usAddress = 0;
+    m_u16Address = 0;
 }
 
 //---------------------------------------------------------------------------
-K_UCHAR RAMDriver::Open()
+uint8_t RAMDriver::Open()
 {
     return 0;
 }
 
 //---------------------------------------------------------------------------
-K_UCHAR RAMDriver::Close()
+uint8_t RAMDriver::Close()
 {
     return 0;
 }
 
 //---------------------------------------------------------------------------
-K_USHORT RAMDriver::Read( K_USHORT usBytes_, K_UCHAR *pucData_ )
+uint16_t RAMDriver::Read( uint16_t u16Bytes_, uint8_t *pu8Data_ )
 {
-    K_USHORT usNumBytes = usBytes_;
-    K_USHORT i;
-    K_UCHAR *pcTemp;
+    uint16_t u16NumBytes = u16Bytes_;
+    uint16_t i;
+    uint8_t *pcTemp;
     
-    if ((m_usAddress + usBytes_) >= m_usSize)
+    if ((m_u16Address + u16Bytes_) >= m_u16Size)
     {
-        usNumBytes = m_usSize - m_usAddress;
+        u16NumBytes = m_u16Size - m_u16Address;
     }
     
-    if (!usNumBytes)
+    if (!u16NumBytes)
     {
         return 0;
     }
 
-    pcTemp = &(m_pcData[m_usAddress]);
-    for (i = 0; i < usNumBytes; i++)
+    pcTemp = &(m_pcData[m_u16Address]);
+    for (i = 0; i < u16NumBytes; i++)
     {
-        pucData_[i] = pcTemp[i];
+        pu8Data_[i] = pcTemp[i];
     }
     
-    m_usAddress += usNumBytes;
+    m_u16Address += u16NumBytes;
     
-    return usNumBytes;
+    return u16NumBytes;
 }
 
 //---------------------------------------------------------------------------
-K_USHORT RAMDriver::Write( K_USHORT usBytes_, K_UCHAR *pucData_ )
+uint16_t RAMDriver::Write( uint16_t u16Bytes_, uint8_t *pu8Data_ )
 {
-    K_USHORT usNumBytes = usBytes_;
-    K_USHORT i;
-    K_UCHAR *pcTemp;
+    uint16_t u16NumBytes = u16Bytes_;
+    uint16_t i;
+    uint8_t *pcTemp;
 
-    if ((m_usAddress + usBytes_) >= m_usSize )
+    if ((m_u16Address + u16Bytes_) >= m_u16Size )
     {
-        usNumBytes = m_usSize - m_usAddress;
+        u16NumBytes = m_u16Size - m_u16Address;
     }
     
-    if (!usNumBytes)
+    if (!u16NumBytes)
     {
         return 0;
     }
 
-    pcTemp = &(m_pcData[m_usAddress]);
-    for (i = 0; i < usNumBytes; i++)
+    pcTemp = &(m_pcData[m_u16Address]);
+    for (i = 0; i < u16NumBytes; i++)
     {
-        pcTemp[i] = pucData_[i];
+        pcTemp[i] = pu8Data_[i];
     }
 
-    m_usAddress += usNumBytes;
+    m_u16Address += u16NumBytes;
     
-    return usNumBytes;
+    return u16NumBytes;
 }
 
 //---------------------------------------------------------------------------
-K_USHORT RAMDriver::Control( K_USHORT usEvent_, void *pvIn_, K_USHORT usSizeIn_, void *pvOut_, K_USHORT usSizeOut_ )
+uint16_t RAMDriver::Control( uint16_t u16Event_, void *pvIn_, uint16_t u16SizeIn_, void *pvOut_, uint16_t u16SizeOut_ )
 {
-    switch (usEvent_)
+    switch (u16Event_)
     {
         case EEPROM_CMD_SEEK:
         {
-            if (usSizeOut_ < m_usSize)
+            if (u16SizeOut_ < m_u16Size)
             {
-                m_usAddress = usSizeIn_;
+                m_u16Address = u16SizeIn_;
             }
             return 1;
         }        
         case EEPROM_CMD_SET_BUFFER:
         {
-            m_pcData = (K_UCHAR*)pvIn_;
-            m_usSize = usSizeIn_;
+            m_pcData = (uint8_t*)pvIn_;
+            m_u16Size = u16SizeIn_;
         }
     }
     return 0;

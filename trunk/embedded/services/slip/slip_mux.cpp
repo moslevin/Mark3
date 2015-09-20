@@ -28,7 +28,7 @@ See license.txt for more information
 
 //---------------------------------------------------------------------------
 MessageQueue *SlipMux::m_pclMessageQueue;
-K_UCHAR SlipMux::m_aucData[SLIP_BUFFER_SIZE];
+uint8_t SlipMux::m_aucData[SLIP_BUFFER_SIZE];
 Driver *SlipMux::m_pclDriver;
 Slip_Channel SlipMux::m_apfChannelHandlers[SLIP_CHANNEL_COUNT] = {0};
 Semaphore SlipMux::m_clSlipSem;
@@ -56,7 +56,7 @@ static void SlipMux_CallBack( Driver *pclDriver_)
 }
 
 //---------------------------------------------------------------------------
-void SlipMux::Init(const K_CHAR *pcDriverPath_, K_USHORT usRxSize_, K_UCHAR *aucRx_, K_USHORT usTxSize_, K_UCHAR *aucTx_)
+void SlipMux::Init(const char *pcDriverPath_, uint16_t u16RxSize_, uint8_t *aucRx_, uint16_t u16TxSize_, uint8_t *aucTx_)
 {
     m_pclDriver = DriverList::FindByPath(pcDriverPath_);
     m_pclMessageQueue = NULL;
@@ -64,33 +64,33 @@ void SlipMux::Init(const K_CHAR *pcDriverPath_, K_USHORT usRxSize_, K_UCHAR *auc
     m_clSlip.SetDriver(m_pclDriver);
     m_clSlipSem.Init(0, 1);
     
-    m_pclDriver->Control(CMD_SET_BUFFERS, (void*)aucRx_, usRxSize_, (void*)aucTx_, usTxSize_);    
+    m_pclDriver->Control(CMD_SET_BUFFERS, (void*)aucRx_, u16RxSize_, (void*)aucTx_, u16TxSize_);    
     m_pclDriver->Control(CMD_SET_RX_CALLBACK, (void*)SlipMux_CallBack, 0, 0, 0);
     {
-        K_UCHAR ucEscape = 192;
-        m_pclDriver->Control(CMD_SET_RX_ESCAPE, (void*)&ucEscape, 1, 0, NULL);
+        uint8_t u8Escape = 192;
+        m_pclDriver->Control(CMD_SET_RX_ESCAPE, (void*)&u8Escape, 1, 0, NULL);
     }
 }
 
 //---------------------------------------------------------------------------
-void SlipMux::InstallHandler( K_UCHAR ucChannel_, Slip_Channel pfHandler_ )
+void SlipMux::InstallHandler( uint8_t u8Channel_, Slip_Channel pfHandler_ )
 {
     if (pfHandler_)
     {
-        m_apfChannelHandlers[ucChannel_] = pfHandler_;
+        m_apfChannelHandlers[u8Channel_] = pfHandler_;
     }
 }
 
 //---------------------------------------------------------------------------
 void SlipMux::MessageReceive(void)
 {    
-    K_USHORT usLen;
-    K_UCHAR ucChannel;
+    uint16_t u16Len;
+    uint8_t u8Channel;
 
-    usLen = m_clSlip.ReadData( &ucChannel, (K_CHAR*)m_aucData, SLIP_BUFFER_SIZE );
-    if (usLen && (m_apfChannelHandlers[ucChannel] != NULL))
+    u16Len = m_clSlip.ReadData( &u8Channel, (char*)m_aucData, SLIP_BUFFER_SIZE );
+    if (u16Len && (m_apfChannelHandlers[u8Channel] != NULL))
     {
-        m_apfChannelHandlers[ucChannel]( m_pclDriver, ucChannel, &(m_aucData[3]), usLen);
+        m_apfChannelHandlers[u8Channel]( m_pclDriver, u8Channel, &(m_aucData[3]), u16Len);
     }
         
     // Re-enable the driver once we're done.

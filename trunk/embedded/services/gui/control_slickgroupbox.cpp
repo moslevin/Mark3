@@ -32,21 +32,21 @@ void SlickGroupBoxControl::Draw()
 {
     GUI_DEBUG_PRINT( "GroupBoxControl::Draw()\n");
     GraphicsDriver *pclDriver = GetParentWindow()->GetDriver();
-    K_USHORT usX, usY;
-    K_USHORT usTextWidth;
+    uint16_t u16X, u16Y;
+    uint16_t u16TextWidth;
 
-    GetControlOffset(&usX, &usY);
+    GetControlOffset(&u16X, &u16Y);
 
         // Draw the header rectangle
     {
         DrawRectangle_t stRect;
-        stRect.usTop = GetTop() + usY;
-        stRect.usBottom = stRect.usTop + GetHeight() - 1;
-        stRect.usLeft = GetLeft() + usX;
-        stRect.usRight = stRect.usLeft + GetWidth() - 1;
+        stRect.u16Top = GetTop() + u16Y;
+        stRect.u16Bottom = stRect.u16Top + GetHeight() - 1;
+        stRect.u16Left = GetLeft() + u16X;
+        stRect.u16Right = stRect.u16Left + GetWidth() - 1;
         stRect.bFill = true;
         stRect.uFillColor = m_uBGColor;
-        stRect.uLineColor = m_uBGColor;
+        stRect.u32ineColor = m_uBGColor;
         pclDriver->Rectangle(&stRect);
     }
 
@@ -54,32 +54,32 @@ void SlickGroupBoxControl::Draw()
         DrawLine_t stLine;
 
         // Draw the rounded-off rectangle
-        stLine.usX1 = GetLeft() + usX + 1;
-        stLine.usX2 = stLine.usX1 + GetWidth() - 3;
-        stLine.usY1 = GetTop() + usY;
-        stLine.usY2 = stLine.usY1;
+        stLine.u16X1 = GetLeft() + u16X + 1;
+        stLine.u16X2 = stLine.u16X1 + GetWidth() - 3;
+        stLine.u16Y1 = GetTop() + u16Y;
+        stLine.u16Y2 = stLine.u16Y1;
         stLine.uColor = COLOR_GREY50;
         pclDriver->Line(&stLine);
 
-        stLine.usY1 = GetTop() + usY + GetHeight() - 1;
-        stLine.usY2 = stLine.usY1;
+        stLine.u16Y1 = GetTop() + u16Y + GetHeight() - 1;
+        stLine.u16Y2 = stLine.u16Y1;
         pclDriver->Line(&stLine);
 
-        stLine.usY1 = GetTop() + usY + m_pstFont->ucSize + TEXT_BANNER_HEIGHT;
-        stLine.usY2 = stLine.usY1;
-        pclDriver->Line(&stLine);
-
-        // Draw the rounded-off rectangle
-        stLine.usX1 = GetLeft() + usX ;
-        stLine.usX2 = stLine.usX1;
-
-        stLine.usY1 = GetTop() + usY + 1;
-        stLine.usY2 = stLine.usY1 + GetHeight() - 3;
+        stLine.u16Y1 = GetTop() + u16Y + m_pstFont->u8Size + TEXT_BANNER_HEIGHT;
+        stLine.u16Y2 = stLine.u16Y1;
         pclDriver->Line(&stLine);
 
         // Draw the rounded-off rectangle
-        stLine.usX1 = GetLeft() + usX + GetWidth() - 1;
-        stLine.usX2 = stLine.usX1;
+        stLine.u16X1 = GetLeft() + u16X ;
+        stLine.u16X2 = stLine.u16X1;
+
+        stLine.u16Y1 = GetTop() + u16Y + 1;
+        stLine.u16Y2 = stLine.u16Y1 + GetHeight() - 3;
+        pclDriver->Line(&stLine);
+
+        // Draw the rounded-off rectangle
+        stLine.u16X1 = GetLeft() + u16X + GetWidth() - 1;
+        stLine.u16X2 = stLine.u16X1;
         pclDriver->Line(&stLine);
 
     }
@@ -87,19 +87,19 @@ void SlickGroupBoxControl::Draw()
     // Draw the header rectangle
     {
         DrawRectangle_t stRect;
-        stRect.usTop = GetTop() + usY + 1;
-        stRect.usBottom = GetTop() + usY + ((m_pstFont->ucSize + TEXT_BANNER_HEIGHT) >> 1);
-        stRect.usLeft = GetLeft() + usX + 1;
-        stRect.usRight = GetLeft() + GetWidth() - 2;
+        stRect.u16Top = GetTop() + u16Y + 1;
+        stRect.u16Bottom = GetTop() + u16Y + ((m_pstFont->u8Size + TEXT_BANNER_HEIGHT) >> 1);
+        stRect.u16Left = GetLeft() + u16X + 1;
+        stRect.u16Right = GetLeft() + GetWidth() - 2;
         stRect.bFill = true;
-        stRect.uFillColor = RGB_COLOR((K_ULONG)(MAX_RED * 0.20),(K_ULONG)(MAX_RED * 0.20),(K_ULONG)(MAX_BLUE * 0.75) );
-        stRect.uLineColor = stRect.uFillColor;
+        stRect.uFillColor = RGB_COLOR((uint32_t)(MAX_RED * 0.20),(uint32_t)(MAX_RED * 0.20),(uint32_t)(MAX_BLUE * 0.75) );
+        stRect.u32ineColor = stRect.uFillColor;
         pclDriver->Rectangle(&stRect);
 
-        stRect.usTop = GetTop() + usY + ((m_pstFont->ucSize + TEXT_BANNER_HEIGHT) >> 1);
-        stRect.usBottom = GetTop() + usY + (m_pstFont->ucSize + TEXT_BANNER_HEIGHT) - 1;
-        stRect.uFillColor = RGB_COLOR((K_ULONG)(MAX_RED * 0.10),(K_ULONG)(MAX_RED * 0.10),(K_ULONG)(MAX_BLUE * 0.65) );
-        stRect.uLineColor = stRect.uFillColor;
+        stRect.u16Top = GetTop() + u16Y + ((m_pstFont->u8Size + TEXT_BANNER_HEIGHT) >> 1);
+        stRect.u16Bottom = GetTop() + u16Y + (m_pstFont->u8Size + TEXT_BANNER_HEIGHT) - 1;
+        stRect.uFillColor = RGB_COLOR((uint32_t)(MAX_RED * 0.10),(uint32_t)(MAX_RED * 0.10),(uint32_t)(MAX_BLUE * 0.65) );
+        stRect.u32ineColor = stRect.uFillColor;
         pclDriver->Rectangle(&stRect);
 
     }
@@ -107,13 +107,13 @@ void SlickGroupBoxControl::Draw()
     // Draw the caption
     {
         DrawText_t stText;
-        stText.usLeft = usX + GetLeft() + TEXT_X_OFFSET;
-        stText.usTop = usY + GetTop() + TEXT_Y_OFFSET;
+        stText.u16Left = u16X + GetLeft() + TEXT_X_OFFSET;
+        stText.u16Top = u16Y + GetTop() + TEXT_Y_OFFSET;
         stText.uColor = COLOR_WHITE;
         stText.pstFont = m_pstFont;
         stText.pcString = m_pcCaption;
 
-        usTextWidth = pclDriver->TextWidth(&stText);
+        u16TextWidth = pclDriver->TextWidth(&stText);
         pclDriver->Text(&stText);
     }
 

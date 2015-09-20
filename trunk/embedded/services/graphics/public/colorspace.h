@@ -30,93 +30,93 @@ See license.txt for more information
 #if DRAW_COLOR_1BIT
 //---------------------------------------------------------------------------
 // Off or On
-    #define COLOR                K_UCHAR
+    #define COLOR                uint8_t
     #define MAX_RED                (0x01)
     #define MAX_GREEN            (0x01)
     #define MAX_BLUE            (0x01)
     #define RGB_COLOR(R,G,B)    ( (R | G | B) != 0 )
     #define BYTES_PER_PIXEL        (1)
-    #define COLOR                    K_UCHAR
+    #define COLOR                    uint8_t
 //---------------------------------------------------------------------------
 #elif DRAW_COLOR_8BIT
 //---------------------------------------------------------------------------
 //3R:2G:3B
-    #define COLOR                K_UCHAR
+    #define COLOR                uint8_t
     #define MAX_RED                (0x07)
     #define MAX_GREEN            (0x03)
     #define MAX_BLUE            (0x07)
     
-    #define MASK_RED(R)            (((K_UCHAR)R & 0x07) << 5)
-    #define MASK_BLUE(B)        ((K_UCHAR)B & 0x07)
-    #define MASK_GREEN(G)        (((K_UCHAR)G & 0x03) << 3)
+    #define MASK_RED(R)            (((uint8_t)R & 0x07) << 5)
+    #define MASK_BLUE(B)        ((uint8_t)B & 0x07)
+    #define MASK_GREEN(G)        (((uint8_t)G & 0x03) << 3)
     
     #define RGB_COLOR(R,G,B)    ( MASK_BLUE(B) | MASK_GREEN(G) | MASK_RED(R) )
     #define BYTES_PER_PIXEL        (1)
-    #define COLOR                    K_UCHAR
+    #define COLOR                    uint8_t
 //---------------------------------------------------------------------------
 #elif DRAW_COLOR_16BIT_BGR565
 //---------------------------------------------------------------------------
 //5R:6G:5B
-    #define COLOR                K_USHORT
+    #define COLOR                uint16_t
     #define MAX_RED                (0x001F)
     #define MAX_GREEN            (0x003F)
     #define MAX_BLUE            (0x001F)
     
-    #define MASK_BLUE(B)        ((K_USHORT)B & 0x001F)
-    #define MASK_GREEN(G)        (((K_USHORT)G & 0x003F) << 5)
-    #define MASK_RED(R)            (((K_USHORT)R & 0x001F) << 11)
+    #define MASK_BLUE(B)        ((uint16_t)B & 0x001F)
+    #define MASK_GREEN(G)        (((uint16_t)G & 0x003F) << 5)
+    #define MASK_RED(R)            (((uint16_t)R & 0x001F) << 11)
     
     #define RGB_COLOR(R,G,B)    ( MASK_BLUE(B) | MASK_GREEN(G) | MASK_RED(R) )
     #define BYTES_PER_PIXEL        (2)
-    #define COLOR                    K_USHORT
+    #define COLOR                    uint16_t
 //---------------------------------------------------------------------------    
 #elif DRAW_COLOR_16BIT_RGB555
 //---------------------------------------------------------------------------
 //5R:5G:5B
-    #define COLOR                K_USHORT
+    #define COLOR                uint16_t
     #define MAX_RED                (0x001F)
     #define MAX_GREEN            (0x001F)
     #define MAX_BLUE            (0x001F)
     
-    #define MASK_BLUE(B)        (((K_USHORT)B & 0x001F) << 10)    
-    #define MASK_GREEN(G)        (((K_USHORT)G & 0x001F) << 5)
-    #define MASK_RED(R)            ((K_USHORT)R & 0x001F)
+    #define MASK_BLUE(B)        (((uint16_t)B & 0x001F) << 10)    
+    #define MASK_GREEN(G)        (((uint16_t)G & 0x001F) << 5)
+    #define MASK_RED(R)            ((uint16_t)R & 0x001F)
         
     #define RGB_COLOR(R,G,B)    ( MASK_BLUE(B) | MASK_GREEN(G) | MASK_RED(R) )
     #define BYTES_PER_PIXEL     (2)
-    #define COLOR                K_USHORT
+    #define COLOR                uint16_t
 //---------------------------------------------------------------------------
 #elif DRAW_COLOR_24BIT
 //---------------------------------------------------------------------------
 //8R:8G:8B
-    #define COLOR    K_ULONG
+    #define COLOR    uint32_t
     #define MAX_RED                (0x00FF)
     #define MAX_GREEN            (0x00FF)
     #define MAX_BLUE            (0x00FF)
     
-    #define MASK_RED(R)            ((K_ULONG)R & 0x00FF)
-    #define MASK_BLUE(B)        (((K_ULONG)B & 0x00FF) << 16)
-    #define MASK_GREEN(G)        (((K_ULONG)G & 0x00FF) << 8)
+    #define MASK_RED(R)            ((uint32_t)R & 0x00FF)
+    #define MASK_BLUE(B)        (((uint32_t)B & 0x00FF) << 16)
+    #define MASK_GREEN(G)        (((uint32_t)G & 0x00FF) << 8)
     
     #define RGB_COLOR(R,G,B)    ( MASK_BLUE(B) | MASK_GREEN(G) | MASK_RED(R) )
     
     #define BYTES_PER_PIXEL        (3)
-    #define COLOR                    K_ULONG
+    #define COLOR                    uint32_t
 #elif DRAW_COLOR_24BIT_RGB
 //8R:8G:8B
-    #define COLOR    K_ULONG
+    #define COLOR    uint32_t
     #define MAX_RED                (0x00FF)
     #define MAX_GREEN            (0x00FF)
     #define MAX_BLUE            (0x00FF)
     
-    #define MASK_RED(R)            (((K_ULONG)R & 0x00FF) << 16)
-    #define MASK_GREEN(G)        (((K_ULONG)G & 0x00FF) << 8)
-    #define MASK_BLUE(B)        (((K_ULONG)B & 0x00FF) << 0)
+    #define MASK_RED(R)            (((uint32_t)R & 0x00FF) << 16)
+    #define MASK_GREEN(G)        (((uint32_t)G & 0x00FF) << 8)
+    #define MASK_BLUE(B)        (((uint32_t)B & 0x00FF) << 0)
     
     #define RGB_COLOR(R,G,B)    ( MASK_BLUE(B) | MASK_GREEN(G) | MASK_RED(R) )
     
     #define BYTES_PER_PIXEL        (3)
-    #define COLOR                    K_ULONG
+    #define COLOR                    uint32_t
 //---------------------------------------------------------------------------
 #else
     #error "Must define a color space for graphics framework"

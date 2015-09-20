@@ -62,17 +62,17 @@ void EventFlag::WakeMe(Thread *pclChosenOne_)
 
 //---------------------------------------------------------------------------
 #if KERNEL_USE_TIMEOUTS
-    K_USHORT EventFlag::Wait_i(K_USHORT usMask_, EventFlagOperation_t eMode_, K_ULONG ulTimeMS_)
+    uint16_t EventFlag::Wait_i(uint16_t u16Mask_, EventFlagOperation_t eMode_, uint32_t u32TimeMS_)
 #else
-    K_USHORT EventFlag::Wait_i(K_USHORT usMask_, EventFlagOperation_t eMode_)
+    uint16_t EventFlag::Wait_i(uint16_t u16Mask_, EventFlagOperation_t eMode_)
 #endif
 {
-    K_BOOL bThreadYield = false;
-    K_BOOL bMatch = false;
+    bool bThreadYield = false;
+    bool bMatch = false;
 
 #if KERNEL_USE_TIMEOUTS
     Timer clEventTimer;
-    K_BOOL bUseTimer = false;
+    bool bUseTimer = false;
 #endif
 
     // Ensure we're operating in a critical section while we determine
@@ -81,26 +81,26 @@ void EventFlag::WakeMe(Thread *pclChosenOne_)
 
     // Check to see whether or not the current mask matches any of the
     // desired bits.
-    g_pstCurrent->SetEventFlagMask(usMask_);
+    g_pclCurrent->SetEventFlagMask(u16Mask_);
 
     if ((eMode_ == EVENT_FLAG_ALL) || (eMode_ == EVENT_FLAG_ALL_CLEAR))
     {
         // Check to see if the flags in their current state match all of
         // the set flags in the event flag group, with this mask.
-        if ((m_usSetMask & usMask_) == usMask_)
+        if ((m_u16SetMask & u16Mask_) == u16Mask_)
         {
             bMatch = true;
-            g_pstCurrent->SetEventFlagMask(usMask_);
+            g_pclCurrent->SetEventFlagMask(u16Mask_);
         }
     }
     else if ((eMode_ == EVENT_FLAG_ANY) || (eMode_ == EVENT_FLAG_ANY_CLEAR))
     {
         // Check to see if the existing flags match any of the set flags in
         // the event flag group  with this mask
-        if (m_usSetMask & usMask_)
+        if (m_u16SetMask & u16Mask_)
         {
             bMatch = true;
-            g_pstCurrent->SetEventFlagMask(m_usSetMask & usMask_);
+            g_pclCurrent->SetEventFlagMask(m_u16SetMask & u16Mask_);
         }
     }
 
@@ -108,21 +108,21 @@ void EventFlag::WakeMe(Thread *pclChosenOne_)
     if (!bMatch)
     {
         // Reset the current thread's event flag mask & mode
-        g_pstCurrent->SetEventFlagMask(usMask_);
-        g_pstCurrent->SetEventFlagMode(eMode_);
+        g_pclCurrent->SetEventFlagMask(u16Mask_);
+        g_pclCurrent->SetEventFlagMode(eMode_);
 
 #if KERNEL_USE_TIMEOUTS
-        if (ulTimeMS_)
+        if (u32TimeMS_)
         {
-            g_pstCurrent->SetExpired(false);
+            g_pclCurrent->SetExpired(false);
             clEventTimer.Init();
-            clEventTimer.Start(0, ulTimeMS_, TimedEventFlag_Callback, (void*)this);
+            clEventTimer.Start(0, u32TimeMS_, TimedEventFlag_Callback, (void*)this);
             bUseTimer = true;
         }
 #endif
 
         // Add the thread to the object's block-list.
-        Block(g_pstCurrent);
+        Block(g_pclCurrent);
 
         // Trigger that
         bThreadYield = true;
@@ -151,34 +151,34 @@ void EventFlag::WakeMe(Thread *pclChosenOne_)
     }
 #endif
 
-    return g_pstCurrent->GetEventFlagMask();
+    return g_pclCurrent->GetEventFlagMask();
 }
 
 //---------------------------------------------------------------------------
-K_USHORT EventFlag::Wait(K_USHORT usMask_, EventFlagOperation_t eMode_)
+uint16_t EventFlag::Wait(uint16_t u16Mask_, EventFlagOperation_t eMode_)
 {
 #if KERNEL_USE_TIMEOUTS
-    return Wait_i(usMask_, eMode_, 0);
+    return Wait_i(u16Mask_, eMode_, 0);
 #else
-    return Wait_i(usMask_, eMode_);
+    return Wait_i(u16Mask_, eMode_);
 #endif
 }
 
 #if KERNEL_USE_TIMEOUTS
 //---------------------------------------------------------------------------
-K_USHORT EventFlag::Wait(K_USHORT usMask_, EventFlagOperation_t eMode_, K_ULONG ulTimeMS_)
+uint16_t EventFlag::Wait(uint16_t u16Mask_, EventFlagOperation_t eMode_, uint32_t u32TimeMS_)
 {
-    return Wait_i(usMask_, eMode_, ulTimeMS_);
+    return Wait_i(u16Mask_, eMode_, u32TimeMS_);
 }
 #endif
 
 //---------------------------------------------------------------------------
-void EventFlag::Set(K_USHORT usMask_)
+void EventFlag::Set(uint16_t u16Mask_)
 {
     Thread *pclPrev;
     Thread *pclCurrent;
-    K_BOOL bReschedule = false;
-    K_USHORT usNewMask;
+    bool bReschedule = false;
+    uint16_t u16NewMask;
 
     CS_ENTER();
 
@@ -186,8 +186,8 @@ void EventFlag::Set(K_USHORT usMask_)
     // the current flag set now matches any/all of the masks and modes of
     // the threads involved.
 
-    m_usSetMask |= usMask_;
-    usNewMask = m_usSetMask;
+    m_u16SetMask |= u16Mask_;
+    u16NewMask = m_u16SetMask;
 
     // Start at the head of the list, and iterate through until we hit the
     // "head" element in the list again.  Ensure that we handle the case where
@@ -207,24 +207,24 @@ void EventFlag::Set(K_USHORT usMask_)
             pclCurrent = static_cast<Thread*>(pclCurrent->GetNext());
 
             // Read the thread's event mask/mode
-            K_USHORT usThreadMask = pclPrev->GetEventFlagMask();
+            uint16_t u16ThreadMask = pclPrev->GetEventFlagMask();
             EventFlagOperation_t eThreadMode = pclPrev->GetEventFlagMode();
 
             // For the "any" mode - unblock the blocked threads if one or more bits
             // in the thread's bitmask match the object's bitmask
             if ((EVENT_FLAG_ANY == eThreadMode) || (EVENT_FLAG_ANY_CLEAR == eThreadMode))
             {
-                if (usThreadMask & m_usSetMask)
+                if (u16ThreadMask & m_u16SetMask)
                 {
                     pclPrev->SetEventFlagMode(EVENT_FLAG_PENDING_UNBLOCK);
-                    pclPrev->SetEventFlagMask(m_usSetMask & usThreadMask);
+                    pclPrev->SetEventFlagMask(m_u16SetMask & u16ThreadMask);
                     bReschedule = true;
 
                     // If the "clear" variant is set, then clear the bits in the mask
                     // that caused the thread to unblock.
                     if (EVENT_FLAG_ANY_CLEAR == eThreadMode)
                     {
-                        usNewMask &=~ (usThreadMask & usMask_);
+                        u16NewMask &=~ (u16ThreadMask & u16Mask_);
                     }
                 }
             }
@@ -232,17 +232,17 @@ void EventFlag::Set(K_USHORT usMask_)
             // match the object's flag mask.
             else if ((EVENT_FLAG_ALL == eThreadMode) || (EVENT_FLAG_ALL_CLEAR == eThreadMode))
             {
-                if ((usThreadMask & m_usSetMask) == usThreadMask)
+                if ((u16ThreadMask & m_u16SetMask) == u16ThreadMask)
                 {
                     pclPrev->SetEventFlagMode(EVENT_FLAG_PENDING_UNBLOCK);
-                    pclPrev->SetEventFlagMask(usThreadMask);
+                    pclPrev->SetEventFlagMask(u16ThreadMask);
                     bReschedule = true;
 
                     // If the "clear" variant is set, then clear the bits in the mask
                     // that caused the thread to unblock.
                     if (EVENT_FLAG_ALL_CLEAR == eThreadMode)
                     {
-                        usNewMask &=~ (usThreadMask & usMask_);
+                        u16NewMask &=~ (u16ThreadMask & u16Mask_);
                     }
                 }
             }
@@ -254,7 +254,7 @@ void EventFlag::Set(K_USHORT usMask_)
         // Second loop - go through and unblock all of the threads that
         // were tagged for unblocking.
         pclCurrent = static_cast<Thread*>(m_clBlockList.GetHead());
-        K_BOOL bIsTail = false;
+        bool bIsTail = false;
         do
         {
             pclPrev = pclCurrent;
@@ -284,7 +284,7 @@ void EventFlag::Set(K_USHORT usMask_)
 
     // Update the bitmask based on any "clear" operations performed along
     // the way
-    m_usSetMask = usNewMask;
+    m_u16SetMask = u16NewMask;
 
     // Restore interrupts - will potentially cause a context switch if a
     // thread is unblocked.
@@ -292,24 +292,24 @@ void EventFlag::Set(K_USHORT usMask_)
 }
 
 //---------------------------------------------------------------------------
-void EventFlag::Clear(K_USHORT usMask_)
+void EventFlag::Clear(uint16_t u16Mask_)
 {
     // Just clear the bitfields in the local object.
     CS_ENTER();
-    m_usSetMask &= ~usMask_;
+    m_u16SetMask &= ~u16Mask_;
     CS_EXIT();
 }
 
 //---------------------------------------------------------------------------
-K_USHORT EventFlag::GetMask()
+uint16_t EventFlag::GetMask()
 {
     // Return the presently held event flag values in this object.  Ensure
     // we get this within a critical section to guarantee atomicity.
-    K_USHORT usReturn;
+    uint16_t u16Return;
     CS_ENTER();
-    usReturn = m_usSetMask;
+    u16Return = m_u16SetMask;
     CS_EXIT();
-    return usReturn;
+    return u16Return;
 }
 
 #endif // KERNEL_USE_EVENTFLAG

@@ -199,6 +199,16 @@ for LINE in ${MARK3_DATA}; do
             MODNAME="Mutex (Synchronization Object).................."
             SYNCOBJ_SIZE=$(( SYNCOBJ_SIZE+${DEC} ))
             ;;
+        "notify.cpp.o")
+            #Ruler:  ----5---10----5---20----5---30----5---40----5---50----5---60"
+            MODNAME="Notification Blocking Object...................."
+            PORT_SIZE=$(( SYNCOBJ_SIZE+${DEC} ))
+            ;;
+        "mailbox.cpp.o")
+            #Ruler:  ----5---10----5---20----5---30----5---40----5---50----5---60"
+            MODNAME="Mailbox IPC Support............................."
+            PORT_SIZE=$(( SYNCOBJ_SIZE+${DEC} ))
+            ;;
         "profile.cpp.o")
             #Ruler:  ----5---10----5---20----5---30----5---40----5---50----5---60"
             MODNAME="Performance-profiling timers...................."

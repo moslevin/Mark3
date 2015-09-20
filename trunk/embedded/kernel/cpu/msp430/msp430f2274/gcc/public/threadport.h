@@ -28,8 +28,8 @@ See license.txt for more information
 #include <in430.h>
 
 //---------------------------------------------------------------------------
-extern volatile K_UCHAR g_ucCSCount;
-extern volatile K_USHORT g_usSR;
+extern volatile uint8_t g_u8CSCount;
+extern volatile uint16_t g_u16SR;
 
 //---------------------------------------------------------------------------
 //! ASM Macro - simplify the use of ASM directive in C
@@ -37,7 +37,7 @@ extern volatile K_USHORT g_usSR;
 
 //---------------------------------------------------------------------------
 //! Macro to find the top of a stack given its size and top address
-#define TOP_OF_STACK(x, y)        (K_ADDR*) ( ((K_USHORT)x) + ((y-1) * sizeof(K_WORD)))
+#define TOP_OF_STACK(x, y)        (K_ADDR*) ( ((uint16_t)x) + ((y-1) * sizeof(K_WORD)))
 //! Push a value y to the stack pointer x and decrement the stack pointer
 #define PUSH_TO_STACK(x, y)        *x = y; x--;
 
@@ -56,14 +56,14 @@ extern volatile K_USHORT g_usSR;
     ASM("push	r13\n"); \
     ASM("push	r14\n"); \
     ASM("push	r15\n"); \
-    ASM("mov.w	&g_pstCurrent, r12\n"); \
+    ASM("mov.w	&g_pclCurrent, r12\n"); \
     ASM("add.w  #4, r12"); \
     ASM("mov.w	r1, 0(r12)\n");
 
 //---------------------------------------------------------------------------
 //! Restore the context of the Thread
 #define Thread_RestoreContext()\
-    ASM("mov.w  &g_pstCurrent, r12"); \
+    ASM("mov.w  &g_pclCurrent, r12"); \
     ASM("add.w  #4, r12"); \
     ASM("mov.w  @r12, r1"); \
     ASM("pop	r15"); \
@@ -86,27 +86,27 @@ extern volatile K_USHORT g_usSR;
 //! Enter critical section (cache GIE bit in the status register, disable interrupts)
 #define CS_ENTER() \
 do { \
-	K_USHORT usIntState = __get_interrupt_state(); \
+	uint16_t u16IntState = __get_interrupt_state(); \
 	__dint(); \
-	if (0 == g_ucCSCount) \
+	if (0 == g_u8CSCount) \
 	{ \
-		g_usSR = usIntState; \
+		g_u16SR = u16IntState; \
     } \
-	g_ucCSCount++; \
+	g_u8CSCount++; \
 } while(0);
 
 //------------------------------------------------------------------------
 //! Exit critical section (restore GIE bit in
 #define CS_EXIT() \
 do { \
-    if (1 == g_ucCSCount) \
+    if (1 == g_u8CSCount) \
     { \
-        if((g_usSR & 0x0008) == 0x0008) \
+        if((g_u16SR & 0x0008) == 0x0008) \
 		{ \
 			__eint(); \
 		} \
     } \
-	g_ucCSCount--; \
+	g_u8CSCount--; \
 } while(0);
 
 //------------------------------------------------------------------------

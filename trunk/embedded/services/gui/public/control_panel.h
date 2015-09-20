@@ -36,7 +36,7 @@ public:
     virtual void Init() { m_uColor = COLOR_BLACK; SetAcceptFocus(false); }
     virtual void Draw();
     virtual GuiReturn_t ProcessEvent( GuiEvent_t *pstEvent_ ) { return GUI_EVENT_OK; }
-    virtual void Activate( K_BOOL bActivate_ ) {}
+    virtual void Activate( bool bActivate_ ) {}
 
     void SetColor( COLOR eColor_ ) { m_uColor = eColor_; }
 

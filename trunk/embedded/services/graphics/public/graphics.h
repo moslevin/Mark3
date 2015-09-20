@@ -169,12 +169,12 @@ public:
     void TextFX(DrawText_t *pstText_, TextFX_t *pstFX_);
 
 	/*!
-		\fn K_USHORT Draw_TextWidth(DisplayManager_t *pstDisplay_, DrawText_t *pstText_)    
+		\fn uint16_t Draw_TextWidth(DisplayManager_t *pstDisplay_, DrawText_t *pstText_)    
 		Returns the width of the text string (in pixels), as it would be drawn to
 		the screen, without actually drawing it to the screen.
 		\param pstText_ - text object to determine the rendering width
 	*/	
-	virtual K_USHORT TextWidth(DrawText_t *pstText_);
+	virtual uint16_t TextWidth(DrawText_t *pstText_);
 
 	/*!
 		\fn void SetWindow(DrawWindow_t *pstWindow_);
@@ -191,15 +191,15 @@ public:
 	void ClearWindow();
 protected:
 
-	K_USHORT m_usResX;
-	K_USHORT m_usResY;
+	uint16_t m_u16Res16X;
+	uint16_t m_u16Res16Y;
 
-	K_USHORT m_usLeft;
-	K_USHORT m_usTop;
-	K_USHORT m_usRight;
-	K_USHORT m_usBottom;
+	uint16_t m_u16Left;
+	uint16_t m_u16Top;
+	uint16_t m_u16Right;
+	uint16_t m_u16Bottom;
 	
-	K_UCHAR m_ucBPP;
+	uint8_t m_u8BPP;
 };
 
 #endif

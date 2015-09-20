@@ -35,7 +35,7 @@ See license.txt for more information
 #define CC1_OFFSET              (0x1A)
 
 //---------------------------------------------------------------------------
-static K_BOOL bEnabled = 1;
+static bool bEnabled = 1;
 
 //---------------------------------------------------------------------------
 static void WriteSync()
@@ -47,10 +47,10 @@ static void WriteSync()
 }
 
 //---------------------------------------------------------------------------
-static void ReadSync(K_USHORT usOffset_)
+static void ReadSync(uint16_t u16Offset_)
 {
     KERNEL_TIMER_TC->COUNT16.READREQ.reg = TC_READREQ_RREQ |
-                                    (((K_ULONG)usOffset_) << TC_READREQ_ADDR_Pos);
+                                    (((uint32_t)u16Offset_) << TC_READREQ_ADDR_Pos);
 
     WriteSync();
 }
@@ -58,56 +58,56 @@ static void ReadSync(K_USHORT usOffset_)
 //---------------------------------------------------------------------------
 void KernelTimer::Config(void)
 {        
-    K_ULONG ulReg;
-    K_ULONG ulCtrlA;
-    K_ULONG ulCtrlB;
-    K_ULONG ulCtrlC;
-    K_ULONG ulEventCtrl;
-    K_ULONG ulReadReq;
+    uint32_t u32Reg;
+    uint32_t u32CtrlA;
+    uint32_t u32CtrlB;
+    uint32_t u32CtrlC;
+    uint32_t u32EventCtrl;
+    uint32_t u32ReadReq;
 
     //--- Enable the clock in the power-management registers ---
     PM->APBCMASK.reg |= 1 << (PM_APBCMASK_TC0_Pos);
 
-    ulReg = (((K_ULONG)KERNEL_TIMER_CLK) << GCLK_CLKCTRL_ID_Pos)
-          | (((K_ULONG)KERNEL_TIMER_GCLK) << GCLK_CLKCTRL_GEN_Pos);
+    u32Reg = (((uint32_t)KERNEL_TIMER_CLK) << GCLK_CLKCTRL_ID_Pos)
+          | (((uint32_t)KERNEL_TIMER_GCLK) << GCLK_CLKCTRL_GEN_Pos);
 
     //--- Set the clock ID ---
     *((uint8_t*)&GCLK->CLKCTRL.reg) = (uint8_t)KERNEL_TIMER_CLK;
 
     //--- Disable clock, set config, Re-enable Clock
     GCLK->CLKCTRL.reg &= ~GCLK_CLKCTRL_CLKEN;
-    GCLK->CLKCTRL.reg = ulReg;
+    GCLK->CLKCTRL.reg = u32Reg;
     GCLK->CLKCTRL.reg |= GCLK_CLKCTRL_CLKEN;
 
     //--- Setup Registers ---
-    ulCtrlA = (((K_ULONG)1) << TC_CTRLA_WAVEGEN_Pos)        // MATCH
-            | (((K_ULONG)0) << TC_CTRLA_MODE_Pos)           // 16-bit timer
-            | (((K_ULONG)6) << TC_CTRLA_PRESCALER_Pos)      // 256x prescalar
-            | (((K_ULONG)0) << TC_CTRLA_PRESCSYNC_Pos);     // Normal presync
+    u32CtrlA = (((uint32_t)1) << TC_CTRLA_WAVEGEN_Pos)        // MATCH
+            | (((uint32_t)0) << TC_CTRLA_MODE_Pos)           // 16-bit timer
+            | (((uint32_t)6) << TC_CTRLA_PRESCALER_Pos)      // 256x prescalar
+            | (((uint32_t)0) << TC_CTRLA_PRESCSYNC_Pos);     // Normal presync
 
-    ulCtrlB = (((K_ULONG)0) << TC_CTRLBSET_ONESHOT_Pos)     // Continuous mode (no 1-shot)
-            | (((K_ULONG)0) << TC_CTRLBSET_DIR_Pos);        // Count-up
+    u32CtrlB = (((uint32_t)0) << TC_CTRLBSET_ONESHOT_Pos)     // Continuous mode (no 1-shot)
+            | (((uint32_t)0) << TC_CTRLBSET_DIR_Pos);        // Count-up
 
-    ulCtrlC = (((K_ULONG)1) << TC_CTRLC_CPTEN_Pos)          // Enable Capture
-            | (((K_ULONG)0) << TC_CTRLC_INVEN_Pos);         // Disable invert
+    u32CtrlC = (((uint32_t)1) << TC_CTRLC_CPTEN_Pos)          // Enable Capture
+            | (((uint32_t)0) << TC_CTRLC_INVEN_Pos);         // Disable invert
 
-    ulEventCtrl = (((K_ULONG)0) << TC_EVCTRL_MCEO_Pos)
-            | (((K_ULONG)1) << TC_EVCTRL_OVFEO_Pos)         // Enable overflow event
-            | (((K_ULONG)0) << TC_EVCTRL_TCEI_Pos)
-            | (((K_ULONG)0) << TC_EVCTRL_TCINV_Pos);
+    u32EventCtrl = (((uint32_t)0) << TC_EVCTRL_MCEO_Pos)
+            | (((uint32_t)1) << TC_EVCTRL_OVFEO_Pos)         // Enable overflow event
+            | (((uint32_t)0) << TC_EVCTRL_TCEI_Pos)
+            | (((uint32_t)0) << TC_EVCTRL_TCINV_Pos);
 
-    ulReadReq = (((K_ULONG)1) << TC_READREQ_RCONT_Pos)
-            | (((K_ULONG)0x10) << TC_READREQ_ADDR_Pos);     // Constantly sync the COUNT value
+    u32ReadReq = (((uint32_t)1) << TC_READREQ_RCONT_Pos)
+            | (((uint32_t)0x10) << TC_READREQ_ADDR_Pos);     // Constantly sync the COUNT value
 
-    KERNEL_TIMER_TC->COUNT16.CTRLA.reg = ulCtrlA;
+    KERNEL_TIMER_TC->COUNT16.CTRLA.reg = u32CtrlA;
     WriteSync();
-    KERNEL_TIMER_TC->COUNT16.CTRLBSET.reg = ulCtrlB;
+    KERNEL_TIMER_TC->COUNT16.CTRLBSET.reg = u32CtrlB;
     WriteSync();
-    KERNEL_TIMER_TC->COUNT16.CTRLC.reg = ulCtrlC;
+    KERNEL_TIMER_TC->COUNT16.CTRLC.reg = u32CtrlC;
     WriteSync();
-    KERNEL_TIMER_TC->COUNT16.READREQ.reg = ulReadReq;
+    KERNEL_TIMER_TC->COUNT16.READREQ.reg = u32ReadReq;
     WriteSync();
-    KERNEL_TIMER_TC->COUNT16.EVCTRL.reg = ulEventCtrl;
+    KERNEL_TIMER_TC->COUNT16.EVCTRL.reg = u32EventCtrl;
 	
 	//--- Enable The Counter ---
 	WriteSync();
@@ -141,7 +141,7 @@ void KernelTimer::Stop(void)
 }
 
 //---------------------------------------------------------------------------
-K_USHORT KernelTimer::Read(void)
+uint16_t KernelTimer::Read(void)
 {
     // If we're not continuously reading the count register...
     ReadSync(COUNT_OFFSET);
@@ -149,63 +149,63 @@ K_USHORT KernelTimer::Read(void)
 }
 
 //---------------------------------------------------------------------------
-K_ULONG KernelTimer::SubtractExpiry(K_ULONG ulInterval_)
+uint32_t KernelTimer::SubtractExpiry(uint32_t u32Interval_)
 {
-    K_USHORT usVal;
+    uint16_t u16Val;
 
     ReadSync(CC0_OFFSET);
-    usVal = KERNEL_TIMER_TC->COUNT16.CC[0].reg;
-    usVal -= (K_USHORT)ulInterval_;
+    u16Val = KERNEL_TIMER_TC->COUNT16.CC[0].reg;
+    u16Val -= (uint16_t)u32Interval_;
 
     WriteSync();
-    KERNEL_TIMER_TC->COUNT16.CC[0].reg = usVal;
+    KERNEL_TIMER_TC->COUNT16.CC[0].reg = u16Val;
 
-    return (K_ULONG)usVal;
+    return (uint32_t)u16Val;
 }
 
 //---------------------------------------------------------------------------
-K_ULONG KernelTimer::TimeToExpiry(void)
+uint32_t KernelTimer::TimeToExpiry(void)
 {
-    K_USHORT usRead;
-    K_USHORT usTop;
+    uint16_t u16Read;
+    uint16_t u16Top;
 
-    usRead = KernelTimer::Read();
+    u16Read = KernelTimer::Read();
 
     ReadSync(CC0_OFFSET);
-    usTop = KERNEL_TIMER_TC->COUNT16.CC[0].reg;
+    u16Top = KERNEL_TIMER_TC->COUNT16.CC[0].reg;
 
-    if (usRead >= usTop)
+    if (u16Read >= u16Top)
     {
         return 0;
     }
     else
     {
-        return (K_ULONG)(usTop - usRead);
+        return (uint32_t)(u16Top - u16Read);
     }
 }
 
 //---------------------------------------------------------------------------
-K_ULONG KernelTimer::GetOvertime(void)
+uint32_t KernelTimer::GetOvertime(void)
 {
     return KernelTimer::Read();
 }
 
 //---------------------------------------------------------------------------
-K_ULONG KernelTimer::SetExpiry(K_ULONG ulInterval_)
+uint32_t KernelTimer::SetExpiry(uint32_t u32Interval_)
 {
-    K_USHORT usSetInterval;    
-    if (ulInterval_ > 65535)
+    uint16_t u16SetInterval;    
+    if (u32Interval_ > 65535)
     {
-        usSetInterval = 65535;
+        u16SetInterval = 65535;
     } 
     else 
     {
-        usSetInterval = (K_USHORT)ulInterval_; 
+        u16SetInterval = (uint16_t)u32Interval_; 
     }
 
     WriteSync();
-    KERNEL_TIMER_TC->COUNT16.CC[0].reg = usSetInterval;
-    return (K_ULONG)usSetInterval;
+    KERNEL_TIMER_TC->COUNT16.CC[0].reg = u16SetInterval;
+    return (uint32_t)u16SetInterval;
 }
 
 //---------------------------------------------------------------------------
@@ -216,16 +216,16 @@ void KernelTimer::ClearExpiry(void)
 }
 
 //---------------------------------------------------------------------------
-K_UCHAR KernelTimer::DI(void)
+uint8_t KernelTimer::DI(void)
 {    
-    K_UCHAR ucRet = (bEnabled == true);
+    uint8_t u8Ret = (bEnabled == true);
 
     KernelTimer::RI(0);
     if (bEnabled == true)
     {
         bEnabled = false;
     }
-    return ucRet;
+    return u8Ret;
 }
 
 //---------------------------------------------------------------------------
@@ -235,7 +235,7 @@ void KernelTimer::EI(void)
 }
 
 //---------------------------------------------------------------------------
-void KernelTimer::RI(K_BOOL bEnable_)
+void KernelTimer::RI(bool bEnable_)
 {
     if (bEnable_)
     {
@@ -269,32 +269,32 @@ void KernelTimer::Stop(void)
 }
 
 //---------------------------------------------------------------------------
-K_USHORT KernelTimer::Read(void)
+uint16_t KernelTimer::Read(void)
 {
 	// Not implemented in this port
 	return 0;
 }
 
 //---------------------------------------------------------------------------
-K_ULONG KernelTimer::SubtractExpiry(K_ULONG ulInterval_)
+uint32_t KernelTimer::SubtractExpiry(uint32_t u32Interval_)
 {
 	return 0;
 }
 
 //---------------------------------------------------------------------------
-K_ULONG KernelTimer::TimeToExpiry(void)
+uint32_t KernelTimer::TimeToExpiry(void)
 {
 	return 0;
 }
 
 //---------------------------------------------------------------------------
-K_ULONG KernelTimer::GetOvertime(void)
+uint32_t KernelTimer::GetOvertime(void)
 {
 	return 0;
 }
 
 //---------------------------------------------------------------------------
-K_ULONG KernelTimer::SetExpiry(K_ULONG ulInterval_)
+uint32_t KernelTimer::SetExpiry(uint32_t u32Interval_)
 {
 	return 0;
 }
@@ -305,7 +305,7 @@ void KernelTimer::ClearExpiry(void)
 }
 
 //-------------------------------------------------------------------------
-K_UCHAR KernelTimer::DI(void)
+uint8_t KernelTimer::DI(void)
 {
 	return 0;
 }
@@ -317,7 +317,7 @@ void KernelTimer::EI(void)
 }
 
 //---------------------------------------------------------------------------
-void KernelTimer::RI(K_BOOL bEnable_)
+void KernelTimer::RI(bool bEnable_)
 {
 }
 

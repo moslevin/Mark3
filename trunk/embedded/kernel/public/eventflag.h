@@ -49,27 +49,27 @@ public:
     /*!
      * \brief Init Initializes the EventFlag object prior to use.
      */
-    void Init() { m_usSetMask = 0; m_clBlockList.Init(); }
+    void Init() { m_u16SetMask = 0; m_clBlockList.Init(); }
 
     /*!
      * \brief Wait - Block a thread on the specific flags in this event flag group
-     * \param usMask_ - 16-bit bitmask to block on
+     * \param u16Mask_ - 16-bit bitmask to block on
      * \param eMode_ - EVENT_FLAG_ANY:  Thread will block on any of the bits in the mask
      *               - EVENT_FLAG_ALL:  Thread will block on all of the bits in the mask
      * \return Bitmask condition that caused the thread to unblock, or 0 on error or timeout
      */
-    K_USHORT Wait(K_USHORT usMask_, EventFlagOperation_t eMode_);
+    uint16_t Wait(uint16_t u16Mask_, EventFlagOperation_t eMode_);
 
 #if KERNEL_USE_TIMEOUTS
     /*!
      * \brief Wait - Block a thread on the specific flags in this event flag group
-     * \param usMask_ - 16-bit bitmask to block on
+     * \param u16Mask_ - 16-bit bitmask to block on
      * \param eMode_ - EVENT_FLAG_ANY:  Thread will block on any of the bits in the mask
      *               - EVENT_FLAG_ALL:  Thread will block on all of the bits in the mask
-     * \param ulTimeMS_ - Time to block (in ms)
+     * \param u32TimeMS_ - Time to block (in ms)
      * \return Bitmask condition that caused the thread to unblock, or 0 on error or timeout
      */
-    K_USHORT Wait(K_USHORT usMask_, EventFlagOperation_t eMode_, K_ULONG ulTimeMS_);
+    uint16_t Wait(uint16_t u16Mask_, EventFlagOperation_t eMode_, uint32_t u32TimeMS_);
 
     /*!
      * \brief WakeMe
@@ -85,21 +85,21 @@ public:
     /*!
      * \brief Set - Set additional flags in this object (logical OR).  This API can potentially
      *              result in threads blocked on Wait() to be unblocked.
-     * \param usMask_ - Bitmask of flags to set.
+     * \param u16Mask_ - Bitmask of flags to set.
      */
-    void Set(K_USHORT usMask_);
+    void Set(uint16_t u16Mask_);
 
     /*!
      * \brief ClearFlags - Clear a specific set of flags within this object, specific by bitmask
-     * \param usMask_ - Bitmask of flags to clear
+     * \param u16Mask_ - Bitmask of flags to clear
      */
-    void Clear(K_USHORT usMask_);
+    void Clear(uint16_t u16Mask_);
 
     /*!
      * \brief GetMask Returns the state of the 16-bit bitmask within this object
      * \return The state of the 16-bit bitmask
      */
-    K_USHORT GetMask();
+    uint16_t GetMask();
 
 private:
 
@@ -109,29 +109,29 @@ private:
      *
      * Interal abstraction used to manage both timed and untimed wait operations
      *
-     * \param usMask_ - 16-bit bitmask to block on
+     * \param u16Mask_ - 16-bit bitmask to block on
      * \param eMode_ - EVENT_FLAG_ANY:  Thread will block on any of the bits in the mask
      *               - EVENT_FLAG_ALL:  Thread will block on all of the bits in the mask
-     * \param ulTimeMS_ - Time to block (in ms)
+     * \param u32TimeMS_ - Time to block (in ms)
      *
      * \return Bitmask condition that caused the thread to unblock, or 0 on error or timeout
      */
-    K_USHORT Wait_i(K_USHORT usMask_, EventFlagOperation_t eMode_, K_ULONG ulTimeMS_);
+    uint16_t Wait_i(uint16_t u16Mask_, EventFlagOperation_t eMode_, uint32_t u32TimeMS_);
 #else
     /*!
      * \brief Wait_i
      * Interal abstraction used to manage wait operations
      *
-     * \param usMask_ - 16-bit bitmask to block on
+     * \param u16Mask_ - 16-bit bitmask to block on
      * \param eMode_ - EVENT_FLAG_ANY:  Thread will block on any of the bits in the mask
      *               - EVENT_FLAG_ALL:  Thread will block on all of the bits in the mask
      *
      * \return Bitmask condition that caused the thread to unblock.
      */
-    K_USHORT Wait_i(K_USHORT usMask_, EventFlagOperation_t eMode_);
+    uint16_t Wait_i(uint16_t u16Mask_, EventFlagOperation_t eMode_);
 #endif
 
-    K_USHORT m_usSetMask;       //!< Event flags currently set in this object
+    uint16_t m_u16SetMask;       //!< Event flags currently set in this object
 };
 
 #endif //KERNEL_USE_EVENTFLAG

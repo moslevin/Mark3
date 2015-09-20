@@ -41,39 +41,39 @@ public:
     Driver functions
 */
     virtual void Init() {}    //Stubbed
-    virtual K_UCHAR Open();
-    virtual K_UCHAR Close();
-    virtual K_USHORT Read( K_USHORT usBytes_, 
-                                 K_UCHAR *pucData_) {return usBytes_;}    //Stubbed
-    virtual K_USHORT Write( K_USHORT usBytes_, 
-                                  K_UCHAR *pucData_);
+    virtual uint8_t Open();
+    virtual uint8_t Close();
+    virtual uint16_t Read( uint16_t u16Bytes_, 
+                                 uint8_t *pu8Data_) {return u16Bytes_;}    //Stubbed
+    virtual uint16_t Write( uint16_t u16Bytes_, 
+                                  uint8_t *pu8Data_);
     
-    virtual K_USHORT Control( K_USHORT usEvent_, 
+    virtual uint16_t Control( uint16_t u16Event_, 
                                     void *pvDataIn_, 
-                                    K_USHORT usSizeIn_, 
+                                    uint16_t u16SizeIn_, 
                                     void *pvDataOut_, 
-                                    K_USHORT usSizeOut_ );
+                                    uint16_t u16SizeOut_ );
     
-    void SetClock( volatile K_UCHAR *pucPort_, K_UCHAR ucBit_ );
-    void SetData( volatile K_UCHAR *pucPort_, K_UCHAR ucBit_ );
-    void SetStrobe( volatile K_UCHAR *pucPort_, K_UCHAR ucBit_ );
-    void SetEnable( volatile K_UCHAR *pucPort_, K_UCHAR ucBit_ );
+    void SetClock( volatile uint8_t *pu8Port_, uint8_t u8Bit_ );
+    void SetData( volatile uint8_t *pu8Port_, uint8_t u8Bit_ );
+    void SetStrobe( volatile uint8_t *pu8Port_, uint8_t u8Bit_ );
+    void SetEnable( volatile uint8_t *pu8Port_, uint8_t u8Bit_ );
     
 private:
     
-    void WriteByte( K_UCHAR ucByte_ );
+    void WriteByte( uint8_t u8Byte_ );
 
-    volatile K_UCHAR *m_pucClockPort;
-    K_UCHAR m_ucClockBit;
+    volatile uint8_t *m_pu8ClockPort;
+    uint8_t m_u8ClockBit;
 
-    volatile K_UCHAR *m_pucDataPort;
-    K_UCHAR m_ucDataBit;
+    volatile uint8_t *m_pu8DataPort;
+    uint8_t m_u8DataBit;
 
-    volatile K_UCHAR *m_pucStrobePort;
-    K_UCHAR m_ucStrobeBit;
+    volatile uint8_t *m_pu8StrobePort;
+    uint8_t m_u8StrobeBit;
     
-    volatile K_UCHAR *m_pucEnablePort;
-    K_UCHAR m_ucEnableBit;    
+    volatile uint8_t *m_pu8EnablePort;
+    uint8_t m_u8EnableBit;    
 };
 
 #endif

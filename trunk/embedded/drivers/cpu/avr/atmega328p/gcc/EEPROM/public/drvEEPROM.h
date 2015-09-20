@@ -35,21 +35,21 @@ class ATMegaEEPROM : public Driver
 {
 public:
     virtual void Init();
-    virtual K_UCHAR Open();
-    virtual K_UCHAR Close();
-    virtual K_USHORT Read( K_USHORT usBytes_,
-        K_UCHAR *pucData_ );
+    virtual uint8_t Open();
+    virtual uint8_t Close();
+    virtual uint16_t Read( uint16_t u16Bytes_,
+        uint8_t *pu8Data_ );
         
-    virtual K_USHORT Write( K_USHORT usBytes_,
-        K_UCHAR *pucData_ );
+    virtual uint16_t Write( uint16_t u16Bytes_,
+        uint8_t *pu8Data_ );
         
-    virtual K_USHORT Control( K_USHORT usEvent_,
+    virtual uint16_t Control( uint16_t u16Event_,
         void *pvIn_,
-        K_USHORT usSizeIn_,
+        uint16_t u16SizeIn_,
         void *pvOut_,
-        K_USHORT usSizeOut_ );
+        uint16_t u16SizeOut_ );
 private:
-    K_USHORT m_usAddress;        
+    uint16_t m_u16Address;        
 };
 
 #endif 

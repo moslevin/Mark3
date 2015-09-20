@@ -7,240 +7,240 @@
 const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 
 //-- Glyph for ASCII Character code: 0
-	0,  /* ucWidth */
-	0,  /* ucHeight */
-	0,  /* ucVOffset */
+	0,  /* u8Width */
+	0,  /* u8Height */
+	0,  /* u8VOffset */
 	//--[Glyph Data]--
 	/* No glyph data*/
 
 //-- Glyph for ASCII Character code: 1
-	0,  /* ucWidth */
-	0,  /* ucHeight */
-	0,  /* ucVOffset */
+	0,  /* u8Width */
+	0,  /* u8Height */
+	0,  /* u8VOffset */
 	//--[Glyph Data]--
 	/* No glyph data*/
 
 //-- Glyph for ASCII Character code: 2
-	0,  /* ucWidth */
-	0,  /* ucHeight */
-	0,  /* ucVOffset */
+	0,  /* u8Width */
+	0,  /* u8Height */
+	0,  /* u8VOffset */
 	//--[Glyph Data]--
 	/* No glyph data*/
 
 //-- Glyph for ASCII Character code: 3
-	0,  /* ucWidth */
-	0,  /* ucHeight */
-	0,  /* ucVOffset */
+	0,  /* u8Width */
+	0,  /* u8Height */
+	0,  /* u8VOffset */
 	//--[Glyph Data]--
 	/* No glyph data*/
 
 //-- Glyph for ASCII Character code: 4
-	0,  /* ucWidth */
-	0,  /* ucHeight */
-	0,  /* ucVOffset */
+	0,  /* u8Width */
+	0,  /* u8Height */
+	0,  /* u8VOffset */
 	//--[Glyph Data]--
 	/* No glyph data*/
 
 //-- Glyph for ASCII Character code: 5
-	0,  /* ucWidth */
-	0,  /* ucHeight */
-	0,  /* ucVOffset */
+	0,  /* u8Width */
+	0,  /* u8Height */
+	0,  /* u8VOffset */
 	//--[Glyph Data]--
 	/* No glyph data*/
 
 //-- Glyph for ASCII Character code: 6
-	0,  /* ucWidth */
-	0,  /* ucHeight */
-	0,  /* ucVOffset */
+	0,  /* u8Width */
+	0,  /* u8Height */
+	0,  /* u8VOffset */
 	//--[Glyph Data]--
 	/* No glyph data*/
 
 //-- Glyph for ASCII Character code: 7
-	0,  /* ucWidth */
-	0,  /* ucHeight */
-	0,  /* ucVOffset */
+	0,  /* u8Width */
+	0,  /* u8Height */
+	0,  /* u8VOffset */
 	//--[Glyph Data]--
 	/* No glyph data*/
 
 //-- Glyph for ASCII Character code: 8
-	0,  /* ucWidth */
-	0,  /* ucHeight */
-	0,  /* ucVOffset */
+	0,  /* u8Width */
+	0,  /* u8Height */
+	0,  /* u8VOffset */
 	//--[Glyph Data]--
 	/* No glyph data*/
 
 //-- Glyph for ASCII Character code: 9
-	0,  /* ucWidth */
-	0,  /* ucHeight */
-	0,  /* ucVOffset */
+	0,  /* u8Width */
+	0,  /* u8Height */
+	0,  /* u8VOffset */
 	//--[Glyph Data]--
 	/* No glyph data*/
 
 //-- Glyph for ASCII Character code: 10
-	0,  /* ucWidth */
-	0,  /* ucHeight */
-	0,  /* ucVOffset */
+	0,  /* u8Width */
+	0,  /* u8Height */
+	0,  /* u8VOffset */
 	//--[Glyph Data]--
 	/* No glyph data*/
 
 //-- Glyph for ASCII Character code: 11
-	0,  /* ucWidth */
-	0,  /* ucHeight */
-	0,  /* ucVOffset */
+	0,  /* u8Width */
+	0,  /* u8Height */
+	0,  /* u8VOffset */
 	//--[Glyph Data]--
 	/* No glyph data*/
 
 //-- Glyph for ASCII Character code: 12
-	0,  /* ucWidth */
-	0,  /* ucHeight */
-	0,  /* ucVOffset */
+	0,  /* u8Width */
+	0,  /* u8Height */
+	0,  /* u8VOffset */
 	//--[Glyph Data]--
 	/* No glyph data*/
 
 //-- Glyph for ASCII Character code: 13
-	0,  /* ucWidth */
-	0,  /* ucHeight */
-	0,  /* ucVOffset */
+	0,  /* u8Width */
+	0,  /* u8Height */
+	0,  /* u8VOffset */
 	//--[Glyph Data]--
 	/* No glyph data*/
 
 //-- Glyph for ASCII Character code: 14
-	0,  /* ucWidth */
-	0,  /* ucHeight */
-	0,  /* ucVOffset */
+	0,  /* u8Width */
+	0,  /* u8Height */
+	0,  /* u8VOffset */
 	//--[Glyph Data]--
 	/* No glyph data*/
 
 //-- Glyph for ASCII Character code: 15
-	0,  /* ucWidth */
-	0,  /* ucHeight */
-	0,  /* ucVOffset */
+	0,  /* u8Width */
+	0,  /* u8Height */
+	0,  /* u8VOffset */
 	//--[Glyph Data]--
 	/* No glyph data*/
 
 //-- Glyph for ASCII Character code: 16
-	0,  /* ucWidth */
-	0,  /* ucHeight */
-	0,  /* ucVOffset */
+	0,  /* u8Width */
+	0,  /* u8Height */
+	0,  /* u8VOffset */
 	//--[Glyph Data]--
 	/* No glyph data*/
 
 //-- Glyph for ASCII Character code: 17
-	0,  /* ucWidth */
-	0,  /* ucHeight */
-	0,  /* ucVOffset */
+	0,  /* u8Width */
+	0,  /* u8Height */
+	0,  /* u8VOffset */
 	//--[Glyph Data]--
 	/* No glyph data*/
 
 //-- Glyph for ASCII Character code: 18
-	0,  /* ucWidth */
-	0,  /* ucHeight */
-	0,  /* ucVOffset */
+	0,  /* u8Width */
+	0,  /* u8Height */
+	0,  /* u8VOffset */
 	//--[Glyph Data]--
 	/* No glyph data*/
 
 //-- Glyph for ASCII Character code: 19
-	0,  /* ucWidth */
-	0,  /* ucHeight */
-	0,  /* ucVOffset */
+	0,  /* u8Width */
+	0,  /* u8Height */
+	0,  /* u8VOffset */
 	//--[Glyph Data]--
 	/* No glyph data*/
 
 //-- Glyph for ASCII Character code: 20
-	0,  /* ucWidth */
-	0,  /* ucHeight */
-	0,  /* ucVOffset */
+	0,  /* u8Width */
+	0,  /* u8Height */
+	0,  /* u8VOffset */
 	//--[Glyph Data]--
 	/* No glyph data*/
 
 //-- Glyph for ASCII Character code: 21
-	0,  /* ucWidth */
-	0,  /* ucHeight */
-	0,  /* ucVOffset */
+	0,  /* u8Width */
+	0,  /* u8Height */
+	0,  /* u8VOffset */
 	//--[Glyph Data]--
 	/* No glyph data*/
 
 //-- Glyph for ASCII Character code: 22
-	0,  /* ucWidth */
-	0,  /* ucHeight */
-	0,  /* ucVOffset */
+	0,  /* u8Width */
+	0,  /* u8Height */
+	0,  /* u8VOffset */
 	//--[Glyph Data]--
 	/* No glyph data*/
 
 //-- Glyph for ASCII Character code: 23
-	0,  /* ucWidth */
-	0,  /* ucHeight */
-	0,  /* ucVOffset */
+	0,  /* u8Width */
+	0,  /* u8Height */
+	0,  /* u8VOffset */
 	//--[Glyph Data]--
 	/* No glyph data*/
 
 //-- Glyph for ASCII Character code: 24
-	0,  /* ucWidth */
-	0,  /* ucHeight */
-	0,  /* ucVOffset */
+	0,  /* u8Width */
+	0,  /* u8Height */
+	0,  /* u8VOffset */
 	//--[Glyph Data]--
 	/* No glyph data*/
 
 //-- Glyph for ASCII Character code: 25
-	0,  /* ucWidth */
-	0,  /* ucHeight */
-	0,  /* ucVOffset */
+	0,  /* u8Width */
+	0,  /* u8Height */
+	0,  /* u8VOffset */
 	//--[Glyph Data]--
 	/* No glyph data*/
 
 //-- Glyph for ASCII Character code: 26
-	0,  /* ucWidth */
-	0,  /* ucHeight */
-	0,  /* ucVOffset */
+	0,  /* u8Width */
+	0,  /* u8Height */
+	0,  /* u8VOffset */
 	//--[Glyph Data]--
 	/* No glyph data*/
 
 //-- Glyph for ASCII Character code: 27
-	0,  /* ucWidth */
-	0,  /* ucHeight */
-	0,  /* ucVOffset */
+	0,  /* u8Width */
+	0,  /* u8Height */
+	0,  /* u8VOffset */
 	//--[Glyph Data]--
 	/* No glyph data*/
 
 //-- Glyph for ASCII Character code: 28
-	0,  /* ucWidth */
-	0,  /* ucHeight */
-	0,  /* ucVOffset */
+	0,  /* u8Width */
+	0,  /* u8Height */
+	0,  /* u8VOffset */
 	//--[Glyph Data]--
 	/* No glyph data*/
 
 //-- Glyph for ASCII Character code: 29
-	0,  /* ucWidth */
-	0,  /* ucHeight */
-	0,  /* ucVOffset */
+	0,  /* u8Width */
+	0,  /* u8Height */
+	0,  /* u8VOffset */
 	//--[Glyph Data]--
 	/* No glyph data*/
 
 //-- Glyph for ASCII Character code: 30
-	0,  /* ucWidth */
-	0,  /* ucHeight */
-	0,  /* ucVOffset */
+	0,  /* u8Width */
+	0,  /* u8Height */
+	0,  /* u8VOffset */
 	//--[Glyph Data]--
 	/* No glyph data*/
 
 //-- Glyph for ASCII Character code: 31
-	0,  /* ucWidth */
-	0,  /* ucHeight */
-	0,  /* ucVOffset */
+	0,  /* u8Width */
+	0,  /* u8Height */
+	0,  /* u8VOffset */
 	//--[Glyph Data]--
 	/* No glyph data*/
 
 //-- Glyph for ASCII Character code: 32
-	0,  /* ucWidth */
-	0,  /* ucHeight */
-	0,  /* ucVOffset */
+	0,  /* u8Width */
+	0,  /* u8Height */
+	0,  /* u8VOffset */
 	//--[Glyph Data]--
 	/* No glyph data*/
 
 //-- Glyph for ASCII Character code: 33
-	1, /* ucWidth */
-	12, /* ucHeight */
-	3, /* ucVOffset */
+	1, /* u8Width */
+	12, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	128,	 /* 1 */
 	128,	 /* 1 */
@@ -256,9 +256,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	128,	 /* 1 */
 	
 //-- Glyph for ASCII Character code: 34
-	4, /* ucWidth */
-	4, /* ucHeight */
-	3, /* ucVOffset */
+	4, /* u8Width */
+	4, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	144,	 /* 1001 */
 	144,	 /* 1001 */
@@ -266,9 +266,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	144,	 /* 1001 */
 	
 //-- Glyph for ASCII Character code: 35
-	9, /* ucWidth */
-	12, /* ucHeight */
-	3, /* ucVOffset */
+	9, /* u8Width */
+	12, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	17,	0,	 /* 000100010 */
 	17,	0,	 /* 000100010 */
@@ -284,9 +284,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	68,	0,	 /* 010001000 */
 	
 //-- Glyph for ASCII Character code: 36
-	7, /* ucWidth */
-	14, /* ucHeight */
-	2, /* ucVOffset */
+	7, /* u8Width */
+	14, /* u8Height */
+	2, /* u8VOffset */
 	//--[Glyph Data]--
 	16,	 /* 0001000 */
 	60,	 /* 0011110 */
@@ -304,9 +304,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	16,	 /* 0001000 */
 	
 //-- Glyph for ASCII Character code: 37
-	12, /* ucWidth */
-	12, /* ucHeight */
-	3, /* ucVOffset */
+	12, /* u8Width */
+	12, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	112,	128,	 /* 011100001000 */
 	137,	0,	 /* 100010010000 */
@@ -322,9 +322,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	16,	224,	 /* 000100001110 */
 	
 //-- Glyph for ASCII Character code: 38
-	9, /* ucWidth */
-	12, /* ucHeight */
-	3, /* ucVOffset */
+	9, /* u8Width */
+	12, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	56,	0,	 /* 001110000 */
 	68,	0,	 /* 010001000 */
@@ -340,9 +340,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	56,	128,	 /* 001110001 */
 	
 //-- Glyph for ASCII Character code: 39
-	1, /* ucWidth */
-	4, /* ucHeight */
-	3, /* ucVOffset */
+	1, /* u8Width */
+	4, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	128,	 /* 1 */
 	128,	 /* 1 */
@@ -350,9 +350,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	128,	 /* 1 */
 	
 //-- Glyph for ASCII Character code: 40
-	3, /* ucWidth */
-	15, /* ucHeight */
-	3, /* ucVOffset */
+	3, /* u8Width */
+	15, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	32,	 /* 001 */
 	64,	 /* 010 */
@@ -371,9 +371,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	32,	 /* 001 */
 	
 //-- Glyph for ASCII Character code: 41
-	3, /* ucWidth */
-	15, /* ucHeight */
-	3, /* ucVOffset */
+	3, /* u8Width */
+	15, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	128,	 /* 100 */
 	64,	 /* 010 */
@@ -392,9 +392,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	128,	 /* 100 */
 	
 //-- Glyph for ASCII Character code: 42
-	5, /* ucWidth */
-	5, /* ucHeight */
-	3, /* ucVOffset */
+	5, /* u8Width */
+	5, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	32,	 /* 00100 */
 	248,	 /* 11111 */
@@ -403,9 +403,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	80,	 /* 01010 */
 	
 //-- Glyph for ASCII Character code: 43
-	7, /* ucWidth */
-	7, /* ucHeight */
-	6, /* ucVOffset */
+	7, /* u8Width */
+	7, /* u8Height */
+	6, /* u8VOffset */
 	//--[Glyph Data]--
 	16,	 /* 0001000 */
 	16,	 /* 0001000 */
@@ -416,32 +416,32 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	16,	 /* 0001000 */
 	
 //-- Glyph for ASCII Character code: 44
-	1, /* ucWidth */
-	3, /* ucHeight */
-	14, /* ucVOffset */
+	1, /* u8Width */
+	3, /* u8Height */
+	14, /* u8VOffset */
 	//--[Glyph Data]--
 	128,	 /* 1 */
 	128,	 /* 1 */
 	128,	 /* 1 */
 	
 //-- Glyph for ASCII Character code: 45
-	4, /* ucWidth */
-	1, /* ucHeight */
-	11, /* ucVOffset */
+	4, /* u8Width */
+	1, /* u8Height */
+	11, /* u8VOffset */
 	//--[Glyph Data]--
 	240,	 /* 1111 */
 	
 //-- Glyph for ASCII Character code: 46
-	1, /* ucWidth */
-	1, /* ucHeight */
-	14, /* ucVOffset */
+	1, /* u8Width */
+	1, /* u8Height */
+	14, /* u8VOffset */
 	//--[Glyph Data]--
 	128,	 /* 1 */
 	
 //-- Glyph for ASCII Character code: 47
-	4, /* ucWidth */
-	12, /* ucHeight */
-	3, /* ucVOffset */
+	4, /* u8Width */
+	12, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	16,	 /* 0001 */
 	16,	 /* 0001 */
@@ -457,9 +457,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	128,	 /* 1000 */
 	
 //-- Glyph for ASCII Character code: 48
-	7, /* ucWidth */
-	12, /* ucHeight */
-	3, /* ucVOffset */
+	7, /* u8Width */
+	12, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	56,	 /* 0011100 */
 	68,	 /* 0100010 */
@@ -475,9 +475,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	56,	 /* 0011100 */
 	
 //-- Glyph for ASCII Character code: 49
-	4, /* ucWidth */
-	12, /* ucHeight */
-	3, /* ucVOffset */
+	4, /* u8Width */
+	12, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	16,	 /* 0001 */
 	48,	 /* 0011 */
@@ -493,9 +493,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	16,	 /* 0001 */
 	
 //-- Glyph for ASCII Character code: 50
-	7, /* ucWidth */
-	12, /* ucHeight */
-	3, /* ucVOffset */
+	7, /* u8Width */
+	12, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	60,	 /* 0011110 */
 	68,	 /* 0100010 */
@@ -511,9 +511,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	254,	 /* 1111111 */
 	
 //-- Glyph for ASCII Character code: 51
-	7, /* ucWidth */
-	12, /* ucHeight */
-	3, /* ucVOffset */
+	7, /* u8Width */
+	12, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	56,	 /* 0011100 */
 	68,	 /* 0100010 */
@@ -529,9 +529,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	56,	 /* 0011100 */
 	
 //-- Glyph for ASCII Character code: 52
-	8, /* ucWidth */
-	12, /* ucHeight */
-	3, /* ucVOffset */
+	8, /* u8Width */
+	12, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	2,	 /* 00000010 */
 	6,	 /* 00000110 */
@@ -547,9 +547,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	2,	 /* 00000010 */
 	
 //-- Glyph for ASCII Character code: 53
-	7, /* ucWidth */
-	12, /* ucHeight */
-	3, /* ucVOffset */
+	7, /* u8Width */
+	12, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	126,	 /* 0111111 */
 	64,	 /* 0100000 */
@@ -565,9 +565,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	56,	 /* 0011100 */
 	
 //-- Glyph for ASCII Character code: 54
-	7, /* ucWidth */
-	12, /* ucHeight */
-	3, /* ucVOffset */
+	7, /* u8Width */
+	12, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	56,	 /* 0011100 */
 	68,	 /* 0100010 */
@@ -583,9 +583,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	56,	 /* 0011100 */
 	
 //-- Glyph for ASCII Character code: 55
-	7, /* ucWidth */
-	12, /* ucHeight */
-	3, /* ucVOffset */
+	7, /* u8Width */
+	12, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	254,	 /* 1111111 */
 	4,	 /* 0000010 */
@@ -601,9 +601,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	32,	 /* 0010000 */
 	
 //-- Glyph for ASCII Character code: 56
-	7, /* ucWidth */
-	12, /* ucHeight */
-	3, /* ucVOffset */
+	7, /* u8Width */
+	12, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	56,	 /* 0011100 */
 	68,	 /* 0100010 */
@@ -619,9 +619,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	56,	 /* 0011100 */
 	
 //-- Glyph for ASCII Character code: 57
-	7, /* ucWidth */
-	12, /* ucHeight */
-	3, /* ucVOffset */
+	7, /* u8Width */
+	12, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	56,	 /* 0011100 */
 	68,	 /* 0100010 */
@@ -637,9 +637,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	56,	 /* 0011100 */
 	
 //-- Glyph for ASCII Character code: 58
-	1, /* ucWidth */
-	9, /* ucHeight */
-	6, /* ucVOffset */
+	1, /* u8Width */
+	9, /* u8Height */
+	6, /* u8VOffset */
 	//--[Glyph Data]--
 	128,	 /* 1 */
 	0,	 /* 0 */
@@ -652,9 +652,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	128,	 /* 1 */
 	
 //-- Glyph for ASCII Character code: 59
-	1, /* ucWidth */
-	11, /* ucHeight */
-	6, /* ucVOffset */
+	1, /* u8Width */
+	11, /* u8Height */
+	6, /* u8VOffset */
 	//--[Glyph Data]--
 	128,	 /* 1 */
 	0,	 /* 0 */
@@ -669,9 +669,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	128,	 /* 1 */
 	
 //-- Glyph for ASCII Character code: 60
-	7, /* ucWidth */
-	7, /* ucHeight */
-	6, /* ucVOffset */
+	7, /* u8Width */
+	7, /* u8Height */
+	6, /* u8VOffset */
 	//--[Glyph Data]--
 	2,	 /* 0000001 */
 	28,	 /* 0001110 */
@@ -682,9 +682,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	2,	 /* 0000001 */
 	
 //-- Glyph for ASCII Character code: 61
-	7, /* ucWidth */
-	5, /* ucHeight */
-	7, /* ucVOffset */
+	7, /* u8Width */
+	5, /* u8Height */
+	7, /* u8VOffset */
 	//--[Glyph Data]--
 	254,	 /* 1111111 */
 	0,	 /* 0000000 */
@@ -693,9 +693,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	254,	 /* 1111111 */
 	
 //-- Glyph for ASCII Character code: 62
-	7, /* ucWidth */
-	7, /* ucHeight */
-	6, /* ucVOffset */
+	7, /* u8Width */
+	7, /* u8Height */
+	6, /* u8VOffset */
 	//--[Glyph Data]--
 	128,	 /* 1000000 */
 	112,	 /* 0111000 */
@@ -706,9 +706,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	128,	 /* 1000000 */
 	
 //-- Glyph for ASCII Character code: 63
-	7, /* ucWidth */
-	12, /* ucHeight */
-	3, /* ucVOffset */
+	7, /* u8Width */
+	12, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	56,	 /* 0011100 */
 	68,	 /* 0100010 */
@@ -724,9 +724,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	16,	 /* 0001000 */
 	
 //-- Glyph for ASCII Character code: 64
-	15, /* ucWidth */
-	15, /* ucHeight */
-	3, /* ucVOffset */
+	15, /* u8Width */
+	15, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	7,	224,	 /* 000001111110000 */
 	24,	24,	 /* 000110000001100 */
@@ -745,9 +745,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	7,	240,	 /* 000001111111000 */
 	
 //-- Glyph for ASCII Character code: 65
-	9, /* ucWidth */
-	12, /* ucHeight */
-	3, /* ucVOffset */
+	9, /* u8Width */
+	12, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	8,	0,	 /* 000010000 */
 	20,	0,	 /* 000101000 */
@@ -763,9 +763,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	128,	128,	 /* 100000001 */
 	
 //-- Glyph for ASCII Character code: 66
-	9, /* ucWidth */
-	12, /* ucHeight */
-	3, /* ucVOffset */
+	9, /* u8Width */
+	12, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	255,	0,	 /* 111111110 */
 	129,	0,	 /* 100000010 */
@@ -781,9 +781,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	254,	0,	 /* 111111100 */
 	
 //-- Glyph for ASCII Character code: 67
-	10, /* ucWidth */
-	12, /* ucHeight */
-	3, /* ucVOffset */
+	10, /* u8Width */
+	12, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	31,	0,	 /* 0001111100 */
 	32,	128,	 /* 0010000010 */
@@ -799,9 +799,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	31,	0,	 /* 0001111100 */
 	
 //-- Glyph for ASCII Character code: 68
-	10, /* ucWidth */
-	12, /* ucHeight */
-	3, /* ucVOffset */
+	10, /* u8Width */
+	12, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	254,	0,	 /* 1111111000 */
 	129,	0,	 /* 1000000100 */
@@ -817,9 +817,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	254,	0,	 /* 1111111000 */
 	
 //-- Glyph for ASCII Character code: 69
-	9, /* ucWidth */
-	12, /* ucHeight */
-	3, /* ucVOffset */
+	9, /* u8Width */
+	12, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	255,	128,	 /* 111111111 */
 	128,	0,	 /* 100000000 */
@@ -835,9 +835,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	255,	128,	 /* 111111111 */
 	
 //-- Glyph for ASCII Character code: 70
-	8, /* ucWidth */
-	12, /* ucHeight */
-	3, /* ucVOffset */
+	8, /* u8Width */
+	12, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	255,	 /* 11111111 */
 	128,	 /* 10000000 */
@@ -853,9 +853,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	128,	 /* 10000000 */
 	
 //-- Glyph for ASCII Character code: 71
-	10, /* ucWidth */
-	12, /* ucHeight */
-	3, /* ucVOffset */
+	10, /* u8Width */
+	12, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	30,	0,	 /* 0001111000 */
 	33,	0,	 /* 0010000100 */
@@ -871,9 +871,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	30,	0,	 /* 0001111000 */
 	
 //-- Glyph for ASCII Character code: 72
-	9, /* ucWidth */
-	12, /* ucHeight */
-	3, /* ucVOffset */
+	9, /* u8Width */
+	12, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	128,	128,	 /* 100000001 */
 	128,	128,	 /* 100000001 */
@@ -889,9 +889,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	128,	128,	 /* 100000001 */
 	
 //-- Glyph for ASCII Character code: 73
-	1, /* ucWidth */
-	12, /* ucHeight */
-	3, /* ucVOffset */
+	1, /* u8Width */
+	12, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	128,	 /* 1 */
 	128,	 /* 1 */
@@ -907,9 +907,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	128,	 /* 1 */
 	
 //-- Glyph for ASCII Character code: 74
-	6, /* ucWidth */
-	12, /* ucHeight */
-	3, /* ucVOffset */
+	6, /* u8Width */
+	12, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	4,	 /* 000001 */
 	4,	 /* 000001 */
@@ -925,9 +925,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	120,	 /* 011110 */
 	
 //-- Glyph for ASCII Character code: 75
-	9, /* ucWidth */
-	12, /* ucHeight */
-	3, /* ucVOffset */
+	9, /* u8Width */
+	12, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	128,	128,	 /* 100000001 */
 	129,	0,	 /* 100000010 */
@@ -943,9 +943,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	128,	128,	 /* 100000001 */
 	
 //-- Glyph for ASCII Character code: 76
-	7, /* ucWidth */
-	12, /* ucHeight */
-	3, /* ucVOffset */
+	7, /* u8Width */
+	12, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	128,	 /* 1000000 */
 	128,	 /* 1000000 */
@@ -961,9 +961,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	254,	 /* 1111111 */
 	
 //-- Glyph for ASCII Character code: 77
-	11, /* ucWidth */
-	12, /* ucHeight */
-	3, /* ucVOffset */
+	11, /* u8Width */
+	12, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	128,	32,	 /* 10000000001 */
 	192,	96,	 /* 11000000011 */
@@ -979,9 +979,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	132,	32,	 /* 10000100001 */
 	
 //-- Glyph for ASCII Character code: 78
-	9, /* ucWidth */
-	12, /* ucHeight */
-	3, /* ucVOffset */
+	9, /* u8Width */
+	12, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	128,	128,	 /* 100000001 */
 	192,	128,	 /* 110000001 */
@@ -997,9 +997,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	128,	128,	 /* 100000001 */
 	
 //-- Glyph for ASCII Character code: 79
-	10, /* ucWidth */
-	12, /* ucHeight */
-	3, /* ucVOffset */
+	10, /* u8Width */
+	12, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	30,	0,	 /* 0001111000 */
 	33,	0,	 /* 0010000100 */
@@ -1015,9 +1015,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	30,	0,	 /* 0001111000 */
 	
 //-- Glyph for ASCII Character code: 80
-	9, /* ucWidth */
-	12, /* ucHeight */
-	3, /* ucVOffset */
+	9, /* u8Width */
+	12, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	254,	0,	 /* 111111100 */
 	129,	0,	 /* 100000010 */
@@ -1033,9 +1033,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	128,	0,	 /* 100000000 */
 	
 //-- Glyph for ASCII Character code: 81
-	10, /* ucWidth */
-	12, /* ucHeight */
-	3, /* ucVOffset */
+	10, /* u8Width */
+	12, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	30,	0,	 /* 0001111000 */
 	33,	0,	 /* 0010000100 */
@@ -1051,9 +1051,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	30,	192,	 /* 0001111011 */
 	
 //-- Glyph for ASCII Character code: 82
-	9, /* ucWidth */
-	12, /* ucHeight */
-	3, /* ucVOffset */
+	9, /* u8Width */
+	12, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	254,	0,	 /* 111111100 */
 	129,	0,	 /* 100000010 */
@@ -1069,9 +1069,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	128,	128,	 /* 100000001 */
 	
 //-- Glyph for ASCII Character code: 83
-	9, /* ucWidth */
-	12, /* ucHeight */
-	3, /* ucVOffset */
+	9, /* u8Width */
+	12, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	62,	0,	 /* 001111100 */
 	65,	0,	 /* 010000010 */
@@ -1087,9 +1087,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	62,	0,	 /* 001111100 */
 	
 //-- Glyph for ASCII Character code: 84
-	9, /* ucWidth */
-	12, /* ucHeight */
-	3, /* ucVOffset */
+	9, /* u8Width */
+	12, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	255,	128,	 /* 111111111 */
 	8,	0,	 /* 000010000 */
@@ -1105,9 +1105,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	8,	0,	 /* 000010000 */
 	
 //-- Glyph for ASCII Character code: 85
-	9, /* ucWidth */
-	12, /* ucHeight */
-	3, /* ucVOffset */
+	9, /* u8Width */
+	12, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	128,	128,	 /* 100000001 */
 	128,	128,	 /* 100000001 */
@@ -1123,9 +1123,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	62,	0,	 /* 001111100 */
 	
 //-- Glyph for ASCII Character code: 86
-	9, /* ucWidth */
-	12, /* ucHeight */
-	3, /* ucVOffset */
+	9, /* u8Width */
+	12, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	128,	128,	 /* 100000001 */
 	128,	128,	 /* 100000001 */
@@ -1141,9 +1141,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	8,	0,	 /* 000010000 */
 	
 //-- Glyph for ASCII Character code: 87
-	15, /* ucWidth */
-	12, /* ucHeight */
-	3, /* ucVOffset */
+	15, /* u8Width */
+	12, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	129,	2,	 /* 100000010000001 */
 	130,	130,	 /* 100000101000001 */
@@ -1159,9 +1159,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	16,	16,	 /* 000100000001000 */
 	
 //-- Glyph for ASCII Character code: 88
-	11, /* ucWidth */
-	12, /* ucHeight */
-	3, /* ucVOffset */
+	11, /* u8Width */
+	12, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	64,	64,	 /* 01000000010 */
 	32,	128,	 /* 00100000100 */
@@ -1177,9 +1177,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	128,	32,	 /* 10000000001 */
 	
 //-- Glyph for ASCII Character code: 89
-	9, /* ucWidth */
-	12, /* ucHeight */
-	3, /* ucVOffset */
+	9, /* u8Width */
+	12, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	128,	128,	 /* 100000001 */
 	65,	0,	 /* 010000010 */
@@ -1195,9 +1195,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	8,	0,	 /* 000010000 */
 	
 //-- Glyph for ASCII Character code: 90
-	9, /* ucWidth */
-	12, /* ucHeight */
-	3, /* ucVOffset */
+	9, /* u8Width */
+	12, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	127,	128,	 /* 011111111 */
 	1,	0,	 /* 000000010 */
@@ -1213,9 +1213,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	255,	128,	 /* 111111111 */
 	
 //-- Glyph for ASCII Character code: 91
-	3, /* ucWidth */
-	15, /* ucHeight */
-	3, /* ucVOffset */
+	3, /* u8Width */
+	15, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	224,	 /* 111 */
 	128,	 /* 100 */
@@ -1234,9 +1234,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	224,	 /* 111 */
 	
 //-- Glyph for ASCII Character code: 92
-	4, /* ucWidth */
-	12, /* ucHeight */
-	3, /* ucVOffset */
+	4, /* u8Width */
+	12, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	128,	 /* 1000 */
 	128,	 /* 1000 */
@@ -1252,9 +1252,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	16,	 /* 0001 */
 	
 //-- Glyph for ASCII Character code: 93
-	3, /* ucWidth */
-	15, /* ucHeight */
-	3, /* ucVOffset */
+	3, /* u8Width */
+	15, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	224,	 /* 111 */
 	32,	 /* 001 */
@@ -1273,9 +1273,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	224,	 /* 111 */
 	
 //-- Glyph for ASCII Character code: 94
-	7, /* ucWidth */
-	6, /* ucHeight */
-	3, /* ucVOffset */
+	7, /* u8Width */
+	6, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	16,	 /* 0001000 */
 	40,	 /* 0010100 */
@@ -1285,24 +1285,24 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	130,	 /* 1000001 */
 	
 //-- Glyph for ASCII Character code: 95
-	9, /* ucWidth */
-	1, /* ucHeight */
-	17, /* ucVOffset */
+	9, /* u8Width */
+	1, /* u8Height */
+	17, /* u8VOffset */
 	//--[Glyph Data]--
 	255,	128,	 /* 111111111 */
 	
 //-- Glyph for ASCII Character code: 96
-	2, /* ucWidth */
-	2, /* ucHeight */
-	3, /* ucVOffset */
+	2, /* u8Width */
+	2, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	128,	 /* 10 */
 	64,	 /* 01 */
 	
 //-- Glyph for ASCII Character code: 97
-	7, /* ucWidth */
-	9, /* ucHeight */
-	6, /* ucVOffset */
+	7, /* u8Width */
+	9, /* u8Height */
+	6, /* u8VOffset */
 	//--[Glyph Data]--
 	60,	 /* 0011110 */
 	66,	 /* 0100001 */
@@ -1315,9 +1315,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	122,	 /* 0111101 */
 	
 //-- Glyph for ASCII Character code: 98
-	7, /* ucWidth */
-	12, /* ucHeight */
-	3, /* ucVOffset */
+	7, /* u8Width */
+	12, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	128,	 /* 1000000 */
 	128,	 /* 1000000 */
@@ -1333,9 +1333,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	184,	 /* 1011100 */
 	
 //-- Glyph for ASCII Character code: 99
-	6, /* ucWidth */
-	9, /* ucHeight */
-	6, /* ucVOffset */
+	6, /* u8Width */
+	9, /* u8Height */
+	6, /* u8VOffset */
 	//--[Glyph Data]--
 	56,	 /* 001110 */
 	68,	 /* 010001 */
@@ -1348,9 +1348,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	56,	 /* 001110 */
 	
 //-- Glyph for ASCII Character code: 100
-	7, /* ucWidth */
-	12, /* ucHeight */
-	3, /* ucVOffset */
+	7, /* u8Width */
+	12, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	2,	 /* 0000001 */
 	2,	 /* 0000001 */
@@ -1366,9 +1366,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	58,	 /* 0011101 */
 	
 //-- Glyph for ASCII Character code: 101
-	7, /* ucWidth */
-	9, /* ucHeight */
-	6, /* ucVOffset */
+	7, /* u8Width */
+	9, /* u8Height */
+	6, /* u8VOffset */
 	//--[Glyph Data]--
 	56,	 /* 0011100 */
 	68,	 /* 0100010 */
@@ -1381,9 +1381,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	56,	 /* 0011100 */
 	
 //-- Glyph for ASCII Character code: 102
-	4, /* ucWidth */
-	12, /* ucHeight */
-	3, /* ucVOffset */
+	4, /* u8Width */
+	12, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	48,	 /* 0011 */
 	64,	 /* 0100 */
@@ -1399,9 +1399,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	64,	 /* 0100 */
 	
 //-- Glyph for ASCII Character code: 103
-	7, /* ucWidth */
-	12, /* ucHeight */
-	6, /* ucVOffset */
+	7, /* u8Width */
+	12, /* u8Height */
+	6, /* u8VOffset */
 	//--[Glyph Data]--
 	58,	 /* 0011101 */
 	70,	 /* 0100011 */
@@ -1417,9 +1417,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	120,	 /* 0111100 */
 	
 //-- Glyph for ASCII Character code: 104
-	6, /* ucWidth */
-	12, /* ucHeight */
-	3, /* ucVOffset */
+	6, /* u8Width */
+	12, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	128,	 /* 100000 */
 	128,	 /* 100000 */
@@ -1435,9 +1435,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	132,	 /* 100001 */
 	
 //-- Glyph for ASCII Character code: 105
-	1, /* ucWidth */
-	12, /* ucHeight */
-	3, /* ucVOffset */
+	1, /* u8Width */
+	12, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	128,	 /* 1 */
 	0,	 /* 0 */
@@ -1453,9 +1453,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	128,	 /* 1 */
 	
 //-- Glyph for ASCII Character code: 106
-	3, /* ucWidth */
-	15, /* ucHeight */
-	3, /* ucVOffset */
+	3, /* u8Width */
+	15, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	32,	 /* 001 */
 	0,	 /* 000 */
@@ -1474,9 +1474,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	192,	 /* 110 */
 	
 //-- Glyph for ASCII Character code: 107
-	7, /* ucWidth */
-	12, /* ucHeight */
-	3, /* ucVOffset */
+	7, /* u8Width */
+	12, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	128,	 /* 1000000 */
 	128,	 /* 1000000 */
@@ -1492,9 +1492,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	130,	 /* 1000001 */
 	
 //-- Glyph for ASCII Character code: 108
-	1, /* ucWidth */
-	12, /* ucHeight */
-	3, /* ucVOffset */
+	1, /* u8Width */
+	12, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	128,	 /* 1 */
 	128,	 /* 1 */
@@ -1510,9 +1510,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	128,	 /* 1 */
 	
 //-- Glyph for ASCII Character code: 109
-	11, /* ucWidth */
-	9, /* ucHeight */
-	6, /* ucVOffset */
+	11, /* u8Width */
+	9, /* u8Height */
+	6, /* u8VOffset */
 	//--[Glyph Data]--
 	185,	192,	 /* 10111001110 */
 	198,	32,	 /* 11000110001 */
@@ -1525,9 +1525,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	132,	32,	 /* 10000100001 */
 	
 //-- Glyph for ASCII Character code: 110
-	6, /* ucWidth */
-	9, /* ucHeight */
-	6, /* ucVOffset */
+	6, /* u8Width */
+	9, /* u8Height */
+	6, /* u8VOffset */
 	//--[Glyph Data]--
 	184,	 /* 101110 */
 	196,	 /* 110001 */
@@ -1540,9 +1540,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	132,	 /* 100001 */
 	
 //-- Glyph for ASCII Character code: 111
-	7, /* ucWidth */
-	9, /* ucHeight */
-	6, /* ucVOffset */
+	7, /* u8Width */
+	9, /* u8Height */
+	6, /* u8VOffset */
 	//--[Glyph Data]--
 	56,	 /* 0011100 */
 	68,	 /* 0100010 */
@@ -1555,9 +1555,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	56,	 /* 0011100 */
 	
 //-- Glyph for ASCII Character code: 112
-	7, /* ucWidth */
-	12, /* ucHeight */
-	6, /* ucVOffset */
+	7, /* u8Width */
+	12, /* u8Height */
+	6, /* u8VOffset */
 	//--[Glyph Data]--
 	184,	 /* 1011100 */
 	196,	 /* 1100010 */
@@ -1573,9 +1573,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	128,	 /* 1000000 */
 	
 //-- Glyph for ASCII Character code: 113
-	7, /* ucWidth */
-	12, /* ucHeight */
-	6, /* ucVOffset */
+	7, /* u8Width */
+	12, /* u8Height */
+	6, /* u8VOffset */
 	//--[Glyph Data]--
 	58,	 /* 0011101 */
 	70,	 /* 0100011 */
@@ -1591,9 +1591,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	2,	 /* 0000001 */
 	
 //-- Glyph for ASCII Character code: 114
-	4, /* ucWidth */
-	9, /* ucHeight */
-	6, /* ucVOffset */
+	4, /* u8Width */
+	9, /* u8Height */
+	6, /* u8VOffset */
 	//--[Glyph Data]--
 	176,	 /* 1011 */
 	192,	 /* 1100 */
@@ -1606,9 +1606,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	128,	 /* 1000 */
 	
 //-- Glyph for ASCII Character code: 115
-	6, /* ucWidth */
-	9, /* ucHeight */
-	6, /* ucVOffset */
+	6, /* u8Width */
+	9, /* u8Height */
+	6, /* u8VOffset */
 	//--[Glyph Data]--
 	120,	 /* 011110 */
 	132,	 /* 100001 */
@@ -1621,9 +1621,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	120,	 /* 011110 */
 	
 //-- Glyph for ASCII Character code: 116
-	4, /* ucWidth */
-	11, /* ucHeight */
-	4, /* ucVOffset */
+	4, /* u8Width */
+	11, /* u8Height */
+	4, /* u8VOffset */
 	//--[Glyph Data]--
 	64,	 /* 0100 */
 	64,	 /* 0100 */
@@ -1638,9 +1638,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	112,	 /* 0111 */
 	
 //-- Glyph for ASCII Character code: 117
-	6, /* ucWidth */
-	9, /* ucHeight */
-	6, /* ucVOffset */
+	6, /* u8Width */
+	9, /* u8Height */
+	6, /* u8VOffset */
 	//--[Glyph Data]--
 	132,	 /* 100001 */
 	132,	 /* 100001 */
@@ -1653,9 +1653,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	116,	 /* 011101 */
 	
 //-- Glyph for ASCII Character code: 118
-	7, /* ucWidth */
-	9, /* ucHeight */
-	6, /* ucVOffset */
+	7, /* u8Width */
+	9, /* u8Height */
+	6, /* u8VOffset */
 	//--[Glyph Data]--
 	130,	 /* 1000001 */
 	130,	 /* 1000001 */
@@ -1668,9 +1668,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	16,	 /* 0001000 */
 	
 //-- Glyph for ASCII Character code: 119
-	11, /* ucWidth */
-	9, /* ucHeight */
-	6, /* ucVOffset */
+	11, /* u8Width */
+	9, /* u8Height */
+	6, /* u8VOffset */
 	//--[Glyph Data]--
 	132,	32,	 /* 10000100001 */
 	132,	32,	 /* 10000100001 */
@@ -1683,9 +1683,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	32,	128,	 /* 00100000100 */
 	
 //-- Glyph for ASCII Character code: 120
-	7, /* ucWidth */
-	9, /* ucHeight */
-	6, /* ucVOffset */
+	7, /* u8Width */
+	9, /* u8Height */
+	6, /* u8VOffset */
 	//--[Glyph Data]--
 	130,	 /* 1000001 */
 	68,	 /* 0100010 */
@@ -1698,9 +1698,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	130,	 /* 1000001 */
 	
 //-- Glyph for ASCII Character code: 121
-	7, /* ucWidth */
-	12, /* ucHeight */
-	6, /* ucVOffset */
+	7, /* u8Width */
+	12, /* u8Height */
+	6, /* u8VOffset */
 	//--[Glyph Data]--
 	130,	 /* 1000001 */
 	130,	 /* 1000001 */
@@ -1716,9 +1716,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	96,	 /* 0110000 */
 	
 //-- Glyph for ASCII Character code: 122
-	7, /* ucWidth */
-	9, /* ucHeight */
-	6, /* ucVOffset */
+	7, /* u8Width */
+	9, /* u8Height */
+	6, /* u8VOffset */
 	//--[Glyph Data]--
 	254,	 /* 1111111 */
 	4,	 /* 0000010 */
@@ -1731,9 +1731,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	254,	 /* 1111111 */
 	
 //-- Glyph for ASCII Character code: 123
-	5, /* ucWidth */
-	15, /* ucHeight */
-	3, /* ucVOffset */
+	5, /* u8Width */
+	15, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	24,	 /* 00011 */
 	32,	 /* 00100 */
@@ -1752,9 +1752,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	24,	 /* 00011 */
 	
 //-- Glyph for ASCII Character code: 124
-	1, /* ucWidth */
-	15, /* ucHeight */
-	3, /* ucVOffset */
+	1, /* u8Width */
+	15, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	128,	 /* 1 */
 	128,	 /* 1 */
@@ -1773,9 +1773,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	128,	 /* 1 */
 	
 //-- Glyph for ASCII Character code: 125
-	5, /* ucWidth */
-	15, /* ucHeight */
-	3, /* ucVOffset */
+	5, /* u8Width */
+	15, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	192,	 /* 11000 */
 	32,	 /* 00100 */
@@ -1794,24 +1794,24 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	192,	 /* 11000 */
 	
 //-- Glyph for ASCII Character code: 126
-	8, /* ucWidth */
-	2, /* ucHeight */
-	8, /* ucVOffset */
+	8, /* u8Width */
+	2, /* u8Height */
+	8, /* u8VOffset */
 	//--[Glyph Data]--
 	113,	 /* 01110001 */
 	142,	 /* 10001110 */
 	
 //-- Glyph for ASCII Character code: 127
-	0,  /* ucWidth */
-	0,  /* ucHeight */
-	0,  /* ucVOffset */
+	0,  /* u8Width */
+	0,  /* u8Height */
+	0,  /* u8VOffset */
 	//--[Glyph Data]--
 	/* No glyph data*/
 
 //-- Glyph for ASCII Character code: 128
-	8, /* ucWidth */
-	12, /* ucHeight */
-	3, /* ucVOffset */
+	8, /* u8Width */
+	12, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	14,	 /* 00001110 */
 	17,	 /* 00010001 */
@@ -1827,25 +1827,25 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	30,	 /* 00011110 */
 	
 //-- Glyph for ASCII Character code: 129
-	0,  /* ucWidth */
-	0,  /* ucHeight */
-	0,  /* ucVOffset */
+	0,  /* u8Width */
+	0,  /* u8Height */
+	0,  /* u8VOffset */
 	//--[Glyph Data]--
 	/* No glyph data*/
 
 //-- Glyph for ASCII Character code: 130
-	1, /* ucWidth */
-	3, /* ucHeight */
-	14, /* ucVOffset */
+	1, /* u8Width */
+	3, /* u8Height */
+	14, /* u8VOffset */
 	//--[Glyph Data]--
 	128,	 /* 1 */
 	128,	 /* 1 */
 	128,	 /* 1 */
 	
 //-- Glyph for ASCII Character code: 131
-	9, /* ucWidth */
-	15, /* ucHeight */
-	3, /* ucVOffset */
+	9, /* u8Width */
+	15, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	3,	128,	 /* 000000111 */
 	4,	0,	 /* 000001000 */
@@ -1864,25 +1864,25 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	240,	0,	 /* 111100000 */
 	
 //-- Glyph for ASCII Character code: 132
-	3, /* ucWidth */
-	3, /* ucHeight */
-	14, /* ucVOffset */
+	3, /* u8Width */
+	3, /* u8Height */
+	14, /* u8VOffset */
 	//--[Glyph Data]--
 	160,	 /* 101 */
 	160,	 /* 101 */
 	160,	 /* 101 */
 	
 //-- Glyph for ASCII Character code: 133
-	11, /* ucWidth */
-	1, /* ucHeight */
-	14, /* ucVOffset */
+	11, /* u8Width */
+	1, /* u8Height */
+	14, /* u8VOffset */
 	//--[Glyph Data]--
 	132,	32,	 /* 10000100001 */
 	
 //-- Glyph for ASCII Character code: 134
-	7, /* ucWidth */
-	15, /* ucHeight */
-	3, /* ucVOffset */
+	7, /* u8Width */
+	15, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	16,	 /* 0001000 */
 	16,	 /* 0001000 */
@@ -1901,9 +1901,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	16,	 /* 0001000 */
 	
 //-- Glyph for ASCII Character code: 135
-	7, /* ucWidth */
-	15, /* ucHeight */
-	3, /* ucVOffset */
+	7, /* u8Width */
+	15, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	16,	 /* 0001000 */
 	16,	 /* 0001000 */
@@ -1922,17 +1922,17 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	16,	 /* 0001000 */
 	
 //-- Glyph for ASCII Character code: 136
-	4, /* ucWidth */
-	2, /* ucHeight */
-	3, /* ucVOffset */
+	4, /* u8Width */
+	2, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	96,	 /* 0110 */
 	144,	 /* 1001 */
 	
 //-- Glyph for ASCII Character code: 137
-	17, /* ucWidth */
-	12, /* ucHeight */
-	3, /* ucVOffset */
+	17, /* u8Width */
+	12, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	113,	0,	0,	 /* 01110001000000000 */
 	137,	0,	0,	 /* 10001001000000000 */
@@ -1948,9 +1948,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	17,	199,	0,	 /* 00010001110001110 */
 	
 //-- Glyph for ASCII Character code: 138
-	9, /* ucWidth */
-	15, /* ucHeight */
-	0, /* ucVOffset */
+	9, /* u8Width */
+	15, /* u8Height */
+	0, /* u8VOffset */
 	//--[Glyph Data]--
 	18,	0,	 /* 000100100 */
 	12,	0,	 /* 000011000 */
@@ -1969,9 +1969,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	62,	0,	 /* 001111100 */
 	
 //-- Glyph for ASCII Character code: 139
-	3, /* ucWidth */
-	7, /* ucHeight */
-	7, /* ucVOffset */
+	3, /* u8Width */
+	7, /* u8Height */
+	7, /* u8VOffset */
 	//--[Glyph Data]--
 	32,	 /* 001 */
 	64,	 /* 010 */
@@ -1982,9 +1982,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	32,	 /* 001 */
 	
 //-- Glyph for ASCII Character code: 140
-	15, /* ucWidth */
-	12, /* ucHeight */
-	3, /* ucVOffset */
+	15, /* u8Width */
+	12, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	30,	126,	 /* 000111100111111 */
 	33,	64,	 /* 001000010100000 */
@@ -2000,16 +2000,16 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	30,	126,	 /* 000111100111111 */
 	
 //-- Glyph for ASCII Character code: 141
-	0,  /* ucWidth */
-	0,  /* ucHeight */
-	0,  /* ucVOffset */
+	0,  /* u8Width */
+	0,  /* u8Height */
+	0,  /* u8VOffset */
 	//--[Glyph Data]--
 	/* No glyph data*/
 
 //-- Glyph for ASCII Character code: 142
-	9, /* ucWidth */
-	15, /* ucHeight */
-	0, /* ucVOffset */
+	9, /* u8Width */
+	15, /* u8Height */
+	0, /* u8VOffset */
 	//--[Glyph Data]--
 	18,	0,	 /* 000100100 */
 	12,	0,	 /* 000011000 */
@@ -2028,59 +2028,59 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	255,	128,	 /* 111111111 */
 	
 //-- Glyph for ASCII Character code: 143
-	0,  /* ucWidth */
-	0,  /* ucHeight */
-	0,  /* ucVOffset */
+	0,  /* u8Width */
+	0,  /* u8Height */
+	0,  /* u8VOffset */
 	//--[Glyph Data]--
 	/* No glyph data*/
 
 //-- Glyph for ASCII Character code: 144
-	0,  /* ucWidth */
-	0,  /* ucHeight */
-	0,  /* ucVOffset */
+	0,  /* u8Width */
+	0,  /* u8Height */
+	0,  /* u8VOffset */
 	//--[Glyph Data]--
 	/* No glyph data*/
 
 //-- Glyph for ASCII Character code: 145
-	1, /* ucWidth */
-	3, /* ucHeight */
-	3, /* ucVOffset */
+	1, /* u8Width */
+	3, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	128,	 /* 1 */
 	128,	 /* 1 */
 	128,	 /* 1 */
 	
 //-- Glyph for ASCII Character code: 146
-	1, /* ucWidth */
-	3, /* ucHeight */
-	3, /* ucVOffset */
+	1, /* u8Width */
+	3, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	128,	 /* 1 */
 	128,	 /* 1 */
 	128,	 /* 1 */
 	
 //-- Glyph for ASCII Character code: 147
-	3, /* ucWidth */
-	3, /* ucHeight */
-	3, /* ucVOffset */
+	3, /* u8Width */
+	3, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	160,	 /* 101 */
 	160,	 /* 101 */
 	160,	 /* 101 */
 	
 //-- Glyph for ASCII Character code: 148
-	3, /* ucWidth */
-	3, /* ucHeight */
-	3, /* ucVOffset */
+	3, /* u8Width */
+	3, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	160,	 /* 101 */
 	160,	 /* 101 */
 	160,	 /* 101 */
 	
 //-- Glyph for ASCII Character code: 149
-	4, /* ucWidth */
-	4, /* ucHeight */
-	7, /* ucVOffset */
+	4, /* u8Width */
+	4, /* u8Height */
+	7, /* u8VOffset */
 	//--[Glyph Data]--
 	96,	 /* 0110 */
 	240,	 /* 1111 */
@@ -2088,31 +2088,31 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	96,	 /* 0110 */
 	
 //-- Glyph for ASCII Character code: 150
-	9, /* ucWidth */
-	1, /* ucHeight */
-	10, /* ucVOffset */
+	9, /* u8Width */
+	1, /* u8Height */
+	10, /* u8VOffset */
 	//--[Glyph Data]--
 	255,	128,	 /* 111111111 */
 	
 //-- Glyph for ASCII Character code: 151
-	16, /* ucWidth */
-	1, /* ucHeight */
-	10, /* ucVOffset */
+	16, /* u8Width */
+	1, /* u8Height */
+	10, /* u8VOffset */
 	//--[Glyph Data]--
 	255,	255,	 /* 1111111111111111 */
 	
 //-- Glyph for ASCII Character code: 152
-	4, /* ucWidth */
-	2, /* ucHeight */
-	3, /* ucVOffset */
+	4, /* u8Width */
+	2, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	80,	 /* 0101 */
 	160,	 /* 1010 */
 	
 //-- Glyph for ASCII Character code: 153
-	13, /* ucWidth */
-	6, /* ucHeight */
-	3, /* ucVOffset */
+	13, /* u8Width */
+	6, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	251,	24,	 /* 1111101100011 */
 	35,	24,	 /* 0010001100011 */
@@ -2122,9 +2122,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	34,	72,	 /* 0010001001001 */
 	
 //-- Glyph for ASCII Character code: 154
-	6, /* ucWidth */
-	12, /* ucHeight */
-	3, /* ucVOffset */
+	6, /* u8Width */
+	12, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	72,	 /* 010010 */
 	48,	 /* 001100 */
@@ -2140,9 +2140,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	120,	 /* 011110 */
 	
 //-- Glyph for ASCII Character code: 155
-	3, /* ucWidth */
-	7, /* ucHeight */
-	7, /* ucVOffset */
+	3, /* u8Width */
+	7, /* u8Height */
+	7, /* u8VOffset */
 	//--[Glyph Data]--
 	128,	 /* 100 */
 	64,	 /* 010 */
@@ -2153,9 +2153,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	128,	 /* 100 */
 	
 //-- Glyph for ASCII Character code: 156
-	13, /* ucWidth */
-	9, /* ucHeight */
-	6, /* ucVOffset */
+	13, /* u8Width */
+	9, /* u8Height */
+	6, /* u8VOffset */
 	//--[Glyph Data]--
 	56,	224,	 /* 0011100011100 */
 	69,	16,	 /* 0100010100010 */
@@ -2168,16 +2168,16 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	56,	224,	 /* 0011100011100 */
 	
 //-- Glyph for ASCII Character code: 157
-	0,  /* ucWidth */
-	0,  /* ucHeight */
-	0,  /* ucVOffset */
+	0,  /* u8Width */
+	0,  /* u8Height */
+	0,  /* u8VOffset */
 	//--[Glyph Data]--
 	/* No glyph data*/
 
 //-- Glyph for ASCII Character code: 158
-	7, /* ucWidth */
-	12, /* ucHeight */
-	3, /* ucVOffset */
+	7, /* u8Width */
+	12, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	36,	 /* 0010010 */
 	24,	 /* 0001100 */
@@ -2193,9 +2193,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	254,	 /* 1111111 */
 	
 //-- Glyph for ASCII Character code: 159
-	9, /* ucWidth */
-	14, /* ucHeight */
-	1, /* ucVOffset */
+	9, /* u8Width */
+	14, /* u8Height */
+	1, /* u8VOffset */
 	//--[Glyph Data]--
 	20,	0,	 /* 000101000 */
 	0,	0,	 /* 000000000 */
@@ -2213,16 +2213,16 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	8,	0,	 /* 000010000 */
 	
 //-- Glyph for ASCII Character code: 160
-	0,  /* ucWidth */
-	0,  /* ucHeight */
-	0,  /* ucVOffset */
+	0,  /* u8Width */
+	0,  /* u8Height */
+	0,  /* u8VOffset */
 	//--[Glyph Data]--
 	/* No glyph data*/
 
 //-- Glyph for ASCII Character code: 161
-	1, /* ucWidth */
-	12, /* ucHeight */
-	6, /* ucVOffset */
+	1, /* u8Width */
+	12, /* u8Height */
+	6, /* u8VOffset */
 	//--[Glyph Data]--
 	128,	 /* 1 */
 	0,	 /* 0 */
@@ -2238,9 +2238,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	128,	 /* 1 */
 	
 //-- Glyph for ASCII Character code: 162
-	7, /* ucWidth */
-	15, /* ucHeight */
-	3, /* ucVOffset */
+	7, /* u8Width */
+	15, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	4,	 /* 0000010 */
 	4,	 /* 0000010 */
@@ -2259,9 +2259,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	64,	 /* 0100000 */
 	
 //-- Glyph for ASCII Character code: 163
-	8, /* ucWidth */
-	12, /* ucHeight */
-	3, /* ucVOffset */
+	8, /* u8Width */
+	12, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	60,	 /* 00111100 */
 	98,	 /* 01100010 */
@@ -2277,9 +2277,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	134,	 /* 10000110 */
 	
 //-- Glyph for ASCII Character code: 164
-	6, /* ucWidth */
-	6, /* ucHeight */
-	6, /* ucVOffset */
+	6, /* u8Width */
+	6, /* u8Height */
+	6, /* u8VOffset */
 	//--[Glyph Data]--
 	180,	 /* 101101 */
 	72,	 /* 010010 */
@@ -2289,9 +2289,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	180,	 /* 101101 */
 	
 //-- Glyph for ASCII Character code: 165
-	9, /* ucWidth */
-	12, /* ucHeight */
-	3, /* ucVOffset */
+	9, /* u8Width */
+	12, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	128,	128,	 /* 100000001 */
 	65,	0,	 /* 010000010 */
@@ -2307,9 +2307,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	8,	0,	 /* 000010000 */
 	
 //-- Glyph for ASCII Character code: 166
-	1, /* ucWidth */
-	15, /* ucHeight */
-	3, /* ucVOffset */
+	1, /* u8Width */
+	15, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	128,	 /* 1 */
 	128,	 /* 1 */
@@ -2328,9 +2328,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	128,	 /* 1 */
 	
 //-- Glyph for ASCII Character code: 167
-	8, /* ucWidth */
-	15, /* ucHeight */
-	3, /* ucVOffset */
+	8, /* u8Width */
+	15, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	60,	 /* 00111100 */
 	66,	 /* 01000010 */
@@ -2349,16 +2349,16 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	60,	 /* 00111100 */
 	
 //-- Glyph for ASCII Character code: 168
-	3, /* ucWidth */
-	1, /* ucHeight */
-	3, /* ucVOffset */
+	3, /* u8Width */
+	1, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	160,	 /* 101 */
 	
 //-- Glyph for ASCII Character code: 169
-	12, /* ucWidth */
-	12, /* ucHeight */
-	3, /* ucVOffset */
+	12, /* u8Width */
+	12, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	31,	128,	 /* 000111111000 */
 	32,	64,	 /* 001000000100 */
@@ -2374,9 +2374,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	31,	128,	 /* 000111111000 */
 	
 //-- Glyph for ASCII Character code: 170
-	5, /* ucWidth */
-	6, /* ucHeight */
-	3, /* ucVOffset */
+	5, /* u8Width */
+	6, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	112,	 /* 01110 */
 	136,	 /* 10001 */
@@ -2386,9 +2386,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	120,	 /* 01111 */
 	
 //-- Glyph for ASCII Character code: 171
-	6, /* ucWidth */
-	7, /* ucHeight */
-	7, /* ucVOffset */
+	6, /* u8Width */
+	7, /* u8Height */
+	7, /* u8VOffset */
 	//--[Glyph Data]--
 	36,	 /* 001001 */
 	72,	 /* 010010 */
@@ -2399,9 +2399,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	36,	 /* 001001 */
 	
 //-- Glyph for ASCII Character code: 172
-	7, /* ucWidth */
-	5, /* ucHeight */
-	7, /* ucVOffset */
+	7, /* u8Width */
+	5, /* u8Height */
+	7, /* u8VOffset */
 	//--[Glyph Data]--
 	254,	 /* 1111111 */
 	2,	 /* 0000001 */
@@ -2410,16 +2410,16 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	2,	 /* 0000001 */
 	
 //-- Glyph for ASCII Character code: 173
-	0,  /* ucWidth */
-	0,  /* ucHeight */
-	0,  /* ucVOffset */
+	0,  /* u8Width */
+	0,  /* u8Height */
+	0,  /* u8VOffset */
 	//--[Glyph Data]--
 	/* No glyph data*/
 
 //-- Glyph for ASCII Character code: 174
-	12, /* ucWidth */
-	12, /* ucHeight */
-	3, /* ucVOffset */
+	12, /* u8Width */
+	12, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	31,	128,	 /* 000111111000 */
 	32,	64,	 /* 001000000100 */
@@ -2435,16 +2435,16 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	31,	128,	 /* 000111111000 */
 	
 //-- Glyph for ASCII Character code: 175
-	9, /* ucWidth */
-	1, /* ucHeight */
-	2, /* ucVOffset */
+	9, /* u8Width */
+	1, /* u8Height */
+	2, /* u8VOffset */
 	//--[Glyph Data]--
 	255,	128,	 /* 111111111 */
 	
 //-- Glyph for ASCII Character code: 176
-	4, /* ucWidth */
-	4, /* ucHeight */
-	3, /* ucVOffset */
+	4, /* u8Width */
+	4, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	96,	 /* 0110 */
 	144,	 /* 1001 */
@@ -2452,9 +2452,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	96,	 /* 0110 */
 	
 //-- Glyph for ASCII Character code: 177
-	7, /* ucWidth */
-	10, /* ucHeight */
-	5, /* ucVOffset */
+	7, /* u8Width */
+	10, /* u8Height */
+	5, /* u8VOffset */
 	//--[Glyph Data]--
 	16,	 /* 0001000 */
 	16,	 /* 0001000 */
@@ -2468,9 +2468,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	254,	 /* 1111111 */
 	
 //-- Glyph for ASCII Character code: 178
-	5, /* ucWidth */
-	6, /* ucHeight */
-	3, /* ucVOffset */
+	5, /* u8Width */
+	6, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	112,	 /* 01110 */
 	136,	 /* 10001 */
@@ -2480,9 +2480,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	248,	 /* 11111 */
 	
 //-- Glyph for ASCII Character code: 179
-	5, /* ucWidth */
-	6, /* ucHeight */
-	3, /* ucVOffset */
+	5, /* u8Width */
+	6, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	120,	 /* 01111 */
 	136,	 /* 10001 */
@@ -2492,17 +2492,17 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	112,	 /* 01110 */
 	
 //-- Glyph for ASCII Character code: 180
-	2, /* ucWidth */
-	2, /* ucHeight */
-	3, /* ucVOffset */
+	2, /* u8Width */
+	2, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	64,	 /* 01 */
 	128,	 /* 10 */
 	
 //-- Glyph for ASCII Character code: 181
-	7, /* ucWidth */
-	12, /* ucHeight */
-	6, /* ucVOffset */
+	7, /* u8Width */
+	12, /* u8Height */
+	6, /* u8VOffset */
 	//--[Glyph Data]--
 	130,	 /* 1000001 */
 	130,	 /* 1000001 */
@@ -2518,9 +2518,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	128,	 /* 1000000 */
 	
 //-- Glyph for ASCII Character code: 182
-	9, /* ucWidth */
-	15, /* ucHeight */
-	3, /* ucVOffset */
+	9, /* u8Width */
+	15, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	127,	128,	 /* 011111111 */
 	249,	0,	 /* 111110010 */
@@ -2539,25 +2539,25 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	9,	0,	 /* 000010010 */
 	
 //-- Glyph for ASCII Character code: 183
-	1, /* ucWidth */
-	1, /* ucHeight */
-	9, /* ucVOffset */
+	1, /* u8Width */
+	1, /* u8Height */
+	9, /* u8VOffset */
 	//--[Glyph Data]--
 	128,	 /* 1 */
 	
 //-- Glyph for ASCII Character code: 184
-	3, /* ucWidth */
-	3, /* ucHeight */
-	15, /* ucVOffset */
+	3, /* u8Width */
+	3, /* u8Height */
+	15, /* u8VOffset */
 	//--[Glyph Data]--
 	64,	 /* 010 */
 	32,	 /* 001 */
 	224,	 /* 111 */
 	
 //-- Glyph for ASCII Character code: 185
-	3, /* ucWidth */
-	6, /* ucHeight */
-	3, /* ucVOffset */
+	3, /* u8Width */
+	6, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	96,	 /* 011 */
 	160,	 /* 101 */
@@ -2567,9 +2567,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	32,	 /* 001 */
 	
 //-- Glyph for ASCII Character code: 186
-	5, /* ucWidth */
-	6, /* ucHeight */
-	3, /* ucVOffset */
+	5, /* u8Width */
+	6, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	112,	 /* 01110 */
 	136,	 /* 10001 */
@@ -2579,9 +2579,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	112,	 /* 01110 */
 	
 //-- Glyph for ASCII Character code: 187
-	6, /* ucWidth */
-	7, /* ucHeight */
-	7, /* ucVOffset */
+	6, /* u8Width */
+	7, /* u8Height */
+	7, /* u8VOffset */
 	//--[Glyph Data]--
 	144,	 /* 100100 */
 	72,	 /* 010010 */
@@ -2592,9 +2592,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	144,	 /* 100100 */
 	
 //-- Glyph for ASCII Character code: 188
-	12, /* ucWidth */
-	12, /* ucHeight */
-	3, /* ucVOffset */
+	12, /* u8Width */
+	12, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	96,	64,	 /* 011000000100 */
 	160,	128,	 /* 101000001000 */
@@ -2610,9 +2610,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	64,	32,	 /* 010000000010 */
 	
 //-- Glyph for ASCII Character code: 189
-	12, /* ucWidth */
-	12, /* ucHeight */
-	3, /* ucVOffset */
+	12, /* u8Width */
+	12, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	96,	64,	 /* 011000000100 */
 	160,	128,	 /* 101000001000 */
@@ -2628,9 +2628,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	65,	240,	 /* 010000011111 */
 	
 //-- Glyph for ASCII Character code: 190
-	13, /* ucWidth */
-	12, /* ucHeight */
-	3, /* ucVOffset */
+	13, /* u8Width */
+	12, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	120,	32,	 /* 0111100000100 */
 	136,	64,	 /* 1000100001000 */
@@ -2646,9 +2646,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	32,	16,	 /* 0010000000010 */
 	
 //-- Glyph for ASCII Character code: 191
-	8, /* ucWidth */
-	12, /* ucHeight */
-	6, /* ucVOffset */
+	8, /* u8Width */
+	12, /* u8Height */
+	6, /* u8VOffset */
 	//--[Glyph Data]--
 	16,	 /* 00010000 */
 	0,	 /* 00000000 */
@@ -2664,9 +2664,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	60,	 /* 00111100 */
 	
 //-- Glyph for ASCII Character code: 192
-	9, /* ucWidth */
-	15, /* ucHeight */
-	0, /* ucVOffset */
+	9, /* u8Width */
+	15, /* u8Height */
+	0, /* u8VOffset */
 	//--[Glyph Data]--
 	16,	0,	 /* 000100000 */
 	8,	0,	 /* 000010000 */
@@ -2685,9 +2685,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	128,	128,	 /* 100000001 */
 	
 //-- Glyph for ASCII Character code: 193
-	9, /* ucWidth */
-	15, /* ucHeight */
-	0, /* ucVOffset */
+	9, /* u8Width */
+	15, /* u8Height */
+	0, /* u8VOffset */
 	//--[Glyph Data]--
 	4,	0,	 /* 000001000 */
 	8,	0,	 /* 000010000 */
@@ -2706,9 +2706,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	128,	128,	 /* 100000001 */
 	
 //-- Glyph for ASCII Character code: 194
-	9, /* ucWidth */
-	15, /* ucHeight */
-	0, /* ucVOffset */
+	9, /* u8Width */
+	15, /* u8Height */
+	0, /* u8VOffset */
 	//--[Glyph Data]--
 	12,	0,	 /* 000011000 */
 	18,	0,	 /* 000100100 */
@@ -2727,9 +2727,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	128,	128,	 /* 100000001 */
 	
 //-- Glyph for ASCII Character code: 195
-	9, /* ucWidth */
-	15, /* ucHeight */
-	0, /* ucVOffset */
+	9, /* u8Width */
+	15, /* u8Height */
+	0, /* u8VOffset */
 	//--[Glyph Data]--
 	10,	0,	 /* 000010100 */
 	20,	0,	 /* 000101000 */
@@ -2748,9 +2748,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	128,	128,	 /* 100000001 */
 	
 //-- Glyph for ASCII Character code: 196
-	9, /* ucWidth */
-	14, /* ucHeight */
-	1, /* ucVOffset */
+	9, /* u8Width */
+	14, /* u8Height */
+	1, /* u8VOffset */
 	//--[Glyph Data]--
 	20,	0,	 /* 000101000 */
 	0,	0,	 /* 000000000 */
@@ -2768,9 +2768,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	128,	128,	 /* 100000001 */
 	
 //-- Glyph for ASCII Character code: 197
-	9, /* ucWidth */
-	14, /* ucHeight */
-	1, /* ucVOffset */
+	9, /* u8Width */
+	14, /* u8Height */
+	1, /* u8VOffset */
 	//--[Glyph Data]--
 	28,	0,	 /* 000111000 */
 	20,	0,	 /* 000101000 */
@@ -2788,9 +2788,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	128,	128,	 /* 100000001 */
 	
 //-- Glyph for ASCII Character code: 198
-	15, /* ucWidth */
-	12, /* ucHeight */
-	3, /* ucVOffset */
+	15, /* u8Width */
+	12, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	7,	254,	 /* 000001111111111 */
 	4,	128,	 /* 000001001000000 */
@@ -2806,9 +2806,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	128,	254,	 /* 100000001111111 */
 	
 //-- Glyph for ASCII Character code: 199
-	10, /* ucWidth */
-	15, /* ucHeight */
-	3, /* ucVOffset */
+	10, /* u8Width */
+	15, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	31,	0,	 /* 0001111100 */
 	32,	128,	 /* 0010000010 */
@@ -2827,9 +2827,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	14,	0,	 /* 0000111000 */
 	
 //-- Glyph for ASCII Character code: 200
-	9, /* ucWidth */
-	15, /* ucHeight */
-	0, /* ucVOffset */
+	9, /* u8Width */
+	15, /* u8Height */
+	0, /* u8VOffset */
 	//--[Glyph Data]--
 	8,	0,	 /* 000010000 */
 	4,	0,	 /* 000001000 */
@@ -2848,9 +2848,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	255,	128,	 /* 111111111 */
 	
 //-- Glyph for ASCII Character code: 201
-	9, /* ucWidth */
-	15, /* ucHeight */
-	0, /* ucVOffset */
+	9, /* u8Width */
+	15, /* u8Height */
+	0, /* u8VOffset */
 	//--[Glyph Data]--
 	4,	0,	 /* 000001000 */
 	8,	0,	 /* 000010000 */
@@ -2869,9 +2869,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	255,	128,	 /* 111111111 */
 	
 //-- Glyph for ASCII Character code: 202
-	9, /* ucWidth */
-	15, /* ucHeight */
-	0, /* ucVOffset */
+	9, /* u8Width */
+	15, /* u8Height */
+	0, /* u8VOffset */
 	//--[Glyph Data]--
 	12,	0,	 /* 000011000 */
 	18,	0,	 /* 000100100 */
@@ -2890,9 +2890,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	255,	128,	 /* 111111111 */
 	
 //-- Glyph for ASCII Character code: 203
-	9, /* ucWidth */
-	14, /* ucHeight */
-	1, /* ucVOffset */
+	9, /* u8Width */
+	14, /* u8Height */
+	1, /* u8VOffset */
 	//--[Glyph Data]--
 	20,	0,	 /* 000101000 */
 	0,	0,	 /* 000000000 */
@@ -2910,9 +2910,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	255,	128,	 /* 111111111 */
 	
 //-- Glyph for ASCII Character code: 204
-	2, /* ucWidth */
-	15, /* ucHeight */
-	0, /* ucVOffset */
+	2, /* u8Width */
+	15, /* u8Height */
+	0, /* u8VOffset */
 	//--[Glyph Data]--
 	128,	 /* 10 */
 	64,	 /* 01 */
@@ -2931,9 +2931,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	64,	 /* 01 */
 	
 //-- Glyph for ASCII Character code: 205
-	2, /* ucWidth */
-	15, /* ucHeight */
-	0, /* ucVOffset */
+	2, /* u8Width */
+	15, /* u8Height */
+	0, /* u8VOffset */
 	//--[Glyph Data]--
 	64,	 /* 01 */
 	128,	 /* 10 */
@@ -2952,9 +2952,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	128,	 /* 10 */
 	
 //-- Glyph for ASCII Character code: 206
-	4, /* ucWidth */
-	15, /* ucHeight */
-	0, /* ucVOffset */
+	4, /* u8Width */
+	15, /* u8Height */
+	0, /* u8VOffset */
 	//--[Glyph Data]--
 	96,	 /* 0110 */
 	144,	 /* 1001 */
@@ -2973,9 +2973,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	64,	 /* 0100 */
 	
 //-- Glyph for ASCII Character code: 207
-	3, /* ucWidth */
-	14, /* ucHeight */
-	1, /* ucVOffset */
+	3, /* u8Width */
+	14, /* u8Height */
+	1, /* u8VOffset */
 	//--[Glyph Data]--
 	160,	 /* 101 */
 	0,	 /* 000 */
@@ -2993,9 +2993,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	64,	 /* 010 */
 	
 //-- Glyph for ASCII Character code: 208
-	11, /* ucWidth */
-	12, /* ucHeight */
-	3, /* ucVOffset */
+	11, /* u8Width */
+	12, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	127,	0,	 /* 01111111000 */
 	64,	128,	 /* 01000000100 */
@@ -3011,9 +3011,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	127,	0,	 /* 01111111000 */
 	
 //-- Glyph for ASCII Character code: 209
-	9, /* ucWidth */
-	15, /* ucHeight */
-	0, /* ucVOffset */
+	9, /* u8Width */
+	15, /* u8Height */
+	0, /* u8VOffset */
 	//--[Glyph Data]--
 	10,	0,	 /* 000010100 */
 	20,	0,	 /* 000101000 */
@@ -3032,9 +3032,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	128,	128,	 /* 100000001 */
 	
 //-- Glyph for ASCII Character code: 210
-	10, /* ucWidth */
-	15, /* ucHeight */
-	0, /* ucVOffset */
+	10, /* u8Width */
+	15, /* u8Height */
+	0, /* u8VOffset */
 	//--[Glyph Data]--
 	8,	0,	 /* 0000100000 */
 	4,	0,	 /* 0000010000 */
@@ -3053,9 +3053,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	30,	0,	 /* 0001111000 */
 	
 //-- Glyph for ASCII Character code: 211
-	10, /* ucWidth */
-	15, /* ucHeight */
-	0, /* ucVOffset */
+	10, /* u8Width */
+	15, /* u8Height */
+	0, /* u8VOffset */
 	//--[Glyph Data]--
 	4,	0,	 /* 0000010000 */
 	8,	0,	 /* 0000100000 */
@@ -3074,9 +3074,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	30,	0,	 /* 0001111000 */
 	
 //-- Glyph for ASCII Character code: 212
-	10, /* ucWidth */
-	15, /* ucHeight */
-	0, /* ucVOffset */
+	10, /* u8Width */
+	15, /* u8Height */
+	0, /* u8VOffset */
 	//--[Glyph Data]--
 	12,	0,	 /* 0000110000 */
 	18,	0,	 /* 0001001000 */
@@ -3095,9 +3095,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	30,	0,	 /* 0001111000 */
 	
 //-- Glyph for ASCII Character code: 213
-	10, /* ucWidth */
-	15, /* ucHeight */
-	0, /* ucVOffset */
+	10, /* u8Width */
+	15, /* u8Height */
+	0, /* u8VOffset */
 	//--[Glyph Data]--
 	10,	0,	 /* 0000101000 */
 	20,	0,	 /* 0001010000 */
@@ -3116,9 +3116,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	30,	0,	 /* 0001111000 */
 	
 //-- Glyph for ASCII Character code: 214
-	10, /* ucWidth */
-	14, /* ucHeight */
-	1, /* ucVOffset */
+	10, /* u8Width */
+	14, /* u8Height */
+	1, /* u8VOffset */
 	//--[Glyph Data]--
 	10,	0,	 /* 0000101000 */
 	0,	0,	 /* 0000000000 */
@@ -3136,9 +3136,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	30,	0,	 /* 0001111000 */
 	
 //-- Glyph for ASCII Character code: 215
-	7, /* ucWidth */
-	7, /* ucHeight */
-	6, /* ucVOffset */
+	7, /* u8Width */
+	7, /* u8Height */
+	6, /* u8VOffset */
 	//--[Glyph Data]--
 	130,	 /* 1000001 */
 	68,	 /* 0100010 */
@@ -3149,9 +3149,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	130,	 /* 1000001 */
 	
 //-- Glyph for ASCII Character code: 216
-	10, /* ucWidth */
-	12, /* ucHeight */
-	3, /* ucVOffset */
+	10, /* u8Width */
+	12, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	30,	64,	 /* 0001111001 */
 	33,	128,	 /* 0010000110 */
@@ -3167,9 +3167,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	158,	0,	 /* 1001111000 */
 	
 //-- Glyph for ASCII Character code: 217
-	9, /* ucWidth */
-	15, /* ucHeight */
-	0, /* ucVOffset */
+	9, /* u8Width */
+	15, /* u8Height */
+	0, /* u8VOffset */
 	//--[Glyph Data]--
 	16,	0,	 /* 000100000 */
 	8,	0,	 /* 000010000 */
@@ -3188,9 +3188,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	62,	0,	 /* 001111100 */
 	
 //-- Glyph for ASCII Character code: 218
-	9, /* ucWidth */
-	15, /* ucHeight */
-	0, /* ucVOffset */
+	9, /* u8Width */
+	15, /* u8Height */
+	0, /* u8VOffset */
 	//--[Glyph Data]--
 	4,	0,	 /* 000001000 */
 	8,	0,	 /* 000010000 */
@@ -3209,9 +3209,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	62,	0,	 /* 001111100 */
 	
 //-- Glyph for ASCII Character code: 219
-	9, /* ucWidth */
-	15, /* ucHeight */
-	0, /* ucVOffset */
+	9, /* u8Width */
+	15, /* u8Height */
+	0, /* u8VOffset */
 	//--[Glyph Data]--
 	12,	0,	 /* 000011000 */
 	18,	0,	 /* 000100100 */
@@ -3230,9 +3230,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	62,	0,	 /* 001111100 */
 	
 //-- Glyph for ASCII Character code: 220
-	9, /* ucWidth */
-	14, /* ucHeight */
-	1, /* ucVOffset */
+	9, /* u8Width */
+	14, /* u8Height */
+	1, /* u8VOffset */
 	//--[Glyph Data]--
 	20,	0,	 /* 000101000 */
 	0,	0,	 /* 000000000 */
@@ -3250,9 +3250,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	62,	0,	 /* 001111100 */
 	
 //-- Glyph for ASCII Character code: 221
-	9, /* ucWidth */
-	15, /* ucHeight */
-	0, /* ucVOffset */
+	9, /* u8Width */
+	15, /* u8Height */
+	0, /* u8VOffset */
 	//--[Glyph Data]--
 	4,	0,	 /* 000001000 */
 	8,	0,	 /* 000010000 */
@@ -3271,9 +3271,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	8,	0,	 /* 000010000 */
 	
 //-- Glyph for ASCII Character code: 222
-	9, /* ucWidth */
-	12, /* ucHeight */
-	3, /* ucVOffset */
+	9, /* u8Width */
+	12, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	128,	0,	 /* 100000000 */
 	128,	0,	 /* 100000000 */
@@ -3289,9 +3289,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	128,	0,	 /* 100000000 */
 	
 //-- Glyph for ASCII Character code: 223
-	7, /* ucWidth */
-	12, /* ucHeight */
-	3, /* ucVOffset */
+	7, /* u8Width */
+	12, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	48,	 /* 0011000 */
 	72,	 /* 0100100 */
@@ -3307,9 +3307,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	156,	 /* 1001110 */
 	
 //-- Glyph for ASCII Character code: 224
-	7, /* ucWidth */
-	12, /* ucHeight */
-	3, /* ucVOffset */
+	7, /* u8Width */
+	12, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	16,	 /* 0001000 */
 	8,	 /* 0000100 */
@@ -3325,9 +3325,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	122,	 /* 0111101 */
 	
 //-- Glyph for ASCII Character code: 225
-	7, /* ucWidth */
-	12, /* ucHeight */
-	3, /* ucVOffset */
+	7, /* u8Width */
+	12, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	8,	 /* 0000100 */
 	16,	 /* 0001000 */
@@ -3343,9 +3343,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	122,	 /* 0111101 */
 	
 //-- Glyph for ASCII Character code: 226
-	7, /* ucWidth */
-	12, /* ucHeight */
-	3, /* ucVOffset */
+	7, /* u8Width */
+	12, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	24,	 /* 0001100 */
 	36,	 /* 0010010 */
@@ -3361,9 +3361,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	122,	 /* 0111101 */
 	
 //-- Glyph for ASCII Character code: 227
-	7, /* ucWidth */
-	12, /* ucHeight */
-	3, /* ucVOffset */
+	7, /* u8Width */
+	12, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	20,	 /* 0001010 */
 	40,	 /* 0010100 */
@@ -3379,9 +3379,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	122,	 /* 0111101 */
 	
 //-- Glyph for ASCII Character code: 228
-	7, /* ucWidth */
-	11, /* ucHeight */
-	4, /* ucVOffset */
+	7, /* u8Width */
+	11, /* u8Height */
+	4, /* u8VOffset */
 	//--[Glyph Data]--
 	40,	 /* 0010100 */
 	0,	 /* 0000000 */
@@ -3396,9 +3396,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	122,	 /* 0111101 */
 	
 //-- Glyph for ASCII Character code: 229
-	7, /* ucWidth */
-	13, /* ucHeight */
-	2, /* ucVOffset */
+	7, /* u8Width */
+	13, /* u8Height */
+	2, /* u8VOffset */
 	//--[Glyph Data]--
 	56,	 /* 0011100 */
 	40,	 /* 0010100 */
@@ -3415,9 +3415,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	122,	 /* 0111101 */
 	
 //-- Glyph for ASCII Character code: 230
-	13, /* ucWidth */
-	9, /* ucHeight */
-	6, /* ucVOffset */
+	13, /* u8Width */
+	9, /* u8Height */
+	6, /* u8VOffset */
 	//--[Glyph Data]--
 	60,	224,	 /* 0011110011100 */
 	67,	16,	 /* 0100001100010 */
@@ -3430,9 +3430,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	120,	224,	 /* 0111100011100 */
 	
 //-- Glyph for ASCII Character code: 231
-	6, /* ucWidth */
-	12, /* ucHeight */
-	6, /* ucVOffset */
+	6, /* u8Width */
+	12, /* u8Height */
+	6, /* u8VOffset */
 	//--[Glyph Data]--
 	56,	 /* 001110 */
 	68,	 /* 010001 */
@@ -3448,9 +3448,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	56,	 /* 001110 */
 	
 //-- Glyph for ASCII Character code: 232
-	7, /* ucWidth */
-	12, /* ucHeight */
-	3, /* ucVOffset */
+	7, /* u8Width */
+	12, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	32,	 /* 0010000 */
 	16,	 /* 0001000 */
@@ -3466,9 +3466,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	56,	 /* 0011100 */
 	
 //-- Glyph for ASCII Character code: 233
-	7, /* ucWidth */
-	12, /* ucHeight */
-	3, /* ucVOffset */
+	7, /* u8Width */
+	12, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	8,	 /* 0000100 */
 	16,	 /* 0001000 */
@@ -3484,9 +3484,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	56,	 /* 0011100 */
 	
 //-- Glyph for ASCII Character code: 234
-	7, /* ucWidth */
-	12, /* ucHeight */
-	3, /* ucVOffset */
+	7, /* u8Width */
+	12, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	24,	 /* 0001100 */
 	36,	 /* 0010010 */
@@ -3502,9 +3502,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	56,	 /* 0011100 */
 	
 //-- Glyph for ASCII Character code: 235
-	7, /* ucWidth */
-	11, /* ucHeight */
-	4, /* ucVOffset */
+	7, /* u8Width */
+	11, /* u8Height */
+	4, /* u8VOffset */
 	//--[Glyph Data]--
 	40,	 /* 0010100 */
 	0,	 /* 0000000 */
@@ -3519,9 +3519,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	56,	 /* 0011100 */
 	
 //-- Glyph for ASCII Character code: 236
-	2, /* ucWidth */
-	12, /* ucHeight */
-	3, /* ucVOffset */
+	2, /* u8Width */
+	12, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	128,	 /* 10 */
 	64,	 /* 01 */
@@ -3537,9 +3537,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	64,	 /* 01 */
 	
 //-- Glyph for ASCII Character code: 237
-	2, /* ucWidth */
-	12, /* ucHeight */
-	3, /* ucVOffset */
+	2, /* u8Width */
+	12, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	64,	 /* 01 */
 	128,	 /* 10 */
@@ -3555,9 +3555,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	128,	 /* 10 */
 	
 //-- Glyph for ASCII Character code: 238
-	4, /* ucWidth */
-	12, /* ucHeight */
-	3, /* ucVOffset */
+	4, /* u8Width */
+	12, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	96,	 /* 0110 */
 	144,	 /* 1001 */
@@ -3573,9 +3573,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	64,	 /* 0100 */
 	
 //-- Glyph for ASCII Character code: 239
-	3, /* ucWidth */
-	11, /* ucHeight */
-	4, /* ucVOffset */
+	3, /* u8Width */
+	11, /* u8Height */
+	4, /* u8VOffset */
 	//--[Glyph Data]--
 	160,	 /* 101 */
 	0,	 /* 000 */
@@ -3590,9 +3590,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	64,	 /* 010 */
 	
 //-- Glyph for ASCII Character code: 240
-	7, /* ucWidth */
-	12, /* ucHeight */
-	3, /* ucVOffset */
+	7, /* u8Width */
+	12, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	52,	 /* 0011010 */
 	24,	 /* 0001100 */
@@ -3608,9 +3608,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	56,	 /* 0011100 */
 	
 //-- Glyph for ASCII Character code: 241
-	6, /* ucWidth */
-	12, /* ucHeight */
-	3, /* ucVOffset */
+	6, /* u8Width */
+	12, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	40,	 /* 001010 */
 	80,	 /* 010100 */
@@ -3626,9 +3626,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	132,	 /* 100001 */
 	
 //-- Glyph for ASCII Character code: 242
-	7, /* ucWidth */
-	12, /* ucHeight */
-	3, /* ucVOffset */
+	7, /* u8Width */
+	12, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	32,	 /* 0010000 */
 	16,	 /* 0001000 */
@@ -3644,9 +3644,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	56,	 /* 0011100 */
 	
 //-- Glyph for ASCII Character code: 243
-	7, /* ucWidth */
-	12, /* ucHeight */
-	3, /* ucVOffset */
+	7, /* u8Width */
+	12, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	8,	 /* 0000100 */
 	16,	 /* 0001000 */
@@ -3662,9 +3662,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	56,	 /* 0011100 */
 	
 //-- Glyph for ASCII Character code: 244
-	7, /* ucWidth */
-	12, /* ucHeight */
-	3, /* ucVOffset */
+	7, /* u8Width */
+	12, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	24,	 /* 0001100 */
 	36,	 /* 0010010 */
@@ -3680,9 +3680,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	56,	 /* 0011100 */
 	
 //-- Glyph for ASCII Character code: 245
-	7, /* ucWidth */
-	12, /* ucHeight */
-	3, /* ucVOffset */
+	7, /* u8Width */
+	12, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	20,	 /* 0001010 */
 	40,	 /* 0010100 */
@@ -3698,9 +3698,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	56,	 /* 0011100 */
 	
 //-- Glyph for ASCII Character code: 246
-	7, /* ucWidth */
-	11, /* ucHeight */
-	4, /* ucVOffset */
+	7, /* u8Width */
+	11, /* u8Height */
+	4, /* u8VOffset */
 	//--[Glyph Data]--
 	40,	 /* 0010100 */
 	0,	 /* 0000000 */
@@ -3715,9 +3715,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	56,	 /* 0011100 */
 	
 //-- Glyph for ASCII Character code: 247
-	7, /* ucWidth */
-	5, /* ucHeight */
-	7, /* ucVOffset */
+	7, /* u8Width */
+	5, /* u8Height */
+	7, /* u8VOffset */
 	//--[Glyph Data]--
 	16,	 /* 0001000 */
 	0,	 /* 0000000 */
@@ -3726,9 +3726,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	16,	 /* 0001000 */
 	
 //-- Glyph for ASCII Character code: 248
-	7, /* ucWidth */
-	9, /* ucHeight */
-	6, /* ucVOffset */
+	7, /* u8Width */
+	9, /* u8Height */
+	6, /* u8VOffset */
 	//--[Glyph Data]--
 	58,	 /* 0011101 */
 	68,	 /* 0100010 */
@@ -3741,9 +3741,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	184,	 /* 1011100 */
 	
 //-- Glyph for ASCII Character code: 249
-	6, /* ucWidth */
-	12, /* ucHeight */
-	3, /* ucVOffset */
+	6, /* u8Width */
+	12, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	32,	 /* 001000 */
 	16,	 /* 000100 */
@@ -3759,9 +3759,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	116,	 /* 011101 */
 	
 //-- Glyph for ASCII Character code: 250
-	6, /* ucWidth */
-	12, /* ucHeight */
-	3, /* ucVOffset */
+	6, /* u8Width */
+	12, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	8,	 /* 000010 */
 	16,	 /* 000100 */
@@ -3777,9 +3777,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	116,	 /* 011101 */
 	
 //-- Glyph for ASCII Character code: 251
-	6, /* ucWidth */
-	12, /* ucHeight */
-	3, /* ucVOffset */
+	6, /* u8Width */
+	12, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	48,	 /* 001100 */
 	72,	 /* 010010 */
@@ -3795,9 +3795,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	116,	 /* 011101 */
 	
 //-- Glyph for ASCII Character code: 252
-	6, /* ucWidth */
-	11, /* ucHeight */
-	4, /* ucVOffset */
+	6, /* u8Width */
+	11, /* u8Height */
+	4, /* u8VOffset */
 	//--[Glyph Data]--
 	80,	 /* 010100 */
 	0,	 /* 000000 */
@@ -3812,9 +3812,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	116,	 /* 011101 */
 	
 //-- Glyph for ASCII Character code: 253
-	7, /* ucWidth */
-	15, /* ucHeight */
-	3, /* ucVOffset */
+	7, /* u8Width */
+	15, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	8,	 /* 0000100 */
 	16,	 /* 0001000 */
@@ -3833,9 +3833,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	96,	 /* 0110000 */
 	
 //-- Glyph for ASCII Character code: 254
-	7, /* ucWidth */
-	15, /* ucHeight */
-	3, /* ucVOffset */
+	7, /* u8Width */
+	15, /* u8Height */
+	3, /* u8VOffset */
 	//--[Glyph Data]--
 	128,	 /* 1000000 */
 	128,	 /* 1000000 */
@@ -3854,9 +3854,9 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 	128,	 /* 1000000 */
 	
 //-- Glyph for ASCII Character code: 255
-	7, /* ucWidth */
-	14, /* ucHeight */
-	4, /* ucVOffset */
+	7, /* u8Width */
+	14, /* u8Height */
+	4, /* u8VOffset */
 	//--[Glyph Data]--
 	40,	 /* 0010100 */
 	0,	 /* 0000000 */
@@ -3877,11 +3877,11 @@ const FONT_STORAGE_TYPE Arial_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 };
 
 Font_t fntArial_12_False_False_False_ = {
-	12, /* ucSize */
-	0, /* ucFlags */
-	0, /* ucStartChar */
-	255, /* ucMaxChar */
+	12, /* u8Size */
+	0, /* u8Flags */
+	0, /* u8StartChar */
+	255, /* u8MaxChar */
 	"Arial", /* szName */
-	Arial_12_False_False_False_ /* pucData */
+	Arial_12_False_False_False_ /* pu8Data */
 };
 

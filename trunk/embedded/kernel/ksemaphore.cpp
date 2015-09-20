@@ -74,7 +74,7 @@ void Semaphore::WakeMe(Thread *pclChosenOne_)
 #endif // KERNEL_USE_TIMEOUTS
 
 //---------------------------------------------------------------------------
-K_UCHAR Semaphore::WakeNext()
+uint8_t Semaphore::WakeNext()
 {
     Thread *pclChosenOne;
     
@@ -92,24 +92,24 @@ K_UCHAR Semaphore::WakeNext()
 }
 
 //---------------------------------------------------------------------------
-void Semaphore::Init(K_USHORT usInitVal_, K_USHORT usMaxVal_)
+void Semaphore::Init(uint16_t u16InitVal_, uint16_t u16MaxVal_)
 {
     // Copy the paramters into the object - set the maximum value for this
     // semaphore to implement either binary or counting semaphores, and set
     // the initial count.  Clear the wait list for this object.
-    m_usValue = usInitVal_;
-    m_usMaxValue = usMaxVal_;    
+    m_u16Value = u16InitVal_;
+    m_u16MaxValue = u16MaxVal_;    
 
     m_clBlockList.Init();
 }
 
 //---------------------------------------------------------------------------
-K_BOOL Semaphore::Post()
+bool Semaphore::Post()
 {
-	KERNEL_TRACE_1( STR_SEMAPHORE_POST_1, (K_USHORT)g_pstCurrent->GetID() );
+	KERNEL_TRACE_1( STR_SEMAPHORE_POST_1, (uint16_t)g_pclCurrent->GetID() );
 	
-    K_BOOL bThreadWake = 0;
-    K_BOOL bBail = false;
+    bool bThreadWake = 0;
+    bool bBail = false;
     // Increment the semaphore count - we can mess with threads so ensure this
     // is in a critical section.  We don't just disable the scheudler since
     // we want to be able to do this from within an interrupt context as well.
@@ -119,10 +119,10 @@ K_BOOL Semaphore::Post()
     if (m_clBlockList.GetHead() == NULL)
     {
         // Check so see if we've reached the maximum value in the semaphore
-        if (m_usValue < m_usMaxValue)
+        if (m_u16Value < m_u16MaxValue)
         {
             // Increment the count value
-            m_usValue++;
+            m_u16Value++;
         }
         else
         {
@@ -157,16 +157,16 @@ K_BOOL Semaphore::Post()
 
 //---------------------------------------------------------------------------
 #if KERNEL_USE_TIMEOUTS
-K_BOOL Semaphore::Pend_i( K_ULONG ulWaitTimeMS_ )
+bool Semaphore::Pend_i( uint32_t u32WaitTimeMS_ )
 #else
 void Semaphore::Pend_i( void )
 #endif
 {
-    KERNEL_TRACE_1( STR_SEMAPHORE_PEND_1, (K_USHORT)g_pstCurrent->GetID() );
+    KERNEL_TRACE_1( STR_SEMAPHORE_PEND_1, (uint16_t)g_pclCurrent->GetID() );
 
 #if KERNEL_USE_TIMEOUTS
     Timer clSemTimer;
-    K_BOOL bUseTimer = false;
+    bool bUseTimer = false;
 #endif
 
     // Once again, messing with thread data - ensure
@@ -174,26 +174,26 @@ void Semaphore::Pend_i( void )
     CS_ENTER();
 
     // Check to see if we need to take any action based on the semaphore count
-    if (m_usValue != 0)
+    if (m_u16Value != 0)
     {
         // The semaphore count is non-zero, we can just decrement the count
         // and go along our merry way.
-        m_usValue--;
+        m_u16Value--;
     }
     else
     {
         // The semaphore count is zero - we need to block the current thread
         // and wait until the semaphore is posted from elsewhere.
 #if KERNEL_USE_TIMEOUTS        
-        if (ulWaitTimeMS_)
+        if (u32WaitTimeMS_)
         {
-            g_pstCurrent->SetExpired(false);
+            g_pclCurrent->SetExpired(false);
             clSemTimer.Init();
-            clSemTimer.Start(0, ulWaitTimeMS_, TimedSemaphore_Callback, (void*)this);
+            clSemTimer.Start(0, u32WaitTimeMS_, TimedSemaphore_Callback, (void*)this);
             bUseTimer = true;
         }
 #endif
-        Block(g_pstCurrent);
+        Block(g_pclCurrent);
 
         // Switch Threads immediately
         Thread::Yield();
@@ -205,7 +205,7 @@ void Semaphore::Pend_i( void )
     if (bUseTimer)
     {
         clSemTimer.Stop();
-        return (g_pstCurrent->GetExpired() == 0);
+        return (g_pclCurrent->GetExpired() == 0);
     }
     return true;
 #endif
@@ -224,20 +224,20 @@ void Semaphore::Pend()
 
 #if KERNEL_USE_TIMEOUTS
 //---------------------------------------------------------------------------	
-K_BOOL Semaphore::Pend( K_ULONG ulWaitTimeMS_ )
+bool Semaphore::Pend( uint32_t u32WaitTimeMS_ )
 {
-    return Pend_i( ulWaitTimeMS_ );
+    return Pend_i( u32WaitTimeMS_ );
 }
 #endif
 
 //---------------------------------------------------------------------------
-K_USHORT Semaphore::GetCount()
+uint16_t Semaphore::GetCount()
 {
-	K_USHORT usRet;
+	uint16_t u16Ret;
 	CS_ENTER();
-	usRet = m_usValue;
+	u16Ret = m_u16Value;
 	CS_EXIT();
-	return usRet;
+	return u16Ret;
 }
 
 #endif

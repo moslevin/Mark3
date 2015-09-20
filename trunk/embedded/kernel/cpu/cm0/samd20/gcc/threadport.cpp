@@ -36,7 +36,7 @@ static void ThreadPort_StartFirstThread( void ) __attribute__ (( naked ));
 void SVC_Handler( void ) __attribute__ (( naked ));
 void PendSV_Handler( void ) __attribute__ (( naked ));
 
-volatile K_ULONG g_ulCriticalCount = 0;
+volatile uint32_t g_ulCriticalCount = 0;
 
 //---------------------------------------------------------------------------
 /*
@@ -83,54 +83,54 @@ volatile K_ULONG g_ulCriticalCount = 0;
 */
 void ThreadPort::InitStack(Thread *pclThread_)
 {
-	K_ULONG *pulStack;
-	K_ULONG *pulTemp;
-	K_ULONG ulAddr;
-	K_USHORT i;
+	uint32_t *pu32Stack;
+	uint32_t *pu32Temp;
+	uint32_t u32Addr;
+	uint16_t i;
 
 	// Get the entrypoint for the thread
-	ulAddr = (K_ULONG)(pclThread_->m_pfEntryPoint);
+	u32Addr = (uint32_t)(pclThread_->m_pfEntryPoint);
 
 	// Get the top-of-stack pointer for the thread
-	pulStack = (K_ULONG*)pclThread_->m_pwStackTop;
+	pu32Stack = (uint32_t*)pclThread_->m_pwStackTop;
 
 	// Initialize the stack to all FF's to aid in stack depth checking
-	pulTemp = (K_ULONG*)pclThread_->m_pwStack;
-	for (i = 0; i < pclThread_->m_usStackSize / sizeof(K_ULONG); i++)
+	pu32Temp = (uint32_t*)pclThread_->m_pwStack;
+	for (i = 0; i < pclThread_->m_u16StackSize / sizeof(uint32_t); i++)
 	{
-		pulTemp[i] = 0xFFFFFFFF;
+		pu32Temp[i] = 0xFFFFFFFF;
 	}
 
-	PUSH_TO_STACK(pulStack, 0);				// We need one word of padding, apparently...
+	PUSH_TO_STACK(pu32Stack, 0);				// We need one word of padding, apparently...
 	
 	//-- Simulated Exception Stack Frame --
-	PUSH_TO_STACK(pulStack, 0x01000000);	// XSPR
-	PUSH_TO_STACK(pulStack, ulAddr);		// PC
-    PUSH_TO_STACK(pulStack, 0);             // LR
-	PUSH_TO_STACK(pulStack, 0x12);
-	PUSH_TO_STACK(pulStack, 0x3);
-    PUSH_TO_STACK(pulStack, 0x2);
-	PUSH_TO_STACK(pulStack, 0x1);
-	PUSH_TO_STACK(pulStack, (K_ULONG)pclThread_->m_pvArg);	// R0 = argument
+	PUSH_TO_STACK(pu32Stack, 0x01000000);	// XSPR
+	PUSH_TO_STACK(pu32Stack, u32Addr);		// PC
+    PUSH_TO_STACK(pu32Stack, 0);             // LR
+	PUSH_TO_STACK(pu32Stack, 0x12);
+	PUSH_TO_STACK(pu32Stack, 0x3);
+    PUSH_TO_STACK(pu32Stack, 0x2);
+	PUSH_TO_STACK(pu32Stack, 0x1);
+	PUSH_TO_STACK(pu32Stack, (uint32_t)pclThread_->m_pvArg);	// R0 = argument
 
 	//-- Simulated Manually-Stacked Registers --
-    PUSH_TO_STACK(pulStack, 0x11);
-	PUSH_TO_STACK(pulStack, 0x10);
-	PUSH_TO_STACK(pulStack, 0x09);
-	PUSH_TO_STACK(pulStack, 0x08);
-	PUSH_TO_STACK(pulStack, 0x07);
-	PUSH_TO_STACK(pulStack, 0x06);
-	PUSH_TO_STACK(pulStack, 0x05);
-	PUSH_TO_STACK(pulStack, 0x04);
-	pulStack++;
+    PUSH_TO_STACK(pu32Stack, 0x11);
+	PUSH_TO_STACK(pu32Stack, 0x10);
+	PUSH_TO_STACK(pu32Stack, 0x09);
+	PUSH_TO_STACK(pu32Stack, 0x08);
+	PUSH_TO_STACK(pu32Stack, 0x07);
+	PUSH_TO_STACK(pu32Stack, 0x06);
+	PUSH_TO_STACK(pu32Stack, 0x05);
+	PUSH_TO_STACK(pu32Stack, 0x04);
+	pu32Stack++;
 
-	pclThread_->m_pwStackTop = pulStack;
+	pclThread_->m_pwStackTop = pu32Stack;
 }
 
 //---------------------------------------------------------------------------
 void Thread_Switch(void)
 {
-    g_pstCurrent = (Thread*)g_pstNext;
+    g_pclCurrent = (Thread*)g_pclNext;
 }
 
 //---------------------------------------------------------------------------
@@ -157,11 +157,11 @@ void ThreadPort::StartThreads()
     We can either:
         1) Simulate a return from an exception manually to start the first
            thread, or..
-        2) Use a software exception to trigger the first "Context Restore
+        2) use a software exception to trigger the first "Context Restore
             /Return from Interrupt" that we have otherwised used to this point.
 
     For 1), we basically have to restore the whole stack manually, not relying
-    on the CPU to do any of this for us.  That's certainly doable, but not all
+    on the CPU to do any of this for u16.  That's certainly doable, but not all
     Cortex parts support this (due to other members of the family supporting
     priveleged modes).  So, we will opt for the second option.
 
@@ -209,7 +209,7 @@ void ThreadPort_StartFirstThread( void )
 
     get_thread_stack:
         ; Get the stack pointer for the current thread
-        ldr r0, g_pstCurrent
+        ldr r0, g_pclCurrent
         ldr r1, [r0]
         add r1, #8
         ldr r2, [r1]         ; r2 contains the current stack-top
@@ -250,7 +250,7 @@ void ThreadPort_StartFirstThread( void )
 
     exit_exception:
         ; Return from the exception handler.  The CPU will automagically unstack R0-R3, R12, PC, LR, and xPSR
-        ; for us.  If all goes well, our thread will start execution at the entrypoint, with the user-specified
+        ; for u16.  If all goes well, our thread will start execution at the entrypoint, with the user-specified
         ; argument.
         bx r0
 
@@ -290,7 +290,7 @@ void SVC_Handler(void)
 	" mov r1, lr \n "
 	" orr r0, r1 \n "
 	" bx r0 \n "
-	: : [CURRENT_THREAD] "r" (g_pstCurrent)
+	: : [CURRENT_THREAD] "r" (g_pclCurrent)
 	);
 }
 
@@ -323,7 +323,7 @@ void SVC_Handler(void)
 	the register storage into multiple chunks.
 	
 	; Get address of current thread stack
-	ldr r0, g_pstCurrentThread
+	ldr r0, g_pclCurrentThread
 	ldr r1, [r0]
 	add r1, #8
 
@@ -419,8 +419,8 @@ void PendSV_Handler(void)
 	" nop \n "
 	
 	// Must be 4-byte aligned.  Also - GNU assembler, I hate you for making me resort to this.
-	" NEXT_: .word g_pstNext \n"
-	" CURR_: .word g_pstCurrent \n"	
+	" NEXT_: .word g_pclNext \n"
+	" CURR_: .word g_pclCurrent \n"	
 	);
 }
 

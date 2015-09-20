@@ -27,17 +27,17 @@ See license.txt for more information
 #include <semaphore.h>
 #include <pthread.h>
 
-extern volatile K_USHORT usIntFlags;
+extern volatile uint16_t u16IntFlags;
 
 #define FLAG_SWI        (0x0001)
 #define FLAG_TIMER      (0x0002)
 #define FLAG_BRIDGE     (0x0004)
 #define TOP_OF_STACK(x, y)            (x)
 
-extern volatile K_BOOL bIntEnabled;
-extern volatile K_BOOL bInterrupt;
-extern volatile K_BOOL bSwitchOnCS;
-extern volatile K_BOOL bTriggerInt;
+extern volatile bool bIntEnabled;
+extern volatile bool bInterrupt;
+extern volatile bool bSwitchOnCS;
+extern volatile bool bTriggerInt;
 extern sem_t stKSem;
 
 //------------------------------------------------------------------------

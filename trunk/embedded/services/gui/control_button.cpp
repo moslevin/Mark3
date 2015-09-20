@@ -28,7 +28,7 @@ void ButtonControl::Init()
     m_pstFont = NULL;
     m_uBGColor = PRIMARY_25;
     m_uActiveColor = PRIMARY_50;
-    m_uLineColor = PRIMARY_75;
+    m_u32ineColor = PRIMARY_75;
     m_uFillColor = PRIMARY_50;
     m_uTextColor = PRIMARY_100;
     m_bState = false;
@@ -44,45 +44,45 @@ void ButtonControl::Draw()
 
     GraphicsDriver *pclDriver = GetParentWindow()->GetDriver();
 
-    K_USHORT usXOffset = 0;
-    K_USHORT usHalfWidth = 0;
-    K_USHORT usYOffset = 0;
+    uint16_t u16XOffset = 0;
+    uint16_t u16HalfWidth = 0;
+    uint16_t u16YOffset = 0;
 
     // Get the location of the control relative to elements higher in the heirarchy
-    GetControlOffset(&usXOffset, &usYOffset);
+    GetControlOffset(&u16XOffset, &u16YOffset);
 
     // Draw the rounded-off rectangle
-    stLine.usX1 = GetLeft() + usXOffset + 1;
-    stLine.usX2 = stLine.usX1 + GetWidth() - 3;
-    stLine.usY1 = GetTop() + usYOffset;
-    stLine.usY2 = stLine.usY1;
-    stLine.uColor = m_uLineColor;
+    stLine.u16X1 = GetLeft() + u16XOffset + 1;
+    stLine.u16X2 = stLine.u16X1 + GetWidth() - 3;
+    stLine.u16Y1 = GetTop() + u16YOffset;
+    stLine.u16Y2 = stLine.u16Y1;
+    stLine.uColor = m_u32ineColor;
     pclDriver->Line(&stLine);
 
-    stLine.usY1 = GetTop() + usYOffset + GetHeight() - 1;
-    stLine.usY2 = stLine.usY1;
-    pclDriver->Line(&stLine);
-
-    // Draw the rounded-off rectangle
-    stLine.usX1 = GetLeft() + usXOffset ;
-    stLine.usX2 = stLine.usX1;
-
-    stLine.usY1 = GetTop() + usYOffset + 1;
-    stLine.usY2 = stLine.usY1 + GetHeight() - 3;
+    stLine.u16Y1 = GetTop() + u16YOffset + GetHeight() - 1;
+    stLine.u16Y2 = stLine.u16Y1;
     pclDriver->Line(&stLine);
 
     // Draw the rounded-off rectangle
-    stLine.usX1 = GetLeft() + usXOffset + GetWidth() - 1;
-    stLine.usX2 = stLine.usX1;
+    stLine.u16X1 = GetLeft() + u16XOffset ;
+    stLine.u16X2 = stLine.u16X1;
+
+    stLine.u16Y1 = GetTop() + u16YOffset + 1;
+    stLine.u16Y2 = stLine.u16Y1 + GetHeight() - 3;
+    pclDriver->Line(&stLine);
+
+    // Draw the rounded-off rectangle
+    stLine.u16X1 = GetLeft() + u16XOffset + GetWidth() - 1;
+    stLine.u16X2 = stLine.u16X1;
     pclDriver->Line(&stLine);
 
     // Draw a rectangle before the text if the BG is specified.
     {
         DrawRectangle_t stRect;
-        stRect.usLeft = GetLeft() + usXOffset + 1;
-        stRect.usRight = GetLeft() + GetWidth() + usXOffset - 2;
-        stRect.usTop = GetTop() + usYOffset + 1;
-        stRect.usBottom = GetTop() + GetHeight() + usYOffset - 2;
+        stRect.u16Left = GetLeft() + u16XOffset + 1;
+        stRect.u16Right = GetLeft() + GetWidth() + u16XOffset - 2;
+        stRect.u16Top = GetTop() + u16YOffset + 1;
+        stRect.u16Bottom = GetTop() + GetHeight() + u16YOffset - 2;
         stRect.bFill = true;
 
         if (m_bState)
@@ -96,11 +96,11 @@ void ButtonControl::Draw()
 
         if (GetParentWindow()->IsInFocus(this))
         {
-            stRect.uLineColor = m_uFillColor;
+            stRect.u32ineColor = m_uFillColor;
         }
         else
         {
-            stRect.uLineColor = m_uLineColor;
+            stRect.u32ineColor = m_u32ineColor;
         }
 
         pclDriver->Rectangle(&stRect);
@@ -110,23 +110,23 @@ void ButtonControl::Draw()
     stText.pstFont = m_pstFont;
     stText.pcString = m_szCaption;
     stText.uColor = m_uTextColor;
-    usHalfWidth = pclDriver->TextWidth(&stText);
-    usHalfWidth >>= 1;
-    stText.usLeft = GetLeft() + (GetWidth()>>1) - usHalfWidth + usXOffset;
-    stText.usTop = GetTop() + usYOffset;
+    u16HalfWidth = pclDriver->TextWidth(&stText);
+    u16HalfWidth >>= 1;
+    stText.u16Left = GetLeft() + (GetWidth()>>1) - u16HalfWidth + u16XOffset;
+    stText.u16Top = GetTop() + u16YOffset;
     pclDriver->Text(&stText);
 }
 
 //---------------------------------------------------------------------------
 GuiReturn_t ButtonControl::ProcessEvent( GuiEvent_t *pstEvent_ )
 {
-    K_USHORT usXOffset, usYOffset;
+    uint16_t u16XOffset, u16YOffset;
 
-    GetControlOffset(&usXOffset, &usYOffset);
+    GetControlOffset(&u16XOffset, &u16YOffset);
 
     GUI_DEBUG_PRINT("ButtonControl::ProcessEvent\n");
 
-    switch (pstEvent_->ucEventType)
+    switch (pstEvent_->u8EventType)
     {
         case EVENT_TYPE_JOYSTICK:
         {
@@ -154,8 +154,8 @@ GuiReturn_t ButtonControl::ProcessEvent( GuiEvent_t *pstEvent_ )
         case EVENT_TYPE_KEYBOARD:
         {
             // If this is a space bar or an enter key, behave like a mouse click.
-            if ((KEYCODE_SPACE == pstEvent_->stKey.ucKeyCode) ||
-                (KEYCODE_RETURN == pstEvent_->stKey.ucKeyCode))
+            if ((KEYCODE_SPACE == pstEvent_->stKey.u8KeyCode) ||
+                (KEYCODE_RETURN == pstEvent_->stKey.u8KeyCode))
             {
                 if (pstEvent_->stKey.bKeyState)
                 {
@@ -182,10 +182,10 @@ GuiReturn_t ButtonControl::ProcessEvent( GuiEvent_t *pstEvent_ )
                 // If so, de-activate the control
                 if (pstEvent_->stMouse.bLeftState)
                 {
-                    if ((pstEvent_->stMouse.usX < GetLeft() + usXOffset) ||
-                        (pstEvent_->stMouse.usX >= GetLeft() + usXOffset + GetWidth()-1) ||
-                        (pstEvent_->stMouse.usY < GetTop() + usYOffset) ||
-                        (pstEvent_->stMouse.usY >= GetTop() + usYOffset + GetHeight() - 1))
+                    if ((pstEvent_->stMouse.u16X < GetLeft() + u16XOffset) ||
+                        (pstEvent_->stMouse.u16X >= GetLeft() + u16XOffset + GetWidth()-1) ||
+                        (pstEvent_->stMouse.u16Y < GetTop() + u16YOffset) ||
+                        (pstEvent_->stMouse.u16Y >= GetTop() + u16YOffset + GetHeight() - 1))
                     {
                         m_bState = false;
                         SetStale();
@@ -195,10 +195,10 @@ GuiReturn_t ButtonControl::ProcessEvent( GuiEvent_t *pstEvent_ )
                 // Run the event callback for the mouse, and go from there.
                 else
                 {
-                    if ((pstEvent_->stMouse.usX >= GetLeft() + usXOffset) &&
-                        (pstEvent_->stMouse.usX < GetLeft() + usXOffset + GetWidth()-1) &&
-                        (pstEvent_->stMouse.usY >= GetTop() + usYOffset) &&
-                        (pstEvent_->stMouse.usY < GetTop() + usYOffset + GetHeight() - 1))
+                    if ((pstEvent_->stMouse.u16X >= GetLeft() + u16XOffset) &&
+                        (pstEvent_->stMouse.u16X < GetLeft() + u16XOffset + GetWidth()-1) &&
+                        (pstEvent_->stMouse.u16Y >= GetTop() + u16YOffset) &&
+                        (pstEvent_->stMouse.u16Y < GetTop() + u16YOffset + GetHeight() - 1))
                     {
                         m_bState = false;
                         SetStale();
@@ -215,10 +215,10 @@ GuiReturn_t ButtonControl::ProcessEvent( GuiEvent_t *pstEvent_ )
                 // control to activated.
                 if (pstEvent_->stMouse.bLeftState)
                 {
-                    if ((pstEvent_->stMouse.usX >= GetLeft() + usXOffset) &&
-                        (pstEvent_->stMouse.usX < GetLeft() + usXOffset + GetWidth()-1) &&
-                        (pstEvent_->stMouse.usY >= GetTop() + usYOffset) &&
-                        (pstEvent_->stMouse.usY < GetTop() + usYOffset + GetHeight() - 1))
+                    if ((pstEvent_->stMouse.u16X >= GetLeft() + u16XOffset) &&
+                        (pstEvent_->stMouse.u16X < GetLeft() + u16XOffset + GetWidth()-1) &&
+                        (pstEvent_->stMouse.u16Y >= GetTop() + u16YOffset) &&
+                        (pstEvent_->stMouse.u16Y < GetTop() + u16YOffset + GetHeight() - 1))
                     {
                         m_bState = true;
                         SetStale();
@@ -239,7 +239,7 @@ GuiReturn_t ButtonControl::ProcessEvent( GuiEvent_t *pstEvent_ )
 }
 
 //---------------------------------------------------------------------------
-void ButtonControl::Activate( K_BOOL bActivate_ )
+void ButtonControl::Activate( bool bActivate_ )
 {
     // When we de-activate the control, simply disarm the control and force
     // a redraw

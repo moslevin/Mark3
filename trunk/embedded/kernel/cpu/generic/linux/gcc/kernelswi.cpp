@@ -30,8 +30,8 @@ See license.txt for more information
 // Pretty hokey...
 
 //---------------------------------------------------------------------------
-static volatile K_BOOL g_bIsEnabled = false;
-static volatile K_BOOL g_bIsPending = false;
+static volatile bool g_bIsEnabled = false;
+static volatile bool g_bIsPending = false;
 
 //---------------------------------------------------------------------------
 void KernelSWI::Config(void)
@@ -75,7 +75,7 @@ void KernelSWI::Trigger(void)
     }
     g_bIsPending = true;    // We have a pending timer interrupt
 
-    usIntFlags |= FLAG_SWI;
+    u16IntFlags |= FLAG_SWI;
 
     if( bIntEnabled ) {               
         // Only return back after
@@ -91,17 +91,17 @@ void KernelSWI::Trigger(void)
 }
 
 //---------------------------------------------------------------------------
-K_UCHAR KernelSWI::DI()
+uint8_t KernelSWI::DI()
 {
-    K_UCHAR ucRet = static_cast<K_UCHAR>(g_bIsEnabled);
+    uint8_t u8Ret = static_cast<uint8_t>(g_bIsEnabled);
     g_bIsEnabled = false;
-    return ucRet;
+    return u8Ret;
 }
 
 //---------------------------------------------------------------------------
-void KernelSWI::RI(K_UCHAR ucRI_)
+void KernelSWI::RI(uint8_t u8RI_)
 {
-    if (ucRI_)
+    if (u8RI_)
     {
         g_bIsEnabled = true;
     }

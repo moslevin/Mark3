@@ -53,17 +53,17 @@ public:
 
     SysPort(PortIdentity_t ePort_);
 
-    void SetDir(K_UCHAR ucPinIndex_, K_BOOL bOutput_);
+    void SetDir(uint8_t u8PinIndex_, bool bOutput_);
 
-    void SetOut(K_UCHAR ucPinIndex_, K_BOOL bLevel_);
+    void SetOut(uint8_t u8PinIndex_, bool bLevel_);
 
-    void ToggleOut(K_UCHAR ucPinIndex_);
+    void ToggleOut(uint8_t u8PinIndex_);
 
-    K_BOOL GetIn(K_UCHAR ucPinIndex_);
+    bool GetIn(uint8_t u8PinIndex_);
 
-    void SetPinConfig(K_UCHAR ucPinIndex_, K_BOOL bPullUp_, K_BOOL bInputEnable_, K_BOOL bMuxWithPeripheral_);
+    void SetPinConfig(uint8_t u8PinIndex_, bool bpu32lUp_, bool bInputEnable_, bool bMuxWithPeripheral_);
 
-    void SetPortMux(K_UCHAR ucPinIndex_, PinMux_t eMuxFunction_);
+    void SetPortMux(uint8_t u8PinIndex_, PinMux_t eMuxFunction_);
 
 private:
     PortGroup *GetPortPointer();

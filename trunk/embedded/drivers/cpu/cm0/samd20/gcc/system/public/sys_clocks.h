@@ -124,20 +124,20 @@ public:
 
     ClockError_t SetGenerator( ClockGenerator_t eClockGen_ );
 
-    void LockOnEnable( K_BOOL bLock_ );
+    void LockOnEnable( bool bLock_ );
 
-    ClockError_t Setup( Clock_t eClock_, ClockGenerator_t eClockGen_, K_BOOL bLock_ );
+    ClockError_t Setup( Clock_t eClock_, ClockGenerator_t eClockGen_, bool bLock_ );
 
     void CommitConfig( void );
 
-    void Enable( K_BOOL bEnable_ );
+    void Enable( bool bEnable_ );
 
 private:
     void WriteChannel();
 
     Clock_t             m_eClock;
     ClockGenerator_t    m_eClockGen;
-    K_BOOL                m_bLock;
+    bool                m_bLock;
 };
 
 //---------------------------------------------------------------------------
@@ -152,21 +152,21 @@ public:
 
     void SetClockSource( ClockGenSource_t eClockSrc_ );
 
-    void OutputOffState( K_BOOL bState_ );
+    void OutputOffState( bool bState_ );
 
-    void PinOutput( K_BOOL bOutput_ );
+    void PinOutput( bool bOutput_ );
 
-    void RunInStandby( K_BOOL bOutput_ );
+    void RunInStandby( bool bOutput_ );
 
-    void ImproveDutyCycle( K_BOOL bImprove_ );
+    void ImproveDutyCycle( bool bImprove_ );
 
-    void SetDivisor( ClockDivideMode_t eMode_, K_USHORT usDivisor_ );
+    void SetDivisor( ClockDivideMode_t eMode_, uint16_t u16Divisor_ );
 
     void CommitConfig(void);
 
 private:
 
-    K_BOOL IsSyncing();
+    bool IsSyncing();
     void WriteSync();
     void WriteGenerator();
     void WriteGeneratorDiv();
@@ -174,13 +174,13 @@ private:
 	ClockGenSource_t	m_eClockSrc;
     ClockGenerator_t    m_eClockGen;
 
-    K_USHORT            m_usDivisor;
+    uint16_t            m_u16Divisor;
     ClockDivideMode_t   m_eDivMode;
 
-    K_BOOL                m_bRunInStandby;
-    K_BOOL                m_bOutputToPin;
-    K_BOOL                m_bOutputOffValue;
-    K_BOOL                m_bImproveDutyCycle;
+    bool                m_bRunInStandby;
+    bool                m_bOutputToPin;
+    bool                m_bOutputOffValue;
+    bool                m_bImproveDutyCycle;
 };
 
 //---------------------------------------------------------------------------
@@ -202,18 +202,18 @@ public:
 
     void Prescalar(OSC8M_Prescaler_t ePrescalar_);
 
-    void RunOnDemand(K_BOOL bRunOnDemand_);
+    void RunOnDemand(bool bRunOnDemand_);
 
-    void RunInStandby(K_BOOL bRunInStandby_);
+    void RunInStandby(bool bRunInStandby_);
 
     void CommitConfig();
 	
-    void Enable(K_BOOL bEnable_);
+    void Enable(bool bEnable_);
 
 private:
     OSC8M_Prescaler_t m_ePrescalar;
-    K_BOOL             m_bOnDemand;
-    K_BOOL             m_bRunStandby;
+    bool             m_bOnDemand;
+    bool             m_bRunStandby;
 };
 
 //---------------------------------------------------------------------------
@@ -239,30 +239,30 @@ public:
     
     void StartupTime(XOSC32K_StartupTime_t eTime_);
     
-    void Enable32KHz(K_BOOL bEnable_);
+    void Enable32KHz(bool bEnable_);
 
-    void Enable1KHz(K_BOOL bEnable_);
+    void Enable1KHz(bool bEnable_);
 
-    void GainAmplifier(K_BOOL bEnable_);
+    void GainAmplifier(bool bEnable_);
 
-    void ExternalCrystal(K_BOOL bEnable_);
+    void ExternalCrystal(bool bEnable_);
 
-    void RunOnDemand(K_BOOL bRunOnDemand_);
+    void RunOnDemand(bool bRunOnDemand_);
 
-    void RunInStandby(K_BOOL bRunInStandby_);
+    void RunInStandby(bool bRunInStandby_);
 
     void CommitConfig();
 	
-    void Enable(K_BOOL bEnable_);
+    void Enable(bool bEnable_);
 
 private:
     XOSC32K_StartupTime_t m_eStartupTime;
-    K_BOOL            m_bEnable32KHz;
-    K_BOOL            m_bEnable1KHz;
-    K_BOOL            m_bAutoAmp;
-    K_BOOL            m_bExternalXtal;
-    K_BOOL            m_bOnDemand;
-    K_BOOL            m_bRunStandby;
+    bool            m_bEnable32KHz;
+    bool            m_bEnable1KHz;
+    bool            m_bAutoAmp;
+    bool            m_bExternalXtal;
+    bool            m_bOnDemand;
+    bool            m_bRunStandby;
 };
 
 //---------------------------------------------------------------------------
@@ -272,51 +272,51 @@ public:
 
 	Source_DFLL48M();
 	
-	void ClockMode(K_BOOL bClosedLoop_);
+	void ClockMode(bool bClosedLoop_);
 	
-	void RunOnDemand(K_BOOL bRunOnDemand_);
+	void RunOnDemand(bool bRunOnDemand_);
 	
-    void RunInStandby(K_BOOL bRunInStandby_);
+    void RunInStandby(bool bRunInStandby_);
 	
-	void ChillCycle(K_BOOL bEnable_);
+	void ChillCycle(bool bEnable_);
 	
-	void LoseLockAfterWakeup(K_BOOL bEnable_);
+	void LoseLockAfterWakeup(bool bEnable_);
 	
-	void QuickLock(K_BOOL bEnable_);
+	void QuickLock(bool bEnable_);
 	
-	void Multiplier(K_USHORT usMultiplier_);
+	void Multiplier(uint16_t u16Multiplier_);
 	
-	void MaxCoarseStep(K_UCHAR ucStep_);
+	void MaxCoarseStep(uint8_t u8Step_);
 	
-	void MaxFineStep(K_USHORT usStep_);
+	void MaxFineStep(uint16_t u16Step_);
 	
-	void CoarseAdjust(K_UCHAR ucVal_);
+	void CoarseAdjust(uint8_t u8Val_);
 	
-	void FineAdjust(K_USHORT usVal_);
+	void FineAdjust(uint16_t u16Val_);
 	
 	void CommitConfig();
 	
-	void Enable(K_BOOL bEnable_);
+	void Enable(bool bEnable_);
 	
 private:
 	void WaitSync();
 	
 	//-- Control register values
-	K_BOOL		m_bRunStandby;
-	K_BOOL		m_bOnDemand;
-	K_BOOL		m_bChillCycle;
-	K_BOOL		m_bQuickLock;
-	K_BOOL		m_bLoseLockAfterWake;
-	K_BOOL		m_bClockMode;
+	bool		m_bRunStandby;
+	bool		m_bOnDemand;
+	bool		m_bChillCycle;
+	bool		m_bQuickLock;
+	bool		m_bLoseLockAfterWake;
+	bool		m_bClockMode;
 	
 	//-- Multiplier register values
-	K_USHORT	m_usMultiplier;
-	K_USHORT	m_usMaxFineStep;
-	K_UCHAR		m_ucMaxCoarseStep;
+	uint16_t	m_u16Multiplier;
+	uint16_t	m_u16MaxFineStep;
+	uint8_t		m_u8MaxCoarseStep;
 	
 	//-- Value register values
-	K_USHORT	m_usFineAdjust;
-	K_UCHAR		m_ucCoarseAdjust;
+	uint16_t	m_u16FineAdjust;
+	uint8_t		m_u8CoarseAdjust;
 };
 
 #endif // __SYS_CLOCKS_H__

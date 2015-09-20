@@ -101,6 +101,12 @@ See license.txt for more information
 #define THREAD_QUANTUM_DEFAULT           (4)
 
 /*!
+    This is a simple blocking object, where a thread (or threads) are guaranteed
+    to block until an asynchronous event signals the object.
+*/
+#define KERNEL_USE_NOTIFY                (1)
+
+/*!
     Do you want the ability to use counting/binary semaphores for thread
     synchronization?  Enabling this features provides fully-blocking semaphores
     and enables all API functions declared in semaphore.h.  If you have to
@@ -142,6 +148,21 @@ See license.txt for more information
 */
 #if KERNEL_USE_MESSAGE
     #define GLOBAL_MESSAGE_POOL_SIZE     (8)
+#endif
+
+/*!
+    Enable inter-thread messaging using mailboxes.  A mailbox manages a blob
+    of data provided by the user, that is partitioned into fixed-size blocks
+    called envelopes.  The size of an envelope is set by the user when the
+    mailbox is initialized.  Any number of threads can read-from and write-to
+    the mailbox.  Envelopes can be sent-to or received-from the mailbox at
+    the head or tail.  In this way, mailboxes essentially act as a circular
+    buffer that can be used as a blocking FIFO or LIFO queue.
+*/
+#if KERNEL_USE_SEMAPHORE
+    #define KERNEL_USE_MAILBOX           (1)
+#else
+    #define KERNEL_USE_MAILBOX           (0)
 #endif
 
 /*!

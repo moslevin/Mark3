@@ -37,18 +37,18 @@ See license.txt for more information
 static pthread_mutex_t  stMutex = PTHREAD_MUTEX_INITIALIZER;
 static pthread_cond_t   stCond = PTHREAD_COND_INITIALIZER;
 
-static K_USHORT usCSCount = 0;
-static K_BOOL bInit = false;
+static uint16_t u16CSCount = 0;
+static bool bInit = false;
 
 //---------------------------------------------------------------------------
 static volatile Thread *pstChosen = NULL;
 
 //---------------------------------------------------------------------------
-volatile K_USHORT usIntFlags = 0;
-volatile K_BOOL bInterrupt = false;
-volatile K_BOOL bIntEnabled = true;
-volatile K_BOOL bTriggerInt = false;
-volatile K_BOOL bSwitchOnCS = false;
+volatile uint16_t u16IntFlags = 0;
+volatile bool bInterrupt = false;
+volatile bool bIntEnabled = true;
+volatile bool bTriggerInt = false;
+volatile bool bSwitchOnCS = false;
 sem_t stKSem;
 
 
@@ -57,8 +57,8 @@ static K_WORD aucBridgeStack[128];
 static Semaphore clBridgeSem;
 static sem_t stBridgeSem;
 
-static volatile K_BOOL bIsThreadUp = false;
-static volatile K_BOOL bIsThreadUnlocked = false;
+static volatile bool bIsThreadUp = false;
+static volatile bool bIsThreadUnlocked = false;
 
 class BridgeLock : private BlockingObject
 {
@@ -72,9 +72,9 @@ public:
 
         BlockingObject::Block(pclThread_);
         Scheduler::Schedule();
-        fprintf(stderr,"Curr :%X, Next %X\n", g_pstCurrent, g_pstNext);
-        g_pstCurrent = (Thread*)g_pstNext;
-        usIntFlags |= FLAG_SWI;
+        fprintf(stderr,"Curr :%X, Next %X\n", g_pclCurrent, g_pclNext);
+        g_pclCurrent = (Thread*)g_pclNext;
+        u16IntFlags |= FLAG_SWI;
         sem_post(&stKSem);
         sem_wait(&stBridgeSem);
     }
@@ -83,7 +83,7 @@ public:
     {
         BlockingObject::UnBlock(m_pclBlocked);
         Scheduler::Schedule();
-        g_pstCurrent = (Thread*)g_pstNext;
+        g_pclCurrent = (Thread*)g_pclNext;
         sem_post(&stBridgeSem);
     }
 
@@ -104,7 +104,7 @@ static void Thread_InitInternal( void );
 //---------------------------------------------------------------------------
 static void BridgeThread(void *unused)
 {
-    Thread *this_thread = g_pstCurrent;
+    Thread *this_thread = g_pclCurrent;
     //!! ToDo - set this thread at a higher priority than the user threads.
     {
         struct sched_param stParam;
@@ -138,9 +138,9 @@ static void StartBridge()
 void ThreadPort::SaveContext()
 {
     // This has to be called from the context of the thread being preempted.
-    K_BOOL bChosen = false;
-    K_BOOL bFirst = true;
-    Thread *pstMyThread = g_pstCurrent;
+    bool bChosen = false;
+    bool bFirst = true;
+    Thread *pstMyThread = g_pclCurrent;
 
     // Wait until we're chosen as the next thread to run again.
     while(!bChosen) 
@@ -174,7 +174,7 @@ void ThreadPort::RestoreContext()
 {   
     // Change condition variable and pend on interrupt-thread semaphore.
     pthread_mutex_lock( &stMutex );
-    pstChosen = g_pstCurrent;
+    pstChosen = g_pclCurrent;
     //fprintf(stderr, "CS: %x\n", pstChosen->GetID());
     pthread_cond_broadcast( &stCond );
 
@@ -186,7 +186,7 @@ void ThreadPort::RestoreContext()
 void ThreadPort::InitStack(Thread *pstThread_)
 {
     // Create the pthread here, set the entry function to ThreadInternalEntry,
-    // Passing in the thread as the arg.  Use default thread priority.
+    // Passing in the thread as the arg.  use default thread priority.
     pthread_attr_t stAttr;
     pthread_t dummy;
     struct sched_param stParam;
@@ -228,7 +228,7 @@ void ThreadPort::StartThreads()
     Scheduler::SetScheduler(true);      // enable the scheduler
     Scheduler::Schedule();              // run the scheduler
 
-    g_pstCurrent = (Thread*)g_pstNext;
+    g_pclCurrent = (Thread*)g_pclNext;
 
     // Restore the context...
     ThreadPort::RestoreContext();          // restore the context of the first running thread
@@ -257,7 +257,7 @@ void *ThreadPort::InternalEntry(void *pstThread_)
     // We want to start our threads in a suspended state, to ensure that the
     // threads sleep on creation until the first time scheduled, at which
     // point we call the thread's actual entrypoint function.
-    K_BOOL bChosen = false;
+    bool bChosen = false;
     Thread *pclThread = static_cast<Thread*>(pstThread_);
     bIsThreadUp = true;
     while(!bChosen) 
@@ -319,26 +319,26 @@ void *ThreadPort::Interrupts( void* unused_ )
         if ( bIntEnabled )
         {
             // process ints.
-            if( usIntFlags & FLAG_SWI )
+            if( u16IntFlags & FLAG_SWI )
             {
                 fprintf(stderr, "SWI Int Ack\n");
-                usIntFlags &= ~FLAG_SWI;
+                u16IntFlags &= ~FLAG_SWI;
                 Scheduler::Schedule();
-                g_pstCurrent = (Thread*)g_pstNext;
+                g_pclCurrent = (Thread*)g_pclNext;
                 ThreadPort::RestoreContext();
                 fprintf(stderr, "End of Ack\n");
             }
-            if( usIntFlags & FLAG_BRIDGE )
+            if( u16IntFlags & FLAG_BRIDGE )
             {
                 fprintf(stderr, "posting\n");
                 sem_post(&stBridgeSem);
-                usIntFlags &= ~FLAG_BRIDGE;
+                u16IntFlags &= ~FLAG_BRIDGE;
 
             }
-            if( usIntFlags & FLAG_TIMER )
+            if( u16IntFlags & FLAG_TIMER )
             {
                 fprintf(stderr, "Timer Int Ack\n");
-                usIntFlags &= ~FLAG_TIMER;
+                u16IntFlags &= ~FLAG_TIMER;
                 clBridgeLock.UnlockThread();
                 fprintf(stderr, "End of ACK\n");
             }

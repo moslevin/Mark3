@@ -68,15 +68,15 @@ void KernelSWI::Stop(void)
 }
 
 //---------------------------------------------------------------------------
-K_UCHAR KernelSWI::DI()
+uint8_t KernelSWI::DI()
 {
-    K_BOOL bEnabled = ((TCC0.INTCTRLA & 0x03) != 0);
+    bool bEnabled = ((TCC0.INTCTRLA & 0x03) != 0);
     TCC0.INTCTRLA &= ~0x03;
     return bEnabled;
 }
 
 //---------------------------------------------------------------------------
-void KernelSWI::RI(K_BOOL bEnable_)
+void KernelSWI::RI(bool bEnable_)
 {
     if (bEnable_)
     {

@@ -65,13 +65,13 @@ public:
      * Block the current thread, waiting for a signal on the
      * object.
      *
-     * \param ulWaitTimeMS_ Time to wait for the notification
+     * \param u32WaitTimeMS_ Time to wait for the notification
      *                      event.
      * \param pbFlag_       Flag set to false on block, and
      *                      true upon wakeup.
      * \return true on notification, false on timeout
      */
-    bool Wait( K_ULONG ulWaitTimeMS_, bool *pbFlag_ );
+    bool Wait( uint32_t u32WaitTimeMS_, bool *pbFlag_ );
 #endif
 
     /*!

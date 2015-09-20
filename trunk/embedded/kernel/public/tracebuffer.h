@@ -15,7 +15,7 @@ See license.txt for more information
 	\file tracebuffer.h
 	\brief Kernel trace buffer class declaration
 	
-	Global kernel trace-buffer.  Used to instrument the kernel with lightweight
+	Global kernel trace-buffer.  used to instrument the kernel with lightweight
 	encoded print statements.  If something goes wrong, the tracebuffer can be
 	examined for debugging purposes.  Also, subsets of kernel trace information
 	can be extracted and analyzed to provide information about runtime 
@@ -46,23 +46,23 @@ public:
 	static void Init();
 	
 	/*!
-		\fn static K_USHORT Increment();
+		\fn static uint16_t Increment();
 		
 		Increment the tracebuffer's atomically-incrementing index.
 		
 		\return a 16-bit index
 	*/
-	static K_USHORT Increment();
+	static uint16_t Increment();
 	
 	/*!
-		\fn static void Write( K_USHORT *pusData_, K_USHORT usSize_ )
+		\fn static void Write( uint16_t *pu16Data_, uint16_t u16Size_ )
 		
 		Write a packet of data to the global tracebuffer.
 		
-		\param pusData_ Pointer to the source data buffer to copy to the trace buffer
-		\param usSize_ Size of the source data buffer in 16-bit words.
+        \param pu16Data_ Pointer to the source data buffer to copy to the trace buffer
+		\param u16Size_ Size of the source data buffer in 16-bit words.
 	*/
-	static void Write( K_USHORT *pusData_, K_USHORT usSize_ );
+	static void Write( uint16_t *pu16Data_, uint16_t u16Size_ );
 	
 	/*! 
 		\fn void SetCallback( WriteBufferCallback pfCallback_ )
@@ -77,8 +77,8 @@ public:
 private:
 
 	static WriteBuffer16 m_clBuffer;		//!< Object used to implement the tracebuffer
-	static volatile K_USHORT m_usIndex;		//!< Current print index	
-	static K_USHORT m_ausBuffer[ (TRACE_BUFFER_SIZE / sizeof( K_USHORT )) ];	//!< Data buffer
+	static volatile uint16_t m_u16Index;		//!< Current print index	
+    static uint16_t m_au16Buffer[ (TRACE_BUFFER_SIZE / sizeof( uint16_t )) ];	//!< Data buffer
 };
 
 #endif //KERNEL_USE_DEBUG

@@ -33,73 +33,73 @@ See license.txt for more information
 //---------------------------------------------------------------------------
 void ATMegaEEPROM::Init()
 { 
-    m_usAddress = 0;
+    m_u16Address = 0;
 }
 
 //---------------------------------------------------------------------------
-K_UCHAR ATMegaEEPROM::Open()
+uint8_t ATMegaEEPROM::Open()
 { 
     return 0; 
 }
 
 //---------------------------------------------------------------------------
-K_UCHAR ATMegaEEPROM::Close()
+uint8_t ATMegaEEPROM::Close()
 { 
     return 0; 
 }
     
 //---------------------------------------------------------------------------
-K_USHORT ATMegaEEPROM::Read( K_USHORT usBytes_, K_UCHAR *pucData_ )
+uint16_t ATMegaEEPROM::Read( uint16_t u16Bytes_, uint8_t *pu8Data_ )
 {
-    K_USHORT usNumBytes = usBytes_;
+    uint16_t u16NumBytes = u16Bytes_;
 
-    if ((m_usAddress + usBytes_) >= EEPROM_SIZE)
+    if ((m_u16Address + u16Bytes_) >= EEPROM_SIZE)
     {
-        usNumBytes = EEPROM_SIZE - m_usAddress;
+        u16NumBytes = EEPROM_SIZE - m_u16Address;
     }
         
-    if (!usNumBytes)
+    if (!u16NumBytes)
     {
         return 0;
     }
 
-    eeprom_read_block((void*)pucData_, (const void*)m_usAddress, (size_t)usNumBytes);
-    m_usAddress += usNumBytes;
+    eeprom_read_block((void*)pu8Data_, (const void*)m_u16Address, (size_t)u16NumBytes);
+    m_u16Address += u16NumBytes;
         
-    return usNumBytes;
+    return u16NumBytes;
 }
 
 //---------------------------------------------------------------------------
-K_USHORT ATMegaEEPROM::Write( K_USHORT usBytes_, K_UCHAR *pucData_ )
+uint16_t ATMegaEEPROM::Write( uint16_t u16Bytes_, uint8_t *pu8Data_ )
 {
-    K_USHORT usNumBytes = usBytes_;
+    uint16_t u16NumBytes = u16Bytes_;
 
-    if ((m_usAddress + usBytes_) >= EEPROM_SIZE)
+    if ((m_u16Address + u16Bytes_) >= EEPROM_SIZE)
     {
-        usNumBytes = EEPROM_SIZE - m_usAddress;
+        u16NumBytes = EEPROM_SIZE - m_u16Address;
     }
     
-    if (!usNumBytes)
+    if (!u16NumBytes)
     {
         return 0;
     }
 
-    eeprom_write_block((void*)pucData_, (void*)m_usAddress, usNumBytes);
-    m_usAddress += usNumBytes;
+    eeprom_write_block((void*)pu8Data_, (void*)m_u16Address, u16NumBytes);
+    m_u16Address += u16NumBytes;
     
-    return usNumBytes;
+    return u16NumBytes;
 }
 
 //---------------------------------------------------------------------------
-K_USHORT ATMegaEEPROM::Control( K_USHORT usEvent_, void *pvIn_, K_USHORT usSizeIn_, void *pvOut_, K_USHORT usSizeOut_ )
+uint16_t ATMegaEEPROM::Control( uint16_t u16Event_, void *pvIn_, uint16_t u16SizeIn_, void *pvOut_, uint16_t u16SizeOut_ )
 {
-    switch (usEvent_)
+    switch (u16Event_)
     {    
         case EEPROM_CMD_SEEK:
         {
-            if (usSizeOut_ < EEPROM_SIZE)
+            if (u16SizeOut_ < EEPROM_SIZE)
             {
-                m_usAddress = usSizeIn_;
+                m_u16Address = u16SizeIn_;
             }
             return 1;
         }

@@ -79,20 +79,20 @@ public:
      *
      * \param pvBuffer_ Pointer to the memory blob to manage as a heap
      *                  from this object.
-     * \param uSize_ Size of the heap memory blob in bytes
+     * \param usize_ Size of the heap memory blob in bytes
      * \return
      */
-    void Init( void *pvBuffer_, K_ADDR uSize_ );
+    void Init( void *pvBuffer_, K_ADDR usize_ );
 
     /*!
      * \brief Allocate
      *
      * Allocate a block of dynamic memory from the heap.
      *
-     * \param uSize_ Size of object to allocate (in bytes)
+     * \param usize_ Size of object to allocate (in bytes)
      * \return pointer to a chunk of dynamic memory, or 0 on exhaustion.
      */
-    void *Allocate( K_ADDR uSize_ );
+    void *Allocate( K_ADDR usize_ );
 
     /*!
      * \brief Free
@@ -117,10 +117,10 @@ private:
      * Determine the arena list with the smallest allocation size
      * to handle an allocation of a given size.
      *
-     * \param uSize_ Size of the object to check
+     * \param usize_ Size of the object to check
      * \return INdex representing the arena/arena-size
      */
-    uint8_t ListForSize( K_ADDR uSize_ );
+    uint8_t ListForSize( K_ADDR usize_ );
 
     /*!
      * \brief ListToSatisfy
@@ -128,10 +128,10 @@ private:
      * Determine the arena list that can satisfy the size request,
      * and has vacant objects available to be allocated.
      *
-     * \param uSize_ Size of data to check
+     * \param usize_ Size of data to check
      * \return Index representing the arena/arena-size, or 0xF...F on invalid
      */
-    uint8_t ListToSatisfy( K_ADDR uSize_ );
+    uint8_t ListToSatisfy( K_ADDR usize_ );
 
     ArenaList  m_aclBlockList[ARENA_LIST_COUNT + 1];    //!< Arena linked-list data
     void      *m_pvData;    //!< Pointer to the raw memory blob managed by this object as a heap.

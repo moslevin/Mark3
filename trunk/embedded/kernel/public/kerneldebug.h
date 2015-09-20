@@ -14,7 +14,7 @@ See license.txt for more information
 /*!
     \file kerneldebug.h
 	
-	\brief Macros and functions used for assertions, kernel traces, etc.
+    \brief Macros and functions used for assertions, kernel traces, etc.
 */
 
 #ifndef __KERNEL_DEBUG_H__
@@ -35,40 +35,40 @@ See license.txt for more information
 //---------------------------------------------------------------------------
 #define KERNEL_TRACE( x )	\
 { 	\
-	K_USHORT ausMsg__[5]; \
-	ausMsg__[0] = 0xACDC;  \
-	ausMsg__[1] = __FILE_ID__; \
-	ausMsg__[2] = __LINE__; \
-	ausMsg__[3] = TraceBuffer::Increment() ; \
-	ausMsg__[4] = (K_USHORT)(x) ; \
-	TraceBuffer::Write(ausMsg__, 5); \
+    uint16_t au16Msg__[5]; \
+    au16Msg__[0] = 0xACDC;  \
+    au16Msg__[1] = __FILE_ID__; \
+    au16Msg__[2] = __LINE__; \
+    au16Msg__[3] = TraceBuffer::Increment() ; \
+    au16Msg__[4] = (uint16_t)(x) ; \
+    TraceBuffer::Write(au16Msg__, 5); \
 };
 
 //---------------------------------------------------------------------------
 #define KERNEL_TRACE_1( x, arg1 ) \
 { 	\
-	K_USHORT ausMsg__[6]; \
-	ausMsg__[0] = 0xACDC;  \
-	ausMsg__[1] = __FILE_ID__; \
-	ausMsg__[2] = __LINE__; \
-	ausMsg__[3] = TraceBuffer::Increment(); \
-	ausMsg__[4] = (K_USHORT)(x); \
-	ausMsg__[5] = arg1; \
-	TraceBuffer::Write(ausMsg__, 6); \
+    uint16_t au16Msg__[6]; \
+    au16Msg__[0] = 0xACDC;  \
+    au16Msg__[1] = __FILE_ID__; \
+    au16Msg__[2] = __LINE__; \
+    au16Msg__[3] = TraceBuffer::Increment(); \
+    au16Msg__[4] = (uint16_t)(x); \
+    au16Msg__[5] = arg1; \
+    TraceBuffer::Write(au16Msg__, 6); \
 }
 
 //---------------------------------------------------------------------------
 #define KERNEL_TRACE_2( x, arg1, arg2 ) \
 { 	\
-	K_USHORT ausMsg__[7]; \
-	ausMsg__[0] = 0xACDC;  \
-	ausMsg__[1] = __FILE_ID__; \
-	ausMsg__[2] = __LINE__; \
-	ausMsg__[3] = TraceBuffer::Increment(); \
-	ausMsg__[4] = (K_USHORT)(x); \
-	ausMsg__[5] = arg1; \
-	ausMsg__[6] = arg2; \
-	TraceBuffer::Write(ausMsg__, 7); \
+    uint16_t au16Msg__[7]; \
+    au16Msg__[0] = 0xACDC;  \
+    au16Msg__[1] = __FILE_ID__; \
+    au16Msg__[2] = __LINE__; \
+    au16Msg__[3] = TraceBuffer::Increment(); \
+    au16Msg__[4] = (uint16_t)(x); \
+    au16Msg__[5] = arg1; \
+    au16Msg__[6] = arg2; \
+    TraceBuffer::Write(au16Msg__, 7); \
 }
 
 //---------------------------------------------------------------------------
@@ -76,13 +76,13 @@ See license.txt for more information
 {		\
 	if( ( x ) == false ) \
 	{	\
-		K_USHORT ausMsg__[5];	\
-		ausMsg__[0] = 0xACDC;	\
-		ausMsg__[1] = __FILE_ID__;	\
-		ausMsg__[2] = __LINE__; \
-		ausMsg__[3] = TraceBuffer::Increment(); \
-		ausMsg__[4] = STR_ASSERT_FAILED;	\
-		TraceBuffer::Write(ausMsg__, 5); \
+        uint16_t au16Msg__[5];	\
+        au16Msg__[0] = 0xACDC;	\
+        au16Msg__[1] = __FILE_ID__;	\
+        au16Msg__[2] = __LINE__; \
+        au16Msg__[3] = TraceBuffer::Increment(); \
+        au16Msg__[4] = STR_ASSERT_FAILED;	\
+        TraceBuffer::Write(au16Msg__, 5); \
         Kernel::Panic(PANIC_ASSERT_FAILED); \
 	}	\
 }

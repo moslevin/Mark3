@@ -39,8 +39,8 @@ See license.txt for more information
 */
 typedef struct
 {
-    K_UCHAR ucAccess;
-    K_UCHAR *pucData;
+    uint8_t u8Access;
+    uint8_t *pu8Data;
 } SlipStampCache_t;
 //---------------------------------------------------------------------------
 
@@ -52,13 +52,13 @@ class GraphicsSlip : public GraphicsDriver
 public:
 //---------------------------------------------------------
     virtual void Init();
-    virtual K_UCHAR Open() { return 0; }
-    virtual K_UCHAR Close() { return 0; }
-    virtual K_USHORT Read( K_USHORT usBytes_, K_UCHAR *pucData_ )
+    virtual uint8_t Open() { return 0; }
+    virtual uint8_t Close() { return 0; }
+    virtual uint16_t Read( uint16_t u16Bytes_, uint8_t *pu8Data_ )
         { return 0; }
-    virtual K_USHORT Write( K_USHORT usBytes_, K_UCHAR *pucData_ )
+    virtual uint16_t Write( uint16_t u16Bytes_, uint8_t *pu8Data_ )
         { return 0; }
-    virtual K_USHORT Control( K_USHORT usEvent_, void *pvDataIn_, K_USHORT usSizeIn_, void *pvDataOut_, K_USHORT usSizeOut_ )
+    virtual uint16_t Control( uint16_t u16Event_, void *pvDataIn_, uint16_t u16SizeIn_, void *pvDataOut_, uint16_t u16SizeOut_ )
         { return 0; }        
         
 //---------------------------------------------------------
@@ -83,17 +83,17 @@ public:
     // virtual void Polygon(DrawPoly_t *pstPoly_);
 
     //virtual void Text(DrawText_t *pstText_);
-    //virtual K_USHORT TextWidth(DrawText_t *pstText_) {return 0;}
+    //virtual uint16_t TextWidth(DrawText_t *pstText_) {return 0;}
     void SetSlip( Slip* pclSlip_ ) { m_pclSlip = pclSlip_; }
 private:
-    K_BOOL FindStamp(K_UCHAR *pucStamp_);
-    void AddStamp(K_UCHAR *pucStamp_);
-    void AddIfNecessary(K_UCHAR *pucStamp_, K_UCHAR ucSize_);
-    K_UCHAR Strlen(K_CHAR *szData_);
+    bool FindStamp(uint8_t *pu8Stamp_);
+    void AddStamp(uint8_t *pu8Stamp_);
+    void AddIfNecessary(uint8_t *pu8Stamp_, uint8_t u8Size_);
+    uint8_t Strlen(char *szData_);
     
     SlipStampCache_t m_astStampCache[ STAMP_CACHE_SIZE ];
     Slip *m_pclSlip;
-    K_UCHAR m_ucStampCacheIndex;
+    uint8_t m_u8StampCacheIndex;
 };
 
 #endif

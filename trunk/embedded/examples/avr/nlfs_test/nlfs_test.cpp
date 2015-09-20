@@ -47,7 +47,7 @@ static Thread AppThread;			//!< Main "application" thread
 static Thread IdleThread;			//!< Idle thread - runs when app can't
 
 static ATMegaUART clUART;			//!< UART device driver object
-//static K_UCHAR aucFS[512];          //!< Filesystem array
+//static uint8_t aucFS[512];          //!< Filesystem array
 static NLFS_EEPROM clNLFS;             //!< Filesystem object
 
 //---------------------------------------------------------------------------
@@ -59,12 +59,12 @@ static NLFS_EEPROM clNLFS;             //!< Filesystem object
 #define UART_SIZE_TX		(32)	//!< UART TX Buffer size
 
 //---------------------------------------------------------------------------
-static K_UCHAR aucAppStack[STACK_SIZE_APP];
-static K_UCHAR aucIdleStack[STACK_SIZE_IDLE];
+static uint8_t aucAppStack[STACK_SIZE_APP];
+static uint8_t aucIdleStack[STACK_SIZE_IDLE];
 
 //---------------------------------------------------------------------------
-static K_UCHAR aucTxBuffer[UART_SIZE_TX];
-static K_UCHAR aucRxBuffer[UART_SIZE_RX];
+static uint8_t aucTxBuffer[UART_SIZE_TX];
+static uint8_t aucRxBuffer[UART_SIZE_RX];
 
 //---------------------------------------------------------------------------
 static void AppEntry(void);
@@ -98,12 +98,12 @@ int main(void)
 	Kernel::Start();					//!< Start the kernel!
 }
 
-void PrintString(const K_CHAR *szStr_)
+void PrintString(const char *szStr_)
 {
-    K_CHAR *szTemp = (K_CHAR*)szStr_;
+    char *szTemp = (char*)szStr_;
     while (*szTemp)
     {
-        while( 1 != clUART.Write( 1, (K_UCHAR*)szTemp ) ) { /* Do nothing */ }
+        while( 1 != clUART.Write( 1, (uint8_t*)szTemp ) ) { /* Do nothing */ }
         szTemp++;
     }
 }
@@ -114,7 +114,7 @@ void PrintString(const K_CHAR *szStr_)
 //---------------------------------------------------------------------------
 void NLFS_Test(void)
 {
-    K_UCHAR aucRead[6];
+    uint8_t aucRead[6];
 
     clHost.u32Data = 0; //Format at EEPROM address 0
 

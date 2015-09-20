@@ -54,24 +54,24 @@ static ATMegaUART clUART;			//!< UART device driver object
 #define UART_SIZE_TX		(64)	//!< UART TX Buffer size
 
 //---------------------------------------------------------------------------
-static K_UCHAR aucAppStack[STACK_SIZE_APP];
-static K_UCHAR aucIdleStack[STACK_SIZE_IDLE];
+static uint8_t aucAppStack[STACK_SIZE_APP];
+static uint8_t aucIdleStack[STACK_SIZE_IDLE];
 
 //---------------------------------------------------------------------------
-static K_UCHAR aucTxBuffer[UART_SIZE_TX];
-static K_UCHAR aucRxBuffer[UART_SIZE_RX];
+static uint8_t aucTxBuffer[UART_SIZE_TX];
+static uint8_t aucRxBuffer[UART_SIZE_RX];
 
 //---------------------------------------------------------------------------
 static void AppEntry(void);
 static void IdleEntry(void);
 
-void MemSet( void *pvData_, K_UCHAR ucValue_, K_USHORT usCount_ )
+void MemSet( void *pvData_, uint8_t u8Value_, uint16_t u16Count_ )
 {
-	K_UCHAR *pucData = (K_UCHAR*)pvData_;
-	K_USHORT i;
-	for (i = 0; i < usCount_; i++)
+	uint8_t *pu8Data = (uint8_t*)pvData_;
+	uint16_t i;
+	for (i = 0; i < u16Count_; i++)
 	{
-		pucData[i]= ucValue_;
+		pu8Data[i]= u8Value_;
 	}
 	
 }
@@ -104,72 +104,72 @@ int main(void)
 	Kernel::Start();					//!< Start the kernel!
 }
 
-void Font_PrintGlyph( Font_t *pstFont_, K_UCHAR ucGlyph_ )
+void Font_PrintGlyph( Font_t *pstFont_, uint8_t u8Glyph_ )
 {
-	K_UCHAR i, j;
-	K_UCHAR ucMask;
+	uint8_t i, j;
+	uint8_t u8Mask;
 	
-	K_UCHAR ucWidth;
-	K_UCHAR ucHeight;
+	uint8_t u8Width;
+	uint8_t u8Height;
 	
-	K_UCHAR ucTempByte;
+	uint8_t u8TempByte;
 	
-	K_USHORT usOffset = 0;
+	uint16_t u16Offset = 0;
 		
 	// If this font uses a subset of printable characters, 
 	// remove the offset before doing any calculations/pointer math
-	ucGlyph_ -= pstFont_->ucStartChar;
+	u8Glyph_ -= pstFont_->u8StartChar;
 	
 	// Read the glyphs from memory until we arrive at the one we wish to print
-	for (i = 0; i < ucGlyph_; i++)
+	for (i = 0; i < u8Glyph_; i++)
 	{
 		// Glyphs are variable-sized for efficiency - to look up a particular 
 		// glyph, we must traverse all preceding glyphs in the list
-		ucWidth  = Font_ReadByte(usOffset, pstFont_->pucFontData);
-		ucHeight = Font_ReadByte(usOffset + 1, pstFont_->pucFontData);
+		u8Width  = Font_ReadByte(u16Offset, pstFont_->pu8FontData);
+		u8Height = Font_ReadByte(u16Offset + 1, pstFont_->pu8FontData);
 
 		// Adjust the offset to point to the next glyph
-		usOffset += ((((K_USHORT)ucWidth + 7) >> 3) * (K_USHORT)ucHeight) 
+		u16Offset += ((((uint16_t)u8Width + 7) >> 3) * (uint16_t)u8Height) 
 					+ (sizeof(Glyph_t) - 1);		
 	}
 
 	// Echo the character out to terminal, using an X for a lit pixel
 	// and a space for a vacant pixel
 	
-	ucWidth  = Font_ReadByte(usOffset, pstFont_->pucFontData);
-	ucHeight = Font_ReadByte(usOffset+1, pstFont_->pucFontData);
+	u8Width  = Font_ReadByte(u16Offset, pstFont_->pu8FontData);
+	u8Height = Font_ReadByte(u16Offset+1, pstFont_->pu8FontData);
 	
-	usOffset += sizeof(Glyph_t) - 1;
+	u16Offset += sizeof(Glyph_t) - 1;
 	
-	ucTempByte = Font_ReadByte(usOffset, pstFont_->pucFontData);
-	for (i = 0; i < ucHeight; i++)
+	u8TempByte = Font_ReadByte(u16Offset, pstFont_->pu8FontData);
+	for (i = 0; i < u8Height; i++)
 	{
-		ucMask = 0x80;
-		for (j = 0; j < ucWidth; j++)
+		u8Mask = 0x80;
+		for (j = 0; j < u8Width; j++)
 		{
-			if (!ucMask)
+			if (!u8Mask)
 			{
-				ucMask = 0x80;
-				usOffset++;
-				ucTempByte = Font_ReadByte(usOffset, pstFont_->pucFontData);
+				u8Mask = 0x80;
+				u16Offset++;
+				u8TempByte = Font_ReadByte(u16Offset, pstFont_->pu8FontData);
 			}
 			
-			if (ucTempByte & ucMask)
+			if (u8TempByte & u8Mask)
 			{
-				while( 0 == clUART.Write(1, (K_UCHAR*)"X") ) {}
+				while( 0 == clUART.Write(1, (uint8_t*)"X") ) {}
 			}
 			else
 			{
-				while( 0 == clUART.Write(1, (K_UCHAR*)" ") ) {}
+				while( 0 == clUART.Write(1, (uint8_t*)" ") ) {}
 			}
 			
-			ucMask >>= 1;
+			u8Mask >>= 1;
 		}
-		while( 0 == clUART.Write(1, (K_UCHAR*)"\n") ){}
-		usOffset++;
-		ucTempByte = Font_ReadByte(usOffset, pstFont_->pucFontData);
+		while( 0 == clUART.Write(1, (uint8_t*)"\n") ){}
+		u16Offset++;
+		u8TempByte = Font_ReadByte(u16Offset, pstFont_->pu8FontData);
 	}
-	while( 0 == clUART.Write(1, (K_UCHAR*)"\n") ){}
+	while( 0 == clUART.Write(1, (uint8_t*)"\n") ){}
 }
 
 //---------------------------------------------------------------------------

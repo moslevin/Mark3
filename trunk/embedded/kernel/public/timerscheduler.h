@@ -79,7 +79,7 @@ public:
     static void Process() {m_clTimerList.Process();}
 private:
 
-    //! TimerList object manipulated by the Timer Scheduler
+    //! TimerList object manipu32ated by the Timer Scheduler
     static TimerList m_clTimerList;
 };
 

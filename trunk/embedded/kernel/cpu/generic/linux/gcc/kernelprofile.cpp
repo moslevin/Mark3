@@ -24,7 +24,7 @@ See license.txt for more information
 #include "threadport.h"
 
 #if KERNEL_USE_PROFILER
-K_ULONG Profiler::m_ulEpoch;
+uint32_t Profiler::m_u32Epoch;
 
 //---------------------------------------------------------------------------
 void Profiler::Init()
@@ -44,7 +44,7 @@ void Profiler::Stop()
 
 }    
 //---------------------------------------------------------------------------
-K_USHORT Profiler::Read()
+uint16_t Profiler::Read()
 {
 return 0;
 }

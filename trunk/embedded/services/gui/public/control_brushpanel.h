@@ -29,7 +29,7 @@ public:
     virtual void Init() { SetAcceptFocus(false); }
     virtual void Draw();
     virtual GuiReturn_t ProcessEvent( GuiEvent_t *pstEvent_ ) { return GUI_EVENT_OK; }
-    virtual void Activate( K_BOOL bActivate_ ) {}
+    virtual void Activate( bool bActivate_ ) {}
 
 private:
 

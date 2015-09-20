@@ -53,7 +53,7 @@ public:
         
 		\fn Init()
         
-        Initializes all global resources used by the operating system.  This 
+        Initializes all global resources used by the operating system.  This
         must be called before any other kernel function is invoked.
     */
 	static void Init(void);
@@ -77,7 +77,7 @@ public:
       \return Whether or not the kernel has started - true = running, false =
               not started
      */
-    static K_BOOL IsStarted()    {   return m_bIsStarted;    }
+    static bool IsStarted()    {   return m_bIsStarted;    }
 
     /*!
      * \brief SetPanic Set a function to be called when a kernel panic occurs,
@@ -92,13 +92,13 @@ public:
      * \brief IsPanic Returns whether or not the kernel is in a panic state
      * \return Whether or not the kernel is in a panic state
      */
-    static K_BOOL IsPanic()      {   return m_bIsPanic;   }
+    static bool IsPanic()      {   return m_bIsPanic;   }
 
     /*!
      * \brief Panic Cause the kernel to enter its panic state
-     * \param usCause_ Reason for the kernel panic
+     * \param u16Cause_ Reason for the kernel panic
      */
-    static void Panic(K_USHORT usCause_);
+    static void Panic(uint16_t u16Cause_);
 
 #if KERNEL_USE_IDLE_FUNC
     /*!
@@ -125,12 +125,12 @@ public:
 #endif
 
 private:
-    static K_BOOL m_bIsStarted;       //!< true if kernel is running, false otherwise
-    static K_BOOL m_bIsPanic;         //!< true if kernel is in panic state, false otherwise
-    static panic_func_t m_pfPanic;    //!< user-set panic function
+    static bool m_bIsStarted;       //!< true if kernel is running, false otherwise
+    static bool m_bIsPanic;         //!< true if kernel is in panic state, false otherwise
+    static panic_func_t m_pfPanic;  //!< set panic function
 #if KERNEL_USE_IDLE_FUNC
-    static idle_func_t m_pfIdle;      //!< user-set idle function
-    static FakeThread_t m_clIdle;           //!< Idle thread object (note: not a real thread)
+    static idle_func_t m_pfIdle;    //!< set idle function
+    static FakeThread_t m_clIdle;   //!< Idle thread object (note: not a real thread)
 #endif
 };
 

@@ -45,7 +45,7 @@ DoubleLinkList GlobalMessagePool::m_clList;
 //---------------------------------------------------------------------------
 void GlobalMessagePool::Init()
 {
-	K_UCHAR i;
+	uint8_t i;
     GlobalMessagePool::m_clList.Init();
     for (i = 0; i < GLOBAL_MESSAGE_POOL_SIZE; i++)
 	{
@@ -100,15 +100,15 @@ Message *MessageQueue::Receive()
 
 //---------------------------------------------------------------------------
 #if KERNEL_USE_TIMEOUTS
-Message *MessageQueue::Receive( K_ULONG ulTimeWaitMS_)
+Message *MessageQueue::Receive( uint32_t u32TimeWaitMS_)
 {
-    return Receive_i( ulTimeWaitMS_ );
+    return Receive_i( u32TimeWaitMS_ );
 }
 #endif
 
 //---------------------------------------------------------------------------
 #if KERNEL_USE_TIMEOUTS
-Message *MessageQueue::Receive_i( K_ULONG ulTimeWaitMS_ )
+Message *MessageQueue::Receive_i( uint32_t u32TimeWaitMS_ )
 #else
 Message *MessageQueue::Receive_i( void )
 #endif
@@ -117,7 +117,7 @@ Message *MessageQueue::Receive_i( void )
 	
 	// Block the current thread on the counting semaphore
 #if KERNEL_USE_TIMEOUTS
-    if (!m_clSemaphore.Pend(ulTimeWaitMS_))
+    if (!m_clSemaphore.Pend(u32TimeWaitMS_))
     {
         return NULL;
     }
@@ -153,7 +153,7 @@ void MessageQueue::Send( Message *pclSrc_ )
 }
 
 //---------------------------------------------------------------------------
-K_USHORT MessageQueue::GetCount()
+uint16_t MessageQueue::GetCount()
 {
 	return m_clSemaphore.GetCount();
 }

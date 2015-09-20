@@ -35,7 +35,7 @@ See license.txt for more information
     -timers provide a way for events to be periodically triggered in a 
      lightweight manner.  These can be periodic, or one-shot.
 
-    -Thread Quantum (used for round-robin scheduling) is dependent on this
+    -Thread Quantum (usedd for round-robin scheduling) is dependent on this
      module, as is Thread Sleep functionality.
 */
 #define KERNEL_USE_TIMERS                (1)
@@ -183,21 +183,21 @@ See license.txt for more information
 
 /*!
     Provide Thread method to allow the user to set a name for each
-    thread in the system.  Adds a const K_CHAR* pointer to the size
+    thread in the system.  Adds a const char* pointer to the size
     of the thread object.
 */
 #define KERNEL_USE_THREADNAME            (0)
 
 /*!
     Provide extra Thread methods to allow the application to create
-    (and more importantly destroy) threads at runtime.  Useful for
+    (and more importantly destroy) threads at runtime.  useful for
     designs implementing worker threads, or threads that can be restarted
     after encountering error conditions.
 */
 #define KERNEL_USE_DYNAMIC_THREADS       (1)
 
 /*!
-    Provides extra classes for profiling the performance of code.  Useful
+    Provides extra classes for profiling the performance of code.  useful
     for debugging and development, but uses an additional hardware timer.
 */
 #define KERNEL_USE_PROFILER              (1)

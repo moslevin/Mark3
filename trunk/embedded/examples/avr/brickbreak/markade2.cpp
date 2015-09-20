@@ -81,8 +81,8 @@ static Song_t stSong =
 #define STACK_SIZE_IDLE        (320)    //!< Size of the idle thread stack
 
 //---------------------------------------------------------------------------
-static K_UCHAR aucAppStack[STACK_SIZE_APP];
-static K_UCHAR aucIdleStack[STACK_SIZE_IDLE];
+static uint8_t aucAppStack[STACK_SIZE_APP];
+static uint8_t aucIdleStack[STACK_SIZE_IDLE];
 
 //---------------------------------------------------------------------------
 static void AppEntry(void);

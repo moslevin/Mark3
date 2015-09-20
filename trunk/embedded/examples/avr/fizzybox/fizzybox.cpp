@@ -55,22 +55,22 @@ static NLFS_Host_t clHost;
 #define UART_SIZE_TX		(32)	//!< UART TX Buffer size
 
 //---------------------------------------------------------------------------
-static K_UCHAR aucAppStack[STACK_SIZE_APP];
-static K_UCHAR aucIdleStack[STACK_SIZE_IDLE];
+static uint8_t aucAppStack[STACK_SIZE_APP];
+static uint8_t aucIdleStack[STACK_SIZE_IDLE];
 
 //---------------------------------------------------------------------------
-static K_UCHAR aucTxBuffer[UART_SIZE_TX];
-static K_UCHAR aucRxBuffer[UART_SIZE_RX];
+static uint8_t aucTxBuffer[UART_SIZE_TX];
+static uint8_t aucRxBuffer[UART_SIZE_RX];
 
 //---------------------------------------------------------------------------
 static void AppEntry(void);
 static void IdleEntry(void);
 
-static void PrintString(const K_CHAR *szStr_);
-static void PrintString(const K_CHAR *szStr_, int iLen_);
+static void PrintString(const char *szStr_);
+static void PrintString(const char *szStr_, int iLen_);
 
-static K_CHAR cmd_dir( CommandLine_t *pstCommand_ );
-static K_CHAR cmd_cat( CommandLine_t *pstCommand_ );
+static char cmd_dir( CommandLine_t *pstCommand_ );
+static char cmd_cat( CommandLine_t *pstCommand_ );
 //---------------------------------------------------------------------------
 // Dummy command list, our shell only support the "dir" command
 static ShellCommand_t astCommands[] =
@@ -83,47 +83,47 @@ static ShellCommand_t astCommands[] =
 //---------------------------------------------------------------------------
 // Dir command implementation.  Since there's no cd command, assume we're
 // dir'ing from the root directory "/".
-static K_CHAR cmd_dir( CommandLine_t *pstCommand_ )
+static char cmd_dir( CommandLine_t *pstCommand_ )
 {
-    K_USHORT usRoot;
+    uint16_t u16Root;
 
-    K_UCHAR ucCount = 0;
-    K_CHAR acVal[16] = {0};
+    uint8_t u8Count = 0;
+    char acVal[16] = {0};
 
     NLFS_File_Stat_t stStats;
 
     // Get the "/" file node    
-    usRoot = FS_ROOT_BLOCK;
+    u16Root = FS_ROOT_BLOCK;
 
     PrintString("Directory Listing For: ");
-    clNLFS.GetStat(usRoot, &stStats);
-    PrintString((const K_CHAR*)stStats.acFileName);
+    clNLFS.GetStat(u16Root, &stStats);
+    PrintString((const char*)stStats.acFileName);
     PrintString("\n");
 
-    usRoot = clNLFS.GetFirstChild(usRoot);
+    u16Root = clNLFS.GetFirstChild(u16Root);
 
     // Iterate through all child nodes in the FS.
-    while (usRoot && INVALID_NODE != usRoot)
+    while (u16Root && INVALID_NODE != u16Root)
     {        
-        if (clNLFS.GetStat( usRoot, &stStats))
+        if (clNLFS.GetStat( u16Root, &stStats))
         {
             // Print the filename and size for each file.
             PrintString("    ");
-            PrintString((const K_CHAR*)stStats.acFileName);
+            PrintString((const char*)stStats.acFileName);
             PrintString("    ");
-            MemUtil::DecimalToString( stStats.ulFileSize, acVal );
-            PrintString((const K_CHAR*)acVal);
+            MemUtil::DecimalToString( stStats.u32FileSize, acVal );
+            PrintString((const char*)acVal);
             PrintString(" Bytes");
             PrintString("\n");
         }
-        ucCount++;
-        usRoot = clNLFS.GetNextPeer(usRoot);
+        u8Count++;
+        u16Root = clNLFS.GetNextPeer(u16Root);
     }
 
     // Display total number of files found
     PrintString(" Found ");
-    MemUtil::DecimalToString( ucCount, acVal);
-    PrintString((const K_CHAR*)acVal);
+    MemUtil::DecimalToString( u8Count, acVal);
+    PrintString((const char*)acVal);
     PrintString(" Files\n");
 
     return 0;
@@ -131,13 +131,13 @@ static K_CHAR cmd_dir( CommandLine_t *pstCommand_ )
 
 //---------------------------------------------------------------------------
 // Print the contents of a file (as ascii) to the terminal
-static K_CHAR cmd_cat( CommandLine_t *pstCommand_ )
+static char cmd_cat( CommandLine_t *pstCommand_ )
 {    
-    K_CHAR acBuf[16];
+    char acBuf[16];
     int iBytesRead;
     NLFS_File clFile;
 
-    if (!pstCommand_->ucNumOptions)
+    if (!pstCommand_->u8NumOptions)
     {
         PrintString("File Not Found\n");
         return -1;
@@ -224,23 +224,23 @@ int main(void)
 }
 
 //---------------------------------------------------------------------------
-static void PrintString(const K_CHAR *szStr_)
+static void PrintString(const char *szStr_)
 {
-    K_CHAR *szTemp = (K_CHAR*)szStr_;
+    char *szTemp = (char*)szStr_;
     while (*szTemp)
     {
-        while( 1 != clUART.Write( 1, (K_UCHAR*)szTemp ) ) { /* Do nothing */ }
+        while( 1 != clUART.Write( 1, (uint8_t*)szTemp ) ) { /* Do nothing */ }
         szTemp++;
     }
 }
 
 //---------------------------------------------------------------------------
-static void PrintString(const K_CHAR *szStr_, int iLen_)
+static void PrintString(const char *szStr_, int iLen_)
 {
-    K_CHAR *szTemp = (K_CHAR*)szStr_;
+    char *szTemp = (char*)szStr_;
     while (*szTemp && iLen_)
     {
-        while( 1 != clUART.Write( 1, (K_UCHAR*)szTemp ) ) { /* Do nothing */ }
+        while( 1 != clUART.Write( 1, (uint8_t*)szTemp ) ) { /* Do nothing */ }
         szTemp++;
         iLen_--;
     }
@@ -263,12 +263,12 @@ void AppEntry(void)
 
     // Set up a pre-seeded command to execute in the shell
     {
-        const K_CHAR *szCmd = "cat /e.txt"; //dir /";
-        K_UCHAR ucNumTokens;
+        const char *szCmd = "cat /e.txt"; //dir /";
+        uint8_t u8NumTokens;
 
 
-        ucNumTokens = MemUtil::Tokenize(szCmd, astTokens, 12);
-        ShellSupport::TokensToCommandLine(astTokens, ucNumTokens, &stCommand);
+        u8NumTokens = MemUtil::Tokenize(szCmd, astTokens, 12);
+        ShellSupport::TokensToCommandLine(astTokens, u8NumTokens, &stCommand);
         ShellSupport::RunCommand(&stCommand, astCommands);
     }
 

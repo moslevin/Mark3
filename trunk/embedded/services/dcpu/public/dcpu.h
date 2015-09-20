@@ -46,24 +46,24 @@ See license.txt for more information
 //---------------------------------------------------------------------------
 // Macros to access individual elements from within an opcode
 #define DCPU_NORMAL_OPCODE_MASK( x ) \
-        ((K_USHORT)(x & 0x001F))
+        ((uint16_t)(x & 0x001F))
 
 #define DCPU_EXTENDED_OPCODE_MASK( x ) \
-        ((K_USHORT)((x >> 5) & 0x001F))
+        ((uint16_t)((x >> 5) & 0x001F))
 
 #define DCPU_A_MASK( x ) \
-        ((K_USHORT)((x >> 10) & 0x003F))
+        ((uint16_t)((x >> 10) & 0x003F))
         
 #define DCPU_B_MASK( x ) \
-        ((K_USHORT)((x >> 5) & 0x001F))
+        ((uint16_t)((x >> 5) & 0x001F))
 
 //---------------------------------------------------------------------------
 // Macros to emit opcodes in the normal/extended formats
 #define DCPU_BUILD_NORMAL( x, y, z ) \
-        ( ((K_USHORT)(x) & 0x001F) | ((K_USHORT)(y) & 0x001F) << 5 | ((K_USHORT)(z) & 0x003F) << 10 )
+        ( ((uint16_t)(x) & 0x001F) | ((uint16_t)(y) & 0x001F) << 5 | ((uint16_t)(z) & 0x003F) << 10 )
 
 #define DCPU_BUILD_EXTENDED( x, y ) \
-        ( ((K_USHORT)(x & 0x001F) << 5) | ((K_USHORT)(y & 0x003F) << 10) )
+        ( ((uint16_t)(x & 0x001F) << 5) | ((uint16_t)(y & 0x003F) << 10) )
 
 //---------------------------------------------------------------------------
 /*!
@@ -75,20 +75,20 @@ typedef struct
     {
         struct
         {
-            K_USHORT A;
-            K_USHORT B;
-            K_USHORT C;
-            K_USHORT X;
-            K_USHORT Y;
-            K_USHORT Z;
-            K_USHORT I;
-            K_USHORT J;
-            K_USHORT PC;
-            K_USHORT SP;
-            K_USHORT EX;
-            K_USHORT IA;
+            uint16_t A;
+            uint16_t B;
+            uint16_t C;
+            uint16_t X;
+            uint16_t Y;
+            uint16_t Z;
+            uint16_t I;
+            uint16_t J;
+            uint16_t PC;
+            uint16_t SP;
+            uint16_t EX;
+            uint16_t IA;
         };
-        K_USHORT ausRegisters[12];
+        uint16_t au16Registers[12];
     };
 } DCPU_Registers;
 
@@ -268,33 +268,33 @@ class DCPUPlugin : public LinkListNode
 {
 public:    
     /*!
-        \fn void Init(  K_USHORT usDeviceNumber_, 
-                        K_ULONG ulHWID_, 
-                        K_ULONG ulVID_, 
-                        K_USHORT usVersion_, 
+        \fn void Init(  uint16_t u16DeviceNumber_, 
+                        uint32_t u32HWID_, 
+                        uint32_t u32VID_, 
+                        uint16_t u16Version_, 
                         DCPU_Callback pfCallback_)
 
         Initialize the DCPU plugin extension.  Plug
         
-        \param usDeviceNumber_ Unique plugin device enumeration associated 
+        \param u16DeviceNumber_ Unique plugin device enumeration associated 
                                 with this plugin
-        \param ulHWID_ Unique hardware type identifier 
-        \param ulVID_  Hardware Vendor ID
-        \param usVersion_ Version identifier for this hardware piece
+        \param u32HWID_ Unique hardware type identifier 
+        \param u32VID_  Hardware Vendor ID
+        \param u16Version_ Version identifier for this hardware piece
         \param pfCallback_ Callback function invoked from the VM when a HWI 
                             instruction is called on this device.  This is
                             essentially the interrupt handler.                
     */
-    void Init(    K_USHORT usDeviceNumber_, 
-                K_ULONG ulHWID_, 
-                K_ULONG ulVID_, 
-                K_USHORT usVersion_, 
+    void Init(    uint16_t u16DeviceNumber_, 
+                uint32_t u32HWID_, 
+                uint32_t u32VID_, 
+                uint16_t u16Version_, 
                 DCPU_Callback pfCallback_)
     {
-        m_ulHWID = ulHWID_;
-        m_ulVID = ulVID_;
-        m_usDeviceNumber = usDeviceNumber_;
-        m_usVersion = usVersion_;
+        m_u32HWID = u32HWID_;
+        m_u32VID = u32VID_;
+        m_u16DeviceNumber = u16DeviceNumber_;
+        m_u16Version = u16Version_;
         m_pfCallback = pfCallback_;
         ClearNode();
     }
@@ -311,11 +311,11 @@ public:
     */
     void Enumerate( DCPU_Registers *pstRegisters_ )
     {
-        pstRegisters_->A = (K_USHORT)(m_ulHWID & 0x0000FFFF);
-        pstRegisters_->B = (K_USHORT)((m_ulHWID >> 16) & 0x0000FFFF);
-        pstRegisters_->C = m_usVersion;
-        pstRegisters_->X = (K_USHORT)(m_ulVID & 0x0000FFFF);
-        pstRegisters_->Y = (K_USHORT)((m_ulVID >> 16) & 0x0000FFFF);
+        pstRegisters_->A = (uint16_t)(m_u32HWID & 0x0000FFFF);
+        pstRegisters_->B = (uint16_t)((m_u32HWID >> 16) & 0x0000FFFF);
+        pstRegisters_->C = m_u16Version;
+        pstRegisters_->X = (uint16_t)(m_u32VID & 0x0000FFFF);
+        pstRegisters_->Y = (uint16_t)((m_u32VID >> 16) & 0x0000FFFF);
     }
 
     /*!
@@ -331,23 +331,23 @@ public:
     }
 
     /*!
-        \fn K_USHORT GetDeviceNumber()
+        \fn uint16_t GetDeviceNumber()
         
         Return the device number associated with this plugin
         
         \return Device number associated with this plugin        
     */
-    K_USHORT GetDeviceNumber()
+    uint16_t GetDeviceNumber()
     {
-        return m_usDeviceNumber;        
+        return m_u16DeviceNumber;        
     }
     
     friend class DCPUPluginList;
 private:
-    K_USHORT      m_usDeviceNumber;   //!< Location of the device on the "bus"
-    K_ULONG       m_ulHWID;           //!< Hardware ID
-    K_ULONG       m_ulVID;            //!< Vendor ID
-    K_USHORT      m_usVersion;        //!< Hardware Version
+    uint16_t      m_u16DeviceNumber;   //!< Location of the device on the "bus"
+    uint32_t       m_u32HWID;           //!< Hardware ID
+    uint32_t       m_u32VID;            //!< Vendor ID
+    uint16_t      m_u16Version;        //!< Hardware Version
     
     DCPU_Callback m_pfCallback;       //!< HWI Callback
 };
@@ -361,19 +361,19 @@ class DCPU
 {
 public:
     /*!        
-        \fn void Init( K_USHORT *pusRAM_, K_USHORT usRAMSize_, const K_USHORT *pusROM_, K_USHORT usROMSize_ )
+        \fn void Init( uint16_t *pu16RAM_, uint16_t u16RAMSize_, const uint16_t *pu16ROM_, uint16_t u16ROMSize_ )
         
         Initialize the CPU emulator, specifying which driver supplies the
-        memory read interface.  This allows us to abstract RAM/FLASH/EEPROM
+        memory read interface.  This allows u16 to abstract RAM/FLASH/EEPROM
         or other memory.  The VM must be initialized before any other method in 
         the class is run.
         
-        \param pusRAM_ Pointer to the CPU's RAM buffer
-        \param usRAMSize_ Size of the RAM Buffer in words
-        \param pusROM_ Pointer to the CPU's ROM buffer
-        \param usROMSize_ Size of the ROM buffer in words
+        \param pu16RAM_ Pointer to the CPU's RAM buffer
+        \param u16RAMSize_ Size of the RAM Buffer in words
+        \param pu16ROM_ Pointer to the CPU's ROM buffer
+        \param u16ROMSize_ Size of the ROM buffer in words
     */    
-    void Init( K_USHORT *pusRAM_, K_USHORT usRAMSize_, const K_USHORT *pusROM_, K_USHORT usROMSize_ );
+    void Init( uint16_t *pu16RAM_, uint16_t u16RAMSize_, const uint16_t *pu16ROM_, uint16_t u16ROMSize_ );
     
     /*!
         \fn void RunOpcode()
@@ -392,13 +392,13 @@ public:
     DCPU_Registers *GetRegisters() { return &m_stRegisters; } 
     
     /*!
-        \fn void SendInterrupt( K_USHORT usMessage_ );
+        \fn void SendInterrupt( uint16_t u16Message_ );
                 
         Send an interrupt to the CPU with a given message
         
-        \param usMessage_ Message to send along with the interrupt
+        \param u16Message_ Message to send along with the interrupt
     */
-    void SendInterrupt( K_USHORT usMessage_ );
+    void SendInterrupt( uint16_t u16Message_ );
 
     /*!
         \fn void AddPlugin( DCPUPlugin *pclPlugin_ )
@@ -427,14 +427,14 @@ private:
     void SHR();
     void ASR();
     void SHL();
-    K_BOOL IFB();
-    K_BOOL IFC();
-    K_BOOL IFE();
-    K_BOOL IFN();
-    K_BOOL IFG();
-    K_BOOL IFA();
-    K_BOOL IFL();
-    K_BOOL IFU();
+    bool IFB();
+    bool IFC();
+    bool IFE();
+    bool IFN();
+    bool IFG();
+    bool IFA();
+    bool IFL();
+    bool IFU();
     void ADX();
     void SBX();
     void STI();
@@ -452,13 +452,13 @@ private:
     void HWI();
     
     /*!
-        \fn K_UCHAR GetOperand( K_UCHAR ucOpType_, K_USHORT **pusResult_ );
+        \fn uint8_t GetOperand( uint8_t uCopType_, uint16_t **pu16Result_ );
         
-        \param ucOpType_ The operand type, as specified in DCPU_Argument
-        \param pusResult_ Pointer to the pointer that corresponds to the 
+        \param uCopType_ The operand type, as specified in DCPU_Argument
+        \param pu16Result_ Pointer to the pointer that corresponds to the 
                         argument's location in memory.
     */
-    K_UCHAR GetOperand( K_UCHAR ucOpType_, K_USHORT **pusResult_ );
+    uint8_t GetOperand( uint8_t uCopType_, uint16_t **pu16Result_ );
     
     
     /*!
@@ -470,22 +470,22 @@ private:
         
     DCPU_Registers m_stRegisters;    //!< CPU Register file
         
-    K_USHORT *a;                //!< Temporary "a" operand pointer
-    K_USHORT *b;                //!< Temporary "b" operand pointer
+    uint16_t *a;                //!< Temporary "a" operand pointer
+    uint16_t *b;                //!< Temporary "b" operand pointer
     
-    K_USHORT m_usTempA;         //!< Local-storage for staging literal "a" values
+    uint16_t m_u16TempA;         //!< Local-storage for staging literal "a" values
         
-    K_USHORT *m_pusRAM;         //!< Pointer to the RAM buffer
-    K_USHORT m_usRAMSize;       //!< Size to the RAM (including stack)    
+    uint16_t *m_pu16RAM;         //!< Pointer to the RAM buffer
+    uint16_t m_u16RAMSize;       //!< Size to the RAM (including stack)    
     
-    K_USHORT *m_pusROM;         //!< Pointer to the CPU ROM storage
-    K_USHORT m_usROMSize;       //!< Size of the ROM 
+    uint16_t *m_pu16ROM;         //!< Pointer to the CPU ROM storage
+    uint16_t m_u16ROMSize;       //!< Size of the ROM 
             
-    K_ULONG  m_ulCycleCount;    //!< Current cycle count
+    uint32_t  m_u32CycleCount;    //!< Current cycle count
         
-    K_BOOL   m_bInterruptQueueing;        //!< CPU flag indicating whether or not interrupts are queued
-    K_UCHAR  m_ucQueueLevel;              //!< Current interrupt Queue level
-    K_USHORT m_ausInterruptQueue[ 8 ];    //!< Interrupt queue
+    bool   m_bInterruptQueueing;        //!< CPU flag indicating whether or not interrupts are queued
+    uint8_t  m_u8QueueLevel;              //!< Current interrupt Queue level
+    uint16_t m_au16InterruptQueue[ 8 ];    //!< Interrupt queue
     
     DoubleLinkList m_clPluginList;        //!< Linked-list of plug-ins.
 };

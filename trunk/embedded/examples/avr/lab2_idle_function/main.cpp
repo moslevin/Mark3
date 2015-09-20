@@ -26,7 +26,7 @@ flAVR AVR Simulator.
 
 Lessons covered in this example include:
 
-- Usage of the Kernel::SetIdleFunc() API
+- usage of the Kernel::SetIdleFunc() API
 - Changing an idle thread into an idle function
 - You can save a thread and a stack by using an idle function instead of a
   dedicated idle thread.

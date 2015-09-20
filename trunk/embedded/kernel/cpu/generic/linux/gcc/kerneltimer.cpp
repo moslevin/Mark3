@@ -31,8 +31,8 @@ See license.txt for more information
 #include <errno.h>
 
 
-volatile K_BOOL bEnabled;
-volatile K_BOOL bStarted;
+volatile bool bEnabled;
+volatile bool bStarted;
 
 //---------------------------------------------------------------------------
 static void sig_handler( int signal )
@@ -43,12 +43,12 @@ static void sig_handler( int signal )
         return;
     }
 
-    if (usIntFlags & FLAG_TIMER)
+    if (u16IntFlags & FLAG_TIMER)
     {
         return;
     }
 
-    usIntFlags |= FLAG_TIMER;
+    u16IntFlags |= FLAG_TIMER;
 
     if (bIntEnabled)
     {
@@ -91,39 +91,39 @@ void KernelTimer::Stop(void)
 }
 
 //---------------------------------------------------------------------------
-K_USHORT KernelTimer::Read(void)
+uint16_t KernelTimer::Read(void)
 {
     return 0;
 }
 
 //---------------------------------------------------------------------------
-K_ULONG KernelTimer::SubtractExpiry(K_ULONG ulInterval_)
+uint32_t KernelTimer::SubtractExpiry(uint32_t u32Interval_)
 {
-    K_ULONG ulTempInt = TimeToExpiry();
+    uint32_t u32TempInt = TimeToExpiry();
 
-    if (ulTempInt >= ulInterval_)
+    if (u32TempInt >= u32Interval_)
     {
-        ulTempInt -= ulInterval_;
+        u32TempInt -= u32Interval_;
     }
 
-    SetExpiry(ulTempInt);
-    return ulTempInt;
+    SetExpiry(u32TempInt);
+    return u32TempInt;
 }
 
 //---------------------------------------------------------------------------
-K_ULONG KernelTimer::TimeToExpiry(void)
+uint32_t KernelTimer::TimeToExpiry(void)
 {
     struct itimerval curr_time;
-    K_ULONG ulTime;
+    uint32_t u32Time;
     getitimer(ITIMER_VIRTUAL, &curr_time);
 
-    ulTime = curr_time.it_value.tv_sec * 1000000;
-    ulTime += curr_time.it_value.tv_usec;
-    return ulTime;
+    u32Time = curr_time.it_value.tv_sec * 1000000;
+    u32Time += curr_time.it_value.tv_usec;
+    return u32Time;
 }
 
 //---------------------------------------------------------------------------
-K_ULONG KernelTimer::GetOvertime(void)
+uint32_t KernelTimer::GetOvertime(void)
 {
     // assume infinitely-fast timer callback processing.  We're using LINUX
     // so our realtime processing is kind of approximate anyway...
@@ -131,23 +131,23 @@ K_ULONG KernelTimer::GetOvertime(void)
 }
 
 //---------------------------------------------------------------------------
-K_ULONG KernelTimer::SetExpiry(K_ULONG ulInterval_)
+uint32_t KernelTimer::SetExpiry(uint32_t u32Interval_)
 {
     //!! Todo - support for limited timers (to 0x7FFFFFFF)
     struct itimerval new_timer;
-    new_timer.it_value.tv_sec = ulInterval_ / 1000000;
-    new_timer.it_value.tv_usec = ulInterval_ % 1000000;
-    new_timer.it_interval.tv_sec = ulInterval_ / 1000000;
-    new_timer.it_interval.tv_usec = ulInterval_ / 1000000;
+    new_timer.it_value.tv_sec = u32Interval_ / 1000000;
+    new_timer.it_value.tv_usec = u32Interval_ % 1000000;
+    new_timer.it_interval.tv_sec = u32Interval_ / 1000000;
+    new_timer.it_interval.tv_usec = u32Interval_ / 1000000;
 
-    fprintf(stderr, "set expiry %d\n", ulInterval_);
+    fprintf(stderr, "set expiry %d\n", u32Interval_);
 
     int err = setitimer(ITIMER_VIRTUAL, &new_timer, NULL );
     if (0 != err)
     {
         fprintf(stderr, "Timer error: %d\n", errno);
     }
-    return ulInterval_;
+    return u32Interval_;
 }
 
 //---------------------------------------------------------------------------
@@ -161,7 +161,7 @@ void KernelTimer::ClearExpiry(void)
 }
 
 //---------------------------------------------------------------------------
-K_UCHAR KernelTimer::DI(void)
+uint8_t KernelTimer::DI(void)
 {    
     KernelTimer::RI(0);
 }
@@ -173,7 +173,7 @@ void KernelTimer::EI(void)
 }
 
 //---------------------------------------------------------------------------
-void KernelTimer::RI(K_BOOL bEnable_)
+void KernelTimer::RI(bool bEnable_)
 {    
     bEnabled = bEnable_;
 }

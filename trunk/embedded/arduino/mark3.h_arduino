@@ -37,5 +37,6 @@ See license.txt for more information
 #include "./inc/mutex.h"
 #include "./inc/eventflag.h"
 #include "./inc/message.h"
-
+#include "./inc/notify.h"
+#include "./inc/mailbox.h"
 #endif

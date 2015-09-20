@@ -28,8 +28,8 @@ See license.txt for more information
 //===========================================================================
 #define MAX_ALLOCS          (32)
 #define TEST_STACK_SIZE     (224)
-static K_USHORT usMaxAllocs;
-static K_USHORT usMaxAllocSize;
+static uint16_t u16MaxAllocs;
+static uint16_t u16MaxAllocSize;
 
 static volatile void *apvAllocs[MAX_ALLOCS]; // assuming we have < 128 system heap allocs...
 
@@ -42,7 +42,7 @@ static volatile void *apvAllocs[MAX_ALLOCS]; // assuming we have < 128 system he
 // start returning NULL when allocating too much/too large data.
 TEST(ut_sysheap_calibrate)
 {
-    K_USHORT usMin, usMax, usAvg;
+    uint16_t u16Min, u16Max, u16Avg;
     void *pvData;
 
     // recreate the system heap (you wouldn't do this in a real system, but
@@ -50,42 +50,42 @@ TEST(ut_sysheap_calibrate)
     SystemHeap::Init();
 
     // Get the maximum number of allocations before heap exhaustion:
-    usMaxAllocs = 0;
+    u16MaxAllocs = 0;
     while( 0 != (pvData = SystemHeap::Alloc(1)) )
     {
-        usMaxAllocs++;
+        u16MaxAllocs++;
     }
 
     // Re-init the heap...
     SystemHeap::Init();
 
     // Find the maximum heap block size.
-    usMin = 0;
-    usMax = 65534;
-    usAvg = (usMin + usMax + 1) / 2;
+    u16Min = 0;
+    u16Max = 65534;
+    u16Avg = (u16Min + u16Max + 1) / 2;
 
-    while((usMax - usMin) >= 2)
+    while((u16Max - u16Min) >= 2)
     {
-        if( 0 != (pvData = SystemHeap::Alloc(usAvg)) )
+        if( 0 != (pvData = SystemHeap::Alloc(u16Avg)) )
         {
             SystemHeap::Free(pvData);
             // Too low
-            usMin = usAvg;
+            u16Min = u16Avg;
         }
         else
         {
             // Too high
-            usMax = usAvg;
+            u16Max = u16Avg;
         }
-        usAvg = (usMin + usMax + 1) / 2;
+        u16Avg = (u16Min + u16Max + 1) / 2;
     }
 
     //Disambiguate between min/max
-    if( 0 == (pvData = SystemHeap::Alloc(usMax)))
+    if( 0 == (pvData = SystemHeap::Alloc(u16Max)))
     {
-        usMaxAllocSize = usMin;
+        u16MaxAllocSize = u16Min;
     } else {
-        usMaxAllocSize = usMax;
+        u16MaxAllocSize = u16Max;
         SystemHeap::Free(pvData);
     }
 
@@ -93,11 +93,11 @@ TEST(ut_sysheap_calibrate)
 
     // This test was more for getting the limits, we care less about the actual
     // results, but will take the opportunity to do a rough check.
-    EXPECT_GT( usMaxAllocSize, 0 );
-    EXPECT_LT( usMaxAllocSize, 65535 );
+    EXPECT_GT( u16MaxAllocSize, 0 );
+    EXPECT_LT( u16MaxAllocSize, 65535 );
 
-    EXPECT_GT( usMaxAllocs, 0 );
-    EXPECT_LT( usMaxAllocs, MAX_ALLOCS );
+    EXPECT_GT( u16MaxAllocs, 0 );
+    EXPECT_LT( u16MaxAllocs, MAX_ALLOCS );
 }
 TEST_END
 
@@ -107,68 +107,68 @@ TEST_END
 // as well as bookkeeping.
 TEST(ut_sysheap_alloc_free)
 {
-    K_USHORT i, j;
+    uint16_t i, j;
 
     for (j = 0; j < 100; j++)
     {
         // Alloc all/free all.
-        for (i = 0; i < usMaxAllocs; i++)
+        for (i = 0; i < u16MaxAllocs; i++)
         {
             apvAllocs[i] = SystemHeap::Alloc(1);
         }
-        for (i = 0; i < usMaxAllocs; i++)
+        for (i = 0; i < u16MaxAllocs; i++)
         {
             SystemHeap::Free((void*)apvAllocs[i]);
             apvAllocs[i] = 0;
         }
 
         // Alloc all, free all odd, then evens
-        for (i = 0; i < usMaxAllocs; i++)
+        for (i = 0; i < u16MaxAllocs; i++)
         {
             apvAllocs[i] = SystemHeap::Alloc(1);
         }
-        for (i = 1; i < usMaxAllocs; i+=2)
+        for (i = 1; i < u16MaxAllocs; i+=2)
         {
             SystemHeap::Free((void*)apvAllocs[i]);
             apvAllocs[i] = 0;
         }
-        for (i = 0; i < usMaxAllocs; i+=2)
+        for (i = 0; i < u16MaxAllocs; i+=2)
         {
             SystemHeap::Free((void*)apvAllocs[i]);
             apvAllocs[i] = 0;
         }
 
         // Alloc all, free in step-3
-        for (i = 0; i < usMaxAllocs; i++)
+        for (i = 0; i < u16MaxAllocs; i++)
         {
             apvAllocs[i] = SystemHeap::Alloc(1);
         }
-        for (i = 1; i < usMaxAllocs; i+=3)
+        for (i = 1; i < u16MaxAllocs; i+=3)
         {
             SystemHeap::Free((void*)apvAllocs[i]);
             apvAllocs[i] = 0;
         }
-        for (i = 0; i < usMaxAllocs; i+=3)
+        for (i = 0; i < u16MaxAllocs; i+=3)
         {
             SystemHeap::Free((void*)apvAllocs[i]);
             apvAllocs[i] = 0;
         }
-        for (i = 2; i < usMaxAllocs; i+=3)
+        for (i = 2; i < u16MaxAllocs; i+=3)
         {
             SystemHeap::Free((void*)apvAllocs[i]);
             apvAllocs[i] = 0;
         }
 
         // free in non-sequential order...
-        for(i = 0; i < usMaxAllocs; i+=2)
+        for(i = 0; i < u16MaxAllocs; i+=2)
         {
             apvAllocs[i] = SystemHeap::Alloc(1);
         }
-        for(i = 1; i < usMaxAllocs; i+=2)
+        for(i = 1; i < u16MaxAllocs; i+=2)
         {
             apvAllocs[i] = SystemHeap::Alloc(1);
         }
-        for (i = 0; i < usMaxAllocs; i++)
+        for (i = 0; i < u16MaxAllocs; i++)
         {
             SystemHeap::Free((void*)apvAllocs[i]);
             apvAllocs[i] = 0;
@@ -184,23 +184,23 @@ TEST_END
 //===========================================================================
 void HeapScriptTest(void *pvParam_)
 {
-    K_USHORT usIndex = ((K_USHORT)pvParam_);
-    K_USHORT i;
+    uint16_t u16Index = ((uint16_t)pvParam_);
+    uint16_t i;
 
     void *pvData;
 
     while(1)
     {
-        for (i = usIndex; i < usMaxAllocs; i+=2)
+        for (i = u16Index; i < u16MaxAllocs; i+=2)
         {
             apvAllocs[i] = SystemHeap::Alloc(1);
         }
-        for (i = usIndex; i < usMaxAllocs; i+=2)
+        for (i = u16Index; i < u16MaxAllocs; i+=2)
         {
             SystemHeap::Free((void*)apvAllocs[i]);
             apvAllocs[i] = 0;
         }
-        for (i = usIndex; i < usMaxAllocs; i+=2)
+        for (i = u16Index; i < u16MaxAllocs; i+=2)
         {
             apvAllocs[i] = SystemHeap::Alloc(1);
             SystemHeap::Free((void*)apvAllocs[i]);
@@ -213,10 +213,10 @@ void HeapScriptTest(void *pvParam_)
                 case 0:
                 case 2:
                 case 6:
-                    pvData = SystemHeap::Alloc(usMaxAllocSize);
+                    pvData = SystemHeap::Alloc(u16MaxAllocSize);
                     if (pvData)
                     {
-                        MemUtil::SetMemory(pvData, 0xFF, usMaxAllocSize);
+                        MemUtil::SetMemory(pvData, 0xFF, u16MaxAllocSize);
                         SystemHeap::Free(pvData);
                     }
                     break;

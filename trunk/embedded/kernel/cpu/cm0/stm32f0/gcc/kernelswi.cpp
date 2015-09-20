@@ -43,14 +43,14 @@ void KernelSWI::Stop(void)
 }
 
 //---------------------------------------------------------------------------
-K_UCHAR KernelSWI::DI()
+uint8_t KernelSWI::DI()
 {
 	// Not implemented
 	return 0;
 }
 
 //---------------------------------------------------------------------------
-void KernelSWI::RI(K_BOOL bEnable_)
+void KernelSWI::RI(bool bEnable_)
 {
 	// Not implemented
 }

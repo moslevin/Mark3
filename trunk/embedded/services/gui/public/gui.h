@@ -13,7 +13,7 @@ See license.txt for more information
 ===========================================================================*/
 /*!
     \file gui.h
-    \brief Graphical User Interface classes and data structure declarations.
+    \brief Graphical user Interface classes and data structure declarations.
 */
 
 #ifndef __GUI_H__
@@ -79,10 +79,10 @@ typedef enum
 */
 typedef struct
 {
-    K_UCHAR ucKeyCode;        //!< 8-bit value representing a keyboard scan code
+    uint8_t u8KeyCode;        //!< 8-bit value representing a keyboard scan code
     union
     {
-        K_UCHAR ucFlags;    //!< Flags indicating modifiers to the event
+        uint8_t u8Flags;    //!< Flags indicating modifiers to the event
         struct
         {
             unsigned int bKeyState:1;        //!< Key is being pressed or released
@@ -101,12 +101,12 @@ typedef struct
 */
 typedef struct
 {
-    K_USHORT usX;        //!< absolute X location of the mouse (pixel)
-    K_USHORT usY;        //!< absolute Y location of the mouse (pixel)
+    uint16_t u16X;        //!< absolute X location of the mouse (pixel)
+    uint16_t u16Y;        //!< absolute Y location of the mouse (pixel)
 
     union
     {
-        K_UCHAR ucFlags;    //!< modifier flags for the event
+        uint8_t u8Flags;    //!< modifier flags for the event
         struct
         {
             unsigned int bLeftState:1;        //!< State of the left mouse button
@@ -124,12 +124,12 @@ typedef struct
 */
 typedef struct
 {
-    K_USHORT usX;        //!< Absolute touch location (pixels)
-    K_USHORT usY;        //!< Absolute touch location (pixels)
+    uint16_t u16X;        //!< Absolute touch location (pixels)
+    uint16_t u16Y;        //!< Absolute touch location (pixels)
 
     union
     {
-        K_USHORT ucFlags;        //!< Modifier flags
+        uint16_t u8Flags;        //!< Modifier flags
         struct
         {
             unsigned int bTouch:1;    //!< Whether or not touch is up or down
@@ -145,7 +145,7 @@ typedef struct
 {
     union
     {
-        K_USHORT usRawData;                //!< Raw joystick data
+        uint16_t u16RawData;                //!< Raw joystick data
         struct
         {
             unsigned int bUp:1;            //!< D-pad UP state
@@ -170,7 +170,7 @@ typedef struct
     } Current;
     union
     {
-        K_USHORT usRawData;                //!< Raw joystick data
+        uint16_t u16RawData;                //!< Raw joystick data
         struct
         {
             unsigned int bUp:1;            //!< D-pad UP state
@@ -201,7 +201,7 @@ typedef struct
 */
 typedef struct
 {
-    K_USHORT usTicks;    //!< Number of clock ticks (arbitrary) that have elapsed
+    uint16_t u16Ticks;    //!< Number of clock ticks (arbitrary) that have elapsed
 } TimerEvent_t;
 
 //---------------------------------------------------------------------------
@@ -211,8 +211,8 @@ typedef struct
 */
 typedef struct
 {
-    K_UCHAR ucEventType;        //!< GuiEventType_t event type
-    K_UCHAR ucTargetID;         //!< Control index that this event is targeted towards
+    uint8_t u8EventType;        //!< GuiEventType_t event type
+    uint8_t u8TargetID;         //!< Control index that this event is targeted towards
     union
     {
         KeyEvent_t        stKey;      //!< Keyboard data
@@ -255,7 +255,7 @@ public:
     */
     void Init()
     {
-        m_ucControlCount = 0;
+        m_u8ControlCount = 0;
         m_pclDriver = NULL;
         m_szName = "";
         ClearNode();
@@ -302,11 +302,11 @@ public:
     /*!
         Returns the highest Z-Order of all controls attached to this window.
 
-        \fn K_UCHAR GetMaxZOrder()
+        \fn uint8_t GetMaxZOrder()
 
         \return The highest Z-Order used by controls in this window
     */
-    K_UCHAR GetMaxZOrder();
+    uint8_t GetMaxZOrder();
 
     /*!
         Redraw objects in the window.  Typically, only the affected controls
@@ -314,9 +314,9 @@ public:
         initialization), the entire window will need to be redrawn cleanly.
         This behavior is defined by the value of the bRedrawAll_ parameter.
 
-        \fn void Redraw( K_BOOL bRedrawAll_ )
+        \fn void Redraw( bool bRedrawAll_ )
     */
-    void Redraw( K_BOOL bRedrawAll_ );
+    void Redraw( bool bRedrawAll_ );
 
     /*!
         Process an event sent to this window.  This method handles all
@@ -339,14 +339,14 @@ public:
     /*!
         Return whether or not the selected control is in focus or not.
 
-        \fn K_BOOL IsInFocus( GuiControl *pclControl_ )
+        \fn bool IsInFocus( GuiControl *pclControl_ )
 
         \param pclControl_ Pointer to the control object to evaluate
 
         \return true - the selected control is the active control on the window
                 false - otherwise
     */
-    K_BOOL IsInFocus( GuiControl *pclControl_ )
+    bool IsInFocus( GuiControl *pclControl_ )
     {
         if (m_pclInFocus == pclControl_)
         {
@@ -358,107 +358,107 @@ public:
     /*!
         Set the location of the topmost pixel of the window
 
-        \param usTop_ Topmost pixel of the window
+        \param u16Top_ Topmost pixel of the window
     */
-    void SetTop( K_USHORT usTop_ )          { m_usTop = usTop_; }
+    void SetTop( uint16_t u16Top_ )          { m_u16Top = u16Top_; }
 
     /*!
         Set the location of the leftmost pixel of the window
 
-        \param usLeft_ Leftmost pixel of the window
+        \param u16Left_ Leftmost pixel of the window
     */
-    void SetLeft( K_USHORT usLeft_ )      { m_usLeft = usLeft_; }
+    void SetLeft( uint16_t u16Left_ )      { m_u16Left = u16Left_; }
 
     /*!
         Set the height of the window (in pixels)
 
-        \param usHeight_ Height of the window in pixels
+        \param u16Height_ Height of the window in pixels
     */
-    void SetHeight( K_USHORT usHeight_ ) { m_usHeight = usHeight_; }
+    void SetHeight( uint16_t u16Height_ ) { m_u16Height = u16Height_; }
 
     /*!
         Set the width of the window (in pixels)
 
-        \param usWidth_ Width of the window in pixels
+        \param u16Width_ Width of the window in pixels
     */
-    void SetWidth( K_USHORT usWidth_ )      { m_usWidth = usWidth_; }
+    void SetWidth( uint16_t u16Width_ )      { m_u16Width = u16Width_; }
 
     /*!
         Return the topmost pixel of the window
 
         \return Topmost pixel of the window
     */
-    K_USHORT GetTop()             { return m_usTop; }
+    uint16_t GetTop()             { return m_u16Top; }
 
     /*!
         Return the leftmost pixel of the window
 
         \return Leftmost pixel of the window
     */
-    K_USHORT GetLeft()             { return m_usLeft; }
+    uint16_t GetLeft()             { return m_u16Left; }
 
     /*!
         Get the height of the window in pixels
 
         \return Height of the window in pixels
     */
-    K_USHORT GetHeight()         { return m_usHeight; }
+    uint16_t GetHeight()         { return m_u16Height; }
 
     /*!
         Get the width of the window in pixels
 
         \return Width of the window in pixels
     */
-    K_USHORT GetWidth()         { return m_usWidth; }
+    uint16_t GetWidth()         { return m_u16Width; }
 
     /*!
         Get the Z-order of the window on the event surface
     */
-    K_UCHAR GetZOrder()         { return m_ucZ; }
+    uint8_t GetZOrder()         { return m_u8Z; }
 
     /*!
         Set the Z-order of the window on the event surface
     */
-    void SetZOrder( K_UCHAR ucZ_ ) { m_ucZ = ucZ_; }
+    void SetZOrder( uint8_t u8Z_ ) { m_u8Z = u8Z_; }
 
     /*!
         Cycle the focus to the next active control in the window
 
-        \fn void CycleFocus( K_BOOL bForward_ )
+        \fn void CycleFocus( bool bForward_ )
         \param bForward_ - Cycle to the next control when true,
                            previous control when false
     */
-    void CycleFocus( K_BOOL bForward_ );
+    void CycleFocus( bool bForward_ );
 
     /*!
         Set the name for this window
     */
-    void SetName( const K_CHAR *szName_ ) { m_szName = szName_; }
+    void SetName( const char *szName_ ) { m_szName = szName_; }
 
     /*!
         Return the name of this window
     */
-    const K_CHAR *GetName() { return m_szName; }
+    const char *GetName() { return m_szName; }
 
     /*!
         Invalidate a region of the window, specified by the bounding box.  The
         coordinates specified in the parameters (top and left) refer to absolute
         display coordinates, and are not relative to coordinates within a window.
     */
-    void InvalidateRegion( K_USHORT usLeft_, K_USHORT usTop_, K_USHORT usWidth_, K_USHORT usHeight_ );
+    void InvalidateRegion( uint16_t u16Left_, uint16_t u16Top_, uint16_t u16Width_, uint16_t u16Height_ );
 
 private:
-    K_USHORT m_usTop;        //!< Topmost pixel of the window on the event surface
-    K_USHORT m_usLeft;        //!< Leftmost pixel of the window on the event surface
-    K_USHORT m_usHeight;    //!< Height of the window in pixels
-    K_USHORT m_usWidth;        //!< Width of the window in pixels
+    uint16_t m_u16Top;        //!< Topmost pixel of the window on the event surface
+    uint16_t m_u16Left;        //!< Leftmost pixel of the window on the event surface
+    uint16_t m_u16Height;    //!< Height of the window in pixels
+    uint16_t m_u16Width;        //!< Width of the window in pixels
 
-    K_UCHAR  m_ucZ;         //!< Z-order of the window on the event surface
-    const K_CHAR  *m_szName;      //!< Name applied to this window
+    uint8_t  m_u8Z;         //!< Z-order of the window on the event surface
+    const char  *m_szName;      //!< Name applied to this window
 
     DoubleLinkList m_clControlList;    //!< List of controls managed by this window
     GuiControl *m_pclInFocus;        //!< Pointer to the control in event focus
-    K_UCHAR m_ucControlCount;        //!< Number of controls in this window
+    uint8_t m_u8ControlCount;        //!< Number of controls in this window
     GraphicsDriver *m_pclDriver;    //!< Graphics driver for this window.
 };
 
@@ -505,30 +505,30 @@ public:
         \param pstEvent_ Pointer to an event to send
         \return true on success, false on failure
     */
-    K_BOOL SendEvent( GuiEvent_t *pstEvent_ );
+    bool SendEvent( GuiEvent_t *pstEvent_ );
 
     /*!
         Process an event in the event queue.  If no events are pending, the
         call will block until an event is available.
     */
-    K_BOOL ProcessEvent();
+    bool ProcessEvent();
 
     /*!
         Get the count of pending events in the event surface's queue.
     */
-    K_UCHAR GetEventCount() { return m_clMessageQueue.GetCount(); }
+    uint8_t GetEventCount() { return m_clMessageQueue.GetCount(); }
 
     /*!
         Return a pointer to a window by name, or NULL on failure
     */
-    GuiWindow *FindWindowByName( const K_CHAR *szName_ );
+    GuiWindow *FindWindowByName( const char *szName_ );
 
     /*!
         Invalidate a region of the window, specified by the bounding box.  The
         coordinates specified in the parameters (top and left) refer to absolute
         display coordinates, and are not relative to coordinates within a window.
     */
-    void InvalidateRegion( K_USHORT usLeft_, K_USHORT usTop_, K_USHORT usWidth_, K_USHORT usHeight_ );
+    void InvalidateRegion( uint16_t u16Left_, uint16_t u16Top_, uint16_t u16Width_, uint16_t u16Height_ );
 
 private:
     /*!
@@ -591,116 +591,116 @@ public:
     /*!
         Set the location of the topmost pixel of the control
 
-        \param usTop_ Topmost pixel of the control
+        \param u16Top_ Topmost pixel of the control
     */
-    void SetTop( K_USHORT usTop_ )          { m_usTop = usTop_; }
+    void SetTop( uint16_t u16Top_ )          { m_u16Top = u16Top_; }
 
     /*!
         Set the location of the leftmost pixel of the control
 
-        \param usLeft_ Leftmost pixel of the control
+        \param u16Left_ Leftmost pixel of the control
     */
-    void SetLeft( K_USHORT usLeft_ )      { m_usLeft = usLeft_; }
+    void SetLeft( uint16_t u16Left_ )      { m_u16Left = u16Left_; }
 
     /*!
         Set the height of the control (in pixels)
 
-        \param usHeight_ Height of the control in pixels
+        \param u16Height_ Height of the control in pixels
     */
-    void SetHeight( K_USHORT usHeight_ ) { m_usHeight = usHeight_; }
+    void SetHeight( uint16_t u16Height_ ) { m_u16Height = u16Height_; }
 
     /*!
         Set the width of the control (in pixels)
 
-        \param usWidth_ Width of the control in pixels
+        \param u16Width_ Width of the control in pixels
     */
-    void SetWidth( K_USHORT usWidth_ )      { m_usWidth = usWidth_; }
+    void SetWidth( uint16_t u16Width_ )      { m_u16Width = u16Width_; }
 
     /*!
         Set the Z-order (depth) of the control
 
-        \param ucZ_ Z order of the control
+        \param u8Z_ Z order of the control
     */
-    void SetZOrder( K_UCHAR ucZ_ )          { m_ucZOrder = ucZ_; }
+    void SetZOrder( uint8_t u8Z_ )          { m_u8ZOrder = u8Z_; }
 
     /*!
         Set the index of the control, used for cycling through focus (ala
         tab order in VB).
 
-        \param ucIdx_ Focus index of the control
+        \param u8Idx_ Focus index of the control
     */
-    void SetControlIndex( K_UCHAR ucIdx_ ) { m_ucControlIndex = ucIdx_; }
+    void SetControlIndex( uint8_t u8Idx_ ) { m_u8ControlIndex = u8Idx_; }
 
     /*!
         Return the topmost pixel of the control
 
         \return Topmost pixel of the control
     */
-    K_USHORT GetTop()             { return m_usTop; }
+    uint16_t GetTop()             { return m_u16Top; }
 
     /*!
         Return the leftmost pixel of the control
 
         \return Leftmost pixel of the control
     */
-    K_USHORT GetLeft()             { return m_usLeft; }
+    uint16_t GetLeft()             { return m_u16Left; }
 
     /*!
         Get the height of the control in pixels
 
         \return Height of the control in pixels
     */
-    K_USHORT GetHeight()         { return m_usHeight; }
+    uint16_t GetHeight()         { return m_u16Height; }
 
     /*!
         Get the width of the control in pixels
 
         \return Width of the control in pixels
     */
-    K_USHORT GetWidth()         { return m_usWidth; }
+    uint16_t GetWidth()         { return m_u16Width; }
 
     /*!
         Return the Z-order of the control
 
         \return Z-order of the control
     */
-    K_UCHAR  GetZOrder()        { return m_ucZOrder; }
+    uint8_t  GetZOrder()        { return m_u8ZOrder; }
 
     /*!
         Return the Control Index of the control
 
         \return The control index of the control
     */
-    K_UCHAR  GetControlIndex()     { return m_ucControlIndex; }
+    uint8_t  GetControlIndex()     { return m_u8ControlIndex; }
 
     /*!
         Return whether or not the control needs to be redrawn or not
 
         \return true - control needs redrawing, false - control is intact.
     */
-    K_BOOL     IsStale()            { return m_bStale; }
+    bool     IsStale()            { return m_bStale; }
 
     /*!
         Return the absolute offset of the control within an event surface.
         This function will traverse through all of the object's parents,
         and their parents, until the root control and root window are
         identified.  The absolute pixel locations of the Topmost (Y)
-        and Leftmost (X) pixels are populated in the
+        and Leftmost (X) pixels are popu32ated in the
 
-        \fn void GetControlOffset( K_USHORT *pusX_, K_USHORT *pusY_ )
-        \param pusX_ Pointer to the K_USHORT containing the leftmost pixel
-        \param pusY_ Pointer to the K_USHORT containing the topmost pixel
+        \fn void GetControlOffset( uint16_t *pu16X_, uint16_t *pu16Y_ )
+        \param pus16X_ Pointer to the uint16_t containing the leftmost pixel
+        \param pus16Y_ Pointer to the uint16_t containing the topmost pixel
     */
-    void GetControlOffset( K_USHORT *pusX_, K_USHORT *pusY_ );
+    void GetControlOffset( uint16_t *pu16X_, uint16_t *pu16Y_ );
 
     /*!
         Return whether or not the current control has the focus in the window
 
-        \fn K_BOOL  IsInFocus()
+        \fn bool  IsInFocus()
 
         \return true if this control is in focus, false otherwise
     */
-    K_BOOL  IsInFocus()
+    bool  IsInFocus()
     {
         return m_pclParentWindow->IsInFocus(this);
     }
@@ -709,10 +709,10 @@ public:
         Activate or deactivate the current control - used when switching
         from one active control to another.
 
-        \fn void Activate( K_BOOL bActivate_ )
+        \fn void Activate( bool bActivate_ )
         \param bActivate_ - true to activate, false to deactivate
     */
-    virtual void Activate( K_BOOL bActivate_ ) = 0;
+    virtual void Activate( bool bActivate_ ) = 0;
 
 protected:
     friend class GuiWindow;
@@ -774,38 +774,38 @@ protected:
     /*!
         Tell the control whether or not to accept focus.
     */
-    void SetAcceptFocus( K_BOOL bFocus_ )             { m_bAcceptsFocus = bFocus_; }
+    void SetAcceptFocus( bool bFocus_ )             { m_bAcceptsFocus = bFocus_; }
 
     /*!
         Returns whether or not this control accepts focus.
     */
-    K_BOOL AcceptsFocus()                             { return m_bAcceptsFocus; }
+    bool AcceptsFocus()                             { return m_bAcceptsFocus; }
 private:
     /*! true if the control is stale and needs to be redrawn, false otherwise*/
-    K_BOOL     m_bStale;
+    bool     m_bStale;
 
     /*! Whether or not the control accepts focus or not*/
-    K_BOOL   m_bAcceptsFocus;
+    bool   m_bAcceptsFocus;
 
     /*! The Z-Order (depth) of the control. Only the highest order controls
         are visible at any given location */
-    K_UCHAR  m_ucZOrder;
+    uint8_t  m_u8ZOrder;
 
     /*! Index of the control in the window.  This is used for setting focus
         when transitioning from control to control on a window */
-    K_UCHAR  m_ucControlIndex;
+    uint8_t  m_u8ControlIndex;
 
     /*! Topmost location of the control on the window */
-    K_USHORT m_usTop;
+    uint16_t m_u16Top;
 
     /*! Leftmost location of the control on the window */
-    K_USHORT m_usLeft;
+    uint16_t m_u16Left;
 
     /*! Width of the control in pixels */
-    K_USHORT m_usWidth;
+    uint16_t m_u16Width;
 
     /*! Height of the control in pixels */
-    K_USHORT m_usHeight;
+    uint16_t m_u16Height;
 
     /*! Pointer to the parent control */
     GuiControl *m_pclParentControl;
@@ -825,7 +825,7 @@ public:
     virtual void Init() {  }
     virtual void Draw() {  }
     virtual GuiReturn_t ProcessEvent( GuiEvent_t *pstEvent_ ) { return GUI_EVENT_OK; }
-    virtual void Activate( K_BOOL bActivate_ ) { }
+    virtual void Activate( bool bActivate_ ) { }
 };
 
 #endif

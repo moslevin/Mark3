@@ -25,7 +25,7 @@ See license.txt for more information
 #include "thread.h"
 
 //---------------------------------------------------------------------------
-extern volatile K_ULONG g_ulCriticalCount;
+extern volatile uint32_t g_ulCriticalCount;
 
 //---------------------------------------------------------------------------
 //! ASM Macro - simplify the use of ASM directive in C
@@ -33,7 +33,7 @@ extern volatile K_ULONG g_ulCriticalCount;
 
 //---------------------------------------------------------------------------
 //! Macro to find the top of a stack given its size and top address
-#define TOP_OF_STACK(x, y)        (K_WORD*) ( ((K_ULONG)x) + (y - sizeof(K_WORD)) )
+#define TOP_OF_STACK(x, y)        (K_WORD*) ( ((uint32_t)x) + (y - sizeof(K_WORD)) )
 //! Push a value y to the stack pointer x and decrement the stack pointer
 #define PUSH_TO_STACK(x, y)        *x = y; x--;
 

@@ -15,7 +15,7 @@ See license.txt for more information
 
 /*===========================================================================
 
-Lab Example 7: Using Event Flags
+Lab Example 7: using Event Flags
 
 Lessons covered in this example include:
 -Using the EventFlag Class to synchronize thread execution
@@ -78,7 +78,7 @@ void App1Main(void *unused_)
 {
     while(1)
     {
-        K_USHORT usFlags;
+        uint16_t u16Flags;
 
         // Block this thread until any of the event flags have been set by
         // some outside force (here, we use Thread 2).  As an exercise to the
@@ -93,10 +93,10 @@ void App1Main(void *unused_)
         // you wanted to trigger an action that only takes place once multiple
         // bits are set, you could block the thread waiting for a specific
         // event bitmask with EVENT_FLAG_ALL specified.
-        usFlags = clFlags.Wait(0xFFFF, EVENT_FLAG_ANY);
+        u16Flags = clFlags.Wait(0xFFFF, EVENT_FLAG_ANY);
 
         // Print a message indicaating which bit was set this time.
-        switch (usFlags)
+        switch (u16Flags)
         {
         case 0x0001:
             KernelAware::Print("Event1\n");
@@ -151,8 +151,8 @@ void App1Main(void *unused_)
         }
 
         // Clear the event-flag that we just printed a message about.  This
-        // will allow us to acknowledge further events in that bit in the future.
-        clFlags.Clear(usFlags);
+        // will allow u16 to acknowledge further events in that bit in the future.
+        clFlags.Clear(u16Flags);
 
     }
 }
@@ -160,7 +160,7 @@ void App1Main(void *unused_)
 //---------------------------------------------------------------------------
 void App2Main(void *unused_)
 {
-    K_USHORT usFlag = 1;
+    uint16_t u16Flag = 1;
     while(1)
     {
         Thread::Sleep(100);
@@ -169,17 +169,17 @@ void App2Main(void *unused_)
         // set one bit each 100ms.  In this loop, we cycle through bits 0-15
         // repeatedly.  Note that this will wake the other thread, which is
         // blocked, waiting for *any* of the flags in the bitmap to be set.
-        clFlags.Set(usFlag);
+        clFlags.Set(u16Flag);
 
         // Bitshift the flag value to the left.  This will be the flag we set
         // the next time this thread runs through its loop.
-        if (usFlag != 0x8000)
+        if (u16Flag != 0x8000)
         {
-            usFlag <<= 1;
+            u16Flag <<= 1;
         }
         else
         {
-            usFlag = 1;
+            u16Flag = 1;
         }
     }
 }

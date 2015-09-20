@@ -34,40 +34,40 @@ static ATMegaUART *pclActive;    // Pointer to the active object
 //---------------------------------------------------------------------------
 void ATMegaUART::SetBaud(void)
 {    
-    K_USHORT usBaudTemp;
-    K_USHORT usPortTemp;
+    uint16_t u16BaudTemp;
+    uint16_t u16PortTemp;
     
     // Calculate the baud rate from the value in the driver.    
-    usBaudTemp = (K_USHORT)(((SYSTEM_FREQ/16)/m_ulBaudRate) - 1);
+    u16BaudTemp = (uint16_t)(((SYSTEM_FREQ/16)/m_u32BaudRate) - 1);
 
     // Save the current port config registers
-    usPortTemp = UART_SRB;
+    u16PortTemp = UART_SRB;
     
     // Clear the registers (disable rx/tx/interrupts)
     UART_SRB = 0;
     UART_SRA = 0;
     
     // Set the baud rate high/low values.
-    UART_BAUDH = (K_UCHAR)(usBaudTemp >> 8);
-    UART_BAUDL = (K_UCHAR)(usBaudTemp & 0x00FF);
+    UART_BAUDH = (uint8_t)(u16BaudTemp >> 8);
+    UART_BAUDL = (uint8_t)(u16BaudTemp & 0x00FF);
     
     // Restore the Rx/Tx flags to their previous state
-    UART_SRB = usPortTemp;
+    UART_SRB = u16PortTemp;
 }
 
 //---------------------------------------------------------------------------
 void ATMegaUART::Init(void)
 {    
     // Set up the FIFOs
-    m_ucTxHead = 0;    
-    m_ucTxTail = 0;
-    m_ucRxHead = 0;
-    m_ucRxTail = 0;
+    m_u8TxHead = 0;    
+    m_u8TxTail = 0;
+    m_u8RxHead = 0;
+    m_u8RxTail = 0;
     m_bEcho = 0;
-    m_ucRxEscape = '\n';
+    m_u8RxEscape = '\n';
     pfCallback = NULL;
     m_bRxOverflow = 0;
-    m_ulBaudRate = UART_DEFAULT_BAUD;
+    m_u32BaudRate = UART_DEFAULT_BAUD;
     
     // Clear flags
     UART_SRA = 0;
@@ -80,7 +80,7 @@ void ATMegaUART::Init(void)
 }
 
 //---------------------------------------------------------------------------
-K_UCHAR ATMegaUART::Open()
+uint8_t ATMegaUART::Open()
 {
   
     // Enable Rx/Tx + Interrupts
@@ -91,7 +91,7 @@ K_UCHAR ATMegaUART::Open()
 }
 
 //---------------------------------------------------------------------------
-K_UCHAR ATMegaUART::Close(void)
+uint8_t ATMegaUART::Close(void)
 {
     // Disable Rx/Tx + Interrupts 
     UART_SRB &= ~((1 << UART_RXEN) | ( 1 << UART_TXEN));
@@ -100,28 +100,28 @@ K_UCHAR ATMegaUART::Close(void)
 }
 
 //---------------------------------------------------------------------------
-K_USHORT ATMegaUART::Control( K_USHORT usCmdId_, void *pvIn_, K_USHORT usSizeIn_, void *pvOut_, K_USHORT usSizeOut_)
+uint16_t ATMegaUART::Control( uint16_t u16CmdId_, void *pvIn_, uint16_t u16SizeIn_, void *pvOut_, uint16_t u16SizeOut_)
 {
-    switch ((CMD_UART)usCmdId_)
+    switch ((CMD_UART)u16CmdId_)
     {
         case CMD_SET_BAUDRATE:
         {
-            K_ULONG ulBaudRate = *((K_ULONG*)pvIn_);
-            m_ulBaudRate = ulBaudRate;
+            uint32_t u32BaudRate = *((uint32_t*)pvIn_);
+            m_u32BaudRate = u32BaudRate;
             SetBaud();
         }
             break;
         case CMD_SET_BUFFERS:
         {
-            m_pucRxBuffer = (K_UCHAR*)pvIn_;
-            m_pucTxBuffer = (K_UCHAR*)pvOut_;
-            m_ucRxSize = usSizeIn_;
-            m_ucTxSize = usSizeOut_;
+            m_pu8RxBuffer = (uint8_t*)pvIn_;
+            m_pu8TxBuffer = (uint8_t*)pvOut_;
+            m_u8RxSize = u16SizeIn_;
+            m_u8TxSize = u16SizeOut_;
         }            
             break;        
         case CMD_SET_RX_ESCAPE:
         {
-            m_ucRxEscape = *((K_UCHAR*)pvIn_);
+            m_u8RxEscape = *((uint8_t*)pvIn_);
         }
             break;
         case CMD_SET_RX_CALLBACK:
@@ -131,7 +131,7 @@ K_USHORT ATMegaUART::Control( K_USHORT usCmdId_, void *pvIn_, K_USHORT usSizeIn_
             break;
         case CMD_SET_RX_ECHO:
         {
-            m_bEcho = *((K_UCHAR*)pvIn_);
+            m_bEcho = *((uint8_t*)pvIn_);
         }
             break;
         case CMD_SET_RX_ENABLE:
@@ -151,33 +151,33 @@ K_USHORT ATMegaUART::Control( K_USHORT usCmdId_, void *pvIn_, K_USHORT usSizeIn_
 }
 
 //---------------------------------------------------------------------------
-K_USHORT ATMegaUART::Read( K_USHORT usSizeIn_, K_UCHAR *pvData_ )
+uint16_t ATMegaUART::Read( uint16_t u16SizeIn_, uint8_t *pvData_ )
 {
     // Read a string of characters of length N.  Return the number of bytes
     // actually read.  If less than the 1 length, this indicates that
     // the buffer is full and that the app needs to wait.
     
-    K_USHORT i = 0;
-    K_USHORT usRead = 0;
-    K_BOOL bExit = 0;
-    K_UCHAR *pucData = (K_UCHAR*)pvData_;
+    uint16_t i = 0;
+    uint16_t u16Read = 0;
+    bool bExit = 0;
+    uint8_t *pu8Data = (uint8_t*)pvData_;
     
-    for (i = 0; i < usSizeIn_; i++)
+    for (i = 0; i < u16SizeIn_; i++)
     {        
         // If Tail != Head, there's data in the buffer.
         CS_ENTER();
-        if (m_ucRxTail != m_ucRxHead)
+        if (m_u8RxTail != m_u8RxHead)
         {
             // We have room to add the byte, so add it.
-            pucData[i] = m_pucRxBuffer[m_ucRxTail];
+            pu8Data[i] = m_pu8RxBuffer[m_u8RxTail];
             
             // Update the buffer head pointer.
-            m_ucRxTail++;
-            if (m_ucRxTail >= m_ucRxSize) 
+            m_u8RxTail++;
+            if (m_u8RxTail >= m_u8RxSize) 
             {
-                m_ucRxTail = 0;
+                m_u8RxTail = 0;
             }
-            usRead++;
+            u16Read++;
         }
         else
         {
@@ -192,46 +192,46 @@ K_USHORT ATMegaUART::Read( K_USHORT usSizeIn_, K_UCHAR *pvData_ )
             break;
         }        
     }
-    return usRead;
+    return u16Read;
 }
 
 //---------------------------------------------------------------------------
-K_USHORT ATMegaUART::Write(K_USHORT usSizeOut_, K_UCHAR *pvData_)
+uint16_t ATMegaUART::Write(uint16_t u16SizeOut_, uint8_t *pvData_)
 {
     // Write a string of characters of length N.  Return the number of bytes
     // actually written.  If less than the 1 length, this indicates that
     // the buffer is full and that the app needs to wait.    
-    K_USHORT i = 0;
-    K_USHORT usWritten = 0;
-    K_UCHAR ucNext;
-    K_BOOL bActivate = 0;
-    K_BOOL bExit = 0;
-    K_UCHAR *pucData = (K_UCHAR*)pvData_;
+    uint16_t i = 0;
+    uint16_t u16Written = 0;
+    uint8_t u8Next;
+    bool bActivate = 0;
+    bool bExit = 0;
+    uint8_t *pu8Data = (uint8_t*)pvData_;
     
     // If the head = tail, we need to start sending data out the data ourselves.
-    if (m_ucTxHead == m_ucTxTail)
+    if (m_u8TxHead == m_u8TxTail)
     {
         bActivate = 1;
     }
     
-    for (i = 0; i < usSizeOut_; i++)
+    for (i = 0; i < u16SizeOut_; i++)
     {
         CS_ENTER();
         // Check that head != tail (we have room)
-        ucNext = (m_ucTxHead + 1);
-        if (ucNext >= m_ucTxSize)
+        u8Next = (m_u8TxHead + 1);
+        if (u8Next >= m_u8TxSize)
         {
-            ucNext = 0;
+            u8Next = 0;
         }
         
-        if (ucNext != m_ucTxTail)
+        if (u8Next != m_u8TxTail)
         {
             // We have room to add the byte, so add it.
-            m_pucTxBuffer[m_ucTxHead] = pucData[i];
+            m_pu8TxBuffer[m_u8TxHead] = pu8Data[i];
             
             // Update the buffer head pointer.
-            m_ucTxHead = ucNext;
-            usWritten++;
+            m_u8TxHead = u8Next;
+            u16Written++;
         }
         else
         {
@@ -259,27 +259,27 @@ K_USHORT ATMegaUART::Write(K_USHORT usSizeOut_, K_UCHAR *pvData_)
         CS_EXIT();
     }
     
-     return usWritten;
+     return u16Written;
 }
 
 //---------------------------------------------------------------------------
 void ATMegaUART::StartTx(void)
 {
     // Send the tail byte out.
-    K_UCHAR ucNext;
+    uint8_t u8Next;
 
     CS_ENTER();
     
     // Send the byte at the tail index
-    UART_UDR = m_pucTxBuffer[m_ucTxTail];
+    UART_UDR = m_pu8TxBuffer[m_u8TxTail];
     
     // Update the tail index
-    ucNext = (m_ucTxTail + 1);
-    if (ucNext >= m_ucTxSize)
+    u8Next = (m_u8TxTail + 1);
+    if (u8Next >= m_u8TxSize)
     {
-        ucNext = 0;
+        u8Next = 0;
     }
-    m_ucTxTail = ucNext;                
+    m_u8TxTail = u8Next;                
     
     CS_EXIT();
 }
@@ -287,48 +287,48 @@ void ATMegaUART::StartTx(void)
 //---------------------------------------------------------------------------
 void ATMegaUART::RxISR()
 {
-    K_UCHAR ucTemp;
-    K_UCHAR ucNext;
+    uint8_t u8Temp;
+    uint8_t u8Next;
     
     // Read the byte from the data buffer register
-    ucTemp = UART_UDR;
+    u8Temp = UART_UDR;
     
     // Check that head != tail (we have room)
-    ucNext = (m_ucRxHead + 1);
-    if (ucNext >= m_ucRxSize)
+    u8Next = (m_u8RxHead + 1);
+    if (u8Next >= m_u8RxSize)
     {
-        ucNext = 0;
+        u8Next = 0;
     }
     
     // Always add the byte to the buffer (but flag an error if it's full...)
-    m_pucRxBuffer[m_ucRxHead] = ucTemp;
+    m_pu8RxBuffer[m_u8RxHead] = u8Temp;
     
     // Update the buffer head pointer.
-    m_ucRxHead = ucNext;
+    m_u8RxHead = u8Next;
     
     // If the buffer's full, discard the oldest byte in the buffer and flag an error
-    if (ucNext == m_ucRxTail)
+    if (u8Next == m_u8RxTail)
     {
         // Update the buffer tail pointer
-        m_ucRxTail = (m_ucRxTail + 1);
-        if (m_ucRxTail >= m_ucRxSize)
+        m_u8RxTail = (m_u8RxTail + 1);
+        if (m_u8RxTail >= m_u8RxSize)
         {
-            m_ucRxTail = 0;
+            m_u8RxTail = 0;
         }
 
         // Flag an error - the buffer is full
         m_bRxOverflow = 1;
     }
     
-    // If local-echo is enabled, TX the K_CHAR
+    // If local-echo is enabled, TX the char
     if (m_bEcho)
     {
-        Write(1, &ucTemp);
+        Write(1, &u8Temp);
     }
     
     // If we've hit the RX callback character, run the callback
     // This is used for calling line-end functions, etc..
-    if (ucTemp == m_ucRxEscape)
+    if (u8Temp == m_u8RxEscape)
     {
         if (pfCallback)
         {
@@ -347,7 +347,7 @@ ISR(UART_RX_ISR)
 void ATMegaUART::TxISR()
 {
     // If the head != tail, there's something to send.
-    if (m_ucTxHead != m_ucTxTail)
+    if (m_u8TxHead != m_u8TxTail)
     {
         StartTx();
     }

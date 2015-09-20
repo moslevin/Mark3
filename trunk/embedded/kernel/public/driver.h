@@ -129,26 +129,26 @@ public:
     virtual void Init() = 0;
     
     /*!
-        \fn K_UCHAR Open()
+        \fn uint8_t Open()
         
         Open a device driver prior to use.
         
         \return Driver-specific return code, 0 = OK, non-0 = error
     */
-    virtual K_UCHAR Open() = 0;
+    virtual uint8_t Open() = 0;
     
     /*!
-        \fn K_UCHAR Close()
+        \fn uint8_t Close()
         
         Close a previously-opened device driver.
                 
         \return Driver-specific return code, 0 = OK, non-0 = error
     */
-    virtual K_UCHAR Close() = 0;
+    virtual uint8_t Close() = 0;
     
     /*!
-        \fn K_USHORT Read( K_USHORT usBytes_, 
-                                 K_UCHAR *pucData_)            
+        \fn uint16_t Read( uint16_t u16Bytes_, 
+                                 uint8_t *pu8Data_)            
 
         Read a specified number of bytes from the device into a specific buffer.
         Depending on the driver-specific implementation, this may be a number
@@ -156,17 +156,17 @@ public:
         there was less input than desired, or that as a result of buffering,
         the data may not be available.
         
-        \param usBytes_ Number of bytes to read (<= size of the buffer)
-        \param pucData_ Pointer to a data buffer receiving the read data
+        \param u16Bytes_ Number of bytes to read (<= size of the buffer)
+        \param pu8Data_ Pointer to a data buffer receiving the read data
         
         \return Number of bytes actually read
     */
-    virtual K_USHORT Read( K_USHORT usBytes_, 
-                                 K_UCHAR *pucData_) = 0;
+    virtual uint16_t Read( uint16_t u16Bytes_, 
+                                 uint8_t *pu8Data_) = 0;
                                  
     /*!
-        \fn K_USHORT Write( K_USHORT usBytes_, 
-                                  K_UCHAR *pucData_)            
+        \fn uint16_t Write( uint16_t u16Bytes_, 
+                                  uint8_t *pu8Data_)            
 
         Write a payload of data of a given length to the device.
         Depending on the implementation of the driver, the amount of data
@@ -175,65 +175,65 @@ public:
         the device buffer is full, indicating that the user must retry
         the write at a later point with the remaining data.
                                   
-        \param usBytes_ Number of bytes to write (<= size of the buffer)
-        \param pucData_ Pointer to a data buffer containing the data to write
+        \param u16Bytes_ Number of bytes to write (<= size of the buffer)
+        \param pu8Data_ Pointer to a data buffer containing the data to write
 
         \return Number of bytes actually written
     */
-    virtual K_USHORT Write( K_USHORT usBytes_, 
-                                  K_UCHAR *pucData_) = 0;
+    virtual uint16_t Write( uint16_t u16Bytes_, 
+                                  uint8_t *pu8Data_) = 0;
 
     /*!        
-        \fn K_USHORT Control( K_USHORT usEvent_, 
+        \fn uint16_t Control( uint16_t u16Event_, 
                                     void *pvDataIn_, 
-                                    K_USHORT usSizeIn_, 
+                                    uint16_t u16SizeIn_, 
                                     void *pvDataOut_, 
-                                    K_USHORT usSizeOut_ )    
+                                    uint16_t u16SizeOut_ )    
     
         This is the main entry-point for device-specific io and control
         operations.  This is used for implementing all "side-channel"
         communications with a device, and any device-specific IO
         operations that do not conform to the typical POSIX 
-        read/write paradigm.  Use of this funciton is analagous to 
+        read/write paradigm.  use of this funciton is analagous to 
         the non-POSIX (yet still common) devctl() or ioctl().
         
-        \param usEvent_ Code defining the io event (driver-specific)
+        \param u16Event_ Code defining the io event (driver-specific)
         \param pvDataIn_ Pointer to the intput data 
-        \param usSizeIn_ Size of the input data (in bytes)
+        \param u16SizeIn_ Size of the input data (in bytes)
         \param pvDataOut_ Pointer to the output data
-        \param usSizeOut_ Size of the output data (in bytes)
+        \param u16SizeOut_ Size of the output data (in bytes)
     
         \return Driver-specific return code, 0 = OK, non-0 = error
     */
-    virtual K_USHORT Control( K_USHORT usEvent_, 
+    virtual uint16_t Control( uint16_t u16Event_, 
                                     void *pvDataIn_, 
-                                    K_USHORT usSizeIn_, 
+                                    uint16_t u16SizeIn_, 
                                     void *pvDataOut_, 
-                                    K_USHORT usSizeOut_ ) = 0;
+                                    uint16_t u16SizeOut_ ) = 0;
     
     /*!
-        \fn void SetName( const K_CHAR *pcName_ )
+        \fn void SetName( const char *pcName_ )
         
         Set the path for the driver.  Name must be set prior to 
         access (since driver access is name-based).
         
         \param pcName_ String constant containing the device path
     */
-    void SetName( const K_CHAR *pcName_ ) { m_pcPath = pcName_; }
+    void SetName( const char *pcName_ ) { m_pcPath = pcName_; }
     
     /*!
-        \fn const K_CHAR *GetPath()
+        \fn const char *GetPath()
     
         Returns a string containing the device path.
         
         \return pcName_ Return the string constant representing the device path
     */
-    const K_CHAR *GetPath() { return m_pcPath; }
+    const char *GetPath() { return m_pcPath; }
     
 private:
 
     //! string pointer that holds the driver path (name)
-    const K_CHAR *m_pcPath;
+    const char *m_pcPath;
 };
 
 //---------------------------------------------------------------------------
@@ -279,7 +279,7 @@ public:
         default "/dev/null" object is returned.  In this way, unimplemented drivers
         are automatically stubbed out.
     */
-    static Driver *FindByPath( const K_CHAR *m_pcPath );
+    static Driver *FindByPath( const char *m_pcPath );
 
 private:
 

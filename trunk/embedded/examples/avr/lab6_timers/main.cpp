@@ -15,7 +15,7 @@ See license.txt for more information
 
 /*===========================================================================
 
-Lab Example 6:  Using Periodic and One-shot timers.
+Lab Example 6:  using Periodic and One-shot timers.
 
 Lessons covered in this example include:
 

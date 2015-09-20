@@ -51,8 +51,8 @@ static GraphicsFlavr clflAVR;       //! flAVR simulated graphics driver object
 #define STACK_SIZE_IDLE		(192)	//!< Size of the idle thread stack
 
 //---------------------------------------------------------------------------
-static K_UCHAR aucAppStack[STACK_SIZE_APP];
-static K_UCHAR aucIdleStack[STACK_SIZE_IDLE];
+static uint8_t aucAppStack[STACK_SIZE_APP];
+static uint8_t aucIdleStack[STACK_SIZE_IDLE];
 
 //---------------------------------------------------------------------------
 static void AppEntry(void);
@@ -96,10 +96,10 @@ void AppEntry(void)
     my_gfx->ClearScreen();
     {
         DrawWindow_t stWindow;
-        stWindow.usBottom = 159;
-        stWindow.usTop = 0;
-        stWindow.usLeft = 0;
-        stWindow.usRight = 127;
+        stWindow.u16Bottom = 159;
+        stWindow.u16Top = 0;
+        stWindow.u16Left = 0;
+        stWindow.u16Right = 127;
         my_gfx->SetWindow(&stWindow);
     }
     Thread::Sleep(10);
@@ -111,15 +111,15 @@ void AppEntry(void)
 	{
         DrawText_t stText;
 
-        stText.usLeft = 8;
-        stText.usTop = 8;
+        stText.u16Left = 8;
+        stText.u16Top = 8;
         stText.uColor = COLOR_RED;
         stText.pstFont = &fntTahoma_10_False_False_False_;
         stText.pcString = "Hello World!";
         my_gfx->Text(&stText);
 
-        stText.usLeft = 8;
-        stText.usTop = 16;
+        stText.u16Left = 8;
+        stText.u16Top = 16;
         stText.uColor = COLOR_RED;
         stText.pstFont = &fntTahoma_10_False_False_False_;
         stText.pcString = "Goodbye World!";

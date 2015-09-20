@@ -51,17 +51,17 @@ public:
     /*!
         Indicate by name which window this screen is to be bound.
     */
-    void SetWindowAffinity( const K_CHAR *szWindowName_ );
+    void SetWindowAffinity( const char *szWindowName_ );
 
     /*!
         Set the name of the current screen.
     */
-    void SetName( const K_CHAR *szName_ )           { m_szName = szName_; }
+    void SetName( const char *szName_ )           { m_szName = szName_; }
 
     /*!
         Return the name of the current screen.
     */
-    const K_CHAR *GetName()                         { return m_szName; }
+    const char *GetName()                         { return m_szName; }
 
 protected:
     friend class ScreenManager;
@@ -71,7 +71,7 @@ protected:
     */
     void SetManager( ScreenManager *pclScreenManager_ );
 
-    const K_CHAR    *m_szName;
+    const char    *m_szName;
     ScreenManager   *m_pclScreenManager;
     GuiWindow       *m_pclWindow;
 
@@ -134,12 +134,12 @@ public:
     /*!
         Return a pointer to a window by name
     */
-    GuiWindow *FindWindowByName( const K_CHAR *m_szName_ );
+    GuiWindow *FindWindowByName( const char *m_szName_ );
 
     /*!
         Return a pointer to a screen by name
     */
-    Screen *FindScreenByName( const K_CHAR *m_szName_ );
+    Screen *FindScreenByName( const char *m_szName_ );
 
 private:
 

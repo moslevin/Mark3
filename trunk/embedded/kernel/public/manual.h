@@ -39,7 +39,7 @@ See license.txt for more information
 	operating system aimed at bringing multitasking to microcontroller 
 	systems without MMUs. 
 
-	It uses modern programming languages and concepts (it's written 
+    It uses modern programming languages and concepts (it's written
 	entirely in C++) to minimize code duplication, and its object-oriented 
 	design enhances readibility. The API is simple - there are only six 
 	functions required to set up the kernel, initialize threads, and start 
@@ -54,7 +54,7 @@ See license.txt for more information
 	
 	- Device driver HAL which provides a meaningful abstraction around device-specific peripherals.  
     - Capable recursive-make driven build system which can be used to build all libraries, examples, tests, documentation, and user-projects for any number of targets from the command-line.
-	- Graphics and UI code designed to simplify the implementation of systems using displays, keypads, joysticks, and touchscreens
+    - Graphics and UI code designed to simplify the implementation of systems using displays, keypads, joysticks, and touchscreens
 	- Standards-based custom communications protocol used to simplify the creation of host tools
 	- A bulletproof, well-documented bootloader for AVR microcontrollers
     - Support for kernel-aware simulators, specifically, Funkenstein Software's own flAVR AVR simulator
@@ -86,17 +86,17 @@ See license.txt for more information
     company that had a very old-school, low-budget philosophy when it came 
     to software development. Every make-or-buy decision ended with "make" 
     when it came to tools. It was the kind of environment where vendors cost 
-    us money, but manpower was free. In retrospect, we didn't have a ton of 
+    u16 money, but manpower was free. In retrospect, we didn't have a ton of 
     business during the time that I worked there, and that may have had 
     something to do with the fact that we were constantly short on ready
     cash for things we could code ourselves. 
 
-    Early on, I asked why we didn't use industry-standard tools - like JTAG 
+    Early on, I asked why we didn't use industry-standard tools - like JTAG
     debuggers or IDEs. One senior engineer scoffed that debuggers were tools 
     for wimps - and something that a good programmer should be able to do 
     without. After all - we had serial ports, GPIOs, and a bi-color LED on 
     our boards. Since these were built into the hardware, they didn't cost 
-    us a thing. We also had a single software "build" server that took 5 
+    u16 a thing. We also had a single software "build" server that took 5 
     minutes to build a 32k binary on its best days, so when we had to debug 
     code, it was a painful process of trial and error, with lots of Youtube 
     between iterations. We complained that tens of thousands of dollars of 
@@ -109,12 +109,12 @@ See license.txt for more information
     say that we walked "up-hills both ways through 3 feet of snow, 
     everyday". Our code was tied ever-so-tightly to our hardware platform, 
     and the system code was indistinguishable from the application. While we 
-    didn't use an RTOS, we had effectively implemented a 3-priority 
-    threading scheme using a carefully designed interrupt nesting scheme 
+    didn't use an RTOS, we had effectively implemented a 3-priority
+    threading scheme using a carefully designed interrupt nesting scheme
     with event flags and a while(1) superloop running as a background 
     thread. Nothing was abstracted, and the code was always optimized for 
     the platform, presumably in an effort to save on code size and wasted 
-    cycles. I asked why we didn't use an RTOS in any of our systems and 
+    cycles. I asked why we didn't use an RTOS in any of our systems and
     received dismissive scoffs - the overhead from thread switching and 
     maintaining multiple threads could not be tolerated in our systems 
     according to our chief engineers. In retrospect, our ad-hoc system was 
@@ -132,24 +132,24 @@ See license.txt for more information
     Most important, I learned that good design is the key to good software; 
     and good design doesn't have to come at a price. In all but the smallest 
     of projects, the well-designed, well-abstracted code is not only more 
-    portable, but it's usually smaller, easier to read, and easier to reuse. 
+    portable, but it's usually smaller, easier to read, and easier to reuse.
 
     Also, since we had all the time in the world to invest in developing our 
-    own tools, I gained a lot of experience building them, and making use of 
+    own tools, I gained a lot of experience building them, and making use of
     good, free PC tools that could be used to develop and debug a large 
     portion of our code. I ended up writing PC-based device and peripheral 
     simulators, state-machine frameworks, and abstractions for our horrible 
     ad-hoc system code. At the end of the day, I had developed enough tools 
     that I could solve a lot of our development problems without having to 
     re-inventing the wheel at each turn. Gaining a background in how these 
-    tools worked gave me a better understanding of how to use them - making 
+    tools worked gave me a better understanding of how to use them - making
     me more productive at the jobs that I've had since. 
 
     I am convinced that designing good software takes honest effort 
     up-front, and that good application code cannot be written unless it is 
     based on a solid framework. Just as the wise man builds his house on 
     rocks, and not on sand, wise developers write applications based on a 
-    well-defined platforms. And while you can probably build a house using 
+    well-defined platforms. And while you can probably build a house using
     nothing but a hammer and sheer will, you can certainly build one a lot 
     faster with all the right tools. 
 
@@ -162,7 +162,7 @@ See license.txt for more information
 
     While I had modest success with this kernel (it has been featured on 
     some blogs, and still gets around 125 downloads a month), it was nothing 
-    like the success of other RTOS kernels like uC/OS-II and FreeRTOS. To be 
+    like the success of other RTOS kernels like u8/OS-II and FreeRTOS. To be 
     honest, as a one-man show, I just don't have the resources to support 
     all of the devices, toolchains, and evaluation boards that a real vendor 
     can. I had never expected my kernel to compete with the likes of them, 
@@ -202,7 +202,7 @@ See license.txt for more information
 	
 	If your code is of any sort of non-trivial complexity (say, at least
 	a few-thousand lines), then a more appropriate question would be 
-	"can you afford *not* to use an	RTOS in your system?".
+    "can you afford *not* to use an	RTOS in your system?".
 	
     In short, there are simply too many benefits of an RTOS to ignore.
 	- Sophisticated synchronization objects 
@@ -225,18 +225,18 @@ See license.txt for more information
     the numbers are not an 100% accurate reflection of the current costs of 
     the Mark3 kernel.)
     
-    One of the main arguments against using an RTOS in an embedded project 
+    One of the main arguments against using an RTOS in an embedded project
     is that the overhead incurred is too great to be justified. Concerns 
-    over "wasted" RAM caused by using multiple stacks, added CPU 
+    over "wasted" RAM caused by using multiple stacks, added CPU
     utilization, and the "large" code footprint from the kernel cause a 
-    large number of developers to shun using a preemptive RTOS, instead 
+    large number of developers to shun using a preemptive RTOS, instead
     favoring a non-preemptive, application-specific solution. 
 
     I believe that not only is the impact negligible in most cases, but that 
     the benefits of writing an application with an RTOS can lead to savings 
     around the board (code size, quality, reliability, and development 
     time). While these other benefits provide the most compelling case for 
-    using an RTOS, they are far more challenging to demonstrate in a 
+    using an RTOS, they are far more challenging to demonstrate in a
     quantitative way, and are clearly documented in numerous industry-based 
     case studies. 
 
@@ -244,12 +244,12 @@ See license.txt for more information
     arguments are largely unfounded when an RTOS is correctly implemented in 
     a system. By measuring the true overhead of a preemptive RTOS in a 
     typical application, we will demonstrate that the impact to code space, 
-    RAM, and CPU usage is minimal, and indeed acceptable for a wide range of 
+    RAM, and CPU usage is minimal, and indeed acceptable for a wide range of
     CPU targets. 
 
     To illustrate just how little an RTOS impacts the size of an embedded 
     software design we will look at a typical microcontroller project and 
-    analyze the various types of overhead associated with using a 
+    analyze the various types of overhead associated with using a
     pre-emptive realtime kernel versus a similar non-preemptive event-based 
     framework. 
 
@@ -260,13 +260,13 @@ See license.txt for more information
     - Runtime overhead: The CPU cycles required for the kernel's functionality (primarily scheduling and thread switching)
     .
 	
-    While there are other notable reasons to include or avoid the use of an 
+    While there are other notable reasons to include or avoid the use of an
     RTOS in certain applications (determinism, responsiveness, and interrupt 
     latency among others), these are not considered in this discussion - as 
     they are difficult to consider for the scope of our "canned" 
     application. Application description: 
 
-    For the purpose of this comparison, we first create an application using 
+    For the purpose of this comparison, we first create an application using
     the standard preemptive Mark3 kernel with 2 system threads running: A 
     foreground thread and a background thread. This gives three total 
     priority levels in the system - the interrupt level (high), and two 
@@ -278,25 +278,25 @@ See license.txt for more information
     its low-power mode until the next interrupt is acknowledged. 
 
     The contents of the threads themselves are unimportant for this 
-    comparison, but we can assume they perform a variety of I/O using 
+    comparison, but we can assume they perform a variety of I/O using
     various user-input devices and a serial graphics display. As a result, a 
     number of Mark3 device drivers are also implemented. 
 
     The application is compiled for an ATMega328p processor which contains 
     32kB of code space in flash, and 2kB of RAM, which is a lower-mid-range 
-    microcontroller in Atmel's 8-bit AVR line of microcontrollers. Using the 
+    microcontroller in Atmel's 8-bit AVR line of microcontrollers. using the
     WinAVR GCC compiler with -O2 level optimizations, an executable is 
     produced with the following code/RAM utilization: 
 
     31600 Bytes Code Space 2014 Bytes RAM 
 
-    An alternate version of this project is created using a custom 
-    "super-loop" kernel, which uses a single application thread and provides 
+    An alternate version of this project is created using a custom
+    "super-loop" kernel, which uses a single application thread and provides
     2 levels of priority (interrupt and application). In this case, the 
     event handler processes the different priority application events to 
     completion from highest to lowest priority. 
 
-    This approach leaves the application itself largely unchanged. Using the 
+    This approach leaves the application itself largely unchanged. using the
     same optimization levels as the preemptive kernel, the code compiles as 
     follows: 
 
@@ -319,7 +319,7 @@ See license.txt for more information
     most stack-intensive event handler. 
 
     In contrast, the preemptive kernel requires a separate stack for each 
-    active thread, and as a result the stack usage of the system is the sum 
+    active thread, and as a result the stack usage of the system is the sum
     of the stacks for all threads. 
 
     Since the application and idle events are the same for both preemptive 
@@ -357,13 +357,13 @@ See license.txt for more information
 
     Mark3 can be configured so that only features necessary for the 
     application are included in the RTOS - you only pay for the parts of the 
-    system that you use. In this way, we can measure the overhead on a 
+    system that you use. In this way, we can measure the overhead on a
     feature-by-feature basis, which is shown below for the kernel as 
     configured for this application: 
         
     3466  Bytes
 
-    The configuration tested in this comparison uses the thread/port module 
+    The configuration tested in this comparison uses the thread/port module
     with timers, drivers, and semaphores, for a total kernel size of ~3.5KB, 
     with the rest of the code space occupied by the application. 
 
@@ -403,7 +403,7 @@ See license.txt for more information
     - Acknowledging the event from the event loop 
 	.
 	
-    Using the cycle-accurate AVR simulator, we find the end-to-end event 
+    using the cycle-accurate AVR simulator, we find the end-to-end event
     sequence time to be 20.4us for the cooperative mode scheduler and 44.2us 
     for the preemptive, giving a difference of 23.8us. 
 
@@ -425,10 +425,10 @@ See license.txt for more information
     On the one hand, if these tests had been performed on a higher-end 
     microcontroller such as the ATMega1284p (containing 128kB of code space 
     and 16kB of RAM), the overhead would be in the noise. For this type of 
-    resource-rich microcontroller, there would be no reason to avoid using 
+    resource-rich microcontroller, there would be no reason to avoid using
     the Mark3 preemptive kernel. 
 
-    Conversely, using a lower-end microcontroller like an ATMega88pa (which 
+    Conversely, using a lower-end microcontroller like an ATMega88pa (which
     has only 8kB of code space and 1kB of RAM), the added overhead would 
     likely be prohibitive for including a preemptive kernel. In this case, 
     the cooperative-mode kernel would be a better choice. 
@@ -441,7 +441,7 @@ See license.txt for more information
     achieved with RTOS overhead, almost any modern platform is sufficient 
     for hosting a kernel. In the event you find yourself with a 
     microprocessor with external memory, there should be no reason to avoid 
-    using an RTOS at all. 
+    using an RTOS at all.
 */
 /*!
     \page SUPER Superloops  
@@ -450,15 +450,15 @@ See license.txt for more information
     
     Before we start taking a look at designing a real-time operating system, 
     it's worthwhile taking a look through one of the most-common design 
-    patterns that developers use to manage task execution in embedded 
+    patterns that developers use to manage task execution in embedded
     systems - Superloops. 
 
     Systems based on superloops favor the system control logic baked 
-    directly into the application code, usually under the guise of 
+    directly into the application code, usually under the guise of
     simplicity, or memory (code and RAM) efficiency. For simple systems, 
     superloops can definitely get the job done. However, they have some 
     serious limitations, and are not suitable for every kind of project. In 
-    a lot of cases you can squeak by using superloops - especially in 
+    a lot of cases you can squeak by using superloops - especially in
     extremely constrained systems, but in general they are not a solid basis 
     for reusable, portable code. 
 
@@ -485,7 +485,7 @@ See license.txt for more information
     
     Here, the code inside the loop will run a single function forever and 
     ever. Not much to it, is there? But you might be surprised at just how 
-    much embedded system firmware is implemented using essentially the same 
+    much embedded system firmware is implemented using essentially the same
     mechanism - there isn't anything wrong with that, but it's just not that 
     interesting. 
 
@@ -501,7 +501,7 @@ See license.txt for more information
     application code. 
 
     The second concept here is the task. This is application code provided 
-    by the user to perform some useful purpose in a system. In this case 
+    by the user to perform some useful purpose in a system. In this case
     Do_something() represents that task - it could be monitoring blood 
     pressure, reading a sensor and writing its data to a terminal, or 
     playing an MP3; anything you can think of for an embedded system to do. 
@@ -523,7 +523,7 @@ See license.txt for more information
     In the previous example, we had a system without any way to control the 
     execution of the task- it just runs forever. There's no way to control 
     when the task can (or more importantly can't) run, which greatly limits 
-    the usefulness of the system. Say you only want your task to run every 
+    the usefulness of the system. Say you only want your task to run every
     100 miliseconds - in the previous code, you have to add a hard-coded 
     delay at the end of your task's execution to ensure your code runs only 
     when it should. 
@@ -534,21 +534,21 @@ See license.txt for more information
     bounds of the operating system to tell tasks when they can run, and in 
     many cases includes special data unique to the synchronization event. 
     There are a whole family of synchronization objects, which we'll get 
-    into later. In this example, we make use of the simplest synchronization 
+    into later. In this example, we make use of the simplest synchronization
     primitive - the global flag. 
 
     With the addition of synchronization brings the addition of event-driven 
     systems. If you're programming a microcontroller system, you generally 
     have scores of peripherals available to you - timers, GPIOs, ADCs, 
-    UARTs, ethernet, USB, etc. All of which can be configured to provide a 
-    stimulus to your system by means of interrupts. This stimulus gives us 
+    UARTs, ethernet, u16B, etc. All of which can be configured to provide a 
+    stimulus to your system by means of interrupts. This stimulus gives u16 
     the ability not only to program our micros to do_something(), but to 
     do_something() if-and-only-if a corresponding trigger has occurred. 
 
     The following concepts are shown in the example below: 
 
     \code 
-    volatile K_BOOL something_to_do = false; 
+    volatile bool something_to_do = false; 
 
     __interrupt__ My_Interrupt_Source(void) 
     { 
@@ -572,7 +572,7 @@ See license.txt for more information
     }
     \endcode
     
-    So there you have it - an event driven system which uses a global 
+    So there you have it - an event driven system which uses a global
     variable to synchronize the execution of our task based on the 
     occurrence of an interrupt. It's still just a bare-metal, 
     OS-baked-into-the-aplication system, but it's introduced a whole bunch 
@@ -582,13 +582,13 @@ See license.txt for more information
     something_to_do, is used as a synchronization object. When an interrupt 
     occurs from some external event, triggering the My_Interrupt_Source() 
     ISR, program flow in main() is interrupted, the interrupt handler is 
-    run, and something_to_do is set to true, letting us know that when we 
+    run, and something_to_do is set to true, letting u16 know that when we 
     get back to main(), that we should run our Do_something() task. 
 
     Another new concept at play here is that of the idle function. In 
     general, when running an event driven system, there are times when the 
     CPU has no application tasks to run. In order to minimize power 
-    consumption, CPUs usually contain instructions or registers that can be 
+    consumption, CPUs usually contain instructions or registers that can be
     set up to disable non-essential subsets of the system when there's 
     nothing to do. In general, the sleeping system can be re-activated 
     quickly as a result of an interrupt or other external stimulus, allowing 
@@ -606,7 +606,7 @@ See license.txt for more information
     the same type occur before the first is processed, one of these 
     interrupt events will be lost. This can be utterly disastrous in a 
     real-time system and should be avoided at all costs. As a result, it's 
-    generally preferable to use synchronization objects whenever possible to 
+    generally preferable to use synchronization objects whenever possible to
     defer processing outside of the ISR. 
 
     Another OS concept that is implicitly introduced in this example is that 
@@ -617,7 +617,7 @@ See license.txt for more information
     shows that main is conceptually a "low-priority" task, and that all ISRs 
     are "high-priority" tasks. In this example, our "high-priority" task is 
     setting a variable to tell our "low-priority" task that it can do 
-    something useful. We will investigate the concept of task priority 
+    something useful. We will investigate the concept of task priority
     further in the next example. 
 
     Preemption is another key principle in embedded systems. This is the 
@@ -639,7 +639,7 @@ See license.txt for more information
     #define TASK_2_EVENT (0x02) 
     #define TASK_3_EVENT (0x04) 
 
-    volatile K_UCHAR event_flags = 0; 
+    volatile uint8_t event_flags = 0; 
 
     // Interrupt sources used to trigger event execution 
     
@@ -707,7 +707,7 @@ See license.txt for more information
     back to main, the system can end up with high-priority tasks getting 
     starved for CPU time by lower-priority, long-running tasks.
 
-    This is one of the more popular Os-baked-into-the-application 
+    This is one of the more popu32ar Os-baked-into-the-application 
     approaches, and is widely used in a variety of real-time embedded 
     systems. 
 
@@ -723,13 +723,13 @@ See license.txt for more information
     #define HP_TASK_1        (0x01)
     #define HP_TASK_2        (0x02)
 
-    volatile K_UCHAR hp_tasks = 0;
+    volatile uint8_t hp_tasks = 0;
 
     // Bitfields used to represent low-priority tasks.
     #define LP_TASK_1        (0x01)
     #define LP_TASK_2        (0x02)
 
-    volatile K_UCHAR lp_tasks = 0;
+    volatile uint8_t lp_tasks = 0;
 
     // Interrupt sources, used to trigger both high and low priority tasks.
     __interrupt__ System_Interrupt_1(void)
@@ -816,7 +816,7 @@ See license.txt for more information
 
     \section SUPER5 Problems with superloops 
 
-    As mentioned earlier, a lot of real-world systems are implemented using 
+    As mentioned earlier, a lot of real-world systems are implemented using
     a superloop design; and while they are simple to understand due to the 
     limited and obvious control logic involved, they are not without their 
     problems. 
@@ -826,7 +826,7 @@ See license.txt for more information
     It's difficult to calculate the overhead of the superloop and the code 
     required to implement workarounds for blocking calls, scheduling, and 
     preemption. There's a cost in both the logic used to implement 
-    workarounds (usually involving state machines), as well as a cost to 
+    workarounds (usually involving state machines), as well as a cost to
     maintainability that comes with breaking up into chunks based on 
     execution time instead of logical operations. In moderate firmware 
     systems, this size cost can exceed the overhead of a reasonably 
@@ -874,7 +874,7 @@ See license.txt for more information
     <b>Limited preemption capability</b> 
 
     As shown in the example code, the way to gain preemption in a superloop 
-    is through the use of nested interrupts. While this isn't unwiedly for 
+    is through the use of nested interrupts. While this isn't unwiedly for
     two levels of priority, adding more levels beyond this is becomes 
     complicated. In this case, it becomes necessary to track interrupt 
     nesting manually, and separate sets of tasks that can run within given 
@@ -957,7 +957,7 @@ See license.txt for more information
     straightforward, requiring only device-specific implementations for the 
     lowest-level operations such as context switching and timer setup. 
 
-    <b>Easy To Use</b>
+    <b>Easy To use</b>
     
     Mark3 is small by design - which gives it the advantage that it's also 
     easy to develop for. This manual, the code itself, and the Doxygen 
@@ -1011,8 +1011,8 @@ See license.txt for more information
     #define STACK_SIZE_APP      (192)
     #define STACK_SIZE_IDLE     (128)
     
-    static K_UCHAR aucAppStack[STACK_SIZE_APP];
-    static K_UCHAR aucIdleStack[STACK_SIZE_IDLE];
+    static uint8_t aucAppStack[STACK_SIZE_APP];
+    static uint8_t aucIdleStack[STACK_SIZE_IDLE];
     
     //3) Define entry point functions for each thread
     void AppThread(void);
@@ -1102,7 +1102,7 @@ See license.txt for more information
     stack size, thread priority, entry-point function, entry-function
     argument, and round-robin time quantum:
     
-    Thread stacks are pointers to blobs of memory (usually K_CHAR arrays)
+    Thread stacks are pointers to blobs of memory (usually char arrays)
     carved out of the system's address space.  Each thread must have a 
     stack defined that's large enough to handle not only the requirements
     of local variables in the thread's code path, but also the maximum 
@@ -1129,7 +1129,7 @@ See license.txt for more information
     
     \code 
     Thread clMyThread;
-    K_UCHAR aucStack[192];
+    uint8_t aucStack[192];
     
     void AppEntry(void)
     {
@@ -1235,7 +1235,7 @@ See license.txt for more information
 
     Semaphores are used to synchronized execution of threads based on the 
     availability (and quantity) of application-specific resources in the
-    system.  They are extremely useful for solving producer-consumer 
+    system.  They are extremely useful for solving producer-consumer
     problems, and are the method-of-choice for creating efficient, low
     latency systems, where ISRs post semaphores that are handled
     from within the context of individual threads.  (Yes, Semaphores
@@ -1321,7 +1321,7 @@ See license.txt for more information
 	intermediate priorities cannot artificically prevent progress from being 
 	made. 
 		
-	Mutex objects are very easy to use, as there are only three operations 
+    Mutex objects are very easy to use, as there are only three operations
 	supported: Initialize, Claim and Release. An example is shown below. 
 	
 	\code 
@@ -1330,7 +1330,7 @@ See license.txt for more information
 	
 	void Init()
 	{
-		// Initialize the mutex before use.
+        // Initialize the mutex before use.
 		clMutex.Init();
 	}
 	
@@ -1415,14 +1415,14 @@ See license.txt for more information
             while(1)
             {
                 ...
-                K_USHORT usWakeCondition;
+                uint16_t u16WakeCondition;
 
                 // Allow this thread to block on multiple flags
-                usWakeCondition = clEventFlag.Wait(0x00FF, EVENT_FLAG_ANY);
+                u16WakeCondition = clEventFlag.Wait(0x00FF, EVENT_FLAG_ANY);
 
                 // Clear the event condition that caused the thread to wake (in this case,
-                // usWakeCondtion will equal 0x20 when triggered from the interrupt above)
-                clEventFlag.Clear(usWakeCondition);
+                // u16WakeCondtion will equal 0x20 when triggered from the interrupt above)
+                clEventFlag.Clear(u16WakeCondition);
 
                 // <do something>
             }
@@ -1464,8 +1464,8 @@ See license.txt for more information
 	payload of data corresponding to the particular event. 
 		
 	Access to these fields is marshalled by accessors - the transmitting 
-	thread uses the SetData() and SetCode() methods to seed the data, while 
-	the receiving thread uses the GetData() and GetCode() methods to 
+    thread uses the SetData() and SetCode() methods to seed the data, while
+    the receiving thread uses the GetData() and GetCode() methods to
 	retrieve it. 
 		
 	By providing the data as a void data pointer instead of a fixed-size 
@@ -1556,7 +1556,133 @@ See license.txt for more information
 		GlobalMessagePool::Push(pclMesg);
 	}
 	\endcode
+
+    \section MBX Mailboxes
+
+    Another form of IPC is provided by Mark3, in the form of Mailboxes and Envelopes.
+
+    Mailboxes are similar to message queues in that they provide a synchronized interface
+    by which data can be transmitted between threads.
+
+    Where Message Queues rely on linked lists of lightweight message objects (containing
+    only message code and a void* data-pointer), which are inherently abstract,
+    Mailboxes use a dedicated blob of memory, which is carved up into fixed-size
+    chunks called Envelopes (defined by the user), which are sent and received.  Unlike
+    message queues, mailbox data is copied to and from the mailboxes dedicated pool.
+
+    Mailboxes also differ in that they provide not only a blocking "receive" call, but
+    also a blocking "send" call, providing the opportunity for threads to block on
+    "mailbox full" as well as "mailbox empty" conditions.
+
+    All send/receive APIs support an optional timeout parameter if the KERNEL_USE_TIMEOUTS
+    option has been configured in mark3cfg.h
+
+    \subsection MBXE Mailbox Example
+
+    \code
+
+    // Create a mailbox object, and define a buffer that will be used to store the
+    // mailbox' envelopes.
+    static Mailbox clMbox;
+    static uint8_t aucMBoxBuffer[128];
+
+    ...
+    void InitMailbox(void)
+    {
+        // Initialize our mailbox, telling it to use our defined buffer for envelope
+        // storage.  Pass in the size of the buffer, and set the size of each
+        // envelope to 16 bytes.  This gives u16 a mailbox capacity of (128 / 16) = 8
+        // envelopes.
+        clMbox.Init((void*)aucMBoxBuffer, 128, 16);
+
+    }
+
+    ...
+    void SendThread(void)
+    {
+        // Define a buffer that we'll eventually send to the
+        // mailbox.  Note the size is the same as that of an
+        // envelope.
+        uint8_t aucTxBuf[16];
+
+        while(1)
+        {
+            // Copy some data into aucTxBuf, a 16-byte buffer, the
+            // same size as a mailbox envelope.
+            ...
+
+            // Deliver the envelope (our buffer) into the mailbox
+            clMbox.Send((void*)aucTxBuf);
+        }
+    }
+
+    ...
+    void RecvThred(void)
+    {
+        uint8_t aucRxBuf[16];
+
+        while(1)
+        {
+            // Wait until there's a message in our mailbox.  Once
+            // there is a message, read it into our local buffer.
+            cmMbox.Receive((void*)aucRxBuf);
+
+            // Do something with the contents of aucRxBuf, which now
+            // contains an envelope of data read from the mailbox.
+            ...
+        }
+    }
+
+    \endcode
+
+    \section NTF Notification Objects
 	
+    Notification objects are the most lightweight of all blocking objects supplied
+    by Mark3.
+
+    using this blocking primative, one or more threads wait for the notification
+    object to be signalled by code elsewhere in the system (i.e. another
+    thread or interrupt).  Once the the notification has been signalled, all
+    threads currently blocked on the object become unblocked.
+
+    \subsection NTFE Notification Example
+
+    \code
+
+    static Notify clNotifier;
+
+    ...
+    void MyThread(void *unused_)
+    {
+        // Initialize our notification object before use
+        clNotifier.Init();
+
+        while (1)
+        {
+            // Wait until our thread has been notified that it
+            // can wake up.
+            clNotify.Wait();
+
+            ...
+            // Thread has woken up now -- do something!
+        }
+    }
+
+    ...
+    void SignalCallback(void)
+    {
+        // Something in the system (interrupt, thread event, IPC,
+        // etc.,) has called this function.  As a result, we need
+        // our other thread to wake up.  Call the Notify object's
+        // Signal() method to wake the thread up.  Note that this
+        // will have no effect if the thread is not presently
+        // blocked.
+
+        clNotify.Signal();
+    }
+
+    \endcode
+
     \section SLP Sleep
     
 	There are instances where it may be necessary for a thread to poll a 
@@ -1578,7 +1704,7 @@ See license.txt for more information
 		int value;
 		// The hardware manual for a peripheral specifies that
 		// the "foo()" method will result in data being generated
-		// that can be captured using the "bar()" method.
+        // that can be captured using the "bar()" method.
 		// However, the value only becomes valid after 10ms
 		
 		peripheral.foo();	
@@ -1590,7 +1716,7 @@ See license.txt for more information
 	
     \section RR Round-Robin Quantum
 	
-	Threads at the same thread priority are scheduled using a round-robin
+    Threads at the same thread priority are scheduled using a round-robin
 	scheme.  Each thread is given a timeslice (which can be configured) 
 	of which it shares time amongst ready threads in the group.  Once 
 	a thread's timeslice has expired, the next thread in the priority 
@@ -1611,7 +1737,7 @@ See license.txt for more information
 	valid makefile is scanned, as well as all of its subdirectories. The 
 	build then generates binary components for all of the components it 
 	finds -libraries and executables. All libraries that are generated can 
-	then be imported into an application using the linker without having to 
+    then be imported into an application using the linker without having to
 	copy-and-paste files on a module-by-module basis. Applications built 
 	during this process can then be loaded onto a device directly, without 
 	requiring a GUI-based IDE. As a result, Mark3 integrates well with 3rd 
@@ -1672,7 +1798,7 @@ See license.txt for more information
 	environment variables so that they are accessible through from the 
 	command-line. 
 
-	Once configured, you can build the source tree using the various make targets:
+    Once configured, you can build the source tree using the various make targets:
 
 	- make headers 
 	  - copy all headers in each module's /public subdirectory to the location specified by STAGE environment variable's ./inc subdirectory.
@@ -1730,7 +1856,7 @@ See license.txt for more information
 
 	Now, you can still copy-and-paste the required kernel, port, and 
 	drivers, directly into your application avoiding the whole process of 
-	using make from the command line. To do this, run "make source" from 
+    using make from the command line. To do this, run "make source" from
 	the root directory in svn, and copy the contents of /stage/src into
 	your project.  This should contain the source to the kernel, all
 	drivers, and all services that are in the tree - along with the necessary
@@ -1819,7 +1945,7 @@ See license.txt for more information
     Copyright (c) 2012-2015, Funkenstein Software Consulting
 	All rights reserved.
 	
-	Redistribution and use in source and binary forms, with or without
+    Redistribution and use in source and binary forms, with or without
 	modification, are permitted provided that the following conditions are met:
 	    * Redistributions of source code must retain the above copyright
 	      notice, this list of conditions and the following disclaimer.
@@ -1836,8 +1962,8 @@ See license.txt for more information
     DISCLAIMED. IN NO EVENT SHALL FUNKENSTEIN SOFTWARE (MARK SLEVINSKY) BE LIABLE FOR ANY
 	DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
 	(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-	LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+    LOSS OF use, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
 	ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-	(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+    (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE use OF THIS
 	SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */

@@ -73,10 +73,10 @@ public:
 
 private:
     //! The time (in system clock ticks) of the next wakeup event
-    K_ULONG m_ulNextWakeup;
+    uint32_t m_u32NextWakeup;
 
     //! Whether or not the timer is active
-    K_UCHAR m_bTimerActive;
+    bool m_bTimerActive;
 };
 
 #endif // KERNEL_USE_TIMERS

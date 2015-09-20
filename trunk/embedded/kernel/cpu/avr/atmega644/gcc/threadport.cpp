@@ -33,58 +33,58 @@ See license.txt for more information
 #include <avr/interrupt.h>
 
 //---------------------------------------------------------------------------
-Thread *g_pstCurrentThread;
+Thread *g_pclCurrentThread;
 
 //---------------------------------------------------------------------------
 void ThreadPort::InitStack(Thread *pclThread_)
 {
     // Initialize the stack for a Thread
-    K_USHORT usAddr;
-    K_UCHAR *pucStack;
-    K_USHORT i;
+    uint16_t u16Addr;
+    uint8_t *pu8Stack;
+    uint16_t i;
 
     // Get the address of the thread's entry function
-    usAddr = (K_USHORT)(pclThread_->m_pfEntryPoint);
+    u16Addr = (uint16_t)(pclThread_->m_pfEntryPoint);
 
     // Start by finding the bottom of the stack
-    pucStack = (K_UCHAR*)pclThread_->m_pwStackTop;
+    pu8Stack = (uint8_t*)pclThread_->m_pwStackTop;
 
     // clear the stack, and initialize it to a known-default value (easier
     // to debug when things go sour with stack corruption or overflow)
-    for (i = 0; i < pclThread_->m_usStackSize; i++)
+    for (i = 0; i < pclThread_->m_u16StackSize; i++)
     {
         pclThread_->m_pwStack[i] = 0xFF;
     }
 
     // Our context starts with the entry function
-    PUSH_TO_STACK(pucStack, (K_UCHAR)(usAddr & 0x00FF));
-    PUSH_TO_STACK(pucStack, (K_UCHAR)((usAddr >> 8) & 0x00FF));
+    PUSH_TO_STACK(pu8Stack, (uint8_t)(u16Addr & 0x00FF));
+    PUSH_TO_STACK(pu8Stack, (uint8_t)((u16Addr >> 8) & 0x00FF));
 
     // R0
-    PUSH_TO_STACK(pucStack, 0x00);    // R0
+    PUSH_TO_STACK(pu8Stack, 0x00);    // R0
 
     // Push status register and R1 (which is used as a constant zero)
-    PUSH_TO_STACK(pucStack, 0x80);  // SR
-    PUSH_TO_STACK(pucStack, 0x00);  // R1
+    PUSH_TO_STACK(pu8Stack, 0x80);  // SR
+    PUSH_TO_STACK(pu8Stack, 0x00);  // R1
 
     // Push other registers
     for (i = 2; i <= 23; i++) //R2-R23
     {
-        PUSH_TO_STACK(pucStack, i);
+        PUSH_TO_STACK(pu8Stack, i);
     }
 
     // Assume that the argument is the only stack variable
-    PUSH_TO_STACK(pucStack, (K_UCHAR)(((K_USHORT)(pclThread_->m_pvArg)) & 0x00FF));    //R24
-    PUSH_TO_STACK(pucStack, (K_UCHAR)((((K_USHORT)(pclThread_->m_pvArg))>>8) & 0x00FF)); //R25
+    PUSH_TO_STACK(pu8Stack, (uint8_t)(((uint16_t)(pclThread_->m_pvArg)) & 0x00FF));    //R24
+    PUSH_TO_STACK(pu8Stack, (uint8_t)((((uint16_t)(pclThread_->m_pvArg))>>8) & 0x00FF)); //R25
 
     // Push the rest of the registers in the context
     for (i = 26; i <=31; i++)
     {
-        PUSH_TO_STACK(pucStack, i);
+        PUSH_TO_STACK(pu8Stack, i);
     }
     
     // Set the top o' the stack.
-    pclThread_->m_pwStackTop = (K_UCHAR*)pucStack;
+    pclThread_->m_pwStackTop = (uint8_t*)pu8Stack;
 
     // That's it!  the thread is ready to run now.
 }
@@ -94,22 +94,22 @@ static void Thread_Switch(void)
 {
 #if KERNEL_USE_IDLE_FUNC
     // If there's no next-thread-to-run...
-    if (g_pstNext == Kernel::GetIdleThread())
+    if (g_pclNext == Kernel::GetIdleThread())
     {
-        g_pstCurrent = Kernel::GetIdleThread();
+        g_pclCurrent = Kernel::GetIdleThread();
 
         // Disable the SWI, and re-enable interrupts -- enter nested interrupt
         // mode.
         KernelSWI::DI();
 
-        g_pstCurrent = Kernel::GetIdleThread();
+        g_pclCurrent = Kernel::GetIdleThread();
 
-        K_UCHAR ucSR = _SFR_IO8(SR_);
+        uint8_t u8SR = _SFR_IO8(SR_);
 
         // So long as there's no "next-to-run" thread, keep executing the Idle
         // function to conclusion...
 
-        while (g_pstNext == Kernel::GetIdleThread())
+        while (g_pclNext == Kernel::GetIdleThread())
         {
            // Ensure that we run this block in an interrupt enabled context (but
            // with the rest of the checks being performed in an interrupt disabled
@@ -125,11 +125,11 @@ static void Thread_Switch(void)
         // proceed to disable the nested interrupt context and switch to the
         // new thread.
 
-        _SFR_IO8(SR_) = ucSR;
+        _SFR_IO8(SR_) = u8SR;
         KernelSWI::RI( true );
     }
 #endif
-    g_pstCurrent = (Thread*)g_pstNext;
+    g_pclCurrent = (Thread*)g_pclNext;
 }
 
 

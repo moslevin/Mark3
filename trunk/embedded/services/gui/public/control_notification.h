@@ -40,25 +40,25 @@ public:
 
     virtual void Draw();
     virtual GuiReturn_t ProcessEvent( GuiEvent_t *pstEvent_ );
-    virtual void Activate( K_BOOL bActivate_ ) {}
+    virtual void Activate( bool bActivate_ ) {}
 
     void SetFont( Font_t *pstFont_ ) { m_pstFont = pstFont_; }
-    void SetCaption( const K_CHAR *szCaption_ ) { m_szCaption = szCaption_; }
+    void SetCaption( const char *szCaption_ ) { m_szCaption = szCaption_; }
 
-    void Trigger( K_USHORT usTimeout_ )
+    void Trigger( uint16_t u16Timeout_ )
     {
-        m_usTimeout = usTimeout_;
+        m_u16Timeout = u16Timeout_;
         m_bTrigger = true;
         m_bVisible = true;
         SetStale();
     }
 
 private:
-    const K_CHAR * m_szCaption;
+    const char * m_szCaption;
     Font_t *m_pstFont;
-    K_USHORT m_usTimeout;
-    K_BOOL m_bTrigger;
-    K_BOOL m_bVisible;
+    uint16_t m_u16Timeout;
+    bool m_bTrigger;
+    bool m_bVisible;
 };
 
 #endif

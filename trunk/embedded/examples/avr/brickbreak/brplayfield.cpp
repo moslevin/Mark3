@@ -20,7 +20,7 @@
 #endif
 
 //---------------------------------------------------------------------------
-const K_USHORT ausLevelData[][ LEVEL_NUM_ROWS ] LEVEL_MEM =
+const uint16_t au16LevelData[][ LEVEL_NUM_ROWS ] LEVEL_MEM =
 {
     {
         0xFFF,
@@ -443,34 +443,34 @@ static BrLevelType_t aeLevelTypes[ NUM_LEVELS ] =
 };
 
 //---------------------------------------------------------------------------
-void BrPlayField::LoadLevel( K_USHORT usLevel_ )
+void BrPlayField::LoadLevel( uint16_t u16Level_ )
 {
-    K_USHORT usLevelIdx = usLevel_ % NUM_LEVELS;
-    const K_USHORT *pusData = &(ausLevelData[usLevelIdx][0]);
+    uint16_t u16LevelIdx = u16Level_ % NUM_LEVELS;
+    const uint16_t *pu16Data = &(au16LevelData[u16LevelIdx][0]);
 
     m_bHitCieling = false;
 
-    m_usBricksLeft = 0;
-    m_ucBonusTimer = 0;
-    m_usRandValue = 1;
-    m_ucCol = 0;
-    m_ucRow = 0;
+    m_u16BricksLeft = 0;
+    m_u8Bonusimer = 0;
+    m_u16RandValue = 1;
+    m_u8Col = 0;
+    m_u8Row = 0;
 
-    for (K_UCHAR i = 0; i < LEVEL_NUM_ROWS; i++)
+    for (uint8_t i = 0; i < LEVEL_NUM_ROWS; i++)
     {
-        m_clLevelData.ausData[i] = READ_LEVEL_MEM(pusData++);
+        m_clLevelData.au16Data[i] = READ_LEVEL_MEM(pu16Data++);
 
-        K_USHORT j = 1;
+        uint16_t j = 1;
         while (j < 0x1000)
         {
-            if (m_clLevelData.ausData[i] & j)
+            if (m_clLevelData.au16Data[i] & j)
             {
-                m_usBricksLeft++;
+                m_u16BricksLeft++;
             }
             j <<= 1;
         }
     }
-    m_clLevelData.eLevelType = aeLevelTypes[ usLevelIdx ];
+    m_clLevelData.eLevelType = aeLevelTypes[ u16LevelIdx ];
 }
 
 //---------------------------------------------------------------------------
@@ -480,41 +480,41 @@ void BrPlayField::Draw(void)
 
     stRect.bFill = true;
     stRect.uFillColor = COLOR_BLUE;
-    stRect.uLineColor = COLOR_BLUE;
-    stRect.usLeft = 0;
-    stRect.usRight = PLAYFIELD_BORDER_WIDTH - 1;
-    stRect.usTop = HUD_HEIGHT;
-    stRect.usBottom = PADDLE_YPOS;
+    stRect.u32ineColor = COLOR_BLUE;
+    stRect.u16Left = 0;
+    stRect.u16Right = PLAYFIELD_BORDER_WIDTH - 1;
+    stRect.u16Top = HUD_HEIGHT;
+    stRect.u16Bottom = PADDLE_YPOS;
 
     pclDisplay->Rectangle(&stRect);
 
-    stRect.usLeft = PLAYFIELD_RIGHT_BORDER;
-    stRect.usRight = PLAYFIELD_RIGHT_BORDER + PLAYFIELD_BORDER_WIDTH - 1;
+    stRect.u16Left = PLAYFIELD_RIGHT_BORDER;
+    stRect.u16Right = PLAYFIELD_RIGHT_BORDER + PLAYFIELD_BORDER_WIDTH - 1;
 
     pclDisplay->Rectangle(&stRect);
 
-    stRect.usTop = HUD_HEIGHT;
-    stRect.usBottom = HUD_HEIGHT + PLAYFIELD_BORDER_HEIGHT;
-    stRect.usLeft = 0;
-    stRect.usRight = SCREEN_WIDTH - 1;
+    stRect.u16Top = HUD_HEIGHT;
+    stRect.u16Bottom = HUD_HEIGHT + PLAYFIELD_BORDER_HEIGHT;
+    stRect.u16Left = 0;
+    stRect.u16Right = SCREEN_WIDTH - 1;
 
     pclDisplay->Rectangle(&stRect);
 
-    stRect.usTop = HUD_HEIGHT + PLAYFIELD_BORDER_HEIGHT;
-    stRect.usBottom = stRect.usTop + (LEVEL_NUM_ROWS * BRICK_HEIGHT) + PLAYFIELD_BRICK_MARGIN;
-    stRect.usLeft = PLAYFIELD_LEFT_BORDER;
-    stRect.usRight = PLAYFIELD_RIGHT_BORDER-1;
+    stRect.u16Top = HUD_HEIGHT + PLAYFIELD_BORDER_HEIGHT;
+    stRect.u16Bottom = stRect.u16Top + (LEVEL_NUM_ROWS * BRICK_HEIGHT) + PLAYFIELD_BRICK_MARGIN;
+    stRect.u16Left = PLAYFIELD_LEFT_BORDER;
+    stRect.u16Right = PLAYFIELD_RIGHT_BORDER-1;
     stRect.uFillColor = COLOR_BLACK;
-    stRect.uLineColor = COLOR_BLACK;
+    stRect.u32ineColor = COLOR_BLACK;
     stRect.bFill = true;
 
     pclDisplay->Rectangle(&stRect);
 
-    for (K_UCHAR i = 0; i < LEVEL_NUM_ROWS; i++)
+    for (uint8_t i = 0; i < LEVEL_NUM_ROWS; i++)
     {
-        for (K_UCHAR j = 0; j < LEVEL_NUM_COLS; j++)
+        for (uint8_t j = 0; j < LEVEL_NUM_COLS; j++)
         {
-            if (m_clLevelData.ausData[i] & (1 << (K_USHORT)j))
+            if (m_clLevelData.au16Data[i] & (1 << (uint16_t)j))
             {
                 DrawBrick( i, j, 0 );
             }
@@ -523,107 +523,107 @@ void BrPlayField::Draw(void)
 }
 
 //---------------------------------------------------------------------------
-void BrPlayField::ClearBrick_i(K_UCHAR ucRow_, K_UCHAR ucCol_)
+void BrPlayField::ClearBrick_i(uint8_t u8Row_, uint8_t u8Col_)
 {
     DrawRectangle_t stRect;
-    stRect.usTop = (PLAYFIELD_BRICK_MARGIN + HUD_HEIGHT + PLAYFIELD_BORDER_HEIGHT) + (ucRow_ * BRICK_HEIGHT);
-    stRect.usBottom = stRect.usTop + BRICK_HEIGHT - 1;
-    stRect.usLeft = PLAYFIELD_BORDER_WIDTH + (ucCol_ * BRICK_WIDTH);
-    stRect.usRight = stRect.usLeft + BRICK_WIDTH - 1;
+    stRect.u16Top = (PLAYFIELD_BRICK_MARGIN + HUD_HEIGHT + PLAYFIELD_BORDER_HEIGHT) + (u8Row_ * BRICK_HEIGHT);
+    stRect.u16Bottom = stRect.u16Top + BRICK_HEIGHT - 1;
+    stRect.u16Left = PLAYFIELD_BORDER_WIDTH + (u8Col_ * BRICK_WIDTH);
+    stRect.u16Right = stRect.u16Left + BRICK_WIDTH - 1;
     stRect.bFill = true;
     stRect.uFillColor = COLOR_BLACK;
-    stRect.uLineColor = COLOR_BLACK;
+    stRect.u32ineColor = COLOR_BLACK;
     pclDisplay->Rectangle(&stRect);
 
-    if ((m_ucBonusRow != 0) && (m_ucBonusCol != 0))
+    if ((m_u8Bonusow != 0) && (m_u8Bonusol != 0))
     {
-        if ((ucRow_ == (m_ucBonusRow - 1)) && (ucCol_ == (m_ucBonusCol - 1)))
+        if ((u8Row_ == (m_u8Bonusow - 1)) && (u8Col_ == (m_u8Bonusol - 1)))
         {
-            m_ucBonusCol = 0;
-            m_ucBonusRow = 0;
+            m_u8Bonusol = 0;
+            m_u8Bonusow = 0;
         }
     }
 }
 
 //---------------------------------------------------------------------------
-K_UCHAR BrPlayField::ClearBrick(K_USHORT usX_, K_USHORT usY_)
+uint8_t BrPlayField::ClearBrick(uint16_t u16X_, uint16_t u16Y_)
 {
     //!! Must ensure the "CheckBrick" test has passed before calling.
 
     // Convert X/Y to row/column
-    K_UCHAR ucCol = (usX_ - PLAYFIELD_BORDER_WIDTH) / BRICK_WIDTH;
-    K_UCHAR ucRow = (usY_ - (PLAYFIELD_BRICK_MARGIN + HUD_HEIGHT + PLAYFIELD_BORDER_HEIGHT)) / BRICK_HEIGHT;
+    uint8_t u8Col = (u16X_ - PLAYFIELD_BORDER_WIDTH) / BRICK_WIDTH;
+    uint8_t u8Row = (u16Y_ - (PLAYFIELD_BRICK_MARGIN + HUD_HEIGHT + PLAYFIELD_BORDER_HEIGHT)) / BRICK_HEIGHT;
 
-    K_UCHAR ucRet = 0;
+    uint8_t u8Ret = 0;
 
-    if (usY_ == ((PLAYFIELD_BRICK_MARGIN + HUD_HEIGHT + PLAYFIELD_BORDER_HEIGHT) + (ucRow * BRICK_HEIGHT)))
+    if (u16Y_ == ((PLAYFIELD_BRICK_MARGIN + HUD_HEIGHT + PLAYFIELD_BORDER_HEIGHT) + (u8Row * BRICK_HEIGHT)))
     {
-        ucRet |= BRICK_HIT_TOP;
+        u8Ret |= BRICK_HIT_TOP;
     }
-    else if (usY_ == ((PLAYFIELD_BRICK_MARGIN + HUD_HEIGHT + PLAYFIELD_BORDER_HEIGHT - 1) + ((ucRow+1) * BRICK_HEIGHT)))
+    else if (u16Y_ == ((PLAYFIELD_BRICK_MARGIN + HUD_HEIGHT + PLAYFIELD_BORDER_HEIGHT - 1) + ((u8Row+1) * BRICK_HEIGHT)))
     {
-        ucRet |= BRICK_HIT_BOTTOM;
+        u8Ret |= BRICK_HIT_BOTTOM;
     }
-    else if (usX_ == (PLAYFIELD_BORDER_WIDTH + (ucCol * BRICK_WIDTH)))
+    else if (u16X_ == (PLAYFIELD_BORDER_WIDTH + (u8Col * BRICK_WIDTH)))
     {
-        ucRet |= BRICK_HIT_LEFT;
+        u8Ret |= BRICK_HIT_LEFT;
     }
-    else if (usX_ == ((PLAYFIELD_BORDER_WIDTH-1) + ((ucCol+1) * BRICK_WIDTH)))
+    else if (u16X_ == ((PLAYFIELD_BORDER_WIDTH-1) + ((u8Col+1) * BRICK_WIDTH)))
     {
-        ucRet |= BRICK_HIT_RIGHT;
+        u8Ret |= BRICK_HIT_RIGHT;
     }
 
     // Hit is in the middle of a brick?  Assume a vertical hit.
-    if (0 == ucRet)
+    if (0 == u8Ret)
     {
-        ucRet = BRICK_HIT_BOTTOM;
+        u8Ret = BRICK_HIT_BOTTOM;
     }
     // Check for the presence of a brick at the specified row/col
-    if (m_clLevelData.ausData[ucRow] & (1 << (K_USHORT)ucCol))
+    if (m_clLevelData.au16Data[u8Row] & (1 << (uint16_t)u8Col))
     {
-        m_clLevelData.ausData[ucRow] &= ~(1 << (K_USHORT)ucCol);
-        m_usBricksLeft--;
+        m_clLevelData.au16Data[u8Row] &= ~(1 << (uint16_t)u8Col);
+        m_u16BricksLeft--;
 
-        if (m_ucBonusRow && m_ucBonusCol)
+        if (m_u8Bonusow && m_u8Bonusol)
         {
-            if ((ucRow == (m_ucBonusRow - 1)) && (ucCol == (m_ucBonusCol - 1)))
+            if ((u8Row == (m_u8Bonusow - 1)) && (u8Col == (m_u8Bonusol - 1)))
             {
-                ucRet |= BRICK_HIT_SPECIAL;                
+                u8Ret |= BRICK_HIT_SPECIAL;                
             }
         }
-        ClearBrick_i(ucRow, ucCol);
+        ClearBrick_i(u8Row, u8Col);
     }
 
-    return ucRet;
+    return u8Ret;
 }
 
 //---------------------------------------------------------------------------
-K_BOOL BrPlayField::CheckBrickExists(K_USHORT usX_, K_USHORT usY_)
+bool BrPlayField::CheckBrickExists(uint16_t u16X_, uint16_t u16Y_)
 {
-    K_UCHAR ucRow;
-    K_UCHAR ucCol;
+    uint8_t u8Row;
+    uint8_t u8Col;
 
     // Check if we're vertically out of bounds...
-    if (usY_ < (PLAYFIELD_BRICK_MARGIN + HUD_HEIGHT + PLAYFIELD_BORDER_HEIGHT))
+    if (u16Y_ < (PLAYFIELD_BRICK_MARGIN + HUD_HEIGHT + PLAYFIELD_BORDER_HEIGHT))
     {
         return false;
     }
-    else if (usY_ >= ((PLAYFIELD_BRICK_MARGIN + HUD_HEIGHT + PLAYFIELD_BORDER_HEIGHT) + (LEVEL_NUM_ROWS * BRICK_HEIGHT)))
+    else if (u16Y_ >= ((PLAYFIELD_BRICK_MARGIN + HUD_HEIGHT + PLAYFIELD_BORDER_HEIGHT) + (LEVEL_NUM_ROWS * BRICK_HEIGHT)))
     {
         return false;
     }
 
     // Convert X/Y to row/column
-    ucCol = (usX_ - PLAYFIELD_BORDER_WIDTH) / BRICK_WIDTH;
-    ucRow = (usY_ - (PLAYFIELD_BRICK_MARGIN + HUD_HEIGHT + PLAYFIELD_BORDER_HEIGHT)) / BRICK_HEIGHT;
+    u8Col = (u16X_ - PLAYFIELD_BORDER_WIDTH) / BRICK_WIDTH;
+    u8Row = (u16Y_ - (PLAYFIELD_BRICK_MARGIN + HUD_HEIGHT + PLAYFIELD_BORDER_HEIGHT)) / BRICK_HEIGHT;
 
-    if (ucRow >= LEVEL_NUM_ROWS)
+    if (u8Row >= LEVEL_NUM_ROWS)
     {
         return false;
     }
 
     // Check for the presence of a brick at the specified row/col
-    if (m_clLevelData.ausData[ucRow] & (1 << (K_USHORT)ucCol))
+    if (m_clLevelData.au16Data[u8Row] & (1 << (uint16_t)u8Col))
     {
         return true;
     }
@@ -631,9 +631,9 @@ K_BOOL BrPlayField::CheckBrickExists(K_USHORT usX_, K_USHORT usY_)
 }
 
 //---------------------------------------------------------------------------
-K_BOOL BrPlayField::IsPlayFieldEmpty(void)
+bool BrPlayField::IsPlayFieldEmpty(void)
 {
-    if (0 == m_usBricksLeft)
+    if (0 == m_u16BricksLeft)
     {
         return true;
     }
@@ -641,20 +641,20 @@ K_BOOL BrPlayField::IsPlayFieldEmpty(void)
 }
 
 //---------------------------------------------------------------------------
-void BrPlayField::LevelAction( K_UCHAR ucFlags_ )
+void BrPlayField::LevelAction( uint8_t u8Flags_ )
 {
-    if (ucFlags_ == LEVEL_ACTION_CIELING_HIT)
+    if (u8Flags_ == LEVEL_ACTION_CIELING_HIT)
     {
         m_bHitCieling = true;
     }
 
-    if (m_ucBonusTimer)
+    if (m_u8Bonusimer)
     {
-        m_ucBonusTimer--;
+        m_u8Bonusimer--;
 
-        if (!m_ucBonusTimer)
+        if (!m_u8Bonusimer)
         {
-            ClearBonusString();
+            ClearBonustring();
         }
     }
 
@@ -664,42 +664,42 @@ void BrPlayField::LevelAction( K_UCHAR ucFlags_ )
     switch (m_clLevelData.eLevelType)
     {
         case BR_LEVEL_ROULETTE:
-            if ((ucFlags_ == LEVEL_ACTION_PADDLE_HIT) ||
-                (ucFlags_ == LEVEL_ACTION_WALL_HIT) ||
-                (ucFlags_ == LEVEL_ACTION_CIELING_HIT))
+            if ((u8Flags_ == LEVEL_ACTION_PADDLE_HIT) ||
+                (u8Flags_ == LEVEL_ACTION_WALL_HIT) ||
+                (u8Flags_ == LEVEL_ACTION_CIELING_HIT))
             {
-                K_UCHAR ucMaxCount = LEVEL_NUM_COLS;
-                K_BOOL bDone = false;
-                while (ucMaxCount--)
+                uint8_t u8MaxCount = LEVEL_NUM_COLS;
+                bool bDone = false;
+                while (u8MaxCount--)
                 {
-                    K_UCHAR ucRow2 = (m_ucRow + 1) % LEVEL_NUM_ROWS;
-                    K_UCHAR ucCol2 = m_ucCol;
-                    if (ucRow2 == 0)
+                    uint8_t u8Row2 = (m_u8Row + 1) % LEVEL_NUM_ROWS;
+                    uint8_t u8Col2 = m_u8Col;
+                    if (u8Row2 == 0)
                     {
-                        ucCol2 = (ucCol2 + 1) % LEVEL_NUM_COLS;
+                        u8Col2 = (u8Col2 + 1) % LEVEL_NUM_COLS;
                     }
 
-                    bDone = SwapBrick(m_ucRow, m_ucCol, ucRow2, ucCol2);
+                    bDone = SwapBrick(m_u8Row, m_u8Col, u8Row2, u8Col2);
 
-                    m_ucRow = ucRow2;
-                    m_ucCol = ucCol2;
+                    m_u8Row = u8Row2;
+                    m_u8Col = u8Col2;
 
                     if (bDone)
                     {
-                        m_ucCol = (ucCol2 + 1) % LEVEL_NUM_COLS;
+                        m_u8Col = (u8Col2 + 1) % LEVEL_NUM_COLS;
                         break;
                     }
                 }
             }
             break;
         case BR_LEVEL_NORMAL:
-        if (ucFlags_ == LEVEL_ACTION_STEP)
+        if (u8Flags_ == LEVEL_ACTION_STEP)
         {
             // Implement an algorithm to determine when to enable
             // and disable bonus bricks.
             Tick();
         }
-        else if (ucFlags_ == LEVEL_ACTION_PADDLE_HIT)
+        else if (u8Flags_ == LEVEL_ACTION_PADDLE_HIT)
         {
             GetRandomData();
         }
@@ -714,15 +714,15 @@ Special_t BrPlayField::SelectBonus()
 {
     Special_t eBonus = (Special_t)(GetRandomData() % (SPECIAL_COUNT - 1));
 
-    ShowBonusString( eBonus );
-    m_usSpecialTime = 30 * 60;
+    ShowBonustring( eBonus );
+    m_u16SpecialTime = 30 * 60;
 	m_eSpecial = eBonus;
 
     return eBonus;
 }
 
 //---------------------------------------------------------------------------
-void BrPlayField::ShowBonusString( Special_t eBonus_ )
+void BrPlayField::ShowBonustring( Special_t eBonus_ )
 {
     DrawText_t stText;
     const char *pcBonus;
@@ -744,23 +744,23 @@ void BrPlayField::ShowBonusString( Special_t eBonus_ )
     }
 
     stText.pcString = pcBonus;
-    stText.usTop = 0;
-    stText.usLeft = 46;
+    stText.u16Top = 0;
+    stText.u16Left = 46;
     stText.uColor = COLOR_RED;
     pclDisplay->Text(&stText);
 
-    m_ucBonusTimer = 120;
+    m_u8Bonusimer = 120;
 }
 
 //---------------------------------------------------------------------------
-void BrPlayField::ClearBonusString()
+void BrPlayField::ClearBonustring()
 {
     DrawRectangle_t stRect;
-    stRect.usLeft = 46;
-    stRect.usRight = stRect.usLeft + 36;
-    stRect.usTop = 0;
-    stRect.usBottom = 8;
-    stRect.uLineColor = COLOR_BLACK;
+    stRect.u16Left = 46;
+    stRect.u16Right = stRect.u16Left + 36;
+    stRect.u16Top = 0;
+    stRect.u16Bottom = 8;
+    stRect.u32ineColor = COLOR_BLACK;
     stRect.uFillColor = COLOR_BLACK;
     stRect.bFill = true;
 
@@ -768,78 +768,78 @@ void BrPlayField::ClearBonusString()
 }
 
 //---------------------------------------------------------------------------
-K_USHORT BrPlayField::GetRandomData()
+uint16_t BrPlayField::GetRandomData()
 {
-    m_usRandValue = (9 * m_usRandValue + 3);
-    return m_usRandValue;
+    m_u16RandValue = (9 * m_u16RandValue + 3);
+    return m_u16RandValue;
 }
 
 //---------------------------------------------------------------------------
 void BrPlayField::Tick()
 {    
-    K_UCHAR ucRow = GetRandomData() >> 1;
-    K_UCHAR ucCol = GetRandomData() >> 1;
+    uint8_t u8Row = GetRandomData() >> 1;
+    uint8_t u8Col = GetRandomData() >> 1;
 
-    m_usTickCount++;
+    m_u16TickCount++;
 
-    if ((m_usTickCount & 0x01FF) == 0x000F)
+    if ((m_u16TickCount & 0x01FF) == 0x000F)
     {
         SetBonus(0,0);        
     }
-    else if ((m_usTickCount & 0x00FF) == 0x000F)
+    else if ((m_u16TickCount & 0x00FF) == 0x000F)
     {
-        K_UCHAR ucRetries = 5;
-        while (ucRetries--)
+        uint8_t u8Retries = 5;
+        while (u8Retries--)
         {
-            if (m_clLevelData.ausData[ucRow % LEVEL_NUM_ROWS] & (1 << (K_USHORT)(ucCol % LEVEL_NUM_COLS)))
+            if (m_clLevelData.au16Data[u8Row % LEVEL_NUM_ROWS] & (1 << (uint16_t)(u8Col % LEVEL_NUM_COLS)))
             {
-                SetBonus( (ucRow % LEVEL_NUM_ROWS) + 1,
-                          (ucCol% LEVEL_NUM_COLS) + 1 );
+                SetBonus( (u8Row % LEVEL_NUM_ROWS) + 1,
+                          (u8Col% LEVEL_NUM_COLS) + 1 );
                 break;
             }
 
-            ucRow = GetRandomData() >> 1;
-            ucCol = GetRandomData() >> 1;
+            u8Row = GetRandomData() >> 1;
+            u8Col = GetRandomData() >> 1;
         }        
     }
 }
 
 //---------------------------------------------------------------------------
-K_BOOL BrPlayField::SwapBrick(K_UCHAR ucRow1_, K_UCHAR ucCol1_, K_UCHAR ucRow2_, K_UCHAR ucCol2_)
+bool BrPlayField::SwapBrick(uint8_t u8Row1_, uint8_t u8Col1_, uint8_t u8Row2_, uint8_t u8Col2_)
 {
-    K_BOOL bExist1 = false;
-    K_BOOL bExist2 = false;
+    bool bExist1 = false;
+    bool bExist2 = false;
 
     // Don't move bonus blocks.
-    if ( ((ucRow1_ == m_ucBonusRow) && (ucCol1_ == m_ucBonusCol)) ||
-         ((ucRow2_ == m_ucBonusRow) && (ucCol2_ == m_ucBonusCol)) )
+    if ( ((u8Row1_ == m_u8Bonusow) && (u8Col1_ == m_u8Bonusol)) ||
+         ((u8Row2_ == m_u8Bonusow) && (u8Col2_ == m_u8Bonusol)) )
     {
         return false;
     }
 
-    if (m_clLevelData.ausData[ucRow1_] & (1 << (K_USHORT)ucCol1_))
+    if (m_clLevelData.au16Data[u8Row1_] & (1 << (uint16_t)u8Col1_))
     {
         bExist1 = true;
     }
-    if (m_clLevelData.ausData[ucRow2_] & (1 << (K_USHORT)ucCol2_))
+    if (m_clLevelData.au16Data[u8Row2_] & (1 << (uint16_t)u8Col2_))
     {
         bExist2 = true;
     }
 
     if (bExist1 == true && bExist2 == false)
     {
-        ClearBrick_i(ucRow1_, ucCol1_);
-        DrawBrick(ucRow2_, ucCol2_, 0);
-        m_clLevelData.ausData[ucRow1_] &= ~(1 << (K_USHORT)ucCol1_);
-        m_clLevelData.ausData[ucRow2_] |= (1 << (K_USHORT)ucCol2_);
+        ClearBrick_i(u8Row1_, u8Col1_);
+        DrawBrick(u8Row2_, u8Col2_, 0);
+        m_clLevelData.au16Data[u8Row1_] &= ~(1 << (uint16_t)u8Col1_);
+        m_clLevelData.au16Data[u8Row2_] |= (1 << (uint16_t)u8Col2_);
         return true;
     }
     else if (bExist1 == false && bExist2 == true)
     {
-        ClearBrick_i(ucRow2_, ucCol2_);
-        DrawBrick(ucRow1_, ucCol1_, 0);
-        m_clLevelData.ausData[ucRow2_] &= ~(1 << (K_USHORT)ucCol2_);
-        m_clLevelData.ausData[ucRow1_] |= (1 << (K_USHORT)ucCol1_);
+        ClearBrick_i(u8Row2_, u8Col2_);
+        DrawBrick(u8Row1_, u8Col1_, 0);
+        m_clLevelData.au16Data[u8Row2_] &= ~(1 << (uint16_t)u8Col2_);
+        m_clLevelData.au16Data[u8Row1_] |= (1 << (uint16_t)u8Col1_);
         return true;
     }
 
@@ -847,47 +847,47 @@ K_BOOL BrPlayField::SwapBrick(K_UCHAR ucRow1_, K_UCHAR ucCol1_, K_UCHAR ucRow2_,
 }
 
 //---------------------------------------------------------------------------
-void BrPlayField::SetBonus( K_UCHAR ucRow_, K_UCHAR ucCol_ )
+void BrPlayField::SetBonus( uint8_t u8Row_, uint8_t u8Col_ )
 {
-    if (!ucRow_ || !ucCol_)
+    if (!u8Row_ || !u8Col_)
     {
-        if (m_clLevelData.ausData[m_ucBonusRow - 1] & (1 << (K_USHORT)(m_ucBonusCol - 1)))
+        if (m_clLevelData.au16Data[m_u8Bonusow - 1] & (1 << (uint16_t)(m_u8Bonusol - 1)))
         {
-            DrawBrick(m_ucBonusRow - 1, m_ucBonusCol - 1, 0);
+            DrawBrick(m_u8Bonusow - 1, m_u8Bonusol - 1, 0);
         }
-        m_ucBonusRow = 0;
-        m_ucBonusCol = 0;
+        m_u8Bonusow = 0;
+        m_u8Bonusol = 0;
         return;
     }
 
-    m_ucBonusRow = ucRow_;
-    m_ucBonusCol = ucCol_;
+    m_u8Bonusow = u8Row_;
+    m_u8Bonusol = u8Col_;
 
-    DrawBrick( m_ucBonusRow - 1, m_ucBonusCol - 1, 1);
+    DrawBrick( m_u8Bonusow - 1, m_u8Bonusol - 1, 1);
 
-    if (!(m_clLevelData.ausData[m_ucBonusRow - 1] & (1 << (K_USHORT)(m_ucBonusCol - 1))))
+    if (!(m_clLevelData.au16Data[m_u8Bonusow - 1] & (1 << (uint16_t)(m_u8Bonusol - 1))))
     {
-        m_clLevelData.ausData[m_ucBonusRow - 1] |= (1 << (K_USHORT)(m_ucBonusCol - 1));
-        m_usBricksLeft++;
+        m_clLevelData.au16Data[m_u8Bonusow - 1] |= (1 << (uint16_t)(m_u8Bonusol - 1));
+        m_u16BricksLeft++;
     }
 }
 
 //---------------------------------------------------------------------------
-void BrPlayField::DrawBrick(K_UCHAR ucRow_, K_UCHAR ucCol_, K_UCHAR ucMode_)
+void BrPlayField::DrawBrick(uint8_t u8Row_, uint8_t u8Col_, uint8_t u8Mode_)
 {
     DrawRectangle_t stRect;
     COLOR uColor;
 
     // Main body...
-    stRect.usTop = HUD_HEIGHT + PLAYFIELD_BRICK_MARGIN + PLAYFIELD_BORDER_HEIGHT + (ucRow_ * BRICK_HEIGHT);
-    stRect.usBottom = stRect.usTop + (BRICK_HEIGHT - 1);
-    stRect.usLeft = PLAYFIELD_BORDER_WIDTH + (ucCol_ * BRICK_WIDTH);
-    stRect.usRight = stRect.usLeft + (BRICK_WIDTH - 1);
+    stRect.u16Top = HUD_HEIGHT + PLAYFIELD_BRICK_MARGIN + PLAYFIELD_BORDER_HEIGHT + (u8Row_ * BRICK_HEIGHT);
+    stRect.u16Bottom = stRect.u16Top + (BRICK_HEIGHT - 1);
+    stRect.u16Left = PLAYFIELD_BORDER_WIDTH + (u8Col_ * BRICK_WIDTH);
+    stRect.u16Right = stRect.u16Left + (BRICK_WIDTH - 1);
     stRect.bFill = true;
 
-    if (!ucMode_)
+    if (!u8Mode_)
     {
-        switch (ucRow_)
+        switch (u8Row_)
         {
         case 0: case 1: uColor = RGB_COLOR(0, 4*MAX_GREEN/5, 0); break;
         case 2: case 3: uColor = RGB_COLOR(0, 0, 4*MAX_BLUE/5); break;
@@ -903,7 +903,7 @@ void BrPlayField::DrawBrick(K_UCHAR ucRow_, K_UCHAR ucCol_, K_UCHAR ucMode_)
         uColor = COLOR_GREY75;
     }
     stRect.uFillColor = uColor;
-    stRect.uLineColor = uColor;
+    stRect.u32ineColor = uColor;
 
     pclDisplay->Rectangle(&stRect);
 
@@ -911,9 +911,9 @@ void BrPlayField::DrawBrick(K_UCHAR ucRow_, K_UCHAR ucCol_, K_UCHAR ucMode_)
 
     // 3D-shadowing...
     // - Top
-    if (!ucMode_)
+    if (!u8Mode_)
     {
-        switch (ucRow_)
+        switch (u8Row_)
         {
         case 0: case 1: uColor = RGB_COLOR(0, MAX_GREEN/2, 0); break;
         case 2: case 3: uColor = RGB_COLOR(0, 0, MAX_BLUE/2); break;
@@ -930,21 +930,21 @@ void BrPlayField::DrawBrick(K_UCHAR ucRow_, K_UCHAR ucCol_, K_UCHAR ucMode_)
     }
 
     stLine.uColor = uColor;
-    stLine.usX1 = PLAYFIELD_BORDER_WIDTH + (ucCol_ * BRICK_WIDTH);
-    stLine.usX2 = stLine.usX1 + (BRICK_WIDTH - 1);
-    stLine.usY1 = HUD_HEIGHT + PLAYFIELD_BRICK_MARGIN + PLAYFIELD_BORDER_HEIGHT + (ucRow_ * BRICK_HEIGHT);
-    stLine.usY2 = stLine.usY1;
+    stLine.u16X1 = PLAYFIELD_BORDER_WIDTH + (u8Col_ * BRICK_WIDTH);
+    stLine.u16X2 = stLine.u16X1 + (BRICK_WIDTH - 1);
+    stLine.u16Y1 = HUD_HEIGHT + PLAYFIELD_BRICK_MARGIN + PLAYFIELD_BORDER_HEIGHT + (u8Row_ * BRICK_HEIGHT);
+    stLine.u16Y2 = stLine.u16Y1;
     pclDisplay->Line(&stLine);
 
     // -Left
-    stLine.usX2 = stLine.usX1;
-    stLine.usY2 = stLine.usY1 + (BRICK_HEIGHT - 1);
+    stLine.u16X2 = stLine.u16X1;
+    stLine.u16Y2 = stLine.u16Y1 + (BRICK_HEIGHT - 1);
     pclDisplay->Line(&stLine);
 
     // - OUter-bottom
-    if (!ucMode_)
+    if (!u8Mode_)
     {
-        switch (ucRow_)
+        switch (u8Row_)
         {
         case 0: case 1: uColor = RGB_COLOR(0, MAX_GREEN, 0); break;
         case 2: case 3: uColor = RGB_COLOR(0, 0, MAX_BLUE); break;
@@ -961,15 +961,15 @@ void BrPlayField::DrawBrick(K_UCHAR ucRow_, K_UCHAR ucCol_, K_UCHAR ucMode_)
     }
 
     stLine.uColor = uColor;
-    stLine.usX1 = PLAYFIELD_BORDER_WIDTH + (ucCol_ * BRICK_WIDTH) + 1;
-    stLine.usX2 = stLine.usX1 + (BRICK_WIDTH - 2);
-    stLine.usY1 = HUD_HEIGHT + PLAYFIELD_BRICK_MARGIN + PLAYFIELD_BORDER_HEIGHT + ((ucRow_+1) * BRICK_HEIGHT) - 1;
-    stLine.usY2 = stLine.usY1;
+    stLine.u16X1 = PLAYFIELD_BORDER_WIDTH + (u8Col_ * BRICK_WIDTH) + 1;
+    stLine.u16X2 = stLine.u16X1 + (BRICK_WIDTH - 2);
+    stLine.u16Y1 = HUD_HEIGHT + PLAYFIELD_BRICK_MARGIN + PLAYFIELD_BORDER_HEIGHT + ((u8Row_+1) * BRICK_HEIGHT) - 1;
+    stLine.u16Y2 = stLine.u16Y1;
     pclDisplay->Line(&stLine);
 
     // Outer-right
-    stLine.usX1 = stLine.usX2;
-    stLine.usY1 = HUD_HEIGHT + PLAYFIELD_BRICK_MARGIN + PLAYFIELD_BORDER_HEIGHT + (ucRow_ * BRICK_HEIGHT) + 1;
-    stLine.usY2 = stLine.usY1 + BRICK_HEIGHT - 2;
+    stLine.u16X1 = stLine.u16X2;
+    stLine.u16Y1 = HUD_HEIGHT + PLAYFIELD_BRICK_MARGIN + PLAYFIELD_BORDER_HEIGHT + (u8Row_ * BRICK_HEIGHT) + 1;
+    stLine.u16Y2 = stLine.u16Y1 + BRICK_HEIGHT - 2;
     pclDisplay->Line(&stLine);
 }

@@ -33,16 +33,16 @@ See license.txt for more information
 #define __FILE_ID__     SCHEDULER_CPP       //!< File ID used in kernel trace calls
 
 //---------------------------------------------------------------------------
-volatile Thread *g_pstNext;      //!< Pointer to the currently-chosen next-running thread
-Thread *g_pstCurrent;   //!< Pointer to the currently-running thread
+volatile Thread *g_pclNext;      //!< Pointer to the currently-chosen next-running thread
+Thread *g_pclCurrent;   //!< Pointer to the currently-running thread
 
 //---------------------------------------------------------------------------
-K_BOOL Scheduler::m_bEnabled;
-K_BOOL Scheduler::m_bQueuedSchedule;
+bool Scheduler::m_bEnabled;
+bool Scheduler::m_bQueuedSchedule;
 
 ThreadList Scheduler::m_clStopList;
 ThreadList Scheduler::m_aclPriorities[NUM_PRIORITIES];
-K_UCHAR Scheduler::m_ucPriFlag;
+uint8_t Scheduler::m_u8PriFlag;
 
 //---------------------------------------------------------------------------
 /*!
@@ -50,19 +50,19 @@ K_UCHAR Scheduler::m_ucPriFlag;
  * lookup table.  It is used to efficiently perform a CLZ operation under the
  * assumption that a native CLZ instruction is unavailable.  This table is
  * further optimized to provide a 0xFF result in the event that the index value
- * is itself zero, allowing us to quickly identify whether or not subsequent
+ * is itself zero, allowing u16 to quickly identify whether or not subsequent
  * 4-bit LUT operations are required to complete the scheduling process.
  */
-static const K_UCHAR aucCLZ[16] ={255,0,1,1,2,2,2,2,3,3,3,3,3,3,3,3};
+static const uint8_t aucCLZ[16] ={255,0,1,1,2,2,2,2,3,3,3,3,3,3,3,3};
 
 //---------------------------------------------------------------------------
 void Scheduler::Init() 
 {
-    m_ucPriFlag = 0;
+    m_u8PriFlag = 0;
     for (int i = 0; i < NUM_PRIORITIES; i++)
     {
         m_aclPriorities[i].SetPriority(i);
-        m_aclPriorities[i].SetFlagPointer(&m_ucPriFlag);
+        m_aclPriorities[i].SetFlagPointer(&m_u8PriFlag);
     }
     m_bQueuedSchedule = false;
 }
@@ -70,37 +70,37 @@ void Scheduler::Init()
 //---------------------------------------------------------------------------
 void Scheduler::Schedule()
 {
-    K_UCHAR ucPri = 0;
+    uint8_t u8Pri = 0;
     
     // Figure out what priority level has ready tasks (8 priorities max)
-    // To do this, we apply our current active-thread bitmap (m_ucPriFlag)
+    // To do this, we apply our current active-thread bitmap (m_u8PriFlag)
     // and perform a CLZ on the upper four bits.  If no tasks are found
     // in the higher priority bits, search the lower priority bits.  This
     // also assumes that we always have the idle thread ready-to-run in
     // priority level zero.
-    ucPri = aucCLZ[m_ucPriFlag >> 4 ];
-    if (ucPri == 0xFF)
+    u8Pri = aucCLZ[m_u8PriFlag >> 4 ];
+    if (u8Pri == 0xFF)
     {
-        ucPri = aucCLZ[m_ucPriFlag & 0x0F];
+        u8Pri = aucCLZ[m_u8PriFlag & 0x0F];
     }
     else
     {
-        ucPri += 4;
+        u8Pri += 4;
     }
 
 #if KERNEL_USE_IDLE_FUNC
-    if (ucPri == 0xFF)
+    if (u8Pri == 0xFF)
     {
-        // There aren't any active threads at all - set g_pstNext to IDLE
-        g_pstNext = Kernel::GetIdleThread();
+        // There aren't any active threads at all - set g_pclNext to IDLE
+        g_pclNext = Kernel::GetIdleThread();
     }
     else
 #endif
     {
         // Get the thread node at this priority.
-        g_pstNext = (Thread*)( m_aclPriorities[ucPri].GetHead() );
+        g_pclNext = (Thread*)( m_aclPriorities[u8Pri].GetHead() );
     }
-    KERNEL_TRACE_1( STR_SCHEDULE_1, (K_USHORT)((Thread*)g_pstNext)->GetID() );
+    KERNEL_TRACE_1( STR_SCHEDULE_1, (uint16_t)((Thread*)g_pclNext)->GetID() );
 
 }
 
@@ -117,9 +117,9 @@ void Scheduler::Remove(Thread *pclThread_)
 }
 
 //---------------------------------------------------------------------------
-K_BOOL Scheduler::SetScheduler(K_BOOL bEnable_)
+bool Scheduler::SetScheduler(bool bEnable_)
 {
-    K_BOOL bRet ;
+    bool bRet ;
     CS_ENTER();
     bRet = m_bEnabled;
     m_bEnabled = bEnable_;

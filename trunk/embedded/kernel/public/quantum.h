@@ -98,8 +98,8 @@ private:
 	static void SetTimer( Thread *pclThread_ );
 	
 	static Timer m_clQuantumTimer;
-	static K_UCHAR m_bActive;
-	static K_UCHAR m_bInTimer;
+    static bool  m_bActive;
+    static bool  m_bInTimer;
 };
 
 #endif //KERNEL_USE_QUANTUM

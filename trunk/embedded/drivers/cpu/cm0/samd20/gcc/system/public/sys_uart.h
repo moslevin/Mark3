@@ -46,24 +46,24 @@ public:
     void SetRxPad(SERCOM_Pad_t ePad_)
         { m_eRxPad = ePad_; }
 
-    void SetBaud(K_ULONG ulBaud_)
-        { m_ulBaud = ulBaud_; }
+    void SetBaud(uint32_t u32Baud_)
+        { m_u32Baud = u32Baud_; }
 
-    void SetParity(K_BOOL bParity_)
+    void SetParity(bool bParity_)
         { m_bParity = bParity_; }
 
-    void SetStopBits(K_UCHAR ucStopBits_ )
-        { m_ucStopBits = ucStopBits_; }
+    void SetStopBits(uint8_t u8StopBits_ )
+        { m_u8StopBits = u8StopBits_; }
 
     void SetClockGen(ClockGenerator_t eClockGen_)
         { m_eClockGen = eClockGen_; }
 
-    void SetBaudClock(K_ULONG ulClockHz_)
-        { m_ulClockFreqHz = ulClockHz_; }
+    void SetBaudClock(uint32_t u32ClockHz_)
+        { m_u32ClockFreqHz = u32ClockHz_; }
 
     void Open(void);
 
-    K_BOOL Write(K_CHAR cChar_);
+    bool Write(char cChar_);
 
 private:
 
@@ -71,7 +71,7 @@ private:
 
     void SetupPin(const SERCOM_Lookup_t *pstLUT_);
 
-    K_ULONG CalculateBaud(void);
+    uint32_t CalculateBaud(void);
 
     void SetupRegisters(void);
 
@@ -87,10 +87,10 @@ private:
     SERCOM_Pad_t        m_eRxPad;
 
     ClockGenerator_t    m_eClockGen;
-    K_ULONG             m_ulClockFreqHz;
-    K_ULONG             m_ulBaud;
-    K_BOOL                m_bParity;
-    K_UCHAR             m_ucStopBits;
+    uint32_t             m_u32ClockFreqHz;
+    uint32_t             m_u32Baud;
+    bool                m_bParity;
+    uint8_t             m_u8StopBits;
 
 };
 

@@ -16,73 +16,73 @@ See license.txt for more information
 #include "bitstream.h"
 
 //---------------------------------------------------------------------------
-void BitStreamer::Init(K_UCHAR *pucData_, K_USHORT usSize_)
+void BitStreamer::Init(uint8_t *pu8Data_, uint16_t u16Size_)
 {
-    m_pucData = pucData_;
-    m_ucBitIndex = 0;
-    m_usByteIndex = 0;
-    m_usSize = 0;
+    m_pu8Data = pu8Data_;
+    m_u8BitIndex = 0;
+    m_u16ByteIndex = 0;
+    m_u16Size = 0;
 }
 
 //---------------------------------------------------------------------------
 void BitStreamer::AdvanceByte(void)
 {
-    if (m_ucBitIndex != 0)
+    if (m_u8BitIndex != 0)
     {
-        m_ucBitIndex = 0;
-        m_usByteIndex++;
+        m_u8BitIndex = 0;
+        m_u16ByteIndex++;
     }
 }
 
 //---------------------------------------------------------------------------
-K_UCHAR BitStreamer::ReadBits(K_UCHAR ucNumBits_)
+uint8_t BitStreamer::ReadBits(uint8_t u8NumBits_)
 {
-    K_UCHAR ucDat = m_pucData[m_usByteIndex];
-    K_UCHAR ucRet = 0;
-    K_UCHAR ucIterBits;
-    K_UCHAR ucShift = 0;
+    uint8_t u8Dat = m_pu8Data[m_u16ByteIndex];
+    uint8_t u8Ret = 0;
+    uint8_t u8IterBits;
+    uint8_t u8Shift = 0;
 
-    while (ucNumBits_)
+    while (u8NumBits_)
     {
         // Check to see whether or not the bitstream read will past the end
         // of the current byte's index.
-        if (ucNumBits_ < (8 - m_ucBitIndex))
+        if (u8NumBits_ < (8 - m_u8BitIndex))
         {
             // If not, read everything all in one iteration
-            ucIterBits = ucNumBits_;
+            u8IterBits = u8NumBits_;
         }
         else
         {
             // Otherwise, read what we can in this iteration.
-            ucIterBits = (8 - m_ucBitIndex);
+            u8IterBits = (8 - m_u8BitIndex);
         }
 
         // Shift the bits to be read in this iteration to the lowest bits in the variable
-        ucDat = ((ucDat >> m_ucBitIndex) & ((1 << ucIterBits) - 1));
+        u8Dat = ((u8Dat >> m_u8BitIndex) & ((1 << u8IterBits) - 1));
 
         // Shift into the output variable in the correct index
-        ucRet += (ucDat << ucShift);
+        u8Ret += (u8Dat << u8Shift);
 
         // Update the bit index (and byte index, if we've reached the end of the word)
-        m_ucBitIndex += ucNumBits_;
-        if (m_ucBitIndex == 8)
+        m_u8BitIndex += u8NumBits_;
+        if (m_u8BitIndex == 8)
         {
-            m_ucBitIndex = 0;
-            m_usByteIndex++;
+            m_u8BitIndex = 0;
+            m_u16ByteIndex++;
         }
 
         // Subtract the bits we've read from the total remaining
-        ucNumBits_ -= ucIterBits;
+        u8NumBits_ -= u8IterBits;
 
         // If there are bits yet to be read
-        if (ucNumBits_)
+        if (u8NumBits_)
         {
             // Figure out how much to shift the current return value by
-            ucShift += ucIterBits;
+            u8Shift += u8IterBits;
 
             // Read the next byte of data to use in the next iteration
-            ucDat = m_pucData[m_usByteIndex];
+            u8Dat = m_pu8Data[m_u16ByteIndex];
         }
     }
-    return ucRet;
+    return u8Ret;
 }

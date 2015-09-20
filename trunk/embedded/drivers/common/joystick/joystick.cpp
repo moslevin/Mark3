@@ -22,30 +22,30 @@ See license.txt for more information
 //---------------------------------------------------------------------------
 void JoystickDriver::Scan()
 {
-    m_stLastReport.usDigital = m_stCurrentReport.usDigital;
-    m_stLastReport.usAnalogX1 = m_stCurrentReport.usAnalogX1;
-    m_stLastReport.usAnalogY1 = m_stCurrentReport.usAnalogY1;
-    m_stLastReport.usAnalogX2 = m_stCurrentReport.usAnalogX2;
-    m_stLastReport.usAnalogY2 = m_stCurrentReport.usAnalogY2;
+    m_stLastReport.u16Digital = m_stCurrentReport.u16Digital;
+    m_stLastReport.u16AnalogX1 = m_stCurrentReport.u16AnalogX1;
+    m_stLastReport.u16AnalogY1 = m_stCurrentReport.u16AnalogY1;
+    m_stLastReport.u16AnalogX2 = m_stCurrentReport.u16AnalogX2;
+    m_stLastReport.u16AnalogY2 = m_stCurrentReport.u16AnalogY2;
     Control(JOYSTICK_SCAN, 0, 0, (void*)&m_stCurrentReport, 0);    
 }
 
 //---------------------------------------------------------------------------
 void JoystickDriver::ReadCurrent( JoystickReport *pstReport_ )
 {
-    pstReport_->usDigital = m_stCurrentReport.usDigital;
-    pstReport_->usAnalogX1 = m_stCurrentReport.usAnalogX1;
-    pstReport_->usAnalogY1 = m_stCurrentReport.usAnalogY1;
-    pstReport_->usAnalogX2 = m_stCurrentReport.usAnalogX2;
-    pstReport_->usAnalogY2 = m_stCurrentReport.usAnalogY2;
+    pstReport_->u16Digital = m_stCurrentReport.u16Digital;
+    pstReport_->u16AnalogX1 = m_stCurrentReport.u16AnalogX1;
+    pstReport_->u16AnalogY1 = m_stCurrentReport.u16AnalogY1;
+    pstReport_->u16AnalogX2 = m_stCurrentReport.u16AnalogX2;
+    pstReport_->u16AnalogY2 = m_stCurrentReport.u16AnalogY2;
 }
 
 //---------------------------------------------------------------------------
 void JoystickDriver::ReadPrevious( JoystickReport *pstReport_ )
 {
-    pstReport_->usDigital = m_stLastReport.usDigital;
-    pstReport_->usAnalogX1 = m_stLastReport.usAnalogX1;
-    pstReport_->usAnalogY1 = m_stLastReport.usAnalogY1;
-    pstReport_->usAnalogX2 = m_stLastReport.usAnalogX2;
-    pstReport_->usAnalogY2 = m_stLastReport.usAnalogY2;
+    pstReport_->u16Digital = m_stLastReport.u16Digital;
+    pstReport_->u16AnalogX1 = m_stLastReport.u16AnalogX1;
+    pstReport_->u16AnalogY1 = m_stLastReport.u16AnalogY1;
+    pstReport_->u16AnalogX2 = m_stLastReport.u16AnalogX2;
+    pstReport_->u16AnalogY2 = m_stLastReport.u16AnalogY2;
 }

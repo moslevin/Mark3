@@ -176,32 +176,32 @@ public:
     void SetPresynch( TCPresynch_t ePresynch_ )
         { m_ePresync = ePresynch_; }
 
-    void SyncContinuous( K_BOOL bSync_ )
+    void SyncContinuous( bool bSync_ )
         { m_bSyncContinuous = bSync_; }
 
     void SyncRegister( TCReadSync_t eSyncReg_ )
         { m_eSyncReg = eSyncReg_; }
 
-    void SetOneShot( K_BOOL bOneShot_ )
+    void SetOneShot( bool bOneShot_ )
         { m_bOneShot = bOneShot_; }
 
-    void SetDirection( K_BOOL bCountDown_ )
+    void SetDirection( bool bCountDown_ )
         { m_bDirection = bCountDown_; }
 
-    void SetCaptureVal( K_UCHAR ucIndex_, K_ULONG ulCaptureVal_ );
+    void SetCaptureVal( uint8_t u8Index_, uint32_t u32CaptureVal_ );
 
-    void SetInvertVal( K_UCHAR ucIndex_, K_BOOL bInvert_ )
+    void SetInvertVal( uint8_t u8Index_, bool bInvert_ )
     {
 		m_bInvert0 = bInvert_;	
     }
-	void EnableOverflow( K_BOOL bOverflow_ )
+	void EnableOverflow( bool bOverflow_ )
 	{
 		m_bOverflowEnable = bOverflow_;
 	}
 
-    void EnableCapture( K_UCHAR ucIndex_, K_BOOL bEnable_);
+    void EnableCapture( uint8_t u8Index_, bool bEnable_);
 
-    K_ULONG GetCount( void );
+    uint32_t GetCount( void );
 
     void Start( void );
 
@@ -220,7 +220,7 @@ public:
 
 private:
 
-    K_UCHAR GetInterfaceIndex();
+    uint8_t GetInterfaceIndex();
 
     Tc *GetInterface();
 
@@ -244,18 +244,18 @@ private:
     TCPrescalar_t       m_ePrescalar;
     TCPresynch_t        m_ePresync;
 
-    K_BOOL                m_bSyncContinuous;
+    bool                m_bSyncContinuous;
     TCReadSync_t        m_eSyncReg;
 
-    K_BOOL                m_bOneShot;
-    K_BOOL                m_bDirection;
+    bool                m_bOneShot;
+    bool                m_bDirection;
 
-    K_BOOL                m_bCapture0;
-    K_BOOL                m_bInvert0;
-    K_BOOL                m_bMatchCompare0;    
-    K_BOOL                m_bOverflowEnable;
-    K_BOOL                m_bTCEventEnable;
-    K_BOOL                m_bTCEventInvert;
+    bool                m_bCapture0;
+    bool                m_bInvert0;
+    bool                m_bMatchCompare0;    
+    bool                m_bOverflowEnable;
+    bool                m_bTCEventEnable;
+    bool                m_bTCEventInvert;
 
     TCAction_t          m_eAction;
 	Tc					*m_pstTC;

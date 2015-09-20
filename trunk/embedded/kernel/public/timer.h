@@ -44,10 +44,10 @@ class Thread;
 //---------------------------------------------------------------------------
 /*
     Ugly macros to support a wide resolution of delays.
-    Given a 16-bit timer @ 16MHz & 256 cycle prescaler, this gives us...
+    Given a 16-bit timer @ 16MHz & 256 cycle prescaler, this gives u16...
     Max time, SECONDS_TO_TICKS:  68719s
     Max time, MSECONDS_TO_TICKS: 6871.9s
-    Max time, USECONDS_TO_TICKS: 6.8719s
+    Max time, useCONDS_TO_TICKS: 6.8719s
 
     ...With a 16us tick resolution.
 
@@ -55,9 +55,9 @@ class Thread;
     customize these values to suit your system more appropriately.
 */
 //---------------------------------------------------------------------------
-#define SECONDS_TO_TICKS(x)             ((((K_ULONG)x) * TIMER_FREQ))
-#define MSECONDS_TO_TICKS(x)            ((((((K_ULONG)x) * (TIMER_FREQ/100)) + 5) / 10))
-#define USECONDS_TO_TICKS(x)            ((((((K_ULONG)x) * TIMER_FREQ) + 50000) / 1000000))
+#define SECONDS_TO_TICKS(x)             ((((uint32_t)x) * TIMER_FREQ))
+#define MSECONDS_TO_TICKS(x)            ((((((uint32_t)x) * (TIMER_FREQ/100)) + 5) / 10))
+#define useCONDS_TO_TICKS(x)            ((((((uint32_t)x) * TIMER_FREQ) + 50000) / 1000000))
 
 //---------------------------------------------------------------------------
 #define MIN_TICKS                        (3)    //!< The minimum tick value to set
@@ -67,9 +67,9 @@ class Thread;
 
 //---------------------------------------------------------------------------
 // add time because we don't know how far in an epoch we are when a call is made.
-#define SECONDS_TO_TICKS(x)             (((K_ULONG)(x) * 1000) + 1)
-#define MSECONDS_TO_TICKS(x)            ((K_ULONG)(x + 1))
-#define USECONDS_TO_TICKS(x)            (((K_ULONG)(x + 999)) / 1000)
+#define SECONDS_TO_TICKS(x)             (((uint32_t)(x) * 1000) + 1)
+#define MSECONDS_TO_TICKS(x)            ((uint32_t)(x + 1))
+#define useCONDS_TO_TICKS(x)            (((uint32_t)(x + 999)) / 1000)
 
 //---------------------------------------------------------------------------
 #define MIN_TICKS                       (1)    //!< The minimum tick value to set
@@ -110,31 +110,31 @@ public:
     /*!
         Re-initialize the Timer to default values.
      */
-    void Init() { ClearNode(); m_ulInterval = 0; m_ulTimerTolerance = 0; m_ulTimeLeft = 0; m_ucFlags = 0; }
+    void Init() { ClearNode(); m_u32Interval = 0; m_u32TimerTolerance = 0; m_u32TimeLeft = 0; m_u8Flags = 0; }
 
     /*!
         Start a timer using default ownership, using repeats as an option, and
         millisecond resolution.
 
         \param bRepeat_ 0 - timer is one-shot.  1 - timer is repeating.
-        \param ulIntervalMs_ - Interval of the timer in miliseconds
+        \param u32IntervalMs_ - Interval of the timer in miliseconds
         \param pfCallback_ - Function to call on timer expiry
         \param pvData_ - Data to pass into the callback function
     */
-    void Start( K_BOOL bRepeat_, K_ULONG ulIntervalMs_, TimerCallback_t pfCallback_, void *pvData_ );
+    void Start( bool bRepeat_, uint32_t u32IntervalMs_, TimerCallback_t pfCallback_, void *pvData_ );
 
     /*!
         Start a timer using default ownership, using repeats as an option, and
         millisecond resolution.
 
         \param bRepeat_ 0 - timer is one-shot.  1 - timer is repeating.
-        \param ulIntervalMs_ - Interval of the timer in miliseconds
-        \param ulToleranceMs - Allow the timer expiry to be delayed by an additional maximum time, in
+        \param u32IntervalMs_ - Interval of the timer in miliseconds
+        \param u32ToleranceMs - Allow the timer expiry to be delayed by an additional maximum time, in
                                order to have as many timers expire at the same time as possible.
         \param pfCallback_ - Function to call on timer expiry
         \param pvData_ - Data to pass into the callback function
     */
-    void Start( K_BOOL bRepeat_, K_ULONG ulIntervalMs_, K_ULONG ulToleranceMs_, TimerCallback_t pfCallback_, void *pvData_ );
+    void Start( bool bRepeat_, uint32_t u32IntervalMs_, uint32_t u32ToleranceMs_, TimerCallback_t pfCallback_, void *pvData_ );
 
     /*!
         Stop a timer already in progress.   Has no effect on timers that have
@@ -143,15 +143,15 @@ public:
     void Stop();
 
     /*!
-        \fn void SetFlags (K_UCHAR ucFlags_)
+        \fn void SetFlags (uint8_t u8Flags_)
 
-        Set the timer's flags based on the bits in the ucFlags_ argument
+        Set the timer's flags based on the bits in the u8Flags_ argument
 
-        \param ucFlags_ Flags to assign to the timer object.
+        \param u8Flags_ Flags to assign to the timer object.
                     TIMERLIST_FLAG_ONE_SHOT for a one-shot timer,
                     0 for a continuous timer.
     */
-    void SetFlags (K_UCHAR ucFlags_) { m_ucFlags = ucFlags_; }
+    void SetFlags (uint8_t u8Flags_) { m_u8Flags = u8Flags_; }
 
     /*!
         \fn void SetCallback( TimerCallback_t pfCallback_)
@@ -182,73 +182,73 @@ public:
     void SetOwner( Thread *pclOwner_){ m_pclOwner = pclOwner_; }
 
     /*!
-        \fn void SetIntervalTicks(K_ULONG ulTicks_)
+        \fn void SetIntervalTicks(uint32_t u32Ticks_)
 
         Set the timer expiry in system-ticks (platform specific!)
 
-        \param ulTicks_ Time in ticks
+        \param u32Ticks_ Time in ticks
     */
-    void SetIntervalTicks(K_ULONG ulTicks_);
+    void SetIntervalTicks(uint32_t u32Ticks_);
 
     /*!
-        \fn void SetIntervalSeconds(K_ULONG ulSeconds_);
+        \fn void SetIntervalSeconds(uint32_t u32Seconds_);
 
         Set the timer expiry interval in seconds (platform agnostic)
 
-        \param ulSeconds_ Time in seconds
+        \param u32Seconds_ Time in seconds
     */
-    void SetIntervalSeconds(K_ULONG ulSeconds_);
+    void SetIntervalSeconds(uint32_t u32Seconds_);
 
 
-    K_ULONG GetInterval()	{ return m_ulInterval; }
+    uint32_t GetInterval()	{ return m_u32Interval; }
 
     /*!
-        \fn void SetIntervalMSeconds(K_ULONG ulMSeconds_)
+        \fn void SetIntervalMSeconds(uint32_t u32MSeconds_)
 
         Set the timer expiry interval in milliseconds (platform agnostic)
 
-        \param ulMSeconds_ Time in milliseconds
+        \param u32MSeconds_ Time in milliseconds
     */
-    void SetIntervalMSeconds(K_ULONG ulMSeconds_);
+    void SetIntervalMSeconds(uint32_t u32MSeconds_);
 
     /*!
-        \fn void SetIntervalUSeconds(K_ULONG ulUSeconds_)
+        \fn void SetIntervalUSeconds(uint32_t u32USeconds_)
 
         Set the timer expiry interval in microseconds (platform agnostic)
 
-        \param ulUSeconds_ Time in microseconds
+        \param u32USeconds_ Time in microseconds
     */
-    void SetIntervalUSeconds(K_ULONG ulUSeconds_);
+    void SetIntervalUSeconds(uint32_t u32USeconds_);
 
     /*!
-        \fn void SetTolerance(K_ULONG ulTicks_)
+        \fn void SetTolerance(uint32_t u32Ticks_)
 
         Set the timer's maximum tolerance in order to synchronize timer
         processing with other timers in the system.
 
-        \param ulTicks_ Maximum tolerance in ticks
+        \param u32Ticks_ Maximum tolerance in ticks
 
     */
-    void SetTolerance(K_ULONG ulTicks_);
+    void SetTolerance(uint32_t u32Ticks_);
 
 private:
 
     friend class TimerList;
 
     //! Flags for the timer, defining if the timer is one-shot or repeated
-    K_UCHAR m_ucFlags;
+    uint8_t m_u8Flags;
 
     //! Pointer to the callback function
     TimerCallback_t m_pfCallback;
 
     //! Interval of the timer in timer ticks
-    K_ULONG m_ulInterval;
+    uint32_t m_u32Interval;
 
     //! Time remaining on the timer
-    K_ULONG m_ulTimeLeft;
+    uint32_t m_u32TimeLeft;
 
-    //! Maximum tolerance (used for timer harmonization)
-    K_ULONG m_ulTimerTolerance;
+    //! Maximum tolerance (usedd for timer harmonization)
+    uint32_t m_u32TimerTolerance;
 
     //! Pointer to the owner thread
     Thread  *m_pclOwner;

@@ -32,7 +32,7 @@ typedef enum
     NLFS_FILE_READ = 0x08,        //!< Open file for read
     NLFS_FILE_WRITE = 0x10        //!< Open file for write
 } NLFS_File_Mode;
-typedef K_UCHAR NLFS_File_Mode_t;
+typedef uint8_t NLFS_File_Mode_t;
 
 //----------------------------------------------------------------------------
 /*!
@@ -53,31 +53,31 @@ public:
      * \param eMode_ - File open mode
      * \return 0 on success, -1 on failure
      */
-    int     Open(NLFS *pclFS_, const K_CHAR *szPath_, NLFS_File_Mode_t eMode_);
+    int     Open(NLFS *pclFS_, const char *szPath_, NLFS_File_Mode_t eMode_);
 
     /*!
      * \brief Read Read bytes from a file into a specified data buffer
-     * \param [in] ulLen_ - Length (in bytes) of data to read
+     * \param [in] u32Len_ - Length (in bytes) of data to read
      * \param [out] pvBuf_ - Pointer to the buffer to read into
      * \return Number of bytes read from the file
      */
-    int     Read(void *pvBuf_, K_ULONG ulLen_);
+    int     Read(void *pvBuf_, uint32_t u32Len_);
 
     /*!
      * \brief Write Write a specified blob of data to the file
-     * \param [in] ulLen_ - Length (in bytes) of the source buffer
+     * \param [in] u32Len_ - Length (in bytes) of the source buffer
      * \param [in] pvBuf_ - Pointer to the data buffer containing the data to
      *                      be written
      * \return Number of bytes written to the file
      */
-    int     Write(void *pvBuf_, K_ULONG ulLen_);
+    int     Write(void *pvBuf_, uint32_t u32Len_);
 
     /*!
      * \brief Seek Seek to the specified byte offset within the file
-     * \param [in] ulOffset_ Offset in bytes from the beginning of the file
+     * \param [in] u32Offset_ Offset in bytes from the beginning of the file
      * \return 0 on success, -1 on failure
      */
-    int     Seek(K_ULONG ulOffset_);
+    int     Seek(uint32_t u32Offset_);
 
     /*!
      * \brief Close Is used to close an open file buffer
@@ -87,10 +87,10 @@ public:
 
 private:
     NLFS                *m_pclFileSystem;       //!< Pointer to the host filesystem
-    K_ULONG             m_ulOffset;             //!< Current byte offset within the file
-    K_ULONG             m_ulCurrentBlock;       //!< Index of the current filesystem block
-    K_USHORT            m_usFile;               //!< File index of the current file
-    NLFS_File_Mode_t    m_ucFlags;              //!< File mode flags
+    uint32_t             m_u32Offset;             //!< Current byte offset within the file
+    uint32_t             m_u32CurrentBlock;       //!< Index of the current filesystem block
+    uint16_t            m_u16File;               //!< File index of the current file
+    NLFS_File_Mode_t    m_u8Flags;              //!< File mode flags
     NLFS_Node_t m_stNode;               //!< Local copy of the file node
 };
 

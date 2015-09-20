@@ -24,7 +24,7 @@ See license.txt for more information
 #include "system_heap_config.h"
 #include "fixed_heap.h"
 
-#if USE_SYSTEM_HEAP
+#if use_SYSTEM_HEAP
 
 //---------------------------------------------------------------------------
 /*!
@@ -196,11 +196,11 @@ public:
 
     /*!
      * \brief Alloc allocate a block of data from the heap
-     * \param usSize_ size of the block (in bytes) to allocate
+     * \param u16Size_ size of the block (in bytes) to allocate
      * \return pointer to a block of data allocated from the heap, or NULL on
      *         failure.
      */
-    static void* Alloc(K_USHORT usSize_);
+    static void* Alloc(uint16_t u16Size_);
 
     /*!
      * \brief Free free a block of data previously allocated from the heap
@@ -209,12 +209,12 @@ public:
     static void  Free(void *pvData_);
 
 private:
-    static K_UCHAR m_pucRawHeap[ HEAP_RAW_SIZE ]; //!< Raw heap buffer
+    static uint8_t m_pu8RawHeap[ HEAP_RAW_SIZE ]; //!< Raw heap buffer
     static HeapConfig m_pclSystemHeapConfig[ HEAP_NUM_SIZES + 1 ]; //!< Heap configuration metadata
     static FixedHeap m_clSystemHeap; //!< Heap management object
-    static K_BOOL m_bInit; //!< True if initialized, false if uninitialized
+    static bool m_bInit; //!< True if initialized, false if uninitialized
 };
 
-#endif // USE_SYSTEM_HEAP
+#endif // use_SYSTEM_HEAP
 
 #endif // __SYSTEM_HEAP_H__

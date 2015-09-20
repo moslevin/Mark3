@@ -25,35 +25,35 @@ See license.txt for more information
 //---------------------------------------------------------------------------
 PseudoRandom::PseudoRandom()
 {
-    m_ulLFSR1 = 0xABCDE;
-    m_ulLFSR2 = 0x23456789;
+    m_u32LFSR1 = 0xABCDE;
+    m_u32LFSR2 = 0x23456789;
 }
 
 //---------------------------------------------------------------------------
-void PseudoRandom::Seed( K_ULONG ulSeed1_, K_ULONG ulSeed2_ )
+void PseudoRandom::Seed( uint32_t u32Seed1_, uint32_t u32Seed2_ )
 {
-    m_ulLFSR1 = ulSeed1_;
-    m_ulLFSR2 = ulSeed2_;
+    m_u32LFSR1 = u32Seed1_;
+    m_u32LFSR2 = u32Seed2_;
 }
 
 //---------------------------------------------------------------------------
-K_USHORT PseudoRandom::GetRandom()
+uint16_t PseudoRandom::GetRandom()
 {
-    Shift(&m_ulLFSR2, POLY_MASK_32);
-    return (K_USHORT)( Shift(&m_ulLFSR2, POLY_MASK_32) ^
-                       Shift(&m_ulLFSR1, POLY_MASK_31) );
+    Shift(&m_u32LFSR2, POLY_MASK_32);
+    return (uint16_t)( Shift(&m_u32LFSR2, POLY_MASK_32) ^
+                       Shift(&m_u32LFSR1, POLY_MASK_31) );
 }
 
 //---------------------------------------------------------------------------
-K_ULONG PseudoRandom::Shift( K_ULONG *pulLFSR_, K_ULONG ulMask_ )
+uint32_t PseudoRandom::Shift( uint32_t *pu32LFSR_, uint32_t u32Mask_ )
 {
-    K_ULONG ulFeedback;
+    uint32_t u32Feedback;
 
-    ulFeedback = *pulLFSR_ & 1;
-    *pulLFSR_ >>= 1;
-    if (ulFeedback)
+    u32Feedback = *pu32LFSR_ & 1;
+    *pu32LFSR_ >>= 1;
+    if (u32Feedback)
     {
-        *pulLFSR_ ^= ulMask_;
+        *pu32LFSR_ ^= u32Mask_;
     }
-    return *pulLFSR_;
+    return *pu32LFSR_;
 }

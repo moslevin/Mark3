@@ -33,11 +33,11 @@ typedef struct
     {
         union
         {
-            K_USHORT usData;
-            K_UCHAR ucData;
+            uint16_t u16Data;
+            uint8_t u8Data;
         };
     };
-    K_UCHAR ucLen;
+    uint8_t u8Len;
 } DataVector_t;
 
 
@@ -49,13 +49,13 @@ class GraphicsUOLED : public GraphicsDriver
 public:
 //---------------------------------------------------------
     virtual void Init() {}
-    virtual K_UCHAR Open() { return 0; }
-    virtual K_UCHAR Close() { return 0; }
-    virtual K_USHORT Read( K_USHORT usBytes_, K_UCHAR *pucData_ )
+    virtual uint8_t Open() { return 0; }
+    virtual uint8_t Close() { return 0; }
+    virtual uint16_t Read( uint16_t u16Bytes_, uint8_t *pu8Data_ )
         { return 0; }
-    virtual K_USHORT Write( K_USHORT usBytes_, K_UCHAR *pucData_ )
+    virtual uint16_t Write( uint16_t u16Bytes_, uint8_t *pu8Data_ )
         { return 0; }
-    virtual K_USHORT Control( K_USHORT usEvent_, void *pvDataIn_, K_USHORT usSizeIn_, void *pvDataOut_, K_USHORT usSizeOut_ )
+    virtual uint16_t Control( uint16_t u16Event_, void *pvDataIn_, uint16_t u16SizeIn_, void *pvDataOut_, uint16_t u16SizeOut_ )
         { return 0; }        
         
 //---------------------------------------------------------
@@ -80,25 +80,25 @@ public:
     virtual void Polygon(DrawPoly_t *pstPoly_);
 
     virtual void Text(DrawText_t *pstText_);
-    virtual K_USHORT TextWidth(DrawText_t *pstText_);
+    virtual uint16_t TextWidth(DrawText_t *pstText_);
     void SetDriver( Driver *pclDriver_ ) { m_pclDriver = pclDriver_; }
 private:
 
 
-    void WriteByte( K_UCHAR ucByte_ );
-    void WriteWord( K_USHORT usWord_ );
-    void WriteVector( DataVector_t *pstVector_, K_UCHAR ucCount_);
+    void WriteByte( uint8_t u8Byte_ );
+    void WriteWord( uint16_t u16Word_ );
+    void WriteVector( DataVector_t *pstVector_, uint8_t u8Count_);
 
-    K_UCHAR ReadByte( void );
-    K_UCHAR WaitAck( void );
+    uint8_t ReadByte( void );
+    uint8_t WaitAck( void );
 
-    void MoveCursor(K_USHORT usX_, K_USHORT usY_);
-    void MoveOrigin( K_USHORT usX_, K_USHORT usY_ );
+    void MoveCursor(uint16_t u16X_, uint16_t u16Y_);
+    void MoveOrigin( uint16_t u16X_, uint16_t u16Y_ );
 
     void SetOutlineColor( COLOR uColor_ );
     void SetFontFGColor(COLOR uColor_);
     void SetFontBGColor(COLOR uColor_);
-    void SetTextOpacity(K_BOOL bOpaque_);
+    void SetTextOpacity(bool bOpaque_);
 
     Driver *m_pclDriver;
     

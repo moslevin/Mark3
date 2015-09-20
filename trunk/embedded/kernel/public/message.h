@@ -21,14 +21,14 @@ See license.txt for more information
     interprocess communications (IPC), an RTOS is just a toy.  Mark3 implements
     a form of IPC to provide safe and flexible messaging between threads.
 
-    Using kernel-managed IPC offers significant benefits over other forms of
+    using kernel-managed IPC offers significant benefits over other forms of
     data sharing (i.e. Global variables) in that it avoids synchronization
-    issues and race conditions common to the practice.  Using IPC also enforces
+    issues and race conditions common to the practice.  using IPC also enforces
     a more disciplined coding style that keeps threads decoupled from one
     another and minimizes global data, preventing careless and hard-to-debug
     errors.
 
-    \section MBCreate Using Messages, Queues, and the Global Message Pool 
+    \section MBCreate using Messages, Queues, and the Global Message Pool 
 
     \code
     
@@ -104,7 +104,7 @@ public:
         
         Initialize the data and code in the message.
     */
-    void Init() { ClearNode(); m_pvData = NULL; m_usCode = 0; }
+    void Init() { ClearNode(); m_pvData = NULL; m_u16Code = 0; }
     
     /*!
         \fn void SetData( void *pvData_ )
@@ -125,29 +125,29 @@ public:
 	void *GetData() { return m_pvData; }
 	
     /*!
-        \fn SetCode( K_USHORT usCode_ )
+        \fn SetCode( uint16_t u16Code_ )
         
         Set the code in the message before transmission
         
-        \param usCode_ Data code to set in the object
+        \param u16Code_ Data code to set in the object
     */
-    void SetCode( K_USHORT usCode_ ) { m_usCode = usCode_; }
+    void SetCode( uint16_t u16Code_ ) { m_u16Code = u16Code_; }
 	
     /*!
-        \fn K_USHORT GetCode()
+        \fn uint16_t GetCode()
         
         Return the code set in the message upon receipt
         
-        \return User code set in the object
+        \return user code set in the object
     */
-    K_USHORT GetCode() { return m_usCode; }
+    uint16_t GetCode() { return m_u16Code; }
 private:
 
     //! Pointer to the message data
 	void *m_pvData;
     
     //! Message code, providing context for the message
-	K_USHORT m_usCode;
+	uint16_t m_u16Code;
 };
 
 //---------------------------------------------------------------------------
@@ -168,7 +168,7 @@ public:
         \fn void Push( Message *pclMessage_ )
         
         Return a previously-claimed message object back to the global queue.
-        Used once the message has been processed by a receiver.
+        used once the message has been processed by a receiver.
         
         \param pclMessage_ Pointer to the Message object to return back to 
                the global queue
@@ -179,7 +179,7 @@ public:
         \fn Message *Pop()
         
         Pop a message from the global queue, returning it to the user to be 
-        populated before sending by a transmitter.
+        popu32ated before sending by a transmitter.
         
         \return Pointer to a Message object
     */
@@ -220,20 +220,20 @@ public:
     
 #if KERNEL_USE_TIMEOUTS
 	/*!        
-        \fn Message *Receive( K_ULONG ulWaitTimeMS_ )
+        \fn Message *Receive( uint32_t u32WaitTimeMS_ )
         
         Receive a message from the message queue.  If the message queue
         is empty, the thread will block until a message is available for
 		the duration specified.  If no message arrives within that 
 		duration, the call will return with NULL.
         
-		\param ulWaitTimeMS_ The amount of time in ms to wait for a 
+		\param u32WaitTimeMS_ The amount of time in ms to wait for a 
 				message before timing out and unblocking the waiting thread.
 		
         \return Pointer to a message object at the head of the queue or
 				NULL on timeout.
     */
-	Message *Receive( K_ULONG ulTimeWaitMS_ );
+	Message *Receive( uint32_t u32TimeWaitMS_ );
 #endif	
 	
     /*!
@@ -248,13 +248,13 @@ public:
     
 	
 	/*!
-		\fn K_USHORT GetCount()
+		\fn uint16_t GetCount()
 		
 		Return the number of messages pending in the "receive" queue.
 		
 		\return Count of pending messages in the queue.
 	*/
-	K_USHORT GetCount();
+	uint16_t GetCount();
 private:
 
 #if KERNEL_USE_TIMEOUTS
@@ -263,11 +263,11 @@ private:
      *
      * Internal function used to abstract timed and un-timed Receive calls.
      *
-     * \param ulTimeWaitMS_ Time (in ms) to block, 0 for un-timed call.
+     * \param u32TimeWaitMS_ Time (in ms) to block, 0 for un-timed call.
      *
      * \return Pointer to a message, or 0 on timeout.
      */
-    Message *Receive_i( K_ULONG ulTimeWaitMS_ );
+    Message *Receive_i( uint32_t u32TimeWaitMS_ );
 #else
     /*!
      * \brief Receive_i

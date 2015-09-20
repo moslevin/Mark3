@@ -26,114 +26,114 @@ See license.txt for more information
 #if KERNEL_USE_ATOMIC
 
 //---------------------------------------------------------------------------
-K_UCHAR Atomic::Set( K_UCHAR *pucSource_, K_UCHAR ucVal_ )
+uint8_t Atomic::Set( uint8_t *pu8Source_, uint8_t u8Val_ )
 {
-    K_UCHAR ucRet;
+    uint8_t u8Ret;
     CS_ENTER();
-    ucRet = *pucSource_;
-    *pucSource_ = ucVal_;
+    u8Ret = *pu8Source_;
+    *pu8Source_ = u8Val_;
     CS_EXIT();
-    return ucRet;
+    return u8Ret;
 }
 //---------------------------------------------------------------------------
-K_USHORT Atomic::Set( K_USHORT *pusSource_, K_USHORT usVal_ )
+uint16_t Atomic::Set( uint16_t *pu16Source_, uint16_t u16Val_ )
 {
-    K_USHORT usRet;
+    uint16_t u16Ret;
     CS_ENTER();
-    usRet = *pusSource_;
-    *pusSource_ = usVal_;
+    u16Ret = *pu16Source_;
+    *pu16Source_ = u16Val_;
     CS_EXIT();
-    return usRet;
+    return u16Ret;
 }
 //---------------------------------------------------------------------------
-K_ULONG Atomic::Set( K_ULONG *pulSource_, K_ULONG ulVal_ )
+uint32_t Atomic::Set( uint32_t *pu32Source_, uint32_t u32Val_ )
 {
-    K_ULONG ulRet;
+    uint32_t u32Ret;
     CS_ENTER();
-    ulRet = *pulSource_;
-    *pulSource_ = ulVal_;
+    u32Ret = *pu32Source_;
+    *pu32Source_ = u32Val_;
     CS_EXIT();
-    return ulRet;
-}
-
-//---------------------------------------------------------------------------
-K_UCHAR Atomic::Add( K_UCHAR *pucSource_, K_UCHAR ucVal_ )
-{
-    K_UCHAR ucRet;
-    CS_ENTER();
-    ucRet = *pucSource_;
-    *pucSource_ += ucVal_;
-    CS_EXIT();
-    return ucRet;
+    return u32Ret;
 }
 
 //---------------------------------------------------------------------------
-K_USHORT Atomic::Add( K_USHORT *pusSource_, K_USHORT usVal_ )
+uint8_t Atomic::Add( uint8_t *pu8Source_, uint8_t u8Val_ )
 {
-    K_USHORT usRet;
+    uint8_t u8Ret;
     CS_ENTER();
-    usRet = *pusSource_;
-    *pusSource_ += usVal_;
+    u8Ret = *pu8Source_;
+    *pu8Source_ += u8Val_;
     CS_EXIT();
-    return usRet;
+    return u8Ret;
 }
 
 //---------------------------------------------------------------------------
-K_ULONG Atomic::Add( K_ULONG *pulSource_, K_ULONG ulVal_ )
+uint16_t Atomic::Add( uint16_t *pu16Source_, uint16_t u16Val_ )
 {
-    K_ULONG ulRet;
+    uint16_t u16Ret;
     CS_ENTER();
-    ulRet = *pulSource_;
-    *pulSource_ += ulVal_;
+    u16Ret = *pu16Source_;
+    *pu16Source_ += u16Val_;
     CS_EXIT();
-    return ulRet;
+    return u16Ret;
 }
 
 //---------------------------------------------------------------------------
-K_UCHAR Atomic::Sub( K_UCHAR *pucSource_, K_UCHAR ucVal_ )
+uint32_t Atomic::Add( uint32_t *pu32Source_, uint32_t u32Val_ )
 {
-    K_UCHAR ucRet;
+    uint32_t u32Ret;
     CS_ENTER();
-    ucRet = *pucSource_;
-    *pucSource_ -= ucVal_;
+    u32Ret = *pu32Source_;
+    *pu32Source_ += u32Val_;
     CS_EXIT();
-    return ucRet;
+    return u32Ret;
 }
 
 //---------------------------------------------------------------------------
-K_USHORT Atomic::Sub( K_USHORT *pusSource_, K_USHORT usVal_ )
+uint8_t Atomic::Sub( uint8_t *pu8Source_, uint8_t u8Val_ )
 {
-    K_USHORT usRet;
+    uint8_t u8Ret;
     CS_ENTER();
-    usRet = *pusSource_;
-    *pusSource_ -= usVal_;
+    u8Ret = *pu8Source_;
+    *pu8Source_ -= u8Val_;
     CS_EXIT();
-    return usRet;
+    return u8Ret;
 }
 
 //---------------------------------------------------------------------------
-K_ULONG Atomic::Sub( K_ULONG *pulSource_, K_ULONG ulVal_ )
+uint16_t Atomic::Sub( uint16_t *pu16Source_, uint16_t u16Val_ )
 {
-    K_ULONG ulRet;
+    uint16_t u16Ret;
     CS_ENTER();
-    ulRet = *pulSource_;
-    *pulSource_ -= ulVal_;
+    u16Ret = *pu16Source_;
+    *pu16Source_ -= u16Val_;
     CS_EXIT();
-    return ulRet;
+    return u16Ret;
 }
 
 //---------------------------------------------------------------------------
-K_BOOL Atomic::TestAndSet( K_BOOL *pbLock_ )
+uint32_t Atomic::Sub( uint32_t *pu32Source_, uint32_t u32Val_ )
 {
-    K_UCHAR ucRet;
+    uint32_t u32Ret;
     CS_ENTER();
-    ucRet = *pbLock_;
-    if (!ucRet)
+    u32Ret = *pu32Source_;
+    *pu32Source_ -= u32Val_;
+    CS_EXIT();
+    return u32Ret;
+}
+
+//---------------------------------------------------------------------------
+bool Atomic::TestAndSet( bool *pbLock_ )
+{
+    uint8_t u8Ret;
+    CS_ENTER();
+    u8Ret = *pbLock_;
+    if (!u8Ret)
     {
         *pbLock_ = 1;
     }
     CS_EXIT();
-    return ucRet;
+    return u8Ret;
 }
 
 #endif // KERNEL_USE_ATOMIC

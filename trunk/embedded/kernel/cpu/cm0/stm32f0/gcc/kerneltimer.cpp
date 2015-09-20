@@ -42,32 +42,32 @@ void KernelTimer::Stop(void)
 }
 
 //---------------------------------------------------------------------------
-K_USHORT KernelTimer::Read(void)
+uint16_t KernelTimer::Read(void)
 {
 	// Not implemented in this port
 	return 0;
 }
 
 //---------------------------------------------------------------------------
-K_ULONG KernelTimer::SubtractExpiry(K_ULONG ulInterval_)
+uint32_t KernelTimer::SubtractExpiry(uint32_t u32Interval_)
 {
 	return 0;
 }
 
 //---------------------------------------------------------------------------
-K_ULONG KernelTimer::TimeToExpiry(void)
+uint32_t KernelTimer::TimeToExpiry(void)
 {
 	return 0;
 }
 
 //---------------------------------------------------------------------------
-K_ULONG KernelTimer::GetOvertime(void)
+uint32_t KernelTimer::GetOvertime(void)
 {
     return 0;
 }
 
 //---------------------------------------------------------------------------
-K_ULONG KernelTimer::SetExpiry(K_ULONG ulInterval_)
+uint32_t KernelTimer::SetExpiry(uint32_t u32Interval_)
 {	
 	return 0;
 }
@@ -78,7 +78,7 @@ void KernelTimer::ClearExpiry(void)
 }
 
 //-------------------------------------------------------------------------
-K_UCHAR KernelTimer::DI(void)
+uint8_t KernelTimer::DI(void)
 {
 	return 0;
 }
@@ -90,7 +90,7 @@ void KernelTimer::EI(void)
 }
 
 //---------------------------------------------------------------------------
-void KernelTimer::RI(K_BOOL bEnable_)
+void KernelTimer::RI(bool bEnable_)
 {
 }
 

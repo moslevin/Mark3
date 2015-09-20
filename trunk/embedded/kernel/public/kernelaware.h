@@ -76,7 +76,7 @@ public:
      *
      * \param szStr_ String to use as a tag for the profilng session.
      */
-    static void ProfileInit( const K_CHAR *szStr_ );
+    static void ProfileInit( const char *szStr_ );
 
     //---------------------------------------------------------------------------
     /*!
@@ -125,7 +125,7 @@ public:
      *
      * \param szStr_
      */
-    static void Print( const K_CHAR *szStr_ );
+    static void Print( const char *szStr_ );
 
     //---------------------------------------------------------------------------
     /*!
@@ -134,13 +134,13 @@ public:
      * Insert a kernel trace statement into the kernel-aware simulator's debug
      * data stream.
      *
-     * \param usFile_   16-bit code representing the file
-     * \param usLine_   16-bit code representing the line in the file
-     * \param usCode_   16-bit data code, which indicates the line's format.
+     * \param u16File_   16-bit code representing the file
+     * \param u16Line_   16-bit code representing the line in the file
+     * \param u16Code_   16-bit data code, which indicates the line's format.
      */
-    static void Trace( K_USHORT usFile_,
-                  K_USHORT usLine_,
-                  K_USHORT usCode_ );
+    static void Trace( uint16_t u16File_,
+                  uint16_t u16Line_,
+                  uint16_t u16Code_ );
 
     //---------------------------------------------------------------------------
     /*!
@@ -149,15 +149,15 @@ public:
      * Insert a kernel trace statement into the kernel-aware simulator's debug
      * data stream.
      *
-     * \param usFile_   16-bit code representing the file
-     * \param usLine_   16-bit code representing the line in the file
-     * \param usCode_   16-bit data code, which indicates the line's format
-     * \param usArg1_   16-bit argument to the format string.
+     * \param u16File_   16-bit code representing the file
+     * \param u16Line_   16-bit code representing the line in the file
+     * \param u16Code_   16-bit data code, which indicates the line's format
+     * \param u16Arg1_   16-bit argument to the format string.
      */
-    static void Trace( K_USHORT usFile_,
-                  K_USHORT usLine_,
-                  K_USHORT usCode_,
-                  K_USHORT usArg1_);
+    static void Trace( uint16_t u16File_,
+                  uint16_t u16Line_,
+                  uint16_t u16Code_,
+                  uint16_t u16Arg1_);
 
     //---------------------------------------------------------------------------
     /*!
@@ -166,29 +166,29 @@ public:
      * Insert a kernel trace statement into the kernel-aware simulator's debug
      * data stream.
      *
-     * \param usFile_   16-bit code representing the file
-     * \param usLine_   16-bit code representing the line in the file
-     * \param usCode_   16-bit data code, which indicates the line's format
-     * \param usArg1_   16-bit argument to the format string.
-     * \param usArg2_   16-bit argument to the format string.
+     * \param u16File_   16-bit code representing the file
+     * \param u16Line_   16-bit code representing the line in the file
+     * \param u16Code_   16-bit data code, which indicates the line's format
+     * \param u16Arg1_   16-bit argument to the format string.
+     * \param u16Arg2_   16-bit argument to the format string.
      */
-    static void Trace( K_USHORT usFile_,
-                  K_USHORT usLine_,
-                  K_USHORT usCode_,
-                  K_USHORT usArg1_,
-                  K_USHORT usArg2_);
+    static void Trace( uint16_t u16File_,
+                  uint16_t u16Line_,
+                  uint16_t u16Code_,
+                  uint16_t u16Arg1_,
+                  uint16_t u16Arg2_);
 
     //---------------------------------------------------------------------------
     /*!
      * \brief IsSimulatorAware
      *
-     * Use this function to determine whether or not the code is running on a 
+     * use this function to determine whether or not the code is running on a
      * simulator that is aware of the kernel.
      *
      * \return true - the application is being run in a kernel-aware simulator.
      *         false - otherwise.
      */
-    static K_BOOL IsSimulatorAware(void);
+    static bool IsSimulatorAware(void);
 
 private:
 
@@ -197,20 +197,20 @@ private:
     * \brief Trace_i
     *
     * Private function by which the class's Trace() methods are reflected, which
-    * allows us to realize a modest code saving.
+    * allows u16 to realize a modest code saving.
     *
-    * \param usFile_   16-bit code representing the file
-    * \param usLine_   16-bit code representing the line in the file
-    * \param usCode_   16-bit data code, which indicates the line's format
-    * \param usArg1_   16-bit argument to the format string.
-    * \param usArg2_   16-bit argument to the format string.
+    * \param u16File_   16-bit code representing the file
+    * \param u16Line_   16-bit code representing the line in the file
+    * \param u16Code_   16-bit data code, which indicates the line's format
+    * \param u16Arg1_   16-bit argument to the format string.
+    * \param u16Arg2_   16-bit argument to the format string.
     * \param eCmd_     Code indicating the number of arguments to emit.
     */
-    static void Trace_i( K_USHORT usFile_,
-                         K_USHORT usLine_,
-                         K_USHORT usCode_,
-                         K_USHORT usArg1_,
-                         K_USHORT usArg2_,
+    static void Trace_i( uint16_t u16File_,
+                         uint16_t u16Line_,
+                         uint16_t u16Code_,
+                         uint16_t u16Arg1_,
+                         uint16_t u16Arg2_,
                          KernelAwareCommand_t eCmd_);
 };
 

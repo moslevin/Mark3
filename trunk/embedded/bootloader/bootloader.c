@@ -28,7 +28,7 @@ See license.txt for more information
     -It's packet-driven.  As a result, the host utility and the target device
      can work together, producing fast, bullet-proof loads.
     
-    -FunkenSlip encoding is similar to many popular programming formats, and 
+    -FunkenSlip encoding is similar to many popu32ar programming formats, and 
      as a result it's easy to use as a generic abstraction for intel hex,
      S-records, etc.
     
@@ -83,10 +83,10 @@ See license.txt for more information
     generic types/defines used throughout the bootloader
 */
 /*-------------------------------------------------------------------------*/
-#define K_UCHAR         unsigned char
-#define K_USHORT        unsigned short
-#define K_ULONG         unsigned long
-#define K_BOOL          unsigned char
+#define uint8_t         unsigned char
+#define uint16_t        unsigned short
+#define uint32_t         unsigned long
+#define bool          unsigned char
 #define K_TRUE          1
 #define K_FALSE         0
 
@@ -97,9 +97,9 @@ See license.txt for more information
 */
 /*-------------------------------------------------------------------------*/
 #define UDR             UDR0
-#define UCSRA           UCSR0A
-#define UCSRB           UCSR0B
-#define UCSRC           UCSR0C
+#define u8SRA           UCSR0A
+#define u8SRB           UCSR0B
+#define u8SRC           UCSR0C
 #define RXC             RXC0
 #define RXEN            RXEN0
 #define TXEN            TXEN0
@@ -112,7 +112,7 @@ See license.txt for more information
     Define the baud rate that the bootloader will operate at
 */
 /*-------------------------------------------------------------------------*/
-#define BAUD_RATE       ((K_ULONG)57600)
+#define BAUD_RATE       ((uint32_t)57600)
 
 /*-------------------------------------------------------------------------*/
 /*!
@@ -121,7 +121,7 @@ See license.txt for more information
     correct baud rate.
 */
 /*-------------------------------------------------------------------------*/
-#define SYSTEM_FREQ     ((K_ULONG)16000000)
+#define SYSTEM_FREQ     ((uint32_t)16000000)
 
 /*-------------------------------------------------------------------------*/
 /*!
@@ -158,7 +158,7 @@ See license.txt for more information
     
     -SEEK-  Set the write pointer to a specific address, generally set on 
             startup.  If a partially-written page exists, assume the seek 
-            will take us out of the page currently being written.  Write the 
+            will take u16 out of the page currently being written.  Write the 
             contents of the partial page to flash, and then set the write 
             pointer to the given address
     
@@ -174,10 +174,10 @@ See license.txt for more information
 #define PROGRAM_CMD_EOF			(2)			/*!< End of file - stop programming */
 
 /*-------------------------------------------------------------------------*/
-static K_ULONG ulPageAddr;                  /*!< Page address pointer*/
-static K_UCHAR ucPageIdx;                   /*!< Index in the data page*/
-static K_UCHAR aucPageBuf[PAGE_SIZE];       /*!< Data buffer written to FLASH*/
-static K_UCHAR aucSerialBuf[RX_BUF_SIZE];   /*!< Buffer filled with FunkenSlip packets*/
+static uint32_t u32PageAddr;                  /*!< Page address pointer*/
+static uint8_t u8PageIdx;                   /*!< Index in the data page*/
+static uint8_t aucPageBuf[PAGE_SIZE];       /*!< Data buffer written to FLASH*/
+static uint8_t aucSerialBuf[RX_BUF_SIZE];   /*!< Buffer filled with FunkenSlip packets*/
 
 /*-------------------------------------------------------------------------*/
 typedef void (*main_func_t)(void);          /*!< Function pointer type used to jump to app*/
@@ -190,11 +190,11 @@ typedef void (*main_func_t)(void);          /*!< Function pointer type used to j
 /*-------------------------------------------------------------------------*/
 static void     BL_Exit(void); 
 static void     Serial_Init(void);
-static K_UCHAR  Serial_Read(void);
-static void     Serial_Write(K_UCHAR ucByte_);
-static K_BOOL   Slip_FillPacket(void);
-static K_UCHAR  Slip_DecodePacket(void);
-static K_BOOL   Serial_ValidatePacket(K_USHORT *pusLen_);
+static uint8_t  Serial_Read(void);
+static void     Serial_Write(uint8_t u8Byte_);
+static bool   Slip_FillPacket(void);
+static uint8_t  Slip_DecodePacket(void);
+static bool   Serial_ValidatePacket(uint16_t *pu16Len_);
 static void		Flash_WritePage(void);
 
 /*-------------------------------------------------------------------------*/
@@ -237,33 +237,33 @@ static void BL_Exit(void)
 */
 static void Serial_Init(void) 
 {
-    K_USHORT usBaudTemp = 0;
+    uint16_t u16BaudTemp = 0;
     
     /* Clear port config*/
-    UCSRA = 0;
-    UCSRB = 0;
+    u8SRA = 0;
+    u8SRB = 0;
     
     /* Set baud rate*/
-    usBaudTemp = (K_USHORT)(((SYSTEM_FREQ/16)/BAUD_RATE) - 1);
-    BAUD_H = (K_UCHAR)(usBaudTemp >> 8);
-    BAUD_L = (K_UCHAR)(usBaudTemp & 0x00FF);
+    u16BaudTemp = (uint16_t)(((SYSTEM_FREQ/16)/BAUD_RATE) - 1);
+    BAUD_H = (uint8_t)(u16BaudTemp >> 8);
+    BAUD_L = (uint8_t)(u16BaudTemp & 0x00FF);
     
     /* Set 8N1 format on the port */
-    UCSRC = 0x06;
+    u8SRC = 0x06;
     
     /* Enable RX & TX, but no interrupts. */
-    UCSRB = (1 << RXEN) | (1 << TXEN);
+    u8SRB = (1 << RXEN) | (1 << TXEN);
 }
 
 /*-------------------------------------------------------------------------*/
 /*!
     Read a byte of data from the serial port, returning it to the user.
-    \fn static K_UCHAR Serial_Read(void) 
+    \fn static uint8_t Serial_Read(void) 
     \return A single byte of data read from the serial port
 */
-static K_UCHAR Serial_Read(void) 
+static uint8_t Serial_Read(void) 
 {
-    while (!(UCSRA & (1 << RXC0))){};
+    while (!(u8SRA & (1 << RXC0))){};
     return UDR;
 }
 
@@ -272,17 +272,17 @@ static K_UCHAR Serial_Read(void)
     Poll until we recieve the SLIP end-of-packet character (192).  If a 
     specified internal (ad-hoc) timeout occurs before receiving a valid
     framing character, bail.
-    \fn static K_BOOL Serial_RxPoll(void) 
+    \fn static bool Serial_RxPoll(void) 
     \return K_TRUE if a SLIP end-of-packet character recieved within the 
             predefined tiemout interval, K_FALSE if a timeout occurred.
 */
-static K_BOOL Serial_RxPoll(void) 
+static bool Serial_RxPoll(void) 
 {
-    volatile K_ULONG ulTimeout = 2000000UL;
+    volatile uint32_t u32Timeout = 2000000UL;
     
-    while (ulTimeout--) 
+    while (u32Timeout--) 
     {
-        if (UCSRA & (1 << RXC0))
+        if (u8SRA & (1 << RXC0))
         {
             if (UDR == 192)
             {
@@ -299,32 +299,32 @@ static K_BOOL Serial_RxPoll(void)
     Push a byte of data out of the serial port.  Waits until the port is free
     before attempting to write the character.
     
-    \fn static void Serial_Write(K_UCHAR ucByte_)
+    \fn static void Serial_Write(uint8_t u8Byte_)
 */
-static void Serial_Write(K_UCHAR ucByte_) 
+static void Serial_Write(uint8_t u8Byte_) 
 {
-    while (!(UCSRA & (1 << UDRE))){};
-    UDR = ucByte_;
+    while (!(u8SRA & (1 << UDRE))){};
+    UDR = u8Byte_;
 }
 
 /*-------------------------------------------------------------------------*/
 /*!
     Busy-wait until a full packet of data is received.
-    \fn static K_BOOL Slip_FillPacket(void)     
+    \fn static bool Slip_FillPacket(void)     
     \return K_TRUE if a packet was successfully read, K_FALSE if the packet
             failed as a result of overflowing the buffer/garbage data on the
             port.
 */
-static K_BOOL Slip_FillPacket(void) 
+static bool Slip_FillPacket(void) 
 {
-    K_UCHAR i = 0;
-    K_UCHAR ucData;
+    uint8_t i = 0;
+    uint8_t u8Data;
     while (i < RX_BUF_SIZE)
     {
-        ucData = Serial_Read();
-        aucSerialBuf[i] = ucData;
+        u8Data = Serial_Read();
+        aucSerialBuf[i] = u8Data;
         
-        if (ucData == 192)
+        if (u8Data == 192)
         {
             return K_TRUE;
         }
@@ -335,40 +335,40 @@ static K_BOOL Slip_FillPacket(void)
 /*-------------------------------------------------------------------------*/
 /*!
     Perform in-place decoding on SLIP data in the serial buffer.
-    \fn static K_UCHAR Slip_DecodePacket(void) 
+    \fn static uint8_t Slip_DecodePacket(void) 
     \return Number of characters read
 */
-static K_UCHAR Slip_DecodePacket(void) 
+static uint8_t Slip_DecodePacket(void) 
 {
-    K_UCHAR i = 0;
-    K_UCHAR *pucSrc = aucSerialBuf;
-    K_UCHAR *pucDst = aucSerialBuf;
+    uint8_t i = 0;
+    uint8_t *pu8Src = aucSerialBuf;
+    uint8_t *pu8Dst = aucSerialBuf;
     
     /* Perform slip decoding in-place in the serial buffer packet*/
-    while ((*pucSrc != 192) && i < RX_BUF_SIZE)
+    while ((*pu8Src != 192) && i < RX_BUF_SIZE)
     {
-        if (*pucSrc == 219)
+        if (*pu8Src == 219)
         {
-            if (*(pucSrc+1) == 220)
+            if (*(pu8Src+1) == 220)
             {
-                *pucDst = 192;				
+                *pu8Dst = 192;				
             }
-            else if (*(pucSrc+1) == 221)
+            else if (*(pu8Src+1) == 221)
             {
-                *pucDst = 219;				
+                *pu8Dst = 219;				
             }
-            pucSrc++;
+            pu8Src++;
         }
         else
         {
-            *pucDst = *pucSrc;	
+            *pu8Dst = *pu8Src;	
         }
         i++;
-        pucSrc++;
-        pucDst++;
+        pu8Src++;
+        pu8Dst++;
     }
     
-    *pucDst = 192;
+    *pu8Dst = 192;
 		
     return i;
 }
@@ -379,57 +379,57 @@ static K_UCHAR Slip_DecodePacket(void)
     SLIP decoded.  This function validates the contents of the payload as 
     being FunkenSlip encoded data - We search for a correct channel, correct
     CRC's, and correct message length before allowing a packet to be valid.
-    \fn static K_BOOL Serial_ValidatePacket(K_USHORT *pusLen_)
-    \param K_USHORT *pusLen_ Length of packet data returned to the user
+    \fn static bool Serial_ValidatePacket(uint16_t *pu16Len_)
+    \param uint16_t *pu16Len_ Length of packet data returned to the user
     \return K_TRUE if packet is valid, K_FALSE if any of the checks fail
 */
-static K_BOOL Serial_ValidatePacket(K_USHORT *pusLen_) 
+static bool Serial_ValidatePacket(uint16_t *pu16Len_) 
 {    
-    K_UCHAR ucChannel;
-    K_USHORT usCRC_Calc = 0;
-    K_USHORT usCRC_Read = 0;
-    K_USHORT usLen;
-    K_UCHAR *pucData;
+    uint8_t u8Channel;
+    uint16_t u16CRC_Calc = 0;
+    uint16_t u16CRC_Read = 0;
+    uint16_t u16Len;
+    uint8_t *pu8Data;
     
-    ucChannel = aucSerialBuf[0];
+    u8Channel = aucSerialBuf[0];
     
     /* Ensure the channel is correct */
-	if (ucChannel != PROGRAM_CHANNEL)
+	if (u8Channel != PROGRAM_CHANNEL)
     {
 	    return K_FALSE;
     }
 	
-    usCRC_Calc += aucSerialBuf[0];
+    u16CRC_Calc += aucSerialBuf[0];
     
     /* Read the length out */
-    usLen = ((K_USHORT)aucSerialBuf[1]) << 8;
-    usCRC_Calc += aucSerialBuf[1];
+    u16Len = ((uint16_t)aucSerialBuf[1]) << 8;
+    u16CRC_Calc += aucSerialBuf[1];
     
-    usLen += (K_USHORT)aucSerialBuf[2];
-    usCRC_Calc += aucSerialBuf[2];
+    u16Len += (uint16_t)aucSerialBuf[2];
+    u16CRC_Calc += aucSerialBuf[2];
     
     /* Length returned to the user is -1 because of the sub-command byte,*/
     /* which is part of the actual FunkenSlip data payload.*/
-    *pusLen_ = usLen - 1; 
+    *pu16Len_ = u16Len - 1; 
     
     /* Continue reading through the packet to compute the CRC */
-	pucData = &aucSerialBuf[3];
-    while (usLen--)
+	pu8Data = &aucSerialBuf[3];
+    while (u16Len--)
     {
-        usCRC_Calc += *pucData;
-        pucData++;
+        u16CRC_Calc += *pu8Data;
+        pu8Data++;
     }
     
     /* The CRC is stored at the end of the packet */
-    usCRC_Read = ((K_USHORT)*pucData) << 8;
-    pucData++;
+    u16CRC_Read = ((uint16_t)*pu8Data) << 8;
+    pu8Data++;
     
-    usCRC_Read += ((K_USHORT)*pucData);
+    u16CRC_Read += ((uint16_t)*pu8Data);
     
     /* Make sure the read CRC matches the generated CRC*/
-    if (usCRC_Read != usCRC_Calc)
+    if (u16CRC_Read != u16CRC_Calc)
     {
-        *pusLen_ = 0;		
+        *pu16Len_ = 0;		
 	    return K_FALSE;
     }
     
@@ -445,24 +445,24 @@ static K_BOOL Serial_ValidatePacket(K_USHORT *pusLen_)
 */
 static void Flash_WritePage(void)
 {
-    K_USHORT i;
-    K_UCHAR *pucData = aucPageBuf;
+    uint16_t i;
+    uint8_t *pu8Data = aucPageBuf;
 	
     eeprom_busy_wait();
 
-    boot_page_erase(ulPageAddr);
+    boot_page_erase(u32PageAddr);
     boot_spm_busy_wait();      /* Wait until the memory is erased. */
 
     for (i=0; i<PAGE_SIZE; i+=2)
     {
         /* Set up little-endian word. */
-        K_USHORT w = *pucData++;
-        w += ((K_USHORT)(*pucData++)) << 8;
+        uint16_t w = *pu8Data++;
+        w += ((uint16_t)(*pu8Data++)) << 8;
 
-        boot_page_fill (ulPageAddr + i, w);
+        boot_page_fill (u32PageAddr + i, w);
     }
 
-    boot_page_write (ulPageAddr);     /* Store buffer in flash page. */
+    boot_page_write (u32PageAddr);     /* Store buffer in flash page. */
     boot_spm_busy_wait();       /* Wait until the memory is written. */
 
     /* Reenable RWW-section again. We need this if we want to jump back */
@@ -474,27 +474,27 @@ static void Flash_WritePage(void)
 /*!
     Copy data in from the serial buffer to the page buffer.  Whenever a page
     buffer is full, commit the page to flash, and start the next.
-    \fn static K_BOOL Flash_WriteBuffer(K_USHORT usLen_)
+    \fn static bool Flash_WriteBuffer(uint16_t u16Len_)
     \return K_TRUE on success, K_FALSE on failure
 */
-static K_BOOL Flash_WriteBuffer(K_USHORT usLen_) 
+static bool Flash_WriteBuffer(uint16_t u16Len_) 
 {
-    K_UCHAR ucIdx = 4; /* Size of the header... */
+    uint8_t u8Idx = 4; /* Size of the header... */
     
     /* Write from the serial buffer to the flash staging buffer */
-    while (usLen_--)
+    while (u16Len_--)
     {
-        aucPageBuf[ucPageIdx] = aucSerialBuf[ucIdx++];
+        aucPageBuf[u8PageIdx] = aucSerialBuf[u8Idx++];
         
-        ucPageIdx++;
-        if (ucPageIdx == PAGE_SIZE)
+        u8PageIdx++;
+        if (u8PageIdx == PAGE_SIZE)
         {
             /* Write the page of data to flash...        */
             Flash_WritePage();
 			
             /* Update indexes/pages. */
-            ucPageIdx = 0;
-            ulPageAddr += PAGE_SIZE;			
+            u8PageIdx = 0;
+            u32PageAddr += PAGE_SIZE;			
         }
     }
     
@@ -509,12 +509,12 @@ static K_BOOL Flash_WriteBuffer(K_USHORT usLen_)
 */
 static void Flash_WritePartialPage(void)
 {
-	if (ucPageIdx != 0)
+	if (u8PageIdx != 0)
 	{
-		while (ucPageIdx < PAGE_SIZE)
+		while (u8PageIdx < PAGE_SIZE)
 		{
-			aucPageBuf[ucPageIdx] = 0xFF;
-			ucPageIdx++;
+			aucPageBuf[u8PageIdx] = 0xFF;
+			u8PageIdx++;
 		}
 		Flash_WritePage();	
 	}
@@ -528,11 +528,11 @@ int main(void)
 
     /* Clear the watchdog timer... */
 	{
-		volatile K_UCHAR ucTemp = MCUSR;
+		volatile uint8_t u8Temp = MCUSR;
 		MCUSR = 0;
 		WDTCSR |= (1 << WDCE) | (1 << WDE);
 		WDTCSR = 0;
-        ucTemp = ucTemp;
+        u8Temp = u8Temp;
 	}
 
     /* Start off by initializing the serial port */
@@ -563,7 +563,7 @@ int main(void)
     /* Main programming loop.  Program until we can't program no more! */
 	while (1)
 	{
-		K_USHORT usLen;
+		uint16_t u16Len;
 		
         /* Wait until we receive a packet of data. */
 		Slip_FillPacket();		
@@ -576,7 +576,7 @@ int main(void)
 		}
 		
         /* Make sure the packet is VALID before trying to operate on it. */
-		if (!Serial_ValidatePacket(&usLen))
+		if (!Serial_ValidatePacket(&u16Len))
 		{
 			Serial_Write('V');
 			continue;
@@ -586,16 +586,16 @@ int main(void)
 		if (aucSerialBuf[3] == PROGRAM_CMD_SEEK)
 		{
             /* Seek to new address... */
-			K_USHORT usNewAddr = ((K_USHORT)aucSerialBuf[4]) << 8;
-			usNewAddr += aucSerialBuf[5];
+			uint16_t u16NewAddr = ((uint16_t)aucSerialBuf[4]) << 8;
+			u16NewAddr += aucSerialBuf[5];
 			Flash_WritePartialPage();
-			ulPageAddr = (K_ULONG)usNewAddr;
-			ucPageIdx = 0;			
+			u32PageAddr = (uint32_t)u16NewAddr;
+			u8PageIdx = 0;			
 		}	
 		else if (aucSerialBuf[3] == PROGRAM_CMD_WRITE)
 		{
             /* Write contents of buffer to staging buffer, then flash.*/
-			Flash_WriteBuffer(usLen);	
+			Flash_WriteBuffer(u16Len);	
 		}
 		else if (aucSerialBuf[3] == PROGRAM_CMD_EOF)
 		{

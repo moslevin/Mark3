@@ -41,20 +41,20 @@ class DevNull : public Driver
 {
 public:
 	virtual void Init() { SetName("/dev/null"); };
-	virtual K_UCHAR Open() { return 0; }
-	virtual K_UCHAR Close() { return 0; }
+	virtual uint8_t Open() { return 0; }
+	virtual uint8_t Close() { return 0; }
 		
-	virtual K_USHORT Read( K_USHORT usBytes_,
-	K_UCHAR *pucData_){ return 0; }
+	virtual uint16_t Read( uint16_t u16Bytes_,
+	uint8_t *pu8Data_){ return 0; }
 	
-	virtual K_USHORT Write( K_USHORT usBytes_,
-	K_UCHAR *pucData_) { return 0; }
+	virtual uint16_t Write( uint16_t u16Bytes_,
+	uint8_t *pu8Data_) { return 0; }
 	
-	virtual K_USHORT Control( K_USHORT usEvent_,
+    virtual uint16_t Control( uint16_t u16Event_,
 		void *pvDataIn_,
-		K_USHORT usSizeIn_,
+		uint16_t u16SizeIn_,
 		void *pvDataOut_,
-		K_USHORT usSizeOut_ ) { return 0; }
+		uint16_t u16SizeOut_ ) { return 0; }
 	
 };
 
@@ -72,10 +72,10 @@ static DevNull clDevNull;       //!< Default driver included to allow for run-ti
  * \param szStr2_   name of a driver, provided from the driver table
  * \return  1 on match, 0 on no-match
  */
-static K_UCHAR DrvCmp( const K_CHAR *szStr1_, const K_CHAR *szStr2_ )
+static uint8_t DrvCmp( const char *szStr1_, const char *szStr2_ )
 {
-	K_CHAR *szTmp1 = (K_CHAR*) szStr1_;
-	K_CHAR *szTmp2 = (K_CHAR*) szStr2_;
+    char *szTmp1 = (char*) szStr1_;
+    char *szTmp2 = (char*) szStr2_;
 
 	while (*szTmp1 && *szTmp2)
 	{
@@ -104,7 +104,7 @@ void DriverList::Init()
 }
 
 //---------------------------------------------------------------------------
-Driver *DriverList::FindByPath( const K_CHAR *m_pcPath )
+Driver *DriverList::FindByPath( const char *m_pcPath )
 {
 	KERNEL_ASSERT( m_pcPath );
 	Driver *pclTemp = static_cast<Driver*>(m_clDriverList.GetHead());

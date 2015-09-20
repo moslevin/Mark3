@@ -40,33 +40,33 @@ typedef enum
 class BrPlayField
 {
 public:
-    void LoadLevel( K_USHORT usLevel_ );
+    void LoadLevel( uint16_t u16Level_ );
 
     void Draw(void);
 
-    K_UCHAR ClearBrick(K_USHORT usX_, K_USHORT usY_);
+    uint8_t ClearBrick(uint16_t u16X_, uint16_t u16Y_);
 
-    K_BOOL CheckBrickExists(K_USHORT usX_, K_USHORT usY_);
+    bool CheckBrickExists(uint16_t u16X_, uint16_t u16Y_);
 
-    K_BOOL IsPlayFieldEmpty(void);
+    bool IsPlayFieldEmpty(void);
 
     BrLevelType_t GetType() { return m_clLevelData.eLevelType; }
 
-    void LevelAction( K_UCHAR ucFlags_ );
+    void LevelAction( uint8_t u8Flags_ );
 
-    void SetBonus( K_UCHAR ucRow_, K_UCHAR ucCol_ );
+    void SetBonus( uint8_t u8Row_, uint8_t u8Col_ );
 
     void Tick();
 
-    K_USHORT GetRandomData();
+    uint16_t GetRandomData();
 
-    K_BOOL HasHitCieling() { return m_bHitCieling; }
+    bool HasHitCieling() { return m_bHitCieling; }
 
     Special_t SelectBonus(void);
 
     Special_t GetCurrentSpecial(void)
     {
-        if (m_usSpecialTime)
+        if (m_u16SpecialTime)
         {           
             return m_eSpecial;
         }
@@ -75,49 +75,49 @@ public:
 
     void ResetBonus(void)
     {
-        m_usSpecialTime = 0;
+        m_u16SpecialTime = 0;
         m_eSpecial = SPECIAL_NONE;
     }
 
 private:
     void SpecialTick(void)
     {
-        if (m_usSpecialTime)
+        if (m_u16SpecialTime)
         {
-            m_usSpecialTime--;
+            m_u16SpecialTime--;
         } else {
             m_eSpecial = SPECIAL_NONE;
         }
     }
-    K_BOOL SwapBrick(K_UCHAR ucRow1_, K_UCHAR ucCol1_, K_UCHAR ucRow2_, K_UCHAR ucCol2_ );
+    bool SwapBrick(uint8_t u8Row1_, uint8_t u8Col1_, uint8_t u8Row2_, uint8_t u8Col2_ );
 
-    void DrawBrick(K_UCHAR ucRow_, K_UCHAR ucCol_, K_UCHAR ucMode_);
+    void DrawBrick(uint8_t u8Row_, uint8_t u8Col_, uint8_t u8Mode_);
 
-    void ClearBrick_i(K_UCHAR ucRow_, K_UCHAR ucCol_);
+    void ClearBrick_i(uint8_t u8Row_, uint8_t u8Col_);
 
-    void ShowBonusString( Special_t eBonus_ );
+    void ShowBonustring( Special_t eBonus_ );
 
-    void ClearBonusString();
+    void ClearBonustring();
 
     BrLevelData_t m_clLevelData;
 
-    K_USHORT m_usBricksLeft;
+    uint16_t m_u16BricksLeft;
 
-    K_USHORT m_usRandValue;
-    K_USHORT m_usTickCount;
+    uint16_t m_u16RandValue;
+    uint16_t m_u16TickCount;
 
-    K_UCHAR m_ucBonusTimer;
+    uint8_t m_u8Bonusimer;
 
-    K_UCHAR m_ucCol;
-    K_UCHAR m_ucRow;
+    uint8_t m_u8Col;
+    uint8_t m_u8Row;
 
-    K_UCHAR m_ucBonusCol;
-    K_UCHAR m_ucBonusRow;
+    uint8_t m_u8Bonusol;
+    uint8_t m_u8Bonusow;
 
-    K_USHORT m_usSpecialTime;
+    uint16_t m_u16SpecialTime;
     Special_t m_eSpecial;
 
-    K_BOOL m_bHitCieling;
+    bool m_bHitCieling;
 };
 
 

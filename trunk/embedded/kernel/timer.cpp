@@ -39,29 +39,29 @@ See license.txt for more information
 #if KERNEL_USE_TIMERS
 
 //---------------------------------------------------------------------------
-void Timer::Start( K_BOOL bRepeat_, K_ULONG ulIntervalMs_, TimerCallback_t pfCallback_, void *pvData_ )
+void Timer::Start( bool bRepeat_, uint32_t u32IntervalMs_, TimerCallback_t pfCallback_, void *pvData_ )
 {
-    SetIntervalMSeconds(ulIntervalMs_);
-    m_ulTimerTolerance = 0;
+    SetIntervalMSeconds(u32IntervalMs_);
+    m_u32TimerTolerance = 0;
     m_pfCallback = pfCallback_;
     m_pvData = pvData_;
     if (!bRepeat_)
     {
-        m_ucFlags = TIMERLIST_FLAG_ONE_SHOT;
+        m_u8Flags = TIMERLIST_FLAG_ONE_SHOT;
     }
     else
     {
-        m_ucFlags = 0;
+        m_u8Flags = 0;
     }
     m_pclOwner = Scheduler::GetCurrentThread();
     TimerScheduler::Add(this);
 }
 
 //---------------------------------------------------------------------------
-void Timer::Start( K_BOOL bRepeat_, K_ULONG ulIntervalMs_, K_ULONG ulToleranceMs_, TimerCallback_t pfCallback_, void *pvData_ )
+void Timer::Start( bool bRepeat_, uint32_t u32IntervalMs_, uint32_t u32ToleranceMs_, TimerCallback_t pfCallback_, void *pvData_ )
 {
-    m_ulTimerTolerance = MSECONDS_TO_TICKS(ulToleranceMs_);
-    Start(bRepeat_, ulIntervalMs_, pfCallback_, pvData_);
+    m_u32TimerTolerance = MSECONDS_TO_TICKS(u32ToleranceMs_);
+    Start(bRepeat_, u32IntervalMs_, pfCallback_, pvData_);
 }
 
 //---------------------------------------------------------------------------
@@ -71,35 +71,35 @@ void Timer::Stop()
 }
 
 //---------------------------------------------------------------------------
-void Timer::SetIntervalTicks( K_ULONG ulTicks_ )
+void Timer::SetIntervalTicks( uint32_t u32Ticks_ )
 {
-    m_ulInterval = ulTicks_;
+    m_u32Interval = u32Ticks_;
 }
 
 //---------------------------------------------------------------------------
-//!! The next three cost us 330 bytes of flash on AVR...
+//!! The next three cost u16 330 bytes of flash on AVR...
 //---------------------------------------------------------------------------
-void Timer::SetIntervalSeconds( K_ULONG ulSeconds_)
+void Timer::SetIntervalSeconds( uint32_t u32Seconds_)
 {
-    m_ulInterval = SECONDS_TO_TICKS(ulSeconds_);
+    m_u32Interval = SECONDS_TO_TICKS(u32Seconds_);
 }
 
 //---------------------------------------------------------------------------
-void Timer::SetIntervalMSeconds( K_ULONG ulMSeconds_)
+void Timer::SetIntervalMSeconds( uint32_t u32MSeconds_)
 {
-    m_ulInterval = MSECONDS_TO_TICKS(ulMSeconds_);
+    m_u32Interval = MSECONDS_TO_TICKS(u32MSeconds_);
 }
 
 //---------------------------------------------------------------------------
-void Timer::SetIntervalUSeconds( K_ULONG ulUSeconds_)
+void Timer::SetIntervalUSeconds( uint32_t u32USeconds_)
 {
-    m_ulInterval = USECONDS_TO_TICKS(ulUSeconds_);
+    m_u32Interval = useCONDS_TO_TICKS(u32USeconds_);
 }
 
 //---------------------------------------------------------------------------
-void Timer::SetTolerance(K_ULONG ulTicks_)
+void Timer::SetTolerance(uint32_t u32Ticks_)
 {
-    m_ulTimerTolerance = ulTicks_;
+    m_u32TimerTolerance = u32Ticks_;
 }
 
 #endif

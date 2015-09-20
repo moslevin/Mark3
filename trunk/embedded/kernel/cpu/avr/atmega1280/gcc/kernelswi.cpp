@@ -37,7 +37,7 @@ void KernelSWI::Config(void)
 void KernelSWI::Start(void)
 {        
     EIFR &= ~(1 << INTF0);    // Clear any pending interrupts on INT0
-    EIMSK |= (1 << INT0);    // Enable INT0 interrupt (as K_LONG as I-bit is set)
+    EIMSK |= (1 << INT0);    // Enable INT0 interrupt (as int32_t as I-bit is set)
 }
 
 //---------------------------------------------------------------------------
@@ -47,15 +47,15 @@ void KernelSWI::Stop(void)
 }
 
 //---------------------------------------------------------------------------
-K_UCHAR KernelSWI::DI()
+uint8_t KernelSWI::DI()
 {
-    K_BOOL bEnabled = ((EIMSK & (1 << INT0)) != 0);
+    bool bEnabled = ((EIMSK & (1 << INT0)) != 0);
     EIMSK &= ~(1 << INT0);
     return bEnabled;
 }
 
 //---------------------------------------------------------------------------
-void KernelSWI::RI(K_BOOL bEnable_)
+void KernelSWI::RI(bool bEnable_)
 {
     if (bEnable_)
     {

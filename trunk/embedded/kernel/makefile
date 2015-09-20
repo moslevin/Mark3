@@ -15,12 +15,12 @@ CPP_SOURCE= \
 	ll.cpp \
 	message.cpp \
 	mutex.cpp \
+        notify.cpp \
 	profile.cpp \
 	quantum.cpp \
 	scheduler.cpp \
 	ksemaphore.cpp \
 	mailbox.cpp \
-	notify.cpp \
 	thread.cpp \
 	threadlist.cpp \
 	kernel.cpp \

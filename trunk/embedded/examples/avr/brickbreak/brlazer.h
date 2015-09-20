@@ -20,13 +20,13 @@ public:
     BrLazer()
     {
         m_bActive = false;
-        m_ucRecharge = 0;
+        m_u8Recharge = 0;
     }
 
-    void Start( K_USHORT usX_ )
+    void Start( uint16_t u16X_ )
     {
         // If there's a lazer in play, then destroy it.
-        if (m_ucRecharge)
+        if (m_u8Recharge)
         {
             return;
         }
@@ -36,8 +36,8 @@ public:
             return;
         }
 
-        m_usX100 = usX_ * 100;
-        m_usY100 = LAZER_START_Y * 100;
+        m_u16X100 = u16X_ * 100;
+        m_u16Y100 = LAZER_START_Y * 100;
 
         m_bActive = true;
         Animate();
@@ -51,20 +51,20 @@ public:
         }
         Clear();
         m_bActive = false;
-        m_ucRecharge = LAZER_RECHARGE;
-        m_usX100 = 0;
-        m_usY100 = 0;
+        m_u8Recharge = LAZER_RECHARGE;
+        m_u16X100 = 0;
+        m_u16Y100 = 0;
     }
 
-    K_USHORT GetX() { return ((m_usX100 + 50)/100); }
+    uint16_t GetX() { return ((m_u16X100 + 50)/100); }
 
-    K_USHORT GetY() { return ((m_usY100 + 50)/100); }
+    uint16_t GetY() { return ((m_u16Y100 + 50)/100); }
 
     void Animate()
     {
-        if (m_ucRecharge)
+        if (m_u8Recharge)
         {
-            m_ucRecharge--;
+            m_u8Recharge--;
             return;
         }
         if (!m_bActive)
@@ -74,12 +74,12 @@ public:
 
         Clear();
 
-        m_usY100 -= LAZER_SPEED100;
+        m_u16Y100 -= LAZER_SPEED100;
 
         Draw();
     }
 
-    K_BOOL IsActive() { return m_bActive; }
+    bool IsActive() { return m_bActive; }
 private:
 
     void Clear()
@@ -89,15 +89,15 @@ private:
         {
             return;
         }
-        stLine.usX1 = (( m_usX100 + 50 ) / 100 - 7);
-        stLine.usX2 = stLine.usX1;
-        stLine.usY1 = ( m_usY100 + 50 ) / 100;
-        stLine.usY2 = stLine.usY1 + LAZER_HEIGHT - 1;
+        stLine.u16X1 = (( m_u16X100 + 50 ) / 100 - 7);
+        stLine.u16X2 = stLine.u16X1;
+        stLine.u16Y1 = ( m_u16Y100 + 50 ) / 100;
+        stLine.u16Y2 = stLine.u16Y1 + LAZER_HEIGHT - 1;
         stLine.uColor = COLOR_BLACK;
         pclDisplay->Line( &stLine );
 
-        stLine.usX1 += 13;
-        stLine.usX2 += 13;
+        stLine.u16X1 += 13;
+        stLine.u16X2 += 13;
         pclDisplay->Line( &stLine );
     }
 
@@ -105,25 +105,25 @@ private:
     {
         DrawLine_t stLine;
 
-        stLine.usX1 = (( m_usX100 + 50 ) / 100 - 7);
-        stLine.usX2 = stLine.usX1;
-        stLine.usY1 = (m_usY100 + 50) / 100;
-        stLine.usY2 = stLine.usY1 + LAZER_HEIGHT - 1;
+        stLine.u16X1 = (( m_u16X100 + 50 ) / 100 - 7);
+        stLine.u16X2 = stLine.u16X1;
+        stLine.u16Y1 = (m_u16Y100 + 50) / 100;
+        stLine.u16Y2 = stLine.u16Y1 + LAZER_HEIGHT - 1;
         stLine.uColor = COLOR_RED;
         pclDisplay->Line( &stLine );
 
-        stLine.usX1 += 13;
-        stLine.usX2 += 13;
+        stLine.u16X1 += 13;
+        stLine.u16X2 += 13;
         pclDisplay->Line( &stLine );
     }
 
-    K_BOOL   m_bActive;
+    bool   m_bActive;
 
-    K_UCHAR  m_ucRecharge;
-    K_USHORT m_usX100;
-    K_USHORT m_usY100;
+    uint8_t  m_u8Recharge;
+    uint16_t m_u16X100;
+    uint16_t m_u16Y100;
 
-    K_USHORT m_usVel100;
+    uint16_t m_u16Vel100;
 };
 
 #endif

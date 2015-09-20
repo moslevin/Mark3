@@ -38,44 +38,44 @@ typedef enum
 static GuiEventSurface *g_pclSurface;
 
 //---------------------------------------------------------------------------
-void SlipHidHandler(Driver *pclDriver_, K_UCHAR ucChannel_, K_UCHAR *pucData_, K_USHORT usLen_ )
+void SlipHidHandler(Driver *pclDriver_, uint8_t u8Channel_, uint8_t *pu8Data_, uint16_t u16Len_ )
 {    
-    K_UCHAR ucEventType = pucData_[0];
+    uint8_t u8EventType = pu8Data_[0];
     GuiEvent_t stGuiEvent;
-    K_BOOL bSend = true;
-    GuiEvent_t *pstEvent = (GuiEvent_t*)&pucData_[1];
+    bool bSend = true;
+    GuiEvent_t *pstEvent = (GuiEvent_t*)&pu8Data_[1];
 
-    if (!pucData_ || !usLen_)
+    if (!pu8Data_ || !u16Len_)
     {
         return;
     }
     
-    stGuiEvent.ucEventType = pstEvent->ucEventType;
-    stGuiEvent.ucTargetID = pstEvent->ucTargetID;
+    stGuiEvent.u8EventType = pstEvent->u8EventType;
+    stGuiEvent.u8TargetID = pstEvent->u8TargetID;
 
-    switch (ucEventType)
+    switch (u8EventType)
     {
         case SLIP_HID_MOUSE:
         {
-            MouseEvent_t *pstMouse = (MouseEvent_t*)&pucData_[3];            
+            MouseEvent_t *pstMouse = (MouseEvent_t*)&pu8Data_[3];            
             
-            stGuiEvent.stMouse.ucFlags = pstMouse->ucFlags;
-            stGuiEvent.stMouse.usX = pstMouse->usX;
-            stGuiEvent.stMouse.usY = pstMouse->usY;
+            stGuiEvent.stMouse.u8Flags = pstMouse->u8Flags;
+            stGuiEvent.stMouse.u16X = pstMouse->u16X;
+            stGuiEvent.stMouse.u16Y = pstMouse->u16Y;
         }            
             break;
         case SLIP_HID_JOYSTICK:
         {
-            JoystickEvent_t *pstJoystick = (JoystickEvent_t*)&pucData_[3];            
-            stGuiEvent.stJoystick.Current.usRawData = pstJoystick->Current.usRawData;
-            stGuiEvent.stJoystick.Previous.usRawData = pstJoystick->Previous.usRawData;
+            JoystickEvent_t *pstJoystick = (JoystickEvent_t*)&pu8Data_[3];            
+            stGuiEvent.stJoystick.Current.u16RawData = pstJoystick->Current.u16RawData;
+            stGuiEvent.stJoystick.Previous.u16RawData = pstJoystick->Previous.u16RawData;
         }        
             break;
         case SLIP_HID_KEYBOARD:
         {
-            KeyEvent_t *pstKeyboard = (KeyEvent_t*)&pucData_[3];            
-            stGuiEvent.stKey.ucFlags = pstKeyboard->ucFlags;
-            stGuiEvent.stKey.ucKeyCode = pstKeyboard->ucKeyCode;
+            KeyEvent_t *pstKeyboard = (KeyEvent_t*)&pu8Data_[3];            
+            stGuiEvent.stKey.u8Flags = pstKeyboard->u8Flags;
+            stGuiEvent.stKey.u8KeyCode = pstKeyboard->u8KeyCode;
         }        
             break;
         default:
@@ -90,10 +90,10 @@ void SlipHidHandler(Driver *pclDriver_, K_UCHAR ucChannel_, K_UCHAR *pucData_, K
 }
 
 //---------------------------------------------------------------------------
-K_USHORT SlipHid::Control( K_USHORT usEvent_, void *pvDataIn_,
-                            K_USHORT usSizeIn_, void *pvDataOut_, K_USHORT usSizeOut_ )
+uint16_t SlipHid::Control( uint16_t u16Event_, void *pvDataIn_,
+                            uint16_t u16SizeIn_, void *pvDataOut_, uint16_t u16SizeOut_ )
 {
-    switch (usEvent_)    
+    switch (u16Event_)    
     {
         case CMD_SET_SLIPMUX:
         {

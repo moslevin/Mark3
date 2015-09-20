@@ -192,35 +192,35 @@ static const uint8_t PROGMEM
 //---------------------------------------------------------------------------
 // Companion code to the above tables.  Reads and issues
 // a series of LCD commands stored in PROGMEM byte array.
-void GraphicsST7735::CommandList(const K_UCHAR *pucData_)
+void GraphicsST7735::CommandList(const uint8_t *pu8Data_)
 {
-    K_UCHAR ucNumCommands = pgm_read_byte(pucData_++);      // Number of commands to follow
-    while (ucNumCommands--)                                 // For each command...
+    uint8_t u8NumCommands = pgm_read_byte(pu8Data_++);      // Number of commands to follow
+    while (u8NumCommands--)                                 // For each command...
     {
-        WriteCommand(pgm_read_byte(pucData_++));            // Read, issue command
+        WriteCommand(pgm_read_byte(pu8Data_++));            // Read, issue command
 
-        K_UCHAR     ucNumArgs = pgm_read_byte(pucData_++);  // Number of args to follow
-        K_USHORT    usMs      = ucNumArgs & DELAY;          // If hibit set, delay follows args
+        uint8_t     u8NumArgs = pgm_read_byte(pu8Data_++);  // Number of args to follow
+        uint16_t    u16Ms      = u8NumArgs & DELAY;          // If hibit set, delay follows args
 
-        ucNumArgs &= ~DELAY;                                // Mask out delay bit
+        u8NumArgs &= ~DELAY;                                // Mask out delay bit
 
-        while(ucNumArgs--)                                  // For each argument...
+        while(u8NumArgs--)                                  // For each argument...
         {
-            WriteData(pgm_read_byte(pucData_++));           // Read, issue argument
+            WriteData(pgm_read_byte(pu8Data_++));           // Read, issue argument
         }
 
-        if(usMs)                                            // If there's a delay for this command
+        if(u16Ms)                                            // If there's a delay for this command
         {
-            usMs = pgm_read_byte(pucData_++);               // Read post-command delay time (ms)
-            if(usMs == 255)                                 // If 255, delay for 500 ms
+            u16Ms = pgm_read_byte(pu8Data_++);               // Read post-command delay time (ms)
+            if(u16Ms == 255)                                 // If 255, delay for 500 ms
             {
-                usMs = 500;
+                u16Ms = 500;
             }
         }
     }
 }
 
-#if USE_HW_SPI
+#if use_HW_SPI
 //---------------------------------------------------------------------------
 #define TFT_SPI_WRITE(x) \
 { \
@@ -231,10 +231,10 @@ void GraphicsST7735::CommandList(const K_UCHAR *pucData_)
 //---------------------------------------------------------------------------
 #define TFT_SPI_WRITE(x)	\
 { \
-    K_UCHAR ucMask = 0x80; \
-    while (ucMask) \
+    uint8_t u8Mask = 0x80; \
+    while (u8Mask) \
     { \
-        if (ucMask & x) \
+        if (u8Mask & x) \
         { \
             TFT_SPI_MOSI_PORT |= TFT_SPI_MOSI_PIN; \
         } \
@@ -244,46 +244,46 @@ void GraphicsST7735::CommandList(const K_UCHAR *pucData_)
         } \
         TFT_SPI_SCLK_OUT |= TFT_SPI_SCLK_PIN; \
         TFT_SPI_SCLK_OUT &= ~TFT_SPI_SCLK_PIN; \
-        ucMask >>= 1; \
+        u8Mask >>= 1; \
     } \
 }
 
 #endif
 
 //---------------------------------------------------------------------------
-void GraphicsST7735::WriteCommand( K_UCHAR ucX_ ) 
+void GraphicsST7735::WriteCommand( uint8_t u8X_ ) 
 {
     TFT_CD_PORT &= ~TFT_CD_PIN;
     TFT_CS_PORT &= ~TFT_CS_PIN;
-	TFT_SPI_WRITE(ucX_);
+	TFT_SPI_WRITE(u8X_);
     TFT_CS_PORT |= TFT_CS_PIN;
 }
 
 //---------------------------------------------------------------------------
-void GraphicsST7735::WriteData( K_UCHAR ucX_ ) 
+void GraphicsST7735::WriteData( uint8_t u8X_ ) 
 {
     TFT_CD_PORT |= TFT_CD_PIN;
     TFT_CS_PORT &= ~TFT_CS_PIN;
-	TFT_SPI_WRITE(ucX_);
+	TFT_SPI_WRITE(u8X_);
     TFT_CS_PORT |= TFT_CS_PIN;
 } 
 
 //---------------------------------------------------------------------------
 void GraphicsST7735::Init()
 {
-    m_ucColStart = 0;
-    m_ucRowStart = 0;
+    m_u8ColStart = 0;
+    m_u8RowStart = 0;
 
-    m_usResX = ST7735_TFTWIDTH;
-    m_usResY = ST7735_TFTHEIGHT;
-    m_ucBPP = 16;
+    m_u16Res16X = ST7735_TFTWIDTH;
+    m_u16Res16Y = ST7735_TFTHEIGHT;
+    m_u8BPP = 16;
 
     TFT_CD_DIR |= TFT_CD_PIN;
     TFT_CS_DIR |= TFT_CS_PIN;
     TFT_CD_PORT &= ~TFT_CD_PIN;
     TFT_CS_PORT &= ~TFT_CS_PIN;
 
-#if USE_HW_SPI
+#if use_HW_SPI
     // SPI Slave-select ourput high; guarantee we're the master on the bus, and
     // that the SPI HW behaves as expected
     SPI_SS_PORT |= SPI_SS_PIN;
@@ -322,8 +322,8 @@ void GraphicsST7735::Init()
     CommandList(Rcmd1);
 #if (TAB_COLOR == INITR_GREENTAB)
     CommandList(Rcmd2green);
-    m_ucColStart = 2;
-    m_ucRowStart = 1;
+    m_u8ColStart = 2;
+    m_u8RowStart = 1;
 #else
     CommandList(Rcmd2red);
 #endif
@@ -345,27 +345,27 @@ void GraphicsST7735::FastVLine(DrawLine_t *pstLine_)
     // (in a bounding-box 1-pixel high, n-pixels wide)
     DrawRectangle_t stRect;
 
-    stRect.usLeft = pstLine_->usX1;
-    stRect.usRight = stRect.usLeft;
-    stRect.usTop = pstLine_->usY1;
-    stRect.usBottom = pstLine_->usY2;
+    stRect.u16Left = pstLine_->u16X1;
+    stRect.u16Right = stRect.u16Left;
+    stRect.u16Top = pstLine_->u16Y1;
+    stRect.u16Bottom = pstLine_->u16Y2;
 
     SetOpWindow(&stRect);
 
     // Count the pixels
-    K_USHORT usPixels = pstLine_->usY2 - pstLine_->usY1 + 1;
+    uint16_t u16Pixels = pstLine_->u16Y2 - pstLine_->u16Y1 + 1;
 
     // Set the high/low bytes of the color that we're going to write
-    K_UCHAR ucHigh    = (K_UCHAR)((pstLine_->uColor) >> 8);
-    K_UCHAR ucLow     = (K_UCHAR)(pstLine_->uColor & 0xFF);
+    uint8_t u8High    = (uint8_t)((pstLine_->uColor) >> 8);
+    uint8_t u8Low     = (uint8_t)(pstLine_->uColor & 0xFF);
 
     // Clock the pixel data out
     TFT_CD_OUT |= TFT_CD_PIN;
     TFT_CS_OUT &= ~TFT_CS_PIN;
-    while (usPixels--)
+    while (u16Pixels--)
     {
-        TFT_SPI_WRITE(ucHigh);
-        TFT_SPI_WRITE(ucLow);
+        TFT_SPI_WRITE(u8High);
+        TFT_SPI_WRITE(u8Low);
     }
     TFT_CS_OUT |= TFT_CS_PIN;
 }
@@ -378,28 +378,28 @@ void GraphicsST7735::FastHLine(DrawLine_t *pstLine_)
     {
         DrawRectangle_t stRect;
 
-        stRect.usLeft = pstLine_->usX1;
-        stRect.usRight = pstLine_->usX2;
-        stRect.usTop = pstLine_->usY1;
-        stRect.usBottom = stRect.usTop;
+        stRect.u16Left = pstLine_->u16X1;
+        stRect.u16Right = pstLine_->u16X2;
+        stRect.u16Top = pstLine_->u16Y1;
+        stRect.u16Bottom = stRect.u16Top;
 
         SetOpWindow(&stRect);
     }
 
     // Count the pixels
-    K_USHORT usPixels = pstLine_->usX2 - pstLine_->usX1 + 1;
+    uint16_t u16Pixels = pstLine_->u16X2 - pstLine_->u16X1 + 1;
 
     // Set the high/low bytes of the color that we're going to write
-    K_UCHAR ucHigh    = (K_UCHAR)((pstLine_->uColor) >> 8);
-    K_UCHAR ucLow     = (K_UCHAR)(pstLine_->uColor & 0xFF);
+    uint8_t u8High    = (uint8_t)((pstLine_->uColor) >> 8);
+    uint8_t u8Low     = (uint8_t)(pstLine_->uColor & 0xFF);
 
     // Clock the pixel data out
     TFT_CD_OUT |= TFT_CD_PIN;
     TFT_CS_OUT &= ~TFT_CS_PIN;
-    while (usPixels--)
+    while (u16Pixels--)
     {
-        TFT_SPI_WRITE(ucHigh);
-        TFT_SPI_WRITE(ucLow);
+        TFT_SPI_WRITE(u8High);
+        TFT_SPI_WRITE(u8Low);
     }
     TFT_CS_OUT |= TFT_CS_PIN;
 }
@@ -410,16 +410,16 @@ void GraphicsST7735::SetOpWindow(DrawRectangle_t *pstRectangle_)
     // Set Column limits
     WriteCommand(ST7735_CASET);
 	WriteData(0x00);
-    WriteData(m_ucColStart + pstRectangle_->usLeft);
+    WriteData(m_u8ColStart + pstRectangle_->u16Left);
 	WriteData(0x00);
-    WriteData(m_ucColStart + pstRectangle_->usRight);
+    WriteData(m_u8ColStart + pstRectangle_->u16Right);
 
     // Set row limits
     WriteCommand(ST7735_RASET);
 	WriteData(0x00);
-    WriteData(m_ucRowStart + pstRectangle_->usTop);
+    WriteData(m_u8RowStart + pstRectangle_->u16Top);
 	WriteData(0x00);
-    WriteData(m_ucRowStart + pstRectangle_->usBottom);
+    WriteData(m_u8RowStart + pstRectangle_->u16Bottom);
 
     WriteCommand(ST7735_RAMWR);
 }
@@ -431,12 +431,12 @@ void GraphicsST7735::ClearScreen()
 
     // Optimized operation - clear the screen by performing a giant filled
     // rectangle write.
-	stRect.usLeft = 0;
-    stRect.usRight = m_usResX - 1;
-	stRect.usTop = 0;
-    stRect.usBottom = m_usResY - 1;
+	stRect.u16Left = 0;
+    stRect.u16Right = m_u16Res16X - 1;
+	stRect.u16Top = 0;
+    stRect.u16Bottom = m_u16Res16Y - 1;
     stRect.bFill = true;
-    stRect.uLineColor = COLOR_BLACK;
+    stRect.u32ineColor = COLOR_BLACK;
     stRect.uFillColor = COLOR_BLACK;
 
     Rectangle(&stRect);
@@ -448,80 +448,80 @@ void GraphicsST7735::Rectangle(DrawRectangle_t *pstRectangle_)
     if (pstRectangle_->bFill)
     {
         // Set the window that we're going to set
-        if (pstRectangle_->uLineColor != pstRectangle_->uFillColor)
+        if (pstRectangle_->u32ineColor != pstRectangle_->uFillColor)
         {
-            pstRectangle_->usTop++;
-            pstRectangle_->usBottom--;
-            pstRectangle_->usLeft++;
-            pstRectangle_->usRight--;
+            pstRectangle_->u16Top++;
+            pstRectangle_->u16Bottom--;
+            pstRectangle_->u16Left++;
+            pstRectangle_->u16Right--;
         }
 
         SetOpWindow(pstRectangle_);
 
-        K_ULONG ulPixels =  (K_ULONG)(pstRectangle_->usBottom - pstRectangle_->usTop + 1) *
-                            (K_ULONG)(pstRectangle_->usRight - pstRectangle_->usLeft + 1);
+        uint32_t u32Pixels =  (uint32_t)(pstRectangle_->u16Bottom - pstRectangle_->u16Top + 1) *
+                            (uint32_t)(pstRectangle_->u16Right - pstRectangle_->u16Left + 1);
 
         // Set the high/low bytes of the color that we're going to write
-        K_UCHAR ucHigh   = (K_UCHAR)((pstRectangle_->uFillColor) >> 8);
-        K_UCHAR ucLow    = (K_UCHAR)(pstRectangle_->uFillColor & 0xFF);
+        uint8_t u8High   = (uint8_t)((pstRectangle_->uFillColor) >> 8);
+        uint8_t u8Low    = (uint8_t)(pstRectangle_->uFillColor & 0xFF);
 
         // Clock the pixel data out
         TFT_CD_OUT |= TFT_CD_PIN;
         TFT_CS_OUT &= ~TFT_CS_PIN;
-        while (ulPixels--)
+        while (u32Pixels--)
         {
-            TFT_SPI_WRITE(ucHigh);
-            TFT_SPI_WRITE(ucLow);
+            TFT_SPI_WRITE(u8High);
+            TFT_SPI_WRITE(u8Low);
         }
         TFT_CS_OUT |= TFT_CS_PIN;
 
         // If the line/fill colors are the same, then bail here.
-        if (pstRectangle_->uLineColor == pstRectangle_->uFillColor)
+        if (pstRectangle_->u32ineColor == pstRectangle_->uFillColor)
         {
             return;
         }
 
-        pstRectangle_->usTop--;
-        pstRectangle_->usBottom++;
-        pstRectangle_->usLeft--;
-        pstRectangle_->usRight++;
+        pstRectangle_->u16Top--;
+        pstRectangle_->u16Bottom++;
+        pstRectangle_->u16Left--;
+        pstRectangle_->u16Right++;
     }
 
     // Draw the Horizontal/Vertical components.
     DrawLine_t stLine;
 
     // Top/Bottom lines
-    stLine.usX1 = pstRectangle_->usLeft;
-    stLine.usX2 = pstRectangle_->usRight;
-    stLine.usY1 = pstRectangle_->usTop;
-    stLine.usY2 = stLine.usY1;
-    stLine.uColor = pstRectangle_->uLineColor;
+    stLine.u16X1 = pstRectangle_->u16Left;
+    stLine.u16X2 = pstRectangle_->u16Right;
+    stLine.u16Y1 = pstRectangle_->u16Top;
+    stLine.u16Y2 = stLine.u16Y1;
+    stLine.uColor = pstRectangle_->u32ineColor;
     FastHLine(&stLine);
 
-    stLine.usY1 = pstRectangle_->usBottom;
-    stLine.usY2 = stLine.usY1;
+    stLine.u16Y1 = pstRectangle_->u16Bottom;
+    stLine.u16Y2 = stLine.u16Y1;
     FastHLine(&stLine);
 
     // Left/Right lines
-    stLine.usX2 = pstRectangle_->usLeft;
-    stLine.usY1 = pstRectangle_->usTop;
+    stLine.u16X2 = pstRectangle_->u16Left;
+    stLine.u16Y1 = pstRectangle_->u16Top;
     FastVLine(&stLine);
 
-    stLine.usX1 = pstRectangle_->usRight;
-    stLine.usX2 = pstRectangle_->usRight;
+    stLine.u16X1 = pstRectangle_->u16Right;
+    stLine.u16X2 = pstRectangle_->u16Right;
     FastVLine(&stLine);
 }
 
 //---------------------------------------------------------------------------
 void GraphicsST7735::Line(DrawLine_t *pstLine_)
 {
-    // If the X values are the same, Use the "fast" vertical line code
-    if (pstLine_->usX1 == pstLine_->usX2)
+    // If the X values are the same, use the "fast" vertical line code
+    if (pstLine_->u16X1 == pstLine_->u16X2)
     {
         FastVLine(pstLine_);
     }
     // If the Y values are the same, use the "fast" horizontal line code
-    else if (pstLine_->usY1 == pstLine_->usY2)
+    else if (pstLine_->u16Y1 == pstLine_->u16Y2)
     {
         FastHLine(pstLine_);
     }
@@ -534,40 +534,40 @@ void GraphicsST7735::Line(DrawLine_t *pstLine_)
 void GraphicsST7735::Point(DrawPoint_t *pstPoint_)
 {
     // Check for pixel data within limits...
-    if ((pstPoint_->usX >= m_usResX) || (pstPoint_->usY >= m_usResY))
+    if ((pstPoint_->u16X >= m_u16Res16X) || (pstPoint_->u16Y >= m_u16Res16Y))
     {
         return;
     }
 
     // Write row/column address
-    K_UCHAR ucX = m_ucColStart + pstPoint_->usX;
+    uint8_t u8X = m_u8ColStart + pstPoint_->u16X;
 
     WriteCommand(ST7735_CASET);
     WriteData(0x00);
-    WriteData(ucX);
+    WriteData(u8X);
     WriteData(0x00);
-    WriteData(ucX);
+    WriteData(u8X);
 
-    K_UCHAR ucY = m_ucRowStart + pstPoint_->usY;
+    uint8_t u8Y = m_u8RowStart + pstPoint_->u16Y;
 
     WriteCommand(ST7735_RASET);
     WriteData(0x00);
-    WriteData(ucY);
+    WriteData(u8Y);
     WriteData(0x00);
-    WriteData(ucY);
+    WriteData(u8Y);
 
     WriteCommand(ST7735_RAMWR);
 
     // Get pixel color data in high/low bytes
-    K_UCHAR ucHigh   = (K_UCHAR)((pstPoint_->uColor) >> 8);
-    K_UCHAR ucLow    = (K_UCHAR)(pstPoint_->uColor & 0xFF);
+    uint8_t u8High   = (uint8_t)((pstPoint_->uColor) >> 8);
+    uint8_t u8Low    = (uint8_t)(pstPoint_->uColor & 0xFF);
 
     // Write the pixel data out
     TFT_CD_OUT |= TFT_CD_PIN;
     TFT_CS_OUT &= ~TFT_CS_PIN;
 
-    TFT_SPI_WRITE(ucHigh);
-    TFT_SPI_WRITE(ucLow);
+    TFT_SPI_WRITE(u8High);
+    TFT_SPI_WRITE(u8Low);
 
     TFT_CS_OUT |= TFT_CS_PIN;
 }
@@ -576,37 +576,37 @@ void GraphicsST7735::Point(DrawPoint_t *pstPoint_)
 void GraphicsST7735::Bitmap(DrawBitmap_t *pstBitmap_)
 {
     // Only draw 16bpp data - add algorithms to convert later...
-    if (pstBitmap_->ucBPP != 16)
+    if (pstBitmap_->u8BPP != 16)
     {
         return;
     }
 
     DrawRectangle_t stRect;
     // Set the window used for drawing the image.
-    stRect.usLeft   = pstBitmap_->usX;
-    stRect.usRight  = stRect.usLeft + pstBitmap_->usWidth - 1;
-    stRect.usTop    = pstBitmap_->usY;
-    stRect.usBottom = stRect.usTop + pstBitmap_->usHeight - 1;
+    stRect.u16Left   = pstBitmap_->u16X;
+    stRect.u16Right  = stRect.u16Left + pstBitmap_->u16Width - 1;
+    stRect.u16Top    = pstBitmap_->u16Y;
+    stRect.u16Bottom = stRect.u16Top + pstBitmap_->u16Height - 1;
 
     SetOpWindow(&stRect);
 
-    K_ULONG ulPixels = (K_ULONG)pstBitmap_->usWidth *
-                        (K_ULONG)pstBitmap_->usHeight;
+    uint32_t u32Pixels = (uint32_t)pstBitmap_->u16Width *
+                        (uint32_t)pstBitmap_->u16Height;
 
-    K_UCHAR *pucData = pstBitmap_->pucData;
+    uint8_t *pu8Data = pstBitmap_->pu8Data;
 
     // Write the pixel data out, assuming native 16-bit format.
     TFT_CD_OUT |= TFT_CD_PIN;
     TFT_CS_OUT &= ~TFT_CS_PIN;
 
-    while (ulPixels--)
+    while (u32Pixels--)
     {
         // Get pixel color data in high/low bytes
-        K_UCHAR ucLow    = *pucData++;
-		K_UCHAR ucHigh   = *pucData++;        
+        uint8_t u8Low    = *pu8Data++;
+		uint8_t u8High   = *pu8Data++;        
 
-        TFT_SPI_WRITE(ucHigh);
-        TFT_SPI_WRITE(ucLow);
+        TFT_SPI_WRITE(u8High);
+        TFT_SPI_WRITE(u8Low);
     }
 
     TFT_CS_OUT |= TFT_CS_PIN;

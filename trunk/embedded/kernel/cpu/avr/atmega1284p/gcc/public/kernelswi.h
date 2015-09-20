@@ -70,22 +70,22 @@ public:
     static void Trigger(void);
     
     /*!
-        \fn K_UCHAR DI();
+        \fn uint8_t DI();
         
         Disable the SWI flag itself
         
         \return previous status of the SWI, prior to the DI call
     */
-    static K_UCHAR DI();
+    static uint8_t DI();
     
     /*!
-        \fn void RI(K_BOOL bEnable_)
+        \fn void RI(bool bEnable_)
         
         Restore the state of the SWI to the value specified
         
         \param bEnable_ true - enable the SWI, false - disable SWI
     */        
-    static void RI(K_BOOL bEnable_);    
+    static void RI(bool bEnable_);    
 };
 
 

@@ -16,10 +16,10 @@ typedef struct
     {
         struct
         {
-            K_ULONG ulScore;
-            K_CHAR acName[4];
+            uint32_t u32Score;
+            char acName[4];
         };
-        K_UCHAR aucRawData[8];
+        uint8_t aucRawData[8];
     };
 
 } HighScore_t;
@@ -30,11 +30,11 @@ class HighScore
 public:
     void CheckInit(void);
 
-    void ReadScore(K_UCHAR ucRank_, HighScore_t *pstScore_);
+    void ReadScore(uint8_t u8Rank_, HighScore_t *pstScore_);
 
-    void WriteScore(K_UCHAR ucRank_, HighScore_t *pstScore_);
+    void WriteScore(uint8_t u8Rank_, HighScore_t *pstScore_);
 
-    K_BOOL IsHighScore(K_ULONG ulScore_);
+    bool IsHighScore(uint32_t u32Score_);
 
     void AddNewScore(HighScore_t *pstNew_);
 

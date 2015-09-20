@@ -18,8 +18,8 @@ See license.txt for more information
     \brief  Core linked-list declarations, used by all kernel list types
     
     At the heart of RTOS data structures are linked lists.  Having a robust
-    and efficient set of linked-list types that we can use as a foundation for 
-    building the rest of our kernel types allows us to keep our RTOS code 
+    and efficient set of linked-list types that we can use as a foundation for
+    building the rest of our kernel types allows u16 to keep our RTOS code 
     efficient and logically-separated.
 
     So what data types rely on these linked-list classes?
@@ -31,7 +31,7 @@ See license.txt for more information
     -The Timer Scheduler
     -Blocking objects (Semaphores, Mutexes, etc...)
     
-    Pretty much everything in the kernel uses these linked lists.  By 
+    Pretty much everything in the kernel uses these linked lists.  By
     having objects inherit from the base linked-list node type, we're able
     to leverage the double and circular linked-list classes to manager
     virtually every object type in the system without duplicating code.
@@ -53,7 +53,7 @@ See license.txt for more information
 //---------------------------------------------------------------------------
 /*!
     Forward declarations of linked-list classes that are used further on in
-    this module.  This allows us to also specify which friend classes can 
+    this module.  This allows u16 to also specify which friend classes can 
     access the LinkListNode type.
 */
 class LinkList;

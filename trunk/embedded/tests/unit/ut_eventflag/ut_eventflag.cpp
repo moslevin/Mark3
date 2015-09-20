@@ -34,14 +34,14 @@ K_WORD aucThreadStack1[THREAD1_STACK_SIZE];
 K_WORD aucThreadStack2[THREAD2_STACK_SIZE];
 
 EventFlag clFlagGroup;
-volatile K_UCHAR ucFlagCount = 0;
-volatile K_UCHAR ucTimeoutCount = 0;
+volatile uint8_t u8FlagCount = 0;
+volatile uint8_t u8TimeoutCount = 0;
 
 //---------------------------------------------------------------------------
 void WaitOnFlag1Any(void *unused_)
 {
     clFlagGroup.Wait(0x0001, EVENT_FLAG_ANY);
-    ucFlagCount++;
+    u8FlagCount++;
 
     Scheduler::GetCurrentThread()->Exit();
 }
@@ -50,7 +50,7 @@ void WaitOnFlag1Any(void *unused_)
 void WaitOnMultiAny(void *unused_)
 {
     clFlagGroup.Wait(0x5555, EVENT_FLAG_ANY);
-    ucFlagCount++;
+    u8FlagCount++;
 
     Scheduler::GetCurrentThread()->Exit();
 }
@@ -59,7 +59,7 @@ void WaitOnMultiAny(void *unused_)
 void WaitOnMultiAll(void *unused_)
 {
     clFlagGroup.Wait(0x5555, EVENT_FLAG_ALL);
-    ucFlagCount++;
+    u8FlagCount++;
 
     Scheduler::GetCurrentThread()->Exit();
 }
@@ -67,40 +67,40 @@ void WaitOnMultiAll(void *unused_)
 //---------------------------------------------------------------------------
 void WaitOnAny(void *mask_)
 {
-    K_USHORT usMask = *((K_USHORT*)mask_);
+    uint16_t u16Mask = *((uint16_t*)mask_);
     while(1)
     {
-        clFlagGroup.Wait(usMask, EVENT_FLAG_ANY);
-        ucFlagCount++;
-        clFlagGroup.Clear(usMask);
+        clFlagGroup.Wait(u16Mask, EVENT_FLAG_ANY);
+        u8FlagCount++;
+        clFlagGroup.Clear(u16Mask);
     }
 }
 
 //---------------------------------------------------------------------------
 void WaitOnAll(void *mask_)
 {
-    K_USHORT usMask = *((K_USHORT*)mask_);
+    uint16_t u16Mask = *((uint16_t*)mask_);
     while(1)
     {
-        clFlagGroup.Wait(usMask, EVENT_FLAG_ALL);
-        ucFlagCount++;
-        clFlagGroup.Clear(usMask);
+        clFlagGroup.Wait(u16Mask, EVENT_FLAG_ALL);
+        u8FlagCount++;
+        clFlagGroup.Clear(u16Mask);
     }
 }
 
 //---------------------------------------------------------------------------
 void TimedWait(void *time_)
 {
-    K_USHORT usRet;
-    K_USHORT usTime = *((K_USHORT*)time_);
-    usRet = clFlagGroup.Wait(0x0001, EVENT_FLAG_ALL, usTime);
-    if (usRet == 0x0001)
+    uint16_t u16Ret;
+    uint16_t u16Time = *((uint16_t*)time_);
+    u16Ret = clFlagGroup.Wait(0x0001, EVENT_FLAG_ALL, u16Time);
+    if (u16Ret == 0x0001)
     {
-        ucFlagCount++;
+        u8FlagCount++;
     }
-    else if (usRet == 0x0000)
+    else if (u16Ret == 0x0000)
     {
-        ucTimeoutCount++;
+        u8TimeoutCount++;
     }
     clFlagGroup.Clear(0x0001);
     Scheduler::GetCurrentThread()->Exit();
@@ -111,19 +111,19 @@ void TimedWait(void *time_)
 //---------------------------------------------------------------------------
 void TimedWaitAll(void *time_)
 {
-    K_USHORT usRet;
-    K_USHORT usTime = *((K_USHORT*)time_);
+    uint16_t u16Ret;
+    uint16_t u16Time = *((uint16_t*)time_);
     while(1)
     {
-        usRet = clFlagGroup.Wait(0x0001, EVENT_FLAG_ALL, 200);
-        if (usRet == 0x0001)
+        u16Ret = clFlagGroup.Wait(0x0001, EVENT_FLAG_ALL, 200);
+        if (u16Ret == 0x0001)
         {
-            ucFlagCount++;
+            u8FlagCount++;
         }
-        else if (usRet == 0x0000)
+        else if (u16Ret == 0x0000)
         {            
             Scheduler::GetCurrentThread()->SetExpired(false);
-            ucTimeoutCount++;
+            u8TimeoutCount++;
         }
         clFlagGroup.Clear(0x0001);
     }
@@ -138,35 +138,35 @@ TEST(ut_waitany)
 {
     // Test - ensure that threads can block using the "waitany" mechanism, and
     // only wake up when bits from its pattern are encountered.
-    K_USHORT i;
-    K_USHORT usMask = 0x8000;
+    uint16_t i;
+    uint16_t u16Mask = 0x8000;
 
     clFlagGroup.Init();
-    ucFlagCount = 0;
+    u8FlagCount = 0;
 
-    clThread1.Init(aucThreadStack1, THREAD1_STACK_SIZE, 7, WaitOnAny, (void*)(&usMask));
+    clThread1.Init(aucThreadStack1, THREAD1_STACK_SIZE, 7, WaitOnAny, (void*)(&u16Mask));
     clThread1.Start();
 
     Thread::Sleep(100);
 
-    EXPECT_EQUALS(ucFlagCount, 0);
+    EXPECT_EQUALS(u8FlagCount, 0);
 
-    usMask = 0x0001;
-    while(usMask)
+    u16Mask = 0x0001;
+    while(u16Mask)
     {
-        clFlagGroup.Set(usMask);
+        clFlagGroup.Set(u16Mask);
         Thread::Sleep(100);
 
-        if (usMask != 0x8000)
+        if (u16Mask != 0x8000)
         {
-            EXPECT_EQUALS(ucFlagCount, 0);
+            EXPECT_EQUALS(u8FlagCount, 0);
         }
         else
         {
-            EXPECT_EQUALS(ucFlagCount, 1);
+            EXPECT_EQUALS(u8FlagCount, 1);
         }
 
-        usMask <<= 1;
+        u16Mask <<= 1;
     }
     clThread1.Exit();
 
@@ -174,32 +174,32 @@ TEST(ut_waitany)
     // and verify that any matching pattern will cause a wakeup
 
     clFlagGroup.Init();
-    ucFlagCount = 0;
-    usMask = 0xAAAA;
+    u8FlagCount = 0;
+    u16Mask = 0xAAAA;
 
-    clThread1.Init(aucThreadStack1, THREAD1_STACK_SIZE, 7, WaitOnAny, (void*)(&usMask));
+    clThread1.Init(aucThreadStack1, THREAD1_STACK_SIZE, 7, WaitOnAny, (void*)(&u16Mask));
     clThread1.Start();
 
     Thread::Sleep(100);
 
-    EXPECT_EQUALS(ucFlagCount, 0);
+    EXPECT_EQUALS(u8FlagCount, 0);
 
     // Test point - the flag set should kick the test thread on even-indexed
     // counters indexes.
     for (i = 0; i < 16; i++)
     {
-        K_UCHAR ucLastFlagCount = ucFlagCount;
+        uint8_t u8LastFlagCount = u8FlagCount;
 
-        clFlagGroup.Set((K_USHORT)(1 << i));
+        clFlagGroup.Set((uint16_t)(1 << i));
 
         Thread::Sleep(100);
         if ((i & 1) == 0)
         {
-            EXPECT_EQUALS(ucFlagCount, ucLastFlagCount);
+            EXPECT_EQUALS(u8FlagCount, u8LastFlagCount);
         }
         else
         {
-            EXPECT_EQUALS(ucFlagCount, ucLastFlagCount+1);
+            EXPECT_EQUALS(u8FlagCount, u8LastFlagCount+1);
         }
     }
 
@@ -213,35 +213,35 @@ TEST(ut_waitall)
 {
     // Test - ensure that threads can block using the "waitany" mechanism, and
     // only wake up when bits from its pattern are encountered.
-    K_USHORT i;
-    K_USHORT usMask = 0x8000;
+    uint16_t i;
+    uint16_t u16Mask = 0x8000;
 
     clFlagGroup.Init();
-    ucFlagCount = 0;
+    u8FlagCount = 0;
 
-    clThread1.Init(aucThreadStack1, THREAD1_STACK_SIZE, 7, WaitOnAll, (void*)(&usMask));
+    clThread1.Init(aucThreadStack1, THREAD1_STACK_SIZE, 7, WaitOnAll, (void*)(&u16Mask));
     clThread1.Start();
 
     Thread::Sleep(100);
 
-    EXPECT_EQUALS(ucFlagCount, 0);
+    EXPECT_EQUALS(u8FlagCount, 0);
 
-    usMask = 0x0001;
-    while(usMask)
+    u16Mask = 0x0001;
+    while(u16Mask)
     {
-        clFlagGroup.Set(usMask);
+        clFlagGroup.Set(u16Mask);
         Thread::Sleep(100);
 
-        if (usMask != 0x8000)
+        if (u16Mask != 0x8000)
         {
-            EXPECT_EQUALS(ucFlagCount, 0);
+            EXPECT_EQUALS(u8FlagCount, 0);
         }
         else
         {
-            EXPECT_EQUALS(ucFlagCount, 1);
+            EXPECT_EQUALS(u8FlagCount, 1);
         }
 
-        usMask <<= 1;
+        u16Mask <<= 1;
     }
     clThread1.Exit();
 
@@ -249,32 +249,32 @@ TEST(ut_waitall)
     // and verify that any matching pattern will cause a wakeup
 
     clFlagGroup.Init();
-    ucFlagCount = 0;
-    usMask = 0xAAAA;
+    u8FlagCount = 0;
+    u16Mask = 0xAAAA;
 
-    clThread1.Init(aucThreadStack1, THREAD1_STACK_SIZE, 7, WaitOnAll, (void*)(&usMask));
+    clThread1.Init(aucThreadStack1, THREAD1_STACK_SIZE, 7, WaitOnAll, (void*)(&u16Mask));
     clThread1.Start();
 
     Thread::Sleep(100);
 
-    EXPECT_EQUALS(ucFlagCount, 0);
+    EXPECT_EQUALS(u8FlagCount, 0);
 
     // Test point - the flag set should kick the test thread on even-indexed
     // counters indexes.
     for (i = 0; i < 16; i++)
     {
-        K_UCHAR ucLastFlagCount = ucFlagCount;
+        uint8_t u8LastFlagCount = u8FlagCount;
 
-        clFlagGroup.Set((K_USHORT)(1 << i));
+        clFlagGroup.Set((uint16_t)(1 << i));
 
         Thread::Sleep(100);
         if (i != 15)
         {
-            EXPECT_EQUALS(ucFlagCount, ucLastFlagCount);
+            EXPECT_EQUALS(u8FlagCount, u8LastFlagCount);
         }
         else
         {
-            EXPECT_EQUALS(ucFlagCount, ucLastFlagCount+1);
+            EXPECT_EQUALS(u8FlagCount, u8LastFlagCount+1);
         }
     }
 
@@ -294,7 +294,7 @@ TEST(ut_flag_multiwait)
     // Test point - 2 threads blocking on an event flag, bit 1.  Wait on these
     // threads until this thread sets bit 0x0001.  When that bit is set, the
     // threads should wake up, incrementing the "ucFlagCount" variable.
-    ucFlagCount = 0;
+    u8FlagCount = 0;
     clFlagGroup.Clear(0xFFFF);
 
     clThread1.Init(aucThreadStack1, THREAD1_STACK_SIZE, 7, WaitOnFlag1Any, 0);
@@ -305,15 +305,15 @@ TEST(ut_flag_multiwait)
 
     Thread::Sleep(100);
 
-    EXPECT_EQUALS(ucFlagCount, 0);
+    EXPECT_EQUALS(u8FlagCount, 0);
 
     clFlagGroup.Set(0x0001);
 
     Thread::Sleep(100);
 
-    EXPECT_EQUALS(ucFlagCount, 2);
+    EXPECT_EQUALS(u8FlagCount, 2);
 
-    ucFlagCount = 0;
+    u8FlagCount = 0;
     clFlagGroup.Clear(0xFFFF);
 
     // Test point - 2 threads blocking on an event flag, bits 0x5555.  Block
@@ -327,19 +327,19 @@ TEST(ut_flag_multiwait)
 
     Thread::Sleep(100);
 
-    EXPECT_EQUALS(ucFlagCount, 0);
+    EXPECT_EQUALS(u8FlagCount, 0);
 
     clFlagGroup.Set(0xAAAA);
     Thread::Sleep(100);
 
-    EXPECT_EQUALS(ucFlagCount, 0);
+    EXPECT_EQUALS(u8FlagCount, 0);
 
     clFlagGroup.Set(0x5555);
     Thread::Sleep(100);
 
-    EXPECT_EQUALS(ucFlagCount, 2);
+    EXPECT_EQUALS(u8FlagCount, 2);
 
-    ucFlagCount = 0;
+    u8FlagCount = 0;
     clFlagGroup.Clear(0xFFFF);
 
 
@@ -351,20 +351,20 @@ TEST(ut_flag_multiwait)
 
     Thread::Sleep(100);
 
-    EXPECT_EQUALS(ucFlagCount, 0);
+    EXPECT_EQUALS(u8FlagCount, 0);
 
     clFlagGroup.Set(0xA000);
     Thread::Sleep(100);
 
-    EXPECT_EQUALS(ucFlagCount, 0);
+    EXPECT_EQUALS(u8FlagCount, 0);
 
     clFlagGroup.Set(0x0005);
     Thread::Sleep(100);
 
-    EXPECT_EQUALS(ucFlagCount, 2);
+    EXPECT_EQUALS(u8FlagCount, 2);
     // Test point - same thing as above, but with the "ALL" flags set.
 
-    ucFlagCount = 0;
+    u8FlagCount = 0;
     clFlagGroup.Clear(0xFFFF);
 
     clThread1.Init(aucThreadStack1, THREAD1_STACK_SIZE, 7, WaitOnMultiAll, 0);
@@ -375,20 +375,20 @@ TEST(ut_flag_multiwait)
 
     Thread::Sleep(100);
 
-    EXPECT_EQUALS(ucFlagCount, 0);
+    EXPECT_EQUALS(u8FlagCount, 0);
 
     clFlagGroup.Set(0xAAAA);
     Thread::Sleep(100);
 
-    EXPECT_EQUALS(ucFlagCount, 0);
+    EXPECT_EQUALS(u8FlagCount, 0);
 
     clFlagGroup.Set(0x5555);
     Thread::Sleep(100);
 
-    EXPECT_EQUALS(ucFlagCount, 2);
+    EXPECT_EQUALS(u8FlagCount, 2);
 
 
-    ucFlagCount = 0;
+    u8FlagCount = 0;
     clFlagGroup.Clear(0xFFFF);
 
     // "All" mode - each flag must be set in order to ensure that the threads
@@ -401,135 +401,135 @@ TEST(ut_flag_multiwait)
 
     Thread::Sleep(100);
 
-    EXPECT_EQUALS(ucFlagCount, 0);
+    EXPECT_EQUALS(u8FlagCount, 0);
 
     clFlagGroup.Set(0xAAAA);
     Thread::Sleep(100);
 
-    EXPECT_EQUALS(ucFlagCount, 0);
+    EXPECT_EQUALS(u8FlagCount, 0);
 
     clFlagGroup.Set(0x5500);
     Thread::Sleep(100);
 
-    EXPECT_EQUALS(ucFlagCount, 0);
+    EXPECT_EQUALS(u8FlagCount, 0);
 
     clFlagGroup.Set(0x0055);
     Thread::Sleep(100);
 
-    EXPECT_EQUALS(ucFlagCount, 2);
+    EXPECT_EQUALS(u8FlagCount, 2);
 }
 TEST_END
 
 //===========================================================================
 TEST(ut_timedwait)
 {
-    K_USHORT usInterval;
+    uint16_t u16Interval;
 
     // Test point - verify positive test case (no timeout, no premature
     // unblocking)
-    ucTimeoutCount = 0;
-    ucFlagCount = 0;
-    usInterval = 200;
+    u8TimeoutCount = 0;
+    u8FlagCount = 0;
+    u16Interval = 200;
 
     clFlagGroup.Init();
 
-    clThread1.Init(aucThreadStack1, THREAD1_STACK_SIZE, 7, TimedWait, (void*)&usInterval);
+    clThread1.Init(aucThreadStack1, THREAD1_STACK_SIZE, 7, TimedWait, (void*)&u16Interval);
     clThread1.Start();
 
     Thread::Sleep(100);
 
-    EXPECT_EQUALS(ucTimeoutCount, 0);
-    EXPECT_EQUALS(ucFlagCount, 0);
+    EXPECT_EQUALS(u8TimeoutCount, 0);
+    EXPECT_EQUALS(u8FlagCount, 0);
 
     clFlagGroup.Set(0x0001);
 
-    EXPECT_EQUALS(ucTimeoutCount, 0);
-    EXPECT_EQUALS(ucFlagCount, 1);
+    EXPECT_EQUALS(u8TimeoutCount, 0);
+    EXPECT_EQUALS(u8FlagCount, 1);
 
 
     // Test point - verify negative test case (timeouts), followed by a
     // positive test result.
-    ucTimeoutCount = 0;
-    ucFlagCount = 0;
-    usInterval = 200;
+    u8TimeoutCount = 0;
+    u8FlagCount = 0;
+    u16Interval = 200;
 
     clFlagGroup.Init();
     clFlagGroup.Clear(0xFFFF);
 
-    clThread1.Init(aucThreadStack1, THREAD1_STACK_SIZE, 7, TimedWait, (void*)&usInterval);
+    clThread1.Init(aucThreadStack1, THREAD1_STACK_SIZE, 7, TimedWait, (void*)&u16Interval);
     clThread1.Start();
 
     Thread::Sleep(100);
 
-    EXPECT_EQUALS(ucTimeoutCount, 0);
-    EXPECT_EQUALS(ucFlagCount, 0);
+    EXPECT_EQUALS(u8TimeoutCount, 0);
+    EXPECT_EQUALS(u8FlagCount, 0);
 
     Thread::Sleep(200);
 
-    EXPECT_EQUALS(ucTimeoutCount, 1);
-    EXPECT_EQUALS(ucFlagCount, 0);
+    EXPECT_EQUALS(u8TimeoutCount, 1);
+    EXPECT_EQUALS(u8FlagCount, 0);
 
     // Test point - verify negative test case (timeouts), followed by a
     // positive test result.
-    ucTimeoutCount = 0;
-    ucFlagCount = 0;
-    usInterval = 200;
+    u8TimeoutCount = 0;
+    u8FlagCount = 0;
+    u16Interval = 200;
 
     clFlagGroup.Init();
     clFlagGroup.Clear(0xFFFF);
 
-    clThread1.Init(aucThreadStack1, THREAD1_STACK_SIZE, 7, TimedWaitAll, (void*)&usInterval);
+    clThread1.Init(aucThreadStack1, THREAD1_STACK_SIZE, 7, TimedWaitAll, (void*)&u16Interval);
     clThread1.Start();
 
     Thread::Sleep(210);
-    EXPECT_EQUALS(ucTimeoutCount, 1);
-    EXPECT_EQUALS(ucFlagCount, 0);
+    EXPECT_EQUALS(u8TimeoutCount, 1);
+    EXPECT_EQUALS(u8FlagCount, 0);
 
     Thread::Sleep(210);
-    EXPECT_EQUALS(ucTimeoutCount, 2);
-    EXPECT_EQUALS(ucFlagCount, 0);
+    EXPECT_EQUALS(u8TimeoutCount, 2);
+    EXPECT_EQUALS(u8FlagCount, 0);
 
     Thread::Sleep(210);
-    EXPECT_EQUALS(ucTimeoutCount, 3);
-    EXPECT_EQUALS(ucFlagCount, 0);
+    EXPECT_EQUALS(u8TimeoutCount, 3);
+    EXPECT_EQUALS(u8FlagCount, 0);
 
     Thread::Sleep(210);
-    EXPECT_EQUALS(ucTimeoutCount, 4);
-    EXPECT_EQUALS(ucFlagCount, 0);
+    EXPECT_EQUALS(u8TimeoutCount, 4);
+    EXPECT_EQUALS(u8FlagCount, 0);
 
     Thread::Sleep(210);
-    EXPECT_EQUALS(ucTimeoutCount, 5);
-    EXPECT_EQUALS(ucFlagCount, 0);
+    EXPECT_EQUALS(u8TimeoutCount, 5);
+    EXPECT_EQUALS(u8FlagCount, 0);
 
     Thread::Sleep(80);
     clFlagGroup.Set(0x0001);
 
-    EXPECT_EQUALS(ucTimeoutCount, 5);
-    EXPECT_EQUALS(ucFlagCount, 1);
+    EXPECT_EQUALS(u8TimeoutCount, 5);
+    EXPECT_EQUALS(u8FlagCount, 1);
 
     Thread::Sleep(80);
     clFlagGroup.Set(0x0001);
 
-    EXPECT_EQUALS(ucTimeoutCount, 5);
-    EXPECT_EQUALS(ucFlagCount, 2);
+    EXPECT_EQUALS(u8TimeoutCount, 5);
+    EXPECT_EQUALS(u8FlagCount, 2);
 
     Thread::Sleep(80);
     clFlagGroup.Set(0x0001);
 
-    EXPECT_EQUALS(ucTimeoutCount, 5);
-    EXPECT_EQUALS(ucFlagCount, 3);
+    EXPECT_EQUALS(u8TimeoutCount, 5);
+    EXPECT_EQUALS(u8FlagCount, 3);
 
     Thread::Sleep(80);
     clFlagGroup.Set(0x0001);
 
-    EXPECT_EQUALS(ucTimeoutCount, 5);
-    EXPECT_EQUALS(ucFlagCount, 4);
+    EXPECT_EQUALS(u8TimeoutCount, 5);
+    EXPECT_EQUALS(u8FlagCount, 4);
 
     Thread::Sleep(80);
     clFlagGroup.Set(0x0001);
 
-    EXPECT_EQUALS(ucTimeoutCount, 5);
-    EXPECT_EQUALS(ucFlagCount, 5);
+    EXPECT_EQUALS(u8TimeoutCount, 5);
+    EXPECT_EQUALS(u8FlagCount, 5);
 
 
 }

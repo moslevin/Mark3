@@ -22,10 +22,10 @@ See license.txt for more information
 #include "heapblock.h"
 
 //---------------------------------------------------------------------------
-void HeapBlock::RootInit( K_ADDR uSize_ )
+void HeapBlock::RootInit( K_ADDR usize_ )
 {
     Init();
-    m_uDataSize = ROUND_DOWN(uSize_);
+    m_uDataSize = ROUND_DOWN(usize_);
 
     SetCookie( HEAP_COOKIE_FREE );
 
@@ -34,18 +34,18 @@ void HeapBlock::RootInit( K_ADDR uSize_ )
 }
 
 //---------------------------------------------------------------------------
-HeapBlock *HeapBlock::Split( K_ADDR uSize_ )
+HeapBlock *HeapBlock::Split( K_ADDR usize_ )
 {
     // Allocate minimum amount of data for this operation on the left side
 
-    K_ADDR uLeftBlockSize = ROUND_UP(uSize_) + sizeof(HeapBlock);
+    K_ADDR u32eftBlockSize = ROUND_UP(usize_) + sizeof(HeapBlock);
 
     K_ADDR uThisBlockSize = m_uDataSize + sizeof(HeapBlock);
-    K_ADDR uRightBlockSize = uThisBlockSize - uLeftBlockSize;
+    K_ADDR uRightBlockSize = uThisBlockSize - u32eftBlockSize;
 
-    m_uDataSize = ROUND_UP(uSize_);
+    m_uDataSize = ROUND_UP(usize_);
 
-    K_ADDR uNewAddr = (K_ADDR)this + uLeftBlockSize;
+    K_ADDR uNewAddr = (K_ADDR)this + u32eftBlockSize;
     HeapBlock *pclRightBlock = (HeapBlock*)uNewAddr;
 
     pclRightBlock->Init();

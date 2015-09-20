@@ -14,15 +14,15 @@ class BrScore
 public:
     void Reset(void);
 
-    void AddScore(K_ULONG ulScore_);
+    void AddScore(uint32_t u32Score_);
 
     void Draw(void);
 
-    K_ULONG GetScore(void);
+    uint32_t GetScore(void);
 
 private:
-    K_ULONG m_ulScore;
-    K_BOOL	m_bUpdate;
+    uint32_t m_u32Score;
+    bool	m_bUpdate;
 };
 
 #endif

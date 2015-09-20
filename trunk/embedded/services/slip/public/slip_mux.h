@@ -33,7 +33,7 @@ See license.txt for more information
 #define SLIP_RX_MESSAGE_ID    (0xD00D)
 
 //---------------------------------------------------------------------------
-typedef void (*Slip_Channel)( Driver *pclDriver_, K_UCHAR ucChannel_, K_UCHAR *pucData_, K_USHORT usLen_ );
+typedef void (*Slip_Channel)( Driver *pclDriver_, uint8_t u8Channel_, uint8_t *pu8Data_, uint16_t u16Len_ );
 
 //---------------------------------------------------------------------------
 /*!
@@ -44,11 +44,11 @@ class SlipMux
 {
 public:
     /*!        
-        \fn void Init( const K_CHAR *pcDriverPath_,
-                        K_USHORT usRxSize_,
-                        K_UCHAR *aucRx_,
-                        K_USHORT usTxSize_,
-                        K_UCHAR *aucTx_)
+        \fn void Init( const char *pcDriverPath_,
+                        uint16_t u16RxSize_,
+                        uint8_t *aucRx_,
+                        uint16_t u16TxSize_,
+                        uint8_t *aucTx_)
         
         Attach a driver to the Slip-stream multiplexer and initialize the 
         internal data associated with the module.  
@@ -57,22 +57,22 @@ public:
         are called.
         
         \param pcDriverPath_ Filesystem path to the driver to attach to
-        \param usRxSize_ Size of the RX Buffer to attach to the driver
+        \param u16RxSize_ Size of the RX Buffer to attach to the driver
         \param aucRx_ Pointer to the RX Buffer to attach to the driver
-        \param usTxSize_ Size of the TX Buffer to attach to the driver
+        \param u16TxSize_ Size of the TX Buffer to attach to the driver
         \param aucTx_ Pointer to the TX Buffer to attach to the driver
     */
-    static void Init(const K_CHAR *pcDriverPath_, K_USHORT usRxSize_, K_UCHAR *aucRx_, K_USHORT usTxSize_, K_UCHAR *aucTx_);
+    static void Init(const char *pcDriverPath_, uint16_t u16RxSize_, uint8_t *aucRx_, uint16_t u16TxSize_, uint8_t *aucTx_);
     
     /*!
-        \fn void InstallHandler( K_UCHAR ucChannel_, Slip_Channel pfHandler_ )
+        \fn void InstallHandler( uint8_t u8Channel_, Slip_Channel pfHandler_ )
         
          Install a slip handler function for the given communication channel.
         
-        \param ucChannel_ Channel to attach the handler to
+        \param u8Channel_ Channel to attach the handler to
         \param pfHandler_ Pointer to the handler function to attach
     */    
-    static void InstallHandler( K_UCHAR ucChannel_, Slip_Channel pfHandler_ );
+    static void InstallHandler( uint8_t u8Channel_, Slip_Channel pfHandler_ );
 
     /*!        
         \fn void MessageReceive(void)
@@ -120,7 +120,7 @@ private:
     static MessageQueue *m_pclMessageQueue;
     static Driver *m_pclDriver;
     static Slip_Channel m_apfChannelHandlers[SLIP_CHANNEL_COUNT];    
-    static K_UCHAR m_aucData[SLIP_BUFFER_SIZE];    
+    static uint8_t m_aucData[SLIP_BUFFER_SIZE];    
     static Semaphore m_clSlipSem;
     static Slip m_clSlip;
 };

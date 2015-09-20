@@ -28,14 +28,14 @@ See license.txt for more information
 #include <avr/interrupt.h>
 
 //---------------------------------------------------------------------------
-static volatile K_USHORT usBeatTimer = 0;
-static volatile K_USHORT usNoteIndex = 0;
-static volatile K_USHORT usSweepIdx = 0;
-static volatile K_USHORT usSweepSteps = 0;
+static volatile uint16_t u16BeatTimer = 0;
+static volatile uint16_t u16NoteIndex = 0;
+static volatile uint16_t u16SweepIdx = 0;
+static volatile uint16_t u16SweepSteps = 0;
 
-static volatile K_USHORT target = 0;
-static volatile K_USHORT count = 0;
-static volatile K_UCHAR	level = 0;
+static volatile uint16_t target = 0;
+static volatile uint16_t count = 0;
+static volatile uint8_t	level = 0;
 
 static Timer clTimer;
 
@@ -68,32 +68,32 @@ void SoundDriver::SetTone( SquareWave_t *pstWave_ )
 	Open();
 	
 	CS_ENTER();	
-	target = pstWave_->usFreq / 2;
-	level = pstWave_->ucLevel;
+	target = pstWave_->u16Freq / 2;
+	level = pstWave_->u8Level;
 	OCR2B = level;
 	CS_EXIT();
 	
-	clTimer.Start( false, pstWave_->usDurationMS, ToneCallback, 0 );	
+	clTimer.Start( false, pstWave_->u16DurationMS, ToneCallback, 0 );	
 }
 
 //---------------------------------------------------------------------------
 void SongCallback( Thread *pclOwner_, void *pvData_ )
 {
 	Song_t *pstSong = (Song_t*)pvData_;
-	usBeatTimer++;
-	if( usBeatTimer >= pstSong->astNotes[usNoteIndex].usDurationBPM32 )
+	u16BeatTimer++;
+	if( u16BeatTimer >= pstSong->astNotes[u16NoteIndex].u16DurationBPM32 )
 	{
-		usBeatTimer = 0;
-		usNoteIndex++;
+		u16BeatTimer = 0;
+		u16NoteIndex++;
 		
-		if (0 == pstSong->astNotes[usNoteIndex].usFreq)	
+		if (0 == pstSong->astNotes[u16NoteIndex].u16Freq)	
 		{
-			usNoteIndex = 0;
+			u16NoteIndex = 0;
 		}
 		
 		CS_ENTER();	
-		target = pstSong->astNotes[usNoteIndex].usFreq / 2;
-		level = pstSong->astNotes[usNoteIndex].ucLevel;
+		target = pstSong->astNotes[u16NoteIndex].u16Freq / 2;
+		level = pstSong->astNotes[u16NoteIndex].u8Level;
 		OCR2B = level;
 		CS_EXIT();
 	}
@@ -102,28 +102,28 @@ void SongCallback( Thread *pclOwner_, void *pvData_ )
 //---------------------------------------------------------------------------
 void SweepCallback( Thread *pstOwner_, void *pvData_ )
 {
-	K_USHORT usFreq;
+	uint16_t u16Freq;
 	Sweep_t *pstSweep = (Sweep_t*)pvData_;
 
-	if (usSweepIdx < usSweepSteps)
+	if (u16SweepIdx < u16SweepSteps)
 	{
-		usSweepIdx++;	
+		u16SweepIdx++;	
 
 		if (pstSweep->bDir)
 		{
-			usFreq = pstSweep->usFreqStart + usSweepIdx;	
+			u16Freq = pstSweep->u16FreqStart + u16SweepIdx;	
 		}
 		else
 		{
-			usFreq = pstSweep->usFreqStart - usSweepIdx;	
+			u16Freq = pstSweep->u16FreqStart - u16SweepIdx;	
 		}
 
 		CS_ENTER();		
-		target = usFreq / 2;
-		level = pstSweep->ucLevel;		
+		target = u16Freq / 2;
+		level = pstSweep->u8Level;		
 		CS_EXIT();
 		
-		if (usSweepIdx == usSweepSteps)
+		if (u16SweepIdx == u16SweepSteps)
 		{
 			OCR2B = 0;
 			TIMSK2 &= ~(1 << OCIE2B);
@@ -134,7 +134,7 @@ void SweepCallback( Thread *pstOwner_, void *pvData_ )
 //---------------------------------------------------------------------------
 void SoundDriver::StartSong( Song_t *pstSong_ )
 {
-	K_ULONG ulBeatTimeMS32 = ((60000)/(pstSong_->ucTempoBPM * 8));
+	uint32_t u32BeatTimeMS32 = ((60000)/(pstSong_->u8TempoBPM * 8));
 	
 	Open();
 	
@@ -142,14 +142,14 @@ void SoundDriver::StartSong( Song_t *pstSong_ )
 	
 	CS_ENTER();
 	count = 0;
-	target = pstSong_->astNotes[0].usFreq / 2;
-	level = pstSong_->astNotes[0].ucLevel;
+	target = pstSong_->astNotes[0].u16Freq / 2;
+	level = pstSong_->astNotes[0].u8Level;
 	OCR2B = level;
 	CS_EXIT();
     
-	clTimer.Start( true, ulBeatTimeMS32, SongCallback, pstSong_ );	
-	usBeatTimer = 0;
-	usNoteIndex = 0;
+	clTimer.Start( true, u32BeatTimeMS32, SongCallback, pstSong_ );	
+	u16BeatTimer = 0;
+	u16NoteIndex = 0;
 }
 
 //---------------------------------------------------------------------------
@@ -159,16 +159,16 @@ void SoundDriver::StartSweep( Sweep_t *pstSweep_ )
 	
 	Open();
 	
-	usSweepIdx = 0;
-	usSweepSteps = (pstSweep_->usDuration) / pstSweep_->usSpeed;
+	u16SweepIdx = 0;
+	u16SweepSteps = (pstSweep_->u16Duration) / pstSweep_->u16Speed;
 	
 	CS_ENTER();	
-	target = pstSweep_->usFreqStart / 2;
-	level = pstSweep_->ucLevel;
+	target = pstSweep_->u16FreqStart / 2;
+	level = pstSweep_->u8Level;
 	OCR2B = level;
 	CS_EXIT();
 	
-	clTimer.Start( true, pstSweep_->usSpeed, SweepCallback, pstSweep_ );
+	clTimer.Start( true, pstSweep_->u16Speed, SweepCallback, pstSweep_ );
 }
 
 //---------------------------------------------------------------------------
@@ -191,7 +191,7 @@ void SoundDriver::Init()
 }
 
 //---------------------------------------------------------------------------
-K_UCHAR SoundDriver::Open()
+uint8_t SoundDriver::Open()
 {		
 	OCR2B = 0;
 	TIMSK2 |= (1 << OCIE2B);
@@ -199,7 +199,7 @@ K_UCHAR SoundDriver::Open()
 }
 
 //---------------------------------------------------------------------------
-K_UCHAR SoundDriver::Close()
+uint8_t SoundDriver::Close()
 {
 	TIMSK2 &= ~(1 << OCIE2B);
 	OCR2B = 0;
@@ -207,9 +207,9 @@ K_UCHAR SoundDriver::Close()
 }
 
 //---------------------------------------------------------------------------
-K_USHORT SoundDriver::Control( K_USHORT usEvent_, void *pvDataIn_, K_USHORT usSizeIn_, void *pvDataOut_, K_USHORT usSizeOut_ )
+uint16_t SoundDriver::Control( uint16_t u16Event_, void *pvDataIn_, uint16_t u16SizeIn_, void *pvDataOut_, uint16_t u16SizeOut_ )
 {
-	switch (usEvent_)
+	switch (u16Event_)
 	{
 		case SOUND_EVENT_OFF:
 			clTimer.Stop();			

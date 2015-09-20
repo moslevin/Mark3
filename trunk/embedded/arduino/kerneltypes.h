@@ -21,24 +21,24 @@ See license.txt for more information
 #ifndef __KERNELTYPES_H__
 #define __KERNELTYPES_H__
 
-#if defined(K_BOOL)
-    #define K_BOOL            K_BOOL    
+#if defined(bool)
+    #define bool            bool    
 #else
-    #define K_BOOL            uint8_t
+    #define bool            uint8_t
 #endif
     
-#define K_CHAR          char
-#define K_UCHAR         uint8_t
-#define K_USHORT        uint16_t
-#define K_SHORT         int16_t
-#define K_ULONG         uint32_t
-#define K_LONG          int32_t
+#define char          char
+#define uint8_t         uint8_t
+#define uint16_t        uint16_t
+#define int16_t         int16_t
+#define uint32_t         uint32_t
+#define int32_t          int32_t
 
 #define K_ADDR      uint16_t
 #define K_WORD      uint8_t
 
 //---------------------------------------------------------------------------
-typedef void (*panic_func_t)( K_USHORT usPanicCode_ );
+typedef void (*panic_func_t)( uint16_t u16PanicCode_ );
 
 //---------------------------------------------------------------------------
 typedef enum

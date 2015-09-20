@@ -31,15 +31,15 @@ See license.txt for more information
 #define __FILE_ID__ 	THREADLIST_CPP       //!< File ID used in kernel trace calls
 
 //---------------------------------------------------------------------------
-void ThreadList::SetPriority(K_UCHAR ucPriority_)
+void ThreadList::SetPriority(uint8_t u8Priority_)
 {
-    m_ucPriority = ucPriority_;
+    m_u8Priority = u8Priority_;
 }
 
 //---------------------------------------------------------------------------
-void ThreadList::SetFlagPointer( K_UCHAR *pucFlag_)
+void ThreadList::SetFlagPointer( uint8_t *pu8Flag_)
 {
-    m_pucFlag = pucFlag_;
+    m_pu8Flag = pu8Flag_;
 }
 
 //---------------------------------------------------------------------------
@@ -48,19 +48,19 @@ void ThreadList::Add(LinkListNode *node_) {
     CircularLinkList::PivotForward();
     
     // We've specified a bitmap for this threadlist
-    if (m_pucFlag)
+    if (m_pu8Flag)
     {
         // Set the flag for this priority level
-        *m_pucFlag |= (1 << m_ucPriority);
+        *m_pu8Flag |= (1 << m_u8Priority);
     }
 }
 
 //---------------------------------------------------------------------------
-void ThreadList::Add(LinkListNode *node_, K_UCHAR *pucFlag_, K_UCHAR ucPriority_) {
+void ThreadList::Add(LinkListNode *node_, uint8_t *pu8Flag_, uint8_t u8Priority_) {
     // Set the threadlist's priority level, flag pointer, and then add the
     // thread to the threadlist
-    SetPriority(ucPriority_);
-    SetFlagPointer(pucFlag_);
+    SetPriority(u8Priority_);
+    SetFlagPointer(pu8Flag_);
     Add(node_);
 }
 
@@ -73,9 +73,9 @@ void ThreadList::Remove(LinkListNode *node_) {
     if (!m_pstHead)
     {
         // Clear the bit in the bitmap at this priority level
-        if (m_pucFlag)
+        if (m_pu8Flag)
         {
-            *m_pucFlag &= ~(1 << m_ucPriority);
+            *m_pu8Flag &= ~(1 << m_u8Priority);
         }
     }
 }
@@ -86,15 +86,15 @@ Thread *ThreadList::HighestWaiter()
 	Thread *pclTemp = static_cast<Thread*>(GetHead());
 	Thread *pclChosen = pclTemp;
 	
-	K_UCHAR ucMaxPri = 0;
+	uint8_t u8MaxPri = 0;
     
     // Go through the list, return the highest-priority thread in this list.
 	while(1)
 	{
         // Compare against current max-priority thread
-		if (pclTemp->GetPriority() >= ucMaxPri)
+		if (pclTemp->GetPriority() >= u8MaxPri)
 		{
-			ucMaxPri = pclTemp->GetPriority();
+			u8MaxPri = pclTemp->GetPriority();
 			pclChosen = pclTemp;
 		}
         

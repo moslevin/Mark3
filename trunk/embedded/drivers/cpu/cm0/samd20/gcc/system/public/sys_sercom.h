@@ -136,7 +136,7 @@ typedef enum
 typedef struct
 {
     PortIdentity_t  ePort;
-    K_UCHAR         ucIndex;
+    uint8_t         u8Index;
 } SERCOM_Lookup_t;
 
 

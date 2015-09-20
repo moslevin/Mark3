@@ -23,7 +23,7 @@ Lessons covered in this example include:
 Takeaway:
 
 In addition to being able to specify a static set of threads during system
-initialization, Mark3 gives the user the ability to create and manipulate
+initialization, Mark3 gives the user the ability to create and manipu32ate
 threads at runtime.  These threads can act as "temporary workers" that can
 be activated when needed, without impacting the responsiveness of the rest
 of the application.
@@ -63,28 +63,28 @@ int main(void)
 static void WorkerMain1(void *arg_)
 {
     Semaphore *pclSem = (Semaphore*)arg_;
-    K_ULONG ulCount = 0;
+    uint32_t u32Count = 0;
 
     // Do some work.  Post a semaphore to notify the other thread that the
     // work has been completed.
-    while (ulCount < 1000000)
+    while (u32Count < 1000000)
     {
-        ulCount++;
+        u32Count++;
     }
 
     KernelAware::Print( "Worker1 -- Done Work\n");
     pclSem->Post();
 
-    // Work is completed, just spin now.  Let another thread destory us.
+    // Work is completed, just spin now.  Let another thread destory u16.
     while(1) { }
 }
 //---------------------------------------------------------------------------
 static void WorkerMain2(void *arg_)
 {
-    K_ULONG ulCount = 0;
-    while (ulCount < 1000000)
+    uint32_t u32Count = 0;
+    while (u32Count < 1000000)
     {
-        ulCount++;
+        u32Count++;
     }
 
     KernelAware::Print( "Worker2 -- Done Work\n");
@@ -108,10 +108,10 @@ void App1Main(void *unused_)
         clMyThread.Start();
 
         // Do some work of our own in parallel, while the other thread works on its project.
-        K_ULONG ulCount = 0;
-        while (ulCount < 100000)
+        uint32_t u32Count = 0;
+        while (u32Count < 100000)
         {
-            ulCount++;
+            u32Count++;
         }
 
         KernelAware::Print( "Thread -- Done Work\n" );
@@ -119,7 +119,7 @@ void App1Main(void *unused_)
         // Wait for the other thread to finish its job.
         clMySem.Pend();
 
-        // Once the thread has signalled us, we can safely call "Exit" on the thread to
+        // Once the thread has signalled u16, we can safely call "Exit" on the thread to
         // remove it from scheduling and recycle it later.
         clMyThread.Exit();
 
@@ -128,10 +128,10 @@ void App1Main(void *unused_)
         clMyThread.Init( awApp2Stack, APP2_STACK_SIZE, 1, WorkerMain2, 0 );
         clMyThread.Start();
 
-        ulCount = 0;
-        while (ulCount < 1000000)
+        u32Count = 0;
+        while (u32Count < 1000000)
         {
-            ulCount++;
+            u32Count++;
         }
 
         KernelAware::Print( "Thread -- Done Work\n" );

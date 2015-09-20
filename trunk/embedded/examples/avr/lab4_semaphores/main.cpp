@@ -15,7 +15,7 @@ See license.txt for more information
 
 /*===========================================================================
 
-Lab Example 4:  Using binary semaphores
+Lab Example 4:  using binary semaphores
 
 In this example, we implement two threads, synchronized using a semaphore to
 model the classic producer-consumer pattern.  One thread does work, and then
@@ -109,7 +109,7 @@ void App1Main(void *unused_)
 //---------------------------------------------------------------------------
 void App2Main(void *unused_)
 {
-    volatile K_ULONG ulCounter = 0;
+    volatile uint32_t u32Counter = 0;
 
     while(1)
     {
@@ -117,10 +117,10 @@ void App2Main(void *unused_)
         // will cause the other thread to wake up and then take some action.
         // It's a bit contrived, but imagine that the results of this process
         // are necessary to drive the work done by that other thread.
-        ulCounter++;
-        if (ulCounter == 1000000)
+        u32Counter++;
+        if (u32Counter == 1000000)
         {
-            ulCounter = 0;
+            u32Counter = 0;
             KernelAware::Print("Posted\n");
             clMySem.Post();
         }
