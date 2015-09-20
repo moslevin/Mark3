@@ -31,12 +31,16 @@ public:
 
 	static void TimerStop(void);
 
+	uint8_t ReceiveByte(void);
+	
 private:
 
     void TimerStart(void);
    
     void TimerInit(void);
 
+	void RxInit(void);
+	
     uint16_t m_u16Prescale;
     uint8_t m_u8TimerPeriod;
 };
