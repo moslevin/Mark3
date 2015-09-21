@@ -29,18 +29,18 @@ public:
 
     void SendByte( uint8_t u8Byte_ );
 
-	static void TimerStop(void);
+    static void TimerStop(void);
 
-	uint8_t ReceiveByte(void);
-	
+    uint8_t ReceiveByte(void);
+
 private:
 
     void TimerStart(void);
    
     void TimerInit(void);
 
-	void RxInit(void);
-	
+    void RxInit(void);
+
     uint16_t m_u16Prescale;
     uint8_t m_u8TimerPeriod;
 };
