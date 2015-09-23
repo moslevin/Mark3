@@ -9,7 +9,9 @@ LIBNAME=heap
 
 #this is the list of the objects required to build the kernel
 CPP_SOURCE=fixed_heap.cpp \
-			system_heap.cpp
+	system_heap.cpp \
+	arena.cpp \
+	heapblock.cpp
 
 # Include the rest of the script that is actually used for building the 
 # outputs
