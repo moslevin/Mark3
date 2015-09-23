@@ -26,7 +26,7 @@ See license.txt for more information
 #include "heapblock.h"
 
 //---------------------------------------------------------------------------
-#define ARENA_LIST_COUNT        (12)
+#define ARENA_LIST_COUNT        (5)
 
 //---------------------------------------------------------------------------
 #define ARENA_SIZE_0            (4)
@@ -43,7 +43,7 @@ See license.txt for more information
 #define ARENA_SIZE_11           (16384)
 
 //---------------------------------------------------------------------------
-#define MAX_ARENA_SIZE          (ARENA_SIZE_11)
+#define MAX_ARENA_SIZE          (ARENA_SIZE_4)
 
 //---------------------------------------------------------------------------
 #if (PTR_SIZE == 2)
@@ -120,7 +120,7 @@ private:
      * \param usize_ Size of the object to check
      * \return INdex representing the arena/arena-size
      */
-    uint8_t ListForSize( K_ADDR usize_ );
+    uint32_t ListForSize( K_ADDR usize_ );
 
     /*!
      * \brief ListToSatisfy
@@ -131,7 +131,7 @@ private:
      * \param usize_ Size of data to check
      * \return Index representing the arena/arena-size, or 0xF...F on invalid
      */
-    uint8_t ListToSatisfy( K_ADDR usize_ );
+    uint32_t ListToSatisfy( K_ADDR usize_ );
 
     ArenaList  m_aclBlockList[ARENA_LIST_COUNT + 1];    //!< Arena linked-list data
     void      *m_pvData;    //!< Pointer to the raw memory blob managed by this object as a heap.
