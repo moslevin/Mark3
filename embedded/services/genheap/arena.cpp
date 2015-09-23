@@ -37,6 +37,7 @@ const static K_ADDR au32ArenaSizes[ ARENA_LIST_COUNT ] =
     ARENA_SIZE_2,
     ARENA_SIZE_3,
     ARENA_SIZE_4,
+/*
     ARENA_SIZE_5,
     ARENA_SIZE_6,
     ARENA_SIZE_7,
@@ -44,6 +45,7 @@ const static K_ADDR au32ArenaSizes[ ARENA_LIST_COUNT ] =
     ARENA_SIZE_9,
     ARENA_SIZE_10,
     ARENA_SIZE_11
+*/
 };
 
 //---------------------------------------------------------------------------
@@ -102,16 +104,23 @@ void *Arena::Allocate( K_ADDR usize_ )
 {
     // Figure out which list to grab the buffer from.
     DEBUG_PRINT("Request to allocate %d bytes\n", usize_ );
-    uint8_t uList = ListToSatisfy( usize_ );
+    HeapBlock *pclRet;
+
+    CS_ENTER();
+    uint32_t uList = ListToSatisfy( usize_ );
 
     if (uList == ARENA_EXHAUSTED)
     {
         DEBUG_PRINT(" Arena Exhausted, bailing\n" );
         return 0;
     }
+    if (usize_ < ARENA_SIZE_0)
+    {
+        usize_ = ARENA_SIZE_0;
+    }
 
     // Pop the first block from the arena list
-    HeapBlock *pclRet = m_aclBlockList[uList].PopBlock();
+    pclRet = m_aclBlockList[uList].PopBlock();
 
     DEBUG_PRINT(" Returned block: 0x%X, size %d\n", pclRet, pclRet ? pclRet->GetDataSize() : 0 );
 
@@ -129,9 +138,12 @@ void *Arena::Allocate( K_ADDR usize_ )
         m_aclBlockList[uList].PushBlock( pclNew );
     }
 
+
     // Mark this block as allocated and return a pointer to the block's data
     // pointer.
     pclRet->SetCookie(HEAP_COOKIE_ALLOCATED);
+
+    CS_EXIT();
     return pclRet->GetDataPointer();
 }
 
@@ -143,18 +155,20 @@ void Arena::Free( void *pvBlock_ )
     HeapBlock *pclRight = pclBlock->GetRightSibling();
     HeapBlock *pclTemp = pclRight;
 
-    uint8_t u8ArenaIndex;
+    uint32_t u32ArenaIndex;
 
     // Block coalescing
     //   Merge right, absorb into current-node
+    CS_ENTER();
+
     pclTemp = pclRight;
     DEBUG_PRINT(" Data Pointer: 0x%X, Object 0x%X, Cookie %08X\n",
                     pvBlock_, pclBlock, pclBlock->GetCookie() );
     while (pclTemp && (pclTemp->GetCookie() == HEAP_COOKIE_FREE))
     {
         // Remove this free block from its currently allocated arena
-        u8ArenaIndex = pclTemp->GetArenaIndex();
-        m_aclBlockList[u8ArenaIndex].RemoveBlock( pclTemp );
+        u32ArenaIndex = pclTemp->GetArenaIndex();
+        m_aclBlockList[u32ArenaIndex].RemoveBlock( pclTemp );
 
         pclBlock->Coalesce();
 
@@ -162,14 +176,17 @@ void Arena::Free( void *pvBlock_ )
         pclTemp = pclBlock->GetRightSibling();
     }
 
+    CS_EXIT();
+
+    CS_ENTER();
     // Merge left, absorb into left-node.
     pclTemp = pclBlock->GetLeftSibling();
     pclRight = pclBlock;
     while (pclTemp && (pclTemp->GetCookie() == HEAP_COOKIE_FREE))
     {
         // Remove this free block from its currently allocated arena
-        u8ArenaIndex = pclTemp->GetArenaIndex();
-        m_aclBlockList[u8ArenaIndex].RemoveBlock( pclTemp );
+        u32ArenaIndex = pclTemp->GetArenaIndex();
+        m_aclBlockList[u32ArenaIndex].RemoveBlock( pclTemp );
 
         pclTemp->Coalesce();
 
@@ -181,17 +198,19 @@ void Arena::Free( void *pvBlock_ )
 
     // Now that all adjacent blocks have been coalesced, add the single block
     // back to the correct arena, and we're done!
-    u8ArenaIndex = ListForSize( pclBlock->GetDataSize() );
-    if (u8ArenaIndex == ARENA_EXHAUSTED)
+    u32ArenaIndex = ListForSize( pclBlock->GetDataSize() );
+    if (u32ArenaIndex == ARENA_EXHAUSTED)
     {
         // Big error...
     }
-    pclBlock->SetArenaIndex(u8ArenaIndex);
-    m_aclBlockList[u8ArenaIndex].PushBlock( pclBlock );
+    pclBlock->SetArenaIndex(u32ArenaIndex);
+    m_aclBlockList[u32ArenaIndex].PushBlock( pclBlock );
+
+    CS_EXIT();
 }
 
 //---------------------------------------------------------------------------
-uint8_t Arena::ListForSize( K_ADDR usize_ )
+uint32_t Arena::ListForSize( K_ADDR usize_ )
 {
     if (usize_ < ARENA_SIZE_0)
     {
@@ -209,7 +228,7 @@ uint8_t Arena::ListForSize( K_ADDR usize_ )
     return ARENA_LIST_COUNT-1;
 }
 //---------------------------------------------------------------------------
-uint8_t Arena::ListToSatisfy( K_ADDR usize_ )
+uint32_t Arena::ListToSatisfy( K_ADDR usize_ )
 {
     for (int i = 0; i < ARENA_LIST_COUNT; i++)
     {
