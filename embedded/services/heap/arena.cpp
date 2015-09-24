@@ -106,8 +106,11 @@ void *Arena::Allocate( K_ADDR usize_ )
     DEBUG_PRINT("Request to allocate %d bytes\n", usize_ );
     HeapBlock *pclRet;
 
-    CS_ENTER();
-    uint32_t uList = ListToSatisfy( usize_ );
+    uint32_t uList;
+
+    CS_ENTER(); 
+    uList = ListToSatisfy( usize_ );
+    CS_EXIT();
 
     if (uList == ARENA_EXHAUSTED)
     {
@@ -119,6 +122,7 @@ void *Arena::Allocate( K_ADDR usize_ )
         usize_ = ARENA_SIZE_0;
     }
 
+    CS_ENTER();
     // Pop the first block from the arena list
     pclRet = m_aclBlockList[uList].PopBlock();
 
@@ -248,6 +252,7 @@ DEBUG_PRINT("  Arena Exhausted\n" );
 void Arena::Print( void )
 {
 #if DEBUG
+
     for (int i = 0; i < ARENA_LIST_COUNT; i++)
     {
         printf( " List %d (%d bytes): %d blocks free\n",
