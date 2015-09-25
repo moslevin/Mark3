@@ -3,8 +3,8 @@
 
 //---------------------------------------------------------------------------
 /*!
-    Text commands defines
-*/
+ *   Text commands defines
+ */
 //---------------------------------------------------------------------------
 #define TEXT_MOVE_CURSOR        (0xFFE4)
 #define TEXT_PUT_CHAR           (0xFFFE)
@@ -29,8 +29,8 @@
 
 //---------------------------------------------------------------------------
 /*!
-    Graphics command defines
-*/
+ *   Graphics command defines
+ */
 //---------------------------------------------------------------------------
 #define GFX_CLEAR_SCREEN        (0xFFD7)
 #define GFX_CHANGE_COLOR        (0xFFBE)
@@ -61,8 +61,8 @@
 
 //---------------------------------------------------------------------------
 /*!
-    Serial port commands
-*/
+ *   Serial port commands
+ */
 //---------------------------------------------------------------------------
 #define SERIAL_SET_BAUD         (0x000B)
 
@@ -91,8 +91,8 @@
 #define ACK_BYTE                (0x06)
 //---------------------------------------------------------------------------
 /*!
-    General defines
-*/
+ *   General defines
+ */
 #define SERIAL_TIMEOUT_MAX      (1000)   //millisecond
 #define COMMAND_RETRY_COUNT     (5)     //attempts
 

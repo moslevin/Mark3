@@ -27,9 +27,9 @@ See license.txt for more information
 #if KERNEL_AWARE_SIMULATION
 //---------------------------------------------------------------------------
 /*!
-    This enumeration contains a list of supported commands that can be
-    executed to invoke a response from a kernel aware host.
-*/
+ *  This enumeration contains a list of supported commands that can be
+ *  executed to invoke a response from a kernel aware host.
+ */
 typedef enum
 {
     KA_COMMAND_IDLE = 0,        //!< Null command, does nothing.

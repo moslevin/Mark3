@@ -10,7 +10,7 @@
 
 Copyright (c) 2012-2015 Funkenstein Software Consulting, all rights reserved.
 See license.txt for more information
-===========================================================================*/
+=========================================================================== */
 /*!
     \file joystick.h
     
@@ -39,7 +39,7 @@ See license.txt for more information
     changes in state from frame-to-frame, compare the results from calls to 
     ReadCurrent() and ReadPrevious().  In this way, it is possible to implement
     more complex, application-specific input state machines.
-*/
+ */
 
 #include "kerneltypes.h"
 #include "driver.h"
@@ -49,12 +49,12 @@ See license.txt for more information
 
 //---------------------------------------------------------------------------
 /*!
-    Structure defining a generic joystick report structure.  In this case, 
-    composed of the following items:
-    - Digital input, including a D-pad and up to 12 additional buttons.
-    - 16-bit analog input for two sets of analog x/y axis.
-    .
-*/
+ *  Structure defining a generic joystick report structure.  In this case, 
+ *  composed of the following items:
+ *  - Digital input, including a D-pad and up to 12 additional buttons.
+ *  - 16-bit analog input for two sets of analog x/y axis.
+ *  .
+ */
 typedef struct
 {
     union
@@ -88,8 +88,8 @@ typedef struct
 
 //---------------------------------------------------------------------------
 /*!
-    Generic joystick driver events/commands
-*/
+ *  Generic joystick driver events/commands
+ */
 typedef enum
 {
     JOYSTICK_SCAN = 0x80    //!< Scan event/command.  Must be implemented in
@@ -98,45 +98,45 @@ typedef enum
 
 //---------------------------------------------------------------------------
 /*!
-    Joystick driver base class.  This class implements the API methods required
-    for a generic joystick driver - including calls to scan the joystick
-    hardware, read the current joystick value, and read the previously-read
-    joystick value.  
-*/
+ *  Joystick driver base class.  This class implements the API methods required
+ *  for a generic joystick driver - including calls to scan the joystick
+ *  hardware, read the current joystick value, and read the previously-read
+ *  joystick value.  
+ */
 class JoystickDriver : public Driver
 {
 public:
     /*!
-        \fn void Scan()
-        
-        Read the current joystick values from hardware.  This calls the
-        underlying driver's Control() function with the JOYSTICK_SCAN event,
-        which is implemented in the inheriting class.  This copies the 
-        newly-read data into the CurrentReport member, while moving the 
-        previously-read report data into m_stLastReport.
-    */
+     *  \fn void Scan()
+     *  
+     *  Read the current joystick values from hardware.  This calls the
+     *  underlying driver's Control() function with the JOYSTICK_SCAN event,
+     *  which is implemented in the inheriting class.  This copies the 
+     *  newly-read data into the CurrentReport member, while moving the 
+     *  previously-read report data into m_stLastReport.
+     */
     void Scan();
     
     /*!
-        \fn void ReadCurrent( JoystickReport &pstReport_ )
-        
-        Copy out the current joystick report data.  This does not trigger a 
-        hardware re-scan of the joystick hardware.
-        
-        \param pstReport_ Pointer to the JoystickReport object that will 
-               hold the read data.
-    */
+     *  \fn void ReadCurrent( JoystickReport &pstReport_ )
+     *  
+     *  Copy out the current joystick report data.  This does not trigger a 
+     *  hardware re-scan of the joystick hardware.
+     *  
+     *  \param pstReport_ Pointer to the JoystickReport object that will 
+     *         hold the read data.
+     */
     void ReadCurrent( JoystickReport *pstReport_ );
     
     /*!
-        \fn void ReadPrevious( JoystickReport &pstReport_ )
-        
-        Copy out the previous joystick report data.  This does not trigger a
-        hardware re-scan of the joystick hardware.
-        
-        \param pstReport_ Pointer to the JoystickReport object that will 
-               hold the read data.
-    */
+     *  \fn void ReadPrevious( JoystickReport &pstReport_ )
+     *  
+     *  Copy out the previous joystick report data.  This does not trigger a
+     *  hardware re-scan of the joystick hardware.
+     *  
+     *  \param pstReport_ Pointer to the JoystickReport object that will 
+     *         hold the read data.
+     */
     void ReadPrevious( JoystickReport *pstReport_ );
 
 protected:

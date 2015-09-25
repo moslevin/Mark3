@@ -26,9 +26,9 @@ See license.txt for more information
 typedef struct
 {
     uint8_t u8Width;        //!< Width of this font glyph in pixels
-    uint8_t u8Height;        //!< Height of this font glyph in pixels
-    uint8_t u8VOffset;        //!< Vertical offset of this glyph
-    uint8_t aucData[1];        //!< Glyph data array
+    uint8_t u8Height;       //!< Height of this font glyph in pixels
+    uint8_t u8VOffset;      //!< Vertical offset of this glyph
+    uint8_t aucData[1];     //!< Glyph data array
 } Glyph_t;
 
 //---------------------------------------------------------------------------

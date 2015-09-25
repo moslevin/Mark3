@@ -38,16 +38,16 @@ public:
     virtual uint8_t Open();
     virtual uint8_t Close();
     virtual uint16_t Read( uint16_t u16Bytes_,
-        uint8_t *pu8Data_ );
+                           uint8_t *pu8Data_ );
         
     virtual uint16_t Write( uint16_t u16Bytes_,
-        uint8_t *pu8Data_ );
+                            uint8_t *pu8Data_ );
         
     virtual uint16_t Control( uint16_t u16Event_,
-        void *pvIn_,
-        uint16_t u16SizeIn_,
-        void *pvOut_,
-        uint16_t u16SizeOut_ );
+                              void *pvIn_,
+                              uint16_t u16SizeIn_,
+                              void *pvOut_,
+                              uint16_t u16SizeOut_ );
 private:
     uint16_t m_u16Address;        
 };

@@ -52,9 +52,9 @@ public:
     uint8_t ReadBits(uint8_t u8NumBits_);
 
 private:
-    uint8_t *m_pu8Data;     //!< Pointer to the data being streamed
-    uint8_t m_u8BitIndex;   //!< Current "bit" index in the current byte
-    uint16_t m_u16ByteIndex;	//!< Current "byte" index in the stream
+    uint8_t *m_pu8Data;      //!< Pointer to the data being streamed
+    uint8_t m_u8BitIndex;    //!< Current "bit" index in the current byte
+    uint16_t m_u16ByteIndex; //!< Current "byte" index in the stream
     uint16_t m_u16Size;      //!< Length of data (in bytes)
 };
 

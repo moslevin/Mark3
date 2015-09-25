@@ -10,7 +10,7 @@
 
 Copyright (c) 2012-2015 Funkenstein Software Consulting, all rights reserved.
 See license.txt for more information
-===========================================================================*/
+=========================================================================== */
 /*!
     \file graphics_slip.h
     
@@ -18,7 +18,7 @@ See license.txt for more information
     
     Graphics driver implementation requires a host capable of interpreting
     the FunkenSLIP graphics protocol and able to render the results.
-*/
+ */
 
 #include "driver.h"
 #include "draw.h"
@@ -33,10 +33,10 @@ See license.txt for more information
 
 //---------------------------------------------------------------------------
 /*!
-    This data structure is used to provide a quick lookup table for 
-    stamps, so that they can be cached instead of redrawn pixel-for-pixel on
-    every single redraw.
-*/
+ *  This data structure is used to provide a quick lookup table for 
+ *  stamps, so that they can be cached instead of redrawn pixel-for-pixel on
+ *  every single redraw.
+ */
 typedef struct
 {
     uint8_t u8Access;
@@ -45,8 +45,8 @@ typedef struct
 //---------------------------------------------------------------------------
 
 /*!
-    Graphics driver implementation based on the generic GraphicsDriver class
-*/
+ *  Graphics driver implementation based on the generic GraphicsDriver class
+ */
 class GraphicsSlip : public GraphicsDriver
 {
 public:
@@ -68,7 +68,7 @@ public:
 /*
     Raster operations defined using per-pixel rendering.
     Can be overridden in inheriting classes.
-*/
+ */
     virtual void ClearScreen();
     // virtual void Point(DrawPoint_t *pstPoint_);
     virtual void Line(DrawLine_t *pstLine_);

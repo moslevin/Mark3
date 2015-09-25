@@ -340,7 +340,7 @@ private:
     uint16_t m_u16Count;         //!< Count of items in the mailbox
     volatile uint16_t m_u16Free; //!< Current number of free slots in the mailbox
 
-    uint16_t m_uselementSize;   //!< Size of the objects tracked in this mailbox
+    uint16_t m_uselementSize;    //!< Size of the objects tracked in this mailbox
     const void *m_pvBuffer;      //!< Pointer to the data-buffer managed by this mailbox
 
     Semaphore m_clRecvSem;       //!< Counting semaphore used to synchronize threads on the object

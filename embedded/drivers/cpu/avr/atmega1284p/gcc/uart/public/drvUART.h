@@ -10,14 +10,14 @@
 
 Copyright (c) 2012-2015 Funkenstein Software Consulting, all rights reserved.
 See license.txt for more information
-===========================================================================*/
+=========================================================================== */
 /*!
 
     \file   drvUART.h
 
     \brief  Atmega328p serial port driver
 
-*/
+ */
 #ifndef __DRVUART_H_
 #define __DRVUART_H_
 
@@ -67,7 +67,7 @@ typedef void (*UART_Rx_Callback_t)( ATMegaUART *pclUART );
 //---------------------------------------------------------------------------
 /*!
     Implements a UART driver on the ATMega328p
-*/
+ */
 class ATMegaUART : public Driver
 {
     
@@ -76,44 +76,44 @@ public:
     virtual uint8_t Open();
     virtual uint8_t Close();
     virtual uint16_t Read( uint16_t u16Bytes_, 
-                                 uint8_t *pu8Data_ );
+                           uint8_t *pu8Data_ );
                                  
     virtual uint16_t Write( uint16_t u16Bytes_, 
-                                  uint8_t *pu8Data_ );
+                            uint8_t *pu8Data_ );
                                   
     virtual uint16_t Control( uint16_t u16Event_, 
-                                    void *pvIn_, 
-                                    uint16_t u16SizeIn_, 
-                                    void *pvOut_, 
-                                    uint16_t u16SizeOut_ );
+                              void *pvIn_, 
+                              uint16_t u16SizeIn_, 
+                              void *pvOut_, 
+                              uint16_t u16SizeOut_ );
     /*!
-        Called from the transmit complete ISR - implements a 
-        callback/transmit state-machine
-    */                        
+     *  Called from the transmit complete ISR - implements a 
+     *  callback/transmit state-machine
+     */                        
     void TxISR();
     
     /*!
-        Called from the receive-complete ISR - implements a 
-        callback/receive state-machine
-    */
+     *  Called from the receive-complete ISR - implements a 
+     *  callback/receive state-machine
+     */
     void RxISR();
     
     /*!         
-        \fn uint8_t *GetRxBuffer(void)
-        
-        Return a pointer to the receive buffer for this UART.
-
-        \return pointer to the driver's RX buffer
-    */
+     *  \fn uint8_t *GetRxBuffer(void)
+     *  
+     *  Return a pointer to the receive buffer for this UART.
+     *
+     *  \return pointer to the driver's RX buffer
+     */
     uint8_t *GetRxBuffer(void) { return m_pu8RxBuffer; }
     
     /*! 
-        \fn uint8_t *GetTxBuffer(void)
-        
-        Return a pointer to the transmit buffer for this UART.
-        
-        \return pointer to the driver's TX buffer
-    */
+     *  \fn uint8_t *GetTxBuffer(void)
+     *  
+     *  Return a pointer to the transmit buffer for this UART.
+     *  
+     *  \return pointer to the driver's TX buffer
+     */
     uint8_t *GetTxBuffer(void) { return m_pu8TxBuffer; }
 
 private:
@@ -129,17 +129,17 @@ private:
     uint8_t m_u8RxHead;                //!< Head index
     uint8_t m_u8RxTail;                //!< Tail index
     
-    bool m_bRxOverflow;              //!< Receive buffer overflow
-    bool m_bEcho;                    //!< Whether or not to echo RX characters to TX
+    bool m_bRxOverflow;                //!< Receive buffer overflow
+    bool m_bEcho;                      //!< Whether or not to echo RX characters to TX
     
     uint8_t *m_pu8RxBuffer;            //!< Receive buffer pointer
     uint8_t *m_pu8TxBuffer;            //!< Transmit buffer pointer
     
-    uint32_t m_u32BaudRate;              //!< Baud rate
+    uint32_t m_u32BaudRate;            //!< Baud rate
     
     uint8_t m_u8RxEscape;              //!< Escape character
     
-    UART_Rx_Callback_t    pfCallback;    //!< Callback function on matched escape character        
+    UART_Rx_Callback_t    pfCallback;  //!< Callback function on matched escape character        
 };
 
 #endif 

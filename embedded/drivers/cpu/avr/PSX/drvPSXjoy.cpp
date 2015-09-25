@@ -243,8 +243,8 @@ void PSXJoystick::Decode(uint8_t u8JoyMode_, uint8_t *pu8Data_)
     m_stCurrentReport.bButton10 = ((pu8Data_[0] & 0x02) == 0);    //L3
     m_stCurrentReport.bButton9  = ((pu8Data_[0] & 0x04) == 0);    //R3
     m_stCurrentReport.bStart    = ((pu8Data_[0] & 0x08) == 0);
-    m_stCurrentReport.bUp         = ((pu8Data_[0] & 0x10) == 0);
-    m_stCurrentReport.bRight     = ((pu8Data_[0] & 0x20) == 0);
+    m_stCurrentReport.bUp       = ((pu8Data_[0] & 0x10) == 0);
+    m_stCurrentReport.bRight    = ((pu8Data_[0] & 0x20) == 0);
     m_stCurrentReport.bDown     = ((pu8Data_[0] & 0x40) == 0);
     m_stCurrentReport.bLeft     = ((pu8Data_[0] & 0x80) == 0);
     
@@ -253,12 +253,12 @@ void PSXJoystick::Decode(uint8_t u8JoyMode_, uint8_t *pu8Data_)
     {
         case PSX_TYPE_DIGITAL:    // Digital Mode
         {            
-            m_stCurrentReport.bButton6  = ((pu8Data_[1] & 0x01) == 0);    //L1
-            m_stCurrentReport.bButton5  = ((pu8Data_[1] & 0x02) == 0);    //R1
-            m_stCurrentReport.bButton8  = ((pu8Data_[1] & 0x04) == 0);    //L2
-            m_stCurrentReport.bButton7  = ((pu8Data_[1] & 0x08) == 0);    //R2
-            m_stCurrentReport.bButton1  = ((pu8Data_[1] & 0x10) == 0);    //Triangle
-            m_stCurrentReport.bButton2  = ((pu8Data_[1] & 0x20) == 0);    //O
+            m_stCurrentReport.bButton6  = ((pu8Data_[1] & 0x01) == 0);  //L1
+            m_stCurrentReport.bButton5  = ((pu8Data_[1] & 0x02) == 0);  //R1
+            m_stCurrentReport.bButton8  = ((pu8Data_[1] & 0x04) == 0);  //L2
+            m_stCurrentReport.bButton7  = ((pu8Data_[1] & 0x08) == 0);  //R2
+            m_stCurrentReport.bButton1  = ((pu8Data_[1] & 0x10) == 0);  //Triangle
+            m_stCurrentReport.bButton2  = ((pu8Data_[1] & 0x20) == 0);  //O
             m_stCurrentReport.bButton3  = ((pu8Data_[1] & 0x40) == 0);  //X
             m_stCurrentReport.bButton4  = ((pu8Data_[1] & 0x80) == 0);  //[]
         }
@@ -284,12 +284,12 @@ void PSXJoystick::Decode(uint8_t u8JoyMode_, uint8_t *pu8Data_)
             
         case PSX_TYPE_ANALOG_RED:    // Analog Red Mode
         {
-            m_stCurrentReport.bButton6  = ((pu8Data_[1] & 0x01) == 0);    //L1
-            m_stCurrentReport.bButton5  = ((pu8Data_[1] & 0x02) == 0);    //R1
-            m_stCurrentReport.bButton8  = ((pu8Data_[1] & 0x04) == 0);    //L2
-            m_stCurrentReport.bButton7  = ((pu8Data_[1] & 0x08) == 0);    //R2
-            m_stCurrentReport.bButton1  = ((pu8Data_[1] & 0x10) == 0);    //Triangle
-            m_stCurrentReport.bButton2  = ((pu8Data_[1] & 0x20) == 0);    //O
+            m_stCurrentReport.bButton6  = ((pu8Data_[1] & 0x01) == 0);  //L1
+            m_stCurrentReport.bButton5  = ((pu8Data_[1] & 0x02) == 0);  //R1
+            m_stCurrentReport.bButton8  = ((pu8Data_[1] & 0x04) == 0);  //L2
+            m_stCurrentReport.bButton7  = ((pu8Data_[1] & 0x08) == 0);  //R2
+            m_stCurrentReport.bButton1  = ((pu8Data_[1] & 0x10) == 0);  //Triangle
+            m_stCurrentReport.bButton2  = ((pu8Data_[1] & 0x20) == 0);  //O
             m_stCurrentReport.bButton3  = ((pu8Data_[1] & 0x40) == 0);  //X
             m_stCurrentReport.bButton4  = ((pu8Data_[1] & 0x80) == 0);  //[]
         

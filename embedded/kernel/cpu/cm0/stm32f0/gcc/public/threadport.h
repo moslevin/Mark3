@@ -10,13 +10,13 @@
 
 Copyright (c) 2012-2015 Funkenstein Software Consulting, all rights reserved.
 See license.txt for more information
-===========================================================================*/
+=========================================================================== */
 /*!
 
     \file   threadport.h    
 
     \brief  Cortex M-0 Multithreading support.
-*/
+ */
 
 #ifndef __THREADPORT_H_
 #define __THREADPORT_H_
@@ -75,31 +75,31 @@ extern volatile uint32_t g_ulCriticalCount;
 //------------------------------------------------------------------------
 class Thread;
 /*!
-    Class defining the architecture specific functions required by the 
-    kernel.  
-    
-    This is limited (at this point) to a function to start the scheduler,
-    and a function to initialize the default stack-frame for a thread.
-*/
+ *  Class defining the architecture specific functions required by the 
+ *  kernel.  
+ *  
+ *  This is limited (at this point) to a function to start the scheduler,
+ *  and a function to initialize the default stack-frame for a thread.
+ */
 class ThreadPort
 {
 public:
     /*!        
-        \fn void StartThreads()
-       
-        Function to start the scheduler, initial threads, etc.
-    */
+     *  \fn void StartThreads()
+     * 
+     *  Function to start the scheduler, initial threads, etc.
+     */
     static void StartThreads();
     friend class Thread;
 private:
 
     /*!
-        \fn void InitStack(Thread *pstThread_)
-        
-        Initialize the thread's stack.
-        
-        \param pstThread_ Pointer to the thread to initialize
-    */
+     *  \fn void InitStack(Thread *pstThread_)
+     *  
+     *  Initialize the thread's stack.
+     *  
+     *  \param pstThread_ Pointer to the thread to initialize
+     */
     static void InitStack(Thread *pstThread_);
 };
 

@@ -10,12 +10,12 @@
 
 Copyright (c) 2012-2015 Funkenstein Software Consulting, all rights reserved.
 See license.txt for more information
-===========================================================================*/
+=========================================================================== */
 /*!
     \file kernelprofile.h
     
     \brief Profiling timer hardware interface
-*/
+ */
 
 #include "kerneltypes.h"
 #include "mark3cfg.h"
@@ -32,48 +32,48 @@ See license.txt for more information
 
 //---------------------------------------------------------------------------
 /*!
-    System profiling timer interface
-*/
+ *   System profiling timer interface
+ */
 class Profiler
 {
 public:
     /*!
-        \fn void Init()
-        
-        Initialize the global system profiler.  Must be 
-        called prior to use.
-    */
+     *  \fn void Init()
+     *  
+     *  Initialize the global system profiler.  Must be 
+     *  called prior to use.
+     */
     static void Init();
     
     /*!
-        \fn void Start()
-        
-        Start the global profiling timer service.
-    */
+     *  \fn void Start()
+     *  
+     *  Start the global profiling timer service.
+     */
     static void Start();
     
     /*!
-        \fn void Stop()
-        
-        Stop the global profiling timer service
-    */
+     *  \fn void Stop()
+     *  
+     *  Stop the global profiling timer service
+     */
     static void Stop();
     
     /*!
-        \fn uint16_t Read()
-        
-        Read the current tick count in the timer.  
-    */
+     *  \fn uint16_t Read()
+     *  
+     *  Read the current tick count in the timer.  
+     */
     static uint16_t Read();
     
     /*!
-        Process the profiling counters from ISR.
-    */
+     *  Process the profiling counters from ISR.
+     */
     static void Process();
     
     /*!
-        Return the current timer epoch    
-    */
+     *  Return the current timer epoch    
+     */
     static uint32_t GetEpoch(){ return m_u32Epoch; }
 private:
 

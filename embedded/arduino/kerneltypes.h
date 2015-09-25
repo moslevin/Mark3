@@ -16,23 +16,11 @@ See license.txt for more information
     \brief Basic data type primatives used throughout the OS
 */
 
-#include <stdint.h>
-
 #ifndef __KERNELTYPES_H__
 #define __KERNELTYPES_H__
 
-#if defined(bool)
-    #define bool            bool    
-#else
-    #define bool            uint8_t
-#endif
-    
-#define char          char
-#define uint8_t         uint8_t
-#define uint16_t        uint16_t
-#define int16_t         int16_t
-#define uint32_t         uint32_t
-#define int32_t          int32_t
+#include <stdint.h>
+#include <stdbool.h>
 
 #define K_ADDR      uint16_t
 #define K_WORD      uint8_t
@@ -50,6 +38,5 @@ typedef enum
     EVENT_FLAG_MODES,
     EVENT_FLAG_PENDING_UNBLOCK
 } EventFlagOperation_t;
-
 
 #endif
