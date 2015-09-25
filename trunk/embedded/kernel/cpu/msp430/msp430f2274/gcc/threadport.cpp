@@ -149,8 +149,8 @@ void ThreadPort::StartThreads()
 
 //---------------------------------------------------------------------------
 /*!
-
-*/
+ * Kernel Context-switch SWI
+ */
 //---------------------------------------------------------------------------
 void __attribute__ ((__interrupt__(PORT1_VECTOR), naked))
 isr_KernelSWI(void)
@@ -163,8 +163,8 @@ isr_KernelSWI(void)
 
 //---------------------------------------------------------------------------
 /*!
-
-*/
+ * Kernel Timer Interrupt
+ */
 //---------------------------------------------------------------------------
 void __attribute__ ((__interrupt__(TIMERA0_VECTOR)))
 isr_KernelTIMER(void)

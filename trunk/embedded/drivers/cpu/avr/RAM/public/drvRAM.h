@@ -27,7 +27,7 @@ See license.txt for more information
 typedef enum
 {
     EEPROM_CMD_SEEK = 0x80,    //!< Set the current EEPROM address, used for read/write
-    EEPROM_CMD_SET_BUFFER    //!< Set the data buffer and buffer size before use
+    EEPROM_CMD_SET_BUFFER      //!< Set the data buffer and buffer size before use
 } EEPROM_Cmd_t;
 
 class RAMDriver;
@@ -39,16 +39,16 @@ public:
     virtual uint8_t Open();
     virtual uint8_t Close();
     virtual uint16_t Read( uint16_t u16Bytes_,
-        uint8_t *pu8Data_ );
+                           uint8_t *pu8Data_ );
         
     virtual uint16_t Write( uint16_t u16Bytes_,
-        uint8_t *pu8Data_ );
+                            uint8_t *pu8Data_ );
         
     virtual uint16_t Control( uint16_t u16Event_,
-        void *pvIn_,
-        uint16_t u16SizeIn_,
-        void *pvOut_,
-        uint16_t u16SizeOut_ );
+                              void *pvIn_,
+                              uint16_t u16SizeIn_,
+                              void *pvOut_,
+                              uint16_t u16SizeOut_ );
 private:
     uint16_t m_u16Address;        
     uint16_t m_u16Size;

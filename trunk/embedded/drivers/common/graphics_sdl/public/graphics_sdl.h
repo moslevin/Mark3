@@ -30,8 +30,8 @@ See license.txt for more information
 
 //---------------------------------------------------------------------------
 /*!
-    Graphics driver implementation based on the generic GraphicsDriver class
-*/
+ *  Graphics driver implementation based on the generic GraphicsDriver class
+ */
 class GraphicsSDL : public GraphicsDriver
 {
 public:

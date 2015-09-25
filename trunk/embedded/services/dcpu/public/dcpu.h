@@ -10,11 +10,11 @@
 
 Copyright (c) 2012-2015 Funkenstein Software Consulting, all rights reserved.
 See license.txt for more information
-===========================================================================*/
+=========================================================================== */
 /*!
     \file dcpu.h
     \brief DCPU-16 emulator
-*/
+ */
 #ifndef __DCPU_H__
 #define __DCPU_H__
 
@@ -41,7 +41,7 @@ See license.txt for more information
         - xxxxx  = all 0's - (basic opcode)
         - ooooo  = an extended opcode
         - aaaaaa = the argument
-*/
+ */
 
 //---------------------------------------------------------------------------
 // Macros to access individual elements from within an opcode
@@ -67,8 +67,8 @@ See license.txt for more information
 
 //---------------------------------------------------------------------------
 /*!
-    Structure defining the DCPU hardware registers
-*/
+ *  Structure defining the DCPU hardware registers
+ */
 typedef struct
 {
     union
@@ -94,8 +94,8 @@ typedef struct
 
 //---------------------------------------------------------------------------
 /*!
-    DCPU Basic Opcodes
-*/
+ *  DCPU Basic Opcodes
+ */
 typedef enum
 {
     OP_NON_BASIC = 0,    //!< special instruction - see below
@@ -134,8 +134,8 @@ typedef enum
 
 //---------------------------------------------------------------------------
 /*!
-    DCPU Extended opcodes.
-*/
+ *  DCPU Extended opcodes.
+ */
 typedef enum
 {
     OP_EX_RESERVED = 0,
@@ -175,7 +175,7 @@ typedef enum
 //---------------------------------------------------------------------------
 /*!
     Argument formats
-*/
+ */
 
 typedef enum
 {
@@ -255,36 +255,36 @@ class DCPU;    // Forward declaration - required by the plugin class
 
 //---------------------------------------------------------------------------
 /*!
-    Callback function type used to implement HWI for VM->Host communications
-*/
+ *  Callback function type used to implement HWI for VM->Host communications
+ */
 typedef void (*DCPU_Callback)(DCPU *pclVM_);
 
 //---------------------------------------------------------------------------
 /*!
-    Class used to provide the hardware device abstraction between the DCPU-16
-    emulator/VM and the host system.
-*/
+ *  Class used to provide the hardware device abstraction between the DCPU-16
+ *  emulator/VM and the host system.
+ */
 class DCPUPlugin : public LinkListNode
 {
 public:    
     /*!
-        \fn void Init(  uint16_t u16DeviceNumber_, 
-                        uint32_t u32HWID_, 
-                        uint32_t u32VID_, 
-                        uint16_t u16Version_, 
-                        DCPU_Callback pfCallback_)
-
-        Initialize the DCPU plugin extension.  Plug
-        
-        \param u16DeviceNumber_ Unique plugin device enumeration associated 
-                                with this plugin
-        \param u32HWID_ Unique hardware type identifier 
-        \param u32VID_  Hardware Vendor ID
-        \param u16Version_ Version identifier for this hardware piece
-        \param pfCallback_ Callback function invoked from the VM when a HWI 
-                            instruction is called on this device.  This is
-                            essentially the interrupt handler.                
-    */
+     *  \fn void Init(  uint16_t u16DeviceNumber_, 
+     *                  uint32_t u32HWID_, 
+     *                  uint32_t u32VID_, 
+     *                  uint16_t u16Version_, 
+     *                  DCPU_Callback pfCallback_)
+     *
+     *  Initialize the DCPU plugin extension.  Plug
+     *  
+     *  \param u16DeviceNumber_ Unique plugin device enumeration associated 
+     *                          with this plugin
+     *  \param u32HWID_ Unique hardware type identifier 
+     *  \param u32VID_  Hardware Vendor ID
+     *  \param u16Version_ Version identifier for this hardware piece
+     *  \param pfCallback_ Callback function invoked from the VM when a HWI 
+     *                      instruction is called on this device.  This is
+     *                      essentially the interrupt handler.                
+     */
     void Init(    uint16_t u16DeviceNumber_, 
                 uint32_t u32HWID_, 
                 uint32_t u32VID_, 
@@ -300,15 +300,15 @@ public:
     }
 
     /*!
-        \fn void Enumerate( DCPU_Registers *pstRegisters_ )
-        
-        Perform hardware enumeration to the target VM specified by the 
-        register set.
-        
-        \param pstRegisters_ Pointer to the VM's CPU registers, which are
-                             filled with enumeration data.  See the DCPU
-                             1.7 spec for details.
-    */
+     *  \fn void Enumerate( DCPU_Registers *pstRegisters_ )
+     *  
+     *  Perform hardware enumeration to the target VM specified by the 
+     *  register set.
+     *  
+     *  \param pstRegisters_ Pointer to the VM's CPU registers, which are
+     *                       filled with enumeration data.  See the DCPU
+     *                       1.7 spec for details.
+     */
     void Enumerate( DCPU_Registers *pstRegisters_ )
     {
         pstRegisters_->A = (uint16_t)(m_u32HWID & 0x0000FFFF);
@@ -319,24 +319,24 @@ public:
     }
 
     /*!
-        \fn void Interrupt( DCPU *pclCPU_ )
-        
-        Execute the hardware callback
-        
-        \param pclCPU_ Pointer to the VM triggering the interrupt
-    */
+     *  \fn void Interrupt( DCPU *pclCPU_ )
+     *  
+     *  Execute the hardware callback
+     *  
+     *  \param pclCPU_ Pointer to the VM triggering the interrupt
+     */
     void Interrupt( DCPU *pclCPU_ )
     {
         m_pfCallback(pclCPU_);        
     }
 
     /*!
-        \fn uint16_t GetDeviceNumber()
-        
-        Return the device number associated with this plugin
-        
-        \return Device number associated with this plugin        
-    */
+     *  \fn uint16_t GetDeviceNumber()
+     *  
+     *  Return the device number associated with this plugin
+     *  
+     *  \return Device number associated with this plugin        
+     */
     uint16_t GetDeviceNumber()
     {
         return m_u16DeviceNumber;        
@@ -354,59 +354,59 @@ private:
 
 //---------------------------------------------------------------------------
 /*!
-    DCPU emulator, used for running code out of EEPROM, RAM, or
-    other memory interfaces than FLASH.
-*/
+ *  DCPU emulator, used for running code out of EEPROM, RAM, or
+ *  other memory interfaces than FLASH.
+ */
 class DCPU
 {
 public:
     /*!        
-        \fn void Init( uint16_t *pu16RAM_, uint16_t u16RAMSize_, const uint16_t *pu16ROM_, uint16_t u16ROMSize_ )
-        
-        Initialize the CPU emulator, specifying which driver supplies the
-        memory read interface.  This allows u16 to abstract RAM/FLASH/EEPROM
-        or other memory.  The VM must be initialized before any other method in 
-        the class is run.
-        
-        \param pu16RAM_ Pointer to the CPU's RAM buffer
-        \param u16RAMSize_ Size of the RAM Buffer in words
-        \param pu16ROM_ Pointer to the CPU's ROM buffer
-        \param u16ROMSize_ Size of the ROM buffer in words
-    */    
+     *  \fn void Init( uint16_t *pu16RAM_, uint16_t u16RAMSize_, const uint16_t *pu16ROM_, uint16_t u16ROMSize_ )
+     *  
+     *  Initialize the CPU emulator, specifying which driver supplies the
+     *  memory read interface.  This allows u16 to abstract RAM/FLASH/EEPROM
+     *  or other memory.  The VM must be initialized before any other method in 
+     *  the class is run.
+     *  
+     *  \param pu16RAM_ Pointer to the CPU's RAM buffer
+     *  \param u16RAMSize_ Size of the RAM Buffer in words
+     *  \param pu16ROM_ Pointer to the CPU's ROM buffer
+     *  \param u16ROMSize_ Size of the ROM buffer in words
+     */    
     void Init( uint16_t *pu16RAM_, uint16_t u16RAMSize_, const uint16_t *pu16ROM_, uint16_t u16ROMSize_ );
     
     /*!
-        \fn void RunOpcode()
-        
-        Execute the next opcode at the VM's current PC.
-    */
+     *  \fn void RunOpcode()
+     *  
+     *  Execute the next opcode at the VM's current PC.
+     */
     void RunOpcode();
         
     /*!
-        \fn DCPU_Registers *GetRegisters()
-                
-        Return a pointer to the VM's register structure
-        
-        \return Pointer to the VM's register structure
-    */
+     *  \fn DCPU_Registers *GetRegisters()
+     *          
+     *  Return a pointer to the VM's register structure
+     *  
+     *  \return Pointer to the VM's register structure
+     */
     DCPU_Registers *GetRegisters() { return &m_stRegisters; } 
     
     /*!
-        \fn void SendInterrupt( uint16_t u16Message_ );
-                
-        Send an interrupt to the CPU with a given message
-        
-        \param u16Message_ Message to send along with the interrupt
-    */
+     *  \fn void SendInterrupt( uint16_t u16Message_ );
+     *          
+     *  Send an interrupt to the CPU with a given message
+     *  
+     *  \param u16Message_ Message to send along with the interrupt
+     */
     void SendInterrupt( uint16_t u16Message_ );
 
     /*!
-        \fn void AddPlugin( DCPUPlugin *pclPlugin_ )
-        
-        Add a plugin to the CPU
-        
-        \param pclPlugin_ Pointer to the plugin object to add
-    */
+     *  \fn void AddPlugin( DCPUPlugin *pclPlugin_ )
+     *  
+     *  Add a plugin to the CPU
+     *  
+     *  \param pclPlugin_ Pointer to the plugin object to add
+     */
     void AddPlugin( DCPUPlugin *pclPlugin_ );
     
 private:    
@@ -452,20 +452,20 @@ private:
     void HWI();
     
     /*!
-        \fn uint8_t GetOperand( uint8_t uCopType_, uint16_t **pu16Result_ );
-        
-        \param uCopType_ The operand type, as specified in DCPU_Argument
-        \param pu16Result_ Pointer to the pointer that corresponds to the 
-                        argument's location in memory.
-    */
+     *  \fn uint8_t GetOperand( uint8_t uCopType_, uint16_t **pu16Result_ );
+     *  
+     *  \param uCopType_ The operand type, as specified in DCPU_Argument
+     *  \param pu16Result_ Pointer to the pointer that corresponds to the 
+     *                  argument's location in memory.
+     */
     uint8_t GetOperand( uint8_t uCopType_, uint16_t **pu16Result_ );
     
     
     /*!
-        \fn void ProcessInterruptQueue()
-        
-        Process the next interrupt in the Queue.        
-    */
+     *  \fn void ProcessInterruptQueue()
+     *  
+     *  Process the next interrupt in the Queue.        
+     */
     void ProcessInterruptQueue();
         
     DCPU_Registers m_stRegisters;    //!< CPU Register file

@@ -10,13 +10,13 @@
 
 Copyright (c) 2012-2015 Funkenstein Software Consulting, all rights reserved.
 See license.txt for more information
-===========================================================================*/
+=========================================================================== */
 /*!
 
     \file   threadport.h    
 
     \brief  ATMega644 Multithreading support.
-*/
+ */
 
 #ifndef __THREADPORT_H_
 #define __THREADPORT_H_
@@ -35,7 +35,7 @@ See license.txt for more information
 //! Stack pointer define
 #define SPH_        0x3E
 #define SPL_        0x3D
-#define RAMPZ_        0x3B
+#define RAMPZ_      0x3B
 
 //---------------------------------------------------------------------------
 //! Macro to find the top of a stack given its size and top address
@@ -158,31 +158,31 @@ _SFR_IO8(SR_) = x;\
 //------------------------------------------------------------------------
 class Thread;
 /*!
-    Class defining the architecture specific functions required by the 
-    kernel.  
-    
-    This is limited (at this point) to a function to start the scheduler,
-    and a function to initialize the default stack-frame for a thread.
-*/
+ *  Class defining the architecture specific functions required by the 
+ *  kernel.  
+ *  
+ *  This is limited (at this point) to a function to start the scheduler,
+ *  and a function to initialize the default stack-frame for a thread.
+ */
 class ThreadPort
 {
 public:
     /*!        
-        \fn void StartThreads()
-       
-        Function to start the scheduler, initial threads, etc.
-    */
+     *  \fn void StartThreads()
+     * 
+     *  Function to start the scheduler, initial threads, etc.
+     */
     static void StartThreads();
     friend class Thread;
 private:
 
     /*!
-        \fn void InitStack(Thread *pstThread_)
-        
-        Initialize the thread's stack.
-        
-        \param pstThread_ Pointer to the thread to initialize
-    */
+     *  \fn void InitStack(Thread *pstThread_)
+     *  
+     *  Initialize the thread's stack.
+     *  
+     *  \param pstThread_ Pointer to the thread to initialize
+     */
     static void InitStack(Thread *pstThread_);
 };
 

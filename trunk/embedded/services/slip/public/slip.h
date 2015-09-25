@@ -40,11 +40,11 @@ See license.txt for more information
 //---------------------------------------------------------------------------
 typedef enum
 {
-    SLIP_CHANNEL_TERMINAL = 0,    //!< ASCII text mode terminal
-    SLIP_CHANNEL_UNISCOPE,        //!< Uniscope VM command channel
+    SLIP_CHANNEL_TERMINAL = 0,   //!< ASCII text mode terminal
+    SLIP_CHANNEL_UNISCOPE,       //!< Uniscope VM command channel
     SLIP_CHANNEL_NVM,            //!< Non-volatile memory configuration
-    SLIP_CHANNEL_RESET,            //!< Channel used to reset the device...
-    SLIP_CHANNEL_GRAPHICS,      //!< Encoded drawing commands    
+    SLIP_CHANNEL_RESET,          //!< Channel used to reset the device...
+    SLIP_CHANNEL_GRAPHICS,       //!< Encoded drawing commands    
     SLIP_CHANNEL_HID,            //!< HID commands
 //---    
     SLIP_CHANNEL_COUNT

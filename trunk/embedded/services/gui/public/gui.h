@@ -47,15 +47,15 @@ See license.txt for more information
     key is in the "up" or "down" contact state.
 */
 #define EVENT_STATE_UP            (0)
-#define EVENT_STATE_DOWN        (1)
+#define EVENT_STATE_DOWN          (1)
 
 //---------------------------------------------------------------------------
 #define MAX_WINDOW_CONTROLS        (251) //!< Maximum number of controls per window
 
-#define TARGET_ID_BROADCAST_Z   (252) //!< Broadcast event to all controls in the topmost window
+#define TARGET_ID_BROADCAST_Z      (252) //!< Broadcast event to all controls in the topmost window
 #define TARGET_ID_BROADCAST        (253) //!< Send event to all controls in all windows
 #define TARGET_ID_FOCUS            (254) //!< Send event to the in-focus control
-#define TARGET_ID_HIGH_Z        (255) //!< Send event to the highest Z-order control
+#define TARGET_ID_HIGH_Z           (255) //!< Send event to the highest Z-order control
 
 
 //---------------------------------------------------------------------------
@@ -64,13 +64,13 @@ See license.txt for more information
 */
 typedef enum
 {
-    EVENT_TYPE_KEYBOARD,    //!< Keypress event
+    EVENT_TYPE_KEYBOARD,     //!< Keypress event
     EVENT_TYPE_MOUSE,        //!< Mouse movement or click event
     EVENT_TYPE_TOUCH,        //!< Touchscreen movement event
-    EVENT_TYPE_JOYSTICK,    //!< Joystick event
+    EVENT_TYPE_JOYSTICK,     //!< Joystick event
     EVENT_TYPE_TIMER,        //!< Timer event
 //---
-    EVENT_TYPE_COUNT        //!< Count of different event types supported
+    EVENT_TYPE_COUNT         //!< Count of different event types supported
 } GuiEventType_t;
 
 //---------------------------------------------------------------------------
@@ -82,15 +82,15 @@ typedef struct
     uint8_t u8KeyCode;        //!< 8-bit value representing a keyboard scan code
     union
     {
-        uint8_t u8Flags;    //!< Flags indicating modifiers to the event
+        uint8_t u8Flags;     //!< Flags indicating modifiers to the event
         struct
         {
             unsigned int bKeyState:1;        //!< Key is being pressed or released
-            unsigned int bShiftState:1;        //!< Whether or not shift is pressed
-            unsigned int bCtrlState:1;        //!< Whether or not CTRL is pressed
+            unsigned int bShiftState:1;      //!< Whether or not shift is pressed
+            unsigned int bCtrlState:1;       //!< Whether or not CTRL is pressed
             unsigned int bAltState:1;        //!< Whether or not ALT it pressed
             unsigned int bWinState:1;        //!< Whether or not the Window/Clover key is pressed
-            unsigned int bFnState:1;        //!< Whether or not a special function key is pressed
+            unsigned int bFnState:1;         //!< Whether or not a special function key is pressed
         };
     };
 } KeyEvent_t;
@@ -109,10 +109,10 @@ typedef struct
         uint8_t u8Flags;    //!< modifier flags for the event
         struct
         {
-            unsigned int bLeftState:1;        //!< State of the left mouse button
+            unsigned int bLeftState:1;         //!< State of the left mouse button
             unsigned int bRightState:1;        //!< State of the right mouse button
-            unsigned int bMiddleState:1;    //!< State of the middle mouse button
-            unsigned int bScrollUp:1;        //!< State of the scroll wheel (UP)
+            unsigned int bMiddleState:1;       //!< State of the middle mouse button
+            unsigned int bScrollUp:1;          //!< State of the scroll wheel (UP)
             unsigned int bScrollDown:1;        //!< State of the scroll wheel (DOWN)
         };
     };
@@ -145,13 +145,13 @@ typedef struct
 {
     union
     {
-        uint16_t u16RawData;                //!< Raw joystick data
+        uint16_t u16RawData;            //!< Raw joystick data
         struct
         {
-            unsigned int bUp:1;            //!< D-pad UP state
-            unsigned int bDown:1;        //!< D-pad DOWN state
-            unsigned int bLeft:1;        //!< D-pad LEFT state
-            unsigned int bRight:1;        //!< D-pad RIGHT state
+            unsigned int bUp:1;         //!< D-pad UP state
+            unsigned int bDown:1;       //!< D-pad DOWN state
+            unsigned int bLeft:1;       //!< D-pad LEFT state
+            unsigned int bRight:1;      //!< D-pad RIGHT state
 
             unsigned int bButton1:1;    //!< Joystick Button1 state
             unsigned int bButton2:1;    //!< Joystick Button2 state
@@ -162,21 +162,21 @@ typedef struct
             unsigned int bButton7:1;    //!< Joystick Button7 state
             unsigned int bButton8:1;    //!< Joystick Button8 state
             unsigned int bButton9:1;    //!< Joystick Button9 state
-            unsigned int bButton10:1;    //!< Joystick Button10 state
+            unsigned int bButton10:1;   //!< Joystick Button10 state
 
-            unsigned int bSelect:1;        //!< Start button state
-            unsigned int bStart:1;        //!< Select button state
+            unsigned int bSelect:1;     //!< Start button state
+            unsigned int bStart:1;      //!< Select button state
         };
     } Current;
     union
     {
-        uint16_t u16RawData;                //!< Raw joystick data
+        uint16_t u16RawData;            //!< Raw joystick data
         struct
         {
-            unsigned int bUp:1;            //!< D-pad UP state
-            unsigned int bDown:1;        //!< D-pad DOWN state
-            unsigned int bLeft:1;        //!< D-pad LEFT state
-            unsigned int bRight:1;        //!< D-pad RIGHT state
+            unsigned int bUp:1;         //!< D-pad UP state
+            unsigned int bDown:1;       //!< D-pad DOWN state
+            unsigned int bLeft:1;       //!< D-pad LEFT state
+            unsigned int bRight:1;      //!< D-pad RIGHT state
 
             unsigned int bButton1:1;    //!< Joystick Button1 state
             unsigned int bButton2:1;    //!< Joystick Button2 state
@@ -187,10 +187,10 @@ typedef struct
             unsigned int bButton7:1;    //!< Joystick Button7 state
             unsigned int bButton8:1;    //!< Joystick Button8 state
             unsigned int bButton9:1;    //!< Joystick Button9 state
-            unsigned int bButton10:1;    //!< Joystick Button10 state
+            unsigned int bButton10:1;   //!< Joystick Button10 state
 
-            unsigned int bSelect:1;        //!< Start button state
-            unsigned int bStart:1;        //!< Select button state
+            unsigned int bSelect:1;     //!< Start button state
+            unsigned int bStart:1;      //!< Select button state
         };
     } Previous;
 } JoystickEvent_t;
@@ -215,7 +215,7 @@ typedef struct
     uint8_t u8TargetID;         //!< Control index that this event is targeted towards
     union
     {
-        KeyEvent_t        stKey;      //!< Keyboard data
+        KeyEvent_t        stKey;     //!< Keyboard data
         MouseEvent_t    stMouse;    //!< Mouse data
         TouchEvent_t    stTouch;    //!< Touchscreen data
         JoystickEvent_t stJoystick; //!< Joystick data

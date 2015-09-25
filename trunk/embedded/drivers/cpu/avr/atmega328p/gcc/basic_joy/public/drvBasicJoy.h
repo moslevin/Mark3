@@ -10,7 +10,7 @@
 
 Copyright (c) 2012 Funkenstein Software Consulting, all rights reserved.
 See license.txt for more information
-===========================================================================*/
+=========================================================================== */
 /*!
     \file drvBasicJoy.h
     
@@ -20,7 +20,7 @@ See license.txt for more information
     order to provide consisency with other drivers in the system, and 
     allow for other joystick drivers to be swapped out without impacting the
     user code.
-*/
+ */
 
 #ifndef __DRV_BASICJOY_H_
 #define __DRV_BASICJOY_H_
@@ -46,9 +46,9 @@ See license.txt for more information
 #define JOY_FIRE			(0x08)
 
 /*!
-    Class implementing a playstation joystick driver, using the Mark3 Joystick
-    Driver API.
-*/
+ *  Class implementing a playstation joystick driver, using the Mark3 Joystick
+ *  Driver API.
+ */
 class BasicJoystick : public JoystickDriver
 {
 public:
@@ -66,12 +66,12 @@ public:
 private:
   
     /*!
-        \fn void ScanInternal();
-        
-        Function that is invoked to scan the joystick from Driver::Control().
-        This starts the process of querying the joystick interface on the 
-        hardware ports, and updates the current report structure if successful.
-    */
+     *  \fn void ScanInternal();
+     *  
+     *  Function that is invoked to scan the joystick from Driver::Control().
+     *  This starts the process of querying the joystick interface on the 
+     *  hardware ports, and updates the current report structure if successful.
+     */
     void ScanInternal();
     
 

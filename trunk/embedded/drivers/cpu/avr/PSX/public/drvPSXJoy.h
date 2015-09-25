@@ -10,7 +10,7 @@
 
 Copyright (c) 2012-2015 Funkenstein Software Consulting, all rights reserved.
 See license.txt for more information
-===========================================================================*/
+=========================================================================== */
 /*!
     \file drvPSXJoy.h
     
@@ -20,7 +20,7 @@ See license.txt for more information
     order to provide consisency with other drivers in the system, and 
     allow for other joystick drivers to be swapped out without impacting the
     user code.
-*/
+ */
 
 #ifndef __DRV_PSXJOY_IN_H_
 #define __DRV_PSXJOY_IN_H_
@@ -63,9 +63,9 @@ See license.txt for more information
 #define PSX_SIZE_ANALOG          (6)
 
 /*!
-    Class implementing a playstation joystick driver, using the Mark3 Joystick
-    Driver API.
-*/
+ *  Class implementing a playstation joystick driver, using the Mark3 Joystick
+ *  Driver API.
+ */
 class PSXJoystick : public JoystickDriver
 {
 public:
@@ -82,49 +82,49 @@ public:
     
 private:
     /*!
-        \fn void JoyDelay(uint16_t u16Time_)
-        
-        Simple delay implementation.  Not instrumented.  This is a
-        busy-waiting delay.
-    */
+     *   \fn void JoyDelay(uint16_t u16Time_)
+     *   
+     *   Simple delay implementation.  Not instrumented.  This is a
+     *   busy-waiting delay.
+     */
     void JoyDelay(uint16_t u16Time_);
     
     /*!
-        \fn void ScanInternal();
-        
-        Function that is invoked to scan the joystick from Driver::Control().
-        This starts the process of querying the joystick interface on the 
-        hardware ports, and updates the current report structure if successful.
-    */
+     *  \fn void ScanInternal();
+     *  
+     *  Function that is invoked to scan the joystick from Driver::Control().
+     *  This starts the process of querying the joystick interface on the 
+     *  hardware ports, and updates the current report structure if successful.
+     */
     void ScanInternal();
     
     /*!
-        \fn uint8_t CmdByte(uint8_t u8Cmd_, bool bWaitAck_)
-        
-        Function that scans a single byte from the joystick interface.
-        
-        \param u8Cmd_ Command to issue on the interface
-        \param bWaitAck_ Wait for acknowledgment on the interface if
-               true, false to not wait.
-    */
+     *  \fn uint8_t CmdByte(uint8_t u8Cmd_, bool bWaitAck_)
+     *  
+     *  Function that scans a single byte from the joystick interface.
+     *  
+     *  \param u8Cmd_ Command to issue on the interface
+     *  \param bWaitAck_ Wait for acknowledgment on the interface if
+     *         true, false to not wait.
+     */
     uint8_t CmdByte(uint8_t u8Cmd_, bool bWaitAck_);
     
     /*!
-        \fn void Decode(uint8_t u8JoyMode_, uint8_t *pu8Data_)
-        
-        Decode the bytestream read from the joystick interafce, and 
-        convert it into the regular joystick report format.
-        
-        \param u8JoyMode_ Joystick mode byte, read from the HW interface
-        \param pu8Data_ Pointer to the bytestream containing the joystick
-                        state information, relative to the joystick mode.
-    */
+     *  \fn void Decode(uint8_t u8JoyMode_, uint8_t *pu8Data_)
+     *  
+     *  Decode the bytestream read from the joystick interafce, and 
+     *  convert it into the regular joystick report format.
+     *  
+     *  \param u8JoyMode_ Joystick mode byte, read from the HW interface
+     *  \param pu8Data_ Pointer to the bytestream containing the joystick
+     *                  state information, relative to the joystick mode.
+     */
     void Decode(uint8_t u8JoyMode_, uint8_t *pu8Data_);
     
     uint8_t m_u8Type;        //!< Joystick type identifier
-    bool m_bConnected;    //!< Whether or not the joystick is connected
+    bool m_bConnected;       //!< Whether or not the joystick is connected
     
-    uint8_t m_aucRaw[6];    //!< Raw Joystick Data
+    uint8_t m_aucRaw[6];     //!< Raw Joystick Data
 };
 
 #endif 

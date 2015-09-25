@@ -10,7 +10,7 @@
 
 Copyright (c) 2012-2015 Funkenstein Software Consulting, all rights reserved.
 See license.txt for more information
-===========================================================================*/
+=========================================================================== */
 /*!
 
     \file   message.h    
@@ -75,7 +75,7 @@ See license.txt for more information
             }
         }
     \endcode
-*/
+ */
 
 #ifndef __MESSAGE_H__
 #define __MESSAGE_H__
@@ -89,172 +89,172 @@ See license.txt for more information
 #if KERNEL_USE_MESSAGE
 
 #if KERNEL_USE_TIMEOUTS
-	#include "timerlist.h"
+    #include "timerlist.h"
 #endif
 
 //---------------------------------------------------------------------------
 /*!
-    Class to provide message-based IPC services in the kernel.
-*/
+ *  Class to provide message-based IPC services in the kernel.
+ */
 class Message : public LinkListNode
 {
 public:
     /*!
-        \fn void Init();
-        
-        Initialize the data and code in the message.
-    */
+     *  \fn void Init();
+     *  
+     *  Initialize the data and code in the message.
+     */
     void Init() { ClearNode(); m_pvData = NULL; m_u16Code = 0; }
     
     /*!
-        \fn void SetData( void *pvData_ )
-        
-        Set the data pointer for the message before transmission.
-        
-        \param pvData_ Pointer to the data object to send in the message
-    */
-	void SetData( void *pvData_ ) { m_pvData = pvData_; }
+     *  \fn void SetData( void *pvData_ )
+     *  
+     *  Set the data pointer for the message before transmission.
+     *  
+     *  \param pvData_ Pointer to the data object to send in the message
+     */
+    void SetData( void *pvData_ ) { m_pvData = pvData_; }
     
     /*!
-        \fn void *GetData()
-        
-        Get the data pointer stored in the message upon receipt
-        
-        \return Pointer to the data set in the message object
-    */
-	void *GetData() { return m_pvData; }
-	
+     *  \fn void *GetData()
+     *  
+     *  Get the data pointer stored in the message upon receipt
+     *  
+     *  \return Pointer to the data set in the message object
+     */
+    void *GetData() { return m_pvData; }
+    
     /*!
-        \fn SetCode( uint16_t u16Code_ )
-        
-        Set the code in the message before transmission
-        
-        \param u16Code_ Data code to set in the object
-    */
+     *  \fn SetCode( uint16_t u16Code_ )
+     *  
+     *  Set the code in the message before transmission
+     *  
+     *  \param u16Code_ Data code to set in the object
+     */
     void SetCode( uint16_t u16Code_ ) { m_u16Code = u16Code_; }
-	
+    
     /*!
-        \fn uint16_t GetCode()
-        
-        Return the code set in the message upon receipt
-        
-        \return user code set in the object
-    */
+     *  \fn uint16_t GetCode()
+     *  
+     *  Return the code set in the message upon receipt
+     *  
+     *  \return user code set in the object
+     */
     uint16_t GetCode() { return m_u16Code; }
 private:
 
     //! Pointer to the message data
-	void *m_pvData;
+    void *m_pvData;
     
     //! Message code, providing context for the message
-	uint16_t m_u16Code;
+    uint16_t m_u16Code;
 };
 
 //---------------------------------------------------------------------------
 /*!
-    Implements a list of message objects shared between all threads.
-*/
+ *  Implements a list of message objects shared between all threads.
+ */
 class GlobalMessagePool
 {
 public:
     /*!
-        \fn void Init()
-        
-        Initialize the message queue prior to use
-    */
-	static void Init();	
+     *  \fn void Init()
+     *  
+     *  Initialize the message queue prior to use
+     */
+    static void Init(); 
     
     /*!
-        \fn void Push( Message *pclMessage_ )
-        
-        Return a previously-claimed message object back to the global queue.
-        used once the message has been processed by a receiver.
-        
-        \param pclMessage_ Pointer to the Message object to return back to 
-               the global queue
-    */
-	static void Push( Message *pclMessage_ );
+     *  \fn void Push( Message *pclMessage_ )
+     *  
+     *  Return a previously-claimed message object back to the global queue.
+     *  used once the message has been processed by a receiver.
+     *  
+     *  \param pclMessage_ Pointer to the Message object to return back to 
+     *         the global queue
+     */
+    static void Push( Message *pclMessage_ );
     
     /*!
-        \fn Message *Pop()
-        
-        Pop a message from the global queue, returning it to the user to be 
-        popu32ated before sending by a transmitter.
-        
-        \return Pointer to a Message object
-    */
-	static Message *Pop();
+     *  \fn Message *Pop()
+     *  
+     *  Pop a message from the global queue, returning it to the user to be 
+     *  popu32ated before sending by a transmitter.
+     *  
+     *  \return Pointer to a Message object
+     */
+    static Message *Pop();
 
 private:
     //! Array of message objects that make up the message pool
     static Message m_aclMessagePool[GLOBAL_MESSAGE_POOL_SIZE];
     
     //! Linked list used to manage the Message objects
-	static DoubleLinkList m_clList;
+    static DoubleLinkList m_clList;
 };
 
 //---------------------------------------------------------------------------
 /*!
-    List of messages, used as the channel for sending and receiving messages
-    between threads.
-*/
+ *  List of messages, used as the channel for sending and receiving messages
+ *  between threads.
+ */
 class MessageQueue
 {
 public:
     /*!
-        \fn void Init()
-        
-        Initialize the message queue prior to use.
-    */
-	void Init();		
+     *  \fn void Init()
+     *  
+     *  Initialize the message queue prior to use.
+     */
+    void Init();        
     
     /*!        
-        \fn Message *Receive()
-        
-        Receive a message from the message queue.  If the message queue
-        is empty, the thread will block until a message is available.
-        
-        \return Pointer to a message object at the head of the queue
-    */
-	Message *Receive();
+     *  \fn Message *Receive()
+     *  
+     *  Receive a message from the message queue.  If the message queue
+     *  is empty, the thread will block until a message is available.
+     *  
+     *  \return Pointer to a message object at the head of the queue
+     */
+    Message *Receive();
     
 #if KERNEL_USE_TIMEOUTS
-	/*!        
-        \fn Message *Receive( uint32_t u32WaitTimeMS_ )
-        
-        Receive a message from the message queue.  If the message queue
-        is empty, the thread will block until a message is available for
-		the duration specified.  If no message arrives within that 
-		duration, the call will return with NULL.
-        
-		\param u32WaitTimeMS_ The amount of time in ms to wait for a 
-				message before timing out and unblocking the waiting thread.
-		
-        \return Pointer to a message object at the head of the queue or
-				NULL on timeout.
-    */
-	Message *Receive( uint32_t u32TimeWaitMS_ );
-#endif	
-	
-    /*!
-        \fn void Send( Message *pclSrc_ )
-        
-        Send a message object into this message queue.  Will un-block the 
-        first waiting thread blocked on this queue if that occurs.
-        
-        \param pclSrc_ Pointer to the message object to add to the queue
-    */
-	void Send( Message *pclSrc_ );
+    /*!        
+     *  \fn Message *Receive( uint32_t u32WaitTimeMS_ )
+     *  
+     *  Receive a message from the message queue.  If the message queue
+     *  is empty, the thread will block until a message is available for
+     *  the duration specified.  If no message arrives within that 
+     *  duration, the call will return with NULL.
+     *  
+     *  \param u32WaitTimeMS_ The amount of time in ms to wait for a 
+     *          message before timing out and unblocking the waiting thread.
+     *  
+     *  \return Pointer to a message object at the head of the queue or
+     *          NULL on timeout.
+     */
+    Message *Receive( uint32_t u32TimeWaitMS_ );
+#endif  
     
-	
-	/*!
-		\fn uint16_t GetCount()
-		
-		Return the number of messages pending in the "receive" queue.
-		
-		\return Count of pending messages in the queue.
-	*/
-	uint16_t GetCount();
+    /*!
+     *  \fn void Send( Message *pclSrc_ )
+     *  
+     *  Send a message object into this message queue.  Will un-block the 
+     *  first waiting thread blocked on this queue if that occurs.
+     *  
+     *  \param pclSrc_ Pointer to the message object to add to the queue
+     */
+    void Send( Message *pclSrc_ );
+    
+    
+    /*!
+     *  \fn uint16_t GetCount()
+     *  
+     *  Return the number of messages pending in the "receive" queue.
+     *  
+     *  \return Count of pending messages in the queue.
+     */
+    uint16_t GetCount();
 private:
 
 #if KERNEL_USE_TIMEOUTS
@@ -280,10 +280,10 @@ private:
 #endif
 
     //! Counting semaphore used to manage thread blocking
-	Semaphore m_clSemaphore;
+    Semaphore m_clSemaphore;
     
     //! List object used to store messages
-	DoubleLinkList m_clLinkList;
+    DoubleLinkList m_clLinkList;
 };
 
 #endif //KERNEL_USE_MESSAGE

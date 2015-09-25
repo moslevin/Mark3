@@ -10,11 +10,11 @@
 
 Copyright (c) 2012-2015 Funkenstein Software Consulting, all rights reserved.
 See license.txt for more information
-===========================================================================*/
+=========================================================================== */
 /*!
     \file shiftreg.cpp
     \brief Shift register functionality to allow for efficient I/O expansion
-*/
+ */
 #include "kerneltypes.h"
 #include "driver.h"
 
@@ -32,27 +32,27 @@ typedef enum
 
 //---------------------------------------------------------------------------
 /*!
-    Shift register driver class
-*/
+ *  Shift register driver class
+ */
 class ShiftDriver : public Driver
 {
 public:
 /*!
-    Driver functions
-*/
+ *  Driver functions
+ */
     virtual void Init() {}    //Stubbed
     virtual uint8_t Open();
     virtual uint8_t Close();
     virtual uint16_t Read( uint16_t u16Bytes_, 
-                                 uint8_t *pu8Data_) {return u16Bytes_;}    //Stubbed
+                           uint8_t *pu8Data_) {return u16Bytes_;}    //Stubbed
     virtual uint16_t Write( uint16_t u16Bytes_, 
-                                  uint8_t *pu8Data_);
-    
+                            uint8_t *pu8Data_);
+
     virtual uint16_t Control( uint16_t u16Event_, 
-                                    void *pvDataIn_, 
-                                    uint16_t u16SizeIn_, 
-                                    void *pvDataOut_, 
-                                    uint16_t u16SizeOut_ );
+                              void *pvDataIn_, 
+                              uint16_t u16SizeIn_, 
+                              void *pvDataOut_, 
+                              uint16_t u16SizeOut_ );
     
     void SetClock( volatile uint8_t *pu8Port_, uint8_t u8Bit_ );
     void SetData( volatile uint8_t *pu8Port_, uint8_t u8Bit_ );

@@ -10,7 +10,7 @@
 
 Copyright (c) 2012-2015 Funkenstein Software Consulting, all rights reserved.
 See license.txt for more information
-===========================================================================*/
+=========================================================================== */
 /*!
 
     \file   driver.h    
@@ -100,7 +100,7 @@ See license.txt for more information
     pclSPI->Write(12, "Hello World!");
     \endcode
     
-*/
+ */
 
 #include "kerneltypes.h"
 #include "mark3cfg.h"
@@ -115,96 +115,96 @@ See license.txt for more information
 class DriverList;
 //---------------------------------------------------------------------------
 /*!
-    Base device-driver class used in hardware abstraction.  All other device
-    drivers inherit from this class
-*/
+ *  Base device-driver class used in hardware abstraction.  All other device
+ *  drivers inherit from this class
+ */
 class Driver : public LinkListNode
 {
 public:
     /*!
-        \fn void Init()
-        
-        Initialize a driver, must be called prior to use
-    */
+     *  \fn void Init()
+     *  
+     *  Initialize a driver, must be called prior to use
+     */
     virtual void Init() = 0;
     
     /*!
-        \fn uint8_t Open()
-        
-        Open a device driver prior to use.
-        
-        \return Driver-specific return code, 0 = OK, non-0 = error
-    */
+     *  \fn uint8_t Open()
+     *  
+     *  Open a device driver prior to use.
+     *  
+     *  \return Driver-specific return code, 0 = OK, non-0 = error
+     */
     virtual uint8_t Open() = 0;
     
     /*!
-        \fn uint8_t Close()
-        
-        Close a previously-opened device driver.
-                
-        \return Driver-specific return code, 0 = OK, non-0 = error
-    */
+     *  \fn uint8_t Close()
+     *  
+     *  Close a previously-opened device driver.
+     *          
+     *  \return Driver-specific return code, 0 = OK, non-0 = error
+     */
     virtual uint8_t Close() = 0;
     
     /*!
-        \fn uint16_t Read( uint16_t u16Bytes_, 
-                                 uint8_t *pu8Data_)            
-
-        Read a specified number of bytes from the device into a specific buffer.
-        Depending on the driver-specific implementation, this may be a number
-        less than the requested number of bytes read, indicating that there
-        there was less input than desired, or that as a result of buffering,
-        the data may not be available.
-        
-        \param u16Bytes_ Number of bytes to read (<= size of the buffer)
-        \param pu8Data_ Pointer to a data buffer receiving the read data
-        
-        \return Number of bytes actually read
-    */
+     *  \fn uint16_t Read( uint16_t u16Bytes_, 
+     *                           uint8_t *pu8Data_)            
+     *
+     *  Read a specified number of bytes from the device into a specific buffer.
+     *  Depending on the driver-specific implementation, this may be a number
+     *  less than the requested number of bytes read, indicating that there
+     *  there was less input than desired, or that as a result of buffering,
+     *  the data may not be available.
+     *  
+     *  \param u16Bytes_ Number of bytes to read (<= size of the buffer)
+     *  \param pu8Data_ Pointer to a data buffer receiving the read data
+     *  
+     *  \return Number of bytes actually read
+     */
     virtual uint16_t Read( uint16_t u16Bytes_, 
                                  uint8_t *pu8Data_) = 0;
                                  
     /*!
-        \fn uint16_t Write( uint16_t u16Bytes_, 
-                                  uint8_t *pu8Data_)            
-
-        Write a payload of data of a given length to the device.
-        Depending on the implementation of the driver, the amount of data
-        written to the device may be less than the requested number of 
-        bytes.  A result less than the requested size may indicate that
-        the device buffer is full, indicating that the user must retry
-        the write at a later point with the remaining data.
-                                  
-        \param u16Bytes_ Number of bytes to write (<= size of the buffer)
-        \param pu8Data_ Pointer to a data buffer containing the data to write
-
-        \return Number of bytes actually written
-    */
+     *  \fn uint16_t Write( uint16_t u16Bytes_, 
+     *                            uint8_t *pu8Data_)            
+     *
+     *  Write a payload of data of a given length to the device.
+     *  Depending on the implementation of the driver, the amount of data
+     *  written to the device may be less than the requested number of 
+     *  bytes.  A result less than the requested size may indicate that
+     *  the device buffer is full, indicating that the user must retry
+     *  the write at a later point with the remaining data.
+     *                            
+     *  \param u16Bytes_ Number of bytes to write (<= size of the buffer)
+     *  \param pu8Data_ Pointer to a data buffer containing the data to write
+     *
+     *  \return Number of bytes actually written
+     */
     virtual uint16_t Write( uint16_t u16Bytes_, 
                                   uint8_t *pu8Data_) = 0;
 
     /*!        
-        \fn uint16_t Control( uint16_t u16Event_, 
-                                    void *pvDataIn_, 
-                                    uint16_t u16SizeIn_, 
-                                    void *pvDataOut_, 
-                                    uint16_t u16SizeOut_ )    
-    
-        This is the main entry-point for device-specific io and control
-        operations.  This is used for implementing all "side-channel"
-        communications with a device, and any device-specific IO
-        operations that do not conform to the typical POSIX 
-        read/write paradigm.  use of this funciton is analagous to 
-        the non-POSIX (yet still common) devctl() or ioctl().
-        
-        \param u16Event_ Code defining the io event (driver-specific)
-        \param pvDataIn_ Pointer to the intput data 
-        \param u16SizeIn_ Size of the input data (in bytes)
-        \param pvDataOut_ Pointer to the output data
-        \param u16SizeOut_ Size of the output data (in bytes)
-    
-        \return Driver-specific return code, 0 = OK, non-0 = error
-    */
+     *  \fn uint16_t Control( uint16_t u16Event_, 
+     *                              void *pvDataIn_, 
+     *                              uint16_t u16SizeIn_, 
+     *                              void *pvDataOut_, 
+     *                              uint16_t u16SizeOut_ )    
+     *
+     *  This is the main entry-point for device-specific io and control
+     *  operations.  This is used for implementing all "side-channel"
+     *  communications with a device, and any device-specific IO
+     *  operations that do not conform to the typical POSIX 
+     *  read/write paradigm.  use of this funciton is analagous to 
+     *  the non-POSIX (yet still common) devctl() or ioctl().
+     *  
+     *  \param u16Event_ Code defining the io event (driver-specific)
+     *  \param pvDataIn_ Pointer to the intput data 
+     *  \param u16SizeIn_ Size of the input data (in bytes)
+     *  \param pvDataOut_ Pointer to the output data
+     *  \param u16SizeOut_ Size of the output data (in bytes)
+     *
+     *  \return Driver-specific return code, 0 = OK, non-0 = error
+     */
     virtual uint16_t Control( uint16_t u16Event_, 
                                     void *pvDataIn_, 
                                     uint16_t u16SizeIn_, 
@@ -212,22 +212,22 @@ public:
                                     uint16_t u16SizeOut_ ) = 0;
     
     /*!
-        \fn void SetName( const char *pcName_ )
-        
-        Set the path for the driver.  Name must be set prior to 
-        access (since driver access is name-based).
-        
-        \param pcName_ String constant containing the device path
-    */
+     *  \fn void SetName( const char *pcName_ )
+     *  
+     *  Set the path for the driver.  Name must be set prior to 
+     *  access (since driver access is name-based).
+     *  
+     *  \param pcName_ String constant containing the device path
+     */
     void SetName( const char *pcName_ ) { m_pcPath = pcName_; }
     
     /*!
-        \fn const char *GetPath()
-    
-        Returns a string containing the device path.
-        
-        \return pcName_ Return the string constant representing the device path
-    */
+     *  \fn const char *GetPath()
+     *
+     *  Returns a string containing the device path.
+     *  
+     *  \return pcName_ Return the string constant representing the device path
+     */
     const char *GetPath() { return m_pcPath; }
     
 private:
@@ -238,47 +238,47 @@ private:
 
 //---------------------------------------------------------------------------
 /*!
-    List of Driver objects used to keep track of all device drivers in the 
-    system.  By default, the list contains a single entity, "/dev/null".
-*/
+ *  List of Driver objects used to keep track of all device drivers in the 
+ *  system.  By default, the list contains a single entity, "/dev/null".
+ */
 class DriverList
 {
 public:
     /*!
-        \fn void Init()        
-       
-        Initialize the list of drivers.  Must be called prior to using the 
-        device driver library.
-    */
+     *  \fn void Init()        
+     * 
+     *  Initialize the list of drivers.  Must be called prior to using the 
+     *  device driver library.
+     */
         
     static void Init();
     
     /*!
-        \fn Add( Driver *pclDriver_ )
-        
-        Add a Driver object to the managed global driver-list.
-        
-        \param pclDriver_ pointer to the driver object to add to the global
-               driver list.
-    */
+     *  \fn Add( Driver *pclDriver_ )
+     *  
+     *  Add a Driver object to the managed global driver-list.
+     *  
+     *  \param pclDriver_ pointer to the driver object to add to the global
+     *         driver list.
+     */
     static void Add( Driver *pclDriver_ ) { m_clDriverList.Add(pclDriver_); }
     
     /*!
-        \fn void Remove( Driver *pclDriver_ )
-        
-        Remove a driver from the global driver list.
-        
-        \param pclDriver_ Pointer to the driver object to remove from the 
-               global table
-    */
+     *  \fn void Remove( Driver *pclDriver_ )
+     *  
+     *  Remove a driver from the global driver list.
+     *  
+     *  \param pclDriver_ Pointer to the driver object to remove from the 
+     *         global table
+     */
     static void Remove( Driver *pclDriver_ ) { m_clDriverList.Remove(pclDriver_); }
     
     /*!
-        Look-up a driver in the global driver-list based on its path.  In the
-        event that the driver is not found in the list, a pointer to the
-        default "/dev/null" object is returned.  In this way, unimplemented drivers
-        are automatically stubbed out.
-    */
+     *  Look-up a driver in the global driver-list based on its path.  In the
+     *  event that the driver is not found in the list, a pointer to the
+     *  default "/dev/null" object is returned.  In this way, unimplemented drivers
+     *  are automatically stubbed out.
+     */
     static Driver *FindByPath( const char *m_pcPath );
 
 private:

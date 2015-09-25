@@ -125,19 +125,19 @@ See license.txt for more information
 //---------------------------------------------------------------------------
 // Primary colors
 //---------------------------------------------------------------------------
-#define COLOR_RED        RGB_COLOR(MAX_RED,         0,                 0)
-#define COLOR_BLUE        RGB_COLOR(0,             0,                 MAX_BLUE)
-#define COLOR_PURPLE    RGB_COLOR(MAX_RED,         0,                 MAX_BLUE)
-#define COLOR_GREEN        RGB_COLOR(0,             MAX_GREEN,        0)
-#define COLOR_YELLOW    RGB_COLOR(MAX_RED,        MAX_GREEN,        0)
-#define COLOR_ORANGE    RGB_COLOR(MAX_RED,        MAX_GREEN/2,    0)
-#define COLOR_WHITE        RGB_COLOR(MAX_RED,        MAX_GREEN,        MAX_BLUE)
-#define COLOR_BLACK        RGB_COLOR(0,            0,                0)
-#define COLOR_GREY75    RGB_COLOR(MAX_RED*3/4,    MAX_GREEN*3/4,    MAX_BLUE*3/4)
-#define COLOR_GREY62    RGB_COLOR(MAX_RED*5/8,    MAX_GREEN*5/8,    MAX_BLUE*5/8)
-#define COLOR_GREY50    RGB_COLOR(MAX_RED/2,    MAX_GREEN/2,    MAX_BLUE/2)
-#define COLOR_GREY37    RGB_COLOR(MAX_RED*3/8,    MAX_GREEN*3/8,    MAX_BLUE*3/8)
-#define COLOR_GREY25    RGB_COLOR(MAX_RED/4,    MAX_GREEN/4,    MAX_BLUE/4)
+#define COLOR_RED       RGB_COLOR(MAX_RED,       0,              0)
+#define COLOR_BLUE      RGB_COLOR(0,             0,              MAX_BLUE)
+#define COLOR_PURPLE    RGB_COLOR(MAX_RED,       0,              MAX_BLUE)
+#define COLOR_GREEN     RGB_COLOR(0,             MAX_GREEN,      0)
+#define COLOR_YELLOW    RGB_COLOR(MAX_RED,       MAX_GREEN,      0)
+#define COLOR_ORANGE    RGB_COLOR(MAX_RED,       MAX_GREEN/2,    0)
+#define COLOR_WHITE     RGB_COLOR(MAX_RED,       MAX_GREEN,      MAX_BLUE)
+#define COLOR_BLACK     RGB_COLOR(0,             0,              0)
+#define COLOR_GREY75    RGB_COLOR(MAX_RED*3/4,   MAX_GREEN*3/4,  MAX_BLUE*3/4)
+#define COLOR_GREY62    RGB_COLOR(MAX_RED*5/8,   MAX_GREEN*5/8,  MAX_BLUE*5/8)
+#define COLOR_GREY50    RGB_COLOR(MAX_RED/2,     MAX_GREEN/2,    MAX_BLUE/2)
+#define COLOR_GREY37    RGB_COLOR(MAX_RED*3/8,   MAX_GREEN*3/8,  MAX_BLUE*3/8)
+#define COLOR_GREY25    RGB_COLOR(MAX_RED/4,     MAX_GREEN/4,    MAX_BLUE/4)
 
 
 #endif

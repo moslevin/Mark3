@@ -10,7 +10,7 @@
 
 Copyright (c) 2012-2015 Funkenstein Software Consulting, all rights reserved.
 See license.txt for more information
-===========================================================================*/
+=========================================================================== */
 /*!
 
     \file   blocking.h    
@@ -42,7 +42,7 @@ See license.txt for more information
     critical sections are used judiciously, otherwise asynchronous events 
     like timers and interrupts could result in non-deterministic and often
     catastrophic behavior.
-*/
+ */
 
 #ifndef __BLOCKING_H__
 #define __BLOCKING_H__
@@ -58,52 +58,52 @@ See license.txt for more information
 
 //---------------------------------------------------------------------------
 /*!
-    Class implementing thread-blocking primatives.  used for implementing 
-    things like semaphores, mutexes, message queues, or anything else that
-    could cause a thread to suspend execution on some external stimulus.
-*/
+ *  Class implementing thread-blocking primatives.  used for implementing 
+ *  things like semaphores, mutexes, message queues, or anything else that
+ *  could cause a thread to suspend execution on some external stimulus.
+ */
 class BlockingObject
 {
 protected:
     /*!
-        \fn void Block(Thread *pclThread_);
-        
-        \param pclThread_ Pointer to the thread object that will be blocked.
-        
-        Blocks a thread on this object.  This is the fundamental operation 
-        performed by any sort of blocking operation in the operating system.
-        All semaphores/mutexes/sleeping/messaging/etc ends up going through
-        the blocking code at some point as part of the code that manages a
-        transition from an "active" or "waiting" thread to a "blocked" thread.
-        
-        The steps involved in blocking a thread (which are performed in the 
-        function itself) are as follows;
-        
-        1)  Remove the specified thread from the current owner's list (which
-            is likely one of the scheduler's thread lists)
-        2)  Add the thread to this object's thread list
-        3)  Setting the thread's "current thread-list" point to reference this
-            object's threadlist.
-    */
+     *  \fn void Block(Thread *pclThread_);
+     *  
+     *  \param pclThread_ Pointer to the thread object that will be blocked.
+     *  
+     *  Blocks a thread on this object.  This is the fundamental operation 
+     *  performed by any sort of blocking operation in the operating system.
+     *  All semaphores/mutexes/sleeping/messaging/etc ends up going through
+     *  the blocking code at some point as part of the code that manages a
+     *  transition from an "active" or "waiting" thread to a "blocked" thread.
+     *  
+     *  The steps involved in blocking a thread (which are performed in the 
+     *  function itself) are as follows;
+     *  
+     *  1)  Remove the specified thread from the current owner's list (which
+     *      is likely one of the scheduler's thread lists)
+     *  2)  Add the thread to this object's thread list
+     *  3)  Setting the thread's "current thread-list" point to reference this
+     *      object's threadlist.
+     */
     void Block(Thread *pclThread_ );
     
     /*!
-        \fn void UnBlock(Thread *pclThread_)
-        
-        \param pclThread_ Pointer to the thread to unblock.
-        
-        Unblock a thread that is already blocked on this object, returning it
-        to the "ready" state by performing the following steps:
-        
-        1)  Removing the thread from this object's threadlist
-        2)  Restoring the thread to its "original" owner's list
-    */
+     *  \fn void UnBlock(Thread *pclThread_)
+     *  
+     *  \param pclThread_ Pointer to the thread to unblock.
+     *  
+     *  Unblock a thread that is already blocked on this object, returning it
+     *  to the "ready" state by performing the following steps:
+     *  
+     *  1)  Removing the thread from this object's threadlist
+     *  2)  Restoring the thread to its "original" owner's list
+     */
     void UnBlock(Thread *pclThread_);
 
     /*!
-        ThreadList which is used to hold the list of threads blocked
-        on a given object.
-    */
+     *  ThreadList which is used to hold the list of threads blocked
+     *  on a given object.
+     */
     ThreadList m_clBlockList;
 };
 

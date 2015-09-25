@@ -10,7 +10,7 @@
 
 Copyright (c) 2012-2015 Funkenstein Software Consulting, all rights reserved.
 See license.txt for more information
-===========================================================================*/
+=========================================================================== */
 /*!
 
     \file   ll.h    
@@ -38,7 +38,7 @@ See license.txt for more information
     These functions are very efficient as well, allowing for very deterministic
     behavior in our code.
     
-*/
+ */
 
 #ifndef __LL_H__
 #define __LL_H__
@@ -55,16 +55,16 @@ See license.txt for more information
     Forward declarations of linked-list classes that are used further on in
     this module.  This allows u16 to also specify which friend classes can 
     access the LinkListNode type.
-*/
+ */
 class LinkList;
 class DoubleLinkList;
 class CircularLinkList;
 
 //---------------------------------------------------------------------------
 /*!
-    Basic linked-list node data structure.  This data is managed by the 
-    linked-list class types, and can be used transparently between them.
-*/
+ *  Basic linked-list node data structure.  This data is managed by the 
+ *  linked-list class types, and can be used transparently between them.
+ */
 class LinkListNode
 {
 protected:
@@ -75,29 +75,29 @@ protected:
     LinkListNode() { }
 
     /*!
-        \fn void ClearNode()
-        
-        Initialize the linked list node, clearing its next and previous node.
-    */
+     *  \fn void ClearNode()
+     *  
+     *  Initialize the linked list node, clearing its next and previous node.
+     */
     void ClearNode();
 
 public:
     /*!
-        \fn LinkListNode *GetNext();
-        
-        Returns a pointer to the next node in the list.
-        
-        \return a pointer to the next node in the list.
-    */
+     *  \fn LinkListNode *GetNext();
+     *  
+     *  Returns a pointer to the next node in the list.
+     *  
+     *  \return a pointer to the next node in the list.
+     */
     LinkListNode *GetNext(void) { return next; }
     
     /*!
-        \fn LinkListNode *GetPrev();
-        
-        Returns a pointer to the previous node in the list.
-        
-        \return a pointer to the previous node in the list.
-    */
+     *  \fn LinkListNode *GetPrev();
+     *  
+     *  Returns a pointer to the previous node in the list.
+     *  
+     *  \return a pointer to the previous node in the list.
+     */
     LinkListNode *GetPrev(void) { return prev; }
 		
     friend class LinkList;  
@@ -107,8 +107,8 @@ public:
 
 //---------------------------------------------------------------------------
 /*!
-    Abstract-data-type from which all other linked-lists are derived
-*/
+ *  Abstract-data-type from which all other linked-lists are derived
+ */
 class LinkList
 {  
 protected:
@@ -117,119 +117,119 @@ protected:
     
 public:
     /*!
-        Clear the linked list.
-    */
+     *  Clear the linked list.
+     */
     void Init(){ m_pstHead = NULL; m_pstTail = NULL; }
     
     /*!
-        \fn void Add(LinkListNode *node_)
-        
-        Add the linked list node to this linked list
-        
-        \param node_ Pointer to the node to add
-    */
+     *  \fn void Add(LinkListNode *node_)
+     *  
+     *  Add the linked list node to this linked list
+     *  
+     *  \param node_ Pointer to the node to add
+     */
     virtual void Add(LinkListNode *node_) = 0;
     
     /*!
-        \fn void Remove(LinkListNode *node_)
-        
-        Add the linked list node to this linked list
-        
-        \param node_ Pointer to the node to remove
-    */
+     *  \fn void Remove(LinkListNode *node_)
+     *  
+     *  Add the linked list node to this linked list
+     *  
+     *  \param node_ Pointer to the node to remove
+     */
     virtual void Remove(LinkListNode *node_) = 0;
     
     /*!
-        \fn LinkListNode *GetHead()
-        
-        Get the head node in the linked list
-        
-        \return Pointer to the head node in the list
-    */
+     *  \fn LinkListNode *GetHead()
+     *  
+     *  Get the head node in the linked list
+     *  
+     *  \return Pointer to the head node in the list
+     */
     LinkListNode *GetHead() { return m_pstHead; }
     
 	/*!
-        \fn LinkListNode *GetTail()
-        
-        Get the tail node of the linked list
-        
-        \return Pointer to the tail node in the list
-    */
+     *  \fn LinkListNode *GetTail()
+     *  
+     *  Get the tail node of the linked list
+     *  
+     *  \return Pointer to the tail node in the list
+     */
     LinkListNode *GetTail() { return m_pstTail; }
 };
 
 //---------------------------------------------------------------------------
 /*!
-    Doubly-linked-list data type, inherited from the base LinkList type.
-*/
+ *  Doubly-linked-list data type, inherited from the base LinkList type.
+ */
 class DoubleLinkList : public LinkList
 {
 public:
     /*!
-        Default constructor - initializes the head/tail nodes to NULL
-    */
+     *  Default constructor - initializes the head/tail nodes to NULL
+     */
     DoubleLinkList() { m_pstHead = NULL; m_pstTail = NULL; }
     
     /*!
-        \fn void Add(LinkListNode *node_)
-        
-        Add the linked list node to this linked list
-        
-        \param node_ Pointer to the node to add
-    */
+     *  \fn void Add(LinkListNode *node_)
+     *  
+     *  Add the linked list node to this linked list
+     *  
+     *  \param node_ Pointer to the node to add
+     */
     virtual void Add(LinkListNode *node_);
     
     /*!
-        \fn void Remove(LinkListNode *node_)
-        
-        Add the linked list node to this linked list
-        
-        \param node_ Pointer to the node to remove
-    */
+     *  \fn void Remove(LinkListNode *node_)
+     *  
+     *  Add the linked list node to this linked list
+     *  
+     *  \param node_ Pointer to the node to remove
+     */
     virtual void Remove(LinkListNode *node_);
 };
 
 //---------------------------------------------------------------------------
 /*!
     Circular-linked-list data type, inherited from the base LinkList type.
-*/
+ */
 class CircularLinkList : public LinkList
 {
 public:
     CircularLinkList() { m_pstHead = NULL; m_pstTail = NULL; }
     
     /*!
-        \fn void Add(LinkListNode *node_)
-        
-        Add the linked list node to this linked list
-        
-        \param node_ Pointer to the node to add
-    */
+     *  \fn void Add(LinkListNode *node_)
+     *  
+     *  Add the linked list node to this linked list
+     *  
+     *  \param node_ Pointer to the node to add
+     */
     virtual void Add(LinkListNode *node_);
     
     /*!
-        \fn void Remove(LinkListNode *node_)
-        
-        Add the linked list node to this linked list
-        
-        \param node_ Pointer to the node to remove
-    */    
+     *  \fn void Remove(LinkListNode *node_)
+     *  
+     *  Add the linked list node to this linked list
+     *  
+     *  \param node_ Pointer to the node to remove
+     */    
     virtual void Remove(LinkListNode *node_);
 
     /*!
-        \fn void PivotForward()
-        
-        Pivot the head of the circularly linked list forward
-        ( Head = Head->next, Tail = Tail->next )                
-    */
+     *  \fn void PivotForward()
+     *  
+     *  Pivot the head of the circularly linked list forward
+     *  ( Head = Head->next, Tail = Tail->next )                
+     */
     void PivotForward();
     
     /*!
-        \fn void PivotBackward()
-        
-        Pivot the head of the circularly linked list backward
-        ( Head = Head->prev, Tail = Tail->prev )        
-    */
+     *  \fn void PivotBackward()
+     *  
+     *  Pivot the head of the circularly linked list backward
+     *  ( Head = Head->prev, Tail = Tail->prev )        
+     */
     void PivotBackward();
 };
 

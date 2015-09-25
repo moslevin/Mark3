@@ -180,9 +180,9 @@ public:
 
 //---------------------------------------------------------
 /*
-    Raster operations defined using per-pixel rendering.
-    Can be overridden in inheriting classes.
-*/
+ *   Raster operations defined using per-pixel rendering.
+ *   Can be overridden in inheriting classes.
+ */
     virtual void ClearScreen();
     virtual void Point(DrawPoint_t *pstPoint_);
     virtual void Line(DrawLine_t *pstLine_);
