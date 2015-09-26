@@ -10,11 +10,11 @@
 
 Copyright (c) 2012-2015 Funkenstein Software Consulting, all rights reserved.
 See license.txt for more information
-===========================================================================*/
+=========================================================================== */
 /*!
     \file gui.h
     \brief Graphical user Interface classes and data structure declarations.
-*/
+ */
 
 #ifndef __GUI_H__
 #define __GUI_H__
@@ -45,7 +45,7 @@ See license.txt for more information
 /*!
     Event state defintions, used for determining whether or not a button or
     key is in the "up" or "down" contact state.
-*/
+ */
 #define EVENT_STATE_UP            (0)
 #define EVENT_STATE_DOWN          (1)
 
@@ -61,7 +61,7 @@ See license.txt for more information
 //---------------------------------------------------------------------------
 /*!
     Enumeration defining the various UI event codes.
-*/
+ */
 typedef enum
 {
     EVENT_TYPE_KEYBOARD,     //!< Keypress event
@@ -76,7 +76,7 @@ typedef enum
 //---------------------------------------------------------------------------
 /*!
     Keyboard UI event structure definition.
-*/
+ */
 typedef struct
 {
     uint8_t u8KeyCode;        //!< 8-bit value representing a keyboard scan code
@@ -98,7 +98,7 @@ typedef struct
 //---------------------------------------------------------------------------
 /*!
     Mouse UI event structure
-*/
+ */
 typedef struct
 {
     uint16_t u16X;        //!< absolute X location of the mouse (pixel)
@@ -121,7 +121,7 @@ typedef struct
 //---------------------------------------------------------------------------
 /*!
     Touch UI event structure
-*/
+ */
 typedef struct
 {
     uint16_t u16X;        //!< Absolute touch location (pixels)
@@ -140,7 +140,7 @@ typedef struct
 //---------------------------------------------------------------------------
 /*!
     Joystick UI event structure
-*/
+ */
 typedef struct
 {
     union
@@ -198,7 +198,7 @@ typedef struct
 //---------------------------------------------------------------------------
 /*!
     Timer UI event structure
-*/
+ */
 typedef struct
 {
     uint16_t u16Ticks;    //!< Number of clock ticks (arbitrary) that have elapsed
@@ -208,7 +208,7 @@ typedef struct
 /*!
     Composite UI event structure.  Depending on the event type, can contain
     either a keyboard, mouse, touch, joystick, timer event, etc.
-*/
+ */
 typedef struct
 {
     uint8_t u8EventType;        //!< GuiEventType_t event type
@@ -244,15 +244,15 @@ class GuiControl;
     A Window is loosely defined as a container of controls, all sharing a
     coordinate reference coordinate frame.  Events are managed on a per-window
     basis, and each window is isolated from eachother.
-*/
+ */
 class GuiWindow : public LinkListNode
 {
 
 public:
     /*!
-        Initialize the GUI Window object prior to use.  Must be called before
-        calling other methods on this object
-    */
+     *  Initialize the GUI Window object prior to use.  Must be called before
+     *  calling other methods on this object
+     */
     void Init()
     {
         m_u8ControlCount = 0;
@@ -262,90 +262,90 @@ public:
     }
 
     /*!
-        Set the graphics driver to use for rendering controls on the window.
-
-        \fn void SetDriver( GraphicsDriver *pclDriver_ )
-        \param pclDriver_ Pointer to the graphics driver
-    */
+     *  Set the graphics driver to use for rendering controls on the window.
+     *
+     *  \fn void SetDriver( GraphicsDriver *pclDriver_ )
+     *  \param pclDriver_ Pointer to the graphics driver
+     */
     void SetDriver( GraphicsDriver *pclDriver_ ) { m_pclDriver = pclDriver_; }
 
     /*!
-        Set the graphics driver to use for rendering controls on the window.
-
-        \fn GraphicsDriver *GetDriver()
-        \return Pointer to the Window's graphics driver
-    */
+     *  Set the graphics driver to use for rendering controls on the window.
+     *
+     *  \fn GraphicsDriver *GetDriver()
+     *  \return Pointer to the Window's graphics driver
+     */
     GraphicsDriver *GetDriver() { return m_pclDriver; }
 
     /*!
-        Assign a GUI Control to this window object.  Adding an object to a
-        window ensures that the object will be drawn on the specific window
-        surface, and ensures that events directed to this window will be
-        forwarded to the controls appropriately.
-
-        \fn AddControl( GuiControl *pclControl_, GuiControl *pclParent_ )
-
-        \param pclControl_ Pointer to the control object to add
-        \param pclParent_  Pointer to the control's "parent" object (or NULL)
-    */
+     *  Assign a GUI Control to this window object.  Adding an object to a
+     *  window ensures that the object will be drawn on the specific window
+     *  surface, and ensures that events directed to this window will be
+     *  forwarded to the controls appropriately.
+     *
+     *  \fn AddControl( GuiControl *pclControl_, GuiControl *pclParent_ )
+     *
+     *  \param pclControl_ Pointer to the control object to add
+     *  \param pclParent_  Pointer to the control's "parent" object (or NULL)
+     */
     void AddControl( GuiControl *pclControl_, GuiControl *pclParent_ );
 
     /*!
-        Removes a previously-added control from the Window.
-
-        \fn RemoveControl( GuiControl *pclControl_ )
-
-        \param pclControl_ Pointer to the control object to remove
-    */
+     *  Removes a previously-added control from the Window.
+     *
+     *  \fn RemoveControl( GuiControl *pclControl_ )
+     *
+     *  \param pclControl_ Pointer to the control object to remove
+     */
     void RemoveControl( GuiControl *pclControl_ );
 
     /*!
-        Returns the highest Z-Order of all controls attached to this window.
-
-        \fn uint8_t GetMaxZOrder()
-
-        \return The highest Z-Order used by controls in this window
-    */
+     *  Returns the highest Z-Order of all controls attached to this window.
+     *
+     *  \fn uint8_t GetMaxZOrder()
+     *
+     *  \return The highest Z-Order used by controls in this window
+     */
     uint8_t GetMaxZOrder();
 
     /*!
-        Redraw objects in the window.  Typically, only the affected controls
-        will need to be redrawn, but in some cases (such as window
-        initialization), the entire window will need to be redrawn cleanly.
-        This behavior is defined by the value of the bRedrawAll_ parameter.
-
-        \fn void Redraw( bool bRedrawAll_ )
-    */
+     *  Redraw objects in the window.  Typically, only the affected controls
+     *  will need to be redrawn, but in some cases (such as window
+     *  initialization), the entire window will need to be redrawn cleanly.
+     *  This behavior is defined by the value of the bRedrawAll_ parameter.
+     *
+     *  \fn void Redraw( bool bRedrawAll_ )
+     */
     void Redraw( bool bRedrawAll_ );
 
     /*!
-        Process an event sent to this window.  This method handles all
-        of the plumbing required to target the event towards specific
-        controls, or all controls in the window depending on the
-        event payload.
-    */
+     *  Process an event sent to this window.  This method handles all
+     *  of the plumbing required to target the event towards specific
+     *  controls, or all controls in the window depending on the
+     *  event payload.
+     */
     void ProcessEvent( GuiEvent_t *pstEvent_ );
 
     /*!
-        Set the control used to accept "focus" events.  Such events include
-        keyboard events.
-
-        \fn void SetFocus( GuiControl *pclControl_ )
-
-        \param pclControl_ Pointer to the control object to set focus on.
-    */
+     *  Set the control used to accept "focus" events.  Such events include
+     *  keyboard events.
+     *
+     *  \fn void SetFocus( GuiControl *pclControl_ )
+     *
+     *  \param pclControl_ Pointer to the control object to set focus on.
+     */
     void SetFocus( GuiControl *pclControl_ );
 
     /*!
-        Return whether or not the selected control is in focus or not.
-
-        \fn bool IsInFocus( GuiControl *pclControl_ )
-
-        \param pclControl_ Pointer to the control object to evaluate
-
-        \return true - the selected control is the active control on the window
-                false - otherwise
-    */
+     *  Return whether or not the selected control is in focus or not.
+     *
+     *  \fn bool IsInFocus( GuiControl *pclControl_ )
+     *
+     *  \param pclControl_ Pointer to the control object to evaluate
+     *
+     *  \return true - the selected control is the active control on the window
+     *          false - otherwise
+     */
     bool IsInFocus( GuiControl *pclControl_ )
     {
         if (m_pclInFocus == pclControl_)
@@ -356,110 +356,110 @@ public:
     }
 
     /*!
-        Set the location of the topmost pixel of the window
-
-        \param u16Top_ Topmost pixel of the window
-    */
+     *  Set the location of the topmost pixel of the window
+     *
+     *  \param u16Top_ Topmost pixel of the window
+     */
     void SetTop( uint16_t u16Top_ )          { m_u16Top = u16Top_; }
 
     /*!
-        Set the location of the leftmost pixel of the window
-
-        \param u16Left_ Leftmost pixel of the window
-    */
+     *  Set the location of the leftmost pixel of the window
+     *
+     *  \param u16Left_ Leftmost pixel of the window
+     */
     void SetLeft( uint16_t u16Left_ )      { m_u16Left = u16Left_; }
 
     /*!
-        Set the height of the window (in pixels)
-
-        \param u16Height_ Height of the window in pixels
-    */
+     *  Set the height of the window (in pixels)
+     *
+     *  \param u16Height_ Height of the window in pixels
+     */
     void SetHeight( uint16_t u16Height_ ) { m_u16Height = u16Height_; }
 
     /*!
-        Set the width of the window (in pixels)
-
-        \param u16Width_ Width of the window in pixels
-    */
+     *  Set the width of the window (in pixels)
+     *
+     *  \param u16Width_ Width of the window in pixels
+     */
     void SetWidth( uint16_t u16Width_ )      { m_u16Width = u16Width_; }
 
     /*!
-        Return the topmost pixel of the window
-
-        \return Topmost pixel of the window
-    */
+     *  Return the topmost pixel of the window
+     *
+     *  \return Topmost pixel of the window
+     */
     uint16_t GetTop()             { return m_u16Top; }
 
     /*!
-        Return the leftmost pixel of the window
-
-        \return Leftmost pixel of the window
-    */
+     *  Return the leftmost pixel of the window
+     *
+     *  \return Leftmost pixel of the window
+     */
     uint16_t GetLeft()             { return m_u16Left; }
 
     /*!
-        Get the height of the window in pixels
-
-        \return Height of the window in pixels
-    */
+     *  Get the height of the window in pixels
+     *
+     *  \return Height of the window in pixels
+     */
     uint16_t GetHeight()         { return m_u16Height; }
 
     /*!
-        Get the width of the window in pixels
-
-        \return Width of the window in pixels
-    */
+     *  Get the width of the window in pixels
+     *
+     *  \return Width of the window in pixels
+     */
     uint16_t GetWidth()         { return m_u16Width; }
 
     /*!
-        Get the Z-order of the window on the event surface
-    */
+     *  Get the Z-order of the window on the event surface
+     */
     uint8_t GetZOrder()         { return m_u8Z; }
 
     /*!
-        Set the Z-order of the window on the event surface
-    */
+     *  Set the Z-order of the window on the event surface
+     */
     void SetZOrder( uint8_t u8Z_ ) { m_u8Z = u8Z_; }
 
     /*!
-        Cycle the focus to the next active control in the window
-
-        \fn void CycleFocus( bool bForward_ )
-        \param bForward_ - Cycle to the next control when true,
-                           previous control when false
-    */
+     *  Cycle the focus to the next active control in the window
+     *
+     *  \fn void CycleFocus( bool bForward_ )
+     *  \param bForward_ - Cycle to the next control when true,
+     *                     previous control when false
+     */
     void CycleFocus( bool bForward_ );
 
     /*!
-        Set the name for this window
-    */
+     *  Set the name for this window
+     */
     void SetName( const char *szName_ ) { m_szName = szName_; }
 
     /*!
-        Return the name of this window
-    */
+     *  Return the name of this window
+     */
     const char *GetName() { return m_szName; }
 
     /*!
-        Invalidate a region of the window, specified by the bounding box.  The
-        coordinates specified in the parameters (top and left) refer to absolute
-        display coordinates, and are not relative to coordinates within a window.
-    */
+     *  Invalidate a region of the window, specified by the bounding box.  The
+     *  coordinates specified in the parameters (top and left) refer to absolute
+     *  display coordinates, and are not relative to coordinates within a window.
+     */
     void InvalidateRegion( uint16_t u16Left_, uint16_t u16Top_, uint16_t u16Width_, uint16_t u16Height_ );
 
 private:
-    uint16_t m_u16Top;        //!< Topmost pixel of the window on the event surface
-    uint16_t m_u16Left;        //!< Leftmost pixel of the window on the event surface
+    uint16_t m_u16Top;       //!< Topmost pixel of the window on the event surface
+    uint16_t m_u16Left;      //!< Leftmost pixel of the window on the event surface
     uint16_t m_u16Height;    //!< Height of the window in pixels
     uint16_t m_u16Width;        //!< Width of the window in pixels
 
-    uint8_t  m_u8Z;         //!< Z-order of the window on the event surface
+    uint8_t  m_u8Z;             //!< Z-order of the window on the event surface
     const char  *m_szName;      //!< Name applied to this window
 
-    DoubleLinkList m_clControlList;    //!< List of controls managed by this window
+    DoubleLinkList m_clControlList;  //!< List of controls managed by this window
     GuiControl *m_pclInFocus;        //!< Pointer to the control in event focus
     uint8_t m_u8ControlCount;        //!< Number of controls in this window
-    GraphicsDriver *m_pclDriver;    //!< Graphics driver for this window.
+    GraphicsDriver *m_pclDriver;     //!< Graphics driver for this window.
 };
 
 //---------------------------------------------------------------------------
@@ -474,80 +474,80 @@ private:
     display, and coordinate frame.  In this way, multiple GUIs can be
     implemented in the system, each tied to separate physical or virtual
     displays.
-*/
+ */
 class GuiEventSurface
 {
 public:
     /*!
-        Initialize an event surface before use.  Must be called prior to
-        any other object methods.
-    */
+     *  Initialize an event surface before use.  Must be called prior to
+     *  any other object methods.
+     */
     void Init() { m_clMessageQueue.Init(); m_clWindowList.Init(); }
 
     /*!
-        Add a window to the event surface.
-
-        \param pclWindow_ Pointer to the window object to add to the sruface
-    */
+     *  Add a window to the event surface.
+     *
+     *  \param pclWindow_ Pointer to the window object to add to the sruface
+     */
     void AddWindow( GuiWindow *pclWindow_ );
 
     /*!
-        Remove a window from the event surface.
-
-        \param pclWindow_ Pointer to the window object to remove from the surface
-    */
+     *  Remove a window from the event surface.
+     *
+     *  \param pclWindow_ Pointer to the window object to remove from the surface
+     */
     void RemoveWindow( GuiWindow *pclWindow_ );
 
     /*!
-        Send an event to this window surface.  The event will be forwraded to
-        all windows managed by this service.
-
-        \param pstEvent_ Pointer to an event to send
-        \return true on success, false on failure
-    */
+     *  Send an event to this window surface.  The event will be forwraded to
+     *  all windows managed by this service.
+     *
+     *  \param pstEvent_ Pointer to an event to send
+     *  \return true on success, false on failure
+     */
     bool SendEvent( GuiEvent_t *pstEvent_ );
 
     /*!
-        Process an event in the event queue.  If no events are pending, the
-        call will block until an event is available.
-    */
+     *  Process an event in the event queue.  If no events are pending, the
+     *  call will block until an event is available.
+     */
     bool ProcessEvent();
 
     /*!
-        Get the count of pending events in the event surface's queue.
-    */
+     *  Get the count of pending events in the event surface's queue.
+     */
     uint8_t GetEventCount() { return m_clMessageQueue.GetCount(); }
 
     /*!
-        Return a pointer to a window by name, or NULL on failure
-    */
+     *  Return a pointer to a window by name, or NULL on failure
+     */
     GuiWindow *FindWindowByName( const char *szName_ );
 
     /*!
-        Invalidate a region of the window, specified by the bounding box.  The
-        coordinates specified in the parameters (top and left) refer to absolute
-        display coordinates, and are not relative to coordinates within a window.
-    */
+     *  Invalidate a region of the window, specified by the bounding box.  The
+     *  coordinates specified in the parameters (top and left) refer to absolute
+     *  display coordinates, and are not relative to coordinates within a window.
+     */
     void InvalidateRegion( uint16_t u16Left_, uint16_t u16Top_, uint16_t u16Width_, uint16_t u16Height_ );
 
 private:
     /*!
-        Copy the contents of one message structure to another.
-
-        \param pstDst_ Destination event pointer
-        \param pstSrc_ Source event pointer
-    */
+     *  Copy the contents of one message structure to another.
+     *
+     *  \param pstDst_ Destination event pointer
+     *  \param pstSrc_ Source event pointer
+     */
     void CopyEvent( GuiEvent_t *pstDst_, GuiEvent_t *pstSrc_ );
 
 private:
     /*!
-        List of windows managed on this event surface
-    */
+     *  List of windows managed on this event surface
+     */
     DoubleLinkList m_clWindowList;
 
     /*!
-        Message queue used to manage window events
-    */
+     *  Message queue used to manage window events
+     */
     MessageQueue   m_clMessageQueue;
 };
 
@@ -560,158 +560,158 @@ private:
     methods for initialization, event handling, and redrawing.  Controls are
     directly related to Windows, which are used to manage and organize
     controls.
-*/
+ */
 class GuiControl : public LinkListNode
 {
 public:
     /*!
-        Initiailize the control - must be called before use.
-        Implementation is subclass specific.
-
-        \fn void Init()
-    */
+     *  Initiailize the control - must be called before use.
+     *  Implementation is subclass specific.
+     *
+     *  \fn void Init()
+     */
     virtual void Init() = 0;
 
     /*!
-        Redraw the control "cleanly".  Subclass specific.
-
-        \fn void Draw()
-    */
+     *  Redraw the control "cleanly".  Subclass specific.
+     *
+     *  \fn void Draw()
+     */
     virtual void Draw() = 0;
 
     /*!
-        Process an event sent to the control.  Subclass specific
-        implementation.
-
-        \fn GuiReturn_t ProcessEvent( GuiEvent_t *pstEvent_ )
-        \param pstEvent_ Pointer to a struct containing the event data
-    */
+     *  Process an event sent to the control.  Subclass specific
+     *  implementation.
+     *
+     *  \fn GuiReturn_t ProcessEvent( GuiEvent_t *pstEvent_ )
+     *  \param pstEvent_ Pointer to a struct containing the event data
+     */
     virtual GuiReturn_t ProcessEvent( GuiEvent_t *pstEvent_ ) = 0;
 
     /*!
-        Set the location of the topmost pixel of the control
-
-        \param u16Top_ Topmost pixel of the control
-    */
+     *  Set the location of the topmost pixel of the control
+     *
+     *  \param u16Top_ Topmost pixel of the control
+     */
     void SetTop( uint16_t u16Top_ )          { m_u16Top = u16Top_; }
 
     /*!
-        Set the location of the leftmost pixel of the control
-
-        \param u16Left_ Leftmost pixel of the control
-    */
+     *  Set the location of the leftmost pixel of the control
+     *
+     *  \param u16Left_ Leftmost pixel of the control
+     */
     void SetLeft( uint16_t u16Left_ )      { m_u16Left = u16Left_; }
 
     /*!
-        Set the height of the control (in pixels)
-
-        \param u16Height_ Height of the control in pixels
-    */
+     *  Set the height of the control (in pixels)
+     *
+     *  \param u16Height_ Height of the control in pixels
+     */
     void SetHeight( uint16_t u16Height_ ) { m_u16Height = u16Height_; }
 
     /*!
-        Set the width of the control (in pixels)
-
-        \param u16Width_ Width of the control in pixels
-    */
+     *  Set the width of the control (in pixels)
+     *
+     *  \param u16Width_ Width of the control in pixels
+     */
     void SetWidth( uint16_t u16Width_ )      { m_u16Width = u16Width_; }
 
     /*!
-        Set the Z-order (depth) of the control
-
-        \param u8Z_ Z order of the control
-    */
+     *  Set the Z-order (depth) of the control
+     *
+     *  \param u8Z_ Z order of the control
+     */
     void SetZOrder( uint8_t u8Z_ )          { m_u8ZOrder = u8Z_; }
 
     /*!
-        Set the index of the control, used for cycling through focus (ala
-        tab order in VB).
-
-        \param u8Idx_ Focus index of the control
-    */
+     *  Set the index of the control, used for cycling through focus (ala
+     *  tab order in VB).
+     *
+     *  \param u8Idx_ Focus index of the control
+     */
     void SetControlIndex( uint8_t u8Idx_ ) { m_u8ControlIndex = u8Idx_; }
 
     /*!
-        Return the topmost pixel of the control
-
-        \return Topmost pixel of the control
-    */
+     *  Return the topmost pixel of the control
+     *
+     *  \return Topmost pixel of the control
+     */
     uint16_t GetTop()             { return m_u16Top; }
 
     /*!
-        Return the leftmost pixel of the control
-
-        \return Leftmost pixel of the control
-    */
+     *  Return the leftmost pixel of the control
+     *
+     *  \return Leftmost pixel of the control
+     */
     uint16_t GetLeft()             { return m_u16Left; }
 
     /*!
-        Get the height of the control in pixels
-
-        \return Height of the control in pixels
-    */
+     *  Get the height of the control in pixels
+     *
+     *  \return Height of the control in pixels
+     */
     uint16_t GetHeight()         { return m_u16Height; }
 
     /*!
-        Get the width of the control in pixels
-
-        \return Width of the control in pixels
-    */
+     *  Get the width of the control in pixels
+     *
+     *  \return Width of the control in pixels
+     */
     uint16_t GetWidth()         { return m_u16Width; }
 
     /*!
-        Return the Z-order of the control
-
-        \return Z-order of the control
-    */
+     *  Return the Z-order of the control
+     *
+     *  \return Z-order of the control
+     */
     uint8_t  GetZOrder()        { return m_u8ZOrder; }
 
     /*!
-        Return the Control Index of the control
-
-        \return The control index of the control
-    */
+     *  Return the Control Index of the control
+     *
+     *  \return The control index of the control
+     */
     uint8_t  GetControlIndex()     { return m_u8ControlIndex; }
 
     /*!
-        Return whether or not the control needs to be redrawn or not
-
-        \return true - control needs redrawing, false - control is intact.
-    */
+     *  Return whether or not the control needs to be redrawn or not
+     *
+     *  \return true - control needs redrawing, false - control is intact.
+     */
     bool     IsStale()            { return m_bStale; }
 
     /*!
-        Return the absolute offset of the control within an event surface.
-        This function will traverse through all of the object's parents,
-        and their parents, until the root control and root window are
-        identified.  The absolute pixel locations of the Topmost (Y)
-        and Leftmost (X) pixels are popu32ated in the
-
-        \fn void GetControlOffset( uint16_t *pu16X_, uint16_t *pu16Y_ )
-        \param pus16X_ Pointer to the uint16_t containing the leftmost pixel
-        \param pus16Y_ Pointer to the uint16_t containing the topmost pixel
-    */
+     *  Return the absolute offset of the control within an event surface.
+     *  This function will traverse through all of the object's parents,
+     *  and their parents, until the root control and root window are
+     *  identified.  The absolute pixel locations of the Topmost (Y)
+     *  and Leftmost (X) pixels are popu32ated in the
+     *
+     *  \fn void GetControlOffset( uint16_t *pu16X_, uint16_t *pu16Y_ )
+     *  \param pus16X_ Pointer to the uint16_t containing the leftmost pixel
+     *  \param pus16Y_ Pointer to the uint16_t containing the topmost pixel
+     */
     void GetControlOffset( uint16_t *pu16X_, uint16_t *pu16Y_ );
 
     /*!
-        Return whether or not the current control has the focus in the window
-
-        \fn bool  IsInFocus()
-
-        \return true if this control is in focus, false otherwise
-    */
+     *  Return whether or not the current control has the focus in the window
+     *
+     *  \fn bool  IsInFocus()
+     *
+     *  \return true if this control is in focus, false otherwise
+     */
     bool  IsInFocus()
     {
         return m_pclParentWindow->IsInFocus(this);
     }
 
     /*!
-        Activate or deactivate the current control - used when switching
-        from one active control to another.
-
-        \fn void Activate( bool bActivate_ )
-        \param bActivate_ - true to activate, false to deactivate
-    */
+     *  Activate or deactivate the current control - used when switching
+     *  from one active control to another.
+     *
+     *  \fn void Activate( bool bActivate_ )
+     *  \param bActivate_ - true to activate, false to deactivate
+     */
     virtual void Activate( bool bActivate_ ) = 0;
 
 protected:
@@ -719,106 +719,106 @@ protected:
     friend class GuiEventSurface;
 
     /*!
-        Set the parent control of this control.  When a control has its parent
-        set, it is considered "nested" within that control.  Moving the control
-        will thus result in all of its child controls to become invalidated,
-        thus requiring redraws.  The control's object offsets (Top, Bottom,
-        Height, and Width) also become relative to the origin of the parent
-        control.
-
-        \fn void SetParentControl( GuiControl *pclParent_ )
-        \param pclParent_ Pointer to the control's parent control
-    */
+     *  Set the parent control of this control.  When a control has its parent
+     *  set, it is considered "nested" within that control.  Moving the control
+     *  will thus result in all of its child controls to become invalidated,
+     *  thus requiring redraws.  The control's object offsets (Top, Bottom,
+     *  Height, and Width) also become relative to the origin of the parent
+     *  control.
+     *
+     *  \fn void SetParentControl( GuiControl *pclParent_ )
+     *  \param pclParent_ Pointer to the control's parent control
+     */
     void SetParentControl( GuiControl *pclParent_ ) { m_pclParentControl = pclParent_; }
 
     /*!
-        Set the parent window of this control.  All controls within the same window
-        are all associated together, and share events targetted towards a specific
-        window.  Event tabbing, focus, and Z-ordering is also shared between controls
-        within a window.
-
-        \fn void SetParentWindow( GuiWindow *pclWindow_ )
-        \param pclWindow_ Pointer to the control's parent window.
-    */
+     *  Set the parent window of this control.  All controls within the same window
+     *  are all associated together, and share events targetted towards a specific
+     *  window.  Event tabbing, focus, and Z-ordering is also shared between controls
+     *  within a window.
+     *
+     *  \fn void SetParentWindow( GuiWindow *pclWindow_ )
+     *  \param pclWindow_ Pointer to the control's parent window.
+     */
     void SetParentWindow( GuiWindow *pclWindow_ )    { m_pclParentWindow  = pclWindow_; }
 
     /*!
-        Return the pointer to the control's currently-assigned parent control.
-
-        \fn GuiControl *GetParentControl()
-        \return Pointer to the Control's currently assigned parent control.
-    */
+     *  Return the pointer to the control's currently-assigned parent control.
+     *
+     *  \fn GuiControl *GetParentControl()
+     *  \return Pointer to the Control's currently assigned parent control.
+     */
     GuiControl *GetParentControl()                     { return m_pclParentControl; }
 
     /*!
-        Get the parent window of this control
-
-        \fn GuiWindow *GetParentWindow()
-        \return Pointer to the control's window
-    */
+     *  Get the parent window of this control
+     *
+     *  \fn GuiWindow *GetParentWindow()
+     *  \return Pointer to the control's window
+     */
     GuiWindow *GetParentWindow()                     { return m_pclParentWindow; }
 
     /*!
-        Clear the stale flag for this control.  Should only be done after a
-        redraw has been completed
-
-        \fn    void ClearStale()
-    */
+     *  Clear the stale flag for this control.  Should only be done after a
+     *  redraw has been completed
+     *
+     *  \fn    void ClearStale()
+     */
     void ClearStale()                                 { m_bStale = false; }
 
     /*!
-        Signal that the object needs to be redrawn.
-    */
+     *  Signal that the object needs to be redrawn.
+     */
     void SetStale()                                 { m_bStale = true; }
 
     /*!
-        Tell the control whether or not to accept focus.
-    */
+     *  Tell the control whether or not to accept focus.
+     */
     void SetAcceptFocus( bool bFocus_ )             { m_bAcceptsFocus = bFocus_; }
 
     /*!
-        Returns whether or not this control accepts focus.
-    */
+     *  Returns whether or not this control accepts focus.
+     */
     bool AcceptsFocus()                             { return m_bAcceptsFocus; }
 private:
-    /*! true if the control is stale and needs to be redrawn, false otherwise*/
+    /*! true if the control is stale and needs to be redrawn, false otherwise */
     bool     m_bStale;
 
-    /*! Whether or not the control accepts focus or not*/
+    /*! Whether or not the control accepts focus or not */
     bool   m_bAcceptsFocus;
 
     /*! The Z-Order (depth) of the control. Only the highest order controls
-        are visible at any given location */
+        are visible at any given location  */
     uint8_t  m_u8ZOrder;
 
     /*! Index of the control in the window.  This is used for setting focus
-        when transitioning from control to control on a window */
+        when transitioning from control to control on a window  */
     uint8_t  m_u8ControlIndex;
 
-    /*! Topmost location of the control on the window */
+    /*! Topmost location of the control on the window  */
     uint16_t m_u16Top;
 
-    /*! Leftmost location of the control on the window */
+    /*! Leftmost location of the control on the window  */
     uint16_t m_u16Left;
 
-    /*! Width of the control in pixels */
+    /*! Width of the control in pixels  */
     uint16_t m_u16Width;
 
-    /*! Height of the control in pixels */
+    /*! Height of the control in pixels  */
     uint16_t m_u16Height;
 
-    /*! Pointer to the parent control */
+    /*! Pointer to the parent control  */
     GuiControl *m_pclParentControl;
 
-    /*! Pointer to the parent window associated with this control */
+    /*! Pointer to the parent window associated with this control  */
     GuiWindow  *m_pclParentWindow;
 };
 
 //---------------------------------------------------------------------------
 /*!
-    Stub control class, used for testing out the GUI framework where certain
-    controls have not yet been implemented.
-*/
+ *  Stub control class, used for testing out the GUI framework where certain
+ *  controls have not yet been implemented.
+ */
 class StubControl : public GuiControl
 {
 public:

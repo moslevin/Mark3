@@ -10,13 +10,13 @@
 
 Copyright (c) 2012-2015 Funkenstein Software Consulting, all rights reserved.
 See license.txt for more information
-===========================================================================*/
+=========================================================================== */
 /*!
     \file slipterm.h
     
     \brief Serial debug interface using SLIP serial, and Funkenslip serial
            port multiplexing
-*/
+ */
 
 #include "kerneltypes.h"
 #include "driver.h"
@@ -36,17 +36,17 @@ See license.txt for more information
 /*!
     Class implementing a simple debug terminal interface.  This is
     useful for printf style debugging.
-*/
+ */
 class SlipTerm
 {
 public:
     /*!
-        \fn void Init();
-        
-        Initialize the terminal by opening a handle to the serial interface
-        attached at /dev/tty.  Must be called prior to using the print
-        functionality.
-    */
+     *  \fn void Init();
+     *  
+     *  Initialize the terminal by opening a handle to the serial interface
+     *  attached at /dev/tty.  Must be called prior to using the print
+     *  functionality.
+     */
     void Init();
     
     /*!
@@ -56,37 +56,37 @@ public:
         FunkenSlip terminal channel.
         
         \param szLine_ String to print
-    */
+     */
     void PrintLn( const char *szLine_ );
 
     /*!
-        \fn void PrintLn( uint8_t u8Severity_, const char *szLine_ )
-        
-        Print a string of text to the SLIP interface, but only if the 
-        current logging verbosity level is greater than or equal to the 
-        specified message severity
-        
-        \param u8Severity_ Message severity level, 0 = highest severity
-        \param szLine_ String to print
-    */
+     *  \fn void PrintLn( uint8_t u8Severity_, const char *szLine_ )
+     *  
+     *  Print a string of text to the SLIP interface, but only if the 
+     *  current logging verbosity level is greater than or equal to the 
+     *  specified message severity
+     *  
+     *  \param u8Severity_ Message severity level, 0 = highest severity
+     *  \param szLine_ String to print
+     */
     void PrintLn( uint8_t u8Severity_, const char *szLine_ );
     
     /*!        
-        \fn void SetVerbosity( uint8_t u8Level_ )
-        
-        Set the logging verbosity level - the minimum severity level that
-        will be printed to the terminal.  The higher the number, the 
-        more chatty the output.
-    */
+     *  \fn void SetVerbosity( uint8_t u8Level_ )
+     *  
+     *  Set the logging verbosity level - the minimum severity level that
+     *  will be printed to the terminal.  The higher the number, the 
+     *  more chatty the output.
+     */
     void SetVerbosity( uint8_t u8Level_ ) { m_u8Verbosity = u8Level_; }
 private:
     /*!
-        \fn uint16_t StrLen( const char *szString_ )
-        
-        Quick 'n' dirty StrLen functionality used for printing the string.
-        
-        \return Length of the string (in bytes)
-    */
+     *  \fn uint16_t StrLen( const char *szString_ )
+     *  
+     *  Quick 'n' dirty StrLen functionality used for printing the string.
+     *  
+     *  \return Length of the string (in bytes)
+     */
     uint16_t StrLen( const char *szString_ );
     
     uint8_t m_u8Verbosity;     //!< Verbosity level.  Messages with a severity 
