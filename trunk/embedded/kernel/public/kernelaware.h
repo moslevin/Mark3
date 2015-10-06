@@ -136,11 +136,9 @@ public:
      *
      * \param u16File_   16-bit code representing the file
      * \param u16Line_   16-bit code representing the line in the file
-     * \param u16Code_   16-bit data code, which indicates the line's format.
      */
     static void Trace( uint16_t u16File_,
-                  uint16_t u16Line_,
-                  uint16_t u16Code_ );
+                  uint16_t u16Line_);
 
     //---------------------------------------------------------------------------
     /*!
@@ -151,12 +149,10 @@ public:
      *
      * \param u16File_   16-bit code representing the file
      * \param u16Line_   16-bit code representing the line in the file
-     * \param u16Code_   16-bit data code, which indicates the line's format
      * \param u16Arg1_   16-bit argument to the format string.
      */
     static void Trace( uint16_t u16File_,
                   uint16_t u16Line_,
-                  uint16_t u16Code_,
                   uint16_t u16Arg1_);
 
     //---------------------------------------------------------------------------
@@ -168,13 +164,11 @@ public:
      *
      * \param u16File_   16-bit code representing the file
      * \param u16Line_   16-bit code representing the line in the file
-     * \param u16Code_   16-bit data code, which indicates the line's format
      * \param u16Arg1_   16-bit argument to the format string.
      * \param u16Arg2_   16-bit argument to the format string.
      */
     static void Trace( uint16_t u16File_,
                   uint16_t u16Line_,
-                  uint16_t u16Code_,
                   uint16_t u16Arg1_,
                   uint16_t u16Arg2_);
 
@@ -201,14 +195,12 @@ private:
     *
     * \param u16File_   16-bit code representing the file
     * \param u16Line_   16-bit code representing the line in the file
-    * \param u16Code_   16-bit data code, which indicates the line's format
     * \param u16Arg1_   16-bit argument to the format string.
     * \param u16Arg2_   16-bit argument to the format string.
     * \param eCmd_     Code indicating the number of arguments to emit.
     */
     static void Trace_i( uint16_t u16File_,
                          uint16_t u16Line_,
-                         uint16_t u16Code_,
                          uint16_t u16Arg1_,
                          uint16_t u16Arg2_,
                          KernelAwareCommand_t eCmd_);

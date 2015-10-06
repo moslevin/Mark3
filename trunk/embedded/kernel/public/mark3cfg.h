@@ -206,7 +206,7 @@ See license.txt for more information
     Provides extra logic for kernel debugging, and instruments the kernel 
     with extra asserts, and kernel trace functionality.
 */
-#define KERNEL_USE_DEBUG                 (0)
+#define KERNEL_USE_DEBUG                 (1)
 
 /*!
     Provides support for atomic operations, including addition, subtraction,

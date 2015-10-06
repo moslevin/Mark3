@@ -7,6 +7,7 @@
 OBJ_DIR_FINAL=$(OBJ_DIR)$(ARCH)/$(VARIANT)/$(TOOLCHAIN)/
 APP_DIR_FINAL=$(APP_DIR)$(ARCH)/$(VARIANT)/$(TOOLCHAIN)/
 LIB_DIR_FINAL=$(LIB_DIR)$(ARCH)/$(VARIANT)/$(TOOLCHAIN)/
+DBG_DIR_FINAL=$(DBG_DIR)$(ARCH)/$(VARIANT)/$(TOOLCHAIN)/
 
 C_OBJ=$(addprefix $(OBJ_DIR_FINAL), $(C_SOURCE:%.c=%.c.o))
 CPP_OBJ=$(addprefix $(OBJ_DIR_FINAL), $(CPP_SOURCE:%.cpp=%.cpp.o))
@@ -24,17 +25,8 @@ USR_OBJS=$(C_OBJ) $(CPP_OBJ) $(PORT_C_OBJ) $(PORT_CPP_OBJ)
 
 CPU_SPEC_HEADERS=$(PORT_DIR)/public/
 
-# Static analysis output
-C_SA_OBJ=$(addprefix $(OBJ_DIR_FINAL), $(C_SOURCE:%.c=%.c.sa))
-CPP_SA_OBJ=$(addprefix $(OBJ_DIR_FINAL), $(CPP_SOURCE:%.cpp=%.cpp.sa))
-
-PORT_C_SA_OBJ=$(addprefix $(PORT_OBJ_DIR), $(PORT_C_SOURCE:%.c=%.c.sa))
-PORT_CPP_SA_OBJ=$(addprefix $(PORT_OBJ_DIR), $(PORT_CPP_SOURCE:%.cpp=%.cpp.sa))
-
-USR_SA_OBJS=$(C_SA_OBJ) $(CPP_SA_OBJ) $(PORT_C_SA_OBJ) $(PORT_CPP_SA_OBJ)
-
 ifeq ($(IS_APP), 1)
-	LFLAGS+=-Wl,-Map="$(APP_NAME).map"
+	LFLAGS+=-Wl,-Map="$(APPNAME).map"
 endif
 
 # the target is specified in the user makefile
@@ -66,7 +58,6 @@ source_banner : $(realpath .)
 	
 # Get rid of all of the binary objects created previous... 
 clean : clean_banner
-	 $(RMCMD) $(USR_SA_OBJS)
 	 $(RMCMD) $(USR_OBJS)
 ifeq ($(IS_LIB),1)
 	 $(RMCMD) $(OBJ_DIR_FINAL)lib$(LIBNAME).a
@@ -146,17 +137,15 @@ endif
 # Build libraries from objects
 #----------------------------------------------------------------------------
 ifeq ($(IS_LIB), 1)
-library : banner directories objects $(USR_OBJS) static_data $(USR_SA_OBJS)
+library : banner directories objects $(USR_OBJS)
 else
 library : banner
 endif
 ifeq ($(IS_LIB), 1)
 	@echo LIBRARY: $(LIBNAME)
 	$(AR) $(ARFLAGS) $(OBJ_DIR_FINAL)lib$(LIBNAME).a $(USR_OBJS)
-	-cat $(USR_SA_OBJS) > lib$(LIBNAME).sa
  ifneq ($(wildcard $(STAGE)lib), "")
 	$(COPYCMD) $(OBJ_DIR_FINAL)lib$(LIBNAME).a $(LIB_DIR_FINAL)
-	-$(COPYCMD) lib$(LIBNAME).sa $(SA_DIR)
  endif
 endif
 	@for i in $(SUBDIRS); \
@@ -172,19 +161,20 @@ endif
 # Build executables from objects
 #----------------------------------------------------------------------------
 ifeq ($(IS_APP), 1)
-binary : banner directories objects $(USR_OBJS) static_data $(USR_SA_OBJS)
+binary : banner directories objects $(USR_OBJS)
 else
 binary : banner
 endif
 ifeq ($(IS_APP), 1)
 	@echo APP: $(APPNAME)
 	$(LINK) $(LFLAGS) -o $(OBJ_DIR_FINAL)$(APPNAME).elf $(USR_OBJS) $(addsuffix .a, $(addprefix $(LIB_DIR_FINAL), $(addprefix lib, $(LIBS))))
+	$(LINK) $(LFLAGS_DBG) -o $(DBG_DIR_FINAL)$(APPNAME).elf $(USR_OBJS) $(addsuffix .a, $(addprefix $(LIB_DIR_FINAL), $(addprefix lib, $(LIBS))))
 	$(OBJCOPY) $(OBJCOPY_FLAGS) "$(OBJ_DIR_FINAL)$(APPNAME).elf" "$(OBJ_DIR_FINAL)$(APPNAME).hex"
-	-cat $(USR_SA_OBJS) > $(APPNAME).sa
+	$(OBJCOPY) $(OBJCOPY_DBG_FLAGS) "$(DBG_DIR_FINAL)$(APPNAME).elf" "$(DBG_DIR_FINAL)$(APPNAME).dbg"
+	$(RMCMD) "$(DBG_DIR_FINAL)$(APPNAME).elf"
  ifneq ($(wildcard $(STAGE)app), "")	
 	$(COPYCMD) $(OBJ_DIR_FINAL)$(APPNAME).elf $(APP_DIR_FINAL)
 	$(COPYCMD) $(OBJ_DIR_FINAL)$(APPNAME).hex $(APP_DIR_FINAL)
-	-$(COPYCMD) $(APPNAME).sa $(SA_DIR)
  endif
 endif
 	@for i in $(SUBDIRS); \
@@ -199,7 +189,7 @@ endif
 #----------------------------------------------------------------------------
 # Code to create object directories (only for folders with lib/app targets
 #----------------------------------------------------------------------------
-directories : $(OBJ_DIR_FINAL) $(APP_DIR_FINAL) $(LIB_DIR_FINAL)
+directories : $(OBJ_DIR_FINAL) $(APP_DIR_FINAL) $(LIB_DIR_FINAL) $(DBG_DIR_FINAL)
 $(OBJ_DIR) :
 	@if test -d $(OBJ_DIR); then echo exists ;\
 		else \
@@ -272,21 +262,30 @@ $(LIB_DIR_FINAL) : $(LIB_DIR)$(ARCH)/$(VARIANT)
 		mkdir $(LIB_DIR)$(ARCH)/$(VARIANT)/$(TOOLCHAIN)    ;\
 	fi;
 
-#----------------------------------------------------------------------------
-# Rule to build static analysis data from source
-#----------------------------------------------------------------------------
-static_data : directories $(C_OBJ) $(CPP_OBJ) $(PORT_C_OBJ) $(PORT_CPP_OBJ)
-$(OBJ_DIR_FINAL)%.c.sa : %.c
-	-$(CLANG) $(CLANGFLAGS) $< >> $@ 2> $@
+$(DBG_DIR) :
+	@if test -d $(DBG_DIR); then echo exists ;\
+		else \
+		mkdir $(DBG_DIR)	;\
+	fi;
 
-$(OBJ_DIR_FINAL)%.cpp.sa : %.cpp
-	-$(CLANG) $(CLANGFLAGS) $< >> $@ 2> $@
+$(DBG_DIR)$(ARCH) : $(DBG_DIR)
+	@if test -d $(DBG_DIR)$(ARCH); then echo exists; \
+		else \
+		mkdir $(DBG_DIR)$(ARCH)    ;\
+	fi;
 
-$(PORT_OBJ_DIR)%.c.sa : $(PORT_DIR)%.c $(PORT_OBJ_DIR)
-	-$(CLANG) $(CLANGFLAGS) $< >> $@ 2> $@
+$(DBG_DIR)$(ARCH)/$(VARIANT) : $(DBG_DIR)$(ARCH)
+	@if test -d $(DBG_DIR)$(ARCH)/$(VARIANT); then echo exists; \
+		else \
+		mkdir $(DBG_DIR)$(ARCH)/$(VARIANT)    ;\
+	fi;
 
-$(PORT_OBJ_DIR)%.cpp.sa : $(PORT_DIR)%.cpp $(PORT_OBJ_DIR)
-	-$(CLANG) $(CLANGFLAGS) $< >> $@ 2> $@
+$(DBG_DIR_FINAL) : $(DBG_DIR)$(ARCH)/$(VARIANT)
+	@if test -d $(DBG_DIR)$(ARCH)/$(VARIANT)/$(TOOLCHAIN); then echo exists; \
+		else \
+		mkdir $(DBG_DIR)$(ARCH)/$(VARIANT)/$(TOOLCHAIN)    ;\
+	fi;
+
 
 #----------------------------------------------------------------------------
 # Rule to build C code into object files

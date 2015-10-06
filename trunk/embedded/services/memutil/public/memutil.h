@@ -23,7 +23,6 @@ See license.txt for more information
 
 #include "kerneltypes.h"
 #include "mark3cfg.h"
-#include "kerneldebug.h"
 
 //---------------------------------------------------------------------------
 /*!

@@ -32,6 +32,7 @@ APP_DIR=$(STAGE)app/
 INC_DIR=$(STAGE)inc/
 SRC_DIR=$(STAGE)src/
 SA_DIR=$(STAGE)sa/
+DBG_DIR=$(STAGE)dbg/
 
 # The rest of these are internal to the build system, do not modify!
 CFLAGS+=-I$(INC_DIR)

@@ -20,54 +20,53 @@ See license.txt for more information
 #ifndef __KERNEL_DEBUG_H__
 #define __KERNEL_DEBUG_H__
 
-#include "debugtokens.h"
 #include "mark3cfg.h"
 #include "tracebuffer.h"
 #include "kernelaware.h"
 #include "paniccodes.h"
 #include "kernel.h"
+#include "buffalogger.h"
+#include "dbg_file_list.h"
+
 //---------------------------------------------------------------------------
 #if (KERNEL_USE_DEBUG && !KERNEL_AWARE_SIMULATION)
 
 //---------------------------------------------------------------------------
-#define __FILE_ID__			STR_UNDEFINED        //!< File ID used in kernel trace calls
-
-//---------------------------------------------------------------------------
 #define KERNEL_TRACE( x )	\
 { 	\
+    EMIT_DBG_STRING( x ); \
     uint16_t au16Msg__[5]; \
     au16Msg__[0] = 0xACDC;  \
-    au16Msg__[1] = __FILE_ID__; \
+    au16Msg__[1] = DBG_FILE; \
     au16Msg__[2] = __LINE__; \
     au16Msg__[3] = TraceBuffer::Increment() ; \
-    au16Msg__[4] = (uint16_t)(x) ; \
     TraceBuffer::Write(au16Msg__, 5); \
 };
 
 //---------------------------------------------------------------------------
 #define KERNEL_TRACE_1( x, arg1 ) \
 { 	\
+    EMIT_DBG_STRING( x ); \
     uint16_t au16Msg__[6]; \
     au16Msg__[0] = 0xACDC;  \
-    au16Msg__[1] = __FILE_ID__; \
+    au16Msg__[1] = DBG_FILE; \
     au16Msg__[2] = __LINE__; \
     au16Msg__[3] = TraceBuffer::Increment(); \
-    au16Msg__[4] = (uint16_t)(x); \
-    au16Msg__[5] = arg1; \
+    au16Msg__[4] = arg1; \
     TraceBuffer::Write(au16Msg__, 6); \
 }
 
 //---------------------------------------------------------------------------
 #define KERNEL_TRACE_2( x, arg1, arg2 ) \
 { 	\
+    EMIT_DBG_STRING( x ); \
     uint16_t au16Msg__[7]; \
     au16Msg__[0] = 0xACDC;  \
-    au16Msg__[1] = __FILE_ID__; \
+    au16Msg__[1] = DBG_FILE; \
     au16Msg__[2] = __LINE__; \
     au16Msg__[3] = TraceBuffer::Increment(); \
-    au16Msg__[4] = (uint16_t)(x); \
-    au16Msg__[5] = arg1; \
-    au16Msg__[6] = arg2; \
+    au16Msg__[4] = arg1; \
+    au16Msg__[5] = arg2; \
     TraceBuffer::Write(au16Msg__, 7); \
 }
 
@@ -76,37 +75,38 @@ See license.txt for more information
 {		\
 	if( ( x ) == false ) \
 	{	\
+        EMIT_DBG_STRING( x ); \
         uint16_t au16Msg__[5];	\
         au16Msg__[0] = 0xACDC;	\
-        au16Msg__[1] = __FILE_ID__;	\
+        au16Msg__[1] = DBG_FILE;	\
         au16Msg__[2] = __LINE__; \
         au16Msg__[3] = TraceBuffer::Increment(); \
-        au16Msg__[4] = STR_ASSERT_FAILED;	\
         TraceBuffer::Write(au16Msg__, 5); \
         Kernel::Panic(PANIC_ASSERT_FAILED); \
 	}	\
 }
 
 #elif (KERNEL_USE_DEBUG && KERNEL_AWARE_SIMULATION)
-//---------------------------------------------------------------------------
-#define __FILE_ID__			STR_UNDEFINED
 
 //---------------------------------------------------------------------------
 #define KERNEL_TRACE( x )	\
 { 	\
-    KernelAware::Trace( __FILE_ID__, __LINE__, x ); \
+    EMIT_DBG_STRING( x ); \
+    KernelAware::Trace( DBG_FILE, __LINE__ ); \
 };
 
 //---------------------------------------------------------------------------
 #define KERNEL_TRACE_1( x, arg1 ) \
 { 	\
-    KernelAware::Trace( __FILE_ID__, __LINE__, x, arg1 ); \
+    EMIT_DBG_STRING( x ); \
+    KernelAware::Trace( DBG_FILE, __LINE__, arg1 ); \
 }
 
 //---------------------------------------------------------------------------
 #define KERNEL_TRACE_2( x, arg1, arg2 ) \
 { 	\
-    KernelAware::Trace( __FILE_ID__, __LINE__, x, arg1, arg2 ); \
+    EMIT_DBG_STRING( x ); \
+    KernelAware::Trace( DBG_FILE, __LINE__, arg1, arg2 ); \
 }
 
 //---------------------------------------------------------------------------
@@ -114,7 +114,8 @@ See license.txt for more information
 {		\
     if( ( x ) == false ) \
     {	\
-        KernelAware::Trace( __FILE_ID__, __LINE__, STR_ASSERT_FAILED ); \
+        EMIT_DBG_STRING( "ASSERT FAILED" ); \
+        KernelAware::Trace( DBG_FILE, __LINE__ ); \
         Kernel::Panic( PANIC_ASSERT_FAILED ); \
     }	\
 }
@@ -124,8 +125,6 @@ See license.txt for more information
 // Note -- when kernel-debugging is disabled, we still have to define the
 // macros to ensure that the expressions compile (albeit, by elimination
 // during pre-processing).
-//---------------------------------------------------------------------------
-#define __FILE_ID__			0           //!< Null ID
 //---------------------------------------------------------------------------
 #define KERNEL_TRACE( x )               //!< Null Kernel Trace Macro
 //---------------------------------------------------------------------------
