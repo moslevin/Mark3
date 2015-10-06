@@ -19,7 +19,7 @@ device	= "/dev/ttyACM0"
 baud	= "57600"
 
 # List of unit tests to run
-test_list = ["ut_logic", "ut_thread", "ut_semaphore", "ut_mutex", "ut_eventflag", "ut_heap", "ut_message", "ut_timers", "ut_sanity", "ut_timer_precision"]
+test_list = ["ut_logic", "ut_thread", "ut_semaphore", "ut_mutex", "ut_eventflag", "ut_mailbox", "ut_notify", "ut_fixedheap", "ut_arena", "ut_message", "ut_timers", "ut_sanity", "ut_timer_precision"]
 
 # Run each test in succession
 for test in test_list:
