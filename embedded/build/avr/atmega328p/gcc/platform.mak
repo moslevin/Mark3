@@ -17,9 +17,5 @@ OBJCOPY=avr-objcopy
 OBJCOPY_FLAGS=-O ihex -R .eeprom -R .fuse -R .lock -R .signature
 OBJCOPY_DBG_FLAGS=--only-section=.logger -O binary --set-section-flags .logger=alloc --change-section-address .logger=0
 
-CLANG=true
-CLANGFLAGS=-D __AVR_ATmega328P__ --analyze -fdiagnostics-show-category=name -Weverything  
-
 CFLAGS+=-I/usr/lib/avr/include/
 CPPFLAGS+=-I/usr/lib/avr/include/
-CLANGFLAGS+=-I/usr/lib/avr/include/
