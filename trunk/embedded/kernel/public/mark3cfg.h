@@ -206,7 +206,7 @@ See license.txt for more information
     Provides extra logic for kernel debugging, and instruments the kernel 
     with extra asserts, and kernel trace functionality.
 */
-#define KERNEL_USE_DEBUG                 (1)
+#define KERNEL_USE_DEBUG                 (0)
 
 /*!
     Provides support for atomic operations, including addition, subtraction,
@@ -228,7 +228,7 @@ See license.txt for more information
     diagnostic functionality when Mark3-based applications are run on the
     flavr AVR simulator.
 */
-#define KERNEL_AWARE_SIMULATION          (1)
+#define KERNEL_AWARE_SIMULATION          (0)
 
 /*!
     Enabling this feature removes the necessity for the user to dedicate
