@@ -237,5 +237,5 @@ See license.txt for more information
     slight overhead to the context switch and scheduler, as a special case
     has to be taken into account.
 */
-#define KERNEL_USE_IDLE_FUNC             (0)
+#define KERNEL_USE_IDLE_FUNC             (1)
 #endif
