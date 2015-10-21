@@ -75,7 +75,7 @@ See license.txt for more information
 {		\
 	if( ( x ) == false ) \
 	{	\
-        EMIT_DBG_STRING( x ); \
+        EMIT_DBG_STRING( "ASSERT FAILED" ); \
         uint16_t au16Msg__[5];	\
         au16Msg__[0] = 0xACDC;	\
         au16Msg__[1] = DBG_FILE;	\

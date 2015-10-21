@@ -109,7 +109,7 @@ void WriteBuffer16::WriteVector( uint16_t **ppu16Buf_, uint16_t *pu16Len_, uint8
 
 			// Second part: after the rollover
 			u16TempLen = u16SegmentLength - u16TempLen;
-			pu16[A-Z]mp = m_pu16Data;
+            pu16Tmp = m_pu16Data;
 			for (i = 0; i < u16TempLen; i++)
 			{		
 				*pu16Tmp++ = *pu16Src++;
