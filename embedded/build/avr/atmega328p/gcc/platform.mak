@@ -3,8 +3,8 @@
 CC=avr-gcc
 CPP=avr-gcc
 
-CFLAGS=-funsigned-char -funsigned-bitfields -Os -g3 -fpack-struct -fshort-enums -Wall -Wno-unused-variable -c -mmcu=$(VARIANT) -I~/atmel/avr/include -DAVR -DK_ADDR=uint16_t -DK_WORD=uint8_t
-CPPFLAGS=-funsigned-char -funsigned-bitfields -Os -g3 -fpack-struct -ffunction-sections -fshort-enums -Wall -Wno-unused-variable -c -mmcu=$(VARIANT) -I~/atmel/avr/include -DAVR -DK_ADDR=uint16_t -DK_WORD=uint8_t
+CFLAGS=-funsigned-char -funsigned-bitfields -Os -g3 -fpack-struct -fshort-enums -Wall -c -mmcu=$(VARIANT) -I~/atmel/avr/include -DAVR -DK_ADDR=uint16_t -DK_WORD=uint8_t
+CPPFLAGS=-funsigned-char -funsigned-bitfields -Os -g3 -fpack-struct -ffunction-sections -fshort-enums -Wall -c -mmcu=$(VARIANT) -I~/atmel/avr/include -DAVR -DK_ADDR=uint16_t -DK_WORD=uint8_t
 
 LINK=avr-gcc
 LFLAGS= -Wl,--start-group -Wl,-lm  -Wl,--end-group -Wl,--gc-sections -mmcu=$(VARIANT) -I~/atmel/avr/include

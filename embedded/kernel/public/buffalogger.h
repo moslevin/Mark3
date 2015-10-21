@@ -31,4 +31,8 @@ See license.txt for more information
     const static volatile uint16_t line_id __attribute__((section (".logger"))) = __LINE__; \
     const static volatile uint16_t file_id __attribute__((section (".logger"))) = DBG_FILE; \
     const static volatile uint16_t cookie __attribute__((section (".logger"))) = 0xCAFE; \
+    (void)log_str; \
+    (void)line_id; \
+    (void)file_id; \
+    (void)cookie; \
 }
