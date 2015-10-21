@@ -46,7 +46,7 @@ void Mailbox::Init( void *pvBuffer_, uint16_t u16BufferSize_, uint16_t u16Elemen
     KERNEL_ASSERT(pvBuffer_);
 
     m_pvBuffer = pvBuffer_;
-    m_uselementSize = u16ElementSize_;
+    m_u16ElementSize = u16ElementSize_;
 
     m_u16Count = (u16BufferSize_ / u16ElementSize_);
     m_u16Free = m_u16Count;
@@ -64,6 +64,17 @@ void Mailbox::Init( void *pvBuffer_, uint16_t u16BufferSize_, uint16_t u16Elemen
     m_clSendSem.Init(0, 1);
 #endif
 }
+
+//---------------------------------------------------------------------------
+#if KERNEL_USE_AUTO_ALLOC
+Mailbox* Mailbox::Init( uint16_t u16BufferSize_, uint16_t u16ElementSize_ )
+{
+    Mailbox* pclNew = (Mailbox*)AutoAlloc::Allocate(sizeof(Mailbox));
+    void *pvBuffer = AutoAlloc::Allocate(u16BufferSize_);
+    pclNew->Init( pvBuffer, u16BufferSize_, u16ElementSize_ );
+    return pclNew;
+}
+#endif
 
 //---------------------------------------------------------------------------
 void Mailbox::Receive( void *pvData_ )
@@ -218,7 +229,7 @@ bool Mailbox::Send_i( const void *pvData_, bool bTail_)
     // Copy data to the claimed slot, and post the counting semaphore
     if (bRet)
     {
-        CopyData( pvData_, pvDst, m_uselementSize );
+        CopyData( pvData_, pvDst, m_u16ElementSize );
     }
 
     Scheduler::SetScheduler( bSchedState );
@@ -274,7 +285,7 @@ void Mailbox::Receive_i( const void *pvData_, bool bTail_ )
 
     CS_EXIT();
 
-    CopyData( pvSrc, pvData_, m_uselementSize );
+    CopyData( pvSrc, pvData_, m_u16ElementSize );
 
     Scheduler::SetScheduler( bSchedState );
 

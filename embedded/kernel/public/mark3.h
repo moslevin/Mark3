@@ -46,4 +46,6 @@ See license.txt for more information
 #include "kernelaware.h"
 
 #include "profile.h"
+#include "autoalloc.h"
+
 #endif

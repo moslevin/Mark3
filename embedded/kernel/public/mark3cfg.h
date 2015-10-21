@@ -228,7 +228,7 @@ See license.txt for more information
     diagnostic functionality when Mark3-based applications are run on the
     flavr AVR simulator.
 */
-#define KERNEL_AWARE_SIMULATION          (0)
+#define KERNEL_AWARE_SIMULATION          (1)
 
 /*!
     Enabling this feature removes the necessity for the user to dedicate
@@ -238,4 +238,17 @@ See license.txt for more information
     has to be taken into account.
 */
 #define KERNEL_USE_IDLE_FUNC             (1)
+
+/*!
+    This feature enables an additional set of APIs that allow for objects
+    to be created on-the-fly out of a special heap, without having to
+    explicitly allocate them (from stack, heap, or static memory). Note
+    that auto-alloc memory cannot be reclaimed.
+*/
+#define KERNEL_USE_AUTO_ALLOC            (1)
+
+#if KERNEL_USE_AUTO_ALLOC
+    #define AUTO_ALLOC_SIZE              (512)
+#endif
+
 #endif

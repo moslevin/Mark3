@@ -39,9 +39,27 @@ public:
      *
      * \param pvBuffer_         Pointer to the static buffer to use for the mailbox
      * \param u16BufferSize_    Size of the mailbox buffer, in bytes
-     * \param uselementSize_   Size of each envelope, in bytes
+     * \param u16ElementSize_   Size of each envelope, in bytes
      */
-    void Init( void *pvBuffer_, uint16_t u16BufferSize_, uint16_t uselementSize_ );
+    void Init( void *pvBuffer_, uint16_t u16BufferSize_, uint16_t u16ElementSize_ );
+
+#if KERNEL_USE_AUTO_ALLOC
+    /*!
+     * \brief Init
+     *
+     * Create and initialize the mailbox object prior to its use.  This must be
+     * called before any calls can be made to the object.  This version of the API
+     * alloctes the buffer space from the kernel's Auto-Allocation heap, which cannot
+     * be returned back.  As a result, this is only suitable for cases where the
+     * mailbox will be created once on startup, and persist for the duration of the
+     * system.
+     *
+     * \param u16BufferSize_    Size of the mailbox buffer, in bytes
+     * \param u16ElementSize_   Size of each envelope, in bytes
+     */
+    static Mailbox* Init( uint16_t u16BufferSize_, uint16_t u16ElementSize_ );
+
+#endif
 
     /*!
      * \brief Send
@@ -191,7 +209,7 @@ private:
     void *GetHeadPointer(void)
     {
         K_ADDR uAddr = (K_ADDR)m_pvBuffer;
-        uAddr += (K_ADDR)(m_uselementSize) * (K_ADDR)(m_u16Head);
+        uAddr += (K_ADDR)(m_u16ElementSize) * (K_ADDR)(m_u16Head);
         return (void*)uAddr;
     }
 
@@ -206,7 +224,7 @@ private:
     void *GetTailPointer(void)
     {
         K_ADDR uAddr = (K_ADDR)m_pvBuffer;
-        uAddr += (K_ADDR)(m_uselementSize) * (K_ADDR)(m_u16Tail);
+        uAddr += (K_ADDR)(m_u16ElementSize) * (K_ADDR)(m_u16Tail);
         return (void*)uAddr;
     }
 
@@ -340,7 +358,7 @@ private:
     uint16_t m_u16Count;         //!< Count of items in the mailbox
     volatile uint16_t m_u16Free; //!< Current number of free slots in the mailbox
 
-    uint16_t m_uselementSize;    //!< Size of the objects tracked in this mailbox
+    uint16_t m_u16ElementSize;    //!< Size of the objects tracked in this mailbox
     const void *m_pvBuffer;      //!< Pointer to the data-buffer managed by this mailbox
 
     Semaphore m_clRecvSem;       //!< Counting semaphore used to synchronize threads on the object

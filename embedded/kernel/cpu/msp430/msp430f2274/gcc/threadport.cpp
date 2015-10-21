@@ -52,7 +52,7 @@ void ThreadPort::InitStack(Thread *pclThread_)
 
     // clear the stack, and initialize it to a known-default value (easier
     // to debug when things go sour with stack corruption or overflow)
-    for (i = 0; i < pclThread_->m_u16StackSize; i++)
+    for (i = 0; i < pclThread_->m_u16StackSize / sizeof(uint16_t); i++)
     {
         pclThread_->m_pwStack[i] = 0xFFFF;
     }

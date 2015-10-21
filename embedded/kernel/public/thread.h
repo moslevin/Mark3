@@ -43,6 +43,7 @@ See license.txt for more information
 #include "scheduler.h"
 #include "threadport.h"
 #include "quantum.h"
+#include "autoalloc.h"
 
 //---------------------------------------------------------------------------
 /*!
@@ -82,7 +83,7 @@ public:
      *  placed in the stopped state, and are not scheduled until the 
      *  thread's start method has been invoked first.
      *  
-     *  \param paucStack_    Pointer to the stack to use for the thread
+     *  \param pwStack_    Pointer to the stack to use for the thread
      *  \param u16StackSize_  Size of the stack (in bytes)
      *  \param u8Priority_   Priority of the thread (0 = idle, 7 = max)
      *  \param pfEntryPoint_ This is the function that gets called when the
@@ -90,11 +91,36 @@ public:
      *  \param pvArg_        Pointer to the argument passed into the thread's
      *                       entrypoint function.
      */
-    void Init(K_WORD *paucStack_, 
+    void Init(K_WORD *pwStack_,
               uint16_t u16StackSize_,
               uint8_t u8Priority_,
               ThreadEntry_t pfEntryPoint_,
               void *pvArg_ );
+
+#if KERNEL_USE_AUTO_ALLOC
+    /*!
+    * \brief Init
+    *
+    * Create and initialize a new thread, using memory from the auto-allocated
+    * heap region to supply both the thread object and its stack.  The thread
+    * returned can then be started using the Start() method directly.  Note that
+    * the memory used to create this thread cannot be reclaimed, and so this API
+    * is only suitable for threads that exist for the duration of runtime.
+    *
+    * \param u16StackSize_  Size of the stack (in bytes)
+    * \param u8Priority_    Priority of the thread (0 = idle, 7 = max)
+    * \param pfEntryPoint_  This is the function that gets called when the
+    *                       thread is started
+    * \param pvArg_         Pointer to the argument passed into the thread's
+     *                      entrypoint function.
+     *
+    * \return Pointer to a newly-created thread.
+    */
+    static Thread* Init(uint16_t u16StackSize_,
+                                uint8_t u8Priority_,
+                                ThreadEntry_t pfEntryPoint_,
+                                void *pvArg_);
+#endif
 
     /*!
      *  \fn void Start()

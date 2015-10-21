@@ -97,6 +97,20 @@ void Thread::Init(  K_WORD *pwStack_,
     CS_EXIT();
 }
 
+#if KERNEL_USE_AUTO_ALLOC
+//---------------------------------------------------------------------------
+Thread* Thread::Init(uint16_t u16StackSize_,
+                            uint8_t u8Priority_,
+                            ThreadEntry_t pfEntryPoint_,
+                            void *pvArg_)
+{
+    Thread *pclNew    = (Thread*)AutoAlloc::Allocate(sizeof(Thread));
+    K_WORD *pwStack   = (K_WORD*)AutoAlloc::Allocate(u16StackSize_);
+    pclNew->Init(pwStack, u16StackSize_, u8Priority_, pfEntryPoint_, pvArg_ );
+    return pclNew;
+}
+#endif
+
 //---------------------------------------------------------------------------
 void Thread::Start(void)
 {

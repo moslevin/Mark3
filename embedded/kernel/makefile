@@ -9,6 +9,7 @@ LIBNAME=mark3
 
 #this is the list of the objects required to build the kernel
 CPP_SOURCE= \
+	autoalloc.cpp \
 	blocking.cpp \
 	driver.cpp \
 	eventflag.cpp \

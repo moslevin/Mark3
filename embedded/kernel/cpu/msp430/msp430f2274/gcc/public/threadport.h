@@ -37,7 +37,7 @@ extern volatile uint16_t g_u16SR;
 
 //---------------------------------------------------------------------------
 //! Macro to find the top of a stack given its size and top address
-#define TOP_OF_STACK(x, y)        (K_ADDR*) ( ((uint16_t)x) + ((y-1) * sizeof(K_WORD)))
+#define TOP_OF_STACK(x, y)        (K_ADDR*) ( ((uint16_t)x) + (y - sizeof(K_WORD)) )
 //! Push a value y to the stack pointer x and decrement the stack pointer
 #define PUSH_TO_STACK(x, y)        *x = y; x--;
 
