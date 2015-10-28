@@ -35,16 +35,29 @@ See license.txt for more information
 #define KERNEL_TRACE( x )	\
 { 	\
     EMIT_DBG_STRING( x ); \
-    uint16_t au16Msg__[5]; \
+    uint16_t au16Msg__[4]; \
     au16Msg__[0] = 0xACDC;  \
     au16Msg__[1] = DBG_FILE; \
     au16Msg__[2] = __LINE__; \
     au16Msg__[3] = TraceBuffer::Increment() ; \
-    TraceBuffer::Write(au16Msg__, 5); \
+    TraceBuffer::Write(au16Msg__, 4); \
 };
 
 //---------------------------------------------------------------------------
 #define KERNEL_TRACE_1( x, arg1 ) \
+{ 	\
+    EMIT_DBG_STRING( x ); \
+    uint16_t au16Msg__[5]; \
+    au16Msg__[0] = 0xACDC;  \
+    au16Msg__[1] = DBG_FILE; \
+    au16Msg__[2] = __LINE__; \
+    au16Msg__[3] = TraceBuffer::Increment(); \
+    au16Msg__[4] = arg1; \
+    TraceBuffer::Write(au16Msg__, 5); \
+}
+
+//---------------------------------------------------------------------------
+#define KERNEL_TRACE_2( x, arg1, arg2 ) \
 { 	\
     EMIT_DBG_STRING( x ); \
     uint16_t au16Msg__[6]; \
@@ -53,21 +66,8 @@ See license.txt for more information
     au16Msg__[2] = __LINE__; \
     au16Msg__[3] = TraceBuffer::Increment(); \
     au16Msg__[4] = arg1; \
-    TraceBuffer::Write(au16Msg__, 6); \
-}
-
-//---------------------------------------------------------------------------
-#define KERNEL_TRACE_2( x, arg1, arg2 ) \
-{ 	\
-    EMIT_DBG_STRING( x ); \
-    uint16_t au16Msg__[7]; \
-    au16Msg__[0] = 0xACDC;  \
-    au16Msg__[1] = DBG_FILE; \
-    au16Msg__[2] = __LINE__; \
-    au16Msg__[3] = TraceBuffer::Increment(); \
-    au16Msg__[4] = arg1; \
     au16Msg__[5] = arg2; \
-    TraceBuffer::Write(au16Msg__, 7); \
+    TraceBuffer::Write(au16Msg__, 6); \
 }
 
 //---------------------------------------------------------------------------
@@ -76,12 +76,12 @@ See license.txt for more information
 	if( ( x ) == false ) \
 	{	\
         EMIT_DBG_STRING( "ASSERT FAILED" ); \
-        uint16_t au16Msg__[5];	\
+        uint16_t au16Msg__[4];	\
         au16Msg__[0] = 0xACDC;	\
         au16Msg__[1] = DBG_FILE;	\
         au16Msg__[2] = __LINE__; \
         au16Msg__[3] = TraceBuffer::Increment(); \
-        TraceBuffer::Write(au16Msg__, 5); \
+        TraceBuffer::Write(au16Msg__, 4); \
         Kernel::Panic(PANIC_ASSERT_FAILED); \
 	}	\
 }
