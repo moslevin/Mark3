@@ -1,4 +1,5 @@
 import struct
+import serial
 
 class buffalogger:
     def __init__(self,symfile,header):
@@ -12,6 +13,8 @@ class buffalogger:
         self.header = ""
         self.filemap = list()
         self.stringmap = list()
+        self.decodearray = ""
+        self.syncidx = 0
 
         # Load the symbols file
         obj = open(self.symfile, "r")
@@ -45,6 +48,10 @@ class buffalogger:
             # Add the tuple (file #, filename) to the list
             self.filemap.append((file_num, name_str))
 
+            dat = { "filename" : name_str, "file_num" : file_num }
+
+            self.stringmap.append( (dat) )
+
         # Parse through the symbol file and extract debug strings with file number/name,
         # and line numbers.
         idx = 0
@@ -64,18 +71,104 @@ class buffalogger:
         while idx < len(self.str):
             if (self.str[idx]) == b'\x00':
                 format_str = self.str[start_idx:idx]
-                pstate = 1
+
+                # Count the number of arguments this string takes.  Limited to a small
+                # subset of printf-like formatters
+                arg_count = 0
+                arg_count += format_str.count("%d");
+                arg_count += format_str.count("%x");
+                arg_count += format_str.count("%i");
+                arg_count += format_str.count("%u");
 
                 (line_no, file_no, token) = struct.unpack('<HHH', self.str[idx+1:idx+7])
 
                 pstate = 0
                 start_idx = idx + 7
                 idx += 7
-                self.stringmap.append( (self.filemap[file_no], line_no, format_str) )
+
+                dat = { str(line_no) : (format_str, arg_count) }
+                print dat
+                self.stringmap[file_no].update( (dat) )
             else:
                 idx += 1
 
-    def decode(data):
+    def decode(self,data):
+        # Add the data to the decoder's temporary decode buffer
+        self.decodearray += data
+
+        # Try to find the first frame-sync
+        framesync = "\xDC\xAC"
+        matchidx = self.decodearray.find(framesync)
+
+        # No match, try again later
+        if matchidx == -1:
+            # If the decoder array is getting too big for a valid string,
+            # abandon the current buffer.
+            if len(self.decodearray) > 64:
+                self.decodearray = ""
+            return 0
+
+        # Found a first-packet match, prune preceding whitespace
+        if (matchidx != 0):
+            self.decodearray = self.decodearray[matchidx:]
+
+        # Wait until we have a complete header
+        if (len(self.decodearray) < 8):
+            return 0
+
+        print len(self.decodearray[0:8])
+        # Check for the *next* framesync
+        (token, fileno, lineno, syncidx) = struct.unpack('<HHHH', self.decodearray[0:8])
+
+        # Verify that the file number is valid - if not, then we're likely still in an
+        # unsynchronized state
+        if (fileno > len(self.filemap)):
+            self.decodearray = ""
+            return 0
+
+        # Decode the line number/string/argument count
+        line_str = ""
+        arg_count = 0
+        if str(lineno) in self.stringmap[fileno]:
+            # Read the number of arguments for the given line number
+            (line_str, arg_count) = (self.stringmap[fileno])[str(lineno)]
+        else:
+            # The string doesn't exist, assume an error in encoding
+            self.decodearray = ""
+            return 0
+
+        # Verify that we've reached the end of the packet + start of next sync.
+        packet_len = (8 + (2 * (arg_count)))
+        next_syncidx = (8 + (2 * (arg_count + 1)))
+        if len(self.decodearray) < next_syncidx:
+            return 0
+
+        # Verify that the start of the next packet is where it should be
+        matchidx = self.decodearray[next_syncidx:(next_syncidx + 2)]
+        if -1 == matchidx:
+            # Nope.  Error in decode.
+            self.decodearray = ""
+            return 0
+
+        # Check to see if we have continuous logs
+        # if ((self.syncidx + 1) % 65536) != syncidx:
+            # Log was unsynchronized - restart count, but ignore this packet
+            #self.syncidx = syncidx
+            #  return 0
+
+        self.syncidx = syncidx
+
+        # Packet decoded OK, parse out the arguments.
+        args = list()
+        for idx in arg_count:
+            args.append( struct.unpack('<H', self.decodearray[(8+(idx*2)):(10+(idx*2))]) )
+
+        ###
+        ### -- Construct the output string -- #
+        ###
+
+        # Discard the packet we just finished
+        self.decodearray = self.decodearray[next_syncidx:]
 
 
 # Testing...
@@ -84,3 +177,5 @@ headerfile = "/home/vm/mark3/trunk/embedded/kernel/public/dbg_file_list.h"
 
 logger = buffalogger(symfile, headerfile)
 print logger.stringmap
+
+# logger.decode("sdfasdf\xDC\xACasdfasdf")
