@@ -81,14 +81,6 @@ class buffalogger:
 
                 (line_no, file_no, token) = struct.unpack('<HHH', self.str[idx+1:idx+7])
 
-                # Count the number of arguments this string takes.  Limited to a small
-                # subset of printf-like formatters
-                arg_count = 0
-                arg_count += format_str.count("%d");
-                arg_count += format_str.count("%x");
-                arg_count += format_str.count("%i");
-                arg_count += format_str.count("%u");
-
                 # Parse out indexes at which to insert the arguments in the format
                 searchstrs = list()
                 searchstrs.append("%d")
