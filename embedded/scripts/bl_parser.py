@@ -71,7 +71,6 @@ class buffalogger:
         while idx < len(self.str):
             if (self.str[idx]) == b'\x00':
                 format_str = self.str[start_idx:idx]
-
                 # Count the number of arguments this string takes.  Limited to a small
                 # subset of printf-like formatters
                 arg_count = 0
@@ -82,11 +81,40 @@ class buffalogger:
 
                 (line_no, file_no, token) = struct.unpack('<HHH', self.str[idx+1:idx+7])
 
-                pstate = 0
+                # Count the number of arguments this string takes.  Limited to a small
+                # subset of printf-like formatters
+                arg_count = 0
+                arg_count += format_str.count("%d");
+                arg_count += format_str.count("%x");
+                arg_count += format_str.count("%i");
+                arg_count += format_str.count("%u");
+
+                # Parse out indexes at which to insert the arguments in the format
+                searchstrs = list()
+                searchstrs.append("%d")
+                searchstrs.append("%i")
+                searchstrs.append("%u")
+                searchstrs.append("%x")
+
+                # Find all of the indexes and map the index to the format type
+                replace_idx = list()
+                for searchstr in searchstrs:
+                    tmpstr = format_str
+                    tmpidx = tmpstr.find(searchstr)
+                    while tmpidx > -1:
+                        replace_idx.append((tmpidx, searchstr))
+                        findidx = tmpstr[tmpidx+2:].find(searchstr)
+                        if findidx != -1:
+                            tmpidx += findidx + 2
+                        else:
+                            tmpidx = findidx
+                # Sort the substring items by index
+                replace_idx.sort()
+
                 start_idx = idx + 7
                 idx += 7
 
-                dat = { str(line_no) : (format_str, arg_count) }
+                dat = { str(line_no) : (format_str, replace_idx) }
                 print dat
                 self.stringmap[file_no].update( (dat) )
             else:
@@ -94,7 +122,8 @@ class buffalogger:
 
     def decode(self,data):
         # Add the data to the decoder's temporary decode buffer
-        self.decodearray += data
+        if (data != ""):
+            self.decodearray += data
 
         # Try to find the first frame-sync
         framesync = "\xDC\xAC"
@@ -116,7 +145,6 @@ class buffalogger:
         if (len(self.decodearray) < 8):
             return 0
 
-        print len(self.decodearray[0:8])
         # Check for the *next* framesync
         (token, fileno, lineno, syncidx) = struct.unpack('<HHHH', self.decodearray[0:8])
 
@@ -128,16 +156,17 @@ class buffalogger:
 
         # Decode the line number/string/argument count
         line_str = ""
-        arg_count = 0
+        arg_data = list();
         if str(lineno) in self.stringmap[fileno]:
             # Read the number of arguments for the given line number
-            (line_str, arg_count) = (self.stringmap[fileno])[str(lineno)]
+            (line_str, arg_data) = (self.stringmap[fileno])[str(lineno)]
         else:
             # The string doesn't exist, assume an error in encoding
             self.decodearray = ""
             return 0
 
         # Verify that we've reached the end of the packet + start of next sync.
+        arg_count = len(arg_data)
         packet_len = (8 + (2 * (arg_count)))
         next_syncidx = (8 + (2 * (arg_count + 1)))
         if len(self.decodearray) < next_syncidx:
@@ -160,16 +189,27 @@ class buffalogger:
 
         # Packet decoded OK, parse out the arguments.
         args = list()
-        for idx in arg_count:
+        outstr = line_str
+
+        for idx in range(0,arg_count):
             args.append( struct.unpack('<H', self.decodearray[(8+(idx*2)):(10+(idx*2))]) )
 
-        ###
-        ### -- Construct the output string -- #
-        ###
+        # Construct the output string using the read arguments and precomputed insert points
+        if arg_count:
+            final_str = outstr[0:arg_data[0][0]]
+            final_str += str(args[0][0])
+            for arg in range(1, arg_count-1):
+                final_str = outstr[(replace_idx[arg-1]+2):arg_data[arg][0]]
+                final_str += str(args[arg][0])
+            final_str += outstr[arg_data[arg_count-1][0]+2:]
+        else:
+            final_str = outstr;
+
+        print "%d: [%s:%d] %s" % (syncidx, (self.stringmap[fileno])['filename'], fileno, final_str)
 
         # Discard the packet we just finished
-        self.decodearray = self.decodearray[next_syncidx:]
-
+        self.decodearray = self.decodearray[next_syncidx-2:]
+        return 1
 
 # Testing...
 symfile = "/home/vm/mark3/trunk/embedded/stage/dbg/avr/atmega328p/gcc/ut_thread.dbg"
@@ -178,4 +218,9 @@ headerfile = "/home/vm/mark3/trunk/embedded/kernel/public/dbg_file_list.h"
 logger = buffalogger(symfile, headerfile)
 print logger.stringmap
 
-# logger.decode("sdfasdf\xDC\xACasdfasdf")
+infile = open("test.dat", "r")
+filedat = infile.read()
+
+working = logger.decode(filedat)
+while working == 1:
+    working = logger.decode("")
