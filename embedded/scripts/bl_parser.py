@@ -155,6 +155,7 @@ class buffalogger:
         else:
             # The string doesn't exist, assume an error in encoding
             self.decodearray = ""
+            print "Encode error: %d %d, %d" %(syncidx, fileno, lineno)
             return 0
 
         # Verify that we've reached the end of the packet + start of next sync.
@@ -169,6 +170,7 @@ class buffalogger:
         if -1 == matchidx:
             # Nope.  Error in decode.
             self.decodearray = ""
+            print "ERROR IN DECODE"
             return 0
 
         # Check to see if we have continuous logs
@@ -204,15 +206,16 @@ class buffalogger:
         return 1
 
 # Testing...
-symfile = "/home/vm/mark3/trunk/embedded/stage/dbg/avr/atmega328p/gcc/ut_thread.dbg"
+symfile = "/home/vm/mark3/trunk/embedded/stage/dbg/avr/atmega328p/gcc/buffalogger.dbg"
 headerfile = "/home/vm/mark3/trunk/embedded/kernel/public/dbg_file_list.h"
 
 logger = buffalogger(symfile, headerfile)
 print logger.stringmap
 
-infile = open("test.dat", "r")
+infile = open("test.txt", "r")
 filedat = infile.read()
 
-working = logger.decode(filedat)
-while working == 1:
-    working = logger.decode("")
+idx = 0
+while idx < len(filedat):
+    working = logger.decode(filedat[idx])
+    idx += 1
