@@ -26,11 +26,12 @@ See license.txt for more information
 
 #include "kerneltypes.h"
 #include "mark3cfg.h"
-#include "writebuf16.h"
 
 #if KERNEL_USE_DEBUG && !KERNEL_AWARE_SIMULATION
 
-#define TRACE_BUFFER_SIZE           (16)
+#define TRACE_BUFFER_SIZE           (160)
+
+typedef void (*TraceBufferCallback_t)(uint16_t *pu16Source_, uint16_t u16Len_, bool bPingPong_);
 
 /*!
  *  Global tracebuffer class declaration
@@ -44,16 +45,13 @@ public:
      *  Initialize the tracebuffer before use.      
      */
     static void Init();
-    
+
     /*!
-     *  \fn static uint16_t Increment();
-     *  
-     *  Increment the tracebuffer's atomically-incrementing index.
-     *  
-     *  \return a 16-bit index
+     * \brief Increment
      */
-    static uint16_t Increment();
-    
+    static uint16_t Increment(void)
+            { return m_u16SyncNumber++; }
+
     /*!
      *  \fn static void Write( uint16_t *pu16Data_, uint16_t u16Size_ )
      *  
@@ -65,19 +63,19 @@ public:
     static void Write( uint16_t *pu16Data_, uint16_t u16Size_ );
     
     /*! 
-     *  \fn void SetCallback( WriteBufferCallback pfCallback_ )
+     *  \fn static void SetCallback( WriteBufferCallback pfCallback_ )
      *  
      *  Set a callback function to be triggered whenever the tracebuffer
      *  hits the 50% point, or rolls over.
      *  
      *  \param pfCallback_ Callback to assign
      */ 
-    void SetCallback( WriteBufferCallback pfCallback_ )
-        { m_clBuffer.SetCallback( pfCallback_ ); }
+    static void SetCallback( TraceBufferCallback_t pfCallback_ )
+        { m_pfCallback = pfCallback_; }
 private:
-
-    static WriteBuffer16 m_clBuffer;        //!< Object used to implement the tracebuffer
-    static volatile uint16_t m_u16Index;        //!< Current print index    
+    static TraceBufferCallback_t m_pfCallback;
+    static uint16_t m_u16SyncNumber;   //!< Current packet synchronization number
+    static uint16_t m_u16Index;        //!< Current buffer index
     static uint16_t m_au16Buffer[ (TRACE_BUFFER_SIZE / sizeof( uint16_t )) ];   //!< Data buffer
 };
 
