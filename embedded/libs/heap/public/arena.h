@@ -26,36 +26,8 @@ See license.txt for more information
 #include "heapblock.h"
 
 //---------------------------------------------------------------------------
-#define ARENA_LIST_COUNT        (5)
-
-//---------------------------------------------------------------------------
-#define ARENA_SIZE_0            (4)
-#define ARENA_SIZE_1            (16)
-#define ARENA_SIZE_2            (32)
-#define ARENA_SIZE_3            (64)
-#define ARENA_SIZE_4            (128)
-#define ARENA_SIZE_5            (256)
-#define ARENA_SIZE_6            (512)
-#define ARENA_SIZE_7            (1024)
-#define ARENA_SIZE_8            (2048)
-#define ARENA_SIZE_9            (4096)
-#define ARENA_SIZE_10           (8192)
-#define ARENA_SIZE_11           (16384)
-
-//---------------------------------------------------------------------------
-#define MAX_ARENA_SIZE          (ARENA_SIZE_4)
-
-//---------------------------------------------------------------------------
-#if (PTR_SIZE == 2)
-#define ARENA_EXHAUSTED         ((K_ADDR)0xC0FE)
-#elif (PTR_SIZE == 4)
-#define ARENA_EXHAUSTED         ((K_ADDR)0xC0FFEEEE)
-#elif (PTR_SIZE == 8)
-#define ARENA_EXHAUSTED         ((K_ADDR)0xC0FFEEEEC0FFEEEE)
-#endif
-
-//---------------------------------------------------------------------------
-#define MIN_ALLOC_SIZE          (sizeof(HeapBlock) + ARENA_SIZE_0)
+#define ARENA_EXHAUSTED         (255)
+#define ARENA_FULL              (254)
 
 //---------------------------------------------------------------------------
 /*!
@@ -82,7 +54,7 @@ public:
      * \param usize_ Size of the heap memory blob in bytes
      * \return
      */
-    void Init( void *pvBuffer_, K_ADDR usize_ );
+    void Init( void *pvBuffer_, K_ADDR u32Size_, K_ADDR *au32Sizes_, uint8_t u8NumSizes_ );
 
     /*!
      * \brief Allocate
@@ -120,7 +92,7 @@ private:
      * \param usize_ Size of the object to check
      * \return INdex representing the arena/arena-size
      */
-    uint32_t ListForSize( K_ADDR usize_ );
+    uint8_t ListForSize( K_ADDR usize_ );
 
     /*!
      * \brief ListToSatisfy
@@ -131,10 +103,11 @@ private:
      * \param usize_ Size of data to check
      * \return Index representing the arena/arena-size, or 0xF...F on invalid
      */
-    uint32_t ListToSatisfy( K_ADDR usize_ );
+    uint8_t ListToSatisfy( K_ADDR usize_ );
 
-    ArenaList  m_aclBlockList[ARENA_LIST_COUNT + 1];    //!< Arena linked-list data
-    void      *m_pvData;    //!< Pointer to the raw memory blob managed by this object as a heap.
+    uint8_t    m_u8LargestList;    //!< Index of the largest arena
+    ArenaList  *m_aclBlockList;    //!< Arena linked-list data
+    void       *m_pvData;          //!< Pointer to the raw memory blob managed by this object as a heap.
 };
 
 #endif

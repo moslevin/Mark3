@@ -7,7 +7,7 @@ information for user comparison, as well as to ensure that regressions are not
 being introduced into the system.
 
 \section PROFILEATE Date Performed 
-Fri Sep 18 21:18:25 EDT 2015
+Sat Nov  7 19:36:14 EST 2015
 \section COMPVER Compiler Information 
 The kernel and test code used in these results were built using the following compiler:
 Using built-in specs.
@@ -19,16 +19,16 @@ Thread model: single
 gcc version 4.8.2 (GCC) 
 \endcode
 \section PROFRES Profiling Results
-    - Semaphore Initialization: 40 cycles (averaged over 127 iterations)
-    - Semaphore Post (uncontested): 103 cycles (averaged over 127 iterations)
-    - Semaphore Pend (uncontested): 63 cycles (averaged over 127 iterations)
-    - Semaphore Flyback Time (Contested Pend): 1679 cycles (averaged over 127 iterations)
-    - Mutex Init: 215 cycles (averaged over 127 iterations)
-    - Mutex Claim: 247 cycles (averaged over 127 iterations)
-    - Mutex Release: 159 cycles (averaged over 127 iterations)
-    - Thread Initialize: 8367 cycles (averaged over 126 iterations)
-    - Thread Start: 831 cycles (averaged over 126 iterations)
-    - Context Switch: 175 cycles (averaged over 126 iterations)
-    - Thread Schedule: 71 cycles (averaged over 126 iterations)
+    - Semaphore Initialization: 40 cycles (averaged over 169 iterations)
+    - Semaphore Post (uncontested): 103 cycles (averaged over 169 iterations)
+    - Semaphore Pend (uncontested): 63 cycles (averaged over 169 iterations)
+    - Semaphore Flyback Time (Contested Pend): 1679 cycles (averaged over 169 iterations)
+    - Mutex Init: 215 cycles (averaged over 169 iterations)
+    - Mutex Claim: 247 cycles (averaged over 169 iterations)
+    - Mutex Release: 159 cycles (averaged over 169 iterations)
+    - Thread Initialize: 8367 cycles (averaged over 169 iterations)
+    - Thread Start: 831 cycles (averaged over 169 iterations)
+    - Context Switch: 175 cycles (averaged over 168 iterations)
+    - Thread Schedule: 71 cycles (averaged over 168 iterations)
     . 
 */

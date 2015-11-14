@@ -13,9 +13,9 @@ See license.txt for more information
 ===========================================================================*/
 /*!
     \file mark3cfg.h
-
+    
     \brief Mark3 Kernel Configuration
-
+    
     This file is used to configure the kernel for your specific application
     in order to provide the optimal set of features for a given use case.
 
@@ -23,7 +23,7 @@ See license.txt for more information
     you can usually find a sweet spot between features and resource usage
     by picking and choosing features a-la-carte.  This config file is
     written in an "interactive" way, in order to minimize confusion about
-    what each option provides, and to make dependencies obvious.
+    what each option provides, and to make dependencies obvious.   
 */
 
 #ifndef __MARK3CFG_H__
@@ -32,10 +32,10 @@ See license.txt for more information
 /*!
     The following options is related to all kernel time-tracking.
 
-    -timers provide a way for events to be periodically triggered in a
+    -timers provide a way for events to be periodically triggered in a 
      lightweight manner.  These can be periodic, or one-shot.
 
-    -Thread Quantum (used for round-robin scheduling) is dependent on this
+    -Thread Quantum (usedd for round-robin scheduling) is dependent on this
      module, as is Thread Sleep functionality.
 */
 #define KERNEL_USE_TIMERS                (1)
@@ -82,13 +82,13 @@ See license.txt for more information
 /*!
     Do you want to enable time quanta?  This is useful when you want to have
     tasks in the same priority group share time in a controlled way.  This
-    allows equal tasks to use unequal amounts of the CPU, which is a great
+    allows equal tasks to use unequal amounts of the CPU, which is a great 
     way to set up CPU budgets per thread in a round-robin scheduling system.
-    If enabled, you can specify a number of ticks that serves as the default
-    time period (quantum).  Unless otherwise specified, every thread in a
+    If enabled, you can specify a number of ticks that serves as the default 
+    time period (quantum).  Unless otherwise specified, every thread in a 
     priority will get the default quantum.
 */
-#if KERNEL_USE_TIMERS
+#if KERNEL_USE_TIMERS    
     #define KERNEL_USE_QUANTUM           (1)
 #else
     #define KERNEL_USE_QUANTUM           (0)
@@ -107,9 +107,9 @@ See license.txt for more information
 #define KERNEL_USE_NOTIFY                (1)
 
 /*!
-    Do you want the ability to use counting/binary semaphores for thread
+    Do you want the ability to use counting/binary semaphores for thread 
     synchronization?  Enabling this features provides fully-blocking semaphores
-    and enables all API functions declared in semaphore.h.  If you have to
+    and enables all API functions declared in semaphore.h.  If you have to 
     pick one blocking mechanism, this is the one to choose.
 */
 #define KERNEL_USE_SEMAPHORE             (1)
@@ -176,37 +176,60 @@ See license.txt for more information
 #endif
 
 /*!
-    Enabling device drivers provides a posix-like filesystem interface for
+    Enabling device drivers provides a posix-like filesystem interface for 
     peripheral device drivers.
 */
 #define KERNEL_USE_DRIVER                (1)
 
 /*!
     Provide Thread method to allow the user to set a name for each
-    thread in the system.  Adds a const K_CHAR* pointer to the size
+    thread in the system.  Adds a const char* pointer to the size
     of the thread object.
 */
 #define KERNEL_USE_THREADNAME            (0)
 
 /*!
     Provide extra Thread methods to allow the application to create
-    (and more importantly destroy) threads at runtime.  Useful for
+    (and more importantly destroy) threads at runtime.  useful for
     designs implementing worker threads, or threads that can be restarted
     after encountering error conditions.
 */
 #define KERNEL_USE_DYNAMIC_THREADS       (1)
 
 /*!
-    Provides extra classes for profiling the performance of code.  Useful
+    Provides extra classes for profiling the performance of code.  useful
     for debugging and development, but uses an additional hardware timer.
 */
 #define KERNEL_USE_PROFILER              (1)
 
 /*!
-    Provides extra logic for kernel debugging, and instruments the kernel
+    Provides extra logic for kernel debugging, and instruments the kernel 
     with extra asserts, and kernel trace functionality.
 */
 #define KERNEL_USE_DEBUG                 (0)
+
+#if KERNEL_USE_DEBUG
+    /*!
+        Set this to 1 to enable very chatty kernel logging.  Since most
+        important things in the kernel emit logs, a large log-buffer and
+        fast output are required in order to keep up.  This is a pretty
+        advanced power-user type feature, so it's disabled by default.
+     */
+    #define KERNEL_ENABLE_LOGGING        (0)
+
+    /*!
+        This enables a set of logging macros similar to the kernel-logging
+        macros; however, these can be enabled or disabled independently.
+        This allows for user-code to benefit from the built-in kernel
+        logging macros without having to account for the super-high-volume
+        of logs generated by kernel code.
+     */
+    #define KERNEL_ENABLE_USER_LOGGING   (1)    //!< 1 to enable logging outside of kernel code
+#else
+    #define KERNEL_ENABLE_LOGGING        (0)
+    #define KERNEL_ENABLE_USER_LOGGING   (0)
+#endif
+
 
 /*!
     Provides support for atomic operations, including addition, subtraction,
@@ -238,4 +261,17 @@ See license.txt for more information
     has to be taken into account.
 */
 #define KERNEL_USE_IDLE_FUNC             (1)
+
+/*!
+    This feature enables an additional set of APIs that allow for objects
+    to be created on-the-fly out of a special heap, without having to
+    explicitly allocate them (from stack, heap, or static memory). Note
+    that auto-alloc memory cannot be reclaimed.
+*/
+#define KERNEL_USE_AUTO_ALLOC            (0)
+
+#if KERNEL_USE_AUTO_ALLOC
+    #define AUTO_ALLOC_SIZE              (512)
+#endif
+
 #endif

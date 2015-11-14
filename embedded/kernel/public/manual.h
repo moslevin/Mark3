@@ -1769,7 +1769,7 @@ See license.txt for more information
         kernel       Basic Mark3 Components (the focus of this manual)			
             cpu      CPU-specific porting code
         scripts      Scripts used to simplify build, documentation, and profiling
-        services     Utility code and services, extended system features
+        libs         Utility code and libraries- filesystems, graphics/GUI, etc.
         stage        Staging directory, where the build system places artifacts
         tests        Unit tests, written as C/C++ applications
         util         .net-based utils: font conversion, terminal, programmer, and configuration

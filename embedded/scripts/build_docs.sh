@@ -5,13 +5,13 @@ root_dir=`pwd`
 echo "Root_Dir" ${root_dir}
 cd ./kernel
 make source ROOT_DIR=${root_dir}/
-cd ..
-cd ./services
+cd ${root_dir}
+cd ./libs
 make source ROOT_DIR=${root_dir}/
-cd ..
+cd ${root_dir}
 cd ./docs
 doxygen ./Doxyfile
-cd ..
+cd ${root_dir}
 cd ./docs/output/latex/
 pdflatex refman
 makeindex refman

@@ -55,6 +55,10 @@ HeapBlock *HeapBlock::Split( K_ADDR usize_ )
     pclRightBlock->SetLeftSibling( this );
     pclRightBlock->SetRightSibling( GetRightSibling() );
 
+    if (GetRightSibling()) {
+        GetRightSibling()->SetLeftSibling( pclRightBlock );
+    }
+
     SetRightSibling( pclRightBlock );
 
     return pclRightBlock;

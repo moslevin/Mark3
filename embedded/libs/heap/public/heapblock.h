@@ -21,9 +21,11 @@ See license.txt for more information
 #ifndef __HEAPBLOCK_H__
 #define __HEAPBLOCK_H__
 
+#include <stdlib.h>
 #include "mark3cfg.h"
 #include "kerneltypes.h"
 #include "mark3.h"
+#include "ll.h"
 //---------------------------------------------------------------------------
 #if defined(AVR) || defined (MSP430)
   #define PTR_SIZE	(2)
@@ -44,9 +46,6 @@ See license.txt for more information
 #else 
   #error PTR_SIZE invalid!
 #endif
-
-//---------------------------------------------------------------------------
-
 
 //---------------------------------------------------------------------------
 #define ROUND_UP(x)                  ((((K_ADDR)x) + (PTR_SIZE-1)) & ~(PTR_SIZE-1))
@@ -84,7 +83,7 @@ class HeapBlock : public LinkListNode
 {
 
 public:
-
+    void* operator new (size_t sz, void* pv) { return (HeapBlock*)pv; };
     /*!
      * \brief RootInit
      *

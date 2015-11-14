@@ -39,4 +39,13 @@ See license.txt for more information
 #include "./inc/message.h"
 #include "./inc/notify.h"
 #include "./inc/mailbox.h"
+
+#include "./inc/atomic.h"
+#include "./inc/driver.h"
+
+#include "./inc/kernelaware.h"
+
+#include "./inc/profile.h"
+#include "./inc/autoalloc.h"
+
 #endif

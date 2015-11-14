@@ -42,6 +42,11 @@ case ${ARCH} in
         COMPILER_BIN="arm-none-eabi-gcc"
         ARCH_STRING="ARM Cortex-M0"
     ;;
+    "msp430")
+        SIZE_BIN="msp430-size"
+        COMPILER_BIN="msp430-gcc"
+        ARCH_STRING="TI MSP430"
+    ;;
     *)
     ;;
 esac
@@ -165,9 +170,15 @@ for LINE in ${MARK3_DATA}; do
 
     MODNAME=""
     case ${MODULE} in
+        "autoalloc.cpp.o")
+            #Ruler:  ----5---10----5---20----5---30----5---40----5---50----5---60"
+            MODNAME="Allocate-once Heap.............................."
+            FEATURE_SIZE=$(( FEATURE_SIZE+${DEC} ))
+            ;;
         "atomic.cpp.o")
             #Ruler:  ----5---10----5---20----5---30----5---40----5---50----5---60"
             MODNAME="Atomic Operations..............................."
+            FEATURE_SIZE=$(( FEATURE_SIZE+${DEC} ))
             ;;
         "blocking.cpp.o")
             #Ruler:  ----5---10----5---20----5---30----5---40----5---50----5---60"
@@ -284,7 +295,7 @@ for LINE in ${MARK3_DATA}; do
             MODNAME="${ARCH_STRING} - Kernel Timer Implementation.........."
             PORT_SIZE=$(( PORT_SIZE+${DEC} ))
             ;;
-        "kprofile.cpp.o")
+        "kernelprofile.cpp.o")
             #Ruler:  ----5---10----5---20----5---30----5---40----5---50----5---60"
             MODNAME="${ARCH_STRING} - Profiling Timer Implementation......."
             PORT_SIZE=$(( PORT_SIZE+${DEC} ))

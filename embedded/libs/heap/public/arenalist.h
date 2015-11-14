@@ -24,6 +24,7 @@ See license.txt for more information
 #include <stdint.h>
 #include "heapblock.h"
 #include "ll.h"
+#include <stdlib.h>
 
 //---------------------------------------------------------------------------
 /*!
@@ -39,6 +40,7 @@ See license.txt for more information
 class ArenaList : private DoubleLinkList
 {
 public:
+    void* operator new (size_t sz, void* pv) { return (ArenaList*)pv; };
     /*!
      * \brief Init
      *
@@ -129,7 +131,7 @@ public:
     }
 
 private:
-    K_ADDR    m_uBlockSize;    //!< The minimum data-size for blocks held in this arena
+    K_ADDR     m_uBlockSize;    //!< The minimum data-size for blocks held in this arena
     uint16_t   m_u16Count;      //!< Current number of available blocks in this list
 };
 

@@ -158,12 +158,12 @@ void AppMain(void *unused_)
     {
 
         Thread::Sleep(100);
-        KERNEL_TRACE("Beginning of the main application loop!");
+        USER_TRACE("Beginning of the main application loop!");
     
         Thread::Sleep(100);
-        KERNEL_TRACE_1(" Iteration: %d", u16Iteration++);
+        USER_TRACE_1(" Iteration: %d", u16Iteration++);
         
         Thread::Sleep(100);
-        KERNEL_TRACE("End of the main application loop!");
+        USER_TRACE("End of the main application loop!");
     }
 }

@@ -16,6 +16,8 @@ ProfileTimer	KEYWORD1
 Scheduler	KEYWORD1
 Timer		KEYWORD1
 EventFlag	KEYWORD1
+Notify      KEYWORD1
+Mailbox     KEYWORD1
 
 #######################################
 # Methods and Functions (KEYWORD2)
@@ -99,6 +101,18 @@ SetIntervalUSeconds	KEYWORD2
 Set	KEYWORD2
 Wait	KEYWORD2
 Clear	KEYWORD2
+
+# notify.h
+Signal  KEYWORD2
+
+# mailbox.h
+SendTail        KEYWORD2
+Receive         KEYWORD2
+ReceiveTail     KEYWORD2
+GetFreeSlots    KEYWORD2
+IsFull          KEYWORD2
+IsEmpty         KEYWORD2
+
 
 #######################################
 # Constants (LITERAL1)
