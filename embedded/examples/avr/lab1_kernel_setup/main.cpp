@@ -45,6 +45,9 @@ Kernel and Thread APIs to initialize and start the kernel with any number
 of static threads.
 
 ===========================================================================*/
+extern "C" {
+void __cxa_pure_virtual(void) { }
+}
 
 //---------------------------------------------------------------------------
 // This block declares the thread data for the main application thread.  It

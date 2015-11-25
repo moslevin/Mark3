@@ -29,6 +29,9 @@ be activated when needed, without impacting the responsiveness of the rest
 of the application.
 
 ===========================================================================*/
+extern "C" {
+void __cxa_pure_virtual(void) { }
+}
 
 //---------------------------------------------------------------------------
 // This block declares the thread data for one main application thread.  It

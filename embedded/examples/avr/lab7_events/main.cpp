@@ -31,6 +31,9 @@ This provides an efficient, robust way for threads to process asynchronous
 system events that occur with a unified interface.
 
 ===========================================================================*/
+extern "C" {
+void __cxa_pure_virtual(void) { }
+}
 
 //---------------------------------------------------------------------------
 // This block declares the thread data for one main application thread.  It

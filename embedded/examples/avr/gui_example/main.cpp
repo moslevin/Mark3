@@ -67,6 +67,10 @@ K_WORD awAppStack[APP_STACK_SIZE];
 //---------------------------------------------------------------------------
 static void AppMain(void *unused_);
 
+extern "C" {
+void __cxa_pure_virtual(void) { }
+}
+
 //---------------------------------------------------------------------------
 int main(void)
 {

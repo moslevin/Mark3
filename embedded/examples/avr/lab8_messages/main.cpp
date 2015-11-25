@@ -35,6 +35,9 @@ can write to/block on a single message queue, which give this method of
 IPC even more flexibility.
 
 ===========================================================================*/
+extern "C" {
+void __cxa_pure_virtual(void) { }
+}
 
 //---------------------------------------------------------------------------
 // This block declares the thread data for one main application thread.  It

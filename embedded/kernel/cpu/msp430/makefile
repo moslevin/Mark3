@@ -21,18 +21,18 @@ headers: ./$(VARIANT)/$(TOOLCHAIN)/public/$(wildcard *.h)
 else
 
 source: source_cpp source_c source_h
-	echo "Copy platform specific kernel source"
+	@echo "Copy platform specific kernel source"
 
 source_cpp:
-	echo "Nothing to do"
+	@echo "Nothing to do"
 
 source_c:
-	echo "Nothing to do"
+	@echo "Nothing to do"
 
 source_h:
-	echo "Nothing to do"
+	@echo "Nothing to do"
 
 headers:
-	echo "Nothing to do"
+	@echo "Nothing to do"
 
 endif

@@ -22,6 +22,9 @@ Lessons covered in this example include:
 Takeaway:
 
 ===========================================================================*/
+extern "C" {
+void __cxa_pure_virtual(void) { }
+}
 
 //---------------------------------------------------------------------------
 // This block declares the thread data for one main application thread.  It

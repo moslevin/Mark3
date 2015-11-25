@@ -29,6 +29,9 @@ Takeaway:
   also with round-robin time-slicing between threads at the same priority.
 
 ===========================================================================*/
+extern "C" {
+void __cxa_pure_virtual(void) { }
+}
 
 //---------------------------------------------------------------------------
 // This block declares the thread data for one main application thread.  It

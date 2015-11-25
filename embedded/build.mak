@@ -34,44 +34,49 @@ all : banner binary
 
 # Display what we're building
 clean_banner : $(realpath .)
+	@echo
 	@echo ------------------------------------------------------------
-	@echo [ Cleaning $^ ]
+	@echo [ Cleaning Build Artifacts $^ ]
 	@echo ------------------------------------------------------------
 	
 # Display what we're building
 banner : $(realpath .)
+	@echo
 	@echo ------------------------------------------------------------
-	@echo [ Building $^ ]
+	@echo [ Building Objects $^ ]
 	@echo ------------------------------------------------------------
 
 # Display what we're building
 headers_banner : $(realpath .)
+	@echo
 	@echo ------------------------------------------------------------
-	@echo [ Headers $^ ]
+	@echo [ Copying Public Headers $^ ]
 	@echo ------------------------------------------------------------
 
 # Display what we're building
 source_banner : $(realpath .)
+	@echo
 	@echo ------------------------------------------------------------
-	@echo [ Source $^ ]
+	@echo [ Copying Source Files $^ ]
 	@echo ------------------------------------------------------------
 	
 # Get rid of all of the binary objects created previous... 
 clean : clean_banner
-	 $(RMCMD) $(USR_OBJS)
+	 @$(RMCMD) $(USR_OBJS)
 ifeq ($(IS_LIB),1)
-	 $(RMCMD) $(OBJ_DIR_FINAL)lib$(LIBNAME).a
+	 @$(RMCMD) $(OBJ_DIR_FINAL)lib$(LIBNAME).a
 endif
 ifeq ($(IS_APP),1)
-	 $(RMCMD) $(OBJ_DIR_FINAL)$(APPNAME).elf
-	 $(RMCMD) $(OBJ_DIR_FINAL)$(APPNAME).hex
+	 @$(RMCMD) $(OBJ_DIR_FINAL)$(APPNAME).elf
+	 @$(RMCMD) $(OBJ_DIR_FINAL)$(APPNAME).hex
 endif
+	@echo "[DONE]"
 # Recursive cleaning...
 	@ for i in $(SUBDIRS); \
 	do \
 		if test -f $$i/makefile; then \
 			cd $$i ;\
-			$(MAKE) clean ;\
+			$(MAKE) --no-print-directory clean ;\
 			cd .. ;\
 		fi ;\
 	done
@@ -93,12 +98,13 @@ headers : headers_banner
 			    $(COPYCMD) $(CPU_SPEC_HEADERS)*.h $(INC_DIR); \
 			fi;	\
 		fi; \
-	fi;
+	fi;	
+	@echo "[DONE]"
 	@for i in $(SUBDIRS); \
 	do \
 		if test -f $$i/makefile; then \
 			cd $$i ;\
-			$(MAKE) headers ;\
+			$(MAKE) --no-print-directory headers ;\
 			cd .. ;\
 		fi; \
 	done
@@ -116,6 +122,7 @@ endif
 ifneq ($(wildcard *.h), )
 		@$(COPYCMD) *.h $(SRC_DIR)
 endif
+	@echo "[DONE]"
 	@if test -d $(PUBLIC_DIR); then \
 		if test -d $(INC_DIR); then \
 			if test -f $(wildcard *.h); then \
@@ -127,7 +134,7 @@ endif
 	do \
 		if test -f $$i/makefile; then \
 			cd $$i ;\
-			$(MAKE) source ;\
+			$(MAKE) --no-print-directory source ;\
 			cd .. ;\
 		fi; \
 	done
@@ -142,17 +149,20 @@ else
 library : banner
 endif
 ifeq ($(IS_LIB), 1)
-	@echo LIBRARY: $(LIBNAME)
-	$(AR) $(ARFLAGS) $(OBJ_DIR_FINAL)lib$(LIBNAME).a $(USR_OBJS)
+	@echo
+	@echo =====[ Creating Library: $(LIBNAME) ] =====
+	@echo
+	@$(AR) $(ARFLAGS) $(OBJ_DIR_FINAL)lib$(LIBNAME).a $(USR_OBJS)
  ifneq ($(wildcard $(STAGE)lib), "")
-	$(COPYCMD) $(OBJ_DIR_FINAL)lib$(LIBNAME).a $(LIB_DIR_FINAL)
- endif
+	@$(COPYCMD) $(OBJ_DIR_FINAL)lib$(LIBNAME).a $(LIB_DIR_FINAL)
+ endif 
+	@echo "[DONE]"
 endif
 	@for i in $(SUBDIRS); \
 	do \
 		if test -f $$i/makefile; then \
 			cd $$i ;\
-			$(MAKE) library ;\
+			$(MAKE) --no-print-directory library ;\
 			cd .. ;\
 		fi; \
 	done
@@ -166,22 +176,25 @@ else
 binary : banner
 endif
 ifeq ($(IS_APP), 1)
-	@echo APP: $(APPNAME)
-	$(LINK) $(LFLAGS) -o $(OBJ_DIR_FINAL)$(APPNAME).elf $(USR_OBJS) $(addsuffix .a, $(addprefix $(LIB_DIR_FINAL), $(addprefix lib, $(LIBS))))
-	$(LINK) $(LFLAGS_DBG) -o $(DBG_DIR_FINAL)$(APPNAME).elf $(USR_OBJS) $(addsuffix .a, $(addprefix $(LIB_DIR_FINAL), $(addprefix lib, $(LIBS))))
-	$(OBJCOPY) $(OBJCOPY_FLAGS) "$(OBJ_DIR_FINAL)$(APPNAME).elf" "$(OBJ_DIR_FINAL)$(APPNAME).hex"
-	$(OBJCOPY) $(OBJCOPY_DBG_FLAGS) "$(DBG_DIR_FINAL)$(APPNAME).elf" "$(DBG_DIR_FINAL)$(APPNAME).dbg"
-	$(RMCMD) "$(DBG_DIR_FINAL)$(APPNAME).elf"
+	@echo
+	@echo =====[ Building Executable: $(APPNAME) ]=====
+	@echo
+	@$(LINK) $(LFLAGS) -o $(OBJ_DIR_FINAL)$(APPNAME).elf $(USR_OBJS) $(addsuffix .a, $(addprefix $(LIB_DIR_FINAL), $(addprefix lib, $(LIBS))))
+	@$(LINK) $(LFLAGS_DBG) -o $(DBG_DIR_FINAL)$(APPNAME).elf $(USR_OBJS) $(addsuffix .a, $(addprefix $(LIB_DIR_FINAL), $(addprefix lib, $(LIBS))))
+	@$(OBJCOPY) $(OBJCOPY_FLAGS) "$(OBJ_DIR_FINAL)$(APPNAME).elf" "$(OBJ_DIR_FINAL)$(APPNAME).hex"
+	@$(OBJCOPY) $(OBJCOPY_DBG_FLAGS) "$(DBG_DIR_FINAL)$(APPNAME).elf" "$(DBG_DIR_FINAL)$(APPNAME).dbg"
+	@$(RMCMD) "$(DBG_DIR_FINAL)$(APPNAME).elf"
  ifneq ($(wildcard $(STAGE)app), "")	
-	$(COPYCMD) $(OBJ_DIR_FINAL)$(APPNAME).elf $(APP_DIR_FINAL)
-	$(COPYCMD) $(OBJ_DIR_FINAL)$(APPNAME).hex $(APP_DIR_FINAL)
+	@$(COPYCMD) $(OBJ_DIR_FINAL)$(APPNAME).elf $(APP_DIR_FINAL)
+	@$(COPYCMD) $(OBJ_DIR_FINAL)$(APPNAME).hex $(APP_DIR_FINAL)
  endif
+	@echo "[DONE]"
 endif
 	@for i in $(SUBDIRS); \
 	do \
 		if test -f $$i/makefile; then \
 			cd $$i ;\
-			$(MAKE) binary ;\
+			$(MAKE) --no-print-directory binary ;\
 			cd .. ;\
 		fi; \
 	done
@@ -191,98 +204,82 @@ endif
 #----------------------------------------------------------------------------
 directories : $(OBJ_DIR_FINAL) $(APP_DIR_FINAL) $(LIB_DIR_FINAL) $(DBG_DIR_FINAL)
 $(OBJ_DIR) :
-	@if test -d $(OBJ_DIR); then echo exists ;\
-		else \
+	@if test ! -d $(OBJ_DIR); then \
 		mkdir $(OBJ_DIR)	;\
 	fi;
 
 $(OBJ_DIR)$(ARCH) : $(OBJ_DIR)
-	@if test -d $(OBJ_DIR)$(ARCH); then echo exists; \
-		else \
+	@if test ! -d $(OBJ_DIR)$(ARCH); then \
 		mkdir $(OBJ_DIR)$(ARCH)    ;\
 	fi;
 
 $(OBJ_DIR)$(ARCH)/$(VARIANT) : $(OBJ_DIR)$(ARCH)
-	@if test -d $(OBJ_DIR)$(ARCH)/$(VARIANT); then echo exists; \
-		else \
+	@if test ! -d $(OBJ_DIR)$(ARCH)/$(VARIANT); then \
 		mkdir $(OBJ_DIR)$(ARCH)/$(VARIANT)    ;\
 	fi;
 
 $(OBJ_DIR_FINAL) : $(OBJ_DIR)$(ARCH)/$(VARIANT)
-	@if test -d $(OBJ_DIR)$(ARCH)/$(VARIANT)/$(TOOLCHAIN); then echo exists; \
-		else \
+	@if test ! -d $(OBJ_DIR)$(ARCH)/$(VARIANT)/$(TOOLCHAIN); then \
 		mkdir $(OBJ_DIR)$(ARCH)/$(VARIANT)/$(TOOLCHAIN)    ;\
 	fi;
 
 $(APP_DIR) :
-	@if test -d $(APP_DIR); then echo exists ;\
-		else \
+	@if test ! -d $(APP_DIR); then \
 		mkdir $(APP_DIR)	;\
 	fi;
 
 $(APP_DIR)$(ARCH) : $(APP_DIR)
-	@if test -d $(APP_DIR)$(ARCH); then echo exists; \
-		else \
+	@if test ! -d $(APP_DIR)$(ARCH); then \
 		mkdir $(APP_DIR)$(ARCH)    ;\
 	fi;
 
 $(APP_DIR)$(ARCH)/$(VARIANT) : $(APP_DIR)$(ARCH)
-	@if test -d $(APP_DIR)$(ARCH)/$(VARIANT); then echo exists; \
-		else \
+	@if test ! -d $(APP_DIR)$(ARCH)/$(VARIANT); then \
 		mkdir $(APP_DIR)$(ARCH)/$(VARIANT)    ;\
 	fi;
 
 $(APP_DIR_FINAL) : $(APP_DIR)$(ARCH)/$(VARIANT)
-	@if test -d $(APP_DIR)$(ARCH)/$(VARIANT)/$(TOOLCHAIN); then echo exists; \
-		else \
+	@if test ! -d $(APP_DIR)$(ARCH)/$(VARIANT)/$(TOOLCHAIN); then \
 		mkdir $(APP_DIR)$(ARCH)/$(VARIANT)/$(TOOLCHAIN)    ;\
 	fi;
 
 $(LIB_DIR) :
-	@if test -d $(LIB_DIR); then echo exists ;\
-		else \
+	@if test ! -d $(LIB_DIR); then \
 		mkdir $(LIB_DIR)	;\
 	fi;
 
 $(LIB_DIR)$(ARCH) : $(LIB_DIR)
-	@if test -d $(LIB_DIR)$(ARCH); then echo exists; \
-		else \
+	@if test ! -d $(LIB_DIR)$(ARCH); then \
 		mkdir $(LIB_DIR)$(ARCH)    ;\
 	fi;
 
 $(LIB_DIR)$(ARCH)/$(VARIANT) : $(LIB_DIR)$(ARCH)
-	@if test -d $(LIB_DIR)$(ARCH)/$(VARIANT); then echo exists; \
-		else \
+	@if test ! -d $(LIB_DIR)$(ARCH)/$(VARIANT); then \
 		mkdir $(LIB_DIR)$(ARCH)/$(VARIANT)    ;\
 	fi;
 
 $(LIB_DIR_FINAL) : $(LIB_DIR)$(ARCH)/$(VARIANT)
-	@if test -d $(LIB_DIR)$(ARCH)/$(VARIANT)/$(TOOLCHAIN); then echo exists; \
-		else \
+	@if test ! -d $(LIB_DIR)$(ARCH)/$(VARIANT)/$(TOOLCHAIN); then \
 		mkdir $(LIB_DIR)$(ARCH)/$(VARIANT)/$(TOOLCHAIN)    ;\
 	fi;
 
 $(DBG_DIR) :
-	@if test -d $(DBG_DIR); then echo exists ;\
-		else \
+	@if test ! -d $(DBG_DIR); then \
 		mkdir $(DBG_DIR)	;\
 	fi;
 
 $(DBG_DIR)$(ARCH) : $(DBG_DIR)
-	@if test -d $(DBG_DIR)$(ARCH); then echo exists; \
-		else \
+	@if test ! -d $(DBG_DIR)$(ARCH); then \
 		mkdir $(DBG_DIR)$(ARCH)    ;\
 	fi;
 
 $(DBG_DIR)$(ARCH)/$(VARIANT) : $(DBG_DIR)$(ARCH)
-	@if test -d $(DBG_DIR)$(ARCH)/$(VARIANT); then echo exists; \
-		else \
+	@if test ! -d $(DBG_DIR)$(ARCH)/$(VARIANT); then \
 		mkdir $(DBG_DIR)$(ARCH)/$(VARIANT)    ;\
 	fi;
 
 $(DBG_DIR_FINAL) : $(DBG_DIR)$(ARCH)/$(VARIANT)
-	@if test -d $(DBG_DIR)$(ARCH)/$(VARIANT)/$(TOOLCHAIN); then echo exists; \
-		else \
+	@if test ! -d $(DBG_DIR)$(ARCH)/$(VARIANT)/$(TOOLCHAIN); then \
 		mkdir $(DBG_DIR)$(ARCH)/$(VARIANT)/$(TOOLCHAIN)    ;\
 	fi;
 
@@ -304,8 +301,7 @@ $(PORT_OBJ_DIR)%.cpp.o : $(PORT_DIR)%.cpp $(PORT_OBJ_DIR)
 	$(CPP) $(CPPFLAGS) $< -o $@
 
 $(PORT_OBJ_DIR) : $(PORT_DIR)
-	@if test -d $(PORT_OBJ_DIR); then echo exists; \
-		else \
+	@if test ! -d $(PORT_OBJ_DIR); then \
 		mkdir $(PORT_OBJ_DIR)	; \
 	fi;
 
