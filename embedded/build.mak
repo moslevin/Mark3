@@ -181,8 +181,8 @@ ifeq ($(IS_APP), 1)
 	@echo
 	@$(LINK) $(LFLAGS) -o $(OBJ_DIR_FINAL)$(APPNAME).elf $(USR_OBJS) $(addsuffix .a, $(addprefix $(LIB_DIR_FINAL), $(addprefix lib, $(LIBS))))
 	@$(LINK) $(LFLAGS_DBG) -o $(DBG_DIR_FINAL)$(APPNAME).elf $(USR_OBJS) $(addsuffix .a, $(addprefix $(LIB_DIR_FINAL), $(addprefix lib, $(LIBS))))
-	@$(OBJCOPY) $(OBJCOPY_FLAGS) "$(OBJ_DIR_FINAL)$(APPNAME).elf" "$(OBJ_DIR_FINAL)$(APPNAME).hex"
-	@$(OBJCOPY) $(OBJCOPY_DBG_FLAGS) "$(DBG_DIR_FINAL)$(APPNAME).elf" "$(DBG_DIR_FINAL)$(APPNAME).dbg"
+	@$(OBJCOPY) $(OBJCOPY_FLAGS) "$(OBJ_DIR_FINAL)$(APPNAME).elf" "$(OBJ_DIR_FINAL)$(APPNAME).hex" > /dev/null 2>&1
+	@$(OBJCOPY) $(OBJCOPY_DBG_FLAGS) "$(DBG_DIR_FINAL)$(APPNAME).elf" "$(DBG_DIR_FINAL)$(APPNAME).dbg" > /dev/null 2>&1
 	@$(RMCMD) "$(DBG_DIR_FINAL)$(APPNAME).elf"
  ifneq ($(wildcard $(STAGE)app), "")	
 	@$(COPYCMD) $(OBJ_DIR_FINAL)$(APPNAME).elf $(APP_DIR_FINAL)
