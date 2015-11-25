@@ -70,7 +70,7 @@ ifeq ($(IS_APP),1)
 	 @$(RMCMD) $(OBJ_DIR_FINAL)$(APPNAME).elf
 	 @$(RMCMD) $(OBJ_DIR_FINAL)$(APPNAME).hex
 endif
-	@echo "[DONE]"
+	@echo "[ DONE ]"
 # Recursive cleaning...
 	@ for i in $(SUBDIRS); \
 	do \
@@ -99,7 +99,7 @@ headers : headers_banner
 			fi;	\
 		fi; \
 	fi;	
-	@echo "[DONE]"
+	@echo "[ DONE ]"
 	@for i in $(SUBDIRS); \
 	do \
 		if test -f $$i/makefile; then \
@@ -122,7 +122,7 @@ endif
 ifneq ($(wildcard *.h), )
 		@$(COPYCMD) *.h $(SRC_DIR)
 endif
-	@echo "[DONE]"
+	@echo "[ DONE ]"
 	@if test -d $(PUBLIC_DIR); then \
 		if test -d $(INC_DIR); then \
 			if test -f $(wildcard *.h); then \
@@ -149,14 +149,12 @@ else
 library : banner
 endif
 ifeq ($(IS_LIB), 1)
-	@echo
-	@echo =====[ Creating Library: $(LIBNAME) ] =====
-	@echo
+	@echo [ Creating Library: $(LIBNAME) ]
 	@$(AR) $(ARFLAGS) $(OBJ_DIR_FINAL)lib$(LIBNAME).a $(USR_OBJS)
  ifneq ($(wildcard $(STAGE)lib), "")
 	@$(COPYCMD) $(OBJ_DIR_FINAL)lib$(LIBNAME).a $(LIB_DIR_FINAL)
  endif 
-	@echo "[DONE]"
+	@echo "[ DONE ]"
 endif
 	@for i in $(SUBDIRS); \
 	do \
@@ -176,9 +174,7 @@ else
 binary : banner
 endif
 ifeq ($(IS_APP), 1)
-	@echo
-	@echo =====[ Building Executable: $(APPNAME) ]=====
-	@echo
+	@echo [ Building Executable: $(APPNAME) ]
 	@$(LINK) $(LFLAGS) -o $(OBJ_DIR_FINAL)$(APPNAME).elf $(USR_OBJS) $(addsuffix .a, $(addprefix $(LIB_DIR_FINAL), $(addprefix lib, $(LIBS))))
 	@$(LINK) $(LFLAGS_DBG) -o $(DBG_DIR_FINAL)$(APPNAME).elf $(USR_OBJS) $(addsuffix .a, $(addprefix $(LIB_DIR_FINAL), $(addprefix lib, $(LIBS))))
 	@$(OBJCOPY) $(OBJCOPY_FLAGS) "$(OBJ_DIR_FINAL)$(APPNAME).elf" "$(OBJ_DIR_FINAL)$(APPNAME).hex" > /dev/null 2>&1
@@ -188,7 +184,7 @@ ifeq ($(IS_APP), 1)
 	@$(COPYCMD) $(OBJ_DIR_FINAL)$(APPNAME).elf $(APP_DIR_FINAL)
 	@$(COPYCMD) $(OBJ_DIR_FINAL)$(APPNAME).hex $(APP_DIR_FINAL)
  endif
-	@echo "[DONE]"
+	@echo "[ DONE ]"
 endif
 	@for i in $(SUBDIRS); \
 	do \
@@ -289,16 +285,20 @@ $(DBG_DIR_FINAL) : $(DBG_DIR)$(ARCH)/$(VARIANT)
 #----------------------------------------------------------------------------
 objects : directories $(C_OBJ) $(CPP_OBJ) $(PORT_C_OBJ) $(PORT_CPP_OBJ)
 $(OBJ_DIR_FINAL)%.c.o : %.c
-	$(CC) $(CFLAGS) $< -o $@
+	@echo Compiling: $<
+	@$(CC) $(CFLAGS) $< -o $@
 
 $(OBJ_DIR_FINAL)%.cpp.o : %.cpp
-	$(CPP) $(CPPFLAGS) $< -o $@
+	@echo Compiling: $<
+	@$(CPP) $(CPPFLAGS) $< -o $@
 
 $(PORT_OBJ_DIR)%.c.o : $(PORT_DIR)%.c $(PORT_OBJ_DIR)
-	$(CC) $(CFLAGS) $< -o $@
+	@echo Compiling: $<
+	@$(CC) $(CFLAGS) $< -o $@
 
 $(PORT_OBJ_DIR)%.cpp.o : $(PORT_DIR)%.cpp $(PORT_OBJ_DIR)
-	$(CPP) $(CPPFLAGS) $< -o $@
+	@echo Compiling: $<
+	@$(CPP) $(CPPFLAGS) $< -o $@
 
 $(PORT_OBJ_DIR) : $(PORT_DIR)
 	@if test ! -d $(PORT_OBJ_DIR); then \

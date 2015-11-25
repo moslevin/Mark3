@@ -10,7 +10,7 @@ APPNAME=gui_test
 #this is the list of the objects required to build the kernel
 CPP_SOURCE=main.cpp
 
-LIBS=mark3 heap random graphics arial_10 drvGraphicsFlavr joystick drvFlavrJoy gui
+LIBS=mark3 heap random graphics arial_10 drvGraphicsFlavr joystick drvFlavrJoy gui memutil
 
 # Include the rest of the script that is actually used for building the
 # outputs
