@@ -103,6 +103,7 @@ public:
     friend class LinkList;  
     friend class DoubleLinkList;  
     friend class CircularLinkList;  
+    friend class ThreadList;
 };
 
 //---------------------------------------------------------------------------
@@ -129,7 +130,7 @@ public:
      *  \param node_ Pointer to the node to add
      */
     virtual void Add(LinkListNode *node_) = 0;
-    
+
     /*!
      *  \fn void Remove(LinkListNode *node_)
      *  
@@ -230,7 +231,18 @@ public:
      *  Pivot the head of the circularly linked list backward
      *  ( Head = Head->prev, Tail = Tail->prev )        
      */
-    void PivotBackward();
+    void PivotBackward();    
+
+    /*!
+     * \brief InsertNodeBefore
+     *
+     * Insert a linked-list node into the list before the specified insertion
+     * point.
+     *
+     * \param node_     Node to insert into the list
+     * \param insert_   Insert point.
+     */
+    void InsertNodeBefore(LinkListNode *node_, LinkListNode *insert_);
 };
 
 #endif

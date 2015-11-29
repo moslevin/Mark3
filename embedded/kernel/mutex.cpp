@@ -173,7 +173,7 @@ void Mutex::Claim_i(void)
         bUseTimer = true;
     }
 #endif
-    Block(g_pclCurrent);
+    BlockPriority(g_pclCurrent);
 
     // Check if priority inheritence is necessary.  We do this in order
     // to ensure that we don't end up with priority inversions in case

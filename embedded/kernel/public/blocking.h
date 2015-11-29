@@ -88,6 +88,16 @@ protected:
     void Block(Thread *pclThread_ );
     
     /*!
+     * \brief BlockPriority
+     *
+     * Same as Block(), but ensures that threads are added to the block-list
+     * in priority-order, which optimizes the unblock procedure.
+     *
+     * \param pclThread_ Pointer to the Thread to Block.
+     */
+    void BlockPriority(Thread *pclThread_ );
+
+    /*!
      *  \fn void UnBlock(Thread *pclThread_)
      *  
      *  \param pclThread_ Pointer to the thread to unblock.

@@ -82,6 +82,8 @@ public:
      */
     void Add(LinkListNode *node_, uint8_t *pu8Flag_, uint8_t u8Priority_);
 
+    void AddPriority(LinkListNode *node_);
+
     /*!
      *  \fn void Remove(LinkListNode *node_)
      *  

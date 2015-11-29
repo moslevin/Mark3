@@ -200,7 +200,7 @@ void Semaphore::Pend_i( void )
             bUseTimer = true;
         }
 #endif
-        Block(g_pclCurrent);
+        BlockPriority(g_pclCurrent);
 
         // Switch Threads immediately
         Thread::Yield();

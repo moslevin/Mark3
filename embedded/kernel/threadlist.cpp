@@ -62,6 +62,41 @@ void ThreadList::Add(LinkListNode *node_) {
 }
 
 //---------------------------------------------------------------------------
+void ThreadList::AddPriority(LinkListNode *node_) {
+    Thread *pclCurr = static_cast<Thread*>(GetHead());
+    if (!pclCurr) {
+        Add(node_);
+        return;
+    }
+    uint8_t u8HeadPri = pclCurr->GetCurPriority();
+
+    Thread *pclTail = static_cast<Thread*>(GetTail());
+    Thread *pclNode = static_cast<Thread*>(node_);
+
+    // Set the threadlist's priority level, flag pointer, and then add the
+    // thread to the threadlist
+    uint8_t u8Priority = pclNode->GetCurPriority();
+    do
+    {
+        if (u8Priority > pclCurr->GetCurPriority())
+        {
+            break;
+        }
+        pclNode = static_cast<Thread*>(pclNode->GetNext());
+    } while (pclNode != pclTail);
+
+    // Insert pclNode before pclCurr in the linked list.
+    InsertNodeBefore(pclNode, pclCurr);
+
+    // If the priority is greater than current head, reset
+    // the head pointer.
+    if (u8Priority > u8HeadPri) {
+        m_pstHead = pclNode;
+        m_pstTail = m_pstHead->prev;
+    }
+}
+
+//---------------------------------------------------------------------------
 void ThreadList::Add(LinkListNode *node_, uint8_t *pu8Flag_, uint8_t u8Priority_) {
     // Set the threadlist's priority level, flag pointer, and then add the
     // thread to the threadlist
@@ -89,28 +124,5 @@ void ThreadList::Remove(LinkListNode *node_) {
 //---------------------------------------------------------------------------
 Thread *ThreadList::HighestWaiter()
 {
-	Thread *pclTemp = static_cast<Thread*>(GetHead());
-	Thread *pclChosen = pclTemp;
-	
-	uint8_t u8MaxPri = 0;
-    
-    // Go through the list, return the highest-priority thread in this list.
-	while(1)
-	{
-        // Compare against current max-priority thread
-		if (pclTemp->GetPriority() >= u8MaxPri)
-		{
-			u8MaxPri = pclTemp->GetPriority();
-			pclChosen = pclTemp;
-		}
-        
-        // Break out if this is the last thread in the list
-		if (pclTemp == static_cast<Thread*>(GetTail()))
-		{
-			break;
-		}
-        
-		pclTemp = static_cast<Thread*>(pclTemp->GetNext());		
-	} 
-	return pclChosen;
+    return static_cast<Thread*>(GetHead());
 }

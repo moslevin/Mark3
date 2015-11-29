@@ -186,3 +186,19 @@ void CircularLinkList::PivotBackward()
         m_pstTail = m_pstTail->prev;
     }
 }
+
+//---------------------------------------------------------------------------
+void CircularLinkList::InsertNodeBefore(LinkListNode *node_, LinkListNode *insert_)
+{
+    KERNEL_ASSERT( node_ );
+
+    node_->next = insert_;
+    node_->prev = insert_->prev;
+
+    if (insert_->prev)
+    {
+        insert_->prev->next = node_;
+    }
+    insert_->prev = node_;
+}
+
