@@ -133,7 +133,7 @@ void EventFlag::WakeMe(Thread *pclChosenOne_)
 #endif
 
         // Add the thread to the object's block-list.
-        Block(g_pclCurrent);
+        BlockPriority(g_pclCurrent);
 
         // Trigger that
         bThreadYield = true;

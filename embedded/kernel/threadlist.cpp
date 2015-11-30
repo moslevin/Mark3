@@ -82,8 +82,8 @@ void ThreadList::AddPriority(LinkListNode *node_) {
         {
             break;
         }
-        pclNode = static_cast<Thread*>(pclNode->GetNext());
-    } while (pclNode != pclTail);
+        pclCurr = static_cast<Thread*>(pclCurr->GetNext());
+    } while (pclCurr != pclTail);
 
     // Insert pclNode before pclCurr in the linked list.
     InsertNodeBefore(pclNode, pclCurr);
@@ -93,6 +93,10 @@ void ThreadList::AddPriority(LinkListNode *node_) {
     if (u8Priority > u8HeadPri) {
         m_pstHead = pclNode;
         m_pstTail = m_pstHead->prev;
+    }
+    else if (pclNode->GetNext() == m_pstHead)
+    {
+        m_pstTail = pclNode;
     }
 }
 
