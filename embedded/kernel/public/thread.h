@@ -73,12 +73,8 @@ class Thread : public LinkListNode
 {
 public:    
     /*!
-     *  \fn void Init(uint8_t *paucStack_, 
-     *        uint16_t u16StackSize_,
-     *        uint8_t u8Priority_,              
-     *        ThreadEntry_t pfEntryPoint_,
-     *        void *pvArg_ );
-     *        
+     *  \brief Init
+     *
      *  Initialize a thread prior to its use.  Initialized threads are
      *  placed in the stopped state, and are not scheduled until the 
      *  thread's start method has been invoked first.
@@ -123,8 +119,8 @@ public:
 #endif
 
     /*!
-     *  \fn void Start()
-     * 
+     *  \brief Start
+     *
      *  Start the thread - remove it from the stopped list, add it to the
      *  scheduler's list of threads (at the thread's set priority), and
      *  continue along.       
@@ -133,7 +129,7 @@ public:
     
 
     /*!
-     *  \fn void Stop()
+     *  \brief Stop
      *
      *  Stop a thread that's actively scheduled without destroying its
      *  stacks.  Stopped threads can be restarted using the Start() API.
@@ -142,8 +138,8 @@ public:
 
 #if KERNEL_USE_THREADNAME    
     /*!
-     *  \fn void SetName(const char *szName_)
-     *  
+     *  \brief SetName
+     *
      *  Set the name of the thread - this is purely optional, but can be 
      *  useful when identifying issues that come along when multiple threads
      *  are at play in a system.
@@ -153,7 +149,7 @@ public:
     void SetName(const char *szName_) { m_szName = szName_; }
 
     /*!
-     *  \fn const char* GetName()
+     *  \brief GetName
      *
      *  \return Pointer to the name of the thread.  If this is not set, 
      *          will be NULL.
@@ -162,8 +158,8 @@ public:
 #endif
     
     /*!
-     *  \fn ThreadList *GetOwner(void)
-     *  
+     *  \brief GetOwner
+     *
      *  Return the ThreadList where the thread belongs when it's in the 
      *  active/ready state in the scheduler.
      *  
@@ -172,8 +168,8 @@ public:
     ThreadList *GetOwner(void) { return m_pclOwner; }
     
     /*!        
-     *  \fn ThreadList *GetCurrent(void)
-     *  
+     *  \brief GetCurrent
+     *
      *  Return the ThreadList where the thread is currently located
      *  
      *  \return Pointer to the thread's current list        
@@ -181,8 +177,8 @@ public:
     ThreadList *GetCurrent(void) { return m_pclCurrent; }
     
     /*!
-     *  \fn uint8_t GetPriority(void)
-     *  
+     *  \brief GetPriority
+     *
      *  Return the priority of the current thread
      *  
      *  \return Priority of the current thread
@@ -191,8 +187,8 @@ public:
     uint8_t GetPriority(void) { return m_u8Priority; }
 
     /*!
-     *  \fn uint8_t GetCurPriority(void)
-     *  
+     *  \brief GetCurPriority
+     *
      *  Return the priority of the current thread
      *  
      *  \return Priority of the current thread
@@ -201,8 +197,8 @@ public:
     
 #if KERNEL_USE_QUANTUM    
     /*!
-     *  \fn void SetQuantum( uint16_t u16Quantum_ )
-     *  
+     *  \brief SetQuantum
+     *
      *  Set the thread's round-robin execution quantum.
      *  
      *  \param u16Quantum_ Thread's execution quantum (in milliseconds)
@@ -210,8 +206,8 @@ public:
     void SetQuantum( uint16_t u16Quantum_ ) { m_u16Quantum = u16Quantum_; }
 
     /*!
-     *  \fn uint16_t GetQuantum(void)
-     *  
+     *  \brief GetQuantum
+     *
      *  Get the thread's round-robin execution quantum.
      *  
      *  \return The thread's quantum
@@ -220,8 +216,8 @@ public:
 #endif
 
     /*!
-     *  \fn void SetCurrent( ThreadList *pclNewList_ )
-     *  
+     *  \brief SetCurrent
+     *
      *  Set the thread's current to the specified thread list
      *  
      *  \param pclNewList_ Pointer to the threadlist to apply thread ownership       
@@ -229,18 +225,17 @@ public:
     void SetCurrent( ThreadList *pclNewList_ ) { m_pclCurrent = pclNewList_; }
     
     /*!
-     *  \fn void SetOwner( ThreadList *pclNewList_ )
-     *  
+     *  \brief SetOwner
+     *
      *  Set the thread's owner to the specified thread list
      *  
      *  \param pclNewList_ Pointer to the threadlist to apply thread ownership       
      */
     void SetOwner( ThreadList *pclNewList_ ) { m_pclOwner = pclNewList_; }
-    
-    
+
     /*!
-     *  \fn void SetPriority( uint8_t u8Priority_ )
-     *  
+     *  \brief SetPriority
+     *
      *  Set the priority of the Thread (running or otherwise) to a different
      *  level.  This activity involves re-scheduling, and must be done so 
      *  with due caution, as it may effect the determinism of the system.
@@ -253,8 +248,8 @@ public:
     void SetPriority(uint8_t u8Priority_);
     
     /*!
-     *  \fn void InheritPriority(uint8_t u8Priority_)
-     *  
+     *  \brief InheritPriority
+     *
      *  Allow the thread to run at a different priority level (temporarily)
      *  for the purpose of avoiding priority inversions.  This should
      *  only be called from within the implementation of blocking-objects.
@@ -265,8 +260,8 @@ public:
     
 #if KERNEL_USE_DYNAMIC_THREADS    
     /*!
-     *  \fn void Exit()
-     *  
+     *  \brief Exit
+     *
      *  Remove the thread from being scheduled again.  The thread is 
      *  effectively destroyed when this occurs.  This is extremely 
      *  useful for cases where a thread encounters an unrecoverable
@@ -280,8 +275,8 @@ public:
 
 #if KERNEL_USE_SLEEP    
     /*!
-     *  \fn void Sleep(uint32_t u32TimeMs_);
-     *  
+     *  \brief Sleep
+     *
      *  Put the thread to sleep for the specified time (in milliseconds).
      *  Actual time slept may be longer (but not less than) the interval specified.
      *  
@@ -290,7 +285,7 @@ public:
     static void Sleep(uint32_t u32TimeMs_);
 
     /*!
-     *  \fn void USleep(uint32_t u32TimeUs_);
+     *  \brief USleep
      *
      *  Put the thread to sleep for the specified time (in microseconds).
      *  Actual time slept may be longer (but not less than) the interval specified.
@@ -301,8 +296,8 @@ public:
 #endif
     
     /*!
-     *  \fn void Yield(void)
-     *  
+     *  \brief Yield
+     *
      *  Yield the thread - this forces the system to call the scheduler and 
      *  determine what thread should run next.  This is typically used when
      *  threads are moved in and out of the scheduler.
@@ -310,8 +305,8 @@ public:
     static void Yield(void);
     
     /*!
-     *  \fn void SetID( uint8_t u8ID_ )
-     *  
+     *  \brief SetID
+     *
      *  Set an 8-bit ID to uniquely identify this thread.
      *  
      *  \param u8ID_ 8-bit Thread ID, set by the user
@@ -319,8 +314,8 @@ public:
     void SetID( uint8_t u8ID_ ) { m_u8ThreadID = u8ID_; }
     
     /*!
-     *  \fn uint8_t GetID()
-     *  
+     *  \brief GetID
+     *
      *  Return the 8-bit ID corresponding to this thread.
      *  
      *  \return Thread's 8-bit ID, set by the user
@@ -329,8 +324,8 @@ public:
     
     
     /*!
-     *  \fn uint16_t GetStackSlack()
-     *  
+     *  \brief GetStackSlack
+     *
      *  Performs a (somewhat lengthy) check on the thread stack to check the
      *  amount of stack margin (or "slack") remaining on the stack. If you're
      *  having problems with blowing your stack, you can run this function 
@@ -428,8 +423,8 @@ public:
     
 private:
     /*!
-     *  \fn void ContextSwitchSWI()
-     * 
+     *  \brief ContextSwitchSWI
+     *
      *  This code is used to trigger the context switch interrupt.  Called 
      *  whenever the kernel decides that it is necessary to swap out the 
      *  current thread for the "next" thread.       
@@ -437,7 +432,8 @@ private:
     static void ContextSwitchSWI(void);
 
     /*!
-     *  \fn void SetPriorityBase(uint8_t u8Priority_)
+     *  \brief SetPriorityBase
+     *
      *  \param u8Priority_
      */
     void SetPriorityBase(uint8_t u8Priority_);

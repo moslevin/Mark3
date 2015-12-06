@@ -40,21 +40,22 @@ class TraceBuffer
 {
 public:
     /*!
-     *  \fn void Init();
-     *  
+     *  \brief Init
+     *
      *  Initialize the tracebuffer before use.      
      */
     static void Init();
 
     /*!
-     * \brief Increment
+     *  \brief Increment
+     *
      */
     static uint16_t Increment(void)
             { return m_u16SyncNumber++; }
 
     /*!
-     *  \fn static void Write( uint16_t *pu16Data_, uint16_t u16Size_ )
-     *  
+     *  \brief Write
+     *
      *  Write a packet of data to the global tracebuffer.
      *  
      *  \param pu16Data_ Pointer to the source data buffer to copy to the trace buffer
@@ -63,8 +64,8 @@ public:
     static void Write( uint16_t *pu16Data_, uint16_t u16Size_ );
     
     /*! 
-     *  \fn static void SetCallback( WriteBufferCallback pfCallback_ )
-     *  
+     *  \brief SetCallback
+     *
      *  Set a callback function to be triggered whenever the tracebuffer
      *  hits the 50% point, or rolls over.
      *  

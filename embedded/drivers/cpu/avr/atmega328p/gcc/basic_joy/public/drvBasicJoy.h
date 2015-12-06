@@ -66,8 +66,8 @@ public:
 private:
   
     /*!
-     *  \fn void ScanInternal();
-     *  
+     *  \brief ScanInternal
+     *
      *  Function that is invoked to scan the joystick from Driver::Control().
      *  This starts the process of querying the joystick interface on the 
      *  hardware ports, and updates the current report structure if successful.

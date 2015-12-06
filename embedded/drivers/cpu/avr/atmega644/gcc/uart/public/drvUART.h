@@ -99,8 +99,8 @@ public:
     void RxISR();
     
     /*!         
-     *  \fn uint8_t *GetRxBuffer(void)
-     *  
+     *  \brief GetRxBuffer
+     *
      *  Return a pointer to the receive buffer for this UART.
      *
      *  \return pointer to the driver's RX buffer
@@ -108,8 +108,8 @@ public:
     uint8_t *GetRxBuffer(void) { return m_pu8RxBuffer; }
     
     /*! 
-     *  \fn uint8_t *GetTxBuffer(void)
-     *  
+     *  \brief GetTxBuffer
+     *
      *  Return a pointer to the transmit buffer for this UART.
      *  
      *  \return pointer to the driver's TX buffer

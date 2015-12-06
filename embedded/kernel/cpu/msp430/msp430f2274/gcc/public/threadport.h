@@ -126,8 +126,8 @@ class ThreadPort
 {
 public:
     /*!        
-     *  \fn void StartThreads()
-     * 
+     *  \brief StartThreads
+     *
      *  Function to start the scheduler, initial threads, etc.
      */
     static void StartThreads();
@@ -135,8 +135,8 @@ public:
 private:
 
     /*!
-     *  \fn void InitStack(Thread *pstThread_)
-     *  
+     *  \brief InitStack
+     *
      *  Initialize the thread's stack.
      *  
      *  \param pstThread_ Pointer to the thread to initialize

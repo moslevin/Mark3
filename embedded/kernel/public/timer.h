@@ -103,16 +103,22 @@ class Timer : public LinkListNode
 {
 public:
     /*!
+     *  \brief Timer
+     *
      *  Default Constructor - zero-initializes all internal data.
      */
     Timer() { }
 
     /*!
+     *  \brief Init
+     *
      * Re-initialize the Timer to default values.
      */
     void Init() { ClearNode(); m_u32Interval = 0; m_u32TimerTolerance = 0; m_u32TimeLeft = 0; m_u8Flags = 0; }
 
     /*!
+     *  \brief Start
+     *
      *  Start a timer using default ownership, using repeats as an option, and
      *  millisecond resolution.
      *
@@ -124,6 +130,8 @@ public:
     void Start( bool bRepeat_, uint32_t u32IntervalMs_, TimerCallback_t pfCallback_, void *pvData_ );
 
     /*!
+     *  \brief Start
+     *
      *  Start a timer using default ownership, using repeats as an option, and
      *  millisecond resolution.
      *
@@ -137,13 +145,15 @@ public:
     void Start( bool bRepeat_, uint32_t u32IntervalMs_, uint32_t u32ToleranceMs_, TimerCallback_t pfCallback_, void *pvData_ );
 
     /*!
+     *  \brief Stop
+     *
      *  Stop a timer already in progress.   Has no effect on timers that have
      *  already been stopped.
      */
     void Stop();
 
     /*!
-     * \fn void SetFlags (uint8_t u8Flags_)
+     *  \brief SetFlags
      *
      * Set the timer's flags based on the bits in the u8Flags_ argument
      *
@@ -154,7 +164,7 @@ public:
     void SetFlags (uint8_t u8Flags_) { m_u8Flags = u8Flags_; }
 
     /*!
-     *  \fn void SetCallback( TimerCallback_t pfCallback_)
+     *  \brief SetCallback
      *
      *  Define the callback function to be executed on expiry of the timer
      *
@@ -163,7 +173,7 @@ public:
     void SetCallback( TimerCallback_t pfCallback_){ m_pfCallback = pfCallback_; }
 
     /*!
-     *  \fn void SetData( void *pvData_ )
+     *  \brief SetData
      *
      *  Define a pointer to be sent to the timer callbcak on timer expiry
      *
@@ -172,7 +182,7 @@ public:
     void SetData( void *pvData_ ){ m_pvData = pvData_; }
 
     /*!
-     *  \fn void SetOwner( Thread *pclOwner_)
+     *  \brief SetOwner
      *
      *  Set the owner-thread of this timer object (all timers must be owned by
      *  a thread).
@@ -182,7 +192,7 @@ public:
     void SetOwner( Thread *pclOwner_){ m_pclOwner = pclOwner_; }
 
     /*!
-     *  \fn void SetIntervalTicks(uint32_t u32Ticks_)
+     *  \brief SetIntervalTicks
      *
      *  Set the timer expiry in system-ticks (platform specific!)
      *
@@ -191,7 +201,7 @@ public:
     void SetIntervalTicks(uint32_t u32Ticks_);
 
     /*!
-     *  \fn void SetIntervalSeconds(uint32_t u32Seconds_);
+     *  \brief SetIntervalSeconds
      *
      *  Set the timer expiry interval in seconds (platform agnostic)
      *
@@ -199,11 +209,15 @@ public:
      */
     void SetIntervalSeconds(uint32_t u32Seconds_);
 
-
+    /*!
+     * \brief GetInterval
+     *
+     * \return
+     */
     uint32_t GetInterval()	{ return m_u32Interval; }
 
     /*!
-     *  \fn void SetIntervalMSeconds(uint32_t u32MSeconds_)
+     *  \brief SetIntervalMSeconds
      *
      *  Set the timer expiry interval in milliseconds (platform agnostic)
      *
@@ -212,7 +226,7 @@ public:
     void SetIntervalMSeconds(uint32_t u32MSeconds_);
 
     /*!
-     *  \fn void SetIntervalUSeconds(uint32_t u32USeconds_)
+     *  \brief SetIntervalUSeconds
      *
      *  Set the timer expiry interval in microseconds (platform agnostic)
      *
@@ -221,13 +235,12 @@ public:
     void SetIntervalUSeconds(uint32_t u32USeconds_);
 
     /*!
-     *  \fn void SetTolerance(uint32_t u32Ticks_)
+     *  \brief SetTolerance
      *
      *  Set the timer's maximum tolerance in order to synchronize timer
      *  processing with other timers in the system.
      *
      *  \param u32Ticks_ Maximum tolerance in ticks
-     *
      */
     void SetTolerance(uint32_t u32Ticks_);
 

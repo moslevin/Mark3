@@ -49,31 +49,32 @@ class Kernel
 {
 public:    
     /*!
+     *  \brief
+     *
      *  Kernel Initialization Function, call before any other OS function
-     *  
-     *  \fn Init()
-     *  
+     *
      *  Initializes all global resources used by the operating system.  This
      *  must be called before any other kernel function is invoked.
      */
     static void Init(void);
         
     /*!
-     *  Start the kernel; function never returns
+     *  \brief
      *
-     *  \fn Start()
-     *  
      *  Start the operating system kernel - the current execution context is
      *  cancelled, all kernel services are started, and the processor resumes
      *  execution at the entrypoint for the highest-priority thread.
      *
      *  You must have at least one thread added to the kernel before calling
-     *  this function, otherwise the behavior is undefined.
+     *  this function, otherwise the behavior is undefined.  The exception to
+     *  this is if the system is configured to use the threadless idle hook,
+     *  in which case the kernel is allowed to run without any ready threads.
      */
     static void Start(void);    
 
     /*!
      * \brief IsStarted
+     *
      * \return Whether or not the kernel has started - true = running, false =
      *        not started
      */

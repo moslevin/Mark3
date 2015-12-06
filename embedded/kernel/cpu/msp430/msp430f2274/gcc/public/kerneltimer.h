@@ -39,36 +39,36 @@ class KernelTimer
 {
 public:
     /*!
-     *  \fn void Config(void)
-     *  
+     *  \brief Config
+     *
      *  Initializes the kernel timer before use
      */
     static void Config(void);
     
     /*!
-     *  \fn void Start(void)
-     *  
+     *  \brief Start
+     *
      *  Starts the kernel time (must be configured first)
      */
     static void Start(void);
     
     /*!
-     *  \fn void Stop(void)
-     *  
+     *  \brief Stop
+     *
      *  Shut down the kernel timer, used when no timers are scheduled
      */
     static void Stop(void);
     
     /*!
-     *  \fn uint8_t DI(void)
-     *  
+     *  \brief DI
+     *
      *  Disable the kernel timer's expiry interrupt
      */
     static uint8_t DI(void);
     
     /*!
-     *  \fn void RI(bool bEnable_)
-     *  
+     *  \brief RI
+     *
      *  Retstore the state of the kernel timer's expiry interrupt.
      *  
      *  \param bEnable_ 1 enable, 0 disable
@@ -76,15 +76,15 @@ public:
     static void RI(bool bEnable_);
     
     /*!
-     *   \fn void EI(void)
+     *  \brief EI
      *   
      *   Enable the kernel timer's expiry interrupt
      */
     static void EI(void);
 
     /*!
-     *  \fn uint32_t SubtractExpiry(uint32_t u32Interval_)
-     *  
+     *  \brief SubtractExpiry
+     *
      *  Subtract the specified number of ticks from the timer's 
      *  expiry count register.  Returns the new expiry value stored in 
      *  the register.
@@ -95,8 +95,8 @@ public:
     static uint32_t SubtractExpiry(uint32_t u32Interval_);
     
     /*!
-     *  \fn uint32_t TimeToExpiry(void)
-     *  
+     *  \brief TimeToExpiry
+     *
      *  Returns the number of ticks remaining before the next timer 
      *  expiry.
      *  
@@ -105,8 +105,8 @@ public:
     static uint32_t TimeToExpiry(void);
     
     /*!
-     *  \fn uint32_t SetExpiry(uint32_t u32Interval_)
-     *  
+     *  \brief SetExpiry
+     *
      *  Resets the kernel timer's expiry interval to the specified value
      *  
      *  \param u32Interval_ Desired interval in ticks to set the timer for
@@ -115,8 +115,8 @@ public:
     static uint32_t SetExpiry(uint32_t u32Interval_);
     
     /*!
-     *  \fn uint32_t GetOvertime(void)
-     *  
+     *  \brief GetOvertime
+     *
      *  Return the number of ticks that have elapsed since the last
      *  expiry.
      *  
@@ -125,16 +125,16 @@ public:
     static uint32_t GetOvertime(void);
     
     /*!
-     *  \fn void ClearExpiry(void)
-     *  
+     *  \brief ClearExpiry
+     *
      *  Clear the hardware timer expiry register
      */
     static void ClearExpiry(void);
     
 private:
     /*!
-     *  \fn uint16_t Read(void)
-     *  
+     *  \brief Read
+     *
      *  Safely read the current value in the timer register
      *  
      *  \return Value held in the timer register

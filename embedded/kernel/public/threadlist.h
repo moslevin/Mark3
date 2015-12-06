@@ -35,13 +35,15 @@ class ThreadList : public CircularLinkList
 {
 public:    
     /*! 
+     *  \brief ThreadList
+     *
      *  Default constructor - zero-initializes the data.
      */
     ThreadList() { m_u8Priority = 0; m_pu8Flag = NULL; }
     
     /*!
-     *  \fn void SetPriority(uint8_t u8Priority_)
-     *  
+     *  \brief SetPriority
+     *
      *  Set the priority of this threadlist (if used for a scheduler).
      *  
      *  \param u8Priority_ Priority level of the thread list
@@ -49,8 +51,8 @@ public:
     void SetPriority(uint8_t u8Priority_);
     
     /*!
-     *  \fn void SetFlagPointer(uint8_t *pu8Flag_)
-     *  
+     *  \brief SetFlagPointer
+     *
      *  Set the pointer to a bitmap to use for this threadlist.  Once again,
      *  only needed when the threadlist is being used for scheduling purposes.
      *  
@@ -59,8 +61,8 @@ public:
     void SetFlagPointer(uint8_t *pu8Flag_);
     
     /*!
-     *  \fn void Add(LinkListNode *node_)
-     *  
+     *  \brief Add
+     *
      *  Add a thread to the threadlist.
      *  
      *  \param node_ Pointer to the thread (link list node) to add to the list
@@ -68,10 +70,8 @@ public:
     void Add(LinkListNode *node_);
     
     /*!
-     *  \fn void Add(LinkListNode *node_, 
-     *                  uint8_t *pu8Flag_, 
-     *                  uint8_t u8Priority_)
-     *  
+     *  \brief Add
+     *
      *  Add a thread to the threadlist, specifying the flag and priority at
      *  the same time.
      *  
@@ -82,11 +82,19 @@ public:
      */
     void Add(LinkListNode *node_, uint8_t *pu8Flag_, uint8_t u8Priority_);
 
+    /*!
+     * \brief AddPriority
+     *
+     * Add a thread to the list such that threads are ordered from highest to
+     * lowest priority from the head of the list.
+     *
+     * \param node_         Pointer to a thread to add to the list.
+     */
     void AddPriority(LinkListNode *node_);
 
     /*!
-     *  \fn void Remove(LinkListNode *node_)
-     *  
+     *  \brief Remove
+     *
      *  Remove the specified thread from the threadlist
      *  
      *  \param node_ Pointer to the thread to remove
@@ -94,8 +102,8 @@ public:
     void Remove(LinkListNode *node_);
     
     /*!
-     *  \fn Thread *HighestWaiter()
-     *  
+     *  \brief HighestWaiter
+     *
      *  Return a pointer to the highest-priority thread in the thread-list.
      *  
      *  \return Pointer to the highest-priority thread

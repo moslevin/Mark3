@@ -31,14 +31,14 @@ class Notify : public BlockingObject
 {
 public:
     /*!
-     * \brief Init
+     *  \brief Init
      *
      * Initialze the Notification object prior to use.
      */
     void Init(void);
 
     /*!
-     * \brief Signal
+     *  \brief Signal
      *
      * Signal the notification object.  This will cause the
      * highest priority thread currently blocking on the object
@@ -49,7 +49,7 @@ public:
     void Signal(void);
 
     /*!
-     * \brief Wait
+     *  \brief Wait
      *
      * Block the current thread, waiting for a signal on the
      * object.
@@ -62,8 +62,9 @@ public:
 #if KERNEL_USE_TIMEOUTS
     /*!
      * \brief Wait
-     * Block the current thread, waiting for a signal on the
-     * object.
+     *
+     *  Block the current thread, waiting for a signal on the
+     *  object.
      *
      * \param u32WaitTimeMS_ Time to wait for the notification
      *                      event.

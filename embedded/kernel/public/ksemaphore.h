@@ -38,7 +38,7 @@ class Semaphore : public BlockingObject
 {
 public:
     /*!
-     *  \fn void Init(uint16_t u16InitVal_, uint16_t u16MaxVal_)
+     *  \brief
      *
      *  Initialize a semaphore before use.  Must be called
      *  before post/pend operations.
@@ -49,8 +49,8 @@ public:
     void Init(uint16_t u16InitVal_, uint16_t u16MaxVal_);
     
     /*!
-     *  \fn void Post();
-     *  
+     *  \brief
+     *
      *  Increment the semaphore count.
      *
      *  \return true if the semaphore was posted, false if the count
@@ -59,16 +59,16 @@ public:
     bool Post();
     
     /*!
-     *  \fn void Pend();
-     *  
+     *  \brief
+     *
      *  Decrement the semaphore count.  If the count is zero,
      *  the thread will block until the semaphore is pended.        
      */
     void Pend();
     
     /*!
-     *  \fn uint16_t GetCount()
-     *  
+     *  \brief
+     *
      *  Return the current semaphore counter. This can be 
      *  usedd by a thread to bypass blocking on a semaphore -
      *  allowing it to do other things until a non-zero count
@@ -81,8 +81,8 @@ public:
     
 #if KERNEL_USE_TIMEOUTS
     /*!
-     *  \fn bool Pend( uint32_t u32WaitTimeMS_ );
-     *  
+     *  \brief
+     *
      *  Decrement the semaphore count.  If the count is zero,
      *  the thread will block until the semaphore is pended.
      *  If the specified interval expires before the thread is
@@ -94,8 +94,8 @@ public:
     bool Pend( uint32_t u32WaitTimeMS_);
     
     /*!
-     *  \fn void WakeMe(Thread *pclChosenOne_)
-     *  
+     *  \brief
+     *
      *  Wake a thread blocked on the semaphore.  This is an
      *  internal function used for implementing timed semaphores
      *  relying on timer callbacks.  Since these do not have
@@ -109,8 +109,8 @@ public:
 private:
 
     /*!
-     *  \fn uint8_t WakeNext();
-     *  
+     *  \brief
+     *
      *  Wake the next thread waiting on the semaphore.
      */
     uint8_t WakeNext();

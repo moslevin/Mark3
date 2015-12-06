@@ -50,9 +50,10 @@ public:
 
     //-----------------------------------------------------------------------
     /*!
+     *  \brief DecimalToHex
+     *
      *  Convert an 8-bit unsigned binary value as a hexadecimal string.
      *
-     *  \fn static void DecimalToHex( uint8_t u8Data_, char *szText_ )
      *
      *  \param u8Data_ Value to convert into a string
      *  \param szText_ Destination string buffer (3 bytes minimum)
@@ -63,9 +64,9 @@ public:
 
     //-----------------------------------------------------------------------
     /*!
-     *  Convert an 8-bit unsigned binary value as a decimal string.
+     *  \brief DecimalToString
      *
-     *  \fn static void DecimalToString( uint8_t u8Data_, char *szText_ )
+     *  Convert an 8-bit unsigned binary value as a decimal string.
      *
      *  \param u8Data_ Value to convert into a string
      *  \param szText_ Destination string buffer (4 bytes minimum)
@@ -76,9 +77,9 @@ public:
 
     //-----------------------------------------------------------------------
     /*!
-     *  Compute the 8-bit addative checksum of a memory buffer.
+     *  \brief Checksum8
      *
-     *  \fn static uint16_t Checksum8( const void *pvSrc_, uint16_t u16Len_ )
+     *  Compute the 8-bit addative checksum of a memory buffer.
      *
      *  \param pvSrc_ Memory buffer to compute a 8-bit checksum of.
      *  \param u16Len_ Length of the buffer in bytes.
@@ -88,9 +89,9 @@ public:
 
     //-----------------------------------------------------------------------
     /*!
-     *  Compute the 16-bit addative checksum of a memory buffer.
+     *  \brief Checksum16
      *
-     *  \fn static uint16_t Checksum16( const void *pvSrc_, uint16_t u16Len_ )
+     *  Compute the 16-bit addative checksum of a memory buffer.
      *
      *  \param pvSrc_ Memory buffer to compute a 16-bit checksum of.
      *  \param u16Len_ Length of the buffer in bytes.
@@ -100,9 +101,9 @@ public:
 
     //-----------------------------------------------------------------------
     /*!
-     *  Compute the length of a string in bytes.
+     *  \brief StringLength
      *
-     *  \fn static uint16_t StringLength( const char *szStr_ )
+     *  Compute the length of a string in bytes.
      *
      *  \param szStr_ Pointer to the zero-terminated string to calculate the length of
      *  \return length of the string (in bytes), not including the 0-terminator.
@@ -112,9 +113,9 @@ public:
 
     //-----------------------------------------------------------------------
     /*!
-     *  Compare the contents of two zero-terminated string buffers to eachother.
+     *  \brief CompareStrings
      *
-     *  \fn static bool CompareStrings( const char *szStr1_, const char *szStr2_ )
+     *  Compare the contents of two zero-terminated string buffers to eachother.
      *
      *  \param szStr1_ First string to compare
      *  \param szStr2_ Second string to compare
@@ -124,9 +125,9 @@ public:
 
     //-----------------------------------------------------------------------
     /*!
-     *  Copy one buffer in memory into another.
+     *  \brief CopyMemory
      *
-     *  \fn static void CopyMemory( void *pvDst_, const void *pvSrc_, uint16_t u16Len_ )
+     *  Copy one buffer in memory into another.
      *
      *  \param pvDst_ Pointer to the destination buffer
      *  \param pvSrc_ Pointer to the source buffer
@@ -136,9 +137,9 @@ public:
 
     //-----------------------------------------------------------------------
     /*!
-     *  Copy a string from one buffer into another.
+     *  \brief CopyString
      *
-     *  \fn static void CopyString( char *szDst_, const char *szSrc_ )
+     *  Copy a string from one buffer into another.
      *
      *  \param szDst_ Pointer to the buffer to copy into
      *  \param szSrc_ Pointer to the buffer to copy data from
@@ -147,9 +148,9 @@ public:
 
     //-----------------------------------------------------------------------
     /*!
-     *  Search for the presence of one string as a substring within another.
+     *  \brief StringSearch
      *
-     *  \fn static int16_t StringSearch( const char *szBuffer_, const char *szPattern_ )
+     *  Search for the presence of one string as a substring within another.
      *
      *  \param szBuffer_ Buffer to search for pattern within
      *  \param szPattern_ Pattern to search for in the buffer
@@ -159,9 +160,9 @@ public:
 
     //-----------------------------------------------------------------------
     /*!
-     *  Compare the contents of two memory buffers to eachother
+     *  \brief CompareMemory
      *
-     *  \fn static bool CompareMemory( void *pvMem1_, void *pvMem2_, uint16_t u16Len_ )
+     *  Compare the contents of two memory buffers to eachother
      *
      *  \param pvMem1_ First buffer to compare
      *  \param pvMem2_ Second buffer to compare
@@ -173,9 +174,9 @@ public:
 
     //-----------------------------------------------------------------------
     /*!
-     *  Initialize a buffer of memory to a specified 8-bit pattern
+     *  \brief SetMemory
      *
-     *  \fn static void SetMemory( void *pvDst_, uint8_t u8Val_, uint16_t u16Len_ )
+     *  Initialize a buffer of memory to a specified 8-bit pattern
      *
      *  \param pvDst_ Destination buffer to set
      *  \param u8Val_ 8-bit pattern to initialize each byte of destination with

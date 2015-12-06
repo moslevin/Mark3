@@ -122,15 +122,15 @@ class Driver : public LinkListNode
 {
 public:
     /*!
-     *  \fn void Init()
-     *  
+     *  \brief Init
+     *
      *  Initialize a driver, must be called prior to use
      */
     virtual void Init() = 0;
     
     /*!
-     *  \fn uint8_t Open()
-     *  
+     *  \brief Open
+     *
      *  Open a device driver prior to use.
      *  
      *  \return Driver-specific return code, 0 = OK, non-0 = error
@@ -138,8 +138,8 @@ public:
     virtual uint8_t Open() = 0;
     
     /*!
-     *  \fn uint8_t Close()
-     *  
+     *  \brief Close
+     *
      *  Close a previously-opened device driver.
      *          
      *  \return Driver-specific return code, 0 = OK, non-0 = error
@@ -147,8 +147,7 @@ public:
     virtual uint8_t Close() = 0;
     
     /*!
-     *  \fn uint16_t Read( uint16_t u16Bytes_, 
-     *                           uint8_t *pu8Data_)            
+     *  \brief Read
      *
      *  Read a specified number of bytes from the device into a specific buffer.
      *  Depending on the driver-specific implementation, this may be a number
@@ -165,8 +164,7 @@ public:
                                  uint8_t *pu8Data_) = 0;
                                  
     /*!
-     *  \fn uint16_t Write( uint16_t u16Bytes_, 
-     *                            uint8_t *pu8Data_)            
+     *  \brief Write
      *
      *  Write a payload of data of a given length to the device.
      *  Depending on the implementation of the driver, the amount of data
@@ -184,11 +182,7 @@ public:
                                   uint8_t *pu8Data_) = 0;
 
     /*!        
-     *  \fn uint16_t Control( uint16_t u16Event_, 
-     *                              void *pvDataIn_, 
-     *                              uint16_t u16SizeIn_, 
-     *                              void *pvDataOut_, 
-     *                              uint16_t u16SizeOut_ )    
+     *  \brief Control
      *
      *  This is the main entry-point for device-specific io and control
      *  operations.  This is used for implementing all "side-channel"
@@ -212,8 +206,8 @@ public:
                                     uint16_t u16SizeOut_ ) = 0;
     
     /*!
-     *  \fn void SetName( const char *pcName_ )
-     *  
+     *  \brief SetName
+     *
      *  Set the path for the driver.  Name must be set prior to 
      *  access (since driver access is name-based).
      *  
@@ -222,7 +216,7 @@ public:
     void SetName( const char *pcName_ ) { m_pcPath = pcName_; }
     
     /*!
-     *  \fn const char *GetPath()
+     *  \brief GetPath
      *
      *  Returns a string containing the device path.
      *  
@@ -245,8 +239,8 @@ class DriverList
 {
 public:
     /*!
-     *  \fn void Init()        
-     * 
+     *  \brief Init
+     *
      *  Initialize the list of drivers.  Must be called prior to using the 
      *  device driver library.
      */
@@ -254,8 +248,8 @@ public:
     static void Init();
     
     /*!
-     *  \fn Add( Driver *pclDriver_ )
-     *  
+     *  \brief Add
+     *
      *  Add a Driver object to the managed global driver-list.
      *  
      *  \param pclDriver_ pointer to the driver object to add to the global
@@ -264,8 +258,8 @@ public:
     static void Add( Driver *pclDriver_ ) { m_clDriverList.Add(pclDriver_); }
     
     /*!
-     *  \fn void Remove( Driver *pclDriver_ )
-     *  
+     *  \brief Remove
+     *
      *  Remove a driver from the global driver list.
      *  
      *  \param pclDriver_ Pointer to the driver object to remove from the 
@@ -274,6 +268,8 @@ public:
     static void Remove( Driver *pclDriver_ ) { m_clDriverList.Remove(pclDriver_); }
     
     /*!
+     *  \brief FindByPath
+     *
      *  Look-up a driver in the global driver-list based on its path.  In the
      *  event that the driver is not found in the list, a pointer to the
      *  default "/dev/null" object is returned.  In this way, unimplemented drivers

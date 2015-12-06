@@ -82,16 +82,16 @@ public:
     
 private:
     /*!
-     *  \fn void JoyDelay(uint16_t u16Time_)
-     *  
+     *  \brief JoyDelay
+     *
      *  Simple delay implementation.  Not instrumented.  This is a
      *  busy-waiting delay.
      */
     void JoyDelay(uint16_t u16Time_);
     
     /*!
-     *  \fn void ScanInternal();
-     *  
+     *  \brief ScanInternal
+     *
      *  Function that is invoked to scan the joystick from Driver::Control().
      *  This starts the process of querying the joystick interface on the 
      *  hardware ports, and updates the current report structure if successful.
@@ -99,8 +99,8 @@ private:
     void ScanInternal();
     
     /*!
-     *  \fn uint8_t CmdByte(uint8_t u8Cmd_, bool bWaitAck_)
-     *  
+     *  \brief CmdByte
+     *
      *  Function that scans a single byte from the joystick interface.
      *  
      *  \param u8Cmd_ Command to issue on the interface
@@ -110,8 +110,8 @@ private:
     uint8_t CmdByte(uint8_t u8Cmd_, bool bWaitAck_);
     
     /*!
-     *  \fn void Decode(uint8_t u8JoyMode_, uint8_t *pu8Data_)
-     *  
+     *  \brief Decode
+     *
      *  Decode the bytestream read from the joystick interafce, and 
      *  convert it into the regular joystick report format.
      *  

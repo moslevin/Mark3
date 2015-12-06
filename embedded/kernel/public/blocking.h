@@ -66,10 +66,8 @@ class BlockingObject
 {
 protected:
     /*!
-     *  \fn void Block(Thread *pclThread_);
-     *  
-     *  \param pclThread_ Pointer to the thread object that will be blocked.
-     *  
+     *  \brief Block
+     *
      *  Blocks a thread on this object.  This is the fundamental operation 
      *  performed by any sort of blocking operation in the operating system.
      *  All semaphores/mutexes/sleeping/messaging/etc ends up going through
@@ -84,6 +82,8 @@ protected:
      *  2)  Add the thread to this object's thread list
      *  3)  Setting the thread's "current thread-list" point to reference this
      *      object's threadlist.
+     *
+     *  \param pclThread_ Pointer to the thread object that will be blocked.
      */
     void Block(Thread *pclThread_ );
     
@@ -98,12 +98,12 @@ protected:
     void BlockPriority(Thread *pclThread_ );
 
     /*!
-     *  \fn void UnBlock(Thread *pclThread_)
-     *  
-     *  \param pclThread_ Pointer to the thread to unblock.
-     *  
+     *  \brief UnBlock
+     *
      *  Unblock a thread that is already blocked on this object, returning it
      *  to the "ready" state by performing the following steps:
+     *
+     *  \param pclThread_ Pointer to the thread to unblock.
      *  
      *  1)  Removing the thread from this object's threadlist
      *  2)  Restoring the thread to its "original" owner's list

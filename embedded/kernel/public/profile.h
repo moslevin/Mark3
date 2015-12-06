@@ -60,6 +60,7 @@ See license.txt for more information
 #if KERNEL_USE_PROFILER
 
 /*!
+ *  \brief
  *  Profiling timer.
  *  This class is used to perform high-performance profiling of
  *  code to see how int32_t certain operations take.  useful in instrumenting
@@ -71,32 +72,32 @@ class ProfileTimer
 
 public:
     /*!
-     *  \fn void Init()
-     *  
+     *  \brief Init
+     *
      *  Initialize the profiling timer prior to use.  Can also
      *  be used to reset a timer that's been used previously.
      */
     void Init();
     
     /*!
-     *  \fn void Start()
-     *  
+     *  \brief Start
+     *
      *  Start a profiling session, if the timer is not already active. 
      *  Has no effect if the timer is already active.
      */
     void Start();
     
     /*!
-     *  \fn void Stop()
-     *  
+     *  \brief Stop
+     *
      *  Stop the current profiling session, adding to the 
      *  cumulative time for this timer, and the total iteration count.        
      */
     void Stop();
         
     /*!
-     *  \fn uint32_t GetAverage()
-     *  
+     *  \brief GetAverage
+     *
      *  Get the average time associated with this operation.
      *  
      *  \return Average tick count normalized over all iterations
@@ -104,8 +105,8 @@ public:
     uint32_t GetAverage();
     
     /*!
-     *  \fn uint32_t GetCurrent()
-     *  
+     *  \brief GetCurrent
+     *
      *  Return the current tick count held by the profiler.  Valid
      *  for both active and stopped timers.
      *  
@@ -116,6 +117,8 @@ public:
 private:
 
     /*!
+     *  \brief ComputeCurrentTicks
+     *
      *  Figure out how many ticks have elapsed in this iteration
      *  
      *  \param u16Count_ Current timer count

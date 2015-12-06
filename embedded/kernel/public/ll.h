@@ -75,16 +75,16 @@ protected:
     LinkListNode() { }
 
     /*!
-     *  \fn void ClearNode()
-     *  
+     *  \brief ClearNode
+     *
      *  Initialize the linked list node, clearing its next and previous node.
      */
     void ClearNode();
 
 public:
     /*!
-     *  \fn LinkListNode *GetNext();
-     *  
+     *  \brief GetNext
+     *
      *  Returns a pointer to the next node in the list.
      *  
      *  \return a pointer to the next node in the list.
@@ -92,8 +92,8 @@ public:
     LinkListNode *GetNext(void) { return next; }
     
     /*!
-     *  \fn LinkListNode *GetPrev();
-     *  
+     *  \brief GetPrev
+     *
      *  Returns a pointer to the previous node in the list.
      *  
      *  \return a pointer to the previous node in the list.
@@ -118,13 +118,15 @@ protected:
     
 public:
     /*!
+     *  \brief Init
+     *
      *  Clear the linked list.
      */
     void Init(){ m_pstHead = NULL; m_pstTail = NULL; }
     
     /*!
-     *  \fn void Add(LinkListNode *node_)
-     *  
+     *  \brief Add
+     *
      *  Add the linked list node to this linked list
      *  
      *  \param node_ Pointer to the node to add
@@ -132,8 +134,8 @@ public:
     virtual void Add(LinkListNode *node_) = 0;
 
     /*!
-     *  \fn void Remove(LinkListNode *node_)
-     *  
+     *  \brief Remove
+     *
      *  Add the linked list node to this linked list
      *  
      *  \param node_ Pointer to the node to remove
@@ -141,8 +143,8 @@ public:
     virtual void Remove(LinkListNode *node_) = 0;
     
     /*!
-     *  \fn LinkListNode *GetHead()
-     *  
+     *  \brief GetHead
+     *
      *  Get the head node in the linked list
      *  
      *  \return Pointer to the head node in the list
@@ -150,8 +152,8 @@ public:
     LinkListNode *GetHead() { return m_pstHead; }
     
 	/*!
-     *  \fn LinkListNode *GetTail()
-     *  
+     *  \brief GetTail
+     *
      *  Get the tail node of the linked list
      *  
      *  \return Pointer to the tail node in the list
@@ -167,13 +169,15 @@ class DoubleLinkList : public LinkList
 {
 public:
     /*!
+     *  \brief DoubleLinkList
+     *
      *  Default constructor - initializes the head/tail nodes to NULL
      */
     DoubleLinkList() { m_pstHead = NULL; m_pstTail = NULL; }
     
     /*!
-     *  \fn void Add(LinkListNode *node_)
-     *  
+     *  \brief Add
+     *
      *  Add the linked list node to this linked list
      *  
      *  \param node_ Pointer to the node to add
@@ -181,8 +185,8 @@ public:
     virtual void Add(LinkListNode *node_);
     
     /*!
-     *  \fn void Remove(LinkListNode *node_)
-     *  
+     *  \brief Remove
+     *
      *  Add the linked list node to this linked list
      *  
      *  \param node_ Pointer to the node to remove
@@ -200,8 +204,8 @@ public:
     CircularLinkList() { m_pstHead = NULL; m_pstTail = NULL; }
     
     /*!
-     *  \fn void Add(LinkListNode *node_)
-     *  
+     *  \brief
+     *
      *  Add the linked list node to this linked list
      *  
      *  \param node_ Pointer to the node to add
@@ -209,8 +213,8 @@ public:
     virtual void Add(LinkListNode *node_);
     
     /*!
-     *  \fn void Remove(LinkListNode *node_)
-     *  
+     *  \brief Remove
+     *
      *  Add the linked list node to this linked list
      *  
      *  \param node_ Pointer to the node to remove
@@ -218,16 +222,16 @@ public:
     virtual void Remove(LinkListNode *node_);
 
     /*!
-     *  \fn void PivotForward()
-     *  
+     *  \brief PivotForward
+     *
      *  Pivot the head of the circularly linked list forward
      *  ( Head = Head->next, Tail = Tail->next )                
      */
     void PivotForward();
     
     /*!
-     *  \fn void PivotBackward()
-     *  
+     *  \brief PivotBackward
+     *
      *  Pivot the head of the circularly linked list backward
      *  ( Head = Head->prev, Tail = Tail->prev )        
      */

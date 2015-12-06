@@ -38,7 +38,7 @@ class TimerList : public DoubleLinkList
 {
 public:
     /*!
-     *  \fn void Init()
+     *  \brief Init
      *
      *  Initialize the TimerList object.  Must be called before
      *  using the object.
@@ -46,7 +46,7 @@ public:
     void Init();
 
     /*!
-     *  \fn void Add(Timer *pclListNode_)
+     *  \brief Add
      *
      *  Add a timer to the TimerList.
      *
@@ -55,7 +55,7 @@ public:
     void Add(Timer *pclListNode_);
 
     /*!
-     *  \fn void Remove(Timer *pclListNode_)
+     *  \brief Remove
      *
      *  Remove a timer from the TimerList, cancelling its expiry.
      *
@@ -64,7 +64,7 @@ public:
     void Remove(Timer *pclListNode_);
 
     /*!
-     *  \fn void Process()
+     *  \brief Process
      *
      *  Process all timers in the timerlist as a result of the timer expiring.
      *  This will select a new timer epoch based on the next timer to expire.

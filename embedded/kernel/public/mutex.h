@@ -69,16 +69,16 @@ class Mutex : public BlockingObject
 {
 public:
     /*!
-     *  \fn void Init()
-     *  
+     *  \brief Init
+     *
      *  Initialize a mutex object for use - must call this function before using
      *  the object.
      */
     void Init();
 
     /*!
-     *  \fn void Claim()
-     *  
+     *  \brief Claim
+     *
      *  Claim the mutex.  When the mutex is claimed, no other thread can claim a
      *  region protected by the object.
      */
@@ -87,8 +87,8 @@ public:
 #if KERNEL_USE_TIMEOUTS
 
     /*!
-     *  \fn bool Claim(uint32_t u32WaitTimeMS_)
-     *  
+     *  \brief Claim
+     *
      *  \param u32WaitTimeMS_
      *  
      *  \return true - mutex was claimed within the time period specified
@@ -97,8 +97,8 @@ public:
     bool Claim(uint32_t u32WaitTimeMS_);
     
     /*!
-     *  \fn void WakeMe( Thread *pclOwner_ )
-     *  
+     *  \brief WakeMe
+     *
      *  Wake a thread blocked on the mutex.  This is an
      *  internal function used for implementing timed mutexes
      *  relying on timer callbacks.  Since these do not have
@@ -113,7 +113,7 @@ public:
 #endif
 
     /*!
-     *  \fn void Release()
+     *  \brief Release
      *  
      *  Release the mutex.  When the mutex is released, another object can enter
      *  the mutex-protected region.
@@ -123,8 +123,8 @@ public:
 private:
 
     /*!
-     *  \fn uint8_t WakeNext();
-     *  
+     *  \brief WakeNext
+     *
      *  Wake the next thread waiting on the Mutex.
      */
     uint8_t WakeNext();
@@ -151,7 +151,7 @@ private:
 #endif
 
     uint8_t m_u8Recurse;    //!< The recursive lock-count when a mutex is claimed multiple times by the same owner
-    bool m_bReady;       //!< State of the mutex - true = ready, false = claimed
+    bool m_bReady;          //!< State of the mutex - true = ready, false = claimed
     uint8_t m_u8MaxPri;     //!< Maximum priority of thread in queue, used for priority inheritence
     Thread *m_pclOwner;     //!< Pointer to the thread that owns the mutex (when claimed)
     

@@ -107,8 +107,8 @@ class JoystickDriver : public Driver
 {
 public:
     /*!
-     *  \fn void Scan()
-     *  
+     *  \brief Scan
+     *
      *  Read the current joystick values from hardware.  This calls the
      *  underlying driver's Control() function with the JOYSTICK_SCAN event,
      *  which is implemented in the inheriting class.  This copies the 
@@ -118,8 +118,8 @@ public:
     void Scan();
     
     /*!
-     *  \fn void ReadCurrent( JoystickReport &pstReport_ )
-     *  
+     *  \brief ReadCurrent
+     *
      *  Copy out the current joystick report data.  This does not trigger a 
      *  hardware re-scan of the joystick hardware.
      *  
@@ -129,8 +129,8 @@ public:
     void ReadCurrent( JoystickReport *pstReport_ );
     
     /*!
-     *  \fn void ReadPrevious( JoystickReport &pstReport_ )
-     *  
+     *  \brief ReadPrevious
+     *
      *  Copy out the previous joystick report data.  This does not trigger a
      *  hardware re-scan of the joystick hardware.
      *  

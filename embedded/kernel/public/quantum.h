@@ -42,8 +42,8 @@ class Quantum
 {
 public:
     /*!
-     *  \fn void UpdateTimer()
-     *  
+     *  \brief UpdateTimer
+     *
      *  This function is called to update the thread quantum timer whenever
      *  something in the scheduler has changed.  This can result in the timer
      *  being re-loaded or started.  The timer is never stopped, but if may
@@ -52,7 +52,7 @@ public:
     static void UpdateTimer();
     
     /*!
-     *  \fn void AddThread( Thread *pclThread_ )
+     *  \brief AddThread
      *
      *  Add the thread to the quantum timer.  Only one thread can own the quantum,
      *  since only one thread can be running on a core at a time.
@@ -60,32 +60,32 @@ public:
     static void AddThread( Thread *pclThread_ );
     
     /*!
-     *  \fn void RemoveThread()
-     *  
+     *  \brief RemoveThread
+     *
      *  Remove the thread from the quantum timer.  This will cancel the timer.
      */
     static void RemoveThread();
     
     /*!
-     * \brief SetInTimer
+     *  \brief SetInTimer
      *
-     * Set a flag to indicate that the CPU is currently running within the
-     * timer-callback routine.  This prevents the Quantum timer from being
-     * updated in the middle of a callback cycle, potentially resulting in
-     * the kernel timer becoming disabled.
+     *  Set a flag to indicate that the CPU is currently running within the
+     *  timer-callback routine.  This prevents the Quantum timer from being
+     *  updated in the middle of a callback cycle, potentially resulting in
+     *  the kernel timer becoming disabled.
      */
     static void SetInTimer(void)   { m_bInTimer = true; }
         
     /*!
      * \brief ClearInTimer
      *
-     * Clear the flag once the timer callback function has been completed.
+     *  Clear the flag once the timer callback function has been completed.
      */
     static void ClearInTimer(void) { m_bInTimer = false; }
     
 private:
     /*!
-     *  \fn void SetTimer( Thread *pclThread_ )
+     *  \brief SetTimer
      *
      *  Set up the quantum timer in the timer scheduler.  This creates a 
      *  one-shot timer, which calls a static callback in quantum.cpp that 

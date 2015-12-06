@@ -71,6 +71,8 @@ class Slip
 {
 public:
     /*!
+     *  \brief SetDriver
+     *
      *  Set the driver to attach to this object.
      *  
      *  \param pclDriver_ Pointer to the driver to attach
@@ -78,6 +80,8 @@ public:
     void SetDriver( Driver *pclDriver_ ){ m_pclDriver = pclDriver_; }
     
     /*!
+     *  \brief GetDriver
+     *
      *  Return the pointer to the driver attached to this object
      *  
      *  \return Pointer to the driver attached
@@ -85,8 +89,8 @@ public:
     Driver *GetDriver() { return m_pclDriver; }
 
     /*!
-     *  \fn uint16_t EncodeByte( uint8_t u8Char_, uint8_t *aucBuf_ )    
-     *  
+     *  \brief EncodeByte
+     *
      *  Encode a single byte into a stream, returning the size of
      *  the encoded value (either 1 or 2 bytes).
      *
@@ -98,8 +102,8 @@ public:
     static uint16_t EncodeByte( uint8_t u8Char_, uint8_t *aucBuf_ );
 
     /*!
-     *  \fn uint16_t DecodeByte( uint8_t *ucChar_, const uint8_t *aucBuf_ )
-     *  
+     *  \brief DecodeByte
+     *
      *  Decode a byte from a stream into a specified value
      *  
      *  Returns    the number of bytes from the source array that were processed,
@@ -114,8 +118,8 @@ public:
     static uint16_t DecodeByte( uint8_t *ucChar_, const uint8_t *aucBuf_ );
     
     /*!
-     *  \fn void WriteData( uint8_t u8Channel_, const char *aucBuf_, uint8_t u8Len_ )
-     *  
+     *  \brief WriteData
+     *
      *  Write a packet of data in the FunkenSlip format.
      *  
      *  Returns    the number of bytes from the source array that were processed,
@@ -128,8 +132,8 @@ public:
     void WriteData( uint8_t u8Channel_, const char *aucBuf_, uint16_t u16Len_ );
 
     /*!
-     *  \fn uint16_t ReadData( uint8_t *pu8Channel_, char *aucBuf_, uint16_t u16Len_ )
-     *  
+     *  \brief ReadData
+     *
      *  Read a packet from a specified device, parse, and copy to a specified 
      *  output buffer.
      *  
@@ -142,8 +146,8 @@ public:
     uint16_t ReadData( uint8_t *pu8Channel_, char *aucBuf_, uint16_t u16Len_ );
 
     /*!
-     *  \fn void WriteVector( uint8_t u8Channel_, SlipDataVector_t *astData, uint16_t u16Len_ )
-     *  
+     *  \brief WriteVector
+     *
      *  Write a single message composed of multiple data-vector fragments.  
      *  
      *  Allows for transmitting complex data structures without requiring buffering.
@@ -156,15 +160,15 @@ public:
     void WriteVector( uint8_t u8Channel_, SlipDataVector *astData_, uint16_t u16Len_ );
     
     /*!
-     *  \fn void SendAck()        
-     *  
+     *  \brief SendAck
+     *
      *  Send an acknowledgement character to the host
      */
     void SendAck();
 
     /*!
-     *  \fn void SendNack()
-     *  
+     *  \brief SendNack
+     *
      *  Send a negative-acknowledgement character to the host
      */
     void SendNack();

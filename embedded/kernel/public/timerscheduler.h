@@ -39,7 +39,7 @@ class TimerScheduler
 {
 public:
     /*!
-     *  \fn void Init()
+     *  \brief Init
      *
      *  Initialize the timer scheduler.  Must be called before any timer, or
      *  timer-derived functions are used.
@@ -47,7 +47,7 @@ public:
     static void Init() { m_clTimerList.Init(); }
 
     /*!
-     *  \fn void Add(Timer *pclListNode_)
+     *  \brief Add
      *
      *  Add a timer to the timer scheduler.  Adding a timer implicitly starts
      *  the timer as well.
@@ -58,7 +58,7 @@ public:
         {m_clTimerList.Add(pclListNode_); }
 
     /*!
-     *  \fn void Remove(Timer *pclListNode_)
+     *  \brief Remove
      *
      *  Remove a timer from the timer scheduler.  May implicitly stop the
      *  timer if this is the only active timer scheduled.
@@ -69,7 +69,7 @@ public:
         {m_clTimerList.Remove(pclListNode_); }
 
     /*!
-     *  \fn void Process()
+     *  \brief Process
      *
      *  This function must be called on timer expiry (from the timer's ISR
      *  context).  This will result in all timers being updated based on

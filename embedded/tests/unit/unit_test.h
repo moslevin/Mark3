@@ -31,8 +31,8 @@ public:
     UnitTest();
     
     /*!
-     *  \fn void SetName( const char *szName_ )
-     *  
+     *  \brief SetName
+     *
      *  Set the name of the test object
      *  
      *  \param szName_ Name of the tests associated with this object
@@ -41,23 +41,23 @@ public:
     void SetName( const char *szName_ ) { m_szName = szName_; }    
     
     /*!
-     *  \fn void Start() 
-     *  
+     *  \brief Start
+     *
      *  Start a new test iteration.
      */
     void Start() { m_bIsActive = 1; }
     
     /*!
-     *  \fn void Pass()
-     *  
+     *  \brief Pass
+     *
      *  Stop the current iteration (if started), and register that the test
      *  was successful.        
      */
     void Pass();
     
     /*!
-     *  \fn void Fail();
-     *  
+     *  \brief Fail
+     *
      *  Stop the current iterations (if started), and register that the
      *  current test failed.
      */
@@ -149,16 +149,16 @@ public:
         { (lVal_ <= lExpression_) ? Fail() : Pass(); }
 
     /*!
-     *  \fn void Complete()
-     *  
+     *  \brief Complete
+     *
      *  Complete the test.  Once a test has been completed, no new iterations
      *  can be started (i.e Start()/Pass()/Fail() will have no effect).
      */
     void Complete() { m_bComplete = 1; }
     
     /*!
-     *  \fn const char *GetName()
-     *  
+     *  \brief GetName
+     *
      *  Get the name of the tests associated with this object
      *  
      *  \return Name of the test
@@ -166,8 +166,8 @@ public:
     const char *GetName(){ return m_szName; }
     
     /*!
-     *  \fn bool GetResult()
-     *  
+     *  \brief GetResult
+     *
      *  Return the result of the last test 
      *  
      *  \return Status of the last run test (false = fail, true = pass)
@@ -175,8 +175,8 @@ public:
     bool GetResult() { return m_bStatus; }
 
     /*!
-     *  \fn uint16_t GetPassed()
-     *  
+     *  \brief GetPassed
+     *
      *  Return the total number of test points/iterations passed
      *  
      *  \return Count of all successful test points/iterations
@@ -184,8 +184,8 @@ public:
     uint16_t GetPassed() { return m_u16Passed; }
     
     /*!
-     *  \fn uint16_t GetFailed()
-     *  
+     *  \brief GetFailed
+     *
      *  Return the number of failed test points/iterations
      *  
      *  \return Failed test point/iteration count
@@ -193,8 +193,8 @@ public:
     uint16_t GetFailed() { return m_u16Iterations - m_u16Passed; }
     
     /*!
-     *  \fn uint16_t GetTotal()
-     *  
+     *  \brief GetTotal
+     *
      *  Return the total number of iterations/test-points executed
      *  
      *  \return Total number of ierations/test-points executed

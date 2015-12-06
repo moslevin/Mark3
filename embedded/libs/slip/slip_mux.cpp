@@ -36,10 +36,11 @@ Slip SlipMux::m_clSlip;
 
 //---------------------------------------------------------------------------
 /*!
-    \fn static void SlipMux_CallBack(Driver *pclDriver_)
-    \param pclDriver_ Pointer to the driver data for the port triggering
-                    the callback
-*/
+ *  \brief SlipMux_CallBack
+ *
+ *  \param pclDriver_ Pointer to the driver data for the port triggering
+ *                    the callback
+ */
 static void SlipMux_CallBack( Driver *pclDriver_)
 {
     Message *pclMsg = GlobalMessagePool::Pop();

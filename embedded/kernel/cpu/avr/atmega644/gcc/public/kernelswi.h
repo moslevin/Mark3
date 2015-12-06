@@ -33,30 +33,30 @@ class KernelSWI
 {
 public:
     /*!
-     *  \fn void Config(void)
-     *  
+     *  \brief Config
+     *
      *  Configure the software interrupt - must be called before any other 
      *  software interrupt functions are called.
      */
     static void Config(void);
 
     /*!
-     *  \fn void Start(void)
-     *  
+     *  \brief Start
+     *
      *  Enable ("Start") the software interrupt functionality
      */
     static void Start(void);
     
     /*!
-     *  \fn void Stop(void)
-     *  
+     *  \brief Stop
+     *
      *  Disable the software interrupt functionality
      */
     static void Stop(void);
     
     /*!
-     *  \fn void Clear(void)
-     *  
+     *  \brief Clear
+     *
      *  Clear the software interrupt
      */
     static void Clear(void);
@@ -64,13 +64,13 @@ public:
     /*!
      *  Call the software interrupt
      *  
-     *  \fn void Trigger(void)
+     *  \brief Trigger
      */
     static void Trigger(void);
     
     /*!
-     *  \fn uint8_t DI();
-     *  
+     *  \brief DI
+     *
      *  Disable the SWI flag itself
      *  
      *  \return previous status of the SWI, prior to the DI call
@@ -78,8 +78,8 @@ public:
     static uint8_t DI();
     
     /*!
-     *  \fn void RI(bool bEnable_)
-     *  
+     *  \brief RI
+     *
      *  Restore the state of the SWI to the value specified
      *  
      *  \param bEnable_ true - enable the SWI, false - disable SWI

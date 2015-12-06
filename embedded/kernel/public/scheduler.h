@@ -63,15 +63,15 @@ class Scheduler
 {
 public:
     /*!
-     *  \fn Init()
-     *  
+     *  \brief Init
+     *
      *  Intiailize the scheduler, must be called before use.
      */
     static void Init();
     
     /*!
-     *  \fn Schedule()
-     *  
+     *  \brief Schedule
+     *
      *  Run the scheduler, determines the next thread to run based on the 
      *  current state of the threads.  Note that the next-thread chosen
      *  from this function is only valid while in a critical section.
@@ -79,8 +79,8 @@ public:
     static void Schedule();
     
     /*!
-     *  \fn void Add(Thread *pclThread_)
-     *  
+     *  \brief Add
+     *
      *  Add a thread to the scheduler at its current priority level.
      *  
      *  \param pclThread_ Pointer to the thread to add to the scheduler
@@ -88,8 +88,8 @@ public:
     static void Add(Thread *pclThread_);
     
     /*!
-     *  \fn void Remove(Thread *pclThread_)
-     *  
+     *  \brief Remove
+     *
      *  Remove a thread from the scheduler at its current priority level.
      *  
      *  \param pclThread_ Pointer to the thread to be removed from the
@@ -98,8 +98,8 @@ public:
     static void Remove(Thread *pclThread_);
     
     /*!
-     *  \fn void SetScheduler(bool bEnable_)
-     *  
+     *  \brief SetScheduler
+     *
      *  Set the active state of the scheduler.  When the scheduler is 
      *  disabled, the *next thread* is never set; the currently
      *  running thread will run forever until the scheduler is enabled
@@ -112,6 +112,8 @@ public:
     static bool SetScheduler(bool bEnable_);
 
     /*!
+     *  \brief GetCurrentThread
+     *
      *  Return the pointer to the currently-running thread.
      *  
      *  \return Pointer to the currently-running thread
@@ -119,6 +121,8 @@ public:
     static Thread *GetCurrentThread(){ return g_pclCurrent; }
     
     /*!
+     *  \brief GetNextThread
+     *
      *  Return the pointer to the thread that should run next, according
      *  to the last run of the scheduler.
      *  
@@ -127,6 +131,8 @@ public:
     static volatile Thread *GetNextThread(){ return g_pclNext; }
     
     /*!
+     *  \brief GetThreadList
+     *
      *  Return the pointer to the active list of threads that are at the 
      *  given priority level in the scheduler.
      *  
@@ -137,6 +143,8 @@ public:
     static ThreadList *GetThreadList(uint8_t u8Priority_){ return &m_aclPriorities[u8Priority_]; }
     
     /*!
+     *  \brief GetStopList
+     *
      *  Return the pointer to the list of threads that are in the 
      *  scheduler's stopped state.
      *  
@@ -145,8 +153,8 @@ public:
     static ThreadList *GetStopList(){ return &m_clStopList; }
     
     /*!
-     *  \fn uint8_t IsEnabled()
-     *  
+     *  \brief IsEnabled
+     *
      *  Return the current state of the scheduler - whether or not scheudling
      *  is enabled or disabled.
      *  
@@ -155,10 +163,10 @@ public:
     static uint8_t IsEnabled(){ return m_bEnabled; }
 
     /*!
-     * \brief QueueScheduler
+     *  \brief QueueScheduler
      *
-     * Tell the kernel to perform a scheduling operation as soon as the
-     * scheduler is re-enabled.
+     *  Tell the kernel to perform a scheduling operation as soon as the
+     *  scheduler is re-enabled.
      */
     static void QueueScheduler() { m_bQueuedSchedule = true; }
 

@@ -100,15 +100,15 @@ class Message : public LinkListNode
 {
 public:
     /*!
-     *  \fn void Init();
-     *  
+     *  \brief Init
+     *
      *  Initialize the data and code in the message.
      */
     void Init() { ClearNode(); m_pvData = NULL; m_u16Code = 0; }
     
     /*!
-     *  \fn void SetData( void *pvData_ )
-     *  
+     *  \brief SetData
+     *
      *  Set the data pointer for the message before transmission.
      *  
      *  \param pvData_ Pointer to the data object to send in the message
@@ -116,8 +116,8 @@ public:
     void SetData( void *pvData_ ) { m_pvData = pvData_; }
     
     /*!
-     *  \fn void *GetData()
-     *  
+     *  \brief GetData
+     *
      *  Get the data pointer stored in the message upon receipt
      *  
      *  \return Pointer to the data set in the message object
@@ -125,8 +125,8 @@ public:
     void *GetData() { return m_pvData; }
     
     /*!
-     *  \fn SetCode( uint16_t u16Code_ )
-     *  
+     *  \brief SetCode
+     *
      *  Set the code in the message before transmission
      *  
      *  \param u16Code_ Data code to set in the object
@@ -134,8 +134,8 @@ public:
     void SetCode( uint16_t u16Code_ ) { m_u16Code = u16Code_; }
     
     /*!
-     *  \fn uint16_t GetCode()
-     *  
+     *  \brief GetCode
+     *
      *  Return the code set in the message upon receipt
      *  
      *  \return user code set in the object
@@ -158,15 +158,15 @@ class GlobalMessagePool
 {
 public:
     /*!
-     *  \fn void Init()
-     *  
+     *  \brief Init
+     *
      *  Initialize the message queue prior to use
      */
     static void Init(); 
     
     /*!
-     *  \fn void Push( Message *pclMessage_ )
-     *  
+     *  \brief Push
+     *
      *  Return a previously-claimed message object back to the global queue.
      *  used once the message has been processed by a receiver.
      *  
@@ -176,8 +176,8 @@ public:
     static void Push( Message *pclMessage_ );
     
     /*!
-     *  \fn Message *Pop()
-     *  
+     *  \brief Pop
+     *
      *  Pop a message from the global queue, returning it to the user to be 
      *  popu32ated before sending by a transmitter.
      *  
@@ -202,15 +202,15 @@ class MessageQueue
 {
 public:
     /*!
-     *  \fn void Init()
-     *  
+     *  \brief Init
+     *
      *  Initialize the message queue prior to use.
      */
     void Init();        
     
     /*!        
-     *  \fn Message *Receive()
-     *  
+     *  \brief Receive
+     *
      *  Receive a message from the message queue.  If the message queue
      *  is empty, the thread will block until a message is available.
      *  
@@ -220,8 +220,8 @@ public:
     
 #if KERNEL_USE_TIMEOUTS
     /*!        
-     *  \fn Message *Receive( uint32_t u32WaitTimeMS_ )
-     *  
+     *  \brief Receive
+     *
      *  Receive a message from the message queue.  If the message queue
      *  is empty, the thread will block until a message is available for
      *  the duration specified.  If no message arrives within that 
@@ -237,8 +237,8 @@ public:
 #endif  
     
     /*!
-     *  \fn void Send( Message *pclSrc_ )
-     *  
+     *  \brief Send
+     *
      *  Send a message object into this message queue.  Will un-block the 
      *  first waiting thread blocked on this queue if that occurs.
      *  
@@ -246,10 +246,9 @@ public:
      */
     void Send( Message *pclSrc_ );
     
-    
     /*!
-     *  \fn uint16_t GetCount()
-     *  
+     *  \brief GetCount
+     *
      *  Return the number of messages pending in the "receive" queue.
      *  
      *  \return Count of pending messages in the queue.

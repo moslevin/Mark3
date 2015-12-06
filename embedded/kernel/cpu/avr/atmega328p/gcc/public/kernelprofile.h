@@ -38,40 +38,44 @@ class Profiler
 {
 public:
     /*!
-     *  \fn void Init()
-     *  
+     *  \brief Init
+     *
      *  Initialize the global system profiler.  Must be 
      *  called prior to use.
      */
     static void Init();
     
     /*!
-     *  \fn void Start()
-     *  
+     *  \brief Start
+     *
      *  Start the global profiling timer service.
      */
     static void Start();
     
     /*!
-     *  \fn void Stop()
-     *  
+     *  \brief Stop
+     *
      *  Stop the global profiling timer service
      */
     static void Stop();
     
     /*!
-     *  \fn uint16_t Read()
-     *  
+     *  \brief Read
+     *
      *  Read the current tick count in the timer.  
      */
     static uint16_t Read();
     
     /*!
+     *  \brief Process
+     *
      *  Process the profiling counters from ISR.
      */
     static void Process();
     
     /*!
+     *  \brief GetEpoch
+     *
      *  Return the current timer epoch    
      */
     static uint32_t GetEpoch(){ return m_u32Epoch; }

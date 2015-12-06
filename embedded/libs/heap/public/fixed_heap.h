@@ -30,9 +30,8 @@ class BlockHeap
 {
 public:
     /*!
+     *  \brief Create
      *
-     *  \fn void *Create( void *pvHeap_, uint16_t u16Size_, uint16_t u16BlockSize_ )
-     *  
      *  Create a single list heap in the blob of memory provided, with the 
      *  selected heap size, and the selected number of blocks.  Will create
      *  as many blocks as will fit in the u16Size_ parameter
@@ -46,8 +45,8 @@ public:
     void *Create( void *pvHeap_, uint16_t u16Size_, uint16_t u16BlockSize_ );
     
     /*! 
-     *  \fn void *Alloc()
-     *  
+     *  \brief Alloc
+     *
      *  Allocate a block of memory from this heap
      *  
      *  \return pointer to a block of memory, or 0 on failure
@@ -55,8 +54,8 @@ public:
     void *Alloc();
     
     /*!
-     *  \fn void Free( void* pvData_ )
-     *  
+     *  \brief Free
+     *
      *  Free a previously allocated block of memory
      *  
      *  \param pvData_ Pointer to a block of data previously allocated off
@@ -65,8 +64,8 @@ public:
     void Free( void* pvData_ );
     
     /*!
-     *  \fn bool IsFree() 
-     *  
+     *  \brief IsFree
+     *
      *  Returns the state of a heap - whether or not it has free elements.
      *  
      *  \return true if the heap is not full, false if the heap is full
@@ -105,7 +104,7 @@ class FixedHeap
 {
 public:
     /*!
-     *  \fn void Create( void *pvHeap_, HeapConfig *pclHeapConfig_ )
+     *  \brief Create
      *
      *  Creates a heap in a provided blob of memory with lists of fixed-size
      *  blocks configured based on the associated configuration data.  A
@@ -122,8 +121,8 @@ public:
     void Create( void *pvHeap_, HeapConfig *pclHeapConfig_ );
 
     /*!
-     *  \fn void *Alloc( uint16_t u16Size_ )
-     *  
+     *  \brief Alloc
+     *
      *  Allocate a blob of memory from the heap.  If no appropriately-sized
      *  data block is available, will return NULL.  Note, this API is thread-
      *  safe, and interrupt safe.
@@ -135,8 +134,8 @@ public:
     void *Alloc( uint16_t u16Size_ );
     
     /*!
-     *  \fn void Free( void *pvNode_ )
-     *  
+     *  \brief Free
+     *
      *  Free a previously-allocated block of memory to the heap it was 
      *  originally allocated from.  This must point to the block of
      *  memory at its originally-returned pointer, and not an address 

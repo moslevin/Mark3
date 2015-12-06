@@ -44,12 +44,8 @@ class SlipMux
 {
 public:
     /*!        
-        \fn void Init( const char *pcDriverPath_,
-                        uint16_t u16RxSize_,
-                        uint8_t *aucRx_,
-                        uint16_t u16TxSize_,
-                        uint8_t *aucTx_)
-        
+     *  \brief Init
+
         Attach a driver to the Slip-stream multiplexer and initialize the 
         internal data associated with the module.  
                 
@@ -65,8 +61,8 @@ public:
     static void Init(const char *pcDriverPath_, uint16_t u16RxSize_, uint8_t *aucRx_, uint16_t u16TxSize_, uint8_t *aucTx_);
     
     /*!
-        \fn void InstallHandler( uint8_t u8Channel_, Slip_Channel pfHandler_ )
-        
+        \brief InstallHandler
+
          Install a slip handler function for the given communication channel.
         
         \param u8Channel_ Channel to attach the handler to
@@ -75,7 +71,7 @@ public:
     static void InstallHandler( uint8_t u8Channel_, Slip_Channel pfHandler_ );
 
     /*!        
-        \fn void MessageReceive(void)
+        \brief MessageReceive
 
         Wait for a valid packet to arrive, and call the appropriate handler function
         for the channel the message was attached to.  This is essentially the entry

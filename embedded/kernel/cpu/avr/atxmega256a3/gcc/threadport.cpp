@@ -164,7 +164,7 @@ void ThreadPort::StartThreads()
 //---------------------------------------------------------------------------
 /*!
  *   SWI using INT0 - used to trigger a context switch
- *   \fn ISR(INT0_vect) __attribute__ ( ( signal, naked ) );
+ *  \brief ISR(INT0_vect)
  */
 //---------------------------------------------------------------------------
 ISR(INT0_vect) __attribute__ ( ( signal, naked ) );
@@ -179,7 +179,7 @@ ISR(INT0_vect)
 //---------------------------------------------------------------------------
 /*!
  *   Timer interrupt ISR - causes a tick, which may cause a context switch
- *   \fn ISR(TIMER1_COMPA_vect) ;
+ *  \brief ISR(TIMER1_COMPA_vect)
  */
 //---------------------------------------------------------------------------
 ISR(TIMER1_COMPA_vect)
