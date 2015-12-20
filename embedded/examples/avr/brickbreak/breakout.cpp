@@ -747,10 +747,10 @@ void Breakout::TitleEnter()
     TextFX_t stTextFX;
 
     stText.pstFont = &fntPrint_Char_21_6_False_False_False_;
-    stText.pcString = "Wellesley Rocks!";
+    stText.pcString = "(c)2015 - FUNKENSTEIN";
     stText.u16Left = 5;
     stText.u16Top = SCREEN_HEIGHT - 8;
-    stText.uColor = COLOR_GREEN;
+    stText.uColor = COLOR_GREY25;
 
     pclDisplay->Text(&stText);
 
