@@ -12,7 +12,6 @@ Copyright (c) 2012-2015 Funkenstein Software Consulting, all rights reserved.
 See license.txt for more information
 ===========================================================================*/
 /*!
-
     \file   notify.h
 
     \brief  Lightweight thread notification - blocking object
@@ -27,6 +26,10 @@ See license.txt for more information
 
 #if KERNEL_USE_NOTIFY
 
+/*!
+ * \brief The Notify class is a blocking object type, that allows one or more
+ * threads to wait for an event to occur before resuming operation.
+ */
 class Notify : public BlockingObject
 {
 public:

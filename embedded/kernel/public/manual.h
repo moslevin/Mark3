@@ -31,7 +31,7 @@ See license.txt for more information
     --[Mark3 Realtime Platform]--------------------------------------------------
 
     Copyright (c) 2012-2015 Funkenstein Software Consulting, all rights reserved.
-    See license.txt for more information
+    See license for more information
         
     \endverbatim
 
@@ -74,14 +74,15 @@ See license.txt for more information
 
     Redistribution and use in source and binary forms, with or without
     modification, are permitted provided that the following conditions are met:
-        * Redistributions of source code must retain the above copyright
+        - Redistributions of source code must retain the above copyright
           notice, this list of conditions and the following disclaimer.
-        * Redistributions in binary form must reproduce the above copyright
+        - Redistributions in binary form must reproduce the above copyright
           notice, this list of conditions and the following disclaimer in the
           documentation and/or other materials provided with the distribution.
-        * Neither the name of Funkenstein Software Consulting, nor the
+        - Neither the name of Funkenstein Software Consulting, nor the
           names of its contributors may be used to endorse or promote products
           derived from this software without specific prior written permission.
+        .
 
     THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
     ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -219,16 +220,14 @@ See license.txt for more information
     \endcode
 
     Once you've placed your code files in the right place, and configured
-    the makefile appropriately, a fresh call to make headers, make library,
-    then make binary will guarantee that your code is built.
+    the makefile appropriately, call the following sequence to guarantee
+    that your code will be built.
 
-    Now, you can still copy-and-paste the required kernel, port, and
-    drivers, directly into your application avoiding the whole process of
-    using make from the command line. To do this, run "make source" from
-    the root directory in svn, and copy the contents of /stage/src into
-    your project.  This should contain the source to the kernel, all
-    drivers, and all services that are in the tree - along with the necessary
-    header files.
+    \verbatim
+    > make headers
+    > make library
+    > make binary
+    \endverbatim
 
     \section WINBUILD Building on Windows
 
@@ -236,7 +235,7 @@ See license.txt for more information
     prerequisites that need to be taken into consideration before the
     build scripts and makefiles will work as expected.
 
-    Step 1 - Install Latest Atmel Studio IDE
+    <b>Step 1 - Install Latest Atmel Studio IDE</b>
 
     Atmel Studio contains the AVR8 GCC toolchain, which contains the necessary
     compilers, assemblers, and platform support required to turn the source
@@ -256,11 +255,11 @@ See license.txt for more information
     Advanced System Settings, and edit the PATH variable.  Append the location
     of the toolchain bin folder to the end of the variable.
 
-    On Windows 7 x64, it should look something like this:
+    On Windows x64, it should look something like this:
 
     C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.2.1002\avr8-gnu-toolchain\bin
 
-    Step 2 - Install MinGW and MinSys
+    <b>Step 2 - Install MinGW and MinSys</b>
 
     MinGW (and MinSys in particular) provide a unix-like environment that
     runs under windows.  Some of the utilities provided include a version of
@@ -273,7 +272,7 @@ See license.txt for more information
     Once installed, add the MinSys binary path to the PATH environment variable,
     in a similar fashion as with Atmel Studio in Step 1.
 
-    Step 3 - Setup Include Paths in Platform Makefile
+    <b>Step 3 - Setup Include Paths in Platform Makefile</b>
 
     The AVR header file path must be added to the "platform.mak" makefile for
     each AVR Target you are attempting to build for.  These files can be located
@@ -289,7 +288,7 @@ See license.txt for more information
 
     \endcode
 
-    Step 4 - Build Mark3 using Bash
+    <b>Step 4 - Build Mark3 using Bash</b>
 
     Launch a terminal to your Mark3 base directory, and cd into the "embedded" folder.
     You should now be able to build Mark3 by running "bash ./build.sh" from the
@@ -332,9 +331,11 @@ See license.txt for more information
 
     Where:
 
+    \verbatim
         <architecture> is the CPU archictecure (i.e. AVR, MSP430, CM0)
         <variant> is the CPU model within the architecture (i.e. atmegea328p)
         <toolchain> is the toolchain compatile with the port (i.e. GCC)
+    \endverbatim
 
     If successful, the generated artifacats will be placed in an output folder
     under the ./export directory.
@@ -1226,6 +1227,8 @@ See license.txt for more information
     The following figure demonstrates the differences between the architecture of
     a bare-metal system and RTOS based system at a high level:
 
+    \image html Mark3_arch.png
+
     As can be seen, the RTOS (And associated middleware + libraries) captures a
     certain fixed size.
 
@@ -1260,16 +1263,17 @@ See license.txt for more information
 
     Consider the following questions when making that decision:
 
-    What is the application?
-    How efficient is efficient enough?
-    How fast is fast enough?
-    How small is small enough?
-    How responsive is responsive enough?
-    How much code space/RAM/etc is available on the target system?
-    How much code space/RAM do I need for an RTOS?
-    How much code space/RAM do I think I'll need for my application?
-    How much time do I have to deliver my system?
-    How many units do we plan to sell?
+    - What is the application?
+    - How efficient is efficient enough?
+    - How fast is fast enough?
+    - How small is small enough?
+    - How responsive is responsive enough?
+    - How much code space/RAM/etc is available on the target system?
+    - How much code space/RAM do I need for an RTOS?
+    - How much code space/RAM do I think I'll need for my application?
+    - How much time do I have to deliver my system?
+    - How many units do we plan to sell?
+    .
 
     \section WHENSUPER Superloops, and their limitations
 
@@ -1312,9 +1316,6 @@ See license.txt for more information
     Not much to it, is there? But you might be surprised at just how much embedded
     system firmware is implemented using essentially the same mechanism - there
     isn't anything wrong with that, but it's just not that interesting.
-
-    While the execution timeline for this program is equally boring, for the sake
-    of completeness it would look like this:
 
     Despite its simplicity we can see the beginnings of some core OS concepts.
     Here, the while(1) statement can be logically seen as the he operating system
@@ -1782,8 +1783,10 @@ See license.txt for more information
     GCC compiler with -Os level optimizations, an executable is produced with the
     following code/RAM utilization:
 
+    \verbatim
     Program:   27914 bytes
     Data:       1313 bytes
+    \endverbatim
 
     An alternate version of this project is created using a custom "super-loop"
     kernel, which uses a single application thread and provides 2 levels of
@@ -1794,8 +1797,10 @@ See license.txt for more information
     This approach leaves the application itself largely unchanged. Using the same
     optimization levels as the preemptive kernel, the code compiles as follows:
 
+    \verbatim
     Program:   24886 bytes
     Data:        750 bytes
+    \endverbatim
 
     At first glance, the difference in RAM utilization seems quite a lot higher
     for the preemptive mode version of the application, but the raw numbers don't
@@ -1833,12 +1838,16 @@ See license.txt for more information
     used to manage the kernel in preemptive mode, and the kernel data itself.
 
     Fixed kernel data costs:
+    \verbatim
     --- 134 Bytes Kernel data
     --- 26 Bytes Kernel Vtables
+    \endverbatim
 
     Application (Variable) data costs:
+    \verbatim
     --- 24 Bytes Driver Vtables
     --- 123 Bytes – statically-allocated kernel objects (semaphores, timers, etc.)
+    \endverbatim
 
     With this taken into account, the true memory cost of a 2-thread system ends
     up being around 428 bytes of RAM - which is about 20% of the total memory
@@ -1859,10 +1868,12 @@ See license.txt for more information
     use. In this way, we can measure the overhead on a feature-by-feature basis,
     which is shown below for the kernel as configured for this application:
 
-    Kernel:  2563 Bytes
-    Synchronization Objects:  644 Bytes
-    Port:  974 Bytes
-    Features:  871 Bytes
+    \verbatim
+    Kernel ................. 2563 Bytes
+    Synchronization Objects.  644 Bytes
+    Port ...................  974 Bytes
+    Features ...............  871 Bytes
+    \endverbatim
 
     The configuration tested in this comparison uses the thread/port module with
     timers, drivers, and semaphores, and mutexes, for a total kernel size of
@@ -1890,12 +1901,14 @@ See license.txt for more information
     becomes the difference between the following:
 
     Preemptive mode:
-    -Posting the semaphore that wakes the high-priority thread
-    -Performing a context switch to the high-priority thread
+    - Posting the semaphore that wakes the high-priority thread
+    - Performing a context switch to the high-priority thread
+    .
 
     Cooperative mode:
-    -Setting the event flag from the timer interrupt
-    -Acknowledging the event from the event loop
+    - Setting the event flag from the timer interrupt
+    - Acknowledging the event from the event loop
+    .
 
     coop – 438 cycles
     preempt – 764 cycles
@@ -1941,7 +1954,7 @@ See license.txt for more information
     avoid using an RTOS at all.
 */
 /*!
-    \page INSIDEMARK3 Inside The Mark3 Kernel
+    \page INSIDEMARK3 Mark3 Design Goals
 
     \section INSIDEOVERVIEW Overview
 
@@ -2064,6 +2077,8 @@ See license.txt for more information
     At a high level, the Mark3 RTOS is organized into the following features, and
     layered as shown below:
 
+    \image html Mark3_arch4.png
+
     Everything in the “green” layer represents the Mark3 public API and classes,
     beneath which lives all hardware abstraction and CPU-specific porting and
     driver code, which runs on a given target CPU.
@@ -2126,8 +2141,7 @@ See license.txt for more information
     in some cases, groups of functions/macros).  The relationship between objects
     in the Mark3 kernel is shown below:
 
-
-
+    \image html Mark3_arch5.png
 
     The objects shown in the preceding table can be grouped together by feature.
     In the table below, we group each feature by object, referencing the source
@@ -2161,10 +2175,17 @@ See license.txt for more information
     |Atomic Operations    | Atomic                |  atomic.cpp/.h                  |
     |Kernel               | Kernel                |  kernel.cpp/.h                  |
 
+    \verbatim
     ** implementation is platform-dependent, and located under the kernel's
     ** /cpu/<arch>/<variant>/<toolchain> folder in the source tree
+    \endverbatim
 
     \section THREADSCHED Threads and Scheduling
+
+    The classes involved in threading and scheudling in Mark3 are highlighted
+    in the following diagram, and are discussed in detail in this chapter:
+
+    \image html Mark3_arch24.png
 
     \subsection BITTHREAD A Bit About Threads
 
@@ -2246,15 +2267,22 @@ See license.txt for more information
     specific condition is met is fundamental to understanding RTOS applications
     design, as well as any highly-multithreaded applications.
 
-    \subsection BLOCKOBJ Blocking objects and primatives provided by Mark3 include:
+    \subsection BLOCKOBJ
 
-    Semaphores (binary and counting)
-    Mutexes
-    Event Flags
-    Thread Notification Objects
-    Thread Sleep
-    Message Queues
-    Mailboxes
+    Blocking objects and primatives provided by Mark3 include:
+
+    - Semaphores (binary and counting)
+    - Mutexes
+    - Event Flags
+    - Thread Notification Objects
+    - Thread Sleep
+    - Message Queues
+    - Mailboxes
+    .
+
+    The relationship between these objects in the system are shown below:
+
+    \image html Mark3_arch21.png
 
     Each of these objects inherit from the BlockingObject class, which itself
     contains a ThreadList object.  This class contains methods to Block() a
@@ -2273,9 +2301,10 @@ See license.txt for more information
 
     At this point we've covered the following concepts:
 
-    Threads
-    Thread States and Thread Lists
-    Blocking and Un-Blocking Threads
+    - Threads
+    - Thread States and Thread Lists
+    - Blocking and Un-Blocking Threads
+    .
 
     Thankfully, this is all the background required to understand how the Mark3
     Scheduler works.  In technical terms, Mark3 implements "strict priority
@@ -2283,10 +2312,12 @@ See license.txt for more information
     In plain English, this boils down to a scheduler which follows a few simple
     rules:
 
+    \verbatim
         Find the highest-priority "Ready" list that has at least one Threads.
         If the first thread in that bucket is not the current thread, select it
         to run next. Otherwise, rotate the linked list, and choose the next
         thread in the list to run
+    \endverbatim
 
     Since context switching is one of the most common and frequent operation
     performed by an RTOS, this needs to be as fast and deterministic as possible.
@@ -2480,8 +2511,9 @@ See license.txt for more information
     within the kernel to implement round-robin scheduling, and timeout-based APIs
     for seamphores, mutexes, events, and messages.
 
-
     Timers are implemented using the following components in the Mark3 Kernel:
+
+    \image html Mark3_arch20.png
 
     The Timer class provides the basic periodic and one-shot timer functionality
     used by applicaiton code, blocking objects, and IPC.
@@ -2612,7 +2644,7 @@ See license.txt for more information
 
     \section SYNCHIPC Synchronization and IPC
 
-    <TBD>
+    \image html Mark3_arch21.png
 
     \section BLOCKINGOBJECTS Blocking Objects
 
@@ -2820,12 +2852,16 @@ See license.txt for more information
 
     \subsection ATOMICOPS Atomic Operations
 
+    \image html Mark3_arch25.png
+
     This utility class provides primatives for atomic operations - that is,
     operations that are guaranteed to execute uninterrupted.  Basic atomic
     primatives provided here include Set/Add/Delete for 8, 16, and 32-bit integer
     types, as well as an atomic test-and-set.
 
     \subsection DRIVERS Drivers
+
+    \image html Mark3_arch18.png
 
     This is the basis of the driver framework.  In the context of Mark3, drivers
     don't necessarily have to be based on physical hardware peripherals.  They
@@ -2909,11 +2945,10 @@ See license.txt for more information
         pclUART->Write(12, "Hello World!");
         pclSPI->Write(12, "Hello World!");
     \endcode
-    
-    Profiling
-    <TBD>
 
-    <b>Kernel Proper</b>
+    \section KRNLPROPER Kernel Proper and Porting
+
+    \image html Mark3_arch26.png
 
     The Kernel class is a static class with methods to handle the initialization
     and startup of the RTOS, manage errors, and provide user-hooks for fatal
@@ -3414,14 +3449,16 @@ See license.txt for more information
 
     In general, CS_ENTER() performs the following tasks:
 
-        Cache the current interrupt-enabled state within a local variable in the
+        - Cache the current interrupt-enabled state within a local variable in the
         thread's state
-        Disable interrupts
+        - Disable interrupts
+        .
 
     Conversely, CS_EXIT() performs the following tasks:
 
-        Read the original interrupt-enabled state from the cached value
-        Restore interrupts to the original value
+        - Read the original interrupt-enabled state from the cached value
+        - Restore interrupts to the original value
+        .
 
     On Cortex-M series micrcontrollers, the PRIMASK special register contains a
     single status bit which can be used to enable/disable all maskable interrupts
@@ -3485,9 +3522,7 @@ See license.txt for more information
     efficiently build these components.  The build system – including its design
     and use, are discussed in the following sections.
 
-    Recursive Makefile System
-
-    Introduction
+    \section BLDINTRO Introduction
 
     As developers, we spend an awful lot of time talking about how our source
     code is written, but devote very little energy to what happens to the code
@@ -3567,7 +3602,7 @@ See license.txt for more information
     quality gate can be released.  In the following sections, we'll explore the
     phased build approach, and how it's used by the Mark3 project.
 
-    Mark3 Build Process Overview
+    \section BLDOVR Mark3 Build Process Overview
 
     Building software is by and large a serial process, as outputs from each
     build step are required in subsequent steps.   We start from our source code,
@@ -3579,15 +3614,16 @@ See license.txt for more information
     To simplify the design and illustrate the concepts involved, we can break down
     these serial process into the following distinct phases:
 
-    Pre-build – Environment configuration, target selection, and header-file staging
-    Build – Compiling libraries, and building binaries for applications and tests
-    Test + Profiling -  Running unit tests, integration tests, profiling code
-    Release – Generation of documentation from source code and test results, packaging of build artifacts and headers
+    - Pre-build – Environment configuration, target selection, and header-file staging
+    - Build – Compiling libraries, and building binaries for applications and tests
+    - Test + Profiling -  Running unit tests, integration tests, profiling code
+    - Release – Generation of documentation from source code and test results, packaging of build artifacts and headers
+    .
 
     Each phase and associated activities are described in detail in the following subsections.
 
-    Pre-Build Phase:
-    Target Selection
+    \subsection BLDPB Pre-Build Phase:
+    <b>Target Selection</b>
 
     Inputs: CPU Architecture, Variant, Toolchain variables
     Outputs: Environment, makefile configuration
@@ -3600,7 +3636,7 @@ See license.txt for more information
     platform specific binaries, including optimization levels, debug symbols,
     linker files, and CPU flags.
 
-    Staging Headers
+    <b>Staging Headers</b>
 
     Inputs:  All files with a .h extension, located in library or binary project /public folders
     Output:  Headers copied to a common staging directory
@@ -3615,8 +3651,8 @@ See license.txt for more information
     with the corresponding libraries to customers, giving them access to a set
     of pre-compiled libraries with APIs, but without providing the source.
 
-    Build Phase
-    Building Libraries
+    \subsection BLDBLD Build Phase
+    <b>Building Libraries</b>
 
     Input: Source code for all common libraries, staged headers
     Output: Static libraries that can be linked against applications
@@ -3631,7 +3667,7 @@ See license.txt for more information
     resolved when building executable binary images, the executable projects are
     responsible for including the dependent libs.
 
-    Building Binaries
+    <b>Building Binaries</b>
 
     Input: Source code for individual applications, precompiled libraries, staged
            headers
@@ -3650,7 +3686,7 @@ See license.txt for more information
     This step will fail if necessary dependencies are not met (i.e. required
     libraries failed to build in a prior step).
 
-    Static Analysis:
+    <b>Static Analysis:</b>
 
     Input: Source code for libraries/binaries
     Output:  Static source analysis output
@@ -3674,33 +3710,70 @@ See license.txt for more information
     Input: Executable test binaries, CPU simulator/embedded target system
     Output: Text output indicating test pass/failure status
 
-    Unit Tests
+    \subsection BLDTESTING Test and Profile
+    <b>Unit Tests</b>
 
     Input: Executable test binaries, CPU simulator/embedded target system
     Output: Text output indicating test pass/failure status
 
-    Code Performance Profiling
+    <b>Code Performance Profiling</b>
 
     Input: Executable test binaries, CPU simulator/embedded target system
     Output: Text output containing critical code performance metrics
 
-    Code Size Profiling
+    <b>Code Size Profiling</b>
 
     Input: Precompiled static libraries and binaries
     Output: Text output containing critical code size metrics
 
-    Release
+    \subsection BLDREL Release
 
-    Documentation
+    <b>Documentation</b>
 
     Input: Library source code and headers, commented with Doxygen tags, Profiling
             results, Test results
     Output: Doxygen-generated HTML and PDF documentation
 
-    Packaging
+    <b>Packaging</b>
 
     Input: Static libraries and application/test binaries, staged headers, compiled
            documentation
     Output: Archive (.zip) containing relevant build outputs
 */
+/*!
+    \example lab1_kernel_setup/main.cpp
+    This example demonstrates basic kernel setup with two threads.
 
+    \example lab2_idle_function/main.cpp
+    This example demonstrates how to use the idle function, instead of an idle
+    thread to manage system inactivity.
+
+    \example lab3_round_robin/main.cpp
+    This example demonstrates how to use round-robin thread scheduling with
+    multiple threads of the same priority.
+
+    \example lab4_semaphores/main.cpp
+    This example demonstrates how to use semaphores for Thread synchronization.
+
+    \example lab5_mutexes/main.cpp
+    This example demonstrates how to use mutexes to protect against concurrent
+    access to resources.
+
+    \example lab6_timers/main.cpp
+    This example demonstrates how to create and use software timers.
+
+    \example lab7_events/main.cpp
+    This example demonstrates how to create and use event groups
+
+    \example lab8_messages/main.cpp
+    This example demonstrates how to pass data between threads using message
+    passing.
+
+    \example lab9_dynamic_threads/main.cpp
+    This example demonstrates how to create and destroy threads dynamically at
+    runtime.
+
+    \example buffalogger/main.cpp
+    This example demonstrates how low-overhead logging can be implemented using
+    buffalogger.
+*/
