@@ -257,7 +257,9 @@ See license.txt for more information
 
     On Windows x64, it should look something like this:
 
+    \verbatim
     C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.2.1002\avr8-gnu-toolchain\bin
+    \endverbatim
 
     <b>Step 2 - Install MinGW and MinSys</b>
 
@@ -2501,7 +2503,7 @@ See license.txt for more information
     practice, I suggest reading through the Mark3 source code (which is heavily
     annotated), and stepping through the code with a simulator/emulator.
 
-    \section TIMERS Timers
+    \section ARCHTIMERS Timers
 
     Mark3 implements one-shot and periodic software-timers via the Timer class.
     The user configures the timer for duration, repetition, and action, at which
@@ -3002,8 +3004,11 @@ See license.txt for more information
     developers familiar with the target architecture and the porting process,
     it's not a tremendously onerous endeavour to get Mark3 up-and-running
     somewhere new.  For starters, all non-portable components are completely
-    isolated in the source-tree under /embedded/kernel/<CPU>/<VARIANT>/<TOOLCHAIN>/,
-    where <CPU> is the architecture, <VARIANT> is the vendor/part, and <TOOLCHAIN>
+    isolated in the source-tree under:
+
+    /embedded/kernel/CPU/VARIANT/TOOLCHAIN/,
+
+    where CPU is the architecture, VARIANT is the vendor/part, and TOOLCHAIN
     is the compiler tool suite used to build the code.
 
     From within the specific port folder, a developer needs only implement a few

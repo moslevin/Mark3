@@ -137,7 +137,7 @@ public:
      *
      *  \param bRepeat_ 0 - timer is one-shot.  1 - timer is repeating.
      *  \param u32IntervalMs_ - Interval of the timer in miliseconds
-     *  \param u32ToleranceMs - Allow the timer expiry to be delayed by an additional maximum time, in
+     *  \param u32ToleranceMs_ - Allow the timer expiry to be delayed by an additional maximum time, in
      *                         order to have as many timers expire at the same time as possible.
      *  \param pfCallback_ - Function to call on timer expiry
      *  \param pvData_ - Data to pass into the callback function

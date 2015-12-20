@@ -227,7 +227,7 @@ public:
      *  the duration specified.  If no message arrives within that 
      *  duration, the call will return with NULL.
      *  
-     *  \param u32WaitTimeMS_ The amount of time in ms to wait for a 
+     *  \param u32TimeWaitMS_ The amount of time in ms to wait for a
      *          message before timing out and unblocking the waiting thread.
      *  
      *  \return Pointer to a message object at the head of the queue or
