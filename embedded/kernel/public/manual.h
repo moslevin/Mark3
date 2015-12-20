@@ -2269,7 +2269,7 @@ See license.txt for more information
     specific condition is met is fundamental to understanding RTOS applications
     design, as well as any highly-multithreaded applications.
 
-    \subsection BLOCKOBJ
+    \subsection BLOCKOBJ Blocking Objects
 
     Blocking objects and primatives provided by Mark3 include:
 
