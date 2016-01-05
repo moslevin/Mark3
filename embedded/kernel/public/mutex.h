@@ -80,7 +80,18 @@ public:
      *  \brief Claim
      *
      *  Claim the mutex.  When the mutex is claimed, no other thread can claim a
-     *  region protected by the object.
+     *  region protected by the object.  If another Thread currently holds the
+     *  Mutex when the Claim method is called, that Thread will block until the
+     *  current owner of the mutex releases the Mutex.
+     *
+     *  If the calling Thread's priority is lower than that of a Thread that
+     *  currently owns the Mutex object, then the priority of that Thread will
+     *  be elevated to that of the highest-priority calling object until the
+     *  Mutex is released.  This property is known as "Priority Inheritence"
+     *
+     *  Note:  A single thread can recursively claim a mutex up to a count of
+     *  255.  Attempting to claim a mutex beyond that will cause a kernel panic.
+     *
      */
     void Claim();
 
@@ -88,6 +99,8 @@ public:
 
     /*!
      *  \brief Claim
+     *
+     *  Claim a mutex, with timeout.
      *
      *  \param u32WaitTimeMS_
      *  
@@ -117,6 +130,20 @@ public:
      *  
      *  Release the mutex.  When the mutex is released, another object can enter
      *  the mutex-protected region.
+     *
+     *  If there are Threads waiting for the Mutex to become available, then the
+     *  highest priority Thread will be unblocked at this time and will claim
+     *  the Mutex lock immediately - this may result in an immediate context
+     *  switch, depending on relative priorities.
+     *
+     *  If the calling Thread's priority was boosted as a result of priority
+     *  inheritence, the Thread's previous priority will also be restored at this
+     *  time.
+     *
+     *  Note that if a Mutex is held recursively, it must be Release'd the same
+     *  number of times that it was Claim'd before it will be availabel for use
+     *  by another Thread.
+     *
      */
     void Release();
     
@@ -146,7 +173,7 @@ private:
      *
      * Abstraction for mutex claim operations.
      *
-      */
+     */
     void Claim_i(void);
 #endif
 

@@ -2165,8 +2165,8 @@ See license.txt for more information
     |                     | Semaphore             |  ksemaphore.cpp/.h              |
     |                     | EventFlag             |  eventflag.cpp/.h               |
     |                     | Mutex                 |  mutex.cpp/.h                   |
-    |                     | Notifier              |  notify.cpp/.h                  |
-    |IPC/Message-passing  | MailBox               |  mailbox.cpp/.h                 |
+    |                     | Notify                |  notify.cpp/.h                  |
+    |IPC/Message-passing  | Mailbox               |  mailbox.cpp/.h                 |
     |                     | MessageQueue          |  message.cpp/.h                 |    
     |                     | GlobalMessagePool     |  message.cpp/.h                 |
     |Debugging            | Miscellaneous Macros  |  kerneldebug.h                  |
@@ -3777,6 +3777,14 @@ See license.txt for more information
     \example lab9_dynamic_threads/main.cpp
     This example demonstrates how to create and destroy threads dynamically at
     runtime.
+
+    \example lab10_notifications/main.cpp
+    This examples demonstrates how to use notifcation objects as a thread
+    synchronization mechanism.
+
+    \example lab11_mailboxes/main.cpp
+    This examples shows how to use mailboxes to deliver data between threads in
+    a synchronized way.
 
     \example buffalogger/main.cpp
     This example demonstrates how low-overhead logging can be implemented using

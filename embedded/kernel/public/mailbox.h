@@ -27,6 +27,11 @@ See license.txt for more information
 
 #if KERNEL_USE_MAILBOX
 
+/*!
+ * \brief The Mailbox class implements an IPC mechnism based on envelopes
+ * containing data of a fixed size (configured at initialization) that reside
+ * within a buffer of memory provided by the user.
+ */
 class Mailbox
 {
 public:

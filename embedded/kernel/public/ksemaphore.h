@@ -32,7 +32,7 @@ See license.txt for more information
 
 //---------------------------------------------------------------------------
 /*!
- *  Counting semaphore, based on BlockingObject base class.
+ *  Binary & Counting semaphores, based on BlockingObject base class.
  */
 class Semaphore : public BlockingObject
 {
@@ -40,18 +40,36 @@ public:
     /*!
      *  \brief
      *
-     *  Initialize a semaphore before use.  Must be called
-     *  before post/pend operations.
+     *  Initialize a semaphore before use.  Must be called before attempting
+     *  post/pend operations on the object.
+     *
+     *  This initialization is required to configure the behavior of the
+     *  semaphore with regards to the initial and maximum values held by the
+     *  semaphore.  By providing access to the raw initial and maximum count
+     *  elements of the semaphore, these objects are able to be used as either
+     *  counting or binary semaphores.
+     *
+     *  To configure a semaphore object for use as a binary semaphore, set values
+     *  of 0 and 1 respectively for the initial/maximum value parameters.
      *  
+     *  Any other combination of values can be used to implement a counting
+     *  semaphore.
+     *
      *  \param u16InitVal_ Initial value held by the semaphore
-     *  \param u16MaxVal_ Maximum value for the semaphore
+     *  \param u16MaxVal_ Maximum value for the semaphore.  Must be nonzero.
      */
     void Init(uint16_t u16InitVal_, uint16_t u16MaxVal_);
     
     /*!
      *  \brief
      *
-     *  Increment the semaphore count.
+     *  Increment the semaphore count.  If the semaphore count is zero at the
+     *  time this is called, and there are threads blocked on the object, this
+     *  will immediately unblock the highest-priority blocked Thread.
+     *
+     *  Note that if the priority of that Thread is higher than the current
+     *  thread's priority, a context switch will occur and control will be
+     *  relinquished to that Thread.
      *
      *  \return true if the semaphore was posted, false if the count
      *          is already maxed out.
@@ -61,8 +79,9 @@ public:
     /*!
      *  \brief
      *
-     *  Decrement the semaphore count.  If the count is zero,
-     *  the thread will block until the semaphore is pended.        
+     *  Decrement the semaphore count.  If the count is zero, the calling
+     *  Thread will block until the semaphore is posted, and the Thread's
+     *  priority is higher than that of any other Thread blocked on the object.
      */
     void Pend();
     
@@ -74,7 +93,7 @@ public:
      *  allowing it to do other things until a non-zero count
      *  is returned, instead of blocking until the semaphore
      *  is posted.
-     *  
+     *
      *  \return The current semaphore counter value.
      */
     uint16_t GetCount();
@@ -111,7 +130,7 @@ private:
     /*!
      *  \brief
      *
-     *  Wake the next thread waiting on the semaphore.
+     *  Wake the next thread waiting on the semaphore.  Used internally.
      */
     uint8_t WakeNext();
 
