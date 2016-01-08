@@ -87,13 +87,258 @@ See license.txt for more information
     THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
     ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
     WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-    DISCLAIMED. IN NO EVENT SHALL FUNKENSTEIN SOFTWARE (MARK SLEVINSKY) BE LIABLE     FOR ANY
+    DISCLAIMED. IN NO EVENT SHALL FUNKENSTEIN SOFTWARE (MARK SLEVINSKY) BE LIABLE FOR ANY
     DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
     (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
     LOSS OF use, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
     ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
     (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE use OF THIS
     SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
+/*!
+    \page CONFIG0 Configuring The Mark3 Kernel
+
+    \section CONFIG_I Overview
+
+    The Mark3 Kernel features a large number of compile-time options that can
+    be set by the user.  In this way, the user can build a custom OS kernel that
+    provides only the necessary feature set required by the application, and
+    reduce the code and data requirements of the kernel.
+
+    Care has been taken to ensure that all valid combinations of features can be
+    enabled or disabled, barring direct dependencies.
+
+    When Mark3 is built, the various compile-time definitions are used to alter
+    how the kernel is compiled, and include or exclude various bits and pieces
+    in order to satisfy the requirements of the selected features.  As a result,
+    the kernel must be rebuilt whenever changes are made to the configuration
+    header.
+
+    Note that not all demos, libraries, and tests will build successfully if the
+    prerequisite features are not included.
+
+    Kernel options are set by modifying mark3cfg.h, located within the
+    /kernel/public folder.
+
+    In the following sections, we will discuss the various configuration options,
+    grouped by functionality.
+
+    \section CONFIG_T Timer Options
+
+    <b>KERNEL_USE_TIMERS</b>
+
+    This option is related to all kernel time-tracking:
+    - Timers provide a way for events to be periodically triggered in a
+     lightweight manner.  These can be periodic, or one-shot.
+    - Thread Quantum (usedd for round-robin scheduling) is dependent on this
+     module, as is Thread Sleep functionality.
+    .
+
+    Setting this option to 0 disables all timer-based functionality within the
+    kernel.
+
+    <b>KERNEL_TIMERS_TICKLESS</b>
+
+    If you've opted to use the kernel timers module, you have an option
+    as to which timer implementation to use:  Tick-based or Tick-less.
+
+    Tick-based timers provide a "traditional" RTOS timer implementation
+    based on a fixed-frequency timer interrupt.  While this provides
+    very accurate, reliable timing, it also means that the CPU is being
+    interrupted far more often than may be necessary (as not all timer
+    ticks result in "real work" being done).
+
+    Tick-less timers still rely on a hardware timer interrupt, but uses
+    a dynamic expiry interval to ensure that the interrupt is only
+    called when the next timer expires.  This increases the complexity
+    of the timer interrupt handler, but reduces the number and frequency.
+
+    Note that the CPU port (kerneltimer.cpp) must be implemented for the
+    particular timer variant desired.
+
+    Set this option to 1 to use the tickless timer implementation, 0 to use
+    the traditional tick-based approach.  Tickless timers are a bit more heavy
+    weight (larger code footprint), but can yield significant power savings as
+    the CPU does not need to wake up at a fixed, high frequency.
+
+    <b>KERNEL_USE_TIMEOUTS</b>
+
+    By default, if you opt to enable kernel timers, you also get timeout-
+    enabled versions of the blocking object APIs along with it.  This
+    support comes at a small cost to code size, but a slightly larger cost
+    to realtime performance - as checking for the use of timers in the
+    underlying internal code costs some cycles.
+
+    As a result, the option is given to the user here to manually disable
+    these timeout-based APIs if desired by the user for performance and
+    code-size reasons.
+
+    Set this option to 1 to enable timeout-based APIs for blocking calls.
+
+    <b>KERNEL_USE_QUANTUM</b>
+
+    Do you want to enable time quanta?  This is useful when you want to have
+    tasks in the same priority group share time in a controlled way.  This
+    allows equal tasks to use unequal amounts of the CPU, which is a great
+    way to set up CPU budgets per thread in a round-robin scheduling system.
+    If enabled, you can specify a number of ticks that serves as the default
+    time period (quantum).  Unless otherwise specified, every thread in a
+    priority will get the default quantum.
+
+    Set this option to 1 to enable round-robin scheduling.
+
+    <b>THREAD_QUANTUM_DEFAULT</b>
+
+    This value defines the default thread quantum when KERNEL_USE_QUANTUM is
+    enabled.  The value defined is a time in milliseconds.
+
+    <b>KERNEL_USE_SLEEP</b>
+
+    This define enables the Thread::Sleep() API, which allows a thread to
+    suspend its operation for a defined length of time, specified in ms.
+
+    \section CONFIG_BL Blocking Objects
+
+    <b>KERNEL_USE_NOTIFY</b>
+
+    This is a simple blocking object, where a thread (or threads) are guaranteed
+    to block until an asynchronous event signals the object.
+
+    <b>KERNEL_USE_SEMAPHORE</b>
+
+    Do you want the ability to use counting/binary semaphores for thread
+    synchronization?  Enabling this features provides fully-blocking semaphores
+    and enables all API functions declared in semaphore.h.  If you have to
+    pick one blocking mechanism, this is the one to choose.
+
+    Note that all IPC mechanisms (mailboxes, messages) rely on semaphores, so
+    keep in mind that this is a prerequisite for many other features in the
+    kernel.
+
+    <b>KERNEL_USE_MUTEX</b>
+
+    Do you want the ability to use mutual exclusion semaphores (mutex) for
+    resource/block protection?  Enabling this feature provides mutexes, with
+    priority inheritence, as declared in mutex.h.
+
+    <b>KERNEL_USE_EVENTFLAG</b>
+
+    Provides additional event-flag based blocking.  This relies on an
+    additional per-thread flag-mask to be allocated, which adds 2 bytes
+    to the size of each thread object.
+
+    \section CONFIG_IPC Inter-process/thread Communication
+
+    <b>KERNEL_USE_MESSAGE</b>
+
+    Enable inter-thread messaging using message queues.  This is the preferred
+    mechanism for IPC for serious multi-threaded communications; generally
+    anywhere a semaphore or event-flag is insufficient.
+
+    <b>GLOBAL_MESSAGE_POOL_SIZE</b>
+
+    If Messages are enabled, define the size of the default kernel message
+    pool.  Messages can be manually added to the message pool, but this
+    mechansims is more convenient and automatic.   All message queues can
+    share their message objects from this global pool to maximize efficiency
+    and simplify data management.
+
+    <b>KERNEL_USE_MAILBOX</b>
+
+    Enable inter-thread messaging using mailboxes.  A mailbox manages a blob
+    of data provided by the user, that is partitioned into fixed-size blocks
+    called envelopes.  The size of an envelope is set by the user when the
+    mailbox is initialized.  Any number of threads can read-from and write-to
+    the mailbox.  Envelopes can be sent-to or received-from the mailbox at
+    the head or tail.  In this way, mailboxes essentially act as a circular
+    buffer that can be used as a blocking FIFO or LIFO queue.
+
+    \section CONFIG_DBG Debug Features
+
+    <b>KERNEL_USE_THREADNAME</b>
+
+    Provide Thread method to allow the user to set a name for each
+    thread in the system.  Adds a const char* pointer to the size
+    of the thread object.
+
+    <b>KERNEL_USE_DEBUG</b>
+
+    Provides extra logic for kernel debugging, and instruments the kernel
+    with extra asserts, and kernel trace functionality.
+
+    <b>KERNEL_ENABLE_LOGGING</b>
+
+    Set this to 1 to enable very chatty kernel logging.  Since most
+    important things in the kernel emit logs, a large log-buffer and
+    fast output are required in order to keep up.  This is a pretty
+    advanced power-user type feature, so it's disabled by default.
+
+    <b>KERNEL_ENABLE_USER_LOGGING</b>
+
+    This enables a set of logging macros similar to the kernel-logging
+    macros; however, these can be enabled or disabled independently.
+    This allows for user-code to benefit from the built-in kernel
+    logging macros without having to account for the super-high-volume
+    of logs generated by kernel code.
+
+    \section CONFIG_KRN Enhancements, Security, Miscellaneous
+
+    <b>KERNEL_USE_DRIVER</b>
+
+    Enabling device drivers provides a posix-like filesystem interface for
+    peripheral device drivers.
+
+    <b>KERNEL_USE_DYNAMIC_THREADS</b>
+
+    Provide extra Thread methods to allow the application to create
+    (and more importantly destroy) threads at runtime.  useful for
+    designs implementing worker threads, or threads that can be restarted
+    after encountering error conditions.
+
+    <b>KERNEL_USE_PROFILER</b>
+
+    Provides extra classes for profiling the performance of code.  useful
+    for debugging and development, but uses an additional hardware timer.
+
+    <b>KERNEL_USE_ATOMIC</b>
+
+    Provides support for atomic operations, including addition, subtraction,
+    set, and test-and-set.  Add/Sub/Set contain 8, 16, and 32-bit variants.
+
+    <b>SAFE_UNLINK</b>
+
+    "Safe unlinking" performs extra checks on data to make sure that there
+    are no consistencies when performing operations on linked lists.  This
+    goes beyond pointer checks, adding a layer of structural and metadata
+    validation to help detect system corruption early.
+
+    <b>KERNEL_AWARE_SIMULATION</b>
+
+    Include support for kernel-aware simulation.  Enabling this feature
+    adds advanced profiling, trace, and environment-aware debugging and
+    diagnostic functionality when Mark3-based applications are run on the
+    flAVR AVR simulator.
+
+    <b>KERNEL_USE_IDLE_FUNC</b>
+
+    Enabling this feature removes the necessity for the user to dedicate
+    a complete thread for idle functionality.  This saves a full thread
+    stack, but also requires a bit extra static data.  This also adds a
+    slight overhead to the context switch and scheduler, as a special case
+    has to be taken into account.
+
+    <b>KERNEL_USE_AUTO_ALLOC</b>
+
+    This feature enables an additional set of APIs that allow for objects
+    to be created on-the-fly out of a special heap, without having to
+    explicitly allocate them (from stack, heap, or static memory). Note
+    that auto-alloc memory cannot be reclaimed.
+
+    <b>AUTO_ALLOC_SIZE</b>
+
+    Size (in bytes) of the static pool of memory reserved from RAM for use by
+    the auto allocator (if enabled).
+
 */
 /*!
     \page BUILD0 Building Mark3
@@ -142,7 +387,6 @@ See license.txt for more information
       tests        Unit tests, written as C/C++ applications
       util         .net-based font converter, terminal, programmer, config util
     \endverbatim
-
 
     \section BUILDKERNEL Building the kernel
 
@@ -2070,6 +2314,37 @@ See license.txt for more information
     rigorously tested and profiled.  Exporting source in Mark3 is also supported
     by scripting to ensure reliable, reproducible results without the possibility
     for human-error.
+
+    \subsection INSIDEOVERFLAVR Use Virtualization For Verification
+
+    Mark3 was designed to work with automated simulation tools as the primary
+    means to validate changes to the kernel, due to the power and flexibility
+    of automatic tests on virtual hardware.  I was also intrigued by the thought
+    of extending the virtual target to support functionality useful for a kernel,
+    but not found on real hardware.
+
+    When the project was started, simavr was the tool of choice- however, its
+    simulation was found to be incorrect compared to execution on a real MCU, and
+    it did not provide the degree of extension that I desired for use with kernel
+    development.
+
+    The flAVR AVR simulator was written to replace the dependency on that tool,
+    and overcome those limitations.  It also provides a GDB interface, as well as
+    its own built-in debugger, profilers, and trace tools.
+
+    The example and test code relies heavily on flAVR kernel aware messaging, so
+    it is recommended that you familiarize yourself with that tool if you intend
+    to do any sort of customizations or extensions to the kernel.
+
+    flAVR is hosted on sourceforge at http://www.sourceforge.net/projects/flavr/ .
+    In its basic configuration, it builds with minimal external dependencies.
+
+    - On linux, it requires only pthreads.
+    - On Windows, it rquires pthreads and ws2_32, both satisfied via MinGW.
+    - Optional SDL builds for both targets (featuring graphics and simulated joystick
+      input) can be built, and rely on libSDL.
+    .
+
 */
 /*!
     \page MARK3KA Mark3 Kernel Architecture
