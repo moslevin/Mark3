@@ -1474,6 +1474,7 @@ See license.txt for more information
     a bare-metal system and RTOS based system at a high level:
 
     \image html Mark3_arch.png
+    \image latex Mark3_arch.png "Arch" width=10cm
 
     As can be seen, the RTOS (And associated middleware + libraries) captures a
     certain fixed size.
@@ -2355,6 +2356,7 @@ See license.txt for more information
     layered as shown below:
 
     \image html Mark3_arch4.png
+    \image latex Mark3_arch4.png "Overview" width=10cm
 
     Everything in the “green” layer represents the Mark3 public API and classes,
     beneath which lives all hardware abstraction and CPU-specific porting and
@@ -2419,6 +2421,7 @@ See license.txt for more information
     in the Mark3 kernel is shown below:
 
     \image html Mark3_arch5.png
+    \image latex Mark3_arch5.png "Overview" width=10cm
 
     The objects shown in the preceding table can be grouped together by feature.
     In the table below, we group each feature by object, referencing the source
@@ -2463,6 +2466,7 @@ See license.txt for more information
     in the following diagram, and are discussed in detail in this chapter:
 
     \image html Mark3_arch24.png
+    \image latex Mark3_arch24.png "Threads and Scheduling" width=10cm
 
     \subsection BITTHREAD A Bit About Threads
 
@@ -2560,6 +2564,7 @@ See license.txt for more information
     The relationship between these objects in the system are shown below:
 
     \image html Mark3_arch21.png
+    \image latex Mark3_arch21.png "Blocking Objects" width=10cm
 
     Each of these objects inherit from the BlockingObject class, which itself
     contains a ThreadList object.  This class contains methods to Block() a
@@ -2791,6 +2796,7 @@ See license.txt for more information
     Timers are implemented using the following components in the Mark3 Kernel:
 
     \image html Mark3_arch20.png
+    \image latex Mark3_arch20.png "Timers" width=10cm
 
     The Timer class provides the basic periodic and one-shot timer functionality
     used by applicaiton code, blocking objects, and IPC.
@@ -2922,6 +2928,7 @@ See license.txt for more information
     \section SYNCHIPC Synchronization and IPC
 
     \image html Mark3_arch21.png
+    \image latex Mark3_arch21.png "Synchronization and IPC" width=10cm
 
     \section BLOCKINGOBJECTS Blocking Objects
 
@@ -3130,6 +3137,7 @@ See license.txt for more information
     \subsection ATOMICOPS Atomic Operations
 
     \image html Mark3_arch25.png
+    \image latex Mark3_arch25.png "Atomic operations" width=10cm
 
     This utility class provides primatives for atomic operations - that is,
     operations that are guaranteed to execute uninterrupted.  Basic atomic
@@ -3139,6 +3147,7 @@ See license.txt for more information
     \subsection DRIVERS Drivers
 
     \image html Mark3_arch18.png
+    \image latex Mark3_arch18.png "Drivers" width=10cm
 
     This is the basis of the driver framework.  In the context of Mark3, drivers
     don't necessarily have to be based on physical hardware peripherals.  They
@@ -3226,6 +3235,7 @@ See license.txt for more information
     \section KRNLPROPER Kernel Proper and Porting
 
     \image html Mark3_arch26.png
+    \image latex Mark3_arch26.png "Kernel Proper and Porting" width=10cm
 
     The Kernel class is a static class with methods to handle the initialization
     and startup of the RTOS, manage errors, and provide user-hooks for fatal
