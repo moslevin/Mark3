@@ -45,29 +45,18 @@ Thread *g_pclCurrent;   //!< Pointer to the currently-running thread
 bool Scheduler::m_bEnabled;
 bool Scheduler::m_bQueuedSchedule;
 
-ThreadList Scheduler::m_clStopList;
-ThreadList Scheduler::m_aclPriorities[NUM_PRIORITIES];
-uint8_t Scheduler::m_u8PriFlag;
-
 //---------------------------------------------------------------------------
-/*!
- * This implements a 4-bit "Count-leading-zeros" operation using a RAM-based
- * lookup table.  It is used to efficiently perform a CLZ operation under the
- * assumption that a native CLZ instruction is unavailable.  This table is
- * further optimized to provide a 0xFF result in the event that the index value
- * is itself zero, allowing u16 to quickly identify whether or not subsequent
- * 4-bit LUT operations are required to complete the scheduling process.
- */
-static const uint8_t aucCLZ[16] ={255,0,1,1,2,2,2,2,3,3,3,3,3,3,3,3};
+ThreadList  Scheduler::m_clStopList;
+ThreadList  Scheduler::m_aclPriorities[NUM_PRIORITIES];
+PriorityMap Scheduler::m_clPrioMap;
 
 //---------------------------------------------------------------------------
 void Scheduler::Init() 
 {
-    m_u8PriFlag = 0;
     for (int i = 0; i < NUM_PRIORITIES; i++)
     {
         m_aclPriorities[i].SetPriority(i);
-        m_aclPriorities[i].SetFlagPointer(&m_u8PriFlag);
+        m_aclPriorities[i].SetMapPointer(&m_clPrioMap);
     }
     m_bQueuedSchedule = false;
 }
@@ -75,26 +64,12 @@ void Scheduler::Init()
 //---------------------------------------------------------------------------
 void Scheduler::Schedule()
 {
-    uint8_t u8Pri = 0;
-    
-    // Figure out what priority level has ready tasks (8 priorities max)
-    // To do this, we apply our current active-thread bitmap (m_u8PriFlag)
-    // and perform a CLZ on the upper four bits.  If no tasks are found
-    // in the higher priority bits, search the lower priority bits.  This
-    // also assumes that we always have the idle thread ready-to-run in
-    // priority level zero.
-    u8Pri = aucCLZ[m_u8PriFlag >> 4 ];
-    if (u8Pri == 0xFF)
-    {
-        u8Pri = aucCLZ[m_u8PriFlag & 0x0F];
-    }
-    else
-    {
-        u8Pri += 4;
-    }
+    PRIO_TYPE uXPrio;
+
+    uXPrio = m_clPrioMap.HighestPriority();
 
 #if KERNEL_USE_IDLE_FUNC
-    if (u8Pri == 0xFF)
+    if (uXPrio == 0)
     {
         // There aren't any active threads at all - set g_pclNext to IDLE
         g_pclNext = Kernel::GetIdleThread();
@@ -102,8 +77,11 @@ void Scheduler::Schedule()
     else
 #endif
     {
+        // Priorities are one-indexed 
+        uXPrio--;
+
         // Get the thread node at this priority.
-        g_pclNext = (Thread*)( m_aclPriorities[u8Pri].GetHead() );
+        g_pclNext = (Thread*)( m_aclPriorities[uXPrio].GetHead() );
     }
     KERNEL_TRACE_1( "Next Thread: %d\n", (uint16_t)((Thread*)g_pclNext)->GetID() );
 

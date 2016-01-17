@@ -23,6 +23,7 @@ See license.txt for more information
 #define __THREADLIST_H__
 
 #include "kerneltypes.h"
+#include "priomap.h"
 #include "ll.h"
 
 class Thread;
@@ -39,26 +40,27 @@ public:
      *
      *  Default constructor - zero-initializes the data.
      */
-    ThreadList() { m_u8Priority = 0; m_pu8Flag = NULL; }
+    ThreadList() { m_uXPriority = 0; m_pclMap = NULL; }
     
     /*!
      *  \brief SetPriority
      *
      *  Set the priority of this threadlist (if used for a scheduler).
      *  
-     *  \param u8Priority_ Priority level of the thread list
+     *  \param uXPriority_ Priority level of the thread list
      */
-    void SetPriority(uint8_t u8Priority_);
+    void SetPriority(PRIO_TYPE uXPriority_);
     
     /*!
-     *  \brief SetFlagPointer
+     *  \brief SetMapPointer
      *
      *  Set the pointer to a bitmap to use for this threadlist.  Once again,
      *  only needed when the threadlist is being used for scheduling purposes.
      *  
-     *  \param pu8Flag_ Pointer to the bitmap flag
+     *  \param pclMap_ Pointer to the priority map object used to track this 
+     *                 thread.
      */
-    void SetFlagPointer(uint8_t *pu8Flag_);
+    void SetMapPointer(PriorityMap *pclMap_);
     
     /*!
      *  \brief Add
@@ -76,11 +78,11 @@ public:
      *  the same time.
      *  
      *  \param node_        Pointer to the thread to add (link list node)
-     *  \param pu8Flag_     Pointer to the bitmap flag to set (if used in 
+     *  \param pclMap_      Pointer to the bitmap flag to set (if used in 
      *                      a scheduler context), or NULL for non-scheduler.
-     *  \param u8Priority_  Priority of the threadlist
+     *  \param uXPriority_  Priority of the threadlist
      */
-    void Add(LinkListNode *node_, uint8_t *pu8Flag_, uint8_t u8Priority_);
+    void Add(LinkListNode *node_, PriorityMap *pclMap_, PRIO_TYPE uXPriority_);
 
     /*!
      * \brief AddPriority
@@ -112,10 +114,10 @@ public:
 private:
 
     //! Priority of the threadlist
-    uint8_t m_u8Priority;
+    PRIO_TYPE    m_uXPriority;
     
     //! Pointer to the bitmap/flag to set when used for scheduling.
-    uint8_t *m_pu8Flag;
+    PriorityMap *m_pclMap;
 };
 
 #endif

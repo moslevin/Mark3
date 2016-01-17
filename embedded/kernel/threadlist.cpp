@@ -37,15 +37,15 @@ See license.txt for more information
 #include "kerneldebug.h"
 
 //---------------------------------------------------------------------------
-void ThreadList::SetPriority(uint8_t u8Priority_)
+void ThreadList::SetPriority(PRIO_TYPE uXPriority_)
 {
-    m_u8Priority = u8Priority_;
+    m_uXPriority = uXPriority_;
 }
 
 //---------------------------------------------------------------------------
-void ThreadList::SetFlagPointer( uint8_t *pu8Flag_)
+void ThreadList::SetMapPointer( PriorityMap *pclMap_)
 {
-    m_pu8Flag = pu8Flag_;
+    m_pclMap = pclMap_;
 }
 
 //---------------------------------------------------------------------------
@@ -54,10 +54,10 @@ void ThreadList::Add(LinkListNode *node_) {
     CircularLinkList::PivotForward();
     
     // We've specified a bitmap for this threadlist
-    if (m_pu8Flag)
+    if (m_pclMap)
     {
         // Set the flag for this priority level
-        *m_pu8Flag |= (1 << m_u8Priority);
+        m_pclMap->Set(m_uXPriority);
     }
 }
 
@@ -68,17 +68,17 @@ void ThreadList::AddPriority(LinkListNode *node_) {
         Add(node_);
         return;
     }
-    uint8_t u8HeadPri = pclCurr->GetCurPriority();
+    PRIO_TYPE uXHeadPri = pclCurr->GetCurPriority();
 
     Thread *pclTail = static_cast<Thread*>(GetTail());
     Thread *pclNode = static_cast<Thread*>(node_);
 
     // Set the threadlist's priority level, flag pointer, and then add the
     // thread to the threadlist
-    uint8_t u8Priority = pclNode->GetCurPriority();
+    PRIO_TYPE uXPriority = pclNode->GetCurPriority();
     do
     {
-        if (u8Priority > pclCurr->GetCurPriority())
+        if (uXPriority > pclCurr->GetCurPriority())
         {
             break;
         }
@@ -90,7 +90,7 @@ void ThreadList::AddPriority(LinkListNode *node_) {
 
     // If the priority is greater than current head, reset
     // the head pointer.
-    if (u8Priority > u8HeadPri) {
+    if (uXPriority > uXHeadPri) {
         m_pstHead = pclNode;
         m_pstTail = m_pstHead->prev;
     }
@@ -101,11 +101,11 @@ void ThreadList::AddPriority(LinkListNode *node_) {
 }
 
 //---------------------------------------------------------------------------
-void ThreadList::Add(LinkListNode *node_, uint8_t *pu8Flag_, uint8_t u8Priority_) {
+void ThreadList::Add(LinkListNode *node_, PriorityMap *pclMap_, PRIO_TYPE uXPriority_) {
     // Set the threadlist's priority level, flag pointer, and then add the
     // thread to the threadlist
-    SetPriority(u8Priority_);
-    SetFlagPointer(pu8Flag_);
+    SetPriority(uXPriority_);
+    SetMapPointer(pclMap_);
     Add(node_);
 }
 
@@ -115,13 +115,10 @@ void ThreadList::Remove(LinkListNode *node_) {
     CircularLinkList::Remove(node_);
     
     // If the list is empty...
-    if (!m_pstHead)
+    if (!m_pstHead && m_pclMap)
     {
         // Clear the bit in the bitmap at this priority level
-        if (m_pu8Flag)
-        {
-            *m_pu8Flag &= ~(1 << m_u8Priority);
-        }
+        m_pclMap->Clear(m_uXPriority);
     }
 }
 

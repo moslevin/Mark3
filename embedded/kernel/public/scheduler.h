@@ -49,6 +49,7 @@ See license.txt for more information
 #include "kerneltypes.h"
 #include "thread.h"
 #include "threadport.h"
+#include "priomap.h"
 
 extern volatile Thread *g_pclNext;
 extern Thread *g_pclCurrent;
@@ -183,8 +184,8 @@ private:
     //! ThreadLists for all threads at all priorities
     static ThreadList m_aclPriorities[NUM_PRIORITIES];
     
-    //! Bitmap flag for each
-    static uint8_t m_u8PriFlag;
+    //! Priority bitmap lookup structure, 1-bit per thread priority.
+    static PriorityMap m_clPrioMap;
 };
 #endif
 

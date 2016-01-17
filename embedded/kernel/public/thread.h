@@ -44,6 +44,7 @@ See license.txt for more information
 #include "threadport.h"
 #include "quantum.h"
 #include "autoalloc.h"
+#include "priomap.h"
 
 //---------------------------------------------------------------------------
 /*!
@@ -81,7 +82,7 @@ public:
      *  
      *  \param pwStack_    Pointer to the stack to use for the thread
      *  \param u16StackSize_  Size of the stack (in bytes)
-     *  \param u8Priority_   Priority of the thread (0 = idle, 7 = max)
+     *  \param uXPriority_   Priority of the thread (0 = idle, 7 = max)
      *  \param pfEntryPoint_ This is the function that gets called when the
      *                       thread is started
      *  \param pvArg_        Pointer to the argument passed into the thread's
@@ -89,7 +90,7 @@ public:
      */
     void Init(K_WORD *pwStack_,
               uint16_t u16StackSize_,
-              uint8_t u8Priority_,
+              PRIO_TYPE uXPriority_,
               ThreadEntry_t pfEntryPoint_,
               void *pvArg_ );
 
@@ -104,7 +105,7 @@ public:
     * is only suitable for threads that exist for the duration of runtime.
     *
     * \param u16StackSize_  Size of the stack (in bytes)
-    * \param u8Priority_    Priority of the thread (0 = idle, 7 = max)
+    * \param uXPriority_    Priority of the thread (0 = idle, 7 = max)
     * \param pfEntryPoint_  This is the function that gets called when the
     *                       thread is started
     * \param pvArg_         Pointer to the argument passed into the thread's
@@ -113,7 +114,7 @@ public:
     * \return Pointer to a newly-created thread.
     */
     static Thread* Init(uint16_t u16StackSize_,
-                                uint8_t u8Priority_,
+                                uint8_t uXPriority_,
                                 ThreadEntry_t pfEntryPoint_,
                                 void *pvArg_);
 #endif
@@ -184,7 +185,7 @@ public:
      *  \return Priority of the current thread
      */
 
-    uint8_t GetPriority(void) { return m_u8Priority; }
+    PRIO_TYPE GetPriority(void) { return m_uXPriority; }
 
     /*!
      *  \brief GetCurPriority
@@ -193,7 +194,7 @@ public:
      *  
      *  \return Priority of the current thread
      */
-    uint8_t GetCurPriority(void) { return m_u8CurPriority; }
+    PRIO_TYPE GetCurPriority(void) { return m_uXCurPriority; }
     
 #if KERNEL_USE_QUANTUM    
     /*!
@@ -243,9 +244,9 @@ public:
      *  This should *always* be called from within a critical section to
      *  prevent system issues.
      *  
-     *  \param u8Priority_ New priority of the thread
+     *  \param uXPriority_ New priority of the thread
      */
-    void SetPriority(uint8_t u8Priority_);
+    void SetPriority(PRIO_TYPE uXPriority_);
     
     /*!
      *  \brief InheritPriority
@@ -254,9 +255,9 @@ public:
      *  for the purpose of avoiding priority inversions.  This should
      *  only be called from within the implementation of blocking-objects.
      *  
-     *  \param u8Priority_  New Priority to boost to.        
+     *  \param uXPriority_  New Priority to boost to.        
      */
-    void InheritPriority(uint8_t u8Priority_); 
+    void InheritPriority(PRIO_TYPE uXPriority_); 
     
 #if KERNEL_USE_DYNAMIC_THREADS    
     /*!
@@ -434,9 +435,9 @@ private:
     /*!
      *  \brief SetPriorityBase
      *
-     *  \param u8Priority_
+     *  \param uXPriority_
      */
-    void SetPriorityBase(uint8_t u8Priority_);
+    void SetPriorityBase(PRIO_TYPE uXPriority_);
 
     //! Pointer to the top of the thread's stack
     K_WORD *m_pwStackTop;
@@ -448,10 +449,10 @@ private:
     uint8_t m_u8ThreadID;
     
     //! Default priority of the thread
-    uint8_t m_u8Priority;     
+    PRIO_TYPE m_uXPriority;     
     
     //! Current priority of the thread (priority inheritence)
-    uint8_t m_u8CurPriority;  
+    PRIO_TYPE m_uXCurPriority;  
 
     //! Enum indicating the thread's current state
     ThreadState_t m_eState;
@@ -528,10 +529,10 @@ typedef struct
     uint8_t m_u8ThreadID;
 
     //! Default priority of the thread
-    uint8_t m_u8Priority;
+    PRIO_TYPE m_uXPriority;
 
     //! Current priority of the thread (priority inheritence)
-    uint8_t m_u8CurPriority;
+    PRIO_TYPE m_uXCurPriority;
 
     //! Enum indicating the thread's current state
     ThreadState_t m_eState;

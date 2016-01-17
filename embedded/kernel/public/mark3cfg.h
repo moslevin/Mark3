@@ -30,6 +30,17 @@ See license.txt for more information
 #define __MARK3CFG_H__
 
 /*!
+    Define the number of thread priorities that the kernel's scheduler will
+    support.  The number of thread priorities is limited only by the memory
+    of the host CPU, as a ThreadList object is statically-allocated for each
+    thread priority.
+
+    In practice, systems rarely need more than 32 priority levels, with the
+    most complex having the capacity for 256.
+*/
+#define KERNEL_NUM_PRIORITIES            (8)
+
+/*!
     The following options is related to all kernel time-tracking.
 
     -timers provide a way for events to be periodically triggered in a 

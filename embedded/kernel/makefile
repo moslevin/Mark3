@@ -16,8 +16,9 @@ CPP_SOURCE= \
 	ll.cpp \
 	message.cpp \
 	mutex.cpp \
-        notify.cpp \
+    notify.cpp \
 	profile.cpp \
+    priomap.cpp \
 	quantum.cpp \
 	scheduler.cpp \
 	ksemaphore.cpp \
