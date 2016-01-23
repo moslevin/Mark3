@@ -59,6 +59,9 @@ See license.txt for more information
 // second-level map index for a given priority
 #define PRIO_MAP_BIT_MASK            ((1 << PRIO_MAP_WORD_SHIFT) - 1)
 
+// Get the priority bit for a given thread
+#define PRIO_BIT(x)                  ((x) & PRIO_MAP_BIT_MASK)
+
 // Macro used to get the map index for a given priroity
 #define PRIO_MAP_WORD_INDEX(prio)    ((prio) >> PRIO_MAP_WORD_SHIFT)
 
@@ -118,7 +121,7 @@ public:
 private:
 #if PRIO_MAP_MULTI_LEVEL
     PRIO_MAP_WORD_TYPE     m_auXPriorityMap[PRIO_MAP_NUM_WORDS];
-    PRIO_MAP_WORD_TYPE     m_uxPriorityMapL2;
+    PRIO_MAP_WORD_TYPE     m_uXPriorityMapL2;
 #else
     PRIO_MAP_WORD_TYPE     m_uXPriorityMap;
 #endif

@@ -58,33 +58,31 @@ PriorityMap::PriorityMap()
 //---------------------------------------------------------------------------
 void PriorityMap::Set( PRIO_TYPE uXPrio_ )
 {
-    PRIO_TYPE uxPrioBit = (uXPrio_ & PRIO_MAP_BIT_MASK);
+    PRIO_TYPE uXPrioBit = PRIO_BIT( uXPrio_ );
 #if PRIO_MAP_MULTI_LEVEL
-    PRIO_TYPE uXWordIdx = PRIO_MAP_WORD_INDEX( prio );
-    PRIO_TYPE uXMapIdx  = SCHEDULER_L2_WORD_INDEX( prio );
+    PRIO_TYPE uXWordIdx = PRIO_MAP_WORD_INDEX( uXPrio_ );
 
-    m_auXPriorityMap[ uxWordIdx ] |= (1 << uxPrioBit);
-    m_uXPriorityMapL2 |= (1 << uXMapIdx);
+    m_auXPriorityMap[ uXWordIdx ] |= (1 << uXPrioBit);
+    m_uXPriorityMapL2 |= (1 << uXWordIdx);
 #else
-    m_uXPriorityMap   |= (1 << uxPrioBit);
+    m_uXPriorityMap   |= (1 << uXPrioBit);
 #endif
 }
 
 //---------------------------------------------------------------------------
 void PriorityMap::Clear( PRIO_TYPE uXPrio_ )
 {
-    PRIO_TYPE uxPrioBit = (uXPrio_ & PRIO_MAP_BIT_MASK);
+    PRIO_TYPE uXPrioBit = PRIO_BIT( uXPrio_ );
 #if PRIO_MAP_MULTI_LEVEL
-    PRIO_TYPE uXWordIdx = PRIO_MAP_WORD_INDEX( prio );
-    PRIO_TYPE uXMapIdx  = SCHEDULER_L2_WORD_INDEX( prio );
+    PRIO_TYPE uXWordIdx = PRIO_MAP_WORD_INDEX( uXPrio_ );
 
-    m_auXPriorityMap[ uxWordIdx ] &= ~(1 << uxPrioBit);
-    if (!m_auXPriorityMap[ uxWordIdx ])
+    m_auXPriorityMap[ uXWordIdx ] &= ~(1 << uXPrioBit);
+    if (!m_auXPriorityMap[ uXWordIdx ])
     {
-        m_uXPriorityMapL2 &= ~(1 << uXMapIdx);
+        m_uXPriorityMapL2 &= ~(1 << uXWordIdx);
     }
 #else
-    m_uXPriorityMap   &= ~(1 << uxPrioBit);
+    m_uXPriorityMap   &= ~(1 << uXPrioBit);
 #endif
 }
 
