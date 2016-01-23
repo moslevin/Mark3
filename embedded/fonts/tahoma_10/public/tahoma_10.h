@@ -1,5 +1,5 @@
 /*    Funkenstein Software Consulting Font Renderer 
-    (c) 2012-2015, Funkenstein Software Consulting, all rights reserved. 
+    (c) 2012-2016, Funkenstein Software Consulting, all rights reserved. 
 */
 
 #ifndef __Tahoma_10_False_False_False__H__
