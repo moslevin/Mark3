@@ -47,13 +47,13 @@ bool Scheduler::m_bQueuedSchedule;
 
 //---------------------------------------------------------------------------
 ThreadList  Scheduler::m_clStopList;
-ThreadList  Scheduler::m_aclPriorities[NUM_PRIORITIES];
+ThreadList  Scheduler::m_aclPriorities[KERNEL_NUM_PRIORITIES];
 PriorityMap Scheduler::m_clPrioMap;
 
 //---------------------------------------------------------------------------
 void Scheduler::Init() 
 {
-    for (int i = 0; i < NUM_PRIORITIES; i++)
+    for (int i = 0; i < KERNEL_NUM_PRIORITIES; i++)
     {
         m_aclPriorities[i].SetPriority(i);
         m_aclPriorities[i].SetMapPointer(&m_clPrioMap);

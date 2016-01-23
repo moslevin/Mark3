@@ -54,7 +54,6 @@ See license.txt for more information
 extern volatile Thread *g_pclNext;
 extern Thread *g_pclCurrent;
 
-#define NUM_PRIORITIES              (8)     //!< Defines the maximum number of thread priorities supported in the scheduler
 //---------------------------------------------------------------------------
 /*!
  *  Priority-based round-robin Thread scheduling, using ThreadLists for
@@ -137,11 +136,11 @@ public:
      *  Return the pointer to the active list of threads that are at the 
      *  given priority level in the scheduler.
      *  
-     *  \param u8Priority_ Priority level of 
+     *  \param uXPriority_ Priority level of the threadlist
      *  
      *  \return Pointer to the ThreadList for the given priority level
      */
-    static ThreadList *GetThreadList(uint8_t u8Priority_){ return &m_aclPriorities[u8Priority_]; }
+    static ThreadList *GetThreadList(PRIO_TYPE uXPriority_){ return &m_aclPriorities[uXPriority_]; }
     
     /*!
      *  \brief GetStopList
@@ -182,7 +181,7 @@ private:
     static ThreadList m_clStopList;
     
     //! ThreadLists for all threads at all priorities
-    static ThreadList m_aclPriorities[NUM_PRIORITIES];
+    static ThreadList m_aclPriorities[KERNEL_NUM_PRIORITIES];
     
     //! Priority bitmap lookup structure, 1-bit per thread priority.
     static PriorityMap m_clPrioMap;
