@@ -25,12 +25,14 @@ See license.txt for more information
 //---------------------------------------------------------------------------
 // Optimize the types used for storing priorities based on number of
 // priorities defined.
-#if (KERNEL_NUM_PRIORITIES < 256)
+#if (KERNEL_NUM_PRIORITIES <= 64)
 # define PRIO_TYPE           uint8_t
-#elif (KERNEL_NUM_PRIORITIES < 65536)
+#elif (KERNEL_NUM_PRIORITIES <= 256)
 # define PRIO_TYPE           uint16_t
-#else
+#elif (KERNEL_NUM_PRIORITIES <= 1024)
 # define PRIO_TYPE           uint32_t
+#else
+# error "Mark3 supports a maximum of 1024 priorities"
 #endif
 
 //---------------------------------------------------------------------------

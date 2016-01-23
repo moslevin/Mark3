@@ -2431,7 +2431,8 @@ See license.txt for more information
     |:--------------------|:----------------------|:--------------------------------|
     |Profiling            | ProfileTimer          |  profile.cpp/.h                 |
     |Threads + Scheduling | Thread                |  thread.cpp/.h                  |
-    |                     | Scheduler             |  scheduler.cpp/.h/cpp           |
+    |                     | Scheduler             |  scheduler.cpp/.h               |
+    |                     | PriorityMap           |  priomap.cpp/.h                 |
     |                     | Quantum               |  quantum.cpp/.h                 |
     |                     | ThreadPort            |  threadport.cpp/.h **           |
     |                     | KernelSWI             |  kernelswi.cpp/.h **            |
