@@ -11,17 +11,20 @@ DBG_DIR_FINAL=$(DBG_DIR)$(ARCH)/$(VARIANT)/$(TOOLCHAIN)/
 
 C_OBJ=$(addprefix $(OBJ_DIR_FINAL), $(C_SOURCE:%.c=%.c.o))
 CPP_OBJ=$(addprefix $(OBJ_DIR_FINAL), $(CPP_SOURCE:%.cpp=%.cpp.o))
+ASM_OBJ=$(addprefix $(OBJ_DIR_FINAL), $(ASM_SOURCE:%.s=%.s.o))
 
 PORT_DIR=./cpu/$(ARCH)/$(VARIANT)/$(TOOLCHAIN)/
 PORT_OBJ_DIR=$(PORT_DIR)obj/
 
 PORT_C_SOURCE_ADJ=$(addprefix $(PORT_DIR), $(PORT_C_SOURCE))
 PORT_CPP_SOURCE_ADJ=$(addprefix $(PORT_DIR), $(PORT_CPP_SOURCE))
+PORT_ASM_SOURCE_ADJ=$(addprefix $(PORT_DIR), $(PORT_ASM_SOURCE))
 
 PORT_C_OBJ=$(addprefix $(PORT_OBJ_DIR), $(PORT_C_SOURCE:%.c=%.c.o))
 PORT_CPP_OBJ=$(addprefix $(PORT_OBJ_DIR), $(PORT_CPP_SOURCE:%.cpp=%.cpp.o))
+PORT_ASM_OBJ=$(addprefix $(PORT_OBJ_DIR), $(PORT_ASM_SOURCE:%.s=%.s.o))
 
-USR_OBJS=$(C_OBJ) $(CPP_OBJ) $(PORT_C_OBJ) $(PORT_CPP_OBJ)
+USR_OBJS=$(C_OBJ) $(CPP_OBJ) $(ASM_OBJ) $(PORT_C_OBJ) $(PORT_CPP_OBJ) $(PORT_ASM_OBJ)
 
 CPU_SPEC_HEADERS=$(PORT_DIR)/public/
 
@@ -118,6 +121,9 @@ ifneq ($(wildcard *.cpp), )
 endif
 ifneq ($(wildcard *.c), )
 		@$(COPYCMD) *.c $(SRC_DIR)
+endif
+ifneq ($(wildcard *.s), )
+		@$(COPYCMD) *.s $(SRC_DIR)
 endif
 ifneq ($(wildcard *.h), )
 		@$(COPYCMD) *.h $(SRC_DIR)
@@ -281,9 +287,9 @@ $(DBG_DIR_FINAL) : $(DBG_DIR)$(ARCH)/$(VARIANT)
 
 
 #----------------------------------------------------------------------------
-# Rule to build C code into object files
+# Rule to build C/C++/ASM code into object files
 #----------------------------------------------------------------------------
-objects : directories $(C_OBJ) $(CPP_OBJ) $(PORT_C_OBJ) $(PORT_CPP_OBJ)
+objects : directories $(C_OBJ) $(CPP_OBJ) $(ASM_OBJ) $(PORT_C_OBJ) $(PORT_CPP_OBJ) $(PORT_ASM_OBJ)
 $(OBJ_DIR_FINAL)%.c.o : %.c
 	@echo Compiling: $<
 	@$(CC) $(CFLAGS) $< -o $@
@@ -292,6 +298,10 @@ $(OBJ_DIR_FINAL)%.cpp.o : %.cpp
 	@echo Compiling: $<
 	@$(CPP) $(CPPFLAGS) $< -o $@
 
+$(OBJ_DIR_FINAL)%.s.o : %.s
+	@echo Assembling: $<
+	@$(ASM) $(ASMFLAGS) $< -o $@
+
 $(PORT_OBJ_DIR)%.c.o : $(PORT_DIR)%.c $(PORT_OBJ_DIR)
 	@echo Compiling: $<
 	@$(CC) $(CFLAGS) $< -o $@
@@ -299,6 +309,10 @@ $(PORT_OBJ_DIR)%.c.o : $(PORT_DIR)%.c $(PORT_OBJ_DIR)
 $(PORT_OBJ_DIR)%.cpp.o : $(PORT_DIR)%.cpp $(PORT_OBJ_DIR)
 	@echo Compiling: $<
 	@$(CPP) $(CPPFLAGS) $< -o $@
+
+$(PORT_OBJ_DIR)%.s.o : $(PORT_DIR)%.s $(PORT_OBJ_DIR)
+	@echo Assembling: $<
+	@$(ASM) $(ASMFLAGS) $< -o $@
 
 $(PORT_OBJ_DIR) : $(PORT_DIR)
 	@if test ! -d $(PORT_OBJ_DIR); then \

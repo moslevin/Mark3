@@ -13,9 +13,9 @@ LFLAGS_DBG= -Wl,--start-group -Wl,-lm  -Wl,--end-group -mthumb -mcpu=cortex-m0pl
 AR=arm-none-eabi-ar
 ARFLAGS=rcs
 
+ASM=arm-none-eabi-as
+ASMFLAGS=-mcpu=cortex-m0plus
+
 OBJCOPY=arm-none-eabi-objcopy
 OBJCOPY_FLAGS=-O ihex -R .eeprom -R .fuse -R .lock -R .signature
 OBJCOPY_DBG_FLAGS=--only-section=.logger -O binary --set-section-flags .logger=alloc --change-section-address .logger=0
-
-CFLAGS+=-I/usr/lib/avr/include/
-CPPFLAGS+=-I/usr/lib/avr/include/

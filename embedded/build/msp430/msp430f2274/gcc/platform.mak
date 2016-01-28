@@ -13,6 +13,9 @@ LFLAGS_DBG= -Wl,--start-group -Wl,-lm  -Wl,--end-group -Wl,--section-start=.logg
 AR=msp430-ar
 ARFLAGS=rcs
 
+ASM=avr-as
+ASMFLAGS=-mcpu=$(VARIANT)
+
 OBJCOPY=msp430-objcopy
 OBJCOPY_FLAGS=-O ihex
 OBJCOPY_DBG_FLAGS=--only-section=.logger -O binary --set-section-flags .logger=alloc --change-section-address .logger=0

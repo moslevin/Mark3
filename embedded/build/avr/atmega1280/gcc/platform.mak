@@ -13,6 +13,9 @@ LFLAGS_DBG= -Wl,--start-group -Wl,-lm  -Wl,--end-group -Wl,--section-start=.logg
 AR=avr-ar
 ARFLAGS=rcs
 
+ASM=avr-as
+ASMFLAGS=-mmcu=$(VARIANT)
+
 OBJCOPY=avr-objcopy
 OBJCOPY_FLAGS=-O ihex -R .eeprom -R .fuse -R .lock -R .signature
 OBJCOPY_DBG_FLAGS=--only-section=.logger -O binary --set-section-flags .logger=alloc --change-section-address .logger=0
