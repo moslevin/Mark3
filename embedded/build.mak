@@ -292,27 +292,27 @@ $(DBG_DIR_FINAL) : $(DBG_DIR)$(ARCH)/$(VARIANT)
 objects : directories $(C_OBJ) $(CPP_OBJ) $(ASM_OBJ) $(PORT_C_OBJ) $(PORT_CPP_OBJ) $(PORT_ASM_OBJ)
 $(OBJ_DIR_FINAL)%.c.o : %.c
 	@echo Compiling: $<
-	@$(CC) $(CFLAGS) $< -o $@
+	$(CC) $(CFLAGS) $< -o $@
 
 $(OBJ_DIR_FINAL)%.cpp.o : %.cpp
 	@echo Compiling: $<
-	@$(CPP) $(CPPFLAGS) $< -o $@
+	$(CPP) $(CPPFLAGS) $< -o $@
 
 $(OBJ_DIR_FINAL)%.s.o : %.s
 	@echo Assembling: $<
-	@$(ASM) $(ASMFLAGS) $< -o $@
+	$(ASM) $(ASMFLAGS) $< -o $@
 
 $(PORT_OBJ_DIR)%.c.o : $(PORT_DIR)%.c $(PORT_OBJ_DIR)
 	@echo Compiling: $<
-	@$(CC) $(CFLAGS) $< -o $@
+	$(CC) $(CFLAGS) $< -o $@
 
 $(PORT_OBJ_DIR)%.cpp.o : $(PORT_DIR)%.cpp $(PORT_OBJ_DIR)
 	@echo Compiling: $<
-	@$(CPP) $(CPPFLAGS) $< -o $@
+	$(CPP) $(CPPFLAGS) $< -o $@
 
 $(PORT_OBJ_DIR)%.s.o : $(PORT_DIR)%.s $(PORT_OBJ_DIR)
 	@echo Assembling: $<
-	@$(ASM) $(ASMFLAGS) $< -o $@
+	$(ASM) $(ASMFLAGS) $< -o $@
 
 $(PORT_OBJ_DIR) : $(PORT_DIR)
 	@if test ! -d $(PORT_OBJ_DIR); then \
