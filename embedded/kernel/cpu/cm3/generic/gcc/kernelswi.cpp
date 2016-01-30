@@ -26,8 +26,9 @@ See license.txt for more information
 //---------------------------------------------------------------------------
 void KernelSWI::Config(void)
 {
-	NVIC_SetPriority(SVCall_IRQn, 0xFF);
-	NVIC_SetPriority(PendSV_IRQn, 0xFF);
+    uint8_t u8MinPriority = (uint8_t)((1 << __NVIC_PRIO_BITS) - 1);
+    NVIC_SetPriority(SVCall_IRQn, u8MinPriority);
+    NVIC_SetPriority(PendSV_IRQn, u8MinPriority);
 	Clear();
 }
 
@@ -59,7 +60,7 @@ void KernelSWI::RI(bool bEnable_)
 //---------------------------------------------------------------------------
 void KernelSWI::Clear(void)
 {	
-	// There's no convenient CMSIS function call for PendSV set/clear,
+    // There's no convenient CMSIS function call for PendSV set/clear,
 	// But we do at least have some structs/macros.
 	
 	// Note that set/clear each have their own bits in the same register.

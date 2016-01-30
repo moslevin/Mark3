@@ -31,8 +31,11 @@ void KernelTimer::Config(void)
 //---------------------------------------------------------------------------
 void KernelTimer::Start(void)
 {	
+    // Barely higher priority than the SVC and PendSV interrupts.
+    uint8_t u8Priority = (uint8_t)((1 << __NVIC_PRIO_BITS) - 2);
+
 	SysTick_Config(SYSTEM_FREQ / 1000); // 1KHz fixed clock...
-	NVIC_SetPriority(SysTick_IRQn, 1);	
+    NVIC_SetPriority(SysTick_IRQn, u8Priority);
 	NVIC_EnableIRQ(SysTick_IRQn);
 }
 

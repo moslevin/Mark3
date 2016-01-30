@@ -63,11 +63,11 @@ void KernelSWI::Clear(void)
 	
 	// Note that set/clear each have their own bits in the same register.
 	// Setting the "set" or "clear" bit results in the desired operation.
-	SCB->ICSR |= SCB_ICSR_PENDSVCLR_Msk;
+    SCB->ICSR = SCB_ICSR_PENDSVCLR_Msk;
 }
 
 //---------------------------------------------------------------------------
 void KernelSWI::Trigger(void)
 {	
-	SCB->ICSR |= SCB_ICSR_PENDSVSET_Msk;
+    SCB->ICSR = SCB_ICSR_PENDSVSET_Msk;
 }

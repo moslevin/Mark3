@@ -34,7 +34,6 @@ extern "C" {
 	void SVC_Handler( void ) __attribute__ (( naked ));
 	void PendSV_Handler( void ) __attribute__ (( naked ));
 	void SysTick_Handler( void );
-	void HardFault_Handler( void ) { while(1){} };
 }
 
 //---------------------------------------------------------------------------
@@ -216,16 +215,10 @@ void ThreadPort_StartFirstThread( void )
         add r1, #8
         ldr r2, [r1]         ; r2 contains the current stack-top
 
-    load_manually_placed_context_r11_r8:
+    load_manually_placed_context_r11_r4:
         ; Handle the bottom 32-bytes of the stack frame
-        ; Start with r11-r8, because only r0-r7 can be used
-        ; with ldmia on CM0.
-        add r2, #16
-        ldmia r2!, {r4-r7}
-        mov r11, r7
-        mov r10, r6
-        mov r9, r5
-        mov r8, r4
+        ; On cortex m3 and up, we can do this in one ldmia instruction.
+        ldmia r2!, {r4-r11}
 
     set_psp:
         ; Since r2 is coincidentally back to where the stack pointer should be,
@@ -235,7 +228,7 @@ void ThreadPort_StartFirstThread( void )
     load_manually_placed_context_r7_r4:
         ; Get back to the bottom of the manually stacked registers and pop.
         sub r2, #32
-        ldmia r2!, {r4-r7}  ; Register r4-r11 are restored.
+        ldmia r2!, {r4-r11}  ; Register r4-r11 are restored.
 
     ** Note - Since we don't care about these registers on init, we could take a shortcut if we wanted to **
     shortcut_init:
@@ -267,21 +260,12 @@ void SVC_Handler(void)
 	" add r3, #8 \n "
 	" ldr r2, [r3] \n "
 	// Stack pointer is in r2, start loading registers from the "manually-stacked" set
-	// Start with r11-r8, since these can't be accessed directly.
-	" add r2, #16 \n "
-	" ldmia r2!, {r4-r7} \n "
-	" mov r11, r7 \n "
-	" mov r10, r6 \n "
-	" mov r9, r5 \n "
-	" mov r8, r4 \n "
-	// After subbing R2 #16 manually, and #16 through ldmia, our PSP is where it
+    " ldmia r2!, {r4-r11} \n "
+    // After subtracting R2 by #32 due to stack popping, our PSP is where it
 	// needs to be when we return from the exception handler
-	" msr psp, r2 \n "
-	// Pop manually-stacked R4-R7
-	" sub r2, #32 \n "
-	" ldmia r2!, {r4-r7} \n "
-	// Also modify the control register to force use of thread mode as well
-	// For CM3 forward-compatibility, also set user mode.
+	" msr psp, r2 \n "	
+    // Also modify the control register to force use of thread mode as well
+    // For CM3 forward-compatibility, keep threads in privileged mode
 	" mrs r0, control \n"
 	" mov r1, #0x02 \n"
 	" orr r0, r1 \n"
@@ -337,16 +321,9 @@ void SVC_Handler(void)
 	; While we're here, store the new top-of-stack value
 	str r2, [r1]
 	
-	; And, while r2 is at the bottom of the stack frame, stack r7-r4
-	stmia r2!, {r4-r7}
-		
-	; Stack r11-r8
-	mov r7, r11	
-	mov r6, r10
-	mov r5, r9
-	mov r4, r8			
-	stmia r2!, {r4-r7}
-	
+    ; And, while r2 is at the bottom of the stack frame, stack r11-r4
+    stmia r2!, {r4-r11}
+
 	; Done!
 		
 	Thread's top-of-stack value is stored, all registers are stacked.  We're good to go!
@@ -359,7 +336,6 @@ void SVC_Handler(void)
 3)	Restore Context
 
 	This is more or less identical to what we did when restoring the first context. 
-	Small optimization - we don't bother explicitly setting the 
 	
 */	
 void PendSV_Handler(void)
@@ -379,17 +355,10 @@ void PendSV_Handler(void)
 	// While we're here, store the new top-of-stack value
 	" str r2, [r3] \n "
 	
-	// And, while r2 is at the bottom of the stack frame, stack r7-r4
-	" stmia r2!, {r4-r7} \n "
-	
-	// Stack r11-r8
-	" mov r7, r11 \n "
-	" mov r6, r10 \n "
-	" mov r5, r9 \n "
-	" mov r4, r8 \n "
-	" stmia r2!, {r4-r7} \n "
-		
-	// Equivalent of Thread_Swap()
+    // And, while r2 is at the bottom of the stack frame, stack r4-r11
+    " stmia r2!, {r4-r11} \n "
+
+    // Equivalent of Thread_Swap() -- g_pclNext -> g_pclCurrent
 	" ldr r1, CURR_ \n"
 	" ldr r0, NEXT_ \n"
 	" ldr r0, [r0] \n"
@@ -400,22 +369,12 @@ void PendSV_Handler(void)
 	" ldr r2, [r0] \n "
 	
 	// Stack pointer is in r2, start loading registers from the "manually-stacked" set
-	// Start with r11-r8, since these can't be accessed directly.
-	" add r2, #16 \n "
-	" ldmia r2!, {r4-r7} \n "
-	" mov r11, r7 \n "
-	" mov r10, r6 \n "
-	" mov r9, r5 \n "
-	" mov r8, r4 \n "
+    " ldmia r2!, {r4-r11} \n "
 	
-	// After subbing R2 #16 manually, and #16 through ldmia, our PSP is where it
+    // After subbing R2 #32 through ldmia/stack popping, our PSP is where it
 	// needs to be when we return from the exception handler
 	" msr psp, r2 \n "
-	
-	// Pop manually-stacked R4-R7
-	" sub r2, #32 \n "
-	" ldmia r2!, {r4-r7} \n "
-		
+
 	// lr contains the proper EXC_RETURN value, we're done with exceptions.
 	" bx lr \n "
 	" nop \n "

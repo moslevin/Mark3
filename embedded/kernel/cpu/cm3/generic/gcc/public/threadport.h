@@ -26,9 +26,6 @@ See license.txt for more information
 #include "stm32f429xx.h"
 
 //---------------------------------------------------------------------------
-extern volatile uint32_t g_ulCriticalCount;
-
-//---------------------------------------------------------------------------
 //! ASM Macro - simplify the use of ASM directive in C
 #define ASM      asm volatile
 
@@ -53,27 +50,25 @@ extern volatile uint32_t g_ulCriticalCount;
 	#define xenable_irq()			ASM(" cpsie i \n");
 #endif
 
-#define CpuEnterCritical()              \
-do { \
-    uint8_t cpuSR; \
-    asm (                               \
-    "MRS   R0, PRIMASK\n\t"             \
-    "CPSID I\n\t"                       \
-    "STRB R0, %[output]"                \
-    : [output] "=m" (cpuSR) :: "r0");   
-
-#define CpuExitCritical()               \
-    asm (                               \
-    "ldrb r0, %[input]\n\t"             \
-    "msr PRIMASK,r0;\n\t"               \
-    ::[input] "m" (cpuSR) : "r0");      \
-} while(0);
 //------------------------------------------------------------------------
 //! Enter critical section (copy current PRIMASK register value, disable interrupts)
-#define CS_ENTER()		CpuEnterCritical()
+#define CS_ENTER()                      \
+do {                                    \
+    volatile uint8_t __sr;              \
+    ASM (                               \
+    " mrs   r0, PRIMASK\n "             \
+    " cpsid i \n"                       \
+    " strb r0, %[output] \n"            \
+    : [output] "=m" (__sr) :: "r0");
+
 //------------------------------------------------------------------------
 //! Exit critical section (restore previous PRIMASK status register value)
-#define CS_EXIT() 		CpuExitCritical()
+#define CS_EXIT()                       \
+    ASM (                               \
+    " ldrb r0, %[input]\n "             \
+    " msr PRIMASK, r0 \n "              \
+    ::[input] "m" (__sr) : "r0");       \
+} while(0);
 
 //------------------------------------------------------------------------
 class Thread;

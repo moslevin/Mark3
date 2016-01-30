@@ -30,10 +30,12 @@ See license.txt for more information
 
 //---------------------------------------------------------------------------
 static void ThreadPort_StartFirstThread( void ) __attribute__ (( naked ));
-void SVC_Handler( void ) __attribute__ (( naked ));
-void PendSV_Handler( void ) __attribute__ (( naked ));
-void SysTick_Handler( void );
 
+extern "C" {
+    void SVC_Handler( void ) __attribute__ (( naked ));
+    void PendSV_Handler( void ) __attribute__ (( naked ));
+    void SysTick_Handler( void );
+}
 //---------------------------------------------------------------------------
 volatile uint32_t g_ulCriticalCount;
 
@@ -278,9 +280,9 @@ void SVC_Handler(void)
 	" sub r2, #32 \n "
 	" ldmia r2!, {r4-r7} \n "
 	// Also modify the control register to force use of thread mode as well
-	// For CM3 forward-compatibility, also set user mode.
+    // For CM3 forward-compatibility, also ensure priveleged mode is set.
 	" mrs r0, control \n"
-	" mov r1, #0x03 \n"
+    " mov r1, #0x02 \n"
 	" orr r0, r1 \n"
 	" msr control, r0 \n"	
 	// Return into thread mode, using PSP as the thread's stack pointer
@@ -434,5 +436,5 @@ void SysTick_Handler(void)
 #endif
 
 	// Clear the systick interrupt pending bit.
-	SCB->ICSR |= SCB_ICSR_PENDSTCLR_Msk;
+    SCB->ICSR = SCB_ICSR_PENDSTCLR_Msk;
 }
