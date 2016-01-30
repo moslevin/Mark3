@@ -39,7 +39,7 @@ void KernelTimer::Start(void)
 //---------------------------------------------------------------------------
 void KernelTimer::Stop(void)
 {
-	SysTick->CTRL &= ~SysTick_CTRL_ENABLE_Msk;
+	SysTick->CTRL = ~SysTick_CTRL_ENABLE_Msk;
 }
 
 //---------------------------------------------------------------------------

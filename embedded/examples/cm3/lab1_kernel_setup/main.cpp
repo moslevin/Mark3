@@ -48,24 +48,6 @@ of static threads.
 ===========================================================================*/
 extern "C" {
 void __cxa_pure_virtual(void) { }
-void _exit(int code) { while(1){}; }
-void _kill(int pid){ }
-int _getpid(void) { return 1; }
-void* _sbrk(intptr_t increment){ return 0; }
-}
-
-typedef void (*InitFunc)(void); 
-extern void** __init_array_start; 
-extern void** __init_array_end; 
-
-void static_init(void) 
-{
-
-	uint32_t* pFunc = (uint32_t*)&__init_array_start; 
-	for ( ; pFunc < (uint32_t*)&__init_array_end; ++pFunc ) 
-	{ 
-		((InitFunc)*pFunc)(); 
-	} 
 }
 
 //---------------------------------------------------------------------------
@@ -89,8 +71,6 @@ static void    IdleMain(void *unused_);
 //---------------------------------------------------------------------------
 int main(void)
 {
-    static_init();
-
     // Before any Mark3 RTOS APIs can be called, the user must call Kernel::Init().
     // Note that if you have any hardware-specific init code, it can be called
     // before Kernel::Init, so long as it does not enable interrupts, or
@@ -161,6 +141,8 @@ void IdleMain(void *unused_)
 {
     while(1)
     {
+	volatile uint32_t ctr = 0;
+	ctr++;
         // Low priority task + power management routines go here.
         // The actions taken in this context must *not* cause the thread
         // to block, as the kernel requires that at least one thread is

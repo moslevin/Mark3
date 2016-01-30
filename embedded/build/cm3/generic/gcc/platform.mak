@@ -5,12 +5,12 @@ USES_CXX=1
 CC=arm-none-eabi-gcc
 CPP=arm-none-eabi-g++
 
-CFLAGS=-O0 -g3 -Wall -c -mthumb -mcpu=cortex-m4 -DARM  -DUSE_STDPERIPH_DRIVER -D__CHECK_DEVICE_DEFINES -DUSE_FULL_ASSERT -fmessage-length=0 -fdata-sections -ffunction-sections -DK_ADDR=uint32_t -DK_WORD=uint32_t  -nostdlib
-CPPFLAGS=-O0 -g3 -Wall -c -mthumb -mcpu=cortex-m4 -DARM  -DUSE_STDPERIPH_DRIVER -D__CHECK_DEVICE_DEFINES -DUSE_FULL_ASSERT -fmessage-length=0 -fdata-sections -ffunction-sections -DK_ADDR=uint32_t -DK_WORD=uint32_t -fno-rtti -nostdlib
+CFLAGS=-Os -g3 -Wall -c -mthumb -mcpu=cortex-m4 -DARM  -DUSE_STDPERIPH_DRIVER -D__CHECK_DEVICE_DEFINES -DUSE_FULL_ASSERT -fmessage-length=0 -fdata-sections -ffunction-sections -DK_ADDR=uint32_t -DK_WORD=uint32_t -ffreestanding
+CPPFLAGS=-Os -g3 -Wall -c -mthumb -mcpu=cortex-m4 -DARM  -DUSE_STDPERIPH_DRIVER -D__CHECK_DEVICE_DEFINES -DUSE_FULL_ASSERT -fmessage-length=0 -fdata-sections -ffunction-sections -DK_ADDR=uint32_t -DK_WORD=uint32_t -fno-rtti -ffreestanding
 
-LINK=arm-none-eabi-g++
-LFLAGS=-Wl,--start-group -Wl,-lm  -Wl,--end-group -Wl,--gc-sections -Wl,--library=nosys -mthumb -mcpu=cortex-m4 -T$(ROOT_DIR)/ext/f4/startup/Linker.ld
-LFLAGS_DBG=-Wl,--start-group -Wl,-lm  -Wl,--end-group -mthumb -mcpu=cortex-m4 -T$(ROOT_DIR)/ext/f4/startup/Linker.ld
+LINK=arm-none-eabi-gcc
+LFLAGS=-Wl,--start-group -Wl,-lm  -Wl,--end-group -Wl,--gc-sections -mthumb -mcpu=cortex-m4 --specs=nano.specs --specs=nosys.specs -T$(ROOT_DIR)/ext/f4/startup/Linker.ld
+LFLAGS_DBG=-Wl,--start-group -Wl,-lm  -Wl,--end-group -mthumb -mcpu=cortex-m4 --specs=nano.specs --specs=nosys.specs -T$(ROOT_DIR)/ext/f4/startup/Linker.ld
 
 AR=arm-none-eabi-ar
 ARFLAGS=rcs

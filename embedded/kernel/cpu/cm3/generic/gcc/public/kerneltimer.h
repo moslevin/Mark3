@@ -23,8 +23,10 @@ See license.txt for more information
 #define __KERNELTIMER_H_
 
 //---------------------------------------------------------------------------
-#define SYSTEM_FREQ       ((uint32_t)20000000)
-#define TIMER_FREQ        ((uint32_t)(SYSTEM_FREQ/256)) // Timer ticks per second...
+extern "C" uint32_t SystemCoreClock;
+
+#define SYSTEM_FREQ       (SystemCoreClock)
+#define TIMER_FREQ        ((uint32_t)(SYSTEM_FREQ/1000)) // Timer ticks per second...
 
 //---------------------------------------------------------------------------
 /*!

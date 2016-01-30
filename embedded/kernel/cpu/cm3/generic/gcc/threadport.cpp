@@ -35,7 +35,6 @@ extern "C" {
 	void PendSV_Handler( void ) __attribute__ (( naked ));
 	void SysTick_Handler( void );
 	void HardFault_Handler( void ) { while(1){} };
-	void BusFault_Handler( void ) { while(1){} };
 }
 
 //---------------------------------------------------------------------------
@@ -260,7 +259,6 @@ void ThreadPort_StartFirstThread( void )
 		This code is identical to what we need to restore the context, so
 		we'll just make it a macro and be done with it.
 */
-extern "C" {
 void SVC_Handler(void)
 {
 	ASM(
@@ -296,7 +294,6 @@ void SVC_Handler(void)
 	" bx r0 \n "
 	: : [CURRENT_THREAD] "r" (g_pclCurrent)
 	);
-}
 }
 
 //---------------------------------------------------------------------------
@@ -365,7 +362,6 @@ void SVC_Handler(void)
 	Small optimization - we don't bother explicitly setting the 
 	
 */	
-extern "C" {
 void PendSV_Handler(void)
 {	
 	ASM(
@@ -429,7 +425,6 @@ void PendSV_Handler(void)
 	" CURR_: .word g_pclCurrent \n"	
 	);
 }
-}
 //---------------------------------------------------------------------------
 void SysTick_Handler(void)
 {
@@ -441,6 +436,6 @@ void SysTick_Handler(void)
 #endif
 
 	// Clear the systick interrupt pending bit.
-	SCB->ICSR |= SCB_ICSR_PENDSTCLR_Msk;
+	SCB->ICSR = SCB_ICSR_PENDSTCLR_Msk;
 }
 
