@@ -90,8 +90,11 @@ TEST(mailbox_blocking_timed)
         aucTxBuf[j] = 'x';
     }
 
-    Thread::Sleep(105);
-    EXPECT_EQUALS(u16Timeouts, 10);
+    //!! Note -- give extra slack here, as the kernel only specifies a *minimum* timing
+    //!! guarantee when a sleep occurs.  Using ms-accuracy timing will make these types
+    //!! of failures more prevalent.
+    Thread::Sleep(115);
+    EXPECT_GTE(u16Timeouts, 10);
 
     for (int i = 0; i < 10; i++)
     {
