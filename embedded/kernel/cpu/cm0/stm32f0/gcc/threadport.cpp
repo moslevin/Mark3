@@ -97,7 +97,7 @@ void ThreadPort::InitStack(Thread *pclThread_)
 
 	// Initialize the stack to all FF's to aid in stack depth checking
 	pu32Temp = (uint32_t*)pclThread_->m_pwStack;
-	for (i = 0; i < pclThread_->m_u16StackSize / sizeof(uint32_t); i++)
+    for (i = 0; i < pclThread_->m_u16StackSize / sizeof(uint32_t); i++)
 	{
 		pu32Temp[i] = 0xFFFFFFFF;
 	}
@@ -107,7 +107,7 @@ void ThreadPort::InitStack(Thread *pclThread_)
 	//-- Simulated Exception Stack Frame --
 	PUSH_TO_STACK(pu32Stack, 0x01000000);	// XSPR
 	PUSH_TO_STACK(pu32Stack, u32Addr);		// PC
-    PUSH_TO_STACK(pu32Stack, 0);             // LR
+    PUSH_TO_STACK(pu32Stack, 0);            // LR
 	PUSH_TO_STACK(pu32Stack, 0x12);
 	PUSH_TO_STACK(pu32Stack, 0x3);
     PUSH_TO_STACK(pu32Stack, 0x2);
@@ -284,7 +284,8 @@ void SVC_Handler(void)
 	" mrs r0, control \n"
     " mov r1, #0x02 \n"
 	" orr r0, r1 \n"
-	" msr control, r0 \n"	
+    " msr control, r0 \n"
+    " isb \n "
 	// Return into thread mode, using PSP as the thread's stack pointer
 	// To do this, or 0x0D into the current lr.
 	" mov r0, #0x0D \n "
@@ -389,10 +390,12 @@ void PendSV_Handler(void)
 	" stmia r2!, {r4-r7} \n "
 		
 	// Equivalent of Thread_Swap()
-	" ldr r1, CURR_ \n"
-	" ldr r0, NEXT_ \n"
-	" ldr r0, [r0] \n"
-	" str r0, [r1] \n"
+	" cpsid i \n "
+	" ldr r1, CURR_ \n "
+	" ldr r0, NEXT_ \n "
+	" ldr r0, [r0] \n "
+	" str r0, [r1] \n "
+	" cpsie i \n "
 	
 	// Get the pointer to the next thread's stack	
 	" add r0, #8 \n "

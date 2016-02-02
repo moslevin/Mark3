@@ -87,12 +87,12 @@ int main(void)
     // Initialize the application thread to use a specified word-array as its stack.
     // The thread will run at priority level "1", and start execution the
     // "AppMain" function when it's started.
-    clAppThread.Init(  awAppStack,  APP_STACK_SIZE,  1, AppMain,  0);
+    clAppThread.Init(  awAppStack,  sizeof(awAppStack),  1, AppMain,  0);
 
     // Initialize the idle thread to use a specific word-array as its stack.
     // The thread will run at priority level "0", which is reserved for the idle
     // priority thread.  IdleMain will be run when the thread is started.
-    clIdleThread.Init( awIdleStack, IDLE_STACK_SIZE, 0, IdleMain, 0);
+    clIdleThread.Init( awIdleStack, sizeof(awIdleStack), 0, IdleMain, 0);
 
     // Once the static threads have been added, the user must then ensure that the
     // threads are ready to execute.  By default, creating a thread is created
