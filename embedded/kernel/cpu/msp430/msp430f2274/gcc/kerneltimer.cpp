@@ -58,7 +58,7 @@ void KernelTimer::Start(void)
 //---------------------------------------------------------------------------
 void KernelTimer::Stop(void)
 {
-	TACTL &= ~MC_1;
+    TACTL &= ~MC_1;
 
     TACCTL0 &= ~CCIE;               // Disable TA0 CCR
 
@@ -70,13 +70,13 @@ void KernelTimer::Stop(void)
 uint16_t KernelTimer::Read(void)
 {
 #if KERNEL_TIMERS_TICKLESS
-	uint16_t u16Val;
-	TACCTL0 &= ~MC_1;
-	u16Val = TAR;
-	TACCTL0 |= MC_1;
-	return u16Val;
+    uint16_t u16Val;
+    TACCTL0 &= ~MC_1;
+    u16Val = TAR;
+    TACCTL0 |= MC_1;
+    return u16Val;
 #else
-	return 0;
+    return 0;
 #endif
 }
 
@@ -84,8 +84,8 @@ uint16_t KernelTimer::Read(void)
 uint32_t KernelTimer::SubtractExpiry(uint32_t u32Interval_)
 {
 #if KERNEL_TIMERS_TICKLESS
-	TACCR0 -= u32Interval_;
-	return (uint32_t)TACCR0;
+    TACCR0 -= u32Interval_;
+    return (uint32_t)TACCR0;
 #else
     return 0;
 #endif
@@ -95,13 +95,13 @@ uint32_t KernelTimer::SubtractExpiry(uint32_t u32Interval_)
 uint32_t KernelTimer::TimeToExpiry(void)
 {
 #if KERNEL_TIMERS_TICKLESS
-	uint16_t u16Current = KernelTimer::Read();
-	uint16_t u16Max = TACCR0;
-	if (u16Max >= u16Current)
-	{
-		return 0;
-	}
-	return (u16Max - u16Current);
+    uint16_t u16Current = KernelTimer::Read();
+    uint16_t u16Max = TACCR0;
+    if (u16Max >= u16Current)
+    {
+        return 0;
+    }
+    return (u16Max - u16Current);
 #else
     return 0;
 #endif
@@ -121,23 +121,23 @@ uint32_t KernelTimer::GetOvertime(void)
 uint32_t KernelTimer::SetExpiry(uint32_t u32Interval_)
 {
 #if KERNEL_TIMERS_TICKLESS
-	uint32_t u32Ret;
-	if (u32Interval_ >= 65535)
-	{
-		u32Ret = 65535;
-	}
-	else
-	{
-		u32Ret = u32Interval_;
-	}
+    uint32_t u32Ret;
+    if (u32Interval_ >= 65535)
+    {
+        u32Ret = 65535;
+    }
+    else
+    {
+        u32Ret = u32Interval_;
+    }
 
-	TACCR0 = (uint16_t)u32Ret;
-	TACCTL0 |= CCIE;                // Enable interrupts on TimerA0 CCR
-	TACTL |= MC_1;
+    TACCR0 = (uint16_t)u32Ret;
+    TACCTL0 |= CCIE;                // Enable interrupts on TimerA0 CCR
+    TACTL |= MC_1;
 
-	return u32Ret;
+    return u32Ret;
 #else
-	return 0;
+    return 0;
 #endif
 }
 
@@ -153,10 +153,10 @@ void KernelTimer::ClearExpiry(void)
 uint8_t KernelTimer::DI(void)
 {
 #if KERNEL_TIMERS_TICKLESS
-	uint8_t u8Ret = ((TACCTL0 & CCIE) != 0);
-	TACCTL0 &= ~CCIE;
-	TACCTL0 &= ~CCIFG;
-	return u8Ret;
+    uint8_t u8Ret = ((TACCTL0 & CCIE) != 0);
+    TACCTL0 &= ~CCIE;
+    TACCTL0 &= ~CCIFG;
+    return u8Ret;
 #else
     return 0;
 #endif
@@ -172,13 +172,13 @@ void KernelTimer::EI(void)
 void KernelTimer::RI(bool bEnable_)
 {
 #if KERNEL_TIMERS_TICKLESS
-	if (bEnable_)
-	{
-		TACCTL0 |= CCIE;
-	}
-	else
-	{
-		TACCTL0 &= ~CCIE;
-	}
+    if (bEnable_)
+    {
+        TACCTL0 |= CCIE;
+    }
+    else
+    {
+        TACCTL0 &= ~CCIE;
+    }
 #endif
 }

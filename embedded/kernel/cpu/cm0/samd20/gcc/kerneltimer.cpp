@@ -108,29 +108,29 @@ void KernelTimer::Config(void)
     KERNEL_TIMER_TC->COUNT16.READREQ.reg = u32ReadReq;
     WriteSync();
     KERNEL_TIMER_TC->COUNT16.EVCTRL.reg = u32EventCtrl;
-	
-	//--- Enable The Counter ---
-	WriteSync();
-	KERNEL_TIMER_TC->COUNT16.CTRLA.reg |= TC_CTRLA_ENABLE;
+    
+    //--- Enable The Counter ---
+    WriteSync();
+    KERNEL_TIMER_TC->COUNT16.CTRLA.reg |= TC_CTRLA_ENABLE;
 
-	KERNEL_TIMER_TC->COUNT16.INTFLAG.reg = TC_INTFLAG_OVF;
-	KERNEL_TIMER_TC->COUNT16.INTENSET.reg = TC_INTENSET_OVF;
+    KERNEL_TIMER_TC->COUNT16.INTFLAG.reg = TC_INTFLAG_OVF;
+    KERNEL_TIMER_TC->COUNT16.INTENSET.reg = TC_INTENSET_OVF;
 
-	WriteSync();
-	KERNEL_TIMER_TC->COUNT16.CC[0].reg = 0xFFFF;
+    WriteSync();
+    KERNEL_TIMER_TC->COUNT16.CC[0].reg = 0xFFFF;
 
-	//--- Enable Interrupts ---
-	NVIC_EnableIRQ(TC0_IRQn);
+    //--- Enable Interrupts ---
+    NVIC_EnableIRQ(TC0_IRQn);
 
-	//--- Stop the counter ---
-	
+    //--- Stop the counter ---
+    
 }
 
 //---------------------------------------------------------------------------
 void KernelTimer::Start(void)
 {   
-	WriteSync();
-	KERNEL_TIMER_TC->COUNT16.CTRLA.reg |= TC_CTRLA_ENABLE;
+    WriteSync();
+    KERNEL_TIMER_TC->COUNT16.CTRLA.reg |= TC_CTRLA_ENABLE;
 }
 
 //---------------------------------------------------------------------------
@@ -252,51 +252,51 @@ void KernelTimer::RI(bool bEnable_)
 //---------------------------------------------------------------------------
 void KernelTimer::Config(void)
 {
-	
+    
 }
 
 //---------------------------------------------------------------------------
 void KernelTimer::Start(void)
 {
-	SysTick_Config(SYSTEM_FREQ / 1000); // 1KHz fixed clock...
-	NVIC_EnableIRQ(SysTick_IRQn);
+    SysTick_Config(SYSTEM_FREQ / 1000); // 1KHz fixed clock...
+    NVIC_EnableIRQ(SysTick_IRQn);
 }
 
 //---------------------------------------------------------------------------
 void KernelTimer::Stop(void)
 {
-	SysTick->CTRL &= ~SysTick_CTRL_ENABLE_Msk;
+    SysTick->CTRL &= ~SysTick_CTRL_ENABLE_Msk;
 }
 
 //---------------------------------------------------------------------------
 uint16_t KernelTimer::Read(void)
 {
-	// Not implemented in this port
-	return 0;
+    // Not implemented in this port
+    return 0;
 }
 
 //---------------------------------------------------------------------------
 uint32_t KernelTimer::SubtractExpiry(uint32_t u32Interval_)
 {
-	return 0;
+    return 0;
 }
 
 //---------------------------------------------------------------------------
 uint32_t KernelTimer::TimeToExpiry(void)
 {
-	return 0;
+    return 0;
 }
 
 //---------------------------------------------------------------------------
 uint32_t KernelTimer::GetOvertime(void)
 {
-	return 0;
+    return 0;
 }
 
 //---------------------------------------------------------------------------
 uint32_t KernelTimer::SetExpiry(uint32_t u32Interval_)
 {
-	return 0;
+    return 0;
 }
 
 //---------------------------------------------------------------------------
@@ -307,13 +307,13 @@ void KernelTimer::ClearExpiry(void)
 //-------------------------------------------------------------------------
 uint8_t KernelTimer::DI(void)
 {
-	return 0;
+    return 0;
 }
 
 //---------------------------------------------------------------------------
 void KernelTimer::EI(void)
 {
-	KernelTimer::RI(0);
+    KernelTimer::RI(0);
 }
 
 //---------------------------------------------------------------------------

@@ -44,21 +44,21 @@ extern volatile uint16_t g_u16SR;
 //---------------------------------------------------------------------------
 //! Save the context of the Thread
 #define Thread_SaveContext()\
-    ASM("push	r4\n");	\
-    ASM("push	r5\n");	\
-    ASM("push	r6\n");	\
-    ASM("push	r7\n");	\
-    ASM("push	r8\n");	\
-    ASM("push	r9\n");	\
-    ASM("push	r10\n"); \
-    ASM("push	r11\n"); \
-    ASM("push	r12\n"); \
-    ASM("push	r13\n"); \
-    ASM("push	r14\n"); \
-    ASM("push	r15\n"); \
-    ASM("mov.w	&g_pclCurrent, r12\n"); \
+    ASM("push    r4\n");    \
+    ASM("push    r5\n");    \
+    ASM("push    r6\n");    \
+    ASM("push    r7\n");    \
+    ASM("push    r8\n");    \
+    ASM("push    r9\n");    \
+    ASM("push    r10\n"); \
+    ASM("push    r11\n"); \
+    ASM("push    r12\n"); \
+    ASM("push    r13\n"); \
+    ASM("push    r14\n"); \
+    ASM("push    r15\n"); \
+    ASM("mov.w    &g_pclCurrent, r12\n"); \
     ASM("add.w  #4, r12"); \
-    ASM("mov.w	r1, 0(r12)\n");
+    ASM("mov.w    r1, 0(r12)\n");
 
 //---------------------------------------------------------------------------
 //! Restore the context of the Thread
@@ -66,19 +66,19 @@ extern volatile uint16_t g_u16SR;
     ASM("mov.w  &g_pclCurrent, r12"); \
     ASM("add.w  #4, r12"); \
     ASM("mov.w  @r12, r1"); \
-    ASM("pop	r15"); \
-    ASM("pop	r14"); \
-    ASM("pop	r13"); \
-    ASM("pop	r12"); \
-    ASM("pop	r11"); \
-    ASM("pop	r10"); \
-    ASM("pop 	r9"); \
-    ASM("pop	r8"); \
-    ASM("pop	r7"); \
-    ASM("pop	r6"); \
-    ASM("pop	r5"); \
-    ASM("pop	r4"); \
-    ASM("bic.w	#0x00F0, 0(r1)");
+    ASM("pop    r15"); \
+    ASM("pop    r14"); \
+    ASM("pop    r13"); \
+    ASM("pop    r12"); \
+    ASM("pop    r11"); \
+    ASM("pop    r10"); \
+    ASM("pop     r9"); \
+    ASM("pop    r8"); \
+    ASM("pop    r7"); \
+    ASM("pop    r6"); \
+    ASM("pop    r5"); \
+    ASM("pop    r4"); \
+    ASM("bic.w    #0x00F0, 0(r1)");
 
 //------------------------------------------------------------------------
 //! These macros *must* be used in pairs !
@@ -86,13 +86,13 @@ extern volatile uint16_t g_u16SR;
 //! Enter critical section (cache GIE bit in the status register, disable interrupts)
 #define CS_ENTER() \
 do { \
-	uint16_t u16IntState = __get_interrupt_state(); \
-	__dint(); \
-	if (0 == g_u8CSCount) \
-	{ \
-		g_u16SR = u16IntState; \
+    uint16_t u16IntState = __get_interrupt_state(); \
+    __dint(); \
+    if (0 == g_u8CSCount) \
+    { \
+        g_u16SR = u16IntState; \
     } \
-	g_u8CSCount++; \
+    g_u8CSCount++; \
 } while(0);
 
 //------------------------------------------------------------------------
@@ -102,11 +102,11 @@ do { \
     if (1 == g_u8CSCount) \
     { \
         if((g_u16SR & 0x0008) == 0x0008) \
-		{ \
-			__eint(); \
-		} \
+        { \
+            __eint(); \
+        } \
     } \
-	g_u8CSCount--; \
+    g_u8CSCount--; \
 } while(0);
 
 //------------------------------------------------------------------------

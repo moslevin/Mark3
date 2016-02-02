@@ -28,7 +28,7 @@ See license.txt for more information
 #if !KERNEL_TIMERS_TICKLESS
   #define TIMER_FREQ         ((uint32_t)(SYSTEM_FREQ / 100)) // Timer ticks per second...
 #else
-  #define TIMER_FREQ	     ((uint32_t)(SYSTEM_FREQ / 8))
+  #define TIMER_FREQ         ((uint32_t)(SYSTEM_FREQ / 8))
 #endif
 
 //---------------------------------------------------------------------------

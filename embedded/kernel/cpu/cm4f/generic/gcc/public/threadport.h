@@ -15,7 +15,7 @@ See license.txt for more information
 
     \file   threadport.h    
 
-    \brief  Cortex M-0 Multithreading support.
+    \brief  Cortex M4  Multithreading support.
  */
 
 #ifndef __THREADPORT_H_
@@ -41,13 +41,13 @@ See license.txt for more information
 
 //------------------------------------------------------------------------
 #ifndef xDMB
-    #define xDMB()					ASM(" dmb \n");
+    #define xDMB()                    ASM(" dmb \n");
 #endif
 #ifndef xdisable_irq
-	#define xdisable_irq()			ASM(" cpsid i \n");
+    #define xdisable_irq()            ASM(" cpsid i \n");
 #endif
 #ifndef xenable_irq
-	#define xenable_irq()			ASM(" cpsie i \n");
+    #define xenable_irq()             ASM(" cpsie i \n");
 #endif
 
 //------------------------------------------------------------------------

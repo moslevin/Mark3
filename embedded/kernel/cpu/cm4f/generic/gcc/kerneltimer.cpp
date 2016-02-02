@@ -15,7 +15,7 @@ See license.txt for more information
 
     \file   kerneltimer.cpp
 
-    \brief  Kernel Timer Implementation for ARM Cortex-M0
+    \brief  Kernel Timer Implementation for ARM Cortex-M4
 */
 
 #include "kerneltypes.h"
@@ -25,43 +25,43 @@ See license.txt for more information
 //---------------------------------------------------------------------------
 void KernelTimer::Config(void)
 {
-	   
+       
 }
 
 //---------------------------------------------------------------------------
 void KernelTimer::Start(void)
-{	
+{    
     // Barely higher priority than the SVC and PendSV interrupts.
     uint8_t u8Priority = (uint8_t)((1 << __NVIC_PRIO_BITS) - 2);
 
-	SysTick_Config(SYSTEM_FREQ / 1000); // 1KHz fixed clock...
+    SysTick_Config(SYSTEM_FREQ / 1000); // 1KHz fixed clock...
     NVIC_SetPriority(SysTick_IRQn, u8Priority);
-	NVIC_EnableIRQ(SysTick_IRQn);
+    NVIC_EnableIRQ(SysTick_IRQn);
 }
 
 //---------------------------------------------------------------------------
 void KernelTimer::Stop(void)
 {
-	SysTick->CTRL = ~SysTick_CTRL_ENABLE_Msk;
+    SysTick->CTRL = ~SysTick_CTRL_ENABLE_Msk;
 }
 
 //---------------------------------------------------------------------------
 uint16_t KernelTimer::Read(void)
 {
-	// Not implemented in this port
-	return 0;
+    // Not implemented in this port
+    return 0;
 }
 
 //---------------------------------------------------------------------------
 uint32_t KernelTimer::SubtractExpiry(uint32_t u32Interval_)
 {
-	return 0;
+    return 0;
 }
 
 //---------------------------------------------------------------------------
 uint32_t KernelTimer::TimeToExpiry(void)
 {
-	return 0;
+    return 0;
 }
 
 //---------------------------------------------------------------------------
@@ -72,8 +72,8 @@ uint32_t KernelTimer::GetOvertime(void)
 
 //---------------------------------------------------------------------------
 uint32_t KernelTimer::SetExpiry(uint32_t u32Interval_)
-{	
-	return 0;
+{    
+    return 0;
 }
 
 //---------------------------------------------------------------------------
@@ -84,12 +84,12 @@ void KernelTimer::ClearExpiry(void)
 //-------------------------------------------------------------------------
 uint8_t KernelTimer::DI(void)
 {
-	return 0;
+    return 0;
 }
 
 //---------------------------------------------------------------------------
 void KernelTimer::EI(void)
-{	
+{    
     KernelTimer::RI(0);
 }
 

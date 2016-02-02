@@ -25,39 +25,39 @@ See license.txt for more information
 //---------------------------------------------------------------------------
 void KernelTimer::Config(void)
 {
-	   
+       
 }
 
 //---------------------------------------------------------------------------
 void KernelTimer::Start(void)
-{	
-	SysTick_Config(SYSTEM_FREQ / 1000); // 1KHz fixed clock...
-	NVIC_EnableIRQ(SysTick_IRQn);
+{    
+    SysTick_Config(SYSTEM_FREQ / 1000); // 1KHz fixed clock...
+    NVIC_EnableIRQ(SysTick_IRQn);
 }
 
 //---------------------------------------------------------------------------
 void KernelTimer::Stop(void)
 {
-	SysTick->CTRL &= ~SysTick_CTRL_ENABLE_Msk;
+    SysTick->CTRL &= ~SysTick_CTRL_ENABLE_Msk;
 }
 
 //---------------------------------------------------------------------------
 uint16_t KernelTimer::Read(void)
 {
-	// Not implemented in this port
-	return 0;
+    // Not implemented in this port
+    return 0;
 }
 
 //---------------------------------------------------------------------------
 uint32_t KernelTimer::SubtractExpiry(uint32_t u32Interval_)
 {
-	return 0;
+    return 0;
 }
 
 //---------------------------------------------------------------------------
 uint32_t KernelTimer::TimeToExpiry(void)
 {
-	return 0;
+    return 0;
 }
 
 //---------------------------------------------------------------------------
@@ -68,8 +68,8 @@ uint32_t KernelTimer::GetOvertime(void)
 
 //---------------------------------------------------------------------------
 uint32_t KernelTimer::SetExpiry(uint32_t u32Interval_)
-{	
-	return 0;
+{    
+    return 0;
 }
 
 //---------------------------------------------------------------------------
@@ -80,12 +80,12 @@ void KernelTimer::ClearExpiry(void)
 //-------------------------------------------------------------------------
 uint8_t KernelTimer::DI(void)
 {
-	return 0;
+    return 0;
 }
 
 //---------------------------------------------------------------------------
 void KernelTimer::EI(void)
-{	
+{    
     KernelTimer::RI(0);
 }
 

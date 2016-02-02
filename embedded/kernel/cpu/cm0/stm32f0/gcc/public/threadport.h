@@ -43,21 +43,21 @@ extern volatile uint32_t g_ulCriticalCount;
 
 //------------------------------------------------------------------------
 #ifndef xDMB
-    #define xDMB()					ASM(" dmb \n");
+    #define xDMB()                    ASM(" dmb \n");
 #endif
 #ifndef xdisable_irq
-    #define xdisable_irq()			ASM(" cpsid i \n");
+    #define xdisable_irq()            ASM(" cpsid i \n");
 #endif
 #ifndef xenable_irq
-    #define xenable_irq()			ASM(" cpsie i \n");
+    #define xenable_irq()            ASM(" cpsie i \n");
 #endif
 
-#define ENABLE_INTS()		{ xDMB(); xenable_irq(); }
-#define DISABLE_INTS()		{ xdisable_irq(); xDMB(); }
+#define ENABLE_INTS()        { xDMB(); xenable_irq(); }
+#define DISABLE_INTS()        { xdisable_irq(); xDMB(); }
 
 //------------------------------------------------------------------------
 //! Enter critical section (copy current PRIMASK register value, disable interrupts)
-#define CS_ENTER()	\
+#define CS_ENTER()    \
 { \
     DISABLE_INTS(); \
     g_ulCriticalCount++;\
