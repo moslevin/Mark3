@@ -149,6 +149,11 @@ void ThreadPort::StartThreads()
     KernelTimer::Start();            // enable the kernel timer
     KernelSWI::Start();              // enable the task switch SWI
 
+#if KERNEL_USE_QUANTUM
+    Quantum::RemoveThread();
+    Quantum::AddThread(g_pclCurrent);
+#endif
+
     SCB->CPACR |= 0x00F00000;        // Enable floating-point
 
     FPU->FPCCR |= (FPU_FPCCR_ASPEN_Msk | FPU_FPCCR_LSPEN_Msk); // Enable lazy-stacking

@@ -127,11 +127,13 @@ void Thread::Start(void)
     m_eState = THREAD_STATE_READY;
 
 #if KERNEL_USE_QUANTUM
-    if (GetCurPriority() >= Scheduler::GetCurrentThread()->GetCurPriority())
-    {
-        // Deal with the thread Quantum
-        Quantum::RemoveThread();
-        Quantum::AddThread(this);
+    if (Kernel::IsStarted()) {
+        if (GetCurPriority() >= Scheduler::GetCurrentThread()->GetCurPriority())
+        {
+            // Deal with the thread Quantum
+            Quantum::RemoveThread();
+            Quantum::AddThread(this);
+        }
     }
 #endif
 

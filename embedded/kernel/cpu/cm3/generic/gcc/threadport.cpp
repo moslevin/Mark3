@@ -148,6 +148,15 @@ void ThreadPort::StartThreads()
     KernelTimer::Start();            // enable the kernel timer
     KernelSWI::Start();              // enable the task switch SWI
 
+#if KERNEL_USE_QUANTUM
+    // Restart the thread quantum timer, as any value held prior to starting
+    // the kernel will be invalid.  This fixes a bug where multiple threads
+    // started with the highest priority before starting the kernel causes problems
+    // until the running thread voluntarily blocks.
+    Quantum::RemoveThread();
+    Quantum::AddThread(g_pclCurrent);
+#endif
+
     ThreadPort_StartFirstThread();     // Jump to the first thread (does not return)
 }
 
