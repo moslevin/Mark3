@@ -20,11 +20,15 @@ See license.txt for more information
 
 #include "kerneltypes.h"
 #include "mark3cfg.h"
+
 #ifndef __KERNELTIMER_H_
 #define __KERNELTIMER_H_
 
 //---------------------------------------------------------------------------
-#define SYSTEM_FREQ        ((uint32_t) 1200000)
+#if !defined(SYSTEM_FREQ)
+# define SYSTEM_FREQ        ((uint32_t) 1200000)
+#endif
+
 #if !KERNEL_TIMERS_TICKLESS
   #define TIMER_FREQ         ((uint32_t)(SYSTEM_FREQ / 100)) // Timer ticks per second...
 #else

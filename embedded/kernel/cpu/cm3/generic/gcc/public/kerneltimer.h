@@ -13,14 +13,21 @@ See license.txt for more information
 =========================================================================== */
 /*!
 
-    \file   kerneltimer.h    
+    \file   kerneltimer.h
 
     \brief  Kernel Timer Class declaration
  */
 
 #include "kerneltypes.h"
+#include "mark3cfg.h"
+
 #ifndef __KERNELTIMER_H_
 #define __KERNELTIMER_H_
+
+//---------------------------------------------------------------------------
+#if KERNEL_TIMERS_TICKLESS
+# error "Tickless timers are not supported on this port"
+#endif
 
 //---------------------------------------------------------------------------
 extern "C" uint32_t SystemCoreClock;

@@ -31,7 +31,7 @@ void KernelTimer::Config(void)
 //---------------------------------------------------------------------------
 void KernelTimer::Start(void)
 {    
-    SysTick_Config(SYSTEM_FREQ / 1000); // 1KHz fixed clock...
+    SysTick_Config(TIMER_FREQ); // 1KHz fixed clock...
     NVIC_EnableIRQ(SysTick_IRQn);
 }
 

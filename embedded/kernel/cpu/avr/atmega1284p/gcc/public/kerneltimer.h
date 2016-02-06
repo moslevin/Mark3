@@ -13,19 +13,27 @@ See license.txt for more information
 =========================================================================== */
 /*!
 
-    \file   kerneltimer.h    
+    \file   kerneltimer.h
 
     \brief  Kernel Timer Class declaration
  */
 
 #include "kerneltypes.h"
+#include "mark3cfg.h"
 
 #ifndef __KERNELTIMER_H_
 #define __KERNELTIMER_H_
 
 //---------------------------------------------------------------------------
-#define SYSTEM_FREQ        ((uint32_t)16000000)
-#define TIMER_FREQ        ((uint32_t)(SYSTEM_FREQ / 256)) // Timer ticks per second...
+#if !defined(SYSTEM_FREQ)
+# define SYSTEM_FREQ       ((uint32_t)16000000)
+#endif
+
+#if KERNEL_TIMERS_TICKLESS
+# define TIMER_FREQ        ((uint32_t)(SYSTEM_FREQ / 256))
+#else
+# define TIMER_FREQ        ((uint32_t)(SYSTEM_FREQ / 1000))
+#endif
 
 //---------------------------------------------------------------------------
 /*!
