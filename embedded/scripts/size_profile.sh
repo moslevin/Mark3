@@ -220,6 +220,11 @@ for LINE in ${MARK3_DATA}; do
             MODNAME="Mailbox IPC Support............................."
             PORT_SIZE=$(( SYNCOBJ_SIZE+${DEC} ))
             ;;
+        "priomap.cpp.o")
+            #Ruler:  ----5---10----5---20----5---30----5---40----5---50----5---60"
+            MODNAME="2D Priority Map Object - Scheduler.............."
+            KERNEL_SIZE=$(( KERNEL_SIZE+${DEC} ))
+            ;;
         "profile.cpp.o")
             #Ruler:  ----5---10----5---20----5---30----5---40----5---50----5---60"
             MODNAME="Performance-profiling timers...................."

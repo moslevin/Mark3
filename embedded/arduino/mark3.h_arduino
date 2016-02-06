@@ -47,5 +47,6 @@ See license.txt for more information
 
 #include "./inc/profile.h"
 #include "./inc/autoalloc.h"
+#include "./inc/priomap.h"
 
 #endif

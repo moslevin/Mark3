@@ -3,7 +3,7 @@
 # Utility script to export the kernel for various platforms.
 
 ### Supported targets for export
-TARGET_LIST="atmega328p atmega644 atmega1280 atmega1284p atxmega256a3 arduino samd20 stm32f0 cortex_m0 msp430f2274"
+TARGET_LIST="atmega328p atmega644 atmega1280 atmega2560 atmega1284p atxmega256a3 arduino arduino2560 samd20 stm32f0 cortex_m0 cortex_m3 cortex_m4f msp430f2274"
 TARGET=""
 ARCH=""
 VARIANT=""
@@ -51,13 +51,21 @@ fi
 
 ### Select architecture variable based on target
 case ${TARGET} in
-	"atmega"* | "atxmega"* | "arduino")
+	"atmega"* | "atxmega"* | "arduino"* )
 		echo "[ Target is an Atmel AVR part ]"	
 		ARCH="avr"
 		;;
 	"samd20" | "stm32f0" | "cortex_m0")
 		echo "[ Target is an ARM Cortex M0 part ]"
 		ARCH="cm0"
+		;;
+	"cortex_m3" )
+		echo "[ Target is an ARM Cortex M3 part ]"
+		ARCH="cm3"
+		;;
+	"cortex_m4f" )
+		echo "[ Target is an ARM Cortex M4F part ]"
+		ARCH="cm4f"
 		;;
 	"msp430f2274")
 		echo "[ Target is a TI MSP430 part ]"
@@ -74,6 +82,7 @@ case ${TARGET} in
 	"atmega328p" | \
 	"atmega644" | \
 	"atmega1280" | \
+	"atmega2560" | \
 	"atmega1284p" | \
 	"atxmega256a3" | \
 	"msp430f2274" | \
@@ -86,9 +95,21 @@ case ${TARGET} in
 		### Arduino is a repackaged atmega328p, with some extra shtuff ###
 		VARIANT="atmega328p"
 		;;
+	"arduino2560")
+		### Arduino is a repackaged atmega2560, with some extra shtuff ###
+		VARIANT="atmega2560"
+		;;
 	"cortex_m0")
 		### Generic cortex_m0 is just the stm32f0 port ###
 		VARIANT="stm32f0"
+		;;
+	"cortex_m3")
+		### Generic cortex_m3 is its own port ###
+		VARIANT="generic"
+		;;
+	"cortex_m4f")
+		### Generic cortex_m4f is its own port ###
+		VARIANT="generic"
 		;;
 	*)
 		echo "Error selecting target variant, bailing"
@@ -123,7 +144,7 @@ cp -f ./kernel/cpu/${ARCH}/${VARIANT}/${TOOLCHAIN}/public/*.h ${TARGET_DIR}/Mark
 
 ### Target-specific bits... ###
 case ${TARGET} in
-	"arduino" )
+	"arduino"* )
 		mkdir ${TARGET_DIR}/Mark3/inc
 		mv ${TARGET_DIR}/Mark3/*.h ${TARGET_DIR}/Mark3/inc
 		cp -f ./arduino/mark3cfg.h_arduino ${TARGET_DIR}/Mark3/inc/mark3cfg.h
@@ -150,7 +171,7 @@ IS_LATEX_INSTALLED=$(which pdflatex)
 IS_DOXYGEN_INSTALLED=$(which doxygen)
 
 USE_DOXYGEN=0
-if [ "" != "${IS_LATEX_INSTALLED}" ]; then
+if [ "" != "${IS_DOXYGEN_INSTALLED}" ]; then
 	USE_DOXYGEN=1
 	echo "[ Doxygen found... will generate docs ]"
 else
@@ -158,7 +179,7 @@ else
 fi
 
 USE_LATEX=0
-if [ "" != "${IS_DOXYGEN_INSTALLED}" ]; then
+if [ "" != "${IS_LATEX_INSTALLED}" ]; then
 	USE_LATEX=1
 	echo "[ Pdflatex found... will generate PDF from doxygen output ]"
 else

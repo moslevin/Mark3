@@ -10,20 +10,18 @@ echo "ROOT=${ROOT_DIR}"
 export ROOT_DIR=${ROOT_DIR}
 
 # Clean out development stage
-rm ./stage/inc/*
-rm ./stage/app/*
-rm ./stage/lib/*
-rm ./stage/drv/*
-rm ./stage/src/*
-rm ./stage/sa/*
+rm -rf ./stage/inc/*
+rm -rf ./stage/app/*
+rm -rf ./stage/lib/*
+rm -rf ./stage/drv/*
+rm -rf ./stage/src/*
+rm -rf ./stage/sa/*
 
 # Purge object files for all components
-make clean -j 4
+make clean
 
 # Build working set of headers, libraries, and applications (will not stop on errors!)
-make headers -j 4
-make library -j 4
-make binary -j 4
-
-
+make headers
+make library -j4
+make binary
 
