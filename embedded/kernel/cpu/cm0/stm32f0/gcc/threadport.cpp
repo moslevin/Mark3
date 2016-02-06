@@ -29,6 +29,11 @@ See license.txt for more information
 #include "quantum.h"
 
 //---------------------------------------------------------------------------
+#if KERNEL_USE_IDLE_FUNC
+# error "KERNEL_USE_IDLE_FUNC not supported in this port"
+#endif
+
+//---------------------------------------------------------------------------
 static void ThreadPort_StartFirstThread( void ) __attribute__ (( naked ));
 
 extern "C" {
