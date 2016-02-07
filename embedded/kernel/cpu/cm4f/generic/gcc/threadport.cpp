@@ -28,6 +28,8 @@ See license.txt for more information
 #include "timerlist.h"
 #include "quantum.h"
 
+#include "m3_core_cm4.h"
+
 //---------------------------------------------------------------------------
 #if KERNEL_USE_IDLE_FUNC
 # error "KERNEL_USE_IDLE_FUNC not supported in this port"

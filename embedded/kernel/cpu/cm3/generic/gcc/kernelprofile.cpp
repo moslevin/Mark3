@@ -23,6 +23,7 @@ See license.txt for more information
 #include "kernelprofile.h"
 #include "threadport.h"
 
+#include "m3_core_cm3.h"
 
 #if KERNEL_USE_PROFILER
 uint32_t Profiler::m_u32Epoch;

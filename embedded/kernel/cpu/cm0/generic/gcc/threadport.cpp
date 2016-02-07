@@ -27,6 +27,7 @@ See license.txt for more information
 #include "kerneltimer.h"
 #include "timerlist.h"
 #include "quantum.h"
+#include "m3_core_cm0.h"
 
 //---------------------------------------------------------------------------
 #if KERNEL_USE_IDLE_FUNC

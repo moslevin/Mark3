@@ -3,7 +3,7 @@
 # Utility script to export the kernel for various platforms.
 
 ### Supported targets for export
-TARGET_LIST="atmega328p atmega644 atmega1280 atmega2560 atmega1284p atxmega256a3 arduino arduino2560 samd20 stm32f0 cortex_m0 cortex_m3 cortex_m4f msp430f2274"
+TARGET_LIST="atmega328p atmega644 atmega1280 atmega2560 atmega1284p atxmega256a3 arduino arduino2560 samd20 cortex_m0 cortex_m3 cortex_m4f msp430f2274"
 TARGET=""
 ARCH=""
 VARIANT=""
@@ -55,7 +55,7 @@ case ${TARGET} in
 		echo "[ Target is an Atmel AVR part ]"	
 		ARCH="avr"
 		;;
-	"samd20" | "stm32f0" | "cortex_m0")
+	"samd20" | "cortex_m0")
 		echo "[ Target is an ARM Cortex M0 part ]"
 		ARCH="cm0"
 		;;
@@ -86,8 +86,7 @@ case ${TARGET} in
 	"atmega1284p" | \
 	"atxmega256a3" | \
 	"msp430f2274" | \
-	"samd20" | \
-	"stm32f0" )
+	"samd20" )
 		### Target names match variant names ###
 		VARIANT=${TARGET}
 		;;
@@ -101,7 +100,7 @@ case ${TARGET} in
 		;;
 	"cortex_m0")
 		### Generic cortex_m0 is just the stm32f0 port ###
-		VARIANT="stm32f0"
+		VARIANT="generic"
 		;;
 	"cortex_m3")
 		### Generic cortex_m3 is its own port ###
@@ -189,6 +188,9 @@ fi
 if [ ${USE_DOXYGEN} -eq 1 ]; then
 	mkdir ${TARGET_DIR}/Mark3/Docs
 	cp ./docs/doxyfile_export ${TARGET_DIR}/Mark3/
+
+	mkdir ${TARGET_DIR}/Mark3/Docs/graphics
+	cp ./docs/graphics/*.png ${TARGET_DIR}/Mark3/Docs/graphics/
 
 	cd ${TARGET_DIR}/Mark3
 	echo "[ Generating doxygen docs ]"

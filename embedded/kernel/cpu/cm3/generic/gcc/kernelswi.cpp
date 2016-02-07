@@ -22,13 +22,14 @@ See license.txt for more information
 #include "kerneltypes.h"
 #include "kernelswi.h"
 
-#include "stm32f429xx.h"
+#include "m3_core_cm3.h"
+
 //---------------------------------------------------------------------------
 void KernelSWI::Config(void)
 {
     uint8_t u8MinPriority = (uint8_t)((1 << __NVIC_PRIO_BITS) - 1);
-    NVIC_SetPriority(SVCall_IRQn, u8MinPriority);
-    NVIC_SetPriority(PendSV_IRQn, u8MinPriority);
+    M3_NVIC_SetPriority(M3_SVC_IRQn, u8MinPriority);
+    M3_NVIC_SetPriority(M3_PENDSV_IRQn, u8MinPriority);
     Clear();
 }
 

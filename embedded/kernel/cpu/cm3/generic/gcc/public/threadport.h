@@ -23,7 +23,6 @@ See license.txt for more information
 
 #include "kerneltypes.h"
 #include "thread.h"
-#include "stm32f429xx.h"
 
 //---------------------------------------------------------------------------
 //! ASM Macro - simplify the use of ASM directive in C

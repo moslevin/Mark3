@@ -70,7 +70,7 @@ See license.txt for more information
     particular timer variant desired.
 */
 #if KERNEL_USE_TIMERS
-    #define KERNEL_TIMERS_TICKLESS       (1)
+    #define KERNEL_TIMERS_TICKLESS       (0)
 #endif
 
 /*!
@@ -271,7 +271,7 @@ See license.txt for more information
     slight overhead to the context switch and scheduler, as a special case
     has to be taken into account.
 */
-#define KERNEL_USE_IDLE_FUNC             (1)
+#define KERNEL_USE_IDLE_FUNC             (0)
 
 /*!
     This feature enables an additional set of APIs that allow for objects

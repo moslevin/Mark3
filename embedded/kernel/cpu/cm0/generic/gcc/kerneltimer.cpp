@@ -21,6 +21,7 @@ See license.txt for more information
 #include "kerneltypes.h"
 #include "kerneltimer.h"
 #include "threadport.h"
+#include "m3_core_cm0.h"
 
 //---------------------------------------------------------------------------
 void KernelTimer::Config(void)
@@ -31,8 +32,8 @@ void KernelTimer::Config(void)
 //---------------------------------------------------------------------------
 void KernelTimer::Start(void)
 {    
-    SysTick_Config(TIMER_FREQ); // 1KHz fixed clock...
-    NVIC_EnableIRQ(SysTick_IRQn);
+    M3_SysTick_Config(TIMER_FREQ); // 1KHz fixed clock...
+    M3_NVIC_EnableIRQ(M3_SYSTICK_IRQn);
 }
 
 //---------------------------------------------------------------------------

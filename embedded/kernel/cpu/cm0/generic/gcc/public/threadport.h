@@ -24,8 +24,6 @@ See license.txt for more information
 #include "kerneltypes.h"
 #include "thread.h"
 
-#warning "ToDo:  Hey You!! Include your part-specific include-file here!"
-
 //---------------------------------------------------------------------------
 //! ASM Macro - simplify the use of ASM directive in C
 #define ASM      asm volatile
