@@ -57,10 +57,10 @@ int main(void)
     Kernel::Init();
 
     // Initialize the threads used in this example
-    clApp1Thread.Init(  awApp1Stack,  APP_STACK_SIZE,  1, App1Main,  0);
+    clApp1Thread.Init(  awApp1Stack,  sizeof(awApp1Stack),  1, App1Main,  0);
     clApp1Thread.Start();
 
-    clApp2Thread.Init(  awApp2Stack,  APP_STACK_SIZE,  2, App2Main,  0);
+    clApp2Thread.Init(  awApp2Stack,  sizeof(awApp2Stack),  2, App2Main,  0);
     clApp2Thread.Start();
 
     // Initialize the mailbox used in this example

@@ -61,8 +61,8 @@ int main(void)
     // As a result, the CPU will automatically swap between these threads
     // at runtime to ensure that each get a chance to execute.
 
-    clApp1Thread.Init(  awApp1Stack,  APP1_STACK_SIZE,  1, App1Main,  0);
-    clApp2Thread.Init(  awApp2Stack,  APP2_STACK_SIZE,  1, App2Main,  0);
+    clApp1Thread.Init(  awApp1Stack,  sizeof(awApp1Stack),  1, App1Main,  0);
+    clApp2Thread.Init(  awApp2Stack,  sizeof(awApp2Stack),  1, App2Main,  0);
 
     // Set the threads up so that Thread 1 can get 4ms of CPU time uninterrupted,
     // but Thread 2 can get 8ms of CPU time uninterrupted.  This means that

@@ -390,9 +390,25 @@ See license.txt for more information
 
     \section BUILDKERNEL Building the kernel
 
+	There are 3 main components of the recursive makefile system used to build
+	Mark3 and its associated middleware libraries and examples.  The components
+	are the files "base.mak", "platform.mak", and "build.mak"
+
     The base.mak file determines how the kernel, drivers, and libraries are
-    built, for what targets, and with what options.  Most of these options can
-    be copied directly from the options found in your IDE managed projects.
+    built, for what targets, and with what options.  These options are set as 
+	variables that are included in a "platform.mak" file for your target, 
+	located under the /builds directory.  "platform.mak" is included for all
+	build steps, and is the place where all chip/board-specific toolchain
+	configuration takes place.
+
+    Build.mak contains the base logic which is used to perform a recursive make
+    in all project directories. Unless you really know what you're doing, it's best
+    to leave this as-is.
+
+	Beyond the essential makefiles, the build system uses a series of environment
+	variables to configure a recursive make-based build system appropriately for
+	a given target part and	toolchain.
+
     Below is an overview of the main variables used to configure the build.
 
     \verbatim
@@ -403,13 +419,26 @@ See license.txt for more information
     TOOLCHAIN	- Which toolchain to build with (dependent on ARCH and VARIANT)
     \endverbatim
 
-    Build.mak contains the logic which is used to perform the recursive make
-    in all directories. Unless you really know what you're doing, it's best
-    to leave this as-is.
+    You must make sure that all required toolchain paths are set in your system
+    environment variables so that they are accessible directly through from the
+    command-line
 
-    You must make sure that all required paths are set in your system
-    environment variables so that they are accessible through from the
-    command-line.
+	Once a sane environment has been created, the kernel, libraries, 
+	examples and tests can be built by running ./scripts/build.sh from the root
+	directory.  By default, Mark3 builds for the atmega328p target, but the target
+	can be selected by manually configuring the above environment variables, or by
+	running the included ./scripts/set_target.sh script as follows:
+
+	\verbatim	
+	. ./scripts/set_target.sh <architecture> <variant> <toolchain>
+	\endverbatim
+
+	Where: 
+	\verbatim
+	 <architecture> is the target CPU architecture(i.e. avr, msp430, cm0, cm3, cm4f)
+	 <variant>		is the part name (i.e. atmega328p, msp430f2274, generic)
+	 <toolchain>	is the build toolchain (i.e. gcc)
+	\endverbatim
 
     Once configured, you can build the source tree using the various make targets:
 
@@ -465,7 +494,7 @@ See license.txt for more information
 
     Once you've placed your code files in the right place, and configured
     the makefile appropriately, call the following sequence to guarantee
-    that your code will be built.
+    that your code will be built.  
 
     \verbatim
     > make headers
@@ -473,11 +502,20 @@ See license.txt for more information
     > make binary
     \endverbatim
 
+	Note that library or app-specific environment variables can be set (or modified
+	from the defaults) from within the body of the makefile.  For example,
+	the CFLAGS, CPPFLAGS, and LFLAGS variables can be used to supply additional chip-
+	specific toolchain flags.  The flags can be used to allow a user to reference
+	chip-specific startup code, headers, middleware, or linker scripts that aren't
+	part of the standard Mark3 distribution.
+
     \section WINBUILD Building on Windows
 
     Building Mark3 on Windows is the same as on Linux, but there are a few
     prerequisites that need to be taken into consideration before the
     build scripts and makefiles will work as expected.
+
+	Below is an example of setting up the AVR toolchain on Windows:
 
     <b>Step 1 - Install Latest Atmel Studio IDE</b>
 

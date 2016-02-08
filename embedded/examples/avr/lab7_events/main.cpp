@@ -63,8 +63,8 @@ int main(void)
     // See the annotations in previous labs for details on init.
     Kernel::Init();
 
-    clApp1Thread.Init(  awApp1Stack,  APP1_STACK_SIZE,  1, App1Main,  0);
-    clApp2Thread.Init(  awApp2Stack,  APP2_STACK_SIZE,  1, App2Main,  0);
+    clApp1Thread.Init(  awApp1Stack,  sizeof(awApp1Stack),  1, App1Main,  0);
+    clApp2Thread.Init(  awApp2Stack,  sizeof(awApp2Stack),  1, App2Main,  0);
 
     clApp1Thread.Start();
     clApp2Thread.Start();

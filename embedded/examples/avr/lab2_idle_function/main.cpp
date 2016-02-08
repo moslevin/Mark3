@@ -69,7 +69,7 @@ int main(void)
     // level 0 is still reserved for idle functionality.  Application threads
     // should never be scheduled at priority level 0 when the idle function is
     // used instead of an idle thread.
-    clAppThread.Init(  awAppStack,  APP_STACK_SIZE,  1, AppMain,  0);
+    clAppThread.Init(  awAppStack,  sizeof(awAppStack),  1, AppMain,  0);
     clAppThread.Start();
 
     // This function is used to install our specified idle function to be called

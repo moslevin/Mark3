@@ -54,7 +54,7 @@ int main(void)
     // See the annotations in previous labs for details on init.
     Kernel::Init();
 
-    clApp1Thread.Init(  awApp1Stack,  APP1_STACK_SIZE,  1, App1Main,  0);
+    clApp1Thread.Init(  awApp1Stack,  sizeof(awApp1Stack),  1, App1Main,  0);
     clApp1Thread.Start();
 
     Kernel::Start();
@@ -107,7 +107,7 @@ void App1Main(void *unused_)
     {
         // Example 1 - create a worker thread at our current priority in order to
         // parallelize some work.
-        clMyThread.Init( awApp2Stack, APP2_STACK_SIZE, 1, WorkerMain1, (void*)&clMySem );
+        clMyThread.Init( awApp2Stack, sizeof(awApp2Stack), 1, WorkerMain1, (void*)&clMySem );
         clMyThread.Start();
 
         // Do some work of our own in parallel, while the other thread works on its project.
@@ -128,7 +128,7 @@ void App1Main(void *unused_)
 
         // Spin the thread up again to do something else in parallel.  This time, the thread
         // will run completely asynchronously to this thread.
-        clMyThread.Init( awApp2Stack, APP2_STACK_SIZE, 1, WorkerMain2, 0 );
+        clMyThread.Init( awApp2Stack, sizeof(awApp2Stack), 1, WorkerMain2, 0 );
         clMyThread.Start();
 
         u32Count = 0;

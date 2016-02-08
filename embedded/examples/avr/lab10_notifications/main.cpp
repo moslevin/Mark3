@@ -51,10 +51,10 @@ int main(void)
     Kernel::Init();
 
     // Initialize notifer and notify-ee threads
-    clApp1Thread.Init(  awApp1Stack,  APP_STACK_SIZE,  1, App1Main,  0);
+    clApp1Thread.Init(  awApp1Stack,  sizeof(awApp1Stack),  1, App1Main,  0);
     clApp1Thread.Start();
 
-    clApp2Thread.Init(  awApp2Stack,  APP_STACK_SIZE,  1, App2Main,  0);
+    clApp2Thread.Init(  awApp2Stack,  sizeof(awApp2Stack),  1, App2Main,  0);
     clApp2Thread.Start();
 
     // Initialize the Notify objects

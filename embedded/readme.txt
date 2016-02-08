@@ -22,9 +22,9 @@ stage		Directory where binaries/headers are published at build
 tests		Unit testing framework
 util			Utility programs
 
-Building the source
+Building from source
 
-To build the source, the Mark3 build system requires the following:
+To build from source, the Mark3 build system requires the following:
 
 	avr-gcc toolchain
 	make support
@@ -35,7 +35,19 @@ On debian-based distributions, such as Ubuntu, the avr toolchain can be installe
 
 On Windows, the toolchain is provided as part of AVRStudio.  Please see the “Build System” section of the docs for instructions on configuring the system on Windows.
 
-Once a sane build environment has been created, the kernel, libraries, examples and tests can be built by running ./scripts/build.sh from the root directory.  By default, Mark3 builds for the atmega328p target, although other supported targets can be configured through environment variables.  See the base.mak makefile, and “Building the Kernel” in the docs for more information on configuring these variables.
+Once a sane build environment has been created, the kernel, libraries, examples and tests can be built by running ./scripts/build.sh from the root directory.  By default, Mark3 builds for the atmega328p target, but the target can be selected by manually configuring environment variables, or by running the ./scripts/set_target.sh script as follows:
+
+	. ./scripts/set_target.sh <architecture> <variant> <toolchain>
+
+	Where: 
+	 <architecture> is the target CPU architecture(i.e. avr, msp430, cm0, cm3, cm4f)
+	 <variant>		is the part name (i.e. atmega328p, msp430f2274, generic)
+	 <toolchain>	is the build toolchain (i.e. gcc)
+
+For example, to build the kernel for a generic ARM Cortex-M0 using a pre-configured arm-none-eabi-gcc toolchain, one would run the following commands:
+
+	. ./scripts/set_target.sh cm0 generic gcc
+	./scripts/build.sh
 
 Supported targets
 
@@ -45,9 +57,14 @@ Currently, Mark3 supports the following parts:
 	atmega644
 	atmega1284p
 	atxmega256a3 (*experimental)
+	atmega1280
+	atmega2560
 	msp430f2274
+	ARM Cortex-M0 (generic)
+	ARM Cortex-M3 (generic)
+	ARM Cortex-M4 (generic, floating point)
 	samd20 (cortex M0)
-	stm32f0 (cortex M0)
+	
 
 Additional Documentation
 
