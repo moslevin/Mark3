@@ -26,6 +26,10 @@ Takeaway:
   between threads.
 
 ===========================================================================*/
+#if !KERNEL_USE_IDLE_FUNC
+# error "This demo requires KERNEL_USE_IDLE_FUNC"
+#endif
+
 extern "C" {
 void __cxa_pure_virtual(void) { }
 }

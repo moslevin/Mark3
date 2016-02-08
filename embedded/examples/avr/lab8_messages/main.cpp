@@ -35,6 +35,10 @@ can write to/block on a single message queue, which give this method of
 IPC even more flexibility.
 
 ===========================================================================*/
+#if !KERNEL_USE_IDLE_FUNC
+# error "This demo requires KERNEL_USE_IDLE_FUNC"
+#endif
+
 extern "C" {
 void __cxa_pure_virtual(void) { }
 }

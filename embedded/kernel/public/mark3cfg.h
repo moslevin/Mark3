@@ -271,7 +271,11 @@ See license.txt for more information
     slight overhead to the context switch and scheduler, as a special case
     has to be taken into account.
 */
-#define KERNEL_USE_IDLE_FUNC             (0)
+#if !defined(ARM)
+    #define KERNEL_USE_IDLE_FUNC         (1) // Supported everywhere but ARM
+#else
+    #define KERNEL_USE_IDLE_FUNC         (0) // Not currently supported on ARM
+#endif
 
 /*!
     This feature enables an additional set of APIs that allow for objects

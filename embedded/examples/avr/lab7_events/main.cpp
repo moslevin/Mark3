@@ -31,6 +31,10 @@ This provides an efficient, robust way for threads to process asynchronous
 system events that occur with a unified interface.
 
 ===========================================================================*/
+#if !KERNEL_USE_IDLE_FUNC
+# error "This demo requires KERNEL_USE_IDLE_FUNC"
+#endif
+
 extern "C" {
 void __cxa_pure_virtual(void) { }
 }

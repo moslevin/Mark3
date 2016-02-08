@@ -39,6 +39,10 @@ memory footprint for the application, as you can avoid having to declare
 a thread object and stack for Idle functionality.
 
 ===========================================================================*/
+#if !KERNEL_USE_IDLE_FUNC
+# error "This demo requires KERNEL_USE_IDLE_FUNC"
+#endif
+
 extern "C" {
 void __cxa_pure_virtual(void) { }
 }

@@ -33,6 +33,10 @@ Semaphores can be used to control which threads execute at which time.  This
 allows threads to work cooperatively to achieve a goal in the system.
 
 ===========================================================================*/
+#if !KERNEL_USE_IDLE_FUNC
+# error "This demo requires KERNEL_USE_IDLE_FUNC"
+#endif
+
 extern "C" {
 void __cxa_pure_virtual(void) { }
 }
