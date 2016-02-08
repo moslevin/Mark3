@@ -26,9 +26,9 @@ static volatile uint8_t u8TestVal;
 static Mutex clMutex;
 
 //---------------------------------------------------------------------------
-#define TEST_STACK1_SIZE            (240)
-#define TEST_STACK2_SIZE            (240)
-#define TEST_STACK3_SIZE            (240)
+#define TEST_STACK1_SIZE            (220)
+#define TEST_STACK2_SIZE            (220)
+#define TEST_STACK3_SIZE            (220)
 
 static MessageQueue clMsgQ1;
 static MessageQueue clMsgQ2;
@@ -621,6 +621,7 @@ TEST(ut_sanity_timer)
     u8TestVal = 0;
 
     clTimer.Init();
+	//! Callback should fire just once in 3ms.
     clTimer.Start(1, 2, TimerTestCallback, NULL);
     
     Thread::Sleep(3);
@@ -629,9 +630,11 @@ TEST(ut_sanity_timer)
     u8TestVal = 0;
     clTimer.Stop();
 
-    clTimer.Start(1, 1, TimerTestCallback, NULL);
+	//! Callback will fire every 10ms (use a higher resolution, since a tick-based timer will have a 
+	//! fairly high jitter for low-count timers).  Not a problem with tickless-mode, however.
+    clTimer.Start(1, 10, TimerTestCallback, NULL);
     
-    Thread::Sleep(10);
+    Thread::Sleep(100);
     
     EXPECT_GTE(u8TestVal, 9);
 
