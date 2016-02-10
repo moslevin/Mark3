@@ -18,9 +18,11 @@ See license.txt for more information
 */
 
 #include "mark3cfg.h"
+#include "mark3.h"
 #include "autoalloc.h"
 #include "threadport.h"
 #include "kernel.h"
+
 
 #if KERNEL_USE_AUTO_ALLOC
 
@@ -58,5 +60,119 @@ void *AutoAlloc::Allocate( uint16_t u16Size_ )
 
     return pvRet;
 }
+
+#if KERNEL_USE_SEMAPHORE
+//---------------------------------------------------------------------------
+Semaphore *AutoAlloc::NewSemaphore(void)
+{
+    void *pvObj = Allocate(sizeof(Semaphore));
+    if (pvObj)
+    {
+        return new(pvObj) Semaphore();
+    }
+    return 0;
+}
+#endif
+
+
+#if KERNEL_USE_MUTEX
+//---------------------------------------------------------------------------
+Mutex *AutoAlloc::NewMutex(void)
+{
+    void *pvObj = Allocate(sizeof(Mutex));
+    if (pvObj)
+    {
+        return new(pvObj) Mutex();
+    }
+    return 0;
+}
+#endif
+
+#if KERNEL_USE_EVENTFLAG
+//---------------------------------------------------------------------------
+EventFlag *AutoAlloc::NewEventFlag(void)
+{
+    void *pvObj = Allocate(sizeof(EventFlag));
+    if (pvObj)
+    {
+        return new(pvObj) EventFlag();
+    }
+    return 0;
+}
+#endif
+
+#if KERNEL_USE_MESSAGE
+//---------------------------------------------------------------------------
+Message *AutoAlloc::NewMessage(void)
+{
+    void *pvObj = Allocate(sizeof(Message));
+    if (pvObj)
+    {
+        return new(pvObj) Message();
+    }
+    return 0;
+}
+//---------------------------------------------------------------------------
+MessageQueue *AutoAlloc::NewMessageQueue(void)
+{
+    void *pvObj = Allocate(sizeof(MessageQueue));
+    if (pvObj)
+    {
+        return new(pvObj) MessageQueue();
+    }
+    return 0;
+}
+
+#endif
+
+#if KERNEL_USE_NOTIFY
+//---------------------------------------------------------------------------
+Notify *AutoAlloc::NewNotify(void)
+{
+    void *pvObj = Allocate(sizeof(Notify));
+    if (pvObj)
+    {
+        return new(pvObj) Notify();
+    }
+    return 0;
+}
+#endif
+
+#if KERNEL_USE_MAILBOX
+//---------------------------------------------------------------------------
+Mailbox *AutoAlloc::NewMailbox(void)
+{
+    void *pvObj = Allocate(sizeof(Mailbox));
+    if (pvObj)
+    {
+        return new(pvObj) Mailbox();
+    }
+    return 0;
+}
+#endif
+
+//---------------------------------------------------------------------------
+Thread *AutoAlloc::NewThread(void)
+{
+    void *pvObj = Allocate(sizeof(Thread));
+    if (pvObj)
+    {
+        return new(pvObj) Thread();
+    }
+    return 0;
+}
+
+#if KERNEL_USE_TIMERS
+//---------------------------------------------------------------------------
+Timer *AutoAlloc::NewTimer(void)
+{
+    void *pvObj = Allocate(sizeof(Timer));
+    if (pvObj)
+    {
+        return new(pvObj) Timer();
+    }
+    return 0;
+}
+#endif
 
 #endif

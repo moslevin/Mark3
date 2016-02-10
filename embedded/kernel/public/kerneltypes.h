@@ -17,6 +17,7 @@ See license.txt for more information
 */
 
 #include <stdint.h>
+#include <stddef.h>
 
 #ifndef __KERNELTYPES_H__
 #define __KERNELTYPES_H__

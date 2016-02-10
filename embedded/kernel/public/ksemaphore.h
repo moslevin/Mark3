@@ -37,6 +37,8 @@ See license.txt for more information
 class Semaphore : public BlockingObject
 {
 public:
+    void* operator new (size_t sz, void* pv) { return (Semaphore*)pv; };
+
     /*!
      *  \brief
      *

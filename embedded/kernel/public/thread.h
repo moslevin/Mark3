@@ -45,7 +45,6 @@ See license.txt for more information
 #include "quantum.h"
 #include "autoalloc.h"
 #include "priomap.h"
-
 //---------------------------------------------------------------------------
 /*!
     Function pointer type used for thread entrypoint functions
@@ -73,6 +72,8 @@ typedef enum
 class Thread : public LinkListNode
 {
 public:    
+    void* operator new (size_t sz, void* pv) { return (Thread*)pv; };
+
     /*!
      *  \brief Init
      *

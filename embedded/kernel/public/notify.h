@@ -33,6 +33,9 @@ See license.txt for more information
 class Notify : public BlockingObject
 {
 public:
+
+    void* operator new (size_t sz, void* pv) { return (Notify*)pv; };
+
     /*!
      *  \brief Init
      *

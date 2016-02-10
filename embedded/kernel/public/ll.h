@@ -117,6 +117,7 @@ protected:
     LinkListNode *m_pstTail;    //!< Pointer to the tail node in the list
     
 public:
+
     /*!
      *  \brief Init
      *
@@ -168,6 +169,9 @@ public:
 class DoubleLinkList : public LinkList
 {
 public:
+
+    void* operator new (size_t sz, void* pv) { return (DoubleLinkList*)pv; };
+
     /*!
      *  \brief DoubleLinkList
      *
@@ -201,6 +205,9 @@ public:
 class CircularLinkList : public LinkList
 {
 public:
+
+    void* operator new (size_t sz, void* pv) { return (CircularLinkList*)pv; };
+
     CircularLinkList() { m_pstHead = NULL; m_pstTail = NULL; }
     
     /*!

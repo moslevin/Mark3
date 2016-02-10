@@ -121,6 +121,8 @@ class DriverList;
 class Driver : public LinkListNode
 {
 public:
+    void* operator new (size_t sz, void* pv) { return (Driver*)pv; };
+
     /*!
      *  \brief Init
      *

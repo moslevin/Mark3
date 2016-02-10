@@ -35,13 +35,15 @@ class Thread;
 class ThreadList : public CircularLinkList
 {
 public:    
+    void* operator new (size_t sz, void* pv) { return (ThreadList*)pv; };
+
     /*! 
      *  \brief ThreadList
      *
      *  Default constructor - zero-initializes the data.
      */
     ThreadList() { m_uXPriority = 0; m_pclMap = NULL; }
-    
+
     /*!
      *  \brief SetPriority
      *

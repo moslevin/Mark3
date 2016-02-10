@@ -102,13 +102,15 @@ class Quantum;
 class Timer : public LinkListNode
 {
 public:
+    void* operator new (size_t sz, void* pv) { return (Timer*)pv; };
+
     /*!
      *  \brief Timer
      *
      *  Default Constructor - zero-initializes all internal data.
      */
     Timer() { }
-
+    
     /*!
      *  \brief Init
      *

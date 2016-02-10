@@ -46,6 +46,8 @@ See license.txt for more information
 class EventFlag : public BlockingObject
 {
 public:
+    void* operator new (size_t sz, void* pv) { return (EventFlag*)pv; };
+
     /*!
      * \brief Init Initializes the EventFlag object prior to use.
      */

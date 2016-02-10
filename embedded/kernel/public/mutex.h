@@ -68,6 +68,9 @@ See license.txt for more information
 class Mutex : public BlockingObject
 {
 public:
+
+    void* operator new (size_t sz, void* pv) { return (Mutex*)pv; };
+
     /*!
      *  \brief Init
      *
