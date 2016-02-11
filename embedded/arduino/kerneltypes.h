@@ -21,6 +21,7 @@ See license.txt for more information
 
 #include <stdint.h>
 #include <stdbool.h>
+#include <stddef.h>
 
 #define K_ADDR      uint16_t
 #define K_WORD      uint8_t
@@ -40,3 +41,4 @@ typedef enum
 } EventFlagOperation_t;
 
 #endif
+
