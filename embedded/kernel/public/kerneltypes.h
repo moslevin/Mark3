@@ -35,6 +35,13 @@ See license.txt for more information
  * Function pointer type used to implement kernel-panic handlers.
  */
 typedef void (*panic_func_t)( uint16_t u16PanicCode_ );
+typedef void (*idle_func_t)(void);
+
+//---------------------------------------------------------------------------
+/*!
+ *  Function pointer type used for thread entrypoint functions
+ */
+typedef void (*ThreadEntry_t)(void *pvArg_);
 
 //---------------------------------------------------------------------------
 /*!
@@ -51,5 +58,19 @@ typedef enum
     EVENT_FLAG_MODES,           //!< Count of event-flag modes.  Not used by user
     EVENT_FLAG_PENDING_UNBLOCK  //!< Special code.  Not used by user
 } EventFlagOperation_t;
+
+//---------------------------------------------------------------------------
+/*!
+ *   Enumeration representing the different states a thread can exist in
+ */
+typedef enum
+{
+    THREAD_STATE_EXIT = 0,
+    THREAD_STATE_READY,
+    THREAD_STATE_BLOCKED,
+    THREAD_STATE_STOP,
+//--
+    THREAD_STATES
+} ThreadState_t;
 
 #endif

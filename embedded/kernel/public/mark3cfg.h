@@ -40,6 +40,16 @@ See license.txt for more information
 */
 #define KERNEL_NUM_PRIORITIES            (8)
 
+#if (KERNEL_NUM_PRIORITIES <= 64)
+# define PRIO_TYPE           uint8_t    // Can be set to larger (but not smaller) type
+#elif (KERNEL_NUM_PRIORITIES <= 256)
+# define PRIO_TYPE           uint16_t   // Can be set to larger (but not smaller) type
+#elif (KERNEL_NUM_PRIORITIES <= 1024)
+# define PRIO_TYPE           uint32_t
+#else
+# error "Mark3 supports a maximum of 1024 priorities"
+#endif
+
 /*!
     The following options is related to all kernel time-tracking.
 
@@ -70,7 +80,7 @@ See license.txt for more information
     particular timer variant desired.
 */
 #if KERNEL_USE_TIMERS
-    #define KERNEL_TIMERS_TICKLESS       (0)
+    #define KERNEL_TIMERS_TICKLESS       (1)
 #endif
 
 /*!

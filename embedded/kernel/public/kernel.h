@@ -37,10 +37,6 @@ See license.txt for more information
 #include "paniccodes.h"
 #include "thread.h"
 
-#if KERNEL_USE_IDLE_FUNC
-typedef void (*idle_func_t)(void);
-#endif
-
 //---------------------------------------------------------------------------
 /*!
  *    Class that encapsulates all of the kernel startup functions.

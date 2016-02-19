@@ -160,7 +160,7 @@ public:
      *  
      *  \return true - scheduler enabled, false - disabled
      */
-    static uint8_t IsEnabled(){ return m_bEnabled; }
+    static bool IsEnabled(){ return m_bEnabled; }
 
     /*!
      *  \brief QueueScheduler

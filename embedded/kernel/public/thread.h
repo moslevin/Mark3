@@ -47,26 +47,6 @@ See license.txt for more information
 #include "priomap.h"
 //---------------------------------------------------------------------------
 /*!
-    Function pointer type used for thread entrypoint functions
- */
-typedef void (*ThreadEntry_t)(void *pvArg_);
-
-//---------------------------------------------------------------------------
-/*!
-    Enumeration representing the different states a thread can exist in
- */
-typedef enum
-{
-    THREAD_STATE_EXIT = 0,
-    THREAD_STATE_READY,
-    THREAD_STATE_BLOCKED,
-    THREAD_STATE_STOP,
-//--
-    THREAD_STATES
-} ThreadState_t;
-
-//---------------------------------------------------------------------------
-/*!
  *  Object providing fundamental multitasking support in the kernel.
  */
 class Thread : public LinkListNode
