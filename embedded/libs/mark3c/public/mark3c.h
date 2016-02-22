@@ -15,8 +15,76 @@ See license.txt for more information
 
     \file   mark3c.h
 
-    \brief  Header providing C-language wrappers for the Mark3 kernel.
+    \brief  Header providing C-language API bindings for the Mark3 kernel.
 */
+
+//---------------------------------------------------------------------------
+/*
+ * Mark3C - C-language API bindings for the Mark3 Kernel.
+ *
+ * The C-language Mark3C APIs map directly to their Mark3 counterparts using
+ * a simple set of conventions, documented below.  As a result, explicit API
+ * documentation for Mark3C is not necessary, as the functions map 1-1 to their
+ * C++ counterparts.
+ *
+ * API Translation Convention:
+ *
+ * 1) Static Methods:
+ *
+ * <ClassName>::<MethodName>()   Becomes    <ClassName>_<MethodName>()
+ *
+ * i.e. Kernel::Start()          Becomes    Kernel_Start()
+ *
+ * 2) Kernel Object Methods:
+ *
+ * In short, any class instance is represented using an object handle, and is
+ * always passed into the relevant APIs as the first argument.  Further, any
+ * method that returns a pointer to an object in the C++ implementation now
+ * returns a handle to that object.
+ *
+ * <Object>.<MethodName>(<args>) Becomes    <ClassName>_<MethoodName>(<ObjectHandle>, <args>)
+ *
+ * i.e. clAppThread.Start()      Becomes    Thread_Start(hAppThread)
+ *
+ * 3) Overloaded Methods:
+ *
+ * a) Methods overloaded with a Timeout parameter:
+ *
+ * <Object>.<MethodName>(<args>) Becomes    <ClassName>_Timed<MethodName>(<ObjectHandle>, <args>)
+ *
+ * i.e. clSemaphore.Wait(1000)   Becomes    Semaphore_Wait(hSemaphore, 1000)
+ *
+ * b) Methods overloaded based on number of arguments:
+ *
+ * <Object>.<MethodName>()                   Becomes     <ClassName>_<MethodName>(<ObjectHandle>)
+ * <Object>.<MethodName>(<arg1>)             Becomes     <ClassName>_<MethodName>1(<ObjectHandle>, <arg1>)
+ * <Object>.<MethodName>(<arg1>, <arg2>)     Becomes     <ClassName>_<MethodName>2(<ObjectHandle>, <arg1>, <arg2>)
+ *
+ * <ClassName>::<MethodName>()               Becomes     <ClassName>_<MethodName>(<ObjectHandle>)
+ * <ClassName>::<MethodName>(<arg1>)         Becomes     <ClassName>_<MethodName>1(<ObjectHandle>, <arg1>)
+ * <ClassName>::<MethodName>(<arg1>, <arg2>) Becomes     <ClassName>_<MethodName>2(<ObjectHandle>, <arg1>, <arg2>)
+ *
+ * c) Methods overloaded base on parameter types:
+ *
+ * <Object>.<MethodName>(<arg type_a>)       Becomes     <ClassName>_<MethodName><type_a>(<ObjectHandle>, <arg type a>)
+ * <Object>.<MethodName>(<arg type_b>)       Becomes     <ClassName>_<MethodName><type_b>(<ObjectHandle>, <arg type b>)
+ * <ClassName>::<MethodName>(<arg type_a>)   Becomes     <ClassName>_<MethodName><type_a>(<arg type a>)
+ * <ClassName>::<MethodName>(<arg type_b>)   Becomes     <ClassName>_<MethodName><type_b>(<arg type b>)
+ *
+ * Allocating Objects:
+ *
+ * Aside from the API name translations, the object allocation scheme is the
+ * major different between Mark3C and Mark3.  Instead of instantiating objects
+ * of the various kernel types, kernel objects must be declared using Declaration
+ * macros, which serve the purpose of reserving memory for the kernel object, and
+ * provide an opaque handle to that object memory.  This is the case for
+ * statically-allocated objects.  The AutoAlloc APIs can be used to dynamically
+ * allocate object memory, returning an object handle that can then be passed
+ * to the relevant APIs.
+ *
+ *
+ */
+
 
 #include "mark3cfg.h"
 #include "kerneltypes.h"
@@ -61,11 +129,12 @@ typedef void* Timer_t;
 //---------------------------------------------------------------------------
 // Macros for declaring opaque buffers of an appropriate size for the given
 // kernel objects
-
-#define WORD_ROUND(x)   (((x) + (sizeof(K_WORD) - 1)) / sizeof(K_WORD))
-
 #define TOKEN_1(x,y)    x ## y
 #define TOKEN_2(x,y)    TOKEN_1(x,y)
+
+// Ensure that opaque buffers are sized to the nearest word - which is
+// a platform-dependent value.
+#define WORD_ROUND(x)   (((x) + (sizeof(K_WORD) - 1)) / sizeof(K_WORD))
 
 #define DECLARE_THREAD(name)    \
     K_WORD TOKEN_2(__thread_, name)[WORD_ROUND(THREAD_SIZE)]; \
@@ -102,9 +171,6 @@ typedef void* Timer_t;
 #define DECLARE_EVENTFLAG(name)    \
     K_WORD TOKEN_2(__eventflag_, name)[WORD_ROUND(EVENTFLAG_SIZE)]; \
     EventFlag_t name = (EventFlag_t)TOKEN_2(__eventflag_, name); \
-
-//---------------------------------------------------------------------------
-// API declarations
 
 //---------------------------------------------------------------------------
 // Allocate-once Memory managment APIs

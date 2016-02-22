@@ -76,6 +76,7 @@ int main(void)
     Kernel_SetIdleFunc(IdleMain);
 
     Thread_Start( hAppThread );
+    Kernel_Start();
 
     return 0;
 }

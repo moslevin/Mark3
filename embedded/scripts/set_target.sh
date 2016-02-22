@@ -8,7 +8,7 @@ if [ $# -lt 3 ]; then
     echo "    ARCH = architecture (i.e. avr, msp430, cm0, cm4f)"
     echo "    VARIANT = device variant (i.e. atmega328p, samd20, generic)"
     echo "    TOOLCHAIN = compiler toolchain (i.e gcc)"
-    exit
+    return 
 fi
 
 ARCH_LOCAL=$1

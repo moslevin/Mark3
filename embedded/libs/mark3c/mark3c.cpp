@@ -21,6 +21,9 @@ See license.txt for more information
 #include "mark3c.h"
 #include "mark3.h"
 
+extern "C" {
+    void __cxa_pure_virtual(void) { };
+}
 //---------------------------------------------------------------------------
 // Allocate-once Memory managment APIs
 #if KERNEL_USE_AUTO_ALLOC
