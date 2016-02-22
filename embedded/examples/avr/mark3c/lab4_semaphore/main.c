@@ -39,7 +39,7 @@ allows threads to work cooperatively to achieve a goal in the system.
 // defines a thread object, stack (in word-array form), and the entry-point
 // function used by the application thread.
 #define APP1_STACK_SIZE      (320/sizeof(K_WORD))
-DECLARE_THREAD(stApp1Thread_t);
+DECLARE_THREAD(hApp1Thread);
 static K_WORD  awApp1Stack[APP1_STACK_SIZE];
 static void    App1Main(void *unused_);
 
@@ -48,7 +48,7 @@ static void    App1Main(void *unused_);
 // defines a thread object, stack (in word-array form), and the entry-point
 // function used by the application thread.
 #define APP2_STACK_SIZE      (320/sizeof(K_WORD))
-DELARE_THREAD(stApp2Thread_t);
+DECLARE_THREAD(hApp2Thread);
 static K_WORD  awApp2Stack[APP2_STACK_SIZE];
 static void    App2Main(void *unused_);
 
@@ -74,11 +74,11 @@ int main(void)
     // work is done, the semaphore is posted to indicate that the other thread
     // can use the producer's work product.
 
-    Thread_Init( h1Thread_t, awApp1Stack,  APP1_STACK_SIZE,  1, App1Main,  0);
-    Thread_Init( h2Thread_t, awApp2Stack,  APP2_STACK_SIZE,  1, App2Main,  0);
+    Thread_Init( hApp1Thread, awApp1Stack,  APP1_STACK_SIZE,  1, App1Main,  0);
+    Thread_Init( hApp2Thread, awApp2Stack,  APP2_STACK_SIZE,  1, App2Main,  0);
 
-    Thread_Start( h1Thread_t );
-    Thread_Start( h2Thread_t );
+    Thread_Start( hApp1Thread );
+    Thread_Start( hApp2Thread );
 
     // Initialize a binary semaphore (maximum value of one, initial value of
     // zero).
@@ -109,7 +109,7 @@ void App1Main(void *unused_)
 //---------------------------------------------------------------------------
 void App2Main(void *unused_)
 {
-    volatile K_ULONG ulCounter = 0;
+    volatile uint32_t ulCounter = 0;
 
     while(1)
     {

@@ -87,7 +87,7 @@ void App1Main(void *unused_)
 {
     // Simple loop that increments a volatile counter to 1000000 then resets
     // it while printing a message.
-    volatile K_ULONG ulCounter = 0;
+    volatile uint32_t ulCounter = 0;
     while(1)
     {
         ulCounter++;
@@ -105,7 +105,7 @@ void App2Main(void *unused_)
     // Same as App1Main.  However, as this thread gets twice as much CPU time
     // as Thread 1, you should see its message printed twice as often as the
     // above function.
-    volatile K_ULONG ulCounter = 0;
+    volatile uint32_t ulCounter = 0;
     while(1)
     {
         ulCounter++;

@@ -10,7 +10,7 @@ APPNAME=c_lab3_round_robin
 #this is the list of the objects required to build the kernel
 C_SOURCE=main.c
 
-LIBS=mark3 mark3c
+LIBS=mark3c mark3
 
 # Include the rest of the script that is actually used for building the 
 # outputs

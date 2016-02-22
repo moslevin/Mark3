@@ -10,7 +10,7 @@ APPNAME=c_lab9_dynamic_threads
 #this is the list of the objects required to build the kernel
 C_SOURCE=main.c
 
-LIBS=mark3 mark3c
+LIBS=mark3c mark3
 
 # Include the rest of the script sthat is actually used for building the
 # outputs

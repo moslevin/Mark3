@@ -50,7 +50,7 @@ DECLARE_MUTEX(hMyMutex);
 // This counter variable is the "shared resource" in the example, protected
 // by the mutex.  Only one thread should be given access to the counter at
 // any time.
-static volatile K_ULONG ulCounter = 0;
+static volatile uint32_t ulCounter = 0;
 
 //---------------------------------------------------------------------------
 int main(void)

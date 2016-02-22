@@ -79,7 +79,7 @@ int main(void)
 //---------------------------------------------------------------------------
 void App1Main(void *unused_)
 {
-    K_USHORT usData = 0;
+    uint16_t usData = 0;
     while(1)
     {
         // This thread grabs a message from the global message pool, sets a
@@ -124,7 +124,7 @@ void App2Main(void *unused_)
 
         // We received a message, now print out its information
         KernelAware_Print("Received Message\n");
-        KernelAware_Trace1(0, __LINE__, Message_GetCode( hMsg ), *((K_USHORT*)Message_GetData( hMsg )));
+        KernelAware_Trace2(0, __LINE__, Message_GetCode( hMsg ), *((uint16_t*)Message_GetData( hMsg )));
 
         // Done with the message, return it back to the global message queue.
         GlobalMessagePool_Push(hMsg);

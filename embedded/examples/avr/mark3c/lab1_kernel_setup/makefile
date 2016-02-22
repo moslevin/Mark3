@@ -10,7 +10,7 @@ APPNAME=c_lab1_kernel_setup
 #this is the list of the objects required to build the kernel
 C_SOURCE=main.c
 
-LIBS=mark3 mark3c drvUART
+LIBS=mark3c mark3 drvUART
 
 # Include the rest of the script that is actually used for building the 
 # outputs

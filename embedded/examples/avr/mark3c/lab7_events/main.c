@@ -78,7 +78,7 @@ void App1Main(void *unused_)
 {
     while(1)
     {
-        K_USHORT usFlags;
+        uint16_t usFlags;
 
         // Block this thread until any of the event flags have been set by
         // some outside force (here, we use Thread 2).  As an exercise to the
@@ -160,7 +160,7 @@ void App1Main(void *unused_)
 //---------------------------------------------------------------------------
 void App2Main(void *unused_)
 {
-    K_USHORT usFlag = 1;
+    uint16_t usFlag = 1;
     while(1)
     {
         Thread_Sleep(100);

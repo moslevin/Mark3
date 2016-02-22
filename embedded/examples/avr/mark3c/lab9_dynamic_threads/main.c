@@ -35,7 +35,7 @@ of the application.
 // defines a thread object, stack (in word-array form), and the entry-point
 // function used by the application thread.
 #define APP1_STACK_SIZE      (320/sizeof(K_WORD))
-DECLARE_THREAD(stApp1Thread);
+DECLARE_THREAD(hApp1Thread);
 static K_WORD  awApp1Stack[APP1_STACK_SIZE];
 static void    App1Main(void *unused_);
 
@@ -63,7 +63,7 @@ int main(void)
 static void WorkerMain1(void *arg_)
 {
     Semaphore_t hSem = (Semaphore_t)arg_;
-    K_ULONG ulCount = 0;
+    uint32_t ulCount = 0;
 
     // Do some work.  Post a semaphore to notify the other thread that the
     // work has been completed.
@@ -81,7 +81,7 @@ static void WorkerMain1(void *arg_)
 //---------------------------------------------------------------------------
 static void WorkerMain2(void *arg_)
 {
-    K_ULONG ulCount = 0;
+    uint32_t ulCount = 0;
     while (ulCount < 10000)
     {
         ulCount++;
@@ -108,7 +108,7 @@ void App1Main(void *unused_)
         Thread_Start( hMyThread );
 
         // Do some work of our own in parallel, while the other thread works on its project.
-        K_ULONG ulCount = 0;
+        uint32_t ulCount = 0;
         while (ulCount < 10000)
         {
             ulCount++;

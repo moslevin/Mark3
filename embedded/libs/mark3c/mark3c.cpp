@@ -177,7 +177,7 @@ void Thread_Init(Thread_t handle,
                  ThreadEntry_t pfEntryPoint_,
                  void *pvArg_)
 {
-    Thread *pclThread = (Thread*)handle;
+    Thread *pclThread = new ((void*)handle) Thread();
     pclThread->Init(pwStack_, u16StackSize_, uXPriority_, pfEntryPoint_, pvArg_);
 }
 
@@ -303,7 +303,7 @@ ThreadState_t Thread_GetState(Thread_t handle)
 //---------------------------------------------------------------------------
 void Timer_Init(Timer_t handle)
 {
-    Timer *pclTimer = (Timer*)handle;
+    Timer *pclTimer = new ((void*)handle) Timer();
     pclTimer->Init();
 }
 
@@ -329,7 +329,7 @@ void Timer_Stop(Timer_t handle)
 #if KERNEL_USE_SEMAPHORE
 void Semaphore_Init(Semaphore_t handle, uint16_t u16InitVal_, uint16_t u16MaxVal_)
 {
-    Semaphore *pclSemaphore = (Semaphore*)handle;
+    Semaphore *pclSemaphore = new ((void*)handle) Semaphore();
     pclSemaphore->Init(u16InitVal_, u16MaxVal_);
 }
 
@@ -363,7 +363,7 @@ bool Semaphore_TimedPend(Semaphore_t handle, uint32_t u32WaitTimeMS_)
 //---------------------------------------------------------------------------
 void Mutex_Init(Mutex_t handle)
 {
-    Mutex *pclMutex = (Mutex*)handle;
+    Mutex *pclMutex = new ((void*)handle) Mutex();
     pclMutex->Init();
 }
 
@@ -398,7 +398,7 @@ bool Mutex_TimedClaim(Mutex_t handle, uint32_t u32WaitTimeMS_)
 #if KERNEL_USE_EVENTFLAG
 void EventFlag_Init(EventFlag_t handle)
 {
-    EventFlag *pclFlag = (EventFlag*)handle;
+    EventFlag *pclFlag = new ((void*)handle) EventFlag();
     pclFlag->Init();
 }
 
@@ -448,7 +448,7 @@ uint16_t EventFlag_GetMask(EventFlag_t handle)
 #if KERNEL_USE_NOTIFY
 void Notify_Init(Notify_t handle)
 {
-    Notify *pclNotify = (Notify*)handle;
+    Notify *pclNotify = new ((void*)handle) Notify();
     pclNotify->Init();
 }
 
@@ -548,7 +548,7 @@ bool Atomic_TestAndSet( bool *pbLock )
 #if KERNEL_USE_MESSAGE
 void Message_Init(Message_t handle)
 {
-    Message *pclMessage = (Message*)handle;
+    Message *pclMessage = new ((void*)handle) Message();
     return pclMessage->Init();
 }
 
@@ -595,7 +595,7 @@ Message_t GlobalMessagePool_Pop(void)
 //---------------------------------------------------------------------------
 void MessageQueue_Init(MessageQueue_t handle)
 {
-    MessageQueue *pclMsgQ = (MessageQueue*)handle;
+    MessageQueue *pclMsgQ = new ((void*)handle) MessageQueue();
     pclMsgQ->Init();
 }
 
@@ -637,7 +637,7 @@ uint16_t MessageQueue_GetCount(MessageQueue_t handle)
 #if KERNEL_USE_MAILBOX
 void Mailbox_Init(Mailbox_t handle, void *pvBuffer_, uint16_t u16BufferSize_, uint16_t u16ElementSize_ )
 {
-    Mailbox *pclMBox=  (Mailbox*)handle;
+    Mailbox *pclMBox = new((void*)handle) Mailbox();
     pclMBox->Init(pvBuffer_, u16BufferSize_, u16ElementSize_);
 }
 
