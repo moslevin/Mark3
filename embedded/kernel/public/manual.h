@@ -51,6 +51,7 @@ See license.txt for more information
     But Mark3 is bigger than just a real-time kernel, it also contains a number
     of class-leading features:
 
+    - Native implementation in C++, with C-language bindings.
     - Device driver HAL which provides a meaningful abstraction around device-specific
       peripherals.
     - Capable recursive-make driven build system which can be used to build all
@@ -85,7 +86,7 @@ See license.txt for more information
         .
 
     THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-    ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+    ANY EXPRESS OR IEnableMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
     WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
     DISCLAIMED. IN NO EVENT SHALL FUNKENSTEIN SOFTWARE (MARK SLEVINSKY) BE LIABLE FOR ANY
     DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
@@ -4069,6 +4070,62 @@ See license.txt for more information
            documentation
     Output: Archive (.zip) containing relevant build outputs
 */
+/*!
+    \page RELEASE Release Notes
+
+    \section RELR4 R4 Release
+
+    - New: C-language bindings for Mark3 kernel (mark3c library)
+    - New: Support for ARM Cortex-M3 and Cortex-M4 (floating point) targets
+    - New: Support for Atmel AVR atmega2560 and arduino pro mega
+    - New: Full-featured, lightweight heap implementation
+    - New: Mailbox IPC class
+    - New: Notification object class
+    - New: lighweight tracelogger/instrumentation implementation (buffalogger), with sample parser
+    - New: High-performance AVR Software UART implementation
+    - New: Allocate-once "AutoAlloc" memory allocator
+    - New: Fixed-time blocking/unblocking operations added to ThreadList/Blocking class
+    - Placement-new supported for all kernel objects
+    - Scheduler now supports up to 1024 levels of thread priority, up from 8 (configurable at build-time)
+    - Kernel now uses stdint.h types for standard integers (instead of K_CHAR, K_ULONG, etc.)
+    - Greatly expanded documentation, with many new examples covering all key kernel features
+    - Expanded unit test coverage on AVR
+    - Updated build system and scripts for easier kernel configuration
+    - Updated builds to only attempt to build tests for supported platforms
+    .
+
+    \section RELR3 R3 Release
+
+    - New: Added support for MSP430 microcontrollers
+    - New: Added Kernel Idle-Function hook to eliminate the need for a dedicated idle-thread (where supported)
+    - New: Support for kernel-aware simulation and testing via flAVR AVR simulator
+    - Updated AVR driver selection
+    - General bugfixes and maintenance
+    - Expanded documentation and test coverage
+    .
+
+    \section RELR2  R2
+
+    - Experimental release, using a "kernel transaction queue" for serializing kernel calls
+    - Works as a proof-of-concept, but abandoned due to overhead of the transaction mechanism in the general case.
+    .
+
+    \section RELR12 R1 - 2nd Release
+
+    - New: Added support for ARM Cortex-M0 targets
+    - New: Added support for variuos AVR targets
+    - New: Timers now support a "tolerance" parameter for grouping timers with close expiry times
+    - Expanded scripts and auotmation used in build/test
+    - Updated and expanded graphics APIs
+    - Large number of bugfixes
+    .
+
+    \section RELR1 R1 - 1st Release
+
+    - Initial release, with support for AVR microcontrollers
+    .
+
+ */
 /*!
     \example lab1_kernel_setup/main.cpp
     This example demonstrates basic kernel setup with two threads.

@@ -9,6 +9,7 @@ LIBNAME=mark3c
 
 #this is the list of the objects required to build the library
 CPP_SOURCE=mark3c.cpp
+C_SOURCE=driver3c.c
 
 # Include the rest of the script that is actually used for building the 
 # outputs
