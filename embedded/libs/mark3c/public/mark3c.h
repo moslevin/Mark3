@@ -123,11 +123,24 @@ See license.txt for more information
     Note that the relevant kernel-object Init() function *must* be called prior to using
     any kernel object, whether or not they have been allocated statically, or dynamically.
 
+    \subsection MARK3DRV Drivers in Mark3C
+
+    Because the Mark3 driver framework makes extensive use of inheritence and
+    virtual functions in C++, it is difficult to wrap for use with C.  In addition, all
+    derived drivers types would still need to have their custom interfaces wrapped with
+    C-language bindings in order to be accessible from C, which is cumbersome and
+    inelegant, and duplicates large portions of code.  As a result, it's probably less
+    work to write a Mark3C specific driver module with a similar interface to Mark3,
+    on which drivers can be ported where necessary, or implemented directly on for
+    efficiency.  The APIs presented in driver3c.h provide such an interface for use
+    in Mark3c.
+
 */
 
 #include "mark3cfg.h"
 #include "kerneltypes.h"
 #include "fake_types.h"
+#include "driver3c.h"
 
 #include <stdint.h>
 #include <stdbool.h>
@@ -217,15 +230,15 @@ typedef void* Timer_t;          //!< Timer opaque handle data type
 /*!
  * \brief AutoAlloc
  * \sa void* AutoAlloc::Allocate(uint16_t u16Size_)
- * \param u16Size_
- * \return
+ * \param u16Size_ Size in bytes to allocate from the one-time-allocate heap
+ * \return Pointer to an allocated blob of memory, or NULL if heap exhausted
  */
 void *AutoAlloc( uint16_t u16Size_ );
 # if KERNEL_USE_SEMAPHORE
 /*!
  * \brief Alloc_Semaphore
  * \sa Semaphore* AutoAlloc::NewSemaphore()
- * \return
+ * \return Handle to an allocated object, or NULL if heap exhausted
  */
 Semaphore_t Alloc_Semaphore(void);
 # endif
@@ -233,7 +246,7 @@ Semaphore_t Alloc_Semaphore(void);
 /*!
  * \brief Alloc_Mutex
  * \sa Mutex* AutoAlloc::NewMutex()
- * \return
+ * \return Handle to an allocated object, or NULL if heap exhausted
  */
 Mutex_t Alloc_Mutex(void);
 # endif
@@ -241,7 +254,7 @@ Mutex_t Alloc_Mutex(void);
 /*!
  * \brief Alloc_EventFlag
  * \sa EventFlag* AutoAlloc::NewEventFlag()
- * \return
+ * \return Handle to an allocated object, or NULL if heap exhausted
  */
 EventFlag_t Alloc_EventFlag(void);
 # endif
@@ -249,13 +262,13 @@ EventFlag_t Alloc_EventFlag(void);
 /*!
  * \brief Alloc_Message
  * \sa AutoAlloc::NewMessage()
- * \return
+ * \return Handle to an allocated object, or NULL if heap exhausted
  */
 Message_t Alloc_Message(void);
 /*!
  * \brief Alloc_MessageQueue
  * \sa MesageQueue* AutoAlloc::NewMessageQueue()
- * \return
+ * \return Handle to an allocated object, or NULL if heap exhausted
  */
 MessageQueue_t Alloc_MessageQueue(void);
 # endif
@@ -263,7 +276,7 @@ MessageQueue_t Alloc_MessageQueue(void);
 /*!
  * \brief Alloc_Notify
  * \sa Notify* AutoAlloc::NewNotify()
- * \return
+ * \return Handle to an allocated object, or NULL if heap exhausted
  */
 Notify_t Alloc_Notify(void);
 # endif
@@ -271,21 +284,21 @@ Notify_t Alloc_Notify(void);
 /*!
  * \brief Alloc_Mailbox
  * \sa Mailbox* AutoAlloc::NewMailbox()
- * \return
+ * \return Handle to an allocated object, or NULL if heap exhausted
  */
 Mailbox_t Alloc_Mailbox(void);
 # endif
 /*!
  * \brief Alloc_Thread
  * \sa Thread* AutoAlloc::NewThread()
- * \return
+ * \return Handle to an allocated object, or NULL if heap exhausted
  */
 Thread_t Alloc_Thread(void);
 # if KERNEL_USE_TIMERS
 /*!
  * \brief Alloc_Timer
  * \sa Timer* AutoAlloc::NewTimer()
- * \return
+ * \return Handle to an allocated object, or NULL if heap exhausted
  */
 Timer_t Alloc_Timer(void);
 # endif
@@ -395,14 +408,14 @@ void Thread_Stop(Thread_t handle);
  * \brief Thread_SetName
  * \sa void Thread::SetName(const char *szName_)
  * \param handle Handle of the thread
- * \param szName_
+ * \param szName_ Name to set for the thread
  */
 void Thread_SetName(Thread_t handle, const char *szName_);
 /*!
  * \brief Thread_GetName
  * \sa const char* Thread::GetName()
  * \param handle Handle of the thread
- * \return
+ * \return Thread current name, or NULL if no name specified
  */
 const char* Thread_GetName(Thread_t handle);
 #endif
@@ -410,14 +423,14 @@ const char* Thread_GetName(Thread_t handle);
  * \brief Thread_GetPriority
  * \sa PRIO_TYPE Thread::GetPriority()
  * \param handle Handle of the thread
- * \return
+ * \return Current priority of the thread not considering priority inheritence
  */
 PRIO_TYPE   Thread_GetPriority(Thread_t handle);
 /*!
  * \brief Thread_GetCurPriority
  * \sa PRIO_TYPE Thread::GetCurPriority()
  * \param handle Handle of the thread
- * \return
+ * \return Current priority of the thread considering priority inheritence
  */
 PRIO_TYPE   Thread_GetCurPriority(Thread_t handle);
 #if KERNEL_USE_QUANTUM
@@ -425,14 +438,14 @@ PRIO_TYPE   Thread_GetCurPriority(Thread_t handle);
  * \brief Thread_SetQuantum
  * \sa void Thread::SetQuentum(uint16_t u16Quantum_)
  * \param handle Handle of the thread
- * \param u16Quantum_
+ * \param u16Quantum_ Time (in ticks) to set for the thread execution quantum
  */
 void Thread_SetQuantum(Thread_t handle, uint16_t u16Quantum_);
 /*!
  * \brief Thread_GetQuantum
  * \sa uint16_t Thread::GetQuantum()
  * \param handle Handle of the thread
- * \return
+ * \return Thread's current execution quantum
  */
 uint16_t Thread_GetQuantum(Thread_t handle);
 #endif
@@ -440,7 +453,7 @@ uint16_t Thread_GetQuantum(Thread_t handle);
  * \brief Thread_SetPriority
  * \sa void Thread::SetPriority(PRIO_TYPE uXPriority_)
  * \param handle Handle of the thread
- * \param uXPriority_
+ * \param uXPriority_ New priority level
  */
 void Thread_SetPriority(Thread_t handle, PRIO_TYPE uXPriority_);
 #if KERNEL_USE_DYNAMIC_THREADS
@@ -455,13 +468,13 @@ void Thread_Exit(Thread_t handle);
 /*!
  * \brief Thread_Sleep
  * \sa void Thread::Sleep(uint32_t u32TimeMs_)
- * \param u32TimeMs_
+ * \param u32TimeMs_ Time in ms to block the thread for
  */
 void Thread_Sleep(uint32_t u32TimeMs_);
 /*!
  * \brief Thread_USleep
  * \sa void Thread::USleep(uint32_t u32TimeUs_)
- * \param u32TimeUs_
+ * \param u32TimeUs_ Time in us to block the thread for
  */
 void Thread_USleep(uint32_t u32TimeUs_);
 #endif
@@ -474,28 +487,28 @@ void Thread_Yield(void);
  * \brief Thread_SetID
  * \sa void Thread::SetID(uint8_t u8ID_)
  * \param handle Handle of the thread
- * \param u8ID_
+ * \param u8ID_ ID To assign to the thread
  */
 void Thread_SetID(Thread_t handle, uint8_t u8ID_);
 /*!
  * \brief Thread_GetID
  * \sa uint8_t Thread::GetID()
  * \param handle Handle of the thread
- * \return
+ * \return Return ID assigned to the thread
  */
 uint8_t Thread_GetID(Thread_t handle);
 /*!
  * \brief Thread_GetStackSlack
  * \sa uint16_t Thread::GetStackSlack()
  * \param handle Handle of the thread
- * \return
+ * \return Return the amount of unused stack on the given thread
  */
 uint16_t Thread_GetStackSlack(Thread_t handle);
 /*!
  * \brief Thread_GetState
  * \sa ThreadState_t Thread::GetState()
  * \param handle Handle of the thread
- * \return
+ * \return The thread's current execution state
  */
 ThreadState_t Thread_GetState(Thread_t handle);
 
@@ -513,11 +526,11 @@ void Timer_Init(Timer_t handle);
  * \brief Timer_Start
  * \sa void Timer::Start(bool bRepeat_, uint32_t u32IntervalMs_, uint32_t u32ToleranceMs_, TimerCallbackC_t pfCallback_, void *pvData_ )
  * \param handle Handle of the timer
- * \param bRepeat_
- * \param u32IntervalMs_
- * \param u32ToleranceMs_
- * \param pfCallback_
- * \param pvData_
+ * \param bRepeat_          Restart the timer continuously on expiry
+ * \param u32IntervalMs_    Time in ms to expiry
+ * \param u32ToleranceMs_   Group with other timers if they expire within the amount of time specified
+ * \param pfCallback_       Callback to run on timer expiry
+ * \param pvData_           Data to pass to the callback on expiry
  */
 void Timer_Start(Timer_t handle, bool bRepeat_, uint32_t u32IntervalMs_, uint32_t u32ToleranceMs_, TimerCallbackC_t pfCallback_, void *pvData_ );
 /*!
@@ -535,8 +548,8 @@ void Timer_Stop(Timer_t handle);
  * \brief Semaphore_Init
  * \sa void Semaphore::Init(uint16_t u16InitVal_, uint16_t u16MaxVal_)
  * \param handle Handle of the semaphore
- * \param u16InitVal_
- * \param u16MaxVal_
+ * \param u16InitVal_   Initial value of the semaphore
+ * \param u16MaxVal_    Maximum value that can be held for a semaphore
  */
 void Semaphore_Init(Semaphore_t handle, uint16_t u16InitVal_, uint16_t u16MaxVal_);
 /*!
@@ -556,8 +569,8 @@ void Semaphore_Pend(Semaphore_t handle);
  * \brief Semaphore_TimedPend
  * \sa bool Semaphore::Pend(uint32_t u32WaitTimeMS_)
  * \param handle Handle of the semaphore
- * \param u32WaitTimeMS_
- * \return
+ * \param u32WaitTimeMS_ Time in ms to wait
+ * \return true if semaphore was acquired, false on timeout
  */
 bool Semaphore_TimedPend(Semaphore_t handle, uint32_t u32WaitTimeMS_);
 # endif
@@ -589,8 +602,8 @@ void Mutex_Release(Mutex_t handle);
  * \brief Mutex_TimedClaim
  * \sa bool Mutex::Claim(uint32_t u32WaitTimeMS_)
  * \param handle Handle of the mutex
- * \param u32WaitTimeMS_
- * \return
+ * \param u32WaitTimeMS_ Time to wait before aborting
+ * \return true if mutex was claimed, false on timeout
  */
 bool Mutex_TimedClaim(Mutex_t handle, uint32_t u32WaitTimeMS_);
 # endif
@@ -609,9 +622,9 @@ void EventFlag_Init(EventFlag_t handle);
  * \brief EventFlag_Wait
  * \sa uint16_t EventFlag::Wait(uint16_t u16Mask_, EventFlagOperation_t eMode_)
  * \param handle Handle of the event flag object
- * \param u16Mask_
- * \param eMode_
- * \return
+ * \param u16Mask_ condition flags to wait for
+ * \param eMode_   Specify conditions under which the thread will be unblocked
+ * \return bitfield contained in the eventflag on unblock
  */
 uint16_t EventFlag_Wait(EventFlag_t handle, uint16_t u16Mask_, EventFlagOperation_t eMode_);
 # if KERNEL_USE_TIMEOUTS
@@ -619,10 +632,10 @@ uint16_t EventFlag_Wait(EventFlag_t handle, uint16_t u16Mask_, EventFlagOperatio
  * \brief EventFlag_TimedWait
  * \sa uint16_t EventFlag::Wait(uint16_t u16Mask_, EventFlagOperation_t eMode_, uint32_t u32TimeMS_)
  * \param handle Handle of the event flag object
- * \param u16Mask_
- * \param eMode_
- * \param u32TimeMS_
- * \return
+ * \param u16Mask_  condition flags to wait for
+ * \param eMode_    Specify conditions under which the thread will be unblocked
+ * \param u32TimeMS_ Time in ms to wait before aborting the operation
+ * \return bitfield contained in the eventflag on unblock, or 0 on expiry.
  */
 uint16_t EventFlag_TimedWait(EventFlag_t handle, uint16_t u16Mask_, EventFlagOperation_t eMode_, uint32_t u32TimeMS_);
 # endif
@@ -630,21 +643,21 @@ uint16_t EventFlag_TimedWait(EventFlag_t handle, uint16_t u16Mask_, EventFlagOpe
  * \brief EventFlag_Set
  * \sa void EventFlag::Set(uint16_t u16Mask_)
  * \param handle Handle of the event flag object
- * \param u16Mask_
+ * \param u16Mask_ Bits to set in the eventflag's internal condition register
  */
 void EventFlag_Set(EventFlag_t handle, uint16_t u16Mask_);
 /*!
  * \brief EventFlag_Clear
  * \sa void EventFlag::Clear(uint16_t u16Mask_)
  * \param handle Handle of the event flag object
- * \param u16Mask_
+ * \param u16Mask_ Bits to clear in the eventflag's internal condition regster
  */
 void EventFlag_Clear(EventFlag_t handle, uint16_t u16Mask_);
 /*!
  * \brief EventFlag_GetMask
  * \sa void EventFlag::GetMask()
  * \param handle Handle of the event flag object
- * \return
+ * \return Return the current bitmask
  */
 uint16_t EventFlag_GetMask(EventFlag_t handle);
 #endif
@@ -668,7 +681,7 @@ void Notify_Signal(Notify_t handle);
  * \brief Notify_Wait
  * \sa void Notify::Wait(bool *pbFlag_)
  * \param handle Handle of the notification object
- * \param pbFlag_
+ * \param pbFlag_ Flag to set to true on notification
  */
 void Notify_Wait(Notify_t handle, bool *pbFlag_);
 # if KERNEL_USE_TIMEOUTS
@@ -676,9 +689,9 @@ void Notify_Wait(Notify_t handle, bool *pbFlag_);
  * \brief Notify_TimedWait
  * \sa bool Notify::Wait(uint32_t u32WaitTimeMS_, bool *pbFlag_)
  * \param handle Handle of the notification object
- * \param u32WaitTimeMS_
- * \param pbFlag_
- * \return
+ * \param u32WaitTimeMS_ Maximum time to wait for notification in ms
+ * \param pbFlag_  Flag to set to true on notification
+ * \return true on unblock, false on timeout
  */
 bool Notify_TimedWait(Notify_t handle, uint32_t u32WaitTimeMS_, bool *pbFlag_);
 # endif
@@ -690,80 +703,82 @@ bool Notify_TimedWait(Notify_t handle, uint32_t u32WaitTimeMS_, bool *pbFlag_);
 /*!
  * \brief Atomic_Set8
  * \sa uint8_t Atomic::Set(uint8_t *pu8Source_, uint8_t u8Val_)
- * \param pu8Source_
- * \param u8Val_
- * \return
+ * \param pu8Source_ Pointer to a variable to set the value of
+ * \param u8Val_ New value to set in the variable
+ * \return Previously-set value
  */
 uint8_t Atomic_Set8( uint8_t *pu8Source_, uint8_t u8Val_ );
 /*!
  * \brief Atomic_Set16
  * \sa uint16_t Atomic::Set(uint16_t *pu16Source_, uint16_t u16Val_)
- * \param pu16Source_
- * \param u16Val_
- * \return
+ * \param pu16Source_ Pointer to a variable to set the value of
+ * \param u16Val_ New value to set in the variable
+ * \return Previously-set value
  */
 uint16_t Atomic_Set16( uint16_t *pu16Source_, uint16_t u16Val_ );
 /*!
  * \brief Atomic_Set32
  * \sa uint32_t Atomic::Set(uint32_t *pu32Source_, uint32_t u32Val_)
- * \param pu32Source_
- * \param u32Val_
- * \return
+ * \param pu32Source_ Pointer to a variable to set the value of
+ * \param u32Val_ New value to set in the variable
+ * \return Previously-set value
  */
 uint32_t Atomic_Set32( uint32_t *pu32Source_, uint32_t u32Val_ );
 /*!
  * \brief Atomic_Add8
  * \sa uint8_t Atomic::Add(uint8_t *pu8Source_, uint8_t u8Val_)
- * \param pu8Source_
- * \param u8Val_
- * \return
+ * \param pu8Source_ Pointer to a variable
+ * \param u8Val_ Value to add to the variable
+ * \return Previously-held value in pu8Source_
  */
 uint8_t Atomic_Add8( uint8_t *pu8Source_, uint8_t u8Val_ );
 /*!
  * \brief Atomic_Add16
  * \sa uint16_t Atomic::Add(uint16_t *pu16Source_, uint16_t u16Val_)
- * \param pu16Source_
- * \param u16Val_
- * \return
+ * \param pu16Source_ Pointer to a variable
+ * \param u16Val_ Value to add to the variable
+ * \return Previously-held value in pu16Source_
  */
 uint16_t Atomic_Add16( uint16_t *pu16Source_, uint16_t u16Val_ );
 /*!
  * \brief Atomic_Add32
  * \sa uint32_t Atomic::Add(uint32_t *pu32Source_, uint32_t u32Val_)
- * \param pu32Source_
- * \param u32Val_
- * \return
+ * \param pu32Source_ Pointer to a variable
+ * \param u32Val_ Value to add to the variable
+ * \return Previously-held value in pu32Source_
  */
 uint32_t Atomic_Add32( uint32_t *pu32Source_, uint32_t u32Val_ );
 /*!
  * \brief Atomic_Sub8
  * \sa uint8_t Atomic::Sub(uint8_t *pu8Source_, uint8_t u8Val_)
- * \param pu8Source_
- * \param u8Val_
- * \return
+ * \param pu8Source_ Pointer to a variable
+ * \param u8Val_ Value to subtract from the variable
+ * \return Previously-held value in pu8Source_
  */
 uint8_t Atomic_Sub8( uint8_t *pu8Source_, uint8_t u8Val_ );
 /*!
  * \brief Atomic_Sub16
  * \sa uint16_t Atomic::Sub(uint16_t *pu16Source_, uint16_t u16Val_)
- * \param pu16Source_
- * \param u16Val_
- * \return
+ * \param pu16Source_ Pointer to a variable
+ * \param u16Val_ Value to subtract from the variable
+ * \return Previously-held value in pu16Source_
  */
 uint16_t Atomic_Sub16( uint16_t *pu16Source_, uint16_t u16Val_ );
 /*!
  * \brief Atomic_Sub32
  * \sa uint32_t Atomic::Sub(uint32_t *pu32Source_, uint32_t u32Val_)
- * \param pu32Source_
- * \param u32Val_
- * \return
+ * \param pu32Source_ Pointer to a variable
+ * \param u32Val_ Value to subtract from the variable
+ * \return Previously-held value in pu32Source_
  */
 uint32_t Atomic_Sub32( uint32_t *pu32Source_, uint32_t u32Val_ );
 /*!
  * \brief Atomic_TestAndSet
  * \sa bool Atomic::TestAndSet(bool *pbLock)
- * \param pbLock
- * \return
+ * \param pbLock Pointer to a value to test against.  This will always
+ *        be set to "true" at the end of a call to TestAndSet.
+ *
+ * \return true - Lock value was "true" on entry, false - Lock was set
  */
 bool Atomic_TestAndSet( bool *pbLock );
 #endif
@@ -781,28 +796,28 @@ void Message_Init(Message_t handle);
  * \brief Message_SetData
  * \sa void Message::SetData(void *pvData_)
  * \param handle Handle of the message object
- * \param pvData_
+ * \param pvData_ Pointer to the data object to send in the message
  */
 void Message_SetData(Message_t handle, void *pvData_);
 /*!
  * \brief Message_GetData
  * \sa void* Message::GetData()
  * \param handle Handle of the message object
- * \return
+ * \return Pointer to the data set in the message object
  */
 void* Message_GetData(Message_t handle);
 /*!
  * \brief Message_SetCode
  * \sa void Message::SetCode(uint16_t u16Code_)
  * \param handle Handle of the message object
- * \param u16Code_
+ * \param u16Code_ Data code to set in the object
  */
 void Message_SetCode(Message_t handle, uint16_t u16Code_);
 /*!
  * \brief Message_GetCode
  * \sa uint16_t Message::GetCode()
  * \param handle Handle of the message object
- * \return
+ * \return user code set in the object
  */
 uint16_t Message_GetCode(Message_t handle);
 /*!
@@ -814,20 +829,20 @@ void GlobalMessagePool_Push(Message_t handle);
 /*!
  * \brief GlobalMessagePool_Pop
  * \sa Message_t GlobalMessagePool::Pop()
- * \return
+ * \return Pointer to a Message object
  */
 Message_t GlobalMessagePool_Pop(void);
 /*!
  * \brief MessageQueue_Init
  * \sa void MessageQueue::Init()
- * \param handle
+ * \param handle Handle to the message queue to initialize
  */
 void MessageQueue_Init(MessageQueue_t handle);
 /*!
  * \brief MessageQueue_Receive
  * \sa Message_t MessageQueue::Receive()
  * \param handle Handle of the message queue object
- * \return
+ * \return Pointer to a message object at the head of the queue
  */
 Message_t MessageQueue_Receive(MessageQueue_t handle);
 # if KERNEL_USE_TIMEOUTS
@@ -835,8 +850,11 @@ Message_t MessageQueue_Receive(MessageQueue_t handle);
  * \brief MessageQueue_TimedReceive
  * \sa Message_t MessageQueue::TimedReceive(uint32_t u32TimeWaitMS_)
  * \param handle Handle of the message queue object
- * \param u32TimeWaitMS_
- * \return
+ * \param u32TimeWaitMS_ The amount of time in ms to wait for a
+ *        message before timing out and unblocking the waiting thread.
+ *
+ * \return Pointer to a message object at the head of the queue or
+ *         NULL on timeout.
  */
 Message_t MessageQueue_TimedReceive(MessageQueue_t handle, uint32_t u32TimeWaitMS_);
 # endif
@@ -845,14 +863,14 @@ Message_t MessageQueue_TimedReceive(MessageQueue_t handle, uint32_t u32TimeWaitM
  * \brief MessageQueue_Send
  * \sa void MessageQueue::Send(Message *pclMessage_)
  * \param handle Handle of the message queue object
- * \param hMessage_
+ * \param hMessage_ Handle to the message to send to the given queue
  */
 void MessageQueue_Send(MessageQueue_t handle, Message_t hMessage_);
 
 /*!
  * \brief MessageQueue_GetCount
  * \sa uint16_t MessageQueue::GetCount()
- * \return
+ * \return Count of pending messages in the queue.
  */
 uint16_t MessageQueue_GetCount(void);
 #endif
@@ -865,9 +883,9 @@ uint16_t MessageQueue_GetCount(void);
  * \brief Mailbox_Init
  * \sa void Mailbox::Init(void *pvBuffer_, uint16_t u16BufferSize_, uint16_t u16ElementSize_ )
  * \param handle Handle of the mailbox object
- * \param pvBuffer_
- * \param u16BufferSize_
- * \param u16ElementSize_
+ * \param pvBuffer_         Pointer to the static buffer to use for the mailbox
+ * \param u16BufferSize_    Size of the mailbox buffer, in bytes
+ * \param u16ElementSize_   Size of each envelope, in bytes
  */
 void Mailbox_Init(Mailbox_t handle, void *pvBuffer_, uint16_t u16BufferSize_, uint16_t u16ElementSize_ );
 
@@ -875,8 +893,8 @@ void Mailbox_Init(Mailbox_t handle, void *pvBuffer_, uint16_t u16BufferSize_, ui
  * \brief Mailbox_Send
  * \sa bool Mailbox::Send(void *pvData_)
  * \param handle Handle of the mailbox object
- * \param pvData_
- * \return
+ * \param pvData_           Pointer to the data object to send to the mailbox.
+ * \return                  true - envelope was delivered, false - mailbox is full.
  */
 bool Mailbox_Send(Mailbox_t handle, void *pvData_);
 
@@ -884,8 +902,8 @@ bool Mailbox_Send(Mailbox_t handle, void *pvData_);
  * \brief Mailbox_SendTail
  * \sa bool Mailbox::SendTail(void *pvData_)
  * \param handle Handle of the mailbox object
- * \param pvData_
- * \return
+ * \param pvData_           Pointer to the data object to send to the mailbox.
+ * \return                  true - envelope was delivered, false - mailbox is full.
  */
 bool Mailbox_SendTail(Mailbox_t handle, void *pvData_);
 
@@ -893,9 +911,9 @@ bool Mailbox_SendTail(Mailbox_t handle, void *pvData_);
  * \brief Mailbox_TimedSend
  * \sa bool Mailbox::Send(void *pvData_, uint32_t u32TimeoutMS_)
  * \param handle Handle of the mailbox object
- * \param pvData_
- * \param u32TimeoutMS_
- * \return
+ * \param pvData_           Pointer to the data object to send to the mailbox.
+ * \param u32TimeoutMS_     Maximum time to wait for a free transmit slot
+ * \return                  true - envelope was delivered, false - mailbox is full.
  */
 bool Mailbox_TimedSend(Mailbox_t handle, void *pvData_, uint32_t u32TimeoutMS_);
 
@@ -903,9 +921,9 @@ bool Mailbox_TimedSend(Mailbox_t handle, void *pvData_, uint32_t u32TimeoutMS_);
  * \brief Mailbox_TimedSendTail
  * \sa bool Mailbox::Send(void *pvData_, uint32_t u32TimeoutMS_)
  * \param handle Handle of the mailbox object
- * \param pvData_
- * \param u32TimeoutMS_
- * \return
+ * \param pvData_           Pointer to the data object to send to the mailbox.
+ * \param u32TimeoutMS_     Maximum time to wait for a free transmit slot
+ * \return                  true - envelope was delivered, false - mailbox is full.
  */
 bool Mailbox_TimedSendTail(Mailbox_t handle, void *pvData_, uint32_t u32TimeoutMS_);
 
@@ -913,7 +931,8 @@ bool Mailbox_TimedSendTail(Mailbox_t handle, void *pvData_, uint32_t u32TimeoutM
  * \brief Mailbox_Receive
  * \sa void Mailbox::Receive(void *pvData_)
  * \param handle Handle of the mailbox object
- * \param pvData_
+ * \param pvData_ Pointer to a buffer that will have the envelope's contents
+ *                copied into upon delivery.
  */
 void Mailbox_Receive(Mailbox_t handle, void *pvData_);
 
@@ -921,7 +940,8 @@ void Mailbox_Receive(Mailbox_t handle, void *pvData_);
  * \brief Mailbox_ReceiveTail
  * \sa void Mailbox::ReceiveTail(void *pvData_)
  * \param handle Handle of the mailbox object
- * \param pvData_
+ * \param pvData_ Pointer to a buffer that will have the envelope's contents
+ *                copied into upon delivery.
  */
 void Mailbox_ReceiveTail(Mailbox_t handle, void *pvData_);
 # if KERNEL_USE_TIMEOUTS
@@ -930,9 +950,10 @@ void Mailbox_ReceiveTail(Mailbox_t handle, void *pvData_);
  * \brief Mailbox_TimedReceive
  * \sa bool Mailbox::Receive(void *pvData_, uint32_t u32TimeoutMS_ )
  * \param handle Handle of the mailbox object
- * \param pvData_
- * \param u32TimeoutMS_
- * \return
+ * \param pvData_ Pointer to a buffer that will have the envelope's contents
+ *                copied into upon delivery.
+ * \param u32TimeoutMS_ Maximum time to wait for delivery.
+ * \return true - envelope was delivered, false - delivery timed out.
  */
 bool Mailbox_TimedReceive(Mailbox_t handle, void *pvData_, uint32_t u32TimeoutMS_ );
 
@@ -940,9 +961,10 @@ bool Mailbox_TimedReceive(Mailbox_t handle, void *pvData_, uint32_t u32TimeoutMS
  * \brief Mailbox_TimedReceiveTail
  * \sa bool Mailbox::ReceiveTail(void *pvData_, uint32_t u32TimeoutMS_ )
  * \param handle Handle of the mailbox object
- * \param pvData_
- * \param u32TimeoutMS_
- * \return
+ * \param pvData_ Pointer to a buffer that will have the envelope's contents
+ *                copied into upon delivery.
+ * \param u32TimeoutMS_ Maximum time to wait for delivery.
+ * \return true - envelope was delivered, false - delivery timed out.
  */
 bool Mailbox_TimedReceiveTail(Mailbox_t handle, void *pvData_, uint32_t u32TimeoutMS_ );
 
@@ -950,7 +972,7 @@ bool Mailbox_TimedReceiveTail(Mailbox_t handle, void *pvData_, uint32_t u32Timeo
  * \brief Mailbox_GetFreeSlots
  * \sa uint16_t Mailbox::GetFreeSlots()
  * \param handle Handle of the mailbox object
- * \return
+ * \return Number of free slots in the mailbox
  */
 uint16_t Mailbox_GetFreeSlots(Mailbox_t handle);
 
@@ -958,7 +980,7 @@ uint16_t Mailbox_GetFreeSlots(Mailbox_t handle);
  * \brief Mailbox_IsFull
  * \sa bool Mailbox::IsFull()
  * \param handle Handle of the mailbox object
- * \return
+ * \return true if the mailbox is full, false otherwise
  */
 bool Mailbox_IsFull(Mailbox_t handle);
 
@@ -966,7 +988,7 @@ bool Mailbox_IsFull(Mailbox_t handle);
  * \brief Mailbox_IsEmpty
  * \sa bool Mailbox::IsEmpty()
  * \param handle Handle of the mailbox object
- * \return
+ * \return true if the mailbox is empty, false otherwise
  */
 bool Mailbox_IsEmpty(Mailbox_t handle);
 # endif
@@ -979,8 +1001,7 @@ bool Mailbox_IsEmpty(Mailbox_t handle);
 /*!
  * \brief KernelAware_ProfileInit
  * \sa void KernelAware::ProfileInit(const char *szStr_);
- *
- * \param szStr_
+ * \param szStr_ String to use as a tag for the profilng session.
  */
 void KernelAware_ProfileInit( const char *szStr_ );
 
@@ -1012,16 +1033,15 @@ void KernelAware_ExitSimulator( void );
 /*!
  * \brief KernelAware_Print
  * \sa void KernelAware::Print(const char *szStr_)
- * \param szStr_
+ * \param szStr_ String to print to the kernel-aware simulator
  */
 void KernelAware_Print( const char *szStr_ );
 
 /*!
  * \brief KernelAware_Trace
  * \sa void KernelAware::Trace(uint16_t u16File_, uint16_t u16Line_);
- *
- * \param u16File_
- * \param u16Line_
+ * \param u16File_   16-bit code representing the file
+ * \param u16Line_   16-bit code representing the line in the file
  */
 void KernelAware_Trace( uint16_t u16File_,
                         uint16_t u16Line_);
@@ -1029,9 +1049,9 @@ void KernelAware_Trace( uint16_t u16File_,
 /*!
  * \brief KernelAware_Trace1
  * \sa void KernelAware::Trace(uint16_t u16File_, uint16_t u16Line_, uint16_t u16Arg1_);
- * \param u16File_
- * \param u16Line_
- * \param u16Arg1_
+ * \param u16File_   16-bit code representing the file
+ * \param u16Line_   16-bit code representing the line in the file
+ * \param u16Arg1_   16-bit argument to the format string.
  */
 void KernelAware_Trace1( uint16_t u16File_,
                          uint16_t u16Line_,
@@ -1039,10 +1059,10 @@ void KernelAware_Trace1( uint16_t u16File_,
 /*!
  * \brief KernelAware_Trace2
  * \sa void KernelAware::Trace(uint16_t u16File_, uint16_t u16Line_, uint16_t u16Arg1_, uint16_t u16Arg2_);
- * \param u16File_
- * \param u16Line_
- * \param u16Arg1_
- * \param u16Arg2_
+ * \param u16File_   16-bit code representing the file
+ * \param u16Line_   16-bit code representing the line in the file
+ * \param u16Arg1_   16-bit argument to the format string.
+ * \param u16Arg2_   16-bit argument to the format string.
  */
 void KernelAware_Trace2( uint16_t u16File_,
                          uint16_t u16Line_,
@@ -1053,7 +1073,9 @@ void KernelAware_Trace2( uint16_t u16File_,
  *
  * \sa void Kernel::IsSimulatorAware()
  *
- * \return
+ * \return true if the runtime environment/simulator is aware that
+ *         it is running the Mark3 kernel.
+ *
  */
 bool KernelAware_IsSimulatorAware(void);
 #endif

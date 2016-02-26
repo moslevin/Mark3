@@ -16,9 +16,7 @@ See license.txt for more information
     \file   driver.h    
 
     \brief  Driver abstraction framework for Mark3C
-
 */
-
 
 #include "mark3cfg.h"
 #include <stdint.h>
@@ -52,11 +50,10 @@ typedef struct
 //---------------------------------------------------------------------------
 typedef struct _Driver
 {
-    // Inherit from LinkListNode -- must go first
-    struct _Driver  *next;
+    struct _Driver  *next;      //!< Linked-list node -- must go first
 
-    DriverVTable_t  *pstVTable;
-    const char      *szName;
+    DriverVTable_t  *pstVTable; //!< Pointer to the VTable object for this driver-type
+    const char      *szName;    //!< Driver's name/path variable
 } Driver_t;
 
 //---------------------------------------------------------------------------
@@ -65,127 +62,139 @@ typedef struct _Driver
     drivers inherit from this object
 */
 
+//---------------------------------------------------------------------------
 /*!
-    \fn void Init()
-
-    Initialize a driver, must be called prior to use
-*/
+ * \brief Driver_Init Initialize a driver, must be called prior to use
+ * \param pstDriver_  Pointer to the driver object to initialize.
+ */
 void Driver_Init( Driver_t *pstDriver_ );
 
 //---------------------------------------------------------------------------
 /*!
-    \fn uint8_t Open()
-
-    Open a device driver prior to use.
-
-    \return Driver-specific return code, 0 = OK, non-0 = error
-*/
+ * \brief Driver_Open Open a device driver, after which it can be used
+ * \param pstDriver_ Pointer to the driver object to open
+ * \return Driver-specific return code, 0 = OK, non-0 = error
+ */
 uint8_t Driver_Open( Driver_t *pstDriver_ );
 
 //---------------------------------------------------------------------------
 /*!
-    \fn uint8_t Close()
-
-    Close a previously-opened device driver.
-
-    \return Driver-specific return code, 0 = OK, non-0 = error
-*/
+ * \brief Driver_Close Close a previously opened driver
+ * \param pstDriver_ Pointer to the driver object to close
+ * \return Driver-specific return code, 0 = OK, non-0 = error
+ */
 uint8_t Driver_Close( Driver_t *pstDriver_ );
 
 //---------------------------------------------------------------------------
 /*!
-    \fn uint16_t Read( uint16_t usBytes_,
-                             uint8_t *pucData_)
-
-    Read a specified number of bytes from the device into a specific buffer.
-    Depending on the driver-specific implementation, this may be a number
-    less than the requested number of bytes read, indicating that there
-    there was less input than desired, or that as a result of buffering,
-    the data may not be available.
-
-    \param usBytes_ Number of bytes to read (<= size of the buffer)
-    \param pucData_ Pointer to a data buffer receiving the read data
-
-    \return Number of bytes actually read
-*/
+ * \brief Driver_Read
+ *
+ * Read a specified number of bytes from the device into a specific buffer.
+ * Depending on the driver-specific implementation, this may be a number
+ * less than the requested number of bytes read, indicating that there
+ * there was less input than desired, or that as a result of buffering,
+ * the data may not be available.
+ *
+ * \param pstDriver_ Pointer to the driver to read from
+ * \param usSize_    Number of bytes to read (<= size of the buffer)
+ * \param pucData_   Pointer to a data buffer receiving the read data
+ * \return Number of bytes read from the device.
+ */
 uint16_t Driver_Read( Driver_t *pstDriver_, uint16_t usSize_, uint8_t *pucData_ );
 
 //---------------------------------------------------------------------------
 /*!
-    \fn uint16_t Write( uint16_t usBytes_,
-                              uint8_t *pucData_)
-
-    Write a payload of data of a given length to the device.
-    Depending on the implementation of the driver, the amount of data
-    written to the device may be less than the requested number of
-    bytes.  A result less than the requested size may indicate that
-    the device buffer is full, indicating that the user must retry
-    the write at a later point with the remaining data.
-
-    \param usBytes_ Number of bytes to write (<= size of the buffer)
-    \param pucData_ Pointer to a data buffer containing the data to write
-
-    \return Number of bytes actually written
-*/
+ * \brief Driver_Write
+ *
+ *  Write a payload of data of a given length to the device.
+ *  Depending on the implementation of the driver, the amount of data
+ *  written to the device may be less than the requested number of
+ *  bytes.  A result less than the requested size may indicate that
+ *  the device buffer is full, indicating that the user must retry
+ *  the write at a later point with the remaining data.
+ *
+ * \param pstDriver_ Pointer to the driver object to write to
+ * \param usSize_   Number of bytes to write (<= size of the buffer)
+ * \param pucData_  Pointer to a data buffer containing the data to write
+ * \return
+ */
 uint16_t Driver_Write( Driver_t *pstDriver_, uint16_t usSize_, uint8_t *pucData_ );
 
 //---------------------------------------------------------------------------
 /*!
-    \fn uint16_t Control( uint16_t usEvent_,
-                                void *pvDataIn_,
-                                uint16_t usSizeIn_,
-                                void *pvDataOut_,
-                                uint16_t usSizeOut_ )
-
-    This is the main entry-point for device-specific io and control
-    operations.  This is used for implementing all "side-channel"
-    communications with a device, and any device-specific IO
-    operations that do not conform to the typical POSIX
-    read/write paradigm.  Use of this funciton is analagous to
-    the non-POSIX (yet still common) devctl() or ioctl().
-
-    \param usEvent_ Code defining the io event (driver-specific)
-    \param pvDataIn_ Pointer to the intput data
-    \param usSizeIn_ Size of the input data (in bytes)
-    \param pvDataOut_ Pointer to the output data
-    \param usSizeOut_ Size of the output data (in bytes)
-
-    \return Driver-specific return code, 0 = OK, non-0 = error
-*/
+ * \brief Driver_Control
+ *
+ * This is the main entry-point for device-specific io and control
+ * operations.  This is used for implementing all "side-channel"
+ * communications with a device, and any device-specific IO
+ * operations that do not conform to the typical POSIX
+ * read/write paradigm.  Use of this funciton is analagous to
+ * the non-POSIX (yet still common) devctl() or ioctl().
+ *
+ * \param pstDriver_ Pointer to the driver object to manipulate
+ * \param usEvent_   Code defining the io event (driver-specific)
+ * \param usInSize_  Size of the input data (in bytes)
+ * \param pucIn_     Pointer to the intput data
+ * \param usOutSize_ Size of the output data (in bytes)
+ * \param pucOut_    Pointer to the output data
+ * \return
+ */
 uint16_t Driver_Control( Driver_t *pstDriver_, uint16_t usEvent_, uint16_t usInSize_, uint8_t *pucIn_, uint16_t usOutSize_, uint8_t *pucOut_);
 
 //---------------------------------------------------------------------------
 /*!
-    \fn void SetName( const char *pcName_ )
-
-    Set the path for the driver.  Name must be set prior to
-    access (since driver access is name-based).
-
-    \param pcName_ String constant containing the device path
-*/
+ * \brief Driver_SetName
+ *
+ * Set the path for the driver.  Name must be set prior to
+ * access (since driver access is name-based).
+ *
+ * \param pstDriver_  Pointer to a driver to set the name of
+ * \param pcName_     String constant containing the device path
+ */
 void Driver_SetName( Driver_t *pstDriver_, const char *pcName_ );
 
 //---------------------------------------------------------------------------
 /*!
-    \fn const char *GetPath()
-
-    Returns a string containing the device path.
-
-    \return pcName_ Return the string constant representing the device path
-*/
+ * \brief Driver_GetPath
+ *
+ * Returns a string containing the device path.
+ *
+ * \param pstDriver_ Pointer of the driver to read the name of
+ * \return Return the string constant representing the device path
+ */
 const char *Driver_GetPath( Driver_t *pstDriver_ );
 
 //---------------------------------------------------------------------------
 /*!
-    List of Driver objects used to keep track of all device drivers in the 
-    system.  By default, the list contains a single entity, "/dev/null".
-*/
+ * \brief DriverList_Init
+ *
+ *  List of Driver objects used to keep track of all device drivers in the
+ *  system.  By default, the list contains a single entity, "/dev/null".
+ */
 void DriverList_Init( void );
 
 //---------------------------------------------------------------------------
+/*!
+ * \brief DriverList_FindByPath
+ *
+ * Find a driver by its path/name, and return a pointer to the object.
+ * This returns the first match, in the even that multiple paths are found.
+ *
+ * \param pcPath   Name of the driver/path to the driver
+ * \return Pointer to a driver found in the search, or NULL on no match found.
+ */
 Driver_t *DriverList_FindByPath( const char *pcPath );
 
 //---------------------------------------------------------------------------
+/*!
+ * \brief DriverList_Add
+ *
+ * Add a driver to the global path space.  Registration of drivers with this
+ * API is voluntary, but only drivers added to the path space can be searched
+ * using DriverList_FindByPath().
+ *
+ * \param pstDriver_ Pointer to the driver to add to the global path space.
+ */
 void DriverList_Add( Driver_t *pstDriver_ );
 
 #ifdef __cplusplus
