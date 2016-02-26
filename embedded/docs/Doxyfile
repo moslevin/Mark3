@@ -778,7 +778,8 @@ WARN_LOGFILE           =
 INPUT                  = ../kernel \
                          ../kernel/public \
                          ../kernel/cpu/avr/atmega328p/gcc \
-                         ../kernel/cpu/avr/atmega328p/gcc/public
+                         ../kernel/cpu/avr/atmega328p/gcc/public \
+                         ../libs/mark3c/public
 
 # This tag can be used to specify the character encoding of the source files
 # that doxygen parses. Internally doxygen uses the UTF-8 encoding. Doxygen uses

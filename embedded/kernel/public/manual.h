@@ -4071,6 +4071,141 @@ See license.txt for more information
     Output: Archive (.zip) containing relevant build outputs
 */
 /*!
+    \page MARK3C Mark3C - C-language API bindings for the Mark3 Kernel.
+
+    Mark3 now includes an optional additional library with C language bindings
+    for all core kernel APIs, known as Mark3C.  This library alllows applications
+    to be written in C, while still enjoying all of the benefits of the
+    clean, modular design of the core RTOS kernel.
+
+    The C-language Mark3C APIs map directly to their Mark3 counterparts using
+    a simple set of conventions, documented below.  As a result, explicit API
+    documentation for Mark3C is not necessary, as the functions map 1-1 to their
+    C++ counterparts.
+
+    \section MARK3CAPI API Conventions
+
+    1) Static Methods:
+
+    \verbatim
+    <ClassName>::<MethodName>()   Becomes    <ClassName>_<MethodName>()
+    i.e. Kernel::Start()          Becomes    Kernel_Start()
+    \endverbatim
+
+    2) Kernel Object Methods:
+
+    In short, any class instance is represented using an object handle, and is
+    always passed into the relevant APIs as the first argument.  Further, any
+    method that returns a pointer to an object in the C++ implementation now
+    returns a handle to that object.
+
+    \verbatim
+    <Object>.<MethodName>(<args>) Becomes    <ClassName>_<MethoodName>(<ObjectHandle>, <args>)
+
+    i.e. clAppThread.Start()      Becomes    Thread_Start(hAppThread)
+    \endverbatim
+
+    3) Overloaded Methods:
+
+    a) Methods overloaded with a Timeout parameter:
+
+    \verbatim
+    <Object>.<MethodName>(<args>) Becomes    <ClassName>_Timed<MethodName>(<ObjectHandle>, <args>)
+
+    i.e. clSemaphore.Wait(1000)   Becomes    Semaphore_Wait(hSemaphore, 1000)
+    \endverbatim
+    b) Methods overloaded based on number of arguments:
+
+    \verbatim
+    <Object>.<MethodName>()                   Becomes     <ClassName>_<MethodName>(<ObjectHandle>)
+    <Object>.<MethodName>(<arg1>)             Becomes     <ClassName>_<MethodName>1(<ObjectHandle>, <arg1>)
+    <Object>.<MethodName>(<arg1>, <arg2>)     Becomes     <ClassName>_<MethodName>2(<ObjectHandle>, <arg1>, <arg2>)
+
+    <ClassName>::<MethodName>()               Becomes     <ClassName>_<MethodName>(<ObjectHandle>)
+    <ClassName>::<MethodName>(<arg1>)         Becomes     <ClassName>_<MethodName>1(<ObjectHandle>, <arg1>)
+    <ClassName>::<MethodName>(<arg1>, <arg2>) Becomes     <ClassName>_<MethodName>2(<ObjectHandle>, <arg1>, <arg2>)
+    \endverbatim
+
+    c) Methods overloaded base on parameter types:
+
+    \verbatim
+    <Object>.<MethodName>(<arg type_a>)       Becomes     <ClassName>_<MethodName><type_a>(<ObjectHandle>, <arg type a>)
+    <Object>.<MethodName>(<arg type_b>)       Becomes     <ClassName>_<MethodName><type_b>(<ObjectHandle>, <arg type b>)
+    <ClassName>::<MethodName>(<arg type_a>)   Becomes     <ClassName>_<MethodName><type_a>(<arg type a>)
+    <ClassName>::<MethodName>(<arg type_b>)   Becomes     <ClassName>_<MethodName><type_b>(<arg type b>)
+    \endverbatim
+
+    d) Allocate-once memory allocation APIs
+
+    \verbatim
+    AutoAlloc::New<ObjectName>                Becomes      Alloc_<ObjectName>
+    AutoAlloc::Allocate(uint16_t u16Size_)    Becomes      AutoAlloc(uint16_t u16Size_)
+    \endverbatim
+
+    \section MARK3CALLOC Allocating Objects
+
+    Aside from the API name translations, the object allocation scheme is the
+    major different between Mark3C and Mark3.  Instead of instantiating objects
+    of the various kernel types, kernel objects must be declared using Declaration
+    macros, which serve the purpose of reserving memory for the kernel object, and
+    provide an opaque handle to that object memory.  This is the case for
+    statically-allocated objects, and objects allocated on the stack.
+
+    Example: Declaring a thread
+
+    \verbatim
+
+    #include "mark3c.h"
+
+    // Statically-allocated
+    DECLARE_THREAD(hMyThread1);
+    ...
+
+    // On stack
+    int main(void)
+    {
+        DECLARE_THREAD(hMyThread2);
+        ...
+    }
+
+    \endverbatim
+
+
+    Where:
+
+        hMyThread1 - is a handle to a statically-allocated thread
+        hMyThread2 - is a handle to a thread allocated from the main stack.
+
+    Alternatively, the AutoAlloc APIs can be used to dynamically allocate objects,
+    as demonstrated in the following example.
+
+    \verbatim
+
+    void Allocate_Example(void)
+    {
+        Thread_t hMyThread = AutoAlloc_Thread();
+
+        Thread_Init(hMyThread, awMyStack, sizeof(awMyStack), 1, MyFunction, 0);
+    }
+
+    \endverbatim
+
+    Note that the relevant kernel-object Init() function *must* be called prior to using
+    any kernel object, whether or not they have been allocated statically, or dynamically.
+
+    \section MARK3DRV Drivers in Mark3C
+
+    Because the Mark3 driver framework makes extensive use of inheritence and
+    virtual functions in C++, it is difficult to wrap for use with C.  In addition, all
+    derived drivers types would still need to have their custom interfaces wrapped with
+    C-language bindings in order to be accessible from C, which is cumbersome and
+    inelegant, and duplicates large portions of code.  As a result, it's probably less
+    work to write a Mark3C specific driver module with a similar interface to Mark3,
+    on which drivers can be ported where necessary, or implemented directly on for
+    efficiency.  The APIs presented in driver3c.h provide such an interface for use
+    in Mark3c.
+*/
+/*!
     \page RELEASE Release Notes
 
     \section RELR4 R4 Release
