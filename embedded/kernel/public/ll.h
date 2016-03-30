@@ -124,25 +124,7 @@ public:
      *  Clear the linked list.
      */
     void Init(){ m_pstHead = NULL; m_pstTail = NULL; }
-    
-    /*!
-     *  \brief Add
-     *
-     *  Add the linked list node to this linked list
-     *  
-     *  \param node_ Pointer to the node to add
-     */
-    virtual void Add(LinkListNode *node_) = 0;
 
-    /*!
-     *  \brief Remove
-     *
-     *  Add the linked list node to this linked list
-     *  
-     *  \param node_ Pointer to the node to remove
-     */
-    virtual void Remove(LinkListNode *node_) = 0;
-    
     /*!
      *  \brief GetHead
      *
@@ -186,7 +168,7 @@ public:
      *  
      *  \param node_ Pointer to the node to add
      */
-    virtual void Add(LinkListNode *node_);
+    void Add(LinkListNode *node_);
     
     /*!
      *  \brief Remove
@@ -195,7 +177,7 @@ public:
      *  
      *  \param node_ Pointer to the node to remove
      */
-    virtual void Remove(LinkListNode *node_);
+    void Remove(LinkListNode *node_);
 };
 
 //---------------------------------------------------------------------------
@@ -217,7 +199,7 @@ public:
      *  
      *  \param node_ Pointer to the node to add
      */
-    virtual void Add(LinkListNode *node_);
+    void Add(LinkListNode *node_);
     
     /*!
      *  \brief Remove
@@ -226,7 +208,7 @@ public:
      *  
      *  \param node_ Pointer to the node to remove
      */    
-    virtual void Remove(LinkListNode *node_);
+    void Remove(LinkListNode *node_);
 
     /*!
      *  \brief PivotForward
