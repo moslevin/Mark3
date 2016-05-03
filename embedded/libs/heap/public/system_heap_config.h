@@ -27,7 +27,7 @@ See license.txt for more information
     Set this to "1" if you want the system heap to be built as part of this
     library.
 */
-#define use_SYSTEM_HEAP        (1)
+#define USE_SYSTEM_HEAP        (1)
 
 //---------------------------------------------------------------------------
 /*!

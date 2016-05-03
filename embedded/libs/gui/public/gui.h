@@ -25,6 +25,7 @@ See license.txt for more information
 #include "graphics.h"
 
 #include "message.h"
+#include "fixed_heap.h"
 
 #include "keycodes.h"
 
@@ -518,6 +519,25 @@ public:
     void Init() { m_clMessageQueue.Init(); m_clWindowList.Init(); }
 
     /*!
+     * \brief SetMessagePool
+     *
+     * Set the message pool used for sending/receiving message on the surface
+     *
+     * \param pclMessagePool_ Pointer to the message pool.
+     */
+    void SetMessagePool( MessagePool* pclMessagePool_ ) { m_pclMessagePool = pclMessagePool_; }
+
+    /*!
+     * \brief SetHeap
+     *
+     * Set the heap used by the event surface for allocating temporary data structures
+     * used by the framework.
+     *
+     * \param pclHeap_  Pointer to the heap to set.
+     */
+    void SetHeap( FixedHeap* pclHeap_ ) { m_pclHeap = pclHeap_; }
+
+    /*!
      *  \brief AddWindow
      *
      *  Add a window to the event surface.
@@ -597,6 +617,16 @@ private:
      *  Message queue used to manage window events
      */
     MessageQueue   m_clMessageQueue;
+
+    /*!
+     *  Message pool used for sending/receiving event messages
+     */
+    MessagePool   *m_pclMessagePool;
+
+    /*!
+     *  Heap used to manage object data allocations
+     */
+    FixedHeap     *m_pclHeap;
 };
 
 //---------------------------------------------------------------------------

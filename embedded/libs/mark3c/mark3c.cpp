@@ -658,6 +658,7 @@ bool Mailbox_SendTail(Mailbox_t handle, void *pvData_)
     return pclMBox->SendTail(pvData_);
 }
 
+#if KERNEL_USE_TIMEOUTS
 //---------------------------------------------------------------------------
 bool Mailbox_TimedSend(Mailbox_t handle, void *pvData_, uint32_t u32TimeoutMS_)
 {
@@ -671,6 +672,7 @@ bool Mailbox_TimedSendTail(Mailbox_t handle, void *pvData_, uint32_t u32TimeoutM
     Mailbox *pclMBox=  (Mailbox*)handle;
     return pclMBox->SendTail(pvData_, u32TimeoutMS_);
 }
+#endif
 
 //---------------------------------------------------------------------------
 void Mailbox_Receive(Mailbox_t handle, void *pvData_)

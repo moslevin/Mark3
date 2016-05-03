@@ -163,13 +163,12 @@ ASM("pop r0");
 //! Enter critical section (copy status register, disable interrupts)
 #define CS_ENTER()    \
 { \
-volatile uint8_t x; \
-x = _SFR_IO8(SR_); \
+uint8_t __x = _SFR_IO8(SR_); \
 ASM("cli");
 //------------------------------------------------------------------------
 //! Exit critical section (restore status register)
 #define CS_EXIT() \
-_SFR_IO8(SR_) = x;\
+_SFR_IO8(SR_) = __x;\
 }
 
 //------------------------------------------------------------------------

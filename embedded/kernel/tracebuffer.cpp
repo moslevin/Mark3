@@ -44,9 +44,6 @@ uint16_t TraceBuffer::m_au16Buffer[ (TRACE_BUFFER_SIZE/sizeof(uint16_t)) ];
 //---------------------------------------------------------------------------
 void TraceBuffer::Init()
 {
-	m_u16Index = 0;
-    m_u16SyncNumber = 0;
-    m_pfCallback = 0;
 }
 
 //---------------------------------------------------------------------------

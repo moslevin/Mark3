@@ -24,7 +24,7 @@ See license.txt for more information
 #include "system_heap_config.h"
 #include "fixed_heap.h"
 
-#if use_SYSTEM_HEAP
+#if USE_SYSTEM_HEAP
 
 //---------------------------------------------------------------------------
 /*!
@@ -208,6 +208,16 @@ public:
      */
     static void  Free(void *pvData_);
 
+    /*!
+     * \brief GetHeap
+     *
+     * Return the pointer to the underlying fixed-block heap used to
+     * implement the the system heap.
+     *
+     * \return Pointer to the fixed-block heap used by the system.
+     */
+    static FixedHeap *GetHeap() { return &m_clSystemHeap; }
+
 private:
     static uint8_t m_pu8RawHeap[ HEAP_RAW_SIZE ]; //!< Raw heap buffer
     static HeapConfig m_pclSystemHeapConfig[ HEAP_NUM_SIZES + 1 ]; //!< Heap configuration metadata
@@ -215,6 +225,6 @@ private:
     static bool m_bInit; //!< True if initialized, false if uninitialized
 };
 
-#endif // use_SYSTEM_HEAP
+#endif // USE_SYSTEM_HEAP
 
 #endif // __SYSTEM_HEAP_H__

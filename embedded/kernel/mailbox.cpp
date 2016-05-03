@@ -289,10 +289,10 @@ void Mailbox::Receive_i( const void *pvData_, bool bTail_ )
 
     Scheduler::SetScheduler( bSchedState );
 
+#if KERNEL_USE_TIMEOUTS
     // Unblock a thread waiting for a free slot to send to
     m_clSendSem.Post();
 
-#if KERNEL_USE_TIMEOUTS
     return true;
 #endif
 }

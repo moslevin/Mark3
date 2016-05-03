@@ -550,7 +550,7 @@ bool GuiEventSurface::SendEvent( GuiEvent_t *pstEvent_ )
     GUI_DEBUG_PRINT("GuiEventSurface::SendEvent\n");
 
     // Allocate a message from the global message pool
-    Message *pclMessage = GlobalMessagePool::Pop();
+    Message *pclMessage = m_pclMessagePool->Pop();
 
     // No messages available? Return a failure
     if (!pclMessage)
@@ -564,7 +564,7 @@ bool GuiEventSurface::SendEvent( GuiEvent_t *pstEvent_ )
     // If the allocation fails, push the message back to the global pool and bail
     if (!pstEventCopy)
     {
-        GlobalMessagePool::Push(pclMessage);
+        m_pclMessagePool->Push(pclMessage);
         return false;
     }
 
@@ -603,7 +603,7 @@ bool GuiEventSurface::ProcessEvent()
     // Free the message and event as soon as possible, since
     // they are shared system resources
     SystemHeap::Free(pclMessage->GetData());
-    GlobalMessagePool::Push(pclMessage);
+    m_pclMessagePool->Push(pclMessage);
 
     // Special case check - target ID is the highest Z-ordered window(s) ONLY.
     if (stLocalEvent.u8TargetID == TARGET_ID_BROADCAST_Z)

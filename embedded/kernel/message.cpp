@@ -44,46 +44,82 @@ See license.txt for more information
 #endif
 
 Message GlobalMessagePool::m_aclMessagePool[GLOBAL_MESSAGE_POOL_SIZE];
-DoubleLinkList GlobalMessagePool::m_clList;
+MessagePool GlobalMessagePool::m_clPool;
+
+//---------------------------------------------------------------------------
+void MessagePool::Init()
+{
+    m_clList.Init();
+}
+
+//---------------------------------------------------------------------------
+void MessagePool::Push( Message *pclMessage_ )
+{
+    KERNEL_ASSERT( pclMessage_ );
+
+    CS_ENTER();
+
+    m_clList.Add(pclMessage_);
+
+    CS_EXIT();
+}
+
+//---------------------------------------------------------------------------
+Message *MessagePool::Pop()
+{
+    Message *pclRet;
+    CS_ENTER();
+
+    pclRet = static_cast<Message*>( m_clList.GetHead() );
+    if (0 != pclRet)
+    {
+        m_clList.Remove( static_cast<LinkListNode*>( pclRet ) );
+    }
+
+    CS_EXIT();
+    return pclRet;
+}
+
+//------------------------------------------------------------------------
+Message *MessagePool::GetHead()
+{
+    return static_cast<Message*>( m_clList.GetHead() );
+}
 
 //---------------------------------------------------------------------------
 void GlobalMessagePool::Init()
 {
 	uint8_t i;
-    GlobalMessagePool::m_clList.Init();
+    GlobalMessagePool::m_clPool.Init();
     for (i = 0; i < GLOBAL_MESSAGE_POOL_SIZE; i++)
 	{
 		GlobalMessagePool::m_aclMessagePool[i].Init();
-		GlobalMessagePool::m_clList.Add(&(GlobalMessagePool::m_aclMessagePool[i]));
+        GlobalMessagePool::m_clPool.Push(&(GlobalMessagePool::m_aclMessagePool[i]));
 	}
 }
 
 //---------------------------------------------------------------------------
 void GlobalMessagePool::Push( Message *pclMessage_ )
 {
-	KERNEL_ASSERT( pclMessage_ );
-	
-	CS_ENTER();
-		
-	GlobalMessagePool::m_clList.Add(pclMessage_);
-	
-	CS_EXIT();
+    m_clPool.Push( pclMessage_ );
 }
 	
 //---------------------------------------------------------------------------
 Message *GlobalMessagePool::Pop()
 {
-	Message *pclRet;
-	CS_ENTER();
-	
-	pclRet = static_cast<Message*>( GlobalMessagePool::m_clList.GetHead() );
-    if (0 != pclRet)
-    {
-        GlobalMessagePool::m_clList.Remove( static_cast<LinkListNode*>( pclRet ) );
-    }
-	
-	CS_EXIT();
-	return pclRet;
+    return m_clPool.Pop();
+}
+
+//------------------------------------------------------------------------
+Message *GlobalMessagePool::GetHead()
+{
+    return m_clPool.GetHead();
+}
+
+//---------------------------------------------------------------------------
+MessagePool *GlobalMessagePool::GetPool()
+{
+    return &m_clPool;
 }
 
 //---------------------------------------------------------------------------

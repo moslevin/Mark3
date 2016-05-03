@@ -47,23 +47,22 @@ void LinkListNode::ClearNode()
 void DoubleLinkList::Add(LinkListNode *node_)
 {
 	KERNEL_ASSERT( node_ );
-	
-    // Add a node to the end of the linked list.
+
+    node_->prev = m_pstTail;
+    node_->next = NULL;
+
+    // If the list is empty, initilize the head
     if (!m_pstHead)
     {
-        // If the list is empty, initilize the nodes
         m_pstHead = node_;          
-        m_pstTail = node_;
-
-        m_pstHead->prev = NULL;
-        m_pstTail->next = NULL;
-        return;
     }
-    
+    // Otherwise, adjust the tail's next pointer
+    else
+    {
+        m_pstTail->next = node_;
+    }
+
     // Move the tail node, and assign it to the new node just passed in
-    m_pstTail->next = node_;
-    node_->prev = m_pstTail;
-    node_->next = NULL;    
     m_pstTail = node_;
 }
 
@@ -100,8 +99,6 @@ void DoubleLinkList::Remove(LinkListNode *node_)
     {
         m_pstTail = node_->prev;
     }
-    
-    node_->ClearNode();
 }
 
 //---------------------------------------------------------------------------
@@ -109,22 +106,22 @@ void CircularLinkList::Add(LinkListNode *node_)
 {
 	KERNEL_ASSERT( node_ );
 
-    // Add a node to the end of the linked list.
     if (!m_pstHead)
     {
         // If the list is empty, initilize the nodes
         m_pstHead = node_;          
         m_pstTail = node_;
-
-        m_pstHead->prev = m_pstHead;
-        m_pstHead->next = m_pstHead;
-        return;
     }
-    
-    // Move the tail node, and assign it to the new node just passed in
-    m_pstTail->next = node_;
+    else
+    {
+        // Move the tail node, and assign it to the new node just passed in
+        m_pstTail->next = node_;
+    }
+
+    // Add a node to the end of the linked list.
     node_->prev = m_pstTail;
     node_->next = m_pstHead;    
+
     m_pstTail = node_;
     m_pstHead->prev = node_;
 }

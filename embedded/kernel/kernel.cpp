@@ -56,15 +56,11 @@ FakeThread_t Kernel::m_clIdle;
 //---------------------------------------------------------------------------
 void Kernel::Init(void)
 {
-    m_bIsStarted = false;
-    m_bIsPanic = false;
-    m_pfPanic = 0;
 #if KERNEL_USE_AUTO_ALLOC
     AutoAlloc::Init();
 #endif
 #if KERNEL_USE_IDLE_FUNC
     ((Thread*)&m_clIdle)->InitIdle();
-    m_pfIdle = 0;
 #endif
 #if KERNEL_USE_DEBUG && !KERNEL_AWARE_SIMULATION
 	TraceBuffer::Init();
@@ -86,7 +82,6 @@ void Kernel::Init(void)
 #if KERNEL_USE_PROFILER
 	Profiler::Init();
 #endif
-
 }
     
 //---------------------------------------------------------------------------

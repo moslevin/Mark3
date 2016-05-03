@@ -22,7 +22,7 @@ See license.txt for more information
 #include "system_heap_config.h"
 #include "system_heap.h"
 
-#if use_SYSTEM_HEAP
+#if USE_SYSTEM_HEAP
 
 //---------------------------------------------------------------------------
 uint8_t    SystemHeap::m_pu8RawHeap[ HEAP_RAW_SIZE ];
@@ -146,4 +146,4 @@ void SystemHeap::Free(void* pvBlock_)
     m_clSystemHeap.Free(pvBlock_);
 }
 
-#endif // use_SYSTEM_HEAP
+#endif // USE_SYSTEM_HEAP

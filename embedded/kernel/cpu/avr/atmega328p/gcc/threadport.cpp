@@ -130,7 +130,6 @@ static void Thread_Switch(void)
     g_pclCurrent = (Thread*)g_pclNext;
 }
 
-
 //---------------------------------------------------------------------------
 void ThreadPort::StartThreads()
 {

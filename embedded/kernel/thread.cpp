@@ -424,10 +424,11 @@ void Thread::ContextSwitchSWI()
     }
 }
 
-#if KERNEL_USE_TIMEOUTS
+#if KERNEL_USE_TIMEOUTS || KERNEL_USE_SLEEP
 //---------------------------------------------------------------------------
 Timer *Thread::GetTimer()						{ return &m_clTimer; }
-
+#endif
+#if KERNEL_USE_TIMEOUTS
 //---------------------------------------------------------------------------
 void Thread::SetExpired( bool bExpired_ )		{ m_bExpired = bExpired_; }
 

@@ -333,6 +333,11 @@ void AppMain(void *unused_)
     // object that ties everything together.
     clEventSurface.Init();
 
+    // Use the global system heap and message pool for dynamic allocations
+    // on this event surface.
+    clEventSurface.SetHeap(SystemHeap::GetHeap());
+    clEventSurface.SetMessagePool(GlobalMessagePool::GetPool());
+
     clEventSurface.AddWindow(&clWindow);
 
     // -- Draw the initial screen state

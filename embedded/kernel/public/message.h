@@ -153,6 +153,57 @@ private:
     uint16_t m_u16Code;
 };
 
+
+//---------------------------------------------------------------------------
+/*!
+ *  Implements a list of message objects
+ */
+class MessagePool
+{
+public:
+    /*!
+     *  \brief Init
+     *
+     *  Initialize the message queue prior to use
+     */
+    void Init();
+
+    /*!
+     *  \brief Push
+     *
+     *  Return a previously-claimed message object back to the queue.
+     *  used once the message has been processed by a receiver.
+     *
+     *  \param pclMessage_ Pointer to the Message object to return back to
+     *         the queue
+     */
+    void Push( Message *pclMessage_ );
+
+    /*!
+     *  \brief Pop
+     *
+     *  Pop a message from the queue, returning it to the user to be
+     *  popu32ated before sending by a transmitter.
+     *
+     *  \return Pointer to a Message object
+     */
+    Message *Pop();
+
+    /*!
+     * \brief GetHead
+     *
+     * Return a pointer to the first element in the message list
+     *
+     * \return
+     */
+    Message *GetHead();
+
+private:
+
+    //! Linked list used to manage the Message objects
+    DoubleLinkList m_clList;
+};
+
 //---------------------------------------------------------------------------
 /*!
  *  Implements a list of message objects shared between all threads.
@@ -188,12 +239,29 @@ public:
      */
     static Message *Pop();
 
+    /*!
+     * \brief GetHead
+     *
+     * Return a pointer to the first element in the message list
+     *
+     * \return Pointer to head message element, or NULL if empty
+     */
+    static Message *GetHead();
+
+    /*!
+     * \brief GetPool
+     *
+     * Get the pointer to the underlying message pool object
+     *
+     * \return Pointer to message pool.
+     */
+    static MessagePool *GetPool();
+
 private:
     //! Array of message objects that make up the message pool
     static Message m_aclMessagePool[GLOBAL_MESSAGE_POOL_SIZE];
-    
-    //! Linked list used to manage the Message objects
-    static DoubleLinkList m_clList;
+
+    static MessagePool m_clPool;
 };
 
 //---------------------------------------------------------------------------
