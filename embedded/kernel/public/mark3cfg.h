@@ -299,4 +299,12 @@ See license.txt for more information
     #define AUTO_ALLOC_SIZE              (512)
 #endif
 
+/*!
+    This feature provides additional kernel APIs to register callout
+    functions that are activated when threads are created or exited.
+    This is useful for implementing low-level instrumentation based on
+    information held in the threads.
+*/
+#define KERNEL_USE_THREAD_CALLOUTS      (1)
+
 #endif

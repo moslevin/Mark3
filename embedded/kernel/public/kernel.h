@@ -121,6 +121,57 @@ public:
     static Thread *GetIdleThread(void) { return (Thread*)&m_clIdle; }
 #endif
 
+#if KERNEL_USE_THREAD_CALLOUTS
+    /*!
+     * \brief SetThreadCreateCallout
+     *
+     * Set a function to be called on creation of a new thread.  This
+     * callout is executed on the successful completion of a Thread::Init()
+     * call.  A callout is only executed if this method has been called
+     * to set a valid handler function.
+     *
+     * \param pfCreate_ Pointer to a function to call on thread creation
+     */
+    static void SetThreadCreateCallout(ThreadCreateCallout_t pfCreate_)
+        { m_pfThreadCreateCallout = pfCreate_; }
+
+    /*!
+     * \brief SetThreadExitCallout
+     *
+     * Set a function to be called on thread exit.  This callout is executed
+     * from the beginning of Thread::Exit().
+     *
+     * A callout is only executed if this method has been called to set a
+     * valid handler function.
+     *
+     * \param pfCreate_ Pointer to a function to call on thread exit
+     */
+    static void SetThreadExitCallout(ThreadExitCallout_t pfExit_)
+        { m_pfThreadExitCallout = pfExit_; }
+
+    /*!
+     * \brief GetThreadCreateCallout
+     *
+     * Return the current function called on every Thread::Init();
+     *
+     * \return Pointer to the currently-installed callout function,
+     *         or NULL if not set.
+     */
+    static ThreadCreateCallout_t GetThreadCreateCallout(void)
+        { return m_pfThreadCreateCallout; }
+
+    /*!
+     * \brief GetThreadExitCallout
+     *
+     * Return the current function called on every Thread::Exit();
+     *
+     * \return Pointer to the currently-installed callout function,
+     *         or NULL if not set.
+     */
+    static ThreadExitCallout_t GetThreadExitCallout(void)
+        { return m_pfThreadExitCallout; }
+#endif
+
 private:
     static bool m_bIsStarted;       //!< true if kernel is running, false otherwise
     static bool m_bIsPanic;         //!< true if kernel is in panic state, false otherwise
@@ -129,6 +180,13 @@ private:
     static idle_func_t m_pfIdle;    //!< set idle function
     static FakeThread_t m_clIdle;   //!< Idle thread object (note: not a real thread)
 #endif
+
+#if KERNEL_USE_THREAD_CALLOUTS
+    static ThreadCreateCallout_t    m_pfThreadCreateCallout;    //!< Function to call on thread creation
+    static ThreadExitCallout_t      m_pfThreadExitCallout;      //!< Function to call on thread exit
+#endif
+
+
 };
 
 #endif

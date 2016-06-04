@@ -96,6 +96,14 @@ void Thread::Init(  K_WORD *pwStack_,
     m_pclCurrent = Scheduler::GetStopList();
     m_pclCurrent->Add(this);
     CS_EXIT();
+
+#if KERNEL_USE_THREAD_CALLOUTS
+    ThreadCreateCallout_t pfCallout = Kernel::GetThreadCreateCallout();
+    if (pfCallout)
+    {
+        pfCallout(this);
+    }
+#endif
 }
 
 #if KERNEL_USE_AUTO_ALLOC
@@ -198,7 +206,14 @@ void Thread::Exit()
     bool bReschedule = 0;
     
     KERNEL_TRACE_1( "Exit Thread %d", m_u8ThreadID );
-    
+
+#if KERNEL_USE_THREAD_CALLOUTS
+    ThreadExitCallout_t pfCallout = Kernel::GetThreadExitCallout();
+    if (pfCallout) {
+        pfCallout(this);
+    }
+#endif
+
     CS_ENTER();
     
     // If this thread is the actively-running thread, make sure we run the
@@ -305,22 +320,35 @@ void Thread::USleep(uint32_t u32TimeUs_)
 //---------------------------------------------------------------------------
 uint16_t Thread::GetStackSlack()
 {
-    uint16_t u16Count = 0;
+    K_ADDR wTop = (K_ADDR)m_u16StackSize - 1;
+    K_ADDR wBottom = (K_ADDR)0;
+    K_ADDR wMid = ((wTop + wBottom) + 1) / 2;
     
     CS_ENTER();
     
-    //!! ToDo: Take into account stacks that grow up
-    for (u16Count = 0; u16Count < m_u16StackSize; u16Count++)
+    // Logarithmic bisection - find the point where the contents of the
+    // stack go from 0xFF's to non 0xFF.  Not Definitive, but accurate enough
+    while ((wTop - wBottom) > 1)
     {
-        if (m_pwStack[u16Count] != 0xFF)
+#if STACK_GROWS_DOWN
+        if (m_pwStack[wMid] != (K_WORD)(-1))
+#else
+        if (m_pwStack[wMid] == (K_WORD)(-1))
+#endif
         {
-            break;
+            //!ToDo : Reverse the logic for MCUs where stack grows UP instead of down
+            wTop = wMid;
         }
+        else
+        {
+            wBottom = wMid;
+        }
+        wMid = (wTop + wBottom + 1) / 2;
     }
-    
+
     CS_EXIT();
     
-    return u16Count;
+    return wMid;
 }
 
 //---------------------------------------------------------------------------

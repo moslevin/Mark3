@@ -53,6 +53,12 @@ panic_func_t Kernel::m_pfPanic;
 idle_func_t Kernel::m_pfIdle;
 FakeThread_t Kernel::m_clIdle;
 #endif
+
+#if KERNEL_USE_THREAD_CALLOUTS
+ThreadCreateCallout_t Kernel::m_pfThreadCreateCallout;
+ThreadExitCallout_t   Kernel::m_pfThreadExitCallout;
+#endif
+
 //---------------------------------------------------------------------------
 void Kernel::Init(void)
 {
