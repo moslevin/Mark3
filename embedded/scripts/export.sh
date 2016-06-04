@@ -39,7 +39,7 @@ if [ ${SHOW_USAGE} -eq 1 ]; then
 	echo "export.sh - Export Mark3 source for a specific platform"
 	echo ""
 	echo "Usage: "
-	echo "    export.sh <target> [-d]"
+	echo "    export.sh <target>"
 	echo ""
 	echo "Where target is one of the following"
 	for TARGET_ENTRY in ${TARGET_LIST}; do
