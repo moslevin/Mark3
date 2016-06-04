@@ -55,8 +55,9 @@ FakeThread_t Kernel::m_clIdle;
 #endif
 
 #if KERNEL_USE_THREAD_CALLOUTS
-ThreadCreateCallout_t Kernel::m_pfThreadCreateCallout;
-ThreadExitCallout_t   Kernel::m_pfThreadExitCallout;
+ThreadCreateCallout_t  Kernel::m_pfThreadCreateCallout;
+ThreadExitCallout_t    Kernel::m_pfThreadExitCallout;
+ThreadContextCallout_t Kernel::m_pfThreadContextCallout;
 #endif
 
 //---------------------------------------------------------------------------

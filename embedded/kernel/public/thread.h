@@ -51,6 +51,7 @@ class Thread;
 //---------------------------------------------------------------------------
 typedef void (*ThreadCreateCallout_t)(Thread* pclThread_);
 typedef void (*ThreadExitCallout_t)(Thread* pclThread_);
+typedef void (*ThreadContextCallout_t)(Thread* pclThread_);
 
 //---------------------------------------------------------------------------
 /*!

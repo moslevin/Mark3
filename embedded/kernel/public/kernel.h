@@ -150,6 +150,19 @@ public:
         { m_pfThreadExitCallout = pfExit_; }
 
     /*!
+     * \brief SetThreadContextSwitchCallout
+     *
+     * Set a function to be called on each context switch.
+     *
+     * A callout is only executed if this method has been called to set a
+     * valid handler function.
+     *
+     * \param pfContext_ Pointer to a function to call on context switch
+     */
+    static void SetThreadContextSwitchCallout(ThreadContextCallout_t pfContext_)
+        { m_pfThreadContextCallout = pfContext_; }
+
+    /*!
      * \brief GetThreadCreateCallout
      *
      * Return the current function called on every Thread::Init();
@@ -170,6 +183,18 @@ public:
      */
     static ThreadExitCallout_t GetThreadExitCallout(void)
         { return m_pfThreadExitCallout; }
+
+    /*!
+     * \brief GetThreadContextSwitchCallout
+     *
+     * Return the current function called on every Thread::ContextSwitchSWI()
+     *
+     * \return Pointer to the currently-installed callout function,
+     *         or NULL if not set.
+     */
+    static ThreadContextCallout_t GetThreadContextSwitchCallout(void)
+        { return m_pfThreadContextCallout; }
+
 #endif
 
 private:
@@ -184,6 +209,7 @@ private:
 #if KERNEL_USE_THREAD_CALLOUTS
     static ThreadCreateCallout_t    m_pfThreadCreateCallout;    //!< Function to call on thread creation
     static ThreadExitCallout_t      m_pfThreadExitCallout;      //!< Function to call on thread exit
+    static ThreadContextCallout_t   m_pfThreadContextCallout;   //!< Function to call on context switch
 #endif
 
 

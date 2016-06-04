@@ -448,6 +448,13 @@ void Thread::ContextSwitchSWI()
     if (Scheduler::IsEnabled() == 1)
     {        
         KERNEL_TRACE_1( "Context switch to Thread %d", (uint16_t)((Thread*)g_pclNext)->GetID() );
+#if KERNEL_USE_THREAD_CALLOUTS
+        ThreadContextCallout_t pfCallout = Kernel::GetThreadContextSwitchCallout();
+        if (pfCallout)
+        {
+            pfCallout(g_pclCurrent);
+        }
+#endif
         KernelSWI::Trigger();
     }
 }
