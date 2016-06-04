@@ -36,6 +36,7 @@ extern volatile uint32_t g_ulCriticalCount;
 #define TOP_OF_STACK(x, y)        (K_WORD*) ( ((uint32_t)x) + (y - sizeof(K_WORD)) )
 //! Push a value y to the stack pointer x and decrement the stack pointer
 #define PUSH_TO_STACK(x, y)        *x = y; x--;
+#define STACK_GROWS_DOWN           (1)
 
 //------------------------------------------------------------------------
 //! These macros *must* be used in matched-pairs !

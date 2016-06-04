@@ -106,14 +106,14 @@ void ThreadPort::InitStack(Thread *pclThread_)
     pu32Temp = (uint32_t*)pclThread_->m_pwStack;
     for (i = 0; i < pclThread_->m_u16StackSize / sizeof(uint32_t); i++)
     {
-        pu32Temp[i] = 0xDEADBEEF;
+        pu32Temp[i] = 0xFFFFFFFF;
     }
 
     PUSH_TO_STACK(pu32Stack, 0);                // We need one word of padding, apparently...
     
     //-- Simulated Exception Stack Frame --
     PUSH_TO_STACK(pu32Stack, 0x01000000);    // XSPR
-    PUSH_TO_STACK(pu32Stack, u32Addr);        // PC
+    PUSH_TO_STACK(pu32Stack, u32Addr);       // PC
     PUSH_TO_STACK(pu32Stack, 0);             // LR
     PUSH_TO_STACK(pu32Stack, 0x12);
     PUSH_TO_STACK(pu32Stack, 0x3);
@@ -122,7 +122,7 @@ void ThreadPort::InitStack(Thread *pclThread_)
     PUSH_TO_STACK(pu32Stack, (uint32_t)pclThread_->m_pvArg);    // R0 = argument
 
     //-- Simulated Manually-Stacked Registers --
-    PUSH_TO_STACK(pu32Stack, 0xFFFFFFFD); // Default "EXC_RETURN" value -- Thread mode, no floating point.
+    PUSH_TO_STACK(pu32Stack, 0xFFFFFFFD); // Default "EXC_RETURN" value -- Thread mode, floating point.
     PUSH_TO_STACK(pu32Stack, 0x11);
     PUSH_TO_STACK(pu32Stack, 0x10);
     PUSH_TO_STACK(pu32Stack, 0x09);
@@ -191,9 +191,8 @@ void ThreadPort::StartThreads()
     -Enable exceptions/interrupts
     -Call SVC
 
-    Optionally, we can reset the MSP stack pointer to the top-of-stack.
-    Note, the default stack pointer location is stored at address
-    0x00000000 on all ARM Cortex M0 parts
+    Optionally, we can reset the MSP stack pointer to the top-of-stack;
+    load the top-of-stack value from the NVIC's stack offset register.
 
     (While Mark3 avoids assembler code as much as possible, there are some
     places where it cannot be avoided.  However, we can at least inline it
@@ -202,7 +201,8 @@ void ThreadPort::StartThreads()
 void ThreadPort_StartFirstThread( void )
 {
     ASM (
-        " mov r0, #0 \n"
+        " ldr r0, =0xE000ED08 \n"
+        " mov r0, [r0] \n"
         " ldr r1, [r0] \n"
         " msr msp, r1 \n"
         " cpsie i \n"
@@ -275,13 +275,7 @@ void SVC_Handler(void)
     " ldmia r2!, {r4-r11, r14} \n "
     // After subtracting R2 by #32 due to stack popping, our PSP is where it
     // needs to be when we return from the exception handler
-    " msr psp, r2 \n "    
-    // Also modify the control register to force use of thread mode as well
-    // For CM3 forward-compatibility, keep threads in privileged mode
-    " mrs r0, control \n"
-    " mov r1, #0x02 \n"
-    " orr r0, r1 \n"
-    " msr control, r0 \n"    
+    " msr psp, r2 \n "
     " isb \n "
     // Return into thread mode, using PSP as the thread's stack pointer
     " bx lr \n "

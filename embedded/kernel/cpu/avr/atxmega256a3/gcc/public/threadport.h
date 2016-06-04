@@ -42,6 +42,7 @@ See license.txt for more information
 #define TOP_OF_STACK(x, y)        (uint8_t*) ( ((uint16_t)x) + (y-1) )
 //! Push a value y to the stack pointer x and decrement the stack pointer
 #define PUSH_TO_STACK(x, y)        *x = y; x--;
+#define STACK_GROWS_DOWN           (1)
 
 //---------------------------------------------------------------------------
 //! Save the context of the Thread

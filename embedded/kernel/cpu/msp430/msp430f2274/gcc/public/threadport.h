@@ -40,7 +40,7 @@ extern volatile uint16_t g_u16SR;
 #define TOP_OF_STACK(x, y)        (K_ADDR*) ( ((uint16_t)x) + (y - sizeof(K_WORD)) )
 //! Push a value y to the stack pointer x and decrement the stack pointer
 #define PUSH_TO_STACK(x, y)        *x = y; x--;
-
+PUSH_TO_STACK
 //---------------------------------------------------------------------------
 //! Save the context of the Thread
 #define Thread_SaveContext()\

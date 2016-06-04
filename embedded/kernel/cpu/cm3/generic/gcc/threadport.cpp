@@ -105,7 +105,7 @@ void ThreadPort::InitStack(Thread *pclThread_)
     pu32Temp = (uint32_t*)pclThread_->m_pwStack;
     for (i = 0; i < pclThread_->m_u16StackSize / sizeof(uint32_t); i++)
     {
-        pu32Temp[i] = 0xDEADBEEF;
+        pu32Temp[i] = 0xFFFFFFFF;
     }
 
     PUSH_TO_STACK(pu32Stack, 0);                // We need one word of padding, apparently...
