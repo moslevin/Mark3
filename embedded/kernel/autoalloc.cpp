@@ -55,7 +55,7 @@ void *AutoAlloc::Allocate( uint16_t u16Size_ )
 
     if (!pvRet)
     {
-        Kernel::Panic(PANIC_AUTO_HEAP_EXHUSTED);
+        Kernel::Panic(PANIC_AUTO_HEAP_EXHAUSTED);
     }
 
     return pvRet;

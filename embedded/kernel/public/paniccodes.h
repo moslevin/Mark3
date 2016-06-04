@@ -23,7 +23,8 @@ See license.txt for more information
 #define PANIC_ASSERT_FAILED         (1)
 #define PANIC_LIST_UNLINK_FAILED    (2)
 #define PANIC_STACK_SLACK_VIOLATED  (3)
-#define PANIC_AUTO_HEAP_EXHUSTED    (4)
+#define PANIC_AUTO_HEAP_EXHAUSTED   (4)
+#define PANIC_POWERMAN_EXHAUSTED    (5)
 
 #endif // __PANIC_CODES_H
 
