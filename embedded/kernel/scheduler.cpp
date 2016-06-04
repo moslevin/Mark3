@@ -76,6 +76,10 @@ void Scheduler::Schedule()
     else
 #endif
     {
+        if (uXPrio == 0)
+        {
+            Kernel::Panic(PANIC_NO_READY_THREADS);
+        }
         // Priorities are one-indexed 
         uXPrio--;
 

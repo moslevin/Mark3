@@ -25,6 +25,6 @@ See license.txt for more information
 #define PANIC_STACK_SLACK_VIOLATED  (3)
 #define PANIC_AUTO_HEAP_EXHAUSTED   (4)
 #define PANIC_POWERMAN_EXHAUSTED    (5)
-
+#define PANIC_NO_READY_THREADS      (6)
 #endif // __PANIC_CODES_H
 
