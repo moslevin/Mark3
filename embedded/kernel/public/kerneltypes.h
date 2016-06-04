@@ -36,6 +36,12 @@ See license.txt for more information
  * Function pointer type used to implement kernel-panic handlers.
  */
 typedef void (*panic_func_t)( uint16_t u16PanicCode_ );
+
+//---------------------------------------------------------------------------
+/*!
+ * Function pointer type used to implement the idle function, where support
+ * for an idle function (as opposed to an idle thread) exists.
+ */
 typedef void (*idle_func_t)(void);
 
 //---------------------------------------------------------------------------

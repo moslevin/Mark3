@@ -611,19 +611,36 @@ See license.txt for more information
     source directory:
 
     \verbatim
-    > ./scripts/export.sh <architecture> <variant> <toolchain>
+    > ./scripts/export.sh <target>
     \endverbatim
 
     Where:
 
+    Target is one of the following:
     \verbatim
-        <architecture> is the CPU archictecure (i.e. AVR, MSP430, CM0)
-        <variant> is the CPU model within the architecture (i.e. atmegea328p)
-        <toolchain> is the toolchain compatile with the port (i.e. GCC)
+        atmega328p
+        atmega644
+        atmega1280
+        atmega2560
+        atmega1284p
+        atxmega256a3
+        arduino
+        arduino2560
+        samd20
+        cortex_m0
+        cortex_m3
+        cortex_m4f
+        msp430f2274
     \endverbatim
 
     If successful, the generated artifacats will be placed in an output folder
     under the ./export directory.
+
+    Additionally, if doxygen is found on the host system's PATH, a copy of the
+    manual (using the specific port's source code) will be generated and archived
+    with the source release.  If pdflatex is also found on the host's PATH, a
+    PDF copy of the manual will be generated, tailored to the selected target.
+
 */
 /*!
     \page START Getting Started With The Mark3 API
