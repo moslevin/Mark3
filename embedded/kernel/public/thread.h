@@ -45,6 +45,13 @@ See license.txt for more information
 #include "quantum.h"
 #include "autoalloc.h"
 #include "priomap.h"
+
+class Thread;
+
+//---------------------------------------------------------------------------
+typedef void (*ThreadCreateCallout_t)(Thread* pclThread_);
+typedef void (*ThreadExitCallout_t)(Thread* pclThread_);
+
 //---------------------------------------------------------------------------
 /*!
  *  Object providing fundamental multitasking support in the kernel.
