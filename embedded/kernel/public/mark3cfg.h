@@ -305,6 +305,20 @@ See license.txt for more information
     This is useful for implementing low-level instrumentation based on
     information held in the threads.
 */
-#define KERNEL_USE_THREAD_CALLOUTS      (1)
+#define KERNEL_USE_THREAD_CALLOUTS      (0)
+
+/*!
+    This feature, when enabled, tells the kernel to check whether any
+    Thread's stack has been exhausted (or slack falls below a certain
+    safety threshold) before executing each context switch.  Enabling
+    this is the most effective means to guard against stack corruption
+    and stack overflow in the kernel, at the cost of increased context
+    switch latency.
+*/
+#define KERNEL_USE_STACK_GUARD          (0)
+
+#if KERNEL_USE_STACK_GUARD
+# define KERNEL_STACK_GUARD_DEFAULT     (32) // words
+#endif
 
 #endif

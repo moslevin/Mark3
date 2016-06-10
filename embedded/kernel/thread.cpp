@@ -58,6 +58,13 @@ void Thread::Init(  K_WORD *pwStack_,
     ClearNode();
 
     m_u8ThreadID = u8ThreadID++;
+#if KERNEL_USE_IDLE_FUNC
+    if (u8ThreadID == 255)
+    {
+        u8ThreadID = 0;
+    }
+#endif
+
     
     KERNEL_TRACE_1( "Stack Size: %d", u16StackSize_ );
     KERNEL_TRACE_1( "Thread Pri: %d", (uint8_t)uXPriority_ );
@@ -448,6 +455,22 @@ void Thread::ContextSwitchSWI()
     if (Scheduler::IsEnabled() == 1)
     {        
         KERNEL_TRACE_1( "Context switch to Thread %d", (uint16_t)((Thread*)g_pclNext)->GetID() );
+#if KERNEL_USE_STACK_GUARD
+        uint16_t u16Slack;
+#if KERNEL_USE_IDLE_FUNC
+        if (g_pclCurrent->GetID() != 255)
+        {
+#endif
+            if (g_pclCurrent->GetStackSlack() <= Kernel::GetStackGuardThreshold())
+            {
+                KernelAware::Trace(DBG_FILE, __LINE__, g_pclCurrent->GetID(), g_pclCurrent->GetStackSlack());
+                Kernel::Panic(PANIC_STACK_SLACK_VIOLATED);
+            }
+#if KERNEL_USE_IDLE_FUNC
+        }
+#endif
+#endif
+
 #if KERNEL_USE_THREAD_CALLOUTS
         ThreadContextCallout_t pfCallout = Kernel::GetThreadContextSwitchCallout();
         if (pfCallout)

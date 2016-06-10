@@ -197,6 +197,15 @@ public:
 
 #endif
 
+#if KERNEL_USE_STACK_GUARD
+    static void SetStackGuardThreshold(uint16_t u16Threshold_)
+        { m_u16GuardThreshold = u16Threshold_; }
+
+    static uint16_t GetStackGuardThreshold(void)
+        { return m_u16GuardThreshold; }
+
+#endif
+
 private:
     static bool m_bIsStarted;       //!< true if kernel is running, false otherwise
     static bool m_bIsPanic;         //!< true if kernel is in panic state, false otherwise
@@ -212,6 +221,9 @@ private:
     static ThreadContextCallout_t   m_pfThreadContextCallout;   //!< Function to call on context switch
 #endif
 
+#if KERNEL_USE_STACK_GUARD
+    static uint16_t m_u16GuardThreshold;
+#endif
 
 };
 

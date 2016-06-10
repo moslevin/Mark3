@@ -49,6 +49,10 @@ bool Kernel::m_bIsStarted;
 bool Kernel::m_bIsPanic;
 panic_func_t Kernel::m_pfPanic;
 
+#if KERNEL_USE_STACK_GUARD
+uint16_t Kernel::m_u16GuardThreshold;
+#endif
+
 #if KERNEL_USE_IDLE_FUNC
 idle_func_t Kernel::m_pfIdle;
 FakeThread_t Kernel::m_clIdle;
@@ -59,7 +63,6 @@ ThreadCreateCallout_t  Kernel::m_pfThreadCreateCallout;
 ThreadExitCallout_t    Kernel::m_pfThreadExitCallout;
 ThreadContextCallout_t Kernel::m_pfThreadContextCallout;
 #endif
-
 //---------------------------------------------------------------------------
 void Kernel::Init(void)
 {
@@ -89,6 +92,9 @@ void Kernel::Init(void)
 #if KERNEL_USE_PROFILER
 	Profiler::Init();
 #endif
+#if KERNEL_USE_STACK_GUARD
+    m_u16GuardThreshold = KERNEL_STACK_GUARD_DEFAULT;
+#endif
 }
     
 //---------------------------------------------------------------------------
@@ -111,6 +117,8 @@ void Kernel::Panic(uint16_t u16Cause_)
     else
     {
 #if KERNEL_AWARE_SIMULATION
+        KernelAware::Print("Panic\n");
+        KernelAware::Trace(0, 0, 3);
         KernelAware::ExitSimulator();
 #endif
         while(1);
