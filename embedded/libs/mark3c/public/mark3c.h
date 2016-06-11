@@ -47,6 +47,12 @@ typedef void* Thread_t;         //!< Thread opaque handle data type
 typedef void* Timer_t;          //!< Timer opaque handle data type
 
 //---------------------------------------------------------------------------
+// Function pointer types used by Kernel APIs
+typedef void (*thread_create_callout_t)(Thread_t hThread_);
+typedef void (*thread_exit_callout_t)(Thread_t hThread_);
+typedef void (*thread_context_callout_t)(Thread_t hThread_);
+
+//---------------------------------------------------------------------------
 // Use the sizes of the structs in fake_types.h to generate opaque object-blobs
 // that get instantiated as kernel objects (from the C++ code) later.
 #define THREAD_SIZE         (sizeof(Fake_Thread))
@@ -231,6 +237,65 @@ void Kernel_Panic(uint16_t u16Cause_);
 void Kernel_SetIdleFunc(idle_func_t pfIdle_);
 #endif
 
+#if KERNEL_USE_THREAD_CALLOUTS
+/*!
+ * \brief Kernel_SetThreadCreateCallout
+ * \sa Kernel::SetThreadCreateCallout
+ * \param pfCreate_ Function to calll on thread creation
+ */
+static void Kernel_SetThreadCreateCallout(thread_create_callout_t pfCreate_);
+/*!
+ * \brief Kernel_SetThreadExitCallout
+ * \sa Kernel::SetThreadExitCallout
+ * \param pfExit_ Function to call on thread exit
+ */
+static void Kernel_SetThreadExitCallout(thread_exit_callout_t pfExit_);
+
+/*!
+ * \brief Kernel_SetThreadContextSwitchCallout
+ * \sa Kernel::SetThreadContextSwitchCallout
+ * \param pfContext_ Function to call prior to each context switch
+ */
+static void Kernel_SetThreadContextSwitchCallout(thread_context_callout_t pfContext_);
+
+/*!
+ * \brief Kernel_GetThreadCreateCallout
+ * \sa Kernel::GetThreadCreateCallout
+ * \return Current function called on each thread creation
+ */
+static thread_create_callout_t Kernel_GetThreadCreateCallout(void);
+
+/*!
+ * \brief Kernel_GetThreadExitCallout
+ * \sa Kernel::GetThreadExitCallout
+ * \return Current function called on each thread exit
+ */
+static thread_exit_callout_t Kernel_GetThreadExitCallout(void);
+
+/*!
+ * \brief Kernel_GetThreadContextSwitchCallout
+ * \sa Kernel::GetThreadContextSwitchCallout
+ * \return Current function called on each context switch
+ */
+static thread_context_callout_t Kernel_GetThreadContextSwitchCallout(void);
+#endif
+
+#if KERNEL_USE_STACK_GUARD
+/*!
+ * \brief Kernel_SetStackGuardThreshold
+ * \sa Kernel::SetStackGuardThreshold
+ * \param u16Threshold_ Minimum number of guard-words for each thread stack.
+ *        Violation results in kernel panic.
+ */
+static void Kernel_SetStackGuardThreshold(uint16_t u16Threshold_);
+
+/*!
+ * \brief Kernel_GetStackGuardThreshold
+ * \sa Kernel:GetStackGuardThreshold
+ * \return Current kernel stack-guard threshold
+ */
+static uint16_t Kernel_GetStackGuardThreshold(void);
+#endif
 //---------------------------------------------------------------------------
 // Scheduler APIs
 /*!
