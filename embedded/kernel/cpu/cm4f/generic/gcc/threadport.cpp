@@ -114,7 +114,7 @@ void ThreadPort::InitStack(Thread *pclThread_)
     //-- Simulated Exception Stack Frame --
     PUSH_TO_STACK(pu32Stack, 0x01000000);    // XSPR
     PUSH_TO_STACK(pu32Stack, u32Addr);       // PC
-    PUSH_TO_STACK(pu32Stack, 0);             // LR
+    PUSH_TO_STACK(pu32Stack, 0);
     PUSH_TO_STACK(pu32Stack, 0x12);
     PUSH_TO_STACK(pu32Stack, 0x3);
     PUSH_TO_STACK(pu32Stack, 0x2);

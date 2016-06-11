@@ -13,7 +13,7 @@ See license.txt for more information
 ===========================================================================*/
 /*!
 
-    \file   threadport.cpp   
+    \file   threadport.cpp
 
     \brief  ARM Cortex-M3 Multithreading
 
@@ -109,7 +109,7 @@ void ThreadPort::InitStack(Thread *pclThread_)
     }
 
     PUSH_TO_STACK(pu32Stack, 0);                // We need one word of padding, apparently...
-    
+
     //-- Simulated Exception Stack Frame --
     PUSH_TO_STACK(pu32Stack, 0x01000000);    // XSPR
     PUSH_TO_STACK(pu32Stack, u32Addr);        // PC
@@ -200,12 +200,13 @@ void ThreadPort::StartThreads()
 void ThreadPort_StartFirstThread( void )
 {
     ASM (
-        " mov r0, #0 \n"
+        " ldr r0, =0xE000ED08 \n"
+        " mov r0, [r0] \n"
         " ldr r1, [r0] \n"
         " msr msp, r1 \n"
         " cpsie i \n"
         " svc 0 \n"
-    );
+        );
 }
 
 //---------------------------------------------------------------------------
@@ -217,9 +218,9 @@ void ThreadPort_StartFirstThread( void )
     starts executing when returning from the call.
 
     We also keep in mind that there's an 8-byte offset from the beginning of
-    the thread object to the location of the thread stack pointer.  This 
+    the thread object to the location of the thread stack pointer.  This
     offset is a result of the thread object inheriting from the linked-list
-    node class, which has 8-bytes of data.  This is stored first in the 
+    node class, which has 8-bytes of data.  This is stored first in the
     object, before the first element of the class, which is the "stack top"
     pointer.
 
@@ -278,19 +279,13 @@ void SVC_Handler(void)
     " ldmia r2!, {r4-r11} \n "
     // After subtracting R2 by #32 due to stack popping, our PSP is where it
     // needs to be when we return from the exception handler
-    " msr psp, r2 \n "    
-    // Also modify the control register to force use of thread mode as well
-    // For CM3 forward-compatibility, keep threads in privileged mode
-    " mrs r0, control \n"
-    " mov r1, #0x02 \n"
-    " orr r0, r1 \n"
-    " msr control, r0 \n"    
+    " msr psp, r2 \n "
     " isb \n "
     // Return into thread mode, using PSP as the thread's stack pointer
     // To do this, or 0x0D into the current lr.
     " mov r0, #0x0D \n "
     " mov r1, lr \n "
-    " orr r0, r1 \n "    
+    " orr r0, r1 \n "
     " bx r0 \n "
     : : [CURRENT_THREAD] "r" (g_pclCurrent)
     );
@@ -299,31 +294,31 @@ void SVC_Handler(void)
 //---------------------------------------------------------------------------
 /*
     Context Switching:
-    
-    On ARM Cortex parts, there's dedicated hardware that's used primarily to 
+
+    On ARM Cortex parts, there's dedicated hardware that's used primarily to
     support RTOS (or RTOS-like) funcationlity.  This functionality includes
-    the SysTick timer, and the PendSV Exception.  SysTick is used for the 
+    the SysTick timer, and the PendSV Exception.  SysTick is used for the
     kernel timer (I need to learn how to use it to see whether or not I can
     do tickless timers), while the PendSV exception is used for triggering
     context switches.  In reality, it's a "special SVC" call that's designed
     to be lower-overhead, in that it isn't mux'd with a bunch of other system
     or application functionality.
-    
+
     Alright, so how do we go about actually implementing a context switch here?
     There are a lot of different parts involved, but it essentially comes down
     to 3 steps:
-    
+
     1) Save Context
     2) Swap "current" and "next" thread pointers
     3) Restore Context
-    
+
 1) Saving the context.
 
-    Alright, so when we enter the exception handler, We should expect that the 
+    Alright, so when we enter the exception handler, We should expect that the
     exception stack frame is stored to our PSP.  This takes care of everything
     but r4-r11.  Similar to the "restore context" code, we'll have to break up
     the register storage into multiple chunks.
-    
+
     ; Get address of current thread stack
     ldr r0, g_pclCurrentThread
     ldr r1, [r0]
@@ -333,44 +328,44 @@ void SVC_Handler(void)
     ; to be manually stacking.
     mrs r2, psp
     sub r2, #32
-    
+
     ; While we're here, store the new top-of-stack value
     str r2, [r1]
-    
+
     ; And, while r2 is at the bottom of the stack frame, stack r11-r4
     stmia r2!, {r4-r11}
 
     ; Done!
-        
+
     Thread's top-of-stack value is stored, all registers are stacked.  We're good to go!
 
 2)  Swap threads
 
-    This is the easy part - we just call a function to swap in the thread "current" thread    
+    This is the easy part - we just call a function to swap in the thread "current" thread
     from the "next" thread.
-    
+
 3)    Restore Context
 
-    This is more or less identical to what we did when restoring the first context. 
-    
-*/    
+    This is more or less identical to what we did when restoring the first context.
+
+*/
 void PendSV_Handler(void)
-{    
+{
     ASM(
     // Thread_SaveContext()
     " ldr r1, CURR_ \n"
     " ldr r1, [r1] \n "
     " mov r3, r1 \n "
     " add r3, #8 \n "
-    
+
     //  Grab the psp and adjust it by 32 based on the extra registers we're going
     // to be manually stacking.
     " mrs r2, psp \n "
     " sub r2, #32 \n "
-    
+
     // While we're here, store the new top-of-stack value
     " str r2, [r3] \n "
-    
+
     // And, while r2 is at the bottom of the stack frame, stack r4-r11
     " stmia r2!, {r4-r11} \n "
 
@@ -382,13 +377,13 @@ void PendSV_Handler(void)
     " str r0, [r1] \n"
     " cpsie i \n "
 
-    // Get the pointer to the next thread's stack    
+    // Get the pointer to the next thread's stack
     " add r0, #8 \n "
     " ldr r2, [r0] \n "
-    
+
     // Stack pointer is in r2, start loading registers from the "manually-stacked" set
     " ldmia r2!, {r4-r11} \n "
-    
+
     // After subbing R2 #32 through ldmia/stack popping, our PSP is where it
     // needs to be when we return from the exception handler
     " msr psp, r2 \n "
@@ -396,10 +391,10 @@ void PendSV_Handler(void)
     // lr contains the proper EXC_RETURN value, we're done with exceptions.
     " bx lr \n "
     " nop \n "
-    
+
     // Must be 4-byte aligned.  Also - GNU assembler, I hate you for making me resort to this.
     " NEXT_: .word g_pclNext \n"
-    " CURR_: .word g_pclCurrent \n"    
+    " CURR_: .word g_pclCurrent \n"
     );
 }
 //---------------------------------------------------------------------------
