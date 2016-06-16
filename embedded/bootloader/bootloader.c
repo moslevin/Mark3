@@ -85,8 +85,8 @@ See license.txt for more information
 /*------------------------------------------------------------------------- */
 #define uint8_t         unsigned char
 #define uint16_t        unsigned short
-#define uint32_t         unsigned long
-#define bool          unsigned char
+#define uint32_t        unsigned long
+#define bool            unsigned char
 #define K_TRUE          1
 #define K_FALSE         0
 
@@ -97,13 +97,14 @@ See license.txt for more information
  */
 /*------------------------------------------------------------------------- */
 #define UDR             UDR0
-#define u8SRA           UCSR0A
-#define u8SRB           UCSR0B
-#define u8SRC           UCSR0C
+#define UCSRA           UCSR0A
+#define UCSRB           UCSR0B
+#define UCSRC           UCSR0C
 #define RXC             RXC0
 #define RXEN            RXEN0
 #define TXEN            TXEN0
 #define UDRE            UDRE0
+#define U2X             U2X0
 #define BAUD_H          UBRR0H
 #define BAUD_L          UBRR0L
 
@@ -112,7 +113,9 @@ See license.txt for more information
  *  Define the baud rate that the bootloader will operate at
  */
 /*------------------------------------------------------------------------- */
-#define BAUD_RATE       ((uint32_t)57600)
+#ifndef BAUD_RATE
+# define BAUD_RATE       (57600)
+#endif
 
 /*------------------------------------------------------------------------- */
 /*!
@@ -121,7 +124,9 @@ See license.txt for more information
  *  correct baud rate.
  */
 /*------------------------------------------------------------------------- */
-#define SYSTEM_FREQ     ((uint32_t)16000000)
+#ifndef SYSTEM_FREQ
+# define SYSTEM_FREQ     (16000000)
+#endif
 
 /*------------------------------------------------------------------------- */
 /*!
@@ -139,7 +144,10 @@ See license.txt for more information
  *       (the size varies between parts), the page buffer is committed to 
  *       FLASH.
  */
-#define PAGE_SIZE       (128)				/*!< 64 words on mega328p. */
+#ifndef PAGE_SIZE
+# error "Must define PAGE_SIZE in compiler flags"
+#endif
+
 #define RX_BUF_SIZE     (64)                /*!< Maximum single funkenslip packet size  */
 
 /*------------------------------------------------------------------------- */
@@ -168,14 +176,15 @@ See license.txt for more information
  *  -EOF-   No more data to be transmitted.  Commit partial-pages to flash, and
  *          boot into the newly-flashed application.
  */
-#define PROGRAM_CHANNEL			(127)		/*!< FunkenSlip channel to program on */
-#define PROGRAM_CMD_SEEK		(0)			/*!< Seek to address */
-#define PROGRAM_CMD_WRITE		(1)			/*!< Write current buffer */
-#define PROGRAM_CMD_EOF			(2)			/*!< End of file - stop programming  */
+#define PROGRAM_CHANNEL            (127)        /*!< FunkenSlip channel to program on */
+#define PROGRAM_CMD_SEEK           (0)          /*!< Seek to address */
+#define PROGRAM_CMD_WRITE          (1)          /*!< Write current buffer */
+#define PROGRAM_CMD_EOF            (2)          /*!< End of file - stop programming  */
 
 /*------------------------------------------------------------------------- */
-static uint32_t u32PageAddr;                  /*!< Page address pointer */
-static uint8_t u8PageIdx;                   /*!< Index in the data page */
+static uint32_t u32PageAddr;                /*!< Page address pointer */
+
+static uint16_t uPageIdx;                   /*!< Index in the data page */
 static uint8_t aucPageBuf[PAGE_SIZE];       /*!< Data buffer written to FLASH */
 static uint8_t aucSerialBuf[RX_BUF_SIZE];   /*!< Buffer filled with FunkenSlip packets */
 
@@ -192,10 +201,11 @@ static void     BL_Exit(void);
 static void     Serial_Init(void);
 static uint8_t  Serial_Read(void);
 static void     Serial_Write(uint8_t u8Byte_);
-static bool   Slip_FillPacket(void);
+static void     Serial_WriteString(const char* szStr_);
+static bool     Slip_FillPacket(void);
 static uint8_t  Slip_DecodePacket(void);
-static bool   Serial_ValidatePacket(uint16_t *pu16Len_);
-static void		Flash_WritePage(void);
+static bool     Serial_ValidatePacket(uint16_t *pu16Len_);
+static void     Flash_WritePage(void);
 
 /*------------------------------------------------------------------------- */
 /*!
@@ -208,20 +218,9 @@ static void BL_Exit(void)
 {
     /* Set a function pointer to the start of the user-app.  */
     main_func_t app_start = (void*)0;
-	
+
     /* Write our farewell message to the UART  */
-	Serial_Write('B');
-	Serial_Write('o');
-	Serial_Write('o');
-	Serial_Write('t');
-	Serial_Write('i');
-	Serial_Write('n');
-	Serial_Write('g');
-	Serial_Write(' ');
-	Serial_Write('A');
-	Serial_Write('p');
-	Serial_Write('p');
-	Serial_Write('\n');
+    Serial_WriteString("Booting App\n");
 
     /* Reboot!  */
     app_start();
@@ -240,19 +239,24 @@ static void Serial_Init(void)
     uint16_t u16BaudTemp = 0;
     
     /* Clear port config */
-    u8SRA = 0;
-    u8SRB = 0;
+    UCSRA = 0;
+    UCSRB = 0;
     
     /* Set baud rate */
+#if (BAUD_RATE > 57600)
+    u16BaudTemp = (uint16_t)(((SYSTEM_FREQ/16)/(BAUD_RATE >> 1)) - 1);
+    UCSRA |= (1 << U2X);
+#else
     u16BaudTemp = (uint16_t)(((SYSTEM_FREQ/16)/BAUD_RATE) - 1);
+#endif
     BAUD_H = (uint8_t)(u16BaudTemp >> 8);
     BAUD_L = (uint8_t)(u16BaudTemp & 0x00FF);
     
     /* Set 8N1 format on the port  */
-    u8SRC = 0x06;
+    UCSRC = 0x06;
     
     /* Enable RX & TX, but no interrupts.  */
-    u8SRB = (1 << RXEN) | (1 << TXEN);
+    UCSRB = (1 << RXEN) | (1 << TXEN);
 }
 
 /*------------------------------------------------------------------------- */
@@ -263,7 +267,7 @@ static void Serial_Init(void)
  */
 static uint8_t Serial_Read(void) 
 {
-    while (!(u8SRA & (1 << RXC0))){};
+    while (!(UCSRA & (1 << RXC0))){};
     return UDR;
 }
 
@@ -282,7 +286,7 @@ static bool Serial_RxPoll(void)
     
     while (u32Timeout--) 
     {
-        if (u8SRA & (1 << RXC0))
+        if (UCSRA & (1 << RXC0))
         {
             if (UDR == 192)
             {
@@ -303,8 +307,23 @@ static bool Serial_RxPoll(void)
  */
 static void Serial_Write(uint8_t u8Byte_) 
 {
-    while (!(u8SRA & (1 << UDRE))){};
+    while (!(UCSRA & (1 << UDRE))){};
     UDR = u8Byte_;
+}
+
+/*------------------------------------------------------------------------- */
+/*!
+ * Write a null-terminated string to the serial port.
+ *
+ * \fn static void Serial_WriteString(const char* szStr_)
+ */
+static void Serial_WriteString(const char* szStr_)
+{
+    uint8_t i = 0;
+    while (szStr_[i] != '\0')
+    {
+        Serial_Write((uint8_t)szStr_[i++]);
+    }
 }
 
 /*------------------------------------------------------------------------- */
@@ -351,17 +370,17 @@ static uint8_t Slip_DecodePacket(void)
         {
             if (*(pu8Src+1) == 220)
             {
-                *pu8Dst = 192;				
+                *pu8Dst = 192;
             }
             else if (*(pu8Src+1) == 221)
             {
-                *pu8Dst = 219;				
+                *pu8Dst = 219;
             }
             pu8Src++;
         }
         else
         {
-            *pu8Dst = *pu8Src;	
+            *pu8Dst = *pu8Src;
         }
         i++;
         pu8Src++;
@@ -369,7 +388,7 @@ static uint8_t Slip_DecodePacket(void)
     }
     
     *pu8Dst = 192;
-		
+
     return i;
 }
 
@@ -394,11 +413,11 @@ static bool Serial_ValidatePacket(uint16_t *pu16Len_)
     u8Channel = aucSerialBuf[0];
     
     /* Ensure the channel is correct  */
-	if (u8Channel != PROGRAM_CHANNEL)
+    if (u8Channel != PROGRAM_CHANNEL)
     {
-	    return K_FALSE;
+        return K_FALSE;
     }
-	
+
     u16CRC_Calc += aucSerialBuf[0];
     
     /* Read the length out  */
@@ -413,7 +432,7 @@ static bool Serial_ValidatePacket(uint16_t *pu16Len_)
     *pu16Len_ = u16Len - 1; 
     
     /* Continue reading through the packet to compute the CRC  */
-	pu8Data = &aucSerialBuf[3];
+    pu8Data = &aucSerialBuf[3];
     while (u16Len--)
     {
         u16CRC_Calc += *pu8Data;
@@ -429,8 +448,8 @@ static bool Serial_ValidatePacket(uint16_t *pu16Len_)
     /* Make sure the read CRC matches the generated CRC */
     if (u16CRC_Read != u16CRC_Calc)
     {
-        *pu16Len_ = 0;		
-	    return K_FALSE;
+        *pu16Len_ = 0;
+        return K_FALSE;
     }
     
     return K_TRUE;
@@ -447,7 +466,7 @@ static void Flash_WritePage(void)
 {
     uint16_t i;
     uint8_t *pu8Data = aucPageBuf;
-	
+
     eeprom_busy_wait();
 
     boot_page_erase(u32PageAddr);
@@ -484,17 +503,17 @@ static bool Flash_WriteBuffer(uint16_t u16Len_)
     /* Write from the serial buffer to the flash staging buffer  */
     while (u16Len_--)
     {
-        aucPageBuf[u8PageIdx] = aucSerialBuf[u8Idx++];
+        aucPageBuf[uPageIdx] = aucSerialBuf[u8Idx++];
         
-        u8PageIdx++;
-        if (u8PageIdx == PAGE_SIZE)
+        uPageIdx++;
+        if (uPageIdx == PAGE_SIZE)
         {
             /* Write the page of data to flash...         */
             Flash_WritePage();
-			
+
             /* Update indexes/pages.  */
-            u8PageIdx = 0;
-            u32PageAddr += PAGE_SIZE;			
+            uPageIdx = 0;
+            u32PageAddr += PAGE_SIZE;
         }
     }
     
@@ -509,15 +528,15 @@ static bool Flash_WriteBuffer(uint16_t u16Len_)
  */
 static void Flash_WritePartialPage(void)
 {
-	if (u8PageIdx != 0)
-	{
-		while (u8PageIdx < PAGE_SIZE)
-		{
-			aucPageBuf[u8PageIdx] = 0xFF;
-			u8PageIdx++;
-		}
-		Flash_WritePage();	
-	}
+    if (uPageIdx != 0)
+    {
+        while (uPageIdx < PAGE_SIZE)
+        {
+            aucPageBuf[uPageIdx] = 0xFF;
+            uPageIdx++;
+        }
+        Flash_WritePage();
+    }
 }
 
 /*------------------------------------------------------------------------- */
@@ -527,27 +546,20 @@ int main(void)
     cli();
 
     /* Clear the watchdog timer...  */
-	{
-		volatile uint8_t u8Temp = MCUSR;
-		MCUSR = 0;
-		WDTCSR |= (1 << WDCE) | (1 << WDE);
-		WDTCSR = 0;
+    {
+        volatile uint8_t u8Temp = MCUSR;
+        MCUSR = 0;
+        WDTCSR |= (1 << WDCE) | (1 << WDE);
+        WDTCSR = 0;
         u8Temp = u8Temp;
-	}
+    }
 
     /* Start off by initializing the serial port  */
     Serial_Init();
 
     /* Send a banner message, indicating we're in the Mark3 Boot Loader  */
-	Serial_Write('M');
-	Serial_Write('a');
-	Serial_Write('r');
-	Serial_Write('k');
-    Serial_Write('3');
-	Serial_Write('B');
-	Serial_Write('L');
-	Serial_Write('\n');
-		
+    Serial_WriteString("Mark3BL\n");
+
 #if 1
     /* Check to see if we're getting our start character to begin using the BL  */
     if (!Serial_RxPoll())
@@ -557,63 +569,63 @@ int main(void)
     }
     
     /* Acknowledge the request to start programming.  */
-	Serial_Write(69);	
+    Serial_Write(69);
 #endif
 
     /* Main programming loop.  Program until we can't program no more!  */
-	while (1)
-	{
-		uint16_t u16Len;
-		
+    while (1)
+    {
+        uint16_t u16Len;
+
         /* Wait until we receive a packet of data.  */
-		Slip_FillPacket();		
-		
+        Slip_FillPacket();
+
         /* Decode the serial buffer  */
-		if (!Slip_DecodePacket())
-		{
-			Serial_Write('D');
-			continue;
-		}
-		
+        if (!Slip_DecodePacket())
+        {
+            Serial_Write('D');
+            continue;
+        }
+
         /* Make sure the packet is VALID before trying to operate on it.  */
-		if (!Serial_ValidatePacket(&u16Len))
-		{
-			Serial_Write('V');
-			continue;
-		}
-		
+        if (!Serial_ValidatePacket(&u16Len))
+        {
+            Serial_Write('V');
+            continue;
+        }
+
         /* Figure out what action to take based on the command field...  */
-		if (aucSerialBuf[3] == PROGRAM_CMD_SEEK)
-		{
+        if (aucSerialBuf[3] == PROGRAM_CMD_SEEK)
+        {
             /* Seek to new address...  */
-			uint16_t u16NewAddr = ((uint16_t)aucSerialBuf[4]) << 8;
-			u16NewAddr += aucSerialBuf[5];
-			Flash_WritePartialPage();
-			u32PageAddr = (uint32_t)u16NewAddr;
-			u8PageIdx = 0;			
-		}	
-		else if (aucSerialBuf[3] == PROGRAM_CMD_WRITE)
-		{
+            uint16_t u16NewAddr = ((uint16_t)aucSerialBuf[4]) << 8;
+            u16NewAddr += aucSerialBuf[5];
+            Flash_WritePartialPage();
+            u32PageAddr = (uint32_t)u16NewAddr;
+            uPageIdx = 0;
+        }
+        else if (aucSerialBuf[3] == PROGRAM_CMD_WRITE)
+        {
             /* Write contents of buffer to staging buffer, then flash. */
-			Flash_WriteBuffer(u16Len);	
-		}
-		else if (aucSerialBuf[3] == PROGRAM_CMD_EOF)
-		{
+            Flash_WriteBuffer(u16Len);
+        }
+        else if (aucSerialBuf[3] == PROGRAM_CMD_EOF)
+        {
             /* End of file.  Commit current page to flash (if non-empty) and boot to  */
             /* application, if possible.  */
-			Flash_WritePartialPage();
-			BL_Exit();
-		}			
-		else
-		{
+            Flash_WritePartialPage();
+            BL_Exit();
+        }
+        else
+        {
             /* error, invalid command   */
-			Serial_Write('I');
-			continue;
-		}
-		
+            Serial_Write('I');
+            continue;
+        }
+
         /* If we get here, the packet was valid.  */
-		Serial_Write(69);
-	}		
+        Serial_Write(69);
+    }
     
     /* Return to app on exit.  */
     BL_Exit();
