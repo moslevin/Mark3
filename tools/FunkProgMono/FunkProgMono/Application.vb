@@ -69,16 +69,22 @@ Public Class Application
 	end sub
 	
 	Private Shared function WaitAck() as boolean
-		while sp.BytesToRead
-			dim tmp_byte as Byte
-			tmp_byte = sp.ReadByte
-		    if tmp_byte = 69 then
-		    	''Console.WriteLine("Received Acknowledge")
-		    	return true
-		    else
-		    	''Console.Writeline("Recevied:" & tmp_byte)
-		    end if
-		end while
+        Dim attempts as integer
+        attempts = 100
+        while attempts		
+            while sp.BytesToRead
+			    dim tmp_byte as Byte
+			    tmp_byte = sp.ReadByte
+		        if tmp_byte = 69 then
+		        	''Console.WriteLine("Received Acknowledge")
+		        	return true
+		        else
+		        	''Console.Writeline("Recevied:" & tmp_byte)
+		        end if
+		    end while
+            Thread.sleep(1)
+            attempts = attempts - 1
+        end while
 		return false
 	end function
 	
@@ -118,7 +124,6 @@ Public Class Application
             Next
 			
 			sp.Write(tx_array, 0, tx_data.Count())
-			Thread.Sleep(25)
         Catch ex As Exception
 
         End Try
