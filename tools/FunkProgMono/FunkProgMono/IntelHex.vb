@@ -1,6 +1,7 @@
 ﻿Imports System
 Imports System.Collections
 Imports System.Collections.Generic
+Imports Microsoft.VisualBasic
 
 Public Class IntelHex
 

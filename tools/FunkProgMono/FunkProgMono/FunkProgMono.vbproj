@@ -25,7 +25,7 @@
     <OutputPath>bin\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <DefineTrace>false</DefineTrace>
-    <AdditionalParameters>/dev/ttyACM0 57600</AdditionalParameters>
+    <AdditionalParameters />
     <DefineDebug>false</DefineDebug>
     <Externalconsole>true</Externalconsole>
   </PropertyGroup>
