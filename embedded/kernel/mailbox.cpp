@@ -39,6 +39,16 @@ See license.txt for more information
 #if KERNEL_USE_MAILBOX
 
 //---------------------------------------------------------------------------
+Mailbox::~Mailbox()
+{
+    // If the mailbox isn't empty on destruction, kernel panic.
+    if (m_u16Free != m_u16Count)
+    {
+        Kernel::Panic(PANIC_ACTIVE_MAILBOX_DESCOPED);
+    }
+}
+
+//---------------------------------------------------------------------------
 void Mailbox::Init( void *pvBuffer_, uint16_t u16BufferSize_, uint16_t u16ElementSize_ )
 {
     KERNEL_ASSERT(u16BufferSize_);

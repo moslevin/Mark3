@@ -39,6 +39,8 @@ class Semaphore : public BlockingObject
 public:
     void* operator new (size_t sz, void* pv) { return (Semaphore*)pv; };
 
+    ~Semaphore();
+
     /*!
      *  \brief
      *

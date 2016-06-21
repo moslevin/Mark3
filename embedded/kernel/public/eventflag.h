@@ -48,6 +48,8 @@ class EventFlag : public BlockingObject
 public:
     void* operator new (size_t sz, void* pv) { return (EventFlag*)pv; };
 
+    ~EventFlag();
+
     /*!
      * \brief Init Initializes the EventFlag object prior to use.
      */

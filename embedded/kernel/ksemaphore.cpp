@@ -72,6 +72,17 @@ void TimedSemaphore_Callback(Thread *pclOwner_, void *pvData_)
 }
 
 //---------------------------------------------------------------------------
+Semaphore::~Semaphore()
+{
+    // If there are any threads waiting on this object when it goes out
+    // of scope, set a kernel panic.
+    if (m_clBlockList.GetHead())
+    {
+        Kernel::Panic(PANIC_ACTIVE_SEMAPHORE_DESCOPED);
+    }
+}
+
+//---------------------------------------------------------------------------
 void Semaphore::WakeMe(Thread *pclChosenOne_)
 { 
     // Remove from the semaphore waitlist and back to its ready list.

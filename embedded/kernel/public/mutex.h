@@ -71,6 +71,8 @@ public:
 
     void* operator new (size_t sz, void* pv) { return (Mutex*)pv; };
 
+    ~Mutex();
+
     /*!
      *  \brief Init
      *

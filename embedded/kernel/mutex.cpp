@@ -66,6 +66,16 @@ void TimedMutex_Calback(Thread *pclOwner_, void *pvData_)
 		Thread::Yield();
 	}
 }
+//---------------------------------------------------------------------------
+Mutex::~Mutex()
+{
+    // If there are any threads waiting on this object when it goes out
+    // of scope, set a kernel panic.
+    if (m_clBlockList.GetHead())
+    {
+        Kernel::Panic(PANIC_ACTIVE_MUTEX_DESCOPED);
+    }
+}
 
 //---------------------------------------------------------------------------
 void Mutex::WakeMe(Thread *pclOwner_)

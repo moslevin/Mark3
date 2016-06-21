@@ -44,6 +44,32 @@ See license.txt for more information
 
 #include "kerneldebug.h"
 //---------------------------------------------------------------------------
+Thread::~Thread()
+{
+    // On destruction of a thread located on a stack,
+    // ensure that the thread is either stopped, or exited.
+    // If the thread is stopped, move it to the exit state.
+    // If not in the exit state, kernel panic -- it's catastrophic to have
+    // running threads on stack suddenly disappear.
+    if (m_eState == THREAD_STATE_STOP)
+    {
+        CS_ENTER();
+        m_pclCurrent->Remove(this);
+        m_pclCurrent = 0;
+        m_pclOwner = 0;
+        m_eState = THREAD_STATE_EXIT;
+        CS_EXIT();
+    }
+    else if (m_eState != THREAD_STATE_EXIT)
+    {
+#if KERNEL_AWARE_SIMULATION
+        KernelAware::Trace(0, 0, m_u8ThreadID, m_eState);
+#endif
+        Kernel::Panic(PANIC_RUNNING_THREAD_DESCOPED);
+    }
+}
+
+//---------------------------------------------------------------------------
 void Thread::Init(  K_WORD *pwStack_,
                 uint16_t u16StackSize_,
                 PRIO_TYPE uXPriority_,                
@@ -235,7 +261,8 @@ void Thread::Exit()
     {
         Scheduler::Remove(this);
     }
-    else if (m_eState == THREAD_STATE_BLOCKED)
+    else if ((m_eState == THREAD_STATE_BLOCKED) ||
+             (m_eState == THREAD_STATE_STOP))
     {
         m_pclCurrent->Remove(this);
     }

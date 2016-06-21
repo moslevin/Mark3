@@ -47,7 +47,7 @@ class Thread;
     Given a 16-bit timer @ 16MHz & 256 cycle prescaler, this gives u16...
     Max time, SECONDS_TO_TICKS:  68719s
     Max time, MSECONDS_TO_TICKS: 6871.9s
-    Max time, useCONDS_TO_TICKS: 6.8719s
+    Max time, USECONDS_TO_TICKS: 6.8719s
 
     ...With a 16us tick resolution.
 
@@ -57,7 +57,7 @@ class Thread;
 //---------------------------------------------------------------------------
 #define SECONDS_TO_TICKS(x)             ((((uint32_t)x) * TIMER_FREQ))
 #define MSECONDS_TO_TICKS(x)            ((((((uint32_t)x) * (TIMER_FREQ/100)) + 5) / 10))
-#define useCONDS_TO_TICKS(x)            ((((((uint32_t)x) * TIMER_FREQ) + 50000) / 1000000))
+#define USECONDS_TO_TICKS(x)            ((((((uint32_t)x) * TIMER_FREQ) + 50000) / 1000000))
 
 //---------------------------------------------------------------------------
 #define MIN_TICKS                        (3)    //!< The minimum tick value to set
@@ -69,7 +69,7 @@ class Thread;
 // add time because we don't know how far in an epoch we are when a call is made.
 #define SECONDS_TO_TICKS(x)             (((uint32_t)(x) * 1000) + 1)
 #define MSECONDS_TO_TICKS(x)            ((uint32_t)(x + 1))
-#define useCONDS_TO_TICKS(x)            (((uint32_t)(x + 999)) / 1000)
+#define USECONDS_TO_TICKS(x)            (((uint32_t)(x + 999)) / 1000)
 
 //---------------------------------------------------------------------------
 #define MIN_TICKS                       (1)    //!< The minimum tick value to set
@@ -94,11 +94,7 @@ typedef void (*TimerCallback_t)(Thread *pclOwner_, void *pvData_);
 class TimerList;
 class TimerScheduler;
 class Quantum;
-/*!
- *  Timer - an event-driven execution context based on a specified time
- *  interval.  This inherits from a LinkListNode for ease of management by
- *  a global TimerList object.
- */
+
 class Timer : public LinkListNode
 {
 public:
@@ -107,10 +103,14 @@ public:
     /*!
      *  \brief Timer
      *
-     *  Default Constructor - zero-initializes all internal data.
+     *  Default Constructor - Do nothing.  Allow the init call to perform
+     *  the necessary object initialization prior to use.
      */
-    Timer() { }
-    
+    Timer()
+    {
+        m_u8Flags = 0;
+    }
+
     /*!
      *  \brief Init
      *
@@ -145,6 +145,16 @@ public:
      *  \param pvData_ - Data to pass into the callback function
      */
     void Start( bool bRepeat_, uint32_t u32IntervalMs_, uint32_t u32ToleranceMs_, TimerCallback_t pfCallback_, void *pvData_ );
+
+    /*!
+     * \brief Start
+     *
+     * Start or restart a timer using parameters previously configured via
+     * calls to Start(<with args>), or via the a-la-carte parameter setter
+     * methods.  This is especially useful for retriggering one-shot timers
+     * that have previously expired, using the timer's previous configuration.
+     */
+    void Start();
 
     /*!
      *  \brief Stop
@@ -214,7 +224,9 @@ public:
     /*!
      * \brief GetInterval
      *
-     * \return
+     * Return the timer's configured interval in ticks
+     *
+     * \return Timer interval in ticks.
      */
     uint32_t GetInterval()	{ return m_u32Interval; }
 

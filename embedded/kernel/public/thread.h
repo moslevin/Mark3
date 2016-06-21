@@ -62,6 +62,8 @@ class Thread : public LinkListNode
 public:    
     void* operator new (size_t sz, void* pv) { return (Thread*)pv; };
 
+    ~Thread();
+
     /*!
      *  \brief Init
      *

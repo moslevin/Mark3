@@ -47,10 +47,15 @@ See license.txt for more information
 //---------------------------------------------------------------------------
 void Timer::Start( bool bRepeat_, uint32_t u32IntervalMs_, TimerCallback_t pfCallback_, void *pvData_ )
 {
+    if (m_u8Flags & TIMERLIST_FLAG_ACTIVE) {
+        return;
+    }
+
     SetIntervalMSeconds(u32IntervalMs_);
     m_u32TimerTolerance = 0;
     m_pfCallback = pfCallback_;
     m_pvData = pvData_;
+
     if (!bRepeat_)
     {
         m_u8Flags = TIMERLIST_FLAG_ONE_SHOT;
@@ -59,15 +64,30 @@ void Timer::Start( bool bRepeat_, uint32_t u32IntervalMs_, TimerCallback_t pfCal
     {
         m_u8Flags = 0;
     }
-    m_pclOwner = Scheduler::GetCurrentThread();
-    TimerScheduler::Add(this);
+
+    Start();
 }
 
 //---------------------------------------------------------------------------
 void Timer::Start( bool bRepeat_, uint32_t u32IntervalMs_, uint32_t u32ToleranceMs_, TimerCallback_t pfCallback_, void *pvData_ )
 {
+    if (m_u8Flags & TIMERLIST_FLAG_ACTIVE) {
+        return;
+    }
+
     m_u32TimerTolerance = MSECONDS_TO_TICKS(u32ToleranceMs_);
     Start(bRepeat_, u32IntervalMs_, pfCallback_, pvData_);
+}
+
+//---------------------------------------------------------------------------
+void Timer::Start()
+{
+    if (m_u8Flags & TIMERLIST_FLAG_ACTIVE) {
+        return;
+    }
+
+    m_pclOwner = Scheduler::GetCurrentThread();
+    TimerScheduler::Add(this);
 }
 
 //---------------------------------------------------------------------------
@@ -99,7 +119,7 @@ void Timer::SetIntervalMSeconds( uint32_t u32MSeconds_)
 //---------------------------------------------------------------------------
 void Timer::SetIntervalUSeconds( uint32_t u32USeconds_)
 {
-    m_u32Interval = useCONDS_TO_TICKS(u32USeconds_);
+    m_u32Interval = USECONDS_TO_TICKS(u32USeconds_);
 }
 
 //---------------------------------------------------------------------------

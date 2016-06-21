@@ -63,6 +63,16 @@ void TimedEventFlag_Callback(Thread *pclOwner_, void *pvData_)
         Thread::Yield();
     }
 }
+//---------------------------------------------------------------------------
+EventFlag::~EventFlag()
+{
+    // If there are any threads waiting on this object when it goes out
+    // of scope, set a kernel panic.
+    if (m_clBlockList.HighestWaiter())
+    {
+        Kernel::Panic(PANIC_ACTIVE_EVENTFLAG_DESCOPED);
+    }
+}
 
 //---------------------------------------------------------------------------
 void EventFlag::WakeMe(Thread *pclChosenOne_)

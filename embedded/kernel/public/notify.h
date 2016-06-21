@@ -36,6 +36,8 @@ public:
 
     void* operator new (size_t sz, void* pv) { return (Notify*)pv; };
 
+    ~Notify();
+
     /*!
      *  \brief Init
      *

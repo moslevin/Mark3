@@ -106,6 +106,7 @@ void TimerList::Remove(Timer *pclLinkListNode_)
     CS_ENTER();
     
     DoubleLinkList::Remove(pclLinkListNode_);
+    pclLinkListNode_->m_u8Flags &= ~TIMERLIST_FLAG_ACTIVE;
 
 #if KERNEL_TIMERS_TICKLESS
     if (this->GetHead() == NULL)
@@ -207,28 +208,29 @@ void TimerList::Process(void)
         pclNode = static_cast<Timer*>(GetHead());
         while (pclNode)
         {
-            pclPrev = NULL;
-        
+            pclPrev = pclNode;
+            pclNode = static_cast<Timer*>(pclNode->GetNext());
+
             // If the timer expired, run the callbacks now.
-            if (pclNode->m_u8Flags & TIMERLIST_FLAG_CALLBACK)
+            if (pclPrev->m_u8Flags & TIMERLIST_FLAG_CALLBACK)
             {
-                // Run the callback. these callbacks must be very fast...
-                pclNode->m_pfCallback( pclNode->m_pclOwner, pclNode->m_pvData );
-                pclNode->m_u8Flags &= ~TIMERLIST_FLAG_CALLBACK;
-            
-                // If this was a one-shot timer, let's remove it.
-                if (pclNode->m_u8Flags & TIMERLIST_FLAG_ONE_SHOT)
+                bool bRemove = false;
+                // If this was a one-shot timer, tag it for removal
+                if (pclPrev->m_u8Flags & TIMERLIST_FLAG_ONE_SHOT)
                 {
-                    pclPrev = pclNode;
+                    bRemove = true;
+                }
+
+                // Run the callback. these callbacks must be very fast...
+                pclPrev->m_pfCallback( pclPrev->m_pclOwner, pclPrev->m_pvData );
+                pclPrev->m_u8Flags &= ~TIMERLIST_FLAG_CALLBACK;
+
+                // Remove one-shot-timers
+                if (bRemove)
+                {
+                    Remove(pclPrev);
                 }
             }
-            pclNode = static_cast<Timer*>(pclNode->GetNext());
-        
-            // Remove one-shot-timers
-            if (pclPrev)
-            {
-                Remove(pclPrev);
-            }        
         }    
 
 #if KERNEL_TIMERS_TICKLESS

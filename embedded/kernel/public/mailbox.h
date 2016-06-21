@@ -37,6 +37,8 @@ class Mailbox
 public:
     void* operator new (size_t sz, void* pv) { return (Mailbox*)pv; };
 
+    ~Mailbox();
+
     /*!
      * \brief Init
      *
