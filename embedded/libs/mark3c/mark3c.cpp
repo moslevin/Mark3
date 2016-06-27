@@ -371,6 +371,13 @@ void Timer_Stop(Timer_t handle)
     pclTimer->Stop();
 }
 
+//---------------------------------------------------------------------------
+void Timer_Restart(Timer_t handle)
+{
+    Timer *pclTimer = (Timer*)handle;
+    pclTimer->Start();
+}
+
 #endif
 
 //---------------------------------------------------------------------------

@@ -479,6 +479,14 @@ void Timer_Init(Timer_t handle);
  * \param pvData_           Data to pass to the callback on expiry
  */
 void Timer_Start(Timer_t handle, bool bRepeat_, uint32_t u32IntervalMs_, uint32_t u32ToleranceMs_, TimerCallbackC_t pfCallback_, void *pvData_ );
+
+/*!
+ * \brief Timer_Restart
+ * \sa void Timer::Start()
+ * \param handler Handle of the timer to restart.
+ */
+void Timer_Restart(Timer_t handle);
+
 /*!
  * \brief Timer_Stop
  * \sa void Timer::Stop()
