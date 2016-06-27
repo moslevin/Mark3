@@ -164,12 +164,12 @@ void ThreadPort::StartThreads()
 
 //---------------------------------------------------------------------------
 /*!
- *   \brief ISR(INT0_vect)
- *   SWI using INT0 - used to trigger a context switch
+ *   \brief ISR(INT2 _vect)
+ *   SWI using INT2 - used to trigger a context switch
  */
 //---------------------------------------------------------------------------
-ISR(INT0_vect) __attribute__ ( ( signal, naked ) );
-ISR(INT0_vect)
+ISR(INT2_vect) __attribute__ ( ( signal, naked ) );
+ISR(INT2_vect)
 {
     Thread_SaveContext();        // Push the context (registers) of the current task
     Thread_Switch();            // Switch to the next task

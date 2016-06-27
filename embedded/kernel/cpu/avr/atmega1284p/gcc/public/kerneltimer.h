@@ -26,7 +26,7 @@ See license.txt for more information
 
 //---------------------------------------------------------------------------
 #if !defined(SYSTEM_FREQ)
-# define SYSTEM_FREQ       ((uint32_t)16000000)
+# define SYSTEM_FREQ       ((uint32_t)20000000)
 #endif
 
 #if KERNEL_TIMERS_TICKLESS
