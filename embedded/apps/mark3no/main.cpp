@@ -10,6 +10,17 @@
 #include "drvUART.h"
 #include "rtc.h"
 #include "memutil.h"
+#include "led.h"
+#include "button.h"
+#include "arena.h"
+#include "tracebuffer.h"
+
+#include "bsp_buttons.h"
+#include "bsp_heap.h"
+#include "bsp_leds.h"
+#include "bsp_rtc.h"
+#include "bsp_tracelogger.h"
+#include "bsp_uarts.h"
 
 static Thread clApp1;
 static uint8_t au8Stack1[320];
@@ -26,21 +37,10 @@ static uint8_t au8Stack4[320];
 static Thread clApp5;
 static uint8_t au8Stack5[320];
 
-static ATMegaUART clUART0;
-static uint8_t au8RX0[32];
-static uint8_t au8TX0[32];
-
-static ATMegaUART clUART1;
-static uint8_t au8RX1[32];
-static uint8_t au8TX1[32];
-
-static Semaphore clRTCSem;
-static RTC clRTC;
-
 static void App1(void* param)
 {
 	while(1) {
-		PORTA ^= 0x01;
+        clLED1.Toggle();
 		Thread::Sleep(100);
 	}
 }
@@ -48,7 +48,7 @@ static void App1(void* param)
 static void App2(void* param)
 {
 	while(1) {
-		PORTA ^= 0x02;
+        clLED2.Toggle();
 		Thread::Sleep(250);
 	}
 }
@@ -69,10 +69,18 @@ static void WriteString(Driver* pclDriver_, const char* szData_)
     }
 }
 
+static Semaphore clRTCSem;
+static void OnRTCTick(void)
+{
+    clRTCSem.Post();
+}
+
 static void App3(void* param)
 {
-    {
-        clRTC.Init(1);
+    bsp_rtc_set_on_rtc_tick(OnRTCTick);
+    clRTCSem.Init(0,1);
+
+    {        
         calendar_t cal = {0};
         cal.u8Day = 27;
         cal.eMonth = MONTH_JUNE;
@@ -81,19 +89,20 @@ static void App3(void* param)
         cal.u8Minute = 50;
         cal.u8Second = 0;
 
-        clRTC.SetDateTime(&cal);
+        bsp_rtc_set_datetime(&cal);
     }
 
     Driver* pclUART = DriverList::FindByPath("/dev/tty0");
 
 	while(1) {
-        PORTA ^= 0x04;
+        clLED3.Toggle();
+
         calendar_t myCal;
 
-		clRTCSem.Pend();
-        clRTC.AddTime(1);
+        clRTCSem.Pend();
 
-        clRTC.GetDateTime(&myCal);
+        bsp_rtc_kick();
+        bsp_rtc_get_datetime(&myCal);
         char szBuf[12];
 
         MemUtil::DecimalToString(myCal.u8Hour, szBuf);
@@ -108,11 +117,11 @@ static void App3(void* param)
         WriteString(pclUART, szBuf);
         WriteString(pclUART, " - ");
 
-        const char* szDay   = clRTC.GetDayOfWeek();
+        const char* szDay   = bsp_rtc_get_day_of_week();
         WriteString(pclUART, szDay);
         WriteString(pclUART, ", ");
 
-        const char* szMonth = clRTC.GetMonthName();
+        const char* szMonth = bsp_rtc_get_month_name();
         WriteString(pclUART, szMonth);
         WriteString(pclUART, " ");
 
@@ -129,10 +138,26 @@ static void App3(void* param)
 static void App4(void* param)
 {
 	Driver* pclUART = DriverList::FindByPath("/dev/tty0");
-	
+    bool bState;
+
 	while(1) {
 		const char* szStr = "Tommy can you hear me?\r\n"; // 24 chars?
         WriteString(pclUART, szStr);
+        Thread::Sleep(100);
+
+        bState = clButtons[0].ReadState();
+        if (bState) {
+            WriteString(pclUART, "B1 UP\n");
+        } else {
+            WriteString(pclUART, "B1 DOWN\n");
+        }
+
+        bState = clButtons[1].ReadState();
+        if (bState) {
+            WriteString(pclUART, "B2 UP\n");
+        } else {
+            WriteString(pclUART, "B2 DOWN\n");
+        }
         Thread::Sleep(300);
 	}
 }
@@ -146,29 +171,6 @@ static void App5(void* param)
         WriteString(pclUART, szStr);
 		Thread::Sleep(750);
 	}
-}
-
-ISR(TIMER2_OVF_vect)
-{
-	clRTCSem.Post();
-	// TIFR2's TOV2 flag is cleared on interrupt.	
-}
-
-static void RTC_Init(void)
-{
-	// Set up an RTC that expires every second.
-	TCCR2A = 0;	 // Normal mode -- count to top @ 0xFF
-	TCNT2 = 0;
-	
-	// Enable overflow interrupt
-	TIFR2 = 0;
-	TIMSK2 = (1 << TOIE2);
-
-	// Enable asynchronous clock from 32kHz source
-	ASSR = (1 << AS2);
-
-	// 1-second expiry (32kHz / 128) = 256 (rollover)
-	TCCR2B = (1 << CS22) | (1 << CS20); 		
 }
 
 int main(void)
@@ -186,36 +188,15 @@ int main(void)
 	clApp3.Start();
 	clApp4.Start();
 	clApp5.Start();
-	
-	DDRA |= 0x07;
-	
-	// Initialize UART0
-	clUART0.Init();
-	clUART0.SetName("/dev/tty0");	
-	uint8_t u8Identity = 0 ;
-	clUART0.Control(CMD_SET_IDENTITY, &u8Identity, 0, 0, 0);
-	uint32_t u32Baud = 57600;
-	clUART0.Control(CMD_SET_BAUDRATE, &u32Baud, 0, 0, 0);
-	clUART0.Control(CMD_SET_BUFFERS, au8RX0, 32, au8TX0, 32);	
-	clUART0.Open();
-	
-	// Initialize UART1
-	clUART1.Init();
-	clUART1.SetName("/dev/tty1");
-	u8Identity = 1 ;
-	clUART1.Control(CMD_SET_IDENTITY, &u8Identity, 0, 0, 0);
-	clUART1.Control(CMD_SET_BAUDRATE, &u32Baud, 0, 0, 0);
-	clUART1.Control(CMD_SET_BUFFERS, au8RX1, 32, au8TX1, 32);		
-	clUART1.Open();
-	
-	DriverList::Add(&clUART0);
-	DriverList::Add(&clUART1);
-	
-	// Initialize the RTC and a semaphore used to signal 1s expiry
-	RTC_Init();
-	clRTCSem.Init(0, 1);
-	
-	Kernel::Start();
+
+    bsp_leds_init();
+    bsp_buttons_init();
+    bsp_uarts_init();
+    bsp_heap_init();
+    bsp_rtc_init();
+    bsp_tracelogger_init();
+
+    Kernel::Start();
 	
 }
 
