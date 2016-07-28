@@ -46,26 +46,28 @@ of static threads.
 
 ===========================================================================*/
 extern "C" {
-void __cxa_pure_virtual(void) { }
+void __cxa_pure_virtual(void)
+{
+}
 }
 
 //---------------------------------------------------------------------------
 // This block declares the thread data for the main application thread.  It
 // defines a thread object, stack (in word-array form), and the entry-point
 // function used by the application thread.
-#define APP_STACK_SIZE      (320/sizeof(K_WORD))
-static Thread  clAppThread;
-static K_WORD  awAppStack[APP_STACK_SIZE];
-static void    AppMain(void *unused_);
+#define APP_STACK_SIZE (320 / sizeof(K_WORD))
+static Thread clAppThread;
+static K_WORD awAppStack[APP_STACK_SIZE];
+static void AppMain(void* unused_);
 
 //---------------------------------------------------------------------------
 // This block declares the thread data for the idle thread.  It defines a
 // thread object, stack (in word-array form), and the entry-point function
 // used by the idle thread.
-#define IDLE_STACK_SIZE     (320/sizeof(K_WORD))
-static Thread  clIdleThread;
-static K_WORD  awIdleStack[IDLE_STACK_SIZE];
-static void    IdleMain(void *unused_);
+#define IDLE_STACK_SIZE (320 / sizeof(K_WORD))
+static Thread clIdleThread;
+static K_WORD awIdleStack[IDLE_STACK_SIZE];
+static void IdleMain(void* unused_);
 
 //---------------------------------------------------------------------------
 int main(void)
@@ -86,12 +88,12 @@ int main(void)
     // Initialize the application thread to use a specified word-array as its stack.
     // The thread will run at priority level "1", and start execution the
     // "AppMain" function when it's started.
-    clAppThread.Init(  awAppStack,  sizeof(awAppStack),  1, AppMain,  0);
+    clAppThread.Init(awAppStack, sizeof(awAppStack), 1, AppMain, 0);
 
     // Initialize the idle thread to use a specific word-array as its stack.
     // The thread will run at priority level "0", which is reserved for the idle
     // priority thread.  IdleMain will be run when the thread is started.
-    clIdleThread.Init( awIdleStack, sizeof(awIdleStack), 0, IdleMain, 0);
+    clIdleThread.Init(awIdleStack, sizeof(awIdleStack), 0, IdleMain, 0);
 
     // Once the static threads have been added, the user must then ensure that the
     // threads are ready to execute.  By default, creating a thread is created
@@ -121,25 +123,23 @@ int main(void)
 }
 
 //---------------------------------------------------------------------------
-void AppMain(void *unused_)
+void AppMain(void* unused_)
 {
     // This function is run from within the application thread.  Here, we
     // simply print a friendly greeting and allow the thread to sleep for a
     // while before repeating the message.  Note that while the thread is
     // sleeping, CPU execution will transition to the Idle thread.
 
-    while(1)
-    {
+    while (1) {
         KernelAware::Print("Hello World!\n");
         Thread::Sleep(1000);
     }
 }
 
 //---------------------------------------------------------------------------
-void IdleMain(void *unused_)
+void IdleMain(void* unused_)
 {
-    while(1)
-    {
+    while (1) {
         // Low priority task + power management routines go here.
         // The actions taken in this context must *not* cause the thread
         // to block, as the kernel requires that at least one thread is
@@ -150,4 +150,3 @@ void IdleMain(void *unused_)
         // condition.
     }
 }
-

@@ -22,8 +22,7 @@ void BrLevel::NextLevel(void)
 //-----------------------------------H----------------------------------------
 void BrLevel::Draw(void)
 {
-    if (!m_bUpdate)
-    {
+    if (!m_bUpdate) {
         return;
     }
     DrawText_t stText;

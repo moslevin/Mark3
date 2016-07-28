@@ -36,7 +36,7 @@ void ProgressControl::Init()
 //---------------------------------------------------------------------------
 void ProgressControl::Draw()
 {
-    GraphicsDriver *pclDriver = GetParentWindow()->GetDriver();
+    GraphicsDriver* pclDriver = GetParentWindow()->GetDriver();
     DrawRectangle_t stRect;
     DrawLine_t stLine;
 
@@ -68,7 +68,7 @@ void ProgressControl::Draw()
     pclDriver->Line(&stLine);
 
     // Draw the "completed" portion
-    u16ProgressWidth = (uint16_t)( ( ( ( (uint32_t)m_u8Progress) * (GetWidth()-2) ) + 50 ) / 100);
+    u16ProgressWidth = (uint16_t)(((((uint32_t)m_u8Progress) * (GetWidth() - 2)) + 50) / 100);
     stRect.u16Top = u16Y + GetTop() + 1;
     stRect.u16Bottom = u16Y + GetTop() + GetHeight() - 2;
     stRect.u16Left = u16X + GetLeft() + 1;
@@ -85,22 +85,20 @@ void ProgressControl::Draw()
     stRect.u32ineColor = m_uBackColor;
     stRect.uFillColor = m_uBackColor;
     pclDriver->Rectangle(&stRect);
-
 }
 
 //---------------------------------------------------------------------------
-void ProgressControl::SetProgress( uint8_t u8Progress_ )
+void ProgressControl::SetProgress(uint8_t u8Progress_)
 {
     m_u8Progress = u8Progress_;
-    if (m_u8Progress > 100)
-    {
+    if (m_u8Progress > 100) {
         m_u8Progress = 100;
     }
     SetStale();
 }
 
 //---------------------------------------------------------------------------
-GuiReturn_t ProgressControl::ProcessEvent( GuiEvent_t *pstEvent_)
+GuiReturn_t ProgressControl::ProcessEvent(GuiEvent_t* pstEvent_)
 {
     return GUI_EVENT_OK;
 }

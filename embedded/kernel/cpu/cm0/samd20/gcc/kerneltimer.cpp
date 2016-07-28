@@ -26,13 +26,13 @@ See license.txt for more information
 
 #if KERNEL_TIMERS_TICKLESS
 //---------------------------------------------------------------------------
-#define KERNEL_TIMER_TC         TC0
-#define KERNEL_TIMER_GCLK       (0)     //GCLK_0
-#define KERNEL_TIMER_CLK        (19)    //CLK_TC_0
+#define KERNEL_TIMER_TC TC0
+#define KERNEL_TIMER_GCLK (0) // GCLK_0
+#define KERNEL_TIMER_CLK (19) // CLK_TC_0
 
-#define COUNT_OFFSET            (0x10)
-#define CC0_OFFSET              (0x18)
-#define CC1_OFFSET              (0x1A)
+#define COUNT_OFFSET (0x10)
+#define CC0_OFFSET (0x18)
+#define CC1_OFFSET (0x1A)
 
 //---------------------------------------------------------------------------
 static bool bEnabled = 1;
@@ -40,8 +40,7 @@ static bool bEnabled = 1;
 //---------------------------------------------------------------------------
 static void WriteSync()
 {
-    while (KERNEL_TIMER_TC->COUNT16.STATUS.reg & TC_STATUS_SYNCBUSY)
-    {
+    while (KERNEL_TIMER_TC->COUNT16.STATUS.reg & TC_STATUS_SYNCBUSY) {
         /* Do Nothing */
     }
 }
@@ -49,15 +48,14 @@ static void WriteSync()
 //---------------------------------------------------------------------------
 static void ReadSync(uint16_t u16Offset_)
 {
-    KERNEL_TIMER_TC->COUNT16.READREQ.reg = TC_READREQ_RREQ |
-                                    (((uint32_t)u16Offset_) << TC_READREQ_ADDR_Pos);
+    KERNEL_TIMER_TC->COUNT16.READREQ.reg = TC_READREQ_RREQ | (((uint32_t)u16Offset_) << TC_READREQ_ADDR_Pos);
 
     WriteSync();
 }
 
 //---------------------------------------------------------------------------
 void KernelTimer::Config(void)
-{        
+{
     uint32_t u32Reg;
     uint32_t u32CtrlA;
     uint32_t u32CtrlB;
@@ -69,7 +67,7 @@ void KernelTimer::Config(void)
     PM->APBCMASK.reg |= 1 << (PM_APBCMASK_TC0_Pos);
 
     u32Reg = (((uint32_t)KERNEL_TIMER_CLK) << GCLK_CLKCTRL_ID_Pos)
-          | (((uint32_t)KERNEL_TIMER_GCLK) << GCLK_CLKCTRL_GEN_Pos);
+             | (((uint32_t)KERNEL_TIMER_GCLK) << GCLK_CLKCTRL_GEN_Pos);
 
     //--- Set the clock ID ---
     *((uint8_t*)&GCLK->CLKCTRL.reg) = (uint8_t)KERNEL_TIMER_CLK;
@@ -80,24 +78,23 @@ void KernelTimer::Config(void)
     GCLK->CLKCTRL.reg |= GCLK_CLKCTRL_CLKEN;
 
     //--- Setup Registers ---
-    u32CtrlA = (((uint32_t)1) << TC_CTRLA_WAVEGEN_Pos)        // MATCH
-            | (((uint32_t)0) << TC_CTRLA_MODE_Pos)           // 16-bit timer
-            | (((uint32_t)6) << TC_CTRLA_PRESCALER_Pos)      // 256x prescalar
-            | (((uint32_t)0) << TC_CTRLA_PRESCSYNC_Pos);     // Normal presync
+    u32CtrlA = (((uint32_t)1) << TC_CTRLA_WAVEGEN_Pos)      // MATCH
+               | (((uint32_t)0) << TC_CTRLA_MODE_Pos)       // 16-bit timer
+               | (((uint32_t)6) << TC_CTRLA_PRESCALER_Pos)  // 256x prescalar
+               | (((uint32_t)0) << TC_CTRLA_PRESCSYNC_Pos); // Normal presync
 
-    u32CtrlB = (((uint32_t)0) << TC_CTRLBSET_ONESHOT_Pos)     // Continuous mode (no 1-shot)
-            | (((uint32_t)0) << TC_CTRLBSET_DIR_Pos);        // Count-up
+    u32CtrlB = (((uint32_t)0) << TC_CTRLBSET_ONESHOT_Pos) // Continuous mode (no 1-shot)
+               | (((uint32_t)0) << TC_CTRLBSET_DIR_Pos);  // Count-up
 
-    u32CtrlC = (((uint32_t)1) << TC_CTRLC_CPTEN_Pos)          // Enable Capture
-            | (((uint32_t)0) << TC_CTRLC_INVEN_Pos);         // Disable invert
+    u32CtrlC = (((uint32_t)1) << TC_CTRLC_CPTEN_Pos)    // Enable Capture
+               | (((uint32_t)0) << TC_CTRLC_INVEN_Pos); // Disable invert
 
     u32EventCtrl = (((uint32_t)0) << TC_EVCTRL_MCEO_Pos)
-            | (((uint32_t)1) << TC_EVCTRL_OVFEO_Pos)         // Enable overflow event
-            | (((uint32_t)0) << TC_EVCTRL_TCEI_Pos)
-            | (((uint32_t)0) << TC_EVCTRL_TCINV_Pos);
+                   | (((uint32_t)1) << TC_EVCTRL_OVFEO_Pos) // Enable overflow event
+                   | (((uint32_t)0) << TC_EVCTRL_TCEI_Pos) | (((uint32_t)0) << TC_EVCTRL_TCINV_Pos);
 
     u32ReadReq = (((uint32_t)1) << TC_READREQ_RCONT_Pos)
-            | (((uint32_t)0x10) << TC_READREQ_ADDR_Pos);     // Constantly sync the COUNT value
+                 | (((uint32_t)0x10) << TC_READREQ_ADDR_Pos); // Constantly sync the COUNT value
 
     KERNEL_TIMER_TC->COUNT16.CTRLA.reg = u32CtrlA;
     WriteSync();
@@ -108,7 +105,7 @@ void KernelTimer::Config(void)
     KERNEL_TIMER_TC->COUNT16.READREQ.reg = u32ReadReq;
     WriteSync();
     KERNEL_TIMER_TC->COUNT16.EVCTRL.reg = u32EventCtrl;
-    
+
     //--- Enable The Counter ---
     WriteSync();
     KERNEL_TIMER_TC->COUNT16.CTRLA.reg |= TC_CTRLA_ENABLE;
@@ -123,12 +120,11 @@ void KernelTimer::Config(void)
     NVIC_EnableIRQ(TC0_IRQn);
 
     //--- Stop the counter ---
-    
 }
 
 //---------------------------------------------------------------------------
 void KernelTimer::Start(void)
-{   
+{
     WriteSync();
     KERNEL_TIMER_TC->COUNT16.CTRLA.reg |= TC_CTRLA_ENABLE;
 }
@@ -174,12 +170,9 @@ uint32_t KernelTimer::TimeToExpiry(void)
     ReadSync(CC0_OFFSET);
     u16Top = KERNEL_TIMER_TC->COUNT16.CC[0].reg;
 
-    if (u16Read >= u16Top)
-    {
+    if (u16Read >= u16Top) {
         return 0;
-    }
-    else
-    {
+    } else {
         return (uint32_t)(u16Top - u16Read);
     }
 }
@@ -193,14 +186,11 @@ uint32_t KernelTimer::GetOvertime(void)
 //---------------------------------------------------------------------------
 uint32_t KernelTimer::SetExpiry(uint32_t u32Interval_)
 {
-    uint16_t u16SetInterval;    
-    if (u32Interval_ > 65535)
-    {
+    uint16_t u16SetInterval;
+    if (u32Interval_ > 65535) {
         u16SetInterval = 65535;
-    } 
-    else 
-    {
-        u16SetInterval = (uint16_t)u32Interval_; 
+    } else {
+        u16SetInterval = (uint16_t)u32Interval_;
     }
 
     WriteSync();
@@ -217,12 +207,11 @@ void KernelTimer::ClearExpiry(void)
 
 //---------------------------------------------------------------------------
 uint8_t KernelTimer::DI(void)
-{    
+{
     uint8_t u8Ret = (bEnabled == true);
 
     KernelTimer::RI(0);
-    if (bEnabled == true)
-    {
+    if (bEnabled == true) {
         bEnabled = false;
     }
     return u8Ret;
@@ -237,13 +226,10 @@ void KernelTimer::EI(void)
 //---------------------------------------------------------------------------
 void KernelTimer::RI(bool bEnable_)
 {
-    if (bEnable_)
-    {
+    if (bEnable_) {
         NVIC_EnableIRQ(TC0_IRQn);
         bEnabled = true;
-    }
-    else
-    {
+    } else {
         NVIC_DisableIRQ(TC0_IRQn);
         bEnabled = false;
     }
@@ -252,7 +238,6 @@ void KernelTimer::RI(bool bEnable_)
 //---------------------------------------------------------------------------
 void KernelTimer::Config(void)
 {
-    
 }
 
 //---------------------------------------------------------------------------

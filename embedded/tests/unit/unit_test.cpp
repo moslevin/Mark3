@@ -29,34 +29,30 @@ UnitTest::UnitTest()
 }
 
 //---------------------------------------------------------------------------
-void UnitTest::Pass() 
-{ 
-    if (m_bComplete)
-    {
+void UnitTest::Pass()
+{
+    if (m_bComplete) {
         return;
     }
-    
-    if (m_bIsActive)
-    { 
-        m_bIsActive = false; 
+
+    if (m_bIsActive) {
+        m_bIsActive = false;
         m_u16Iterations++;
         m_u16Passed++;
         m_bStatus = true;
-    }        
-}    
+    }
+}
 
 //---------------------------------------------------------------------------
 void UnitTest::Fail()
 {
-    if (m_bComplete)
-    {
+    if (m_bComplete) {
         return;
     }
-    
-    if (m_bIsActive)
-    {
+
+    if (m_bIsActive) {
         m_bIsActive = false;
-        m_u16Iterations++;            
+        m_u16Iterations++;
         m_bStatus = false;
     }
 }

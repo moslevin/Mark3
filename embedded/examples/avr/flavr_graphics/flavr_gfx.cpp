@@ -37,18 +37,20 @@ See license.txt for more information
 
 //---------------------------------------------------------------------------
 // Need to have this to handle pure-virtual functions
-extern "C" void __cxa_pure_virtual() {}
+extern "C" void __cxa_pure_virtual()
+{
+}
 
 //---------------------------------------------------------------------------
 // Global objects
-static Thread AppThread;			//!< Main "application" thread
-static Thread IdleThread;			//!< Idle thread - runs when app can't
+static Thread AppThread;  //!< Main "application" thread
+static Thread IdleThread; //!< Idle thread - runs when app can't
 
-static GraphicsFlavr clflAVR;       //! flAVR simulated graphics driver object
+static GraphicsFlavr clflAVR; //! flAVR simulated graphics driver object
 
 //---------------------------------------------------------------------------
-#define STACK_SIZE_APP		(192)	//!< Size of the main app's stack
-#define STACK_SIZE_IDLE		(192)	//!< Size of the idle thread stack
+#define STACK_SIZE_APP (192)  //!< Size of the main app's stack
+#define STACK_SIZE_IDLE (192) //!< Size of the idle thread stack
 
 //---------------------------------------------------------------------------
 static uint8_t aucAppStack[STACK_SIZE_APP];
@@ -60,36 +62,36 @@ static void IdleEntry(void);
 
 //---------------------------------------------------------------------------
 int main(void)
-{		
-	Kernel::Init();						//!< MUST be before other kernel ops
+{
+    Kernel::Init(); //!< MUST be before other kernel ops
 
-	AppThread.Init(	aucAppStack,		//!< Pointer to the stack
-					STACK_SIZE_APP,		//!< Size of the stack
-					1,					//!< Thread priority
-					(ThreadEntry_t)AppEntry,	//!< Entry function
-					(void*)&AppThread );//!< Entry function argument
+    AppThread.Init(aucAppStack,             //!< Pointer to the stack
+                   STACK_SIZE_APP,          //!< Size of the stack
+                   1,                       //!< Thread priority
+                   (ThreadEntry_t)AppEntry, //!< Entry function
+                   (void*)&AppThread);      //!< Entry function argument
 
-	IdleThread.Init( aucIdleStack,		//!< Pointer to the stack
-					 STACK_SIZE_IDLE,	//!< Size of the stack
-					 0,					//!< Thread priority		
-					 (ThreadEntry_t)IdleEntry,	//!< Entry function
-					 NULL );			//!< Entry function argument
+    IdleThread.Init(aucIdleStack,             //!< Pointer to the stack
+                    STACK_SIZE_IDLE,          //!< Size of the stack
+                    0,                        //!< Thread priority
+                    (ThreadEntry_t)IdleEntry, //!< Entry function
+                    NULL);                    //!< Entry function argument
 
-	AppThread.Start();					//!< Schedule the threads
-	IdleThread.Start();
+    AppThread.Start(); //!< Schedule the threads
+    IdleThread.Start();
 
-    clflAVR.SetName("/dev/display");     //!< Add the display driver
+    clflAVR.SetName("/dev/display"); //!< Add the display driver
     clflAVR.Init();
 
-    DriverList::Add( &clflAVR );
+    DriverList::Add(&clflAVR);
 
-	Kernel::Start();					//!< Start the kernel!
+    Kernel::Start(); //!< Start the kernel!
 }
 
 //---------------------------------------------------------------------------
 void AppEntry(void)
-{    	
-    GraphicsFlavr *my_gfx = (GraphicsFlavr*)(DriverList::FindByPath("/dev/display" ));
+{
+    GraphicsFlavr* my_gfx = (GraphicsFlavr*)(DriverList::FindByPath("/dev/display"));
 
     my_gfx->Open();
     // Dummy code - just write hello world forever...
@@ -107,8 +109,7 @@ void AppEntry(void)
     my_gfx->ClearScreen();
     Thread::Sleep(10);
 
-    while(1)
-	{
+    while (1) {
         DrawText_t stText;
 
         stText.u16Left = 8;
@@ -127,24 +128,22 @@ void AppEntry(void)
         Thread::Sleep(10);
 
         my_gfx->Flip();
-	}
+    }
 }
 
 //---------------------------------------------------------------------------
 void IdleEntry(void)
 {
-	while(1)
-	{
+    while (1) {
 #if 1
-		// LPM code;
-		set_sleep_mode(SLEEP_MODE_IDLE);
-		cli();
-		sleep_enable();
-		sei();
-		sleep_cpu();
-		sleep_disable();
-		sei();
+        // LPM code;
+        set_sleep_mode(SLEEP_MODE_IDLE);
+        cli();
+        sleep_enable();
+        sei();
+        sleep_cpu();
+        sleep_disable();
+        sei();
 #endif
-	}
+    }
 }
-

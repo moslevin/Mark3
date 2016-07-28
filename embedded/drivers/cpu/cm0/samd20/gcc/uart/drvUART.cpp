@@ -22,7 +22,7 @@ See license.txt for more information
 
 //---------------------------------------------------------------------------
 void D20_UART::Init(void)
-{    
+{
     m_clUART.SetInterface(SERCOM_IF_3);
     m_clUART.SetTxPad(SERCOM_PAD_2);
     m_clUART.SetRxPad(SERCOM_PAD_3);
@@ -47,23 +47,22 @@ uint8_t D20_UART::Close(void)
 }
 
 //---------------------------------------------------------------------------
-uint16_t D20_UART::Control( uint16_t u16CmdId_, void *pvIn_, uint16_t u16SizeIn_, void *pvOut_, uint16_t u16SizeOut_)
+uint16_t D20_UART::Control(uint16_t u16CmdId_, void* pvIn_, uint16_t u16SizeIn_, void* pvOut_, uint16_t u16SizeOut_)
 {
     return 0;
 }
 
 //---------------------------------------------------------------------------
-uint16_t D20_UART::Read( uint16_t u16SizeIn_, uint8_t *pvData_ )
+uint16_t D20_UART::Read(uint16_t u16SizeIn_, uint8_t* pvData_)
 {
     return u16SizeIn_;
 }
 
 //---------------------------------------------------------------------------
-uint16_t D20_UART::Write(uint16_t u16SizeOut_, uint8_t *pvData_)
+uint16_t D20_UART::Write(uint16_t u16SizeOut_, uint8_t* pvData_)
 {
-    for (uint16_t i = 0; i < u16SizeOut_; i++)
-    {
+    for (uint16_t i = 0; i < u16SizeOut_; i++) {
         m_clUART.Write(pvData_[i]);
     }
-	return u16SizeOut_;
+    return u16SizeOut_;
 }

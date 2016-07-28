@@ -24,31 +24,30 @@ See license.txt for more information
 #include <avr/io.h>
 #include <avr/interrupt.h>
 
-
 //---------------------------------------------------------------------------
 void KernelTimer::Config(void)
-{        
-    TCC1.CTRLA = 0;    
-    TCC1.CTRLB = 0;     // Disable individual capture/compares on this timer since all we care about is overflow.
-    TCC1.CTRLC = 0;     
+{
+    TCC1.CTRLA = 0;
+    TCC1.CTRLB = 0; // Disable individual capture/compares on this timer since all we care about is overflow.
+    TCC1.CTRLC = 0;
     TCC1.CTRLD = 0x20;
-            
-    TCC1.CTRLE = 0x00;    // using word mode (not byte mode)
 
-    TCC1.CTRLFCLR |= 0x0F;    // Reset the controller for upcount, no controller update
-    TCC1.INTFLAGS |= 0x01;    // Clear interrupt on overflow
+    TCC1.CTRLE = 0x00; // using word mode (not byte mode)
 
-    TCC1.PER = 0; 
+    TCC1.CTRLFCLR |= 0x0F; // Reset the controller for upcount, no controller update
+    TCC1.INTFLAGS |= 0x01; // Clear interrupt on overflow
+
+    TCC1.PER = 0;
     TCC1.CNT = 0;
-    
+
     TCC1.INTCTRLB = 0; // Disable ABCD Capture compare interrupts.
 }
 
 //---------------------------------------------------------------------------
 void KernelTimer::Start(void)
-{    
-    TCC1.CTRLA = 0x05;    // Clock / 64
-    TCC1.INTFLAGS |= 0x01;    // Clear interrupt on overflow
+{
+    TCC1.CTRLA = 0x05;     // Clock / 64
+    TCC1.INTFLAGS |= 0x01; // Clear interrupt on overflow
     TCC1.INTCTRLA |= 0x01;
 }
 
@@ -57,7 +56,7 @@ void KernelTimer::Stop(void)
 {
     TCC1.INTFLAGS |= 0x01;    // Clear interrupt on overflow
     TCC1.INTCTRLA &= ~(0x01); // Disable the interrupt
-    TCC1.CTRLA = 0;    // Clock source disable.
+    TCC1.CTRLA = 0;           // Clock source disable.
 }
 
 //---------------------------------------------------------------------------
@@ -65,19 +64,19 @@ uint16_t KernelTimer::Read(void)
 {
     volatile uint16_t u16Read1;
     volatile uint16_t u16Read2;
-    
+
     do {
         u16Read1 = TCC1.CNT;
-        u16Read2 = TCC1.CNT;            
+        u16Read2 = TCC1.CNT;
     } while (u16Read1 != u16Read2);
-    
-    return u16Read1;    
+
+    return u16Read1;
 }
 
 //---------------------------------------------------------------------------
 uint32_t KernelTimer::SubtractExpiry(uint32_t u32Interval_)
 {
-    TCC1.PER -= (uint16_t)u32Interval_;        
+    TCC1.PER -= (uint16_t)u32Interval_;
     return (uint32_t)TCC1.PER;
 }
 
@@ -87,13 +86,10 @@ uint32_t KernelTimer::TimeToExpiry(void)
     uint16_t u16Read = KernelTimer::Read();
     uint16_t u16OCR1A = TCC1.PER;
 
-    if (u16Read >= u16OCR1A)
-    {
+    if (u16Read >= u16OCR1A) {
         return 0;
-    }
-    else
-    {
-        return (uint32_t)(u16OCR1A - u16Read);    
+    } else {
+        return (uint32_t)(u16OCR1A - u16Read);
     }
 }
 
@@ -106,15 +102,12 @@ uint32_t KernelTimer::GetOvertime(void)
 //---------------------------------------------------------------------------
 uint32_t KernelTimer::SetExpiry(uint32_t u32Interval_)
 {
-    uint16_t u16SetInterval;    
-    if (u32Interval_ > 65535)
-    {
+    uint16_t u16SetInterval;
+    if (u32Interval_ > 65535) {
         u16SetInterval = 65535;
-    } 
-    else 
-    {
-        u16SetInterval = (uint16_t)u32Interval_ ;        
-    }    
+    } else {
+        u16SetInterval = (uint16_t)u32Interval_;
+    }
     TCC1.PER = u16SetInterval;
     return (uint32_t)u16SetInterval;
 }
@@ -122,7 +115,7 @@ uint32_t KernelTimer::SetExpiry(uint32_t u32Interval_)
 //---------------------------------------------------------------------------
 void KernelTimer::ClearExpiry(void)
 {
-    TCC1.PER = 65535; 
+    TCC1.PER = 65535;
 }
 
 //---------------------------------------------------------------------------
@@ -142,12 +135,9 @@ void KernelTimer::EI(void)
 //---------------------------------------------------------------------------
 void KernelTimer::RI(bool bEnable_)
 {
-    if (bEnable_)    
-    {
+    if (bEnable_) {
         TCC1.INTCTRLA |= (0x01); // Disable the interrupt
-    }
-    else
-    {
+    } else {
         TCC1.INTCTRLA &= ~(0x01); // Disable the interrupt
-    }    
+    }
 }

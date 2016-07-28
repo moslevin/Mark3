@@ -28,8 +28,7 @@ SysPort::SysPort()
 //---------------------------------------------------------------------------
 SysPort::SysPort(PortIdentity_t ePort_)
 {
-    if (ePort_ > SYS_PORT_COUNT)
-    {
+    if (ePort_ > SYS_PORT_COUNT) {
         m_ePort = SYS_PORT_A;
     } else {
         m_ePort = ePort_;
@@ -41,12 +40,9 @@ SysPort::SysPort(PortIdentity_t ePort_)
 //---------------------------------------------------------------------------
 void SysPort::SetDir(uint8_t u8PinIndex_, bool bOutput_)
 {
-    if (bOutput_)
-    {
+    if (bOutput_) {
         m_pstPort->DIRSET.reg = (1 << u8PinIndex_);
-    }
-    else
-    {
+    } else {
         m_pstPort->DIRCLR.reg = (1 << u8PinIndex_);
     }
 }
@@ -54,12 +50,9 @@ void SysPort::SetDir(uint8_t u8PinIndex_, bool bOutput_)
 //---------------------------------------------------------------------------
 void SysPort::SetOut(uint8_t u8PinIndex_, bool bLevel_)
 {
-    if (bLevel_)
-    {
+    if (bLevel_) {
         m_pstPort->OUTSET.reg = (1 << u8PinIndex_);
-    }
-    else
-    {
+    } else {
         m_pstPort->OUTCLR.reg = (1 << u8PinIndex_);
     }
 }
@@ -82,24 +75,18 @@ void SysPort::SetPinConfig(uint8_t u8PinIndex_, bool bpu32lUp_, bool bInputEnabl
     uint32_t u32Reg;
     uint32_t u32PinBit = 1 << ((uint32_t)(u8PinIndex_ & 0x0F));
 
-    u32Reg = PORT_WRCONFIG_WRPINCFG
-            | (u32PinBit << PORT_WRCONFIG_PINMASK_Pos)
-            ;
+    u32Reg = PORT_WRCONFIG_WRPINCFG | (u32PinBit << PORT_WRCONFIG_PINMASK_Pos);
 
-    if (u8PinIndex_ >= 16)
-    {
+    if (u8PinIndex_ >= 16) {
         u32Reg |= PORT_WRCONFIG_HWSEL; // Accessing upper bits in the register
     }
-    if (bpu32lUp_)
-    {
+    if (bpu32lUp_) {
         u32Reg |= PORT_WRCONFIG_pu32LEN;
     }
-    if (bInputEnable_)
-    {
+    if (bInputEnable_) {
         u32Reg |= PORT_WRCONFIG_INEN;
     }
-    if (bMuxWithPeripheral_)
-    {
+    if (bMuxWithPeripheral_) {
         u32Reg |= PORT_WRCONFIG_PMUXEN;
     }
 
@@ -112,13 +99,10 @@ void SysPort::SetPortMux(uint8_t u8PinIndex_, PinMux_t eMuxFunction_)
     uint32_t u32Reg;
     uint32_t u32PinBit = 1 << ((uint32_t)(u8PinIndex_ & 0x0F));
 
-    u32Reg =  PORT_WRCONFIG_WRPMUX
-            | (u32PinBit << PORT_WRCONFIG_PINMASK_Pos)
-            | (eMuxFunction_ << PORT_WRCONFIG_PMUX_Pos)
-            ;
+    u32Reg = PORT_WRCONFIG_WRPMUX | (u32PinBit << PORT_WRCONFIG_PINMASK_Pos)
+             | (eMuxFunction_ << PORT_WRCONFIG_PMUX_Pos);
 
-    if (u8PinIndex_ >= 16)
-    {
+    if (u8PinIndex_ >= 16) {
         u32Reg |= PORT_WRCONFIG_HWSEL; // Accessing upper bits in the register
     }
 
@@ -126,24 +110,17 @@ void SysPort::SetPortMux(uint8_t u8PinIndex_, PinMux_t eMuxFunction_)
 }
 
 //---------------------------------------------------------------------------
-PortGroup *SysPort::GetPortPointer()
+PortGroup* SysPort::GetPortPointer()
 {
-    PortGroup *pstPort = 0;
-    switch (m_ePort)
-    {
-        case SYS_PORT_A:
-        {
+    PortGroup* pstPort = 0;
+    switch (m_ePort) {
+        case SYS_PORT_A: {
             pstPort = &PORT->Group[0];
-        }
-            break;
-        case SYS_PORT_B:
-        {
+        } break;
+        case SYS_PORT_B: {
             pstPort = &PORT->Group[1];
-        }
-            break;
-        default:
-            pstPort = &PORT->Group[0];
-            break;
+        } break;
+        default: pstPort = &PORT->Group[0]; break;
     }
     return pstPort;
 }
@@ -151,4 +128,3 @@ PortGroup *SysPort::GetPortPointer()
 //---------------------------------------------------------------------------
 SysPort PortA(SYS_PORT_A);
 SysPort PortB(SYS_PORT_B);
-

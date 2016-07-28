@@ -39,10 +39,9 @@ TEST(ut_semaphore_count)
     // failure.
 
     Semaphore clTestSem;
-    clTestSem.Init( 0, 10 );
+    clTestSem.Init(0, 10);
 
-    for (int i = 0; i < 10; i++)
-    {
+    for (int i = 0; i < 10; i++) {
         EXPECT_TRUE(clTestSem.Post());
     }
     EXPECT_FALSE(clTestSem.Post());
@@ -51,18 +50,17 @@ TEST_END
 
 //===========================================================================
 static Thread clThread;
-#define SEM_STACK_SIZE     (256)
+#define SEM_STACK_SIZE (256)
 static K_WORD aucStack[SEM_STACK_SIZE];
 static Semaphore clSem1;
 static Semaphore clSem2;
 static volatile uint8_t u8Counter = 0;
 
 //===========================================================================
-void PostPendFunction(void *param_)
+void PostPendFunction(void* param_)
 {
-    Semaphore *pclSem = (Semaphore*)param_;
-    while(1)
-    {
+    Semaphore* pclSem = (Semaphore*)param_;
+    while (1) {
         pclSem->Pend();
         u8Counter++;
     }
@@ -80,8 +78,7 @@ TEST(ut_semaphore_post_pend)
     clThread.Init(aucStack, SEM_STACK_SIZE, 7, PostPendFunction, (void*)&clSem1);
     clThread.Start();
     KernelAware::ProfileInit("seminit");
-    for (int i = 0; i < 10; i++)
-    {
+    for (int i = 0; i < 10; i++) {
         KernelAware::ProfileStart();
         clSem1.Post();
         KernelAware::ProfileStop();
@@ -112,9 +109,9 @@ TEST(ut_semaphore_post_pend)
 TEST_END
 
 //===========================================================================
-void TimeSemFunction(void *param_)
+void TimeSemFunction(void* param_)
 {
-    Semaphore *pclSem = (Semaphore*)param_;
+    Semaphore* pclSem = (Semaphore*)param_;
 
     Thread::Sleep(20);
 
@@ -129,23 +126,23 @@ TEST(ut_semaphore_timed)
     Semaphore clTestSem;
     Semaphore clTestSem2;
 
-    clTestSem.Init(0,1);
+    clTestSem.Init(0, 1);
 
     clThread.Init(aucStack, SEM_STACK_SIZE, 7, TimeSemFunction, (void*)&clTestSem);
     clThread.Start();
 
-    EXPECT_FALSE( clTestSem.Pend(10) );
+    EXPECT_FALSE(clTestSem.Pend(10));
     Thread::Sleep(20);
 
     // Pretty nuanced - we can only re-init the semaphore under the knowledge
     // that there's nothing blocking on it already...  don't do this in
     // production
-    clTestSem2.Init(0,1);
+    clTestSem2.Init(0, 1);
 
     clThread.Init(aucStack, SEM_STACK_SIZE, 7, TimeSemFunction, (void*)&clTestSem2);
     clThread.Start();
 
-    EXPECT_TRUE( clTestSem2.Pend(30) );
+    EXPECT_TRUE(clTestSem2.Pend(30));
 }
 
 TEST_END
@@ -154,7 +151,4 @@ TEST_END
 // Test Whitelist Goes Here
 //===========================================================================
 TEST_CASE_START
-  TEST_CASE(ut_semaphore_count),
-  TEST_CASE(ut_semaphore_post_pend),
-  TEST_CASE(ut_semaphore_timed),
-TEST_CASE_END
+TEST_CASE(ut_semaphore_count), TEST_CASE(ut_semaphore_post_pend), TEST_CASE(ut_semaphore_timed), TEST_CASE_END

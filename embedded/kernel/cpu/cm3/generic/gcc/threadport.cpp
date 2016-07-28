@@ -31,15 +31,15 @@ See license.txt for more information
 
 //---------------------------------------------------------------------------
 #if KERNEL_USE_IDLE_FUNC
-# error "KERNEL_USE_IDLE_FUNC not supported in this port"
+#error "KERNEL_USE_IDLE_FUNC not supported in this port"
 #endif
 
 //---------------------------------------------------------------------------
-static void ThreadPort_StartFirstThread( void ) __attribute__ (( naked ));
+static void ThreadPort_StartFirstThread(void) __attribute__((naked));
 extern "C" {
-    void SVC_Handler( void ) __attribute__ (( naked ));
-    void PendSV_Handler( void ) __attribute__ (( naked ));
-    void SysTick_Handler( void );
+void SVC_Handler(void) __attribute__((naked));
+void PendSV_Handler(void) __attribute__((naked));
+void SysTick_Handler(void);
 }
 
 //---------------------------------------------------------------------------
@@ -88,10 +88,10 @@ volatile uint32_t g_ulCriticalCount;
     These all need to be manually pushed to the stack on stack creation, and
     puhsed/pop as part of a normal context switch.
 */
-void ThreadPort::InitStack(Thread *pclThread_)
+void ThreadPort::InitStack(Thread* pclThread_)
 {
-    uint32_t *pu32Stack;
-    uint32_t *pu32Temp;
+    uint32_t* pu32Stack;
+    uint32_t* pu32Temp;
     uint32_t u32Addr;
     uint16_t i;
 
@@ -103,22 +103,21 @@ void ThreadPort::InitStack(Thread *pclThread_)
 
     // Initialize the stack to all FF's to aid in stack depth checking
     pu32Temp = (uint32_t*)pclThread_->m_pwStack;
-    for (i = 0; i < pclThread_->m_u16StackSize / sizeof(uint32_t); i++)
-    {
+    for (i = 0; i < pclThread_->m_u16StackSize / sizeof(uint32_t); i++) {
         pu32Temp[i] = 0xFFFFFFFF;
     }
 
-    PUSH_TO_STACK(pu32Stack, 0);                // We need one word of padding, apparently...
+    PUSH_TO_STACK(pu32Stack, 0); // We need one word of padding, apparently...
 
     //-- Simulated Exception Stack Frame --
-    PUSH_TO_STACK(pu32Stack, 0x01000000);    // XSPR
-    PUSH_TO_STACK(pu32Stack, u32Addr);        // PC
-    PUSH_TO_STACK(pu32Stack, 0);            // LR
+    PUSH_TO_STACK(pu32Stack, 0x01000000); // XSPR
+    PUSH_TO_STACK(pu32Stack, u32Addr);    // PC
+    PUSH_TO_STACK(pu32Stack, 0);          // LR
     PUSH_TO_STACK(pu32Stack, 0x12);
     PUSH_TO_STACK(pu32Stack, 0x3);
     PUSH_TO_STACK(pu32Stack, 0x2);
     PUSH_TO_STACK(pu32Stack, 0x1);
-    PUSH_TO_STACK(pu32Stack, (uint32_t)pclThread_->m_pvArg);    // R0 = argument
+    PUSH_TO_STACK(pu32Stack, (uint32_t)pclThread_->m_pvArg); // R0 = argument
 
     //-- Simulated Manually-Stacked Registers --
     PUSH_TO_STACK(pu32Stack, 0x11);
@@ -143,16 +142,16 @@ void Thread_Switch(void)
 //---------------------------------------------------------------------------
 void ThreadPort::StartThreads()
 {
-    KernelSWI::Config();             // configure the task switch SWI
-    KernelTimer::Config();           // configure the kernel timer
+    KernelSWI::Config();   // configure the task switch SWI
+    KernelTimer::Config(); // configure the kernel timer
 
-    Scheduler::SetScheduler(1);      // enable the scheduler
-    Scheduler::Schedule();           // run the scheduler - determine the first thread to run
+    Scheduler::SetScheduler(1); // enable the scheduler
+    Scheduler::Schedule();      // run the scheduler - determine the first thread to run
 
-    Thread_Switch();                 // Set the next scheduled thread to the current thread
+    Thread_Switch(); // Set the next scheduled thread to the current thread
 
-    KernelTimer::Start();            // enable the kernel timer
-    KernelSWI::Start();              // enable the task switch SWI
+    KernelTimer::Start(); // enable the kernel timer
+    KernelSWI::Start();   // enable the task switch SWI
 
 #if KERNEL_USE_QUANTUM
     // Restart the thread quantum timer, as any value held prior to starting
@@ -163,7 +162,7 @@ void ThreadPort::StartThreads()
     Quantum::AddThread(g_pclCurrent);
 #endif
 
-    ThreadPort_StartFirstThread();     // Jump to the first thread (does not return)
+    ThreadPort_StartFirstThread(); // Jump to the first thread (does not return)
 }
 
 //---------------------------------------------------------------------------
@@ -197,16 +196,14 @@ void ThreadPort::StartThreads()
     places where it cannot be avoided.  However, we can at least inline it
     in most circumstances.)
 */
-void ThreadPort_StartFirstThread( void )
+void ThreadPort_StartFirstThread(void)
 {
-    ASM (
-        " ldr r0, =0xE000ED08 \n"
+    ASM(" ldr r0, =0xE000ED08 \n"
         " mov r0, [r0] \n"
         " ldr r1, [r0] \n"
         " msr msp, r1 \n"
         " cpsie i \n"
-        " svc 0 \n"
-        );
+        " svc 0 \n");
 }
 
 //---------------------------------------------------------------------------
@@ -271,24 +268,24 @@ void ThreadPort_StartFirstThread( void )
 void SVC_Handler(void)
 {
     ASM(
-    // Get the pointer to the first thread's stack
-    " mov r3, %[CURRENT_THREAD]\n "
-    " add r3, #8 \n "
-    " ldr r2, [r3] \n "
-    // Stack pointer is in r2, start loading registers from the "manually-stacked" set
-    " ldmia r2!, {r4-r11} \n "
-    // After subtracting R2 by #32 due to stack popping, our PSP is where it
-    // needs to be when we return from the exception handler
-    " msr psp, r2 \n "
-    " isb \n "
-    // Return into thread mode, using PSP as the thread's stack pointer
-    // To do this, or 0x0D into the current lr.
-    " mov r0, #0x0D \n "
-    " mov r1, lr \n "
-    " orr r0, r1 \n "
-    " bx r0 \n "
-    : : [CURRENT_THREAD] "r" (g_pclCurrent)
-    );
+        // Get the pointer to the first thread's stack
+        " mov r3, %[CURRENT_THREAD]\n "
+        " add r3, #8 \n "
+        " ldr r2, [r3] \n "
+        // Stack pointer is in r2, start loading registers from the "manually-stacked" set
+        " ldmia r2!, {r4-r11} \n "
+        // After subtracting R2 by #32 due to stack popping, our PSP is where it
+        // needs to be when we return from the exception handler
+        " msr psp, r2 \n "
+        " isb \n "
+        // Return into thread mode, using PSP as the thread's stack pointer
+        // To do this, or 0x0D into the current lr.
+        " mov r0, #0x0D \n "
+        " mov r1, lr \n "
+        " orr r0, r1 \n "
+        " bx r0 \n "
+        :
+        : [CURRENT_THREAD] "r"(g_pclCurrent));
 }
 
 //---------------------------------------------------------------------------
@@ -352,50 +349,49 @@ void SVC_Handler(void)
 void PendSV_Handler(void)
 {
     ASM(
-    // Thread_SaveContext()
-    " ldr r1, CURR_ \n"
-    " ldr r1, [r1] \n "
-    " mov r3, r1 \n "
-    " add r3, #8 \n "
+        // Thread_SaveContext()
+        " ldr r1, CURR_ \n"
+        " ldr r1, [r1] \n "
+        " mov r3, r1 \n "
+        " add r3, #8 \n "
 
-    //  Grab the psp and adjust it by 32 based on the extra registers we're going
-    // to be manually stacking.
-    " mrs r2, psp \n "
-    " sub r2, #32 \n "
+        //  Grab the psp and adjust it by 32 based on the extra registers we're going
+        // to be manually stacking.
+        " mrs r2, psp \n "
+        " sub r2, #32 \n "
 
-    // While we're here, store the new top-of-stack value
-    " str r2, [r3] \n "
+        // While we're here, store the new top-of-stack value
+        " str r2, [r3] \n "
 
-    // And, while r2 is at the bottom of the stack frame, stack r4-r11
-    " stmia r2!, {r4-r11} \n "
+        // And, while r2 is at the bottom of the stack frame, stack r4-r11
+        " stmia r2!, {r4-r11} \n "
 
-    // Equivalent of Thread_Swap() -- g_pclNext -> g_pclCurrent
-    " cpsid i \n "
-    " ldr r1, CURR_ \n"
-    " ldr r0, NEXT_ \n"
-    " ldr r0, [r0] \n"
-    " str r0, [r1] \n"
-    " cpsie i \n "
+        // Equivalent of Thread_Swap() -- g_pclNext -> g_pclCurrent
+        " cpsid i \n "
+        " ldr r1, CURR_ \n"
+        " ldr r0, NEXT_ \n"
+        " ldr r0, [r0] \n"
+        " str r0, [r1] \n"
+        " cpsie i \n "
 
-    // Get the pointer to the next thread's stack
-    " add r0, #8 \n "
-    " ldr r2, [r0] \n "
+        // Get the pointer to the next thread's stack
+        " add r0, #8 \n "
+        " ldr r2, [r0] \n "
 
-    // Stack pointer is in r2, start loading registers from the "manually-stacked" set
-    " ldmia r2!, {r4-r11} \n "
+        // Stack pointer is in r2, start loading registers from the "manually-stacked" set
+        " ldmia r2!, {r4-r11} \n "
 
-    // After subbing R2 #32 through ldmia/stack popping, our PSP is where it
-    // needs to be when we return from the exception handler
-    " msr psp, r2 \n "
+        // After subbing R2 #32 through ldmia/stack popping, our PSP is where it
+        // needs to be when we return from the exception handler
+        " msr psp, r2 \n "
 
-    // lr contains the proper EXC_RETURN value, we're done with exceptions.
-    " bx lr \n "
-    " nop \n "
+        // lr contains the proper EXC_RETURN value, we're done with exceptions.
+        " bx lr \n "
+        " nop \n "
 
-    // Must be 4-byte aligned.  Also - GNU assembler, I hate you for making me resort to this.
-    " NEXT_: .word g_pclNext \n"
-    " CURR_: .word g_pclCurrent \n"
-    );
+        // Must be 4-byte aligned.  Also - GNU assembler, I hate you for making me resort to this.
+        " NEXT_: .word g_pclNext \n"
+        " CURR_: .word g_pclCurrent \n");
 }
 //---------------------------------------------------------------------------
 void SysTick_Handler(void)
@@ -410,4 +406,3 @@ void SysTick_Handler(void)
     // Clear the systick interrupt pending bit.
     SCB->ICSR = SCB_ICSR_PENDSTCLR_Msk;
 }
-

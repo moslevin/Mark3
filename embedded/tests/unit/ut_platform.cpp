@@ -25,21 +25,22 @@ See license.txt for more information
 #include <avr/sleep.h>
 #endif
 
-extern "C"
+extern "C" {
+void __cxa_pure_virtual(void)
 {
-void __cxa_pure_virtual(void) {}
+}
 }
 
 //---------------------------------------------------------------------------
 // Global objects
-static Thread AppThread;			//!< Main "application" thread
+static Thread AppThread; //!< Main "application" thread
 static K_WORD aucAppStack[STACK_SIZE_APP];
 
-static ATMegaUART clUART;			//!< UART device driver object
+static ATMegaUART clUART; //!< UART device driver object
 
 //---------------------------------------------------------------------------
 #if !KERNEL_USE_IDLE_FUNC
-static Thread IdleThread;			//!< Idle thread - runs when app can't
+static Thread IdleThread; //!< Idle thread - runs when app can't
 static uint8_t aucIdleStack[STACK_SIZE_IDLE];
 #endif
 
@@ -61,20 +62,15 @@ void MyUnitTest::PrintTestResult()
     PrintString(GetName());
     PrintString(": ");
     iLen = MemUtil::StringLength(GetName());
-    if (iLen >= 32)
-    {
+    if (iLen >= 32) {
         iLen = 32;
     }
-    for (int i = 0; i < 32 - iLen; i++)
-    {
+    for (int i = 0; i < 32 - iLen; i++) {
         PrintString(".");
     }
-    if (GetPassed() == GetTotal())
-    {
+    if (GetPassed() == GetTotal()) {
         PrintString("(PASS)[");
-    }
-    else
-    {
+    } else {
         PrintString("(FAIL)[");
     }
     MemUtil::DecimalToString(GetPassed(), (char*)acTemp);
@@ -89,11 +85,10 @@ typedef void (*FuncPtr)(void);
 //---------------------------------------------------------------------------
 void run_tests()
 {
-    MyTestCase *pstTestCase;
+    MyTestCase* pstTestCase;
     pstTestCase = astTestCases;
 
-    while (pstTestCase->pclTestCase)
-    {
+    while (pstTestCase->pclTestCase) {
         pstTestCase->pfTestFunc();
         pstTestCase++;
     }
@@ -107,23 +102,22 @@ void run_tests()
 //---------------------------------------------------------------------------
 void init_tests()
 {
-    MyTestCase *pstTestCase;
+    MyTestCase* pstTestCase;
     pstTestCase = astTestCases;
 
-    while (pstTestCase->pclTestCase)
-    {
+    while (pstTestCase->pclTestCase) {
         pstTestCase->pclTestCase->SetName(pstTestCase->szName);
         pstTestCase++;
     }
 }
 
 //---------------------------------------------------------------------------
-void PrintString(const char *szStr_)
+void PrintString(const char* szStr_)
 {
-    char *szTemp = (char*)szStr_;
-    while (*szTemp)
-    {
-        while( 1 != clUART.Write( 1, (uint8_t*)szTemp ) ) { /* Do nothing */ }
+    char* szTemp = (char*)szStr_;
+    while (*szTemp) {
+        while (1 != clUART.Write(1, (uint8_t*)szTemp)) { /* Do nothing */
+        }
         szTemp++;
     }
 }
@@ -132,17 +126,15 @@ void PrintString(const char *szStr_)
 void AppEntry(void)
 {
     {
-        Driver *my_uart = DriverList::FindByPath("/dev/tty");
+        Driver* my_uart = DriverList::FindByPath("/dev/tty");
 
-        my_uart->Control( CMD_SET_BUFFERS, aucRxBuffer, UART_SIZE_RX,
-                                             aucTxBuffer, UART_SIZE_TX);
+        my_uart->Control(CMD_SET_BUFFERS, aucRxBuffer, UART_SIZE_RX, aucTxBuffer, UART_SIZE_TX);
         my_uart->Open();
 
         init_tests();
     }
 
-    while(1)
-    {
+    while (1) {
         run_tests();
     }
 }
@@ -151,8 +143,7 @@ void AppEntry(void)
 void IdleEntry(void)
 {
 #if !KERNEL_USE_IDLE_FUNC
-    while(1)
-    {
+    while (1) {
 #endif
 
 #if defined(AVR)
@@ -169,38 +160,37 @@ void IdleEntry(void)
 #if !KERNEL_USE_IDLE_FUNC
     }
 #endif
-
 }
 
 //---------------------------------------------------------------------------
 int main(void)
 {
-    Kernel::Init();						//!< MUST be before other kernel ops
+    Kernel::Init(); //!< MUST be before other kernel ops
 
-    AppThread.Init(	aucAppStack,		//!< Pointer to the stack
-                    STACK_SIZE_APP,		//!< Size of the stack
-                    1,					//!< Thread priority
-                    (ThreadEntry_t)AppEntry,	//!< Entry function
-                    (void*)&AppThread );//!< Entry function argument
+    AppThread.Init(aucAppStack,             //!< Pointer to the stack
+                   STACK_SIZE_APP,          //!< Size of the stack
+                   1,                       //!< Thread priority
+                   (ThreadEntry_t)AppEntry, //!< Entry function
+                   (void*)&AppThread);      //!< Entry function argument
 
-    AppThread.Start();					//!< Schedule the threads
+    AppThread.Start(); //!< Schedule the threads
 
 #if KERNEL_USE_IDLE_FUNC
     Kernel::SetIdleFunc(IdleEntry);
 #else
-    IdleThread.Init( aucIdleStack,		//!< Pointer to the stack
-                     STACK_SIZE_IDLE,	//!< Size of the stack
-                     0,					//!< Thread priority
-                     (ThreadEntry_t)IdleEntry,	//!< Entry function
-                     NULL );			//!< Entry function argument
+    IdleThread.Init(aucIdleStack,             //!< Pointer to the stack
+                    STACK_SIZE_IDLE,          //!< Size of the stack
+                    0,                        //!< Thread priority
+                    (ThreadEntry_t)IdleEntry, //!< Entry function
+                    NULL);                    //!< Entry function argument
 
     IdleThread.Start();
 #endif
 
-    clUART.SetName("/dev/tty");			//!< Add the serial driver
+    clUART.SetName("/dev/tty"); //!< Add the serial driver
     clUART.Init();
 
-    DriverList::Add( &clUART );
+    DriverList::Add(&clUART);
 
-    Kernel::Start();					//!< Start the kernel!
+    Kernel::Start(); //!< Start the kernel!
 }

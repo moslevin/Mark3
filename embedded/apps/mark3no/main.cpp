@@ -3,7 +3,7 @@
  *
  * Created: 6/12/2016 7:56:41 PM
  * Author : moslevin
- */ 
+ */
 
 #include <avr/io.h>
 #include "mark3.h"
@@ -39,18 +39,18 @@ static uint8_t au8Stack5[320];
 
 static void App1(void* param)
 {
-	while(1) {
+    while (1) {
         clLED1.Toggle();
-		Thread::Sleep(100);
-	}
+        Thread::Sleep(100);
+    }
 }
 
 static void App2(void* param)
 {
-	while(1) {
+    while (1) {
         clLED2.Toggle();
-		Thread::Sleep(250);
-	}
+        Thread::Sleep(250);
+    }
 }
 
 static void WriteString(Driver* pclDriver_, const char* szData_)
@@ -58,12 +58,10 @@ static void WriteString(Driver* pclDriver_, const char* szData_)
     uint16_t u16Written = 0;
     uint8_t* src = (uint8_t*)szData_;
 
-    while (*src != '\0')
-    {
+    while (*src != '\0') {
         u16Written = pclDriver_->Write(1, src++);
 
-        if (!u16Written)
-        {
+        if (!u16Written) {
             Thread::Sleep(5);
         }
     }
@@ -78,10 +76,10 @@ static void OnRTCTick(void)
 static void App3(void* param)
 {
     bsp_rtc_set_on_rtc_tick(OnRTCTick);
-    clRTCSem.Init(0,1);
+    clRTCSem.Init(0, 1);
 
-    {        
-        calendar_t cal = {0};
+    {
+        calendar_t cal = { 0 };
         cal.u8Day = 27;
         cal.eMonth = MONTH_JUNE;
         cal.u16Year = 2016;
@@ -94,7 +92,7 @@ static void App3(void* param)
 
     Driver* pclUART = DriverList::FindByPath("/dev/tty0");
 
-	while(1) {
+    while (1) {
         clLED3.Toggle();
 
         calendar_t myCal;
@@ -117,7 +115,7 @@ static void App3(void* param)
         WriteString(pclUART, szBuf);
         WriteString(pclUART, " - ");
 
-        const char* szDay   = bsp_rtc_get_day_of_week();
+        const char* szDay = bsp_rtc_get_day_of_week();
         WriteString(pclUART, szDay);
         WriteString(pclUART, ", ");
 
@@ -132,16 +130,16 @@ static void App3(void* param)
         MemUtil::DecimalToString(myCal.u16Year, szBuf);
         WriteString(pclUART, szBuf);
         WriteString(pclUART, "\n");
-	}
+    }
 }
 
 static void App4(void* param)
 {
-	Driver* pclUART = DriverList::FindByPath("/dev/tty0");
+    Driver* pclUART = DriverList::FindByPath("/dev/tty0");
     bool bState;
 
-	while(1) {
-		const char* szStr = "Tommy can you hear me?\r\n"; // 24 chars?
+    while (1) {
+        const char* szStr = "Tommy can you hear me?\r\n"; // 24 chars?
         WriteString(pclUART, szStr);
         Thread::Sleep(100);
 
@@ -159,35 +157,35 @@ static void App4(void* param)
             WriteString(pclUART, "B2 DOWN\n");
         }
         Thread::Sleep(300);
-	}
+    }
 }
 
 static void App5(void* param)
 {
-	Driver* pclUART = DriverList::FindByPath("/dev/tty1");
-	
-	while(1) {
-		const char* szStr = "Ground control to major Tom\r\n"; // 29 chars?
+    Driver* pclUART = DriverList::FindByPath("/dev/tty1");
+
+    while (1) {
+        const char* szStr = "Ground control to major Tom\r\n"; // 29 chars?
         WriteString(pclUART, szStr);
-		Thread::Sleep(750);
-	}
+        Thread::Sleep(750);
+    }
 }
 
 int main(void)
 {
-	Kernel::Init();
-	
-	clApp1.Init(au8Stack1, 320, 1, App1, 0);	
-	clApp2.Init(au8Stack2, 320, 1, App2, 0);
-	clApp3.Init(au8Stack3, 320, 1, App3, 0);
-	clApp4.Init(au8Stack4, 320, 1, App4, 0);
-	clApp5.Init(au8Stack5, 320, 1, App5, 0);
-	
-	clApp1.Start();
-	clApp2.Start();
-	clApp3.Start();
-	clApp4.Start();
-	clApp5.Start();
+    Kernel::Init();
+
+    clApp1.Init(au8Stack1, 320, 1, App1, 0);
+    clApp2.Init(au8Stack2, 320, 1, App2, 0);
+    clApp3.Init(au8Stack3, 320, 1, App3, 0);
+    clApp4.Init(au8Stack4, 320, 1, App4, 0);
+    clApp5.Init(au8Stack5, 320, 1, App5, 0);
+
+    clApp1.Start();
+    clApp2.Start();
+    clApp3.Start();
+    clApp4.Start();
+    clApp5.Start();
 
     bsp_leds_init();
     bsp_buttons_init();
@@ -197,6 +195,4 @@ int main(void)
     bsp_tracelogger_init();
 
     Kernel::Start();
-	
 }
-

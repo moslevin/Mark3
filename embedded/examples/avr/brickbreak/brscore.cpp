@@ -22,8 +22,7 @@ void BrScore::AddScore(uint32_t u32Score_)
 //---------------------------------------------------------------------------
 void BrScore::Draw(void)
 {
-    if (!m_bUpdate)
-    {
+    if (!m_bUpdate) {
         return;
     }
     DrawText_t stText;

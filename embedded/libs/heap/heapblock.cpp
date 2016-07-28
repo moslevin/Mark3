@@ -18,23 +18,22 @@ See license.txt for more information
     \brief  Metadata object used to manage a heap allocation
 */
 
-
 #include "heapblock.h"
 
 //---------------------------------------------------------------------------
-void HeapBlock::RootInit( K_ADDR usize_ )
+void HeapBlock::RootInit(K_ADDR usize_)
 {
     Init();
     m_uDataSize = ROUND_DOWN(usize_);
 
-    SetCookie( HEAP_COOKIE_FREE );
+    SetCookie(HEAP_COOKIE_FREE);
 
     SetRightSibling(0);
     SetLeftSibling(0);
 }
 
 //---------------------------------------------------------------------------
-HeapBlock *HeapBlock::Split( K_ADDR usize_ )
+HeapBlock* HeapBlock::Split(K_ADDR usize_)
 {
     // Allocate minimum amount of data for this operation on the left side
 
@@ -45,78 +44,76 @@ HeapBlock *HeapBlock::Split( K_ADDR usize_ )
 
     m_uDataSize = ROUND_UP(usize_);
 
-    K_ADDR uNewAddr = (K_ADDR)this + u32eftBlockSize;
-    HeapBlock *pclRightBlock = (HeapBlock*)uNewAddr;
+    K_ADDR uNewAddr = (K_ADDR) this + u32eftBlockSize;
+    HeapBlock* pclRightBlock = (HeapBlock*)uNewAddr;
 
     pclRightBlock->Init();
-    pclRightBlock->SetDataSize( uRightBlockSize - sizeof(HeapBlock) );
-    pclRightBlock->SetCookie( HEAP_COOKIE_FREE );
+    pclRightBlock->SetDataSize(uRightBlockSize - sizeof(HeapBlock));
+    pclRightBlock->SetCookie(HEAP_COOKIE_FREE);
 
-    pclRightBlock->SetLeftSibling( this );
-    pclRightBlock->SetRightSibling( GetRightSibling() );
+    pclRightBlock->SetLeftSibling(this);
+    pclRightBlock->SetRightSibling(GetRightSibling());
 
     if (GetRightSibling()) {
-        GetRightSibling()->SetLeftSibling( pclRightBlock );
+        GetRightSibling()->SetLeftSibling(pclRightBlock);
     }
 
-    SetRightSibling( pclRightBlock );
+    SetRightSibling(pclRightBlock);
 
     return pclRightBlock;
 }
 
 //---------------------------------------------------------------------------
 // Merge this block with RIGHT neighbor.
-void HeapBlock::Coalesce( void )
+void HeapBlock::Coalesce(void)
 {
-    HeapBlock *pclTemp;
+    HeapBlock* pclTemp;
 
     pclTemp = GetRightSibling();
     // Add the size of this object to the left object.
-    SetDataSize( GetDataSize() + pclTemp->GetBlockSize() );
+    SetDataSize(GetDataSize() + pclTemp->GetBlockSize());
 
     // Reconnect sibling pointers between this block and "absorbed" right block
-    SetRightSibling( pclTemp->GetRightSibling() );
-    if (GetRightSibling())
-    {
-        GetRightSibling()->SetLeftSibling( this );
+    SetRightSibling(pclTemp->GetRightSibling());
+    if (GetRightSibling()) {
+        GetRightSibling()->SetLeftSibling(this);
     }
 }
 
 //---------------------------------------------------------------------------
-void *HeapBlock::GetDataPointer( void )
+void* HeapBlock::GetDataPointer(void)
 {
-    K_ADDR uAddr = (K_ADDR)this;
+    K_ADDR uAddr = (K_ADDR) this;
     uAddr += sizeof(HeapBlock);
     return (void*)uAddr;
 }
 
 //---------------------------------------------------------------------------
-K_ADDR HeapBlock::GetDataSize( void )
+K_ADDR HeapBlock::GetDataSize(void)
 {
     return m_uDataSize;
 }
 
 //---------------------------------------------------------------------------
-K_ADDR HeapBlock::GetBlockSize( void )
+K_ADDR HeapBlock::GetBlockSize(void)
 {
-    return ( sizeof(HeapBlock) + m_uDataSize );
+    return (sizeof(HeapBlock) + m_uDataSize);
 }
 
 //---------------------------------------------------------------------------
-void HeapBlock::SetArenaIndex( uint8_t u8List_ )
+void HeapBlock::SetArenaIndex(uint8_t u8List_)
 {
     m_u8ArenaIndex = u8List_;
 }
 
 //---------------------------------------------------------------------------
-uint8_t HeapBlock::GetArenaIndex( void )
+uint8_t HeapBlock::GetArenaIndex(void)
 {
     return m_u8ArenaIndex;
 }
 
 //---------------------------------------------------------------------------
-void HeapBlock::SetDataSize( K_ADDR uBlockSize )
+void HeapBlock::SetDataSize(K_ADDR uBlockSize)
 {
     m_uDataSize = uBlockSize;
 }
-

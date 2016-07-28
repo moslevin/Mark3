@@ -42,7 +42,7 @@ void ButtonControl::Draw()
     DrawText_t stText;
     DrawLine_t stLine;
 
-    GraphicsDriver *pclDriver = GetParentWindow()->GetDriver();
+    GraphicsDriver* pclDriver = GetParentWindow()->GetDriver();
 
     uint16_t u16XOffset = 0;
     uint16_t u16HalfWidth = 0;
@@ -64,7 +64,7 @@ void ButtonControl::Draw()
     pclDriver->Line(&stLine);
 
     // Draw the rounded-off rectangle
-    stLine.u16X1 = GetLeft() + u16XOffset ;
+    stLine.u16X1 = GetLeft() + u16XOffset;
     stLine.u16X2 = stLine.u16X1;
 
     stLine.u16Y1 = GetTop() + u16YOffset + 1;
@@ -85,21 +85,15 @@ void ButtonControl::Draw()
         stRect.u16Bottom = GetTop() + GetHeight() + u16YOffset - 2;
         stRect.bFill = true;
 
-        if (m_bState)
-        {
+        if (m_bState) {
             stRect.uFillColor = m_uActiveColor;
-        }
-        else
-        {
+        } else {
             stRect.uFillColor = m_uBGColor;
         }
 
-        if (GetParentWindow()->IsInFocus(this))
-        {
+        if (GetParentWindow()->IsInFocus(this)) {
             stRect.u32ineColor = m_uFillColor;
-        }
-        else
-        {
+        } else {
             stRect.u32ineColor = m_u32ineColor;
         }
 
@@ -112,13 +106,13 @@ void ButtonControl::Draw()
     stText.uColor = m_uTextColor;
     u16HalfWidth = pclDriver->TextWidth(&stText);
     u16HalfWidth >>= 1;
-    stText.u16Left = GetLeft() + (GetWidth()>>1) - u16HalfWidth + u16XOffset;
+    stText.u16Left = GetLeft() + (GetWidth() >> 1) - u16HalfWidth + u16XOffset;
     stText.u16Top = GetTop() + u16YOffset;
     pclDriver->Text(&stText);
 }
 
 //---------------------------------------------------------------------------
-GuiReturn_t ButtonControl::ProcessEvent( GuiEvent_t *pstEvent_ )
+GuiReturn_t ButtonControl::ProcessEvent(GuiEvent_t* pstEvent_)
 {
     uint16_t u16XOffset, u16YOffset;
 
@@ -126,126 +120,95 @@ GuiReturn_t ButtonControl::ProcessEvent( GuiEvent_t *pstEvent_ )
 
     GUI_DEBUG_PRINT("ButtonControl::ProcessEvent\n");
 
-    switch (pstEvent_->u8EventType)
-    {
-        case EVENT_TYPE_JOYSTICK:
-        {
+    switch (pstEvent_->u8EventType) {
+        case EVENT_TYPE_JOYSTICK: {
             // If this is a space bar or an enter key, behave like a mouse click.
-            if( pstEvent_->stJoystick.Current.bButton1 && (!pstEvent_->stJoystick.Previous.bButton1))
-            {
+            if (pstEvent_->stJoystick.Current.bButton1 && (!pstEvent_->stJoystick.Previous.bButton1)) {
                 m_bState = true;
-                if (m_pfCallback)
-                {
+                if (m_pfCallback) {
                     m_pfCallback(m_pvCallbackData);
                 }
 
                 SetStale();
-            }
-            else
-            {
-                if (m_bState == true)
-                {
+            } else {
+                if (m_bState == true) {
                     m_bState = false;
                     SetStale();
                 }
             }
-        }
-        break;
-        case EVENT_TYPE_KEYBOARD:
-        {
+        } break;
+        case EVENT_TYPE_KEYBOARD: {
             // If this is a space bar or an enter key, behave like a mouse click.
-            if ((KEYCODE_SPACE == pstEvent_->stKey.u8KeyCode) ||
-                (KEYCODE_RETURN == pstEvent_->stKey.u8KeyCode))
-            {
-                if (pstEvent_->stKey.bKeyState)
-                {
+            if ((KEYCODE_SPACE == pstEvent_->stKey.u8KeyCode) || (KEYCODE_RETURN == pstEvent_->stKey.u8KeyCode)) {
+                if (pstEvent_->stKey.bKeyState) {
                     m_bState = true;
-                }
-                else
-                {
+                } else {
                     m_bState = false;
-                    if (m_pfCallback)
-                    {
+                    if (m_pfCallback) {
                         m_pfCallback(m_pvCallbackData);
                     }
                 }
                 SetStale();
             }
-        }
-            break;
-        case EVENT_TYPE_MOUSE:
-        {
+        } break;
+        case EVENT_TYPE_MOUSE: {
             // Is this control currently in the "active"/pressed state?
-            if (m_bState)
-            {
+            if (m_bState) {
                 // Check to see if the movement is out-of-bounds based on the coordinates.
                 // If so, de-activate the control
-                if (pstEvent_->stMouse.bLeftState)
-                {
-                    if ((pstEvent_->stMouse.u16X < GetLeft() + u16XOffset) ||
-                        (pstEvent_->stMouse.u16X >= GetLeft() + u16XOffset + GetWidth()-1) ||
-                        (pstEvent_->stMouse.u16Y < GetTop() + u16YOffset) ||
-                        (pstEvent_->stMouse.u16Y >= GetTop() + u16YOffset + GetHeight() - 1))
-                    {
+                if (pstEvent_->stMouse.bLeftState) {
+                    if ((pstEvent_->stMouse.u16X < GetLeft() + u16XOffset)
+                        || (pstEvent_->stMouse.u16X >= GetLeft() + u16XOffset + GetWidth() - 1)
+                        || (pstEvent_->stMouse.u16Y < GetTop() + u16YOffset)
+                        || (pstEvent_->stMouse.u16Y >= GetTop() + u16YOffset + GetHeight() - 1)) {
                         m_bState = false;
                         SetStale();
                     }
                 }
                 // left button state is now up, and the control was previously active.
                 // Run the event callback for the mouse, and go from there.
-                else
-                {
-                    if ((pstEvent_->stMouse.u16X >= GetLeft() + u16XOffset) &&
-                        (pstEvent_->stMouse.u16X < GetLeft() + u16XOffset + GetWidth()-1) &&
-                        (pstEvent_->stMouse.u16Y >= GetTop() + u16YOffset) &&
-                        (pstEvent_->stMouse.u16Y < GetTop() + u16YOffset + GetHeight() - 1))
-                    {
+                else {
+                    if ((pstEvent_->stMouse.u16X >= GetLeft() + u16XOffset)
+                        && (pstEvent_->stMouse.u16X < GetLeft() + u16XOffset + GetWidth() - 1)
+                        && (pstEvent_->stMouse.u16Y >= GetTop() + u16YOffset)
+                        && (pstEvent_->stMouse.u16Y < GetTop() + u16YOffset + GetHeight() - 1)) {
                         m_bState = false;
                         SetStale();
-                        if (m_pfCallback)
-                        {
+                        if (m_pfCallback) {
                             m_pfCallback(m_pvCallbackData);
                         }
                     }
                 }
-            }
-            else if (!m_bState)
-            {
+            } else if (!m_bState) {
                 // If we registered a down-click in the bounding box, set the state of the
                 // control to activated.
-                if (pstEvent_->stMouse.bLeftState)
-                {
-                    if ((pstEvent_->stMouse.u16X >= GetLeft() + u16XOffset) &&
-                        (pstEvent_->stMouse.u16X < GetLeft() + u16XOffset + GetWidth()-1) &&
-                        (pstEvent_->stMouse.u16Y >= GetTop() + u16YOffset) &&
-                        (pstEvent_->stMouse.u16Y < GetTop() + u16YOffset + GetHeight() - 1))
-                    {
+                if (pstEvent_->stMouse.bLeftState) {
+                    if ((pstEvent_->stMouse.u16X >= GetLeft() + u16XOffset)
+                        && (pstEvent_->stMouse.u16X < GetLeft() + u16XOffset + GetWidth() - 1)
+                        && (pstEvent_->stMouse.u16Y >= GetTop() + u16YOffset)
+                        && (pstEvent_->stMouse.u16Y < GetTop() + u16YOffset + GetHeight() - 1)) {
                         m_bState = true;
                         SetStale();
                     }
                 }
             }
 
-            if (!IsInFocus())
-            {
+            if (!IsInFocus()) {
                 GetParentWindow()->SetFocus(this);
                 SetStale();
             }
-
-        }
-            break;
+        } break;
     }
     return GUI_EVENT_OK;
 }
 
 //---------------------------------------------------------------------------
-void ButtonControl::Activate( bool bActivate_ )
+void ButtonControl::Activate(bool bActivate_)
 {
     // When we de-activate the control, simply disarm the control and force
     // a redraw
-    if (!bActivate_)
-    {
+    if (!bActivate_) {
         m_bState = false;
-    } 
+    }
     SetStale();
 }

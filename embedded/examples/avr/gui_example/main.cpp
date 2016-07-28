@@ -20,55 +20,57 @@
 #include "gui_palette.h"
 //---------------------------------------------------------------------------
 // Graphics driver used in our application
-static GraphicsFlavr    clGfx;
+static GraphicsFlavr clGfx;
 
 //---------------------------------------------------------------------------
 // Window management objects and GUI components.
-static GuiEventSurface  clEventSurface;
-static GuiWindow        clWindow;
-static LabelControl     clLabel;
+static GuiEventSurface clEventSurface;
+static GuiWindow clWindow;
+static LabelControl clLabel;
 static BrushPanelControl clPanel;
-static CheckBoxControl  clCheckBox1;
-static CheckBoxControl  clCheckBox2;
-static ButtonControl    clSlickButton;
-static SevenSegControl  clSevenSeg;
-static GroupBoxControl  clGroupBox;
-static ProgressControl  clProgress;
+static CheckBoxControl clCheckBox1;
+static CheckBoxControl clCheckBox2;
+static ButtonControl clSlickButton;
+static SevenSegControl clSevenSeg;
+static GroupBoxControl clGroupBox;
+static ProgressControl clProgress;
 //---------------------------------------------------------------------------
 // Joystick driver and associated timer object, used to poll the joystick at
 // a fixed frequency
-static FlavrJoystick    clJoystick;
-static Timer            clJoyTimer;
+static FlavrJoystick clJoystick;
+static Timer clJoyTimer;
 
 //---------------------------------------------------------------------------
 // Callback function used to poll the joystick and pass the event back to the
 // GUI thread.
-static void JoyTimerCallback( Thread *pclOwner_, void *pvData_ );
+static void JoyTimerCallback(Thread* pclOwner_, void* pvData_);
 
 //---------------------------------------------------------------------------
 // Tick timer, used to drive animated display elements
-static Timer            clTickTimer;
-static volatile bool    bFlip = false;
+static Timer clTickTimer;
+static volatile bool bFlip = false;
 //---------------------------------------------------------------------------
-static void TickTimerCallback( Thread *pclOwner_, void *pvData_ );
+static void TickTimerCallback(Thread* pclOwner_, void* pvData_);
 
 //---------------------------------------------------------------------------
 // Checkbox callback declarations
 static uint8_t u8Progress16Val = 50;
-static void CheckBox1Callback( bool bChecked_ );
-static void CheckBox2Callback( bool bChecked_ );
+static void CheckBox1Callback(bool bChecked_);
+static void CheckBox2Callback(bool bChecked_);
 
 //---------------------------------------------------------------------------
 // GUI Application thread + thread stack
-#define APP_STACK_SIZE      (320)
+#define APP_STACK_SIZE (320)
 Thread clAppThread;
 K_WORD awAppStack[APP_STACK_SIZE];
 
 //---------------------------------------------------------------------------
-static void AppMain(void *unused_);
+static void AppMain(void* unused_);
 
 extern "C" {
-void __cxa_pure_virtual(void) { }
+void __cxa_pure_virtual(void)
+{
+}
 }
 
 //---------------------------------------------------------------------------
@@ -76,14 +78,14 @@ int main(void)
 {
     Kernel::Init();
 
-    clAppThread.Init(awAppStack,APP_STACK_SIZE,1,AppMain,0);
+    clAppThread.Init(awAppStack, APP_STACK_SIZE, 1, AppMain, 0);
     clAppThread.Start();
 
     Kernel::Start();
 }
 
 //---------------------------------------------------------------------------
-void JoyTimerCallback( Thread *pclOwner_, void *pvData_ )
+void JoyTimerCallback(Thread* pclOwner_, void* pvData_)
 {
     // Read the joystick, and send the event to the "event surface" that
     // manages events for our application window.
@@ -106,19 +108,15 @@ void JoyTimerCallback( Thread *pclOwner_, void *pvData_ )
 static volatile bool bTimerRunning = false;
 
 //---------------------------------------------------------------------------
-void TickTimerCallback( Thread *pclOwner_, void *pvData_ )
+void TickTimerCallback(Thread* pclOwner_, void* pvData_)
 {
     // If the stopwatch timer is running (i.e. user pressed the button)
     // then add time to the display + trigger a redraw.
-    if (bTimerRunning)
-    {
-        clSevenSeg.SetValue( clSevenSeg.GetValue() + 3 );
-        if ((clSevenSeg.GetValue() % 100) < 50)
-        {
+    if (bTimerRunning) {
+        clSevenSeg.SetValue(clSevenSeg.GetValue() + 3);
+        if ((clSevenSeg.GetValue() % 100) < 50) {
             clSevenSeg.SetColon(false);
-        }
-        else
-        {
+        } else {
             clSevenSeg.SetColon(true);
         }
     }
@@ -129,51 +127,41 @@ void TickTimerCallback( Thread *pclOwner_, void *pvData_ )
     stEvent.stTimer.u16Ticks = 1;
     bFlip = true;
     clEventSurface.SendEvent(&stEvent);
-
 }
 
 //---------------------------------------------------------------------------
-static void MyButtonCallback( void *pvData_ )
+static void MyButtonCallback(void* pvData_)
 {
     // Toggle the stopwatch timer on/off.
-    if (!bTimerRunning)
-    {
+    if (!bTimerRunning) {
         KernelAware::Print("StopWatchON!\n");
         bTimerRunning = true;
-    }
-    else
-    {
+    } else {
         KernelAware::Print("StopWatchOFF!\n");
         bTimerRunning = false;
     }
 }
 
 //---------------------------------------------------------------------------
-static void CheckBox1Callback( bool bChecked_ )
+static void CheckBox1Callback(bool bChecked_)
 {
-    if (bChecked_)
-    {
+    if (bChecked_) {
         KernelAware::Print("CB1_Chk\n");
         u8Progress16Val += 50;
-    }
-    else
-    {
+    } else {
         KernelAware::Print("CB1_NCh\n");
-        u8Progress16Val -=50;
+        u8Progress16Val -= 50;
     }
     clProgress.SetProgress(u8Progress16Val);
 }
 
 //---------------------------------------------------------------------------
-static void CheckBox2Callback( bool bChecked_ )
+static void CheckBox2Callback(bool bChecked_)
 {
-    if (bChecked_)
-    {
+    if (bChecked_) {
         KernelAware::Print("CB2_Chk\n");
         u8Progress16Val += 25;
-    }
-    else
-    {
+    } else {
         KernelAware::Print("CB2_NCh\n");
         u8Progress16Val -= 25;
     }
@@ -181,13 +169,13 @@ static void CheckBox2Callback( bool bChecked_ )
 }
 
 //---------------------------------------------------------------------------
-void AppMain(void *unused_)
+void AppMain(void* unused_)
 {
     // -- Setup the system heap (it's needed by the GUI lib)
     SystemHeap::Init();
 
     PseudoRandom clRand;
-    clRand.Seed(1,2);
+    clRand.Seed(1, 2);
     clRand.GetRandom();
 
     // -- Setup a timer to poll the joystick for input regularly
@@ -245,7 +233,6 @@ void AppMain(void *unused_)
     clCheckBox1.SetBackColor(SECONDARY_2_0);
     clCheckBox1.SetCheckCallback(CheckBox1Callback);
 
-
     clCheckBox2.Init();
     clCheckBox2.SetLeft(2);
     clCheckBox2.SetTop(32);
@@ -281,14 +268,13 @@ void AppMain(void *unused_)
 
     clSevenSeg.Init();
     clSevenSeg.SetLeft(16);
-    clSevenSeg.SetWidth(96) ;
+    clSevenSeg.SetWidth(96);
     clSevenSeg.SetTop(128);
     clSevenSeg.SetHeight(30);
     clSevenSeg.SetColon(true);
     clSevenSeg.SetValue(0);
     clSevenSeg.SetControlIndex(6);
     clSevenSeg.SetZOrder(2);
-
 
     clPanel.Init();
     clPanel.SetLeft(0);
@@ -345,15 +331,12 @@ void AppMain(void *unused_)
     clGfx.Flip();
 
     // -- This becomes our main event loop for the application.
-    while(1)
-    {
-        if (!clEventSurface.ProcessEvent())
-        {
+    while (1) {
+        if (!clEventSurface.ProcessEvent()) {
             KernelAware::Print("Error processing event\n");
         }
 
-        if (bFlip == true)
-        {
+        if (bFlip == true) {
             clWindow.Redraw(false);
             clGfx.Flip();
             bFlip = false;

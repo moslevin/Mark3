@@ -22,37 +22,34 @@ See license.txt for more information
 #include "memutil.h"
 
 //---------------------------------------------------------------------------
-void Screen::SetManager( ScreenManager *pclScreenManager_ )
+void Screen::SetManager(ScreenManager* pclScreenManager_)
 {
     m_pclScreenManager = pclScreenManager_;
 }
 
 //---------------------------------------------------------------------------
-void Screen::SetWindowAffinity( const char *szWindowName_ )
+void Screen::SetWindowAffinity(const char* szWindowName_)
 {
-    m_pclWindow = m_pclScreenManager->FindWindowByName( szWindowName_ );
+    m_pclWindow = m_pclScreenManager->FindWindowByName(szWindowName_);
 }
 
 //---------------------------------------------------------------------------
-GuiWindow *ScreenManager::FindWindowByName( const char *m_szName_ )
+GuiWindow* ScreenManager::FindWindowByName(const char* m_szName_)
 {
-    return m_pclSurface->FindWindowByName( m_szName_ );
+    return m_pclSurface->FindWindowByName(m_szName_);
 }
 
 //---------------------------------------------------------------------------
-Screen *ScreenManager::FindScreenByName( const char *szName_ )
+Screen* ScreenManager::FindScreenByName(const char* szName_)
 {
-    LinkListNode *pclTempNode = static_cast<LinkListNode*>(m_clScreenList.GetHead());
+    LinkListNode* pclTempNode = static_cast<LinkListNode*>(m_clScreenList.GetHead());
 
-    while (pclTempNode)
-    {
-        if (MemUtil::CompareStrings(szName_, static_cast<Screen*>(pclTempNode)->GetName()))
-        {
-             return static_cast<Screen*>(pclTempNode);
+    while (pclTempNode) {
+        if (MemUtil::CompareStrings(szName_, static_cast<Screen*>(pclTempNode)->GetName())) {
+            return static_cast<Screen*>(pclTempNode);
         }
         pclTempNode = pclTempNode->GetNext();
     }
 
     return NULL;
 }
-

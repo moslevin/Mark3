@@ -25,10 +25,10 @@ See license.txt for more information
 //===========================================================================
 // Local Defines
 //===========================================================================
-#define MAX_ALLOCS          (16)
-#define TEST_STACK_SIZE     (192)
+#define MAX_ALLOCS (16)
+#define TEST_STACK_SIZE (192)
 
-static volatile void *apvAllocs[MAX_ALLOCS]; // assuming we have < 128 system heap allocs...
+static volatile void* apvAllocs[MAX_ALLOCS]; // assuming we have < 128 system heap allocs...
 
 #define ARENA_SIZE (200)
 static uint8_t au8Arena[ARENA_SIZE];
@@ -45,92 +45,72 @@ const static K_ADDR au16Sizes[] = { 4, 8, 12, 20, 32, 52, 84, 0 };
 TEST(ut_arena_alloc_free)
 {
     uint16_t i, j;
-    clArena.Init(au8Arena, ARENA_SIZE, (K_ADDR*)au16Sizes, sizeof(au16Sizes)/sizeof(K_ADDR));
+    clArena.Init(au8Arena, ARENA_SIZE, (K_ADDR*)au16Sizes, sizeof(au16Sizes) / sizeof(K_ADDR));
 
-    for (j = 0; j < 100; j++)
-    {
+    for (j = 0; j < 100; j++) {
         // Alloc all/free all.
-        for (i = 0; i < MAX_ALLOCS; i++)
-        {
+        for (i = 0; i < MAX_ALLOCS; i++) {
             apvAllocs[i] = clArena.Allocate(1);
         }
-        for (i = 0; i < MAX_ALLOCS; i++)
-        {
-            if (apvAllocs[i] != 0) 
-            {
+        for (i = 0; i < MAX_ALLOCS; i++) {
+            if (apvAllocs[i] != 0) {
                 clArena.Free((void*)apvAllocs[i]);
                 apvAllocs[i] = 0;
-	    }
+            }
         }
 
         // Alloc all, free all odd, then evens
-        for (i = 0; i < MAX_ALLOCS; i++)
-        {
+        for (i = 0; i < MAX_ALLOCS; i++) {
             apvAllocs[i] = clArena.Allocate(1);
         }
-        for (i = 1; i < MAX_ALLOCS; i+=2)
-        {
-            if (apvAllocs[i] != 0) 
-            {
+        for (i = 1; i < MAX_ALLOCS; i += 2) {
+            if (apvAllocs[i] != 0) {
                 clArena.Free((void*)apvAllocs[i]);
                 apvAllocs[i] = 0;
-	    }
+            }
         }
-        for (i = 0; i < MAX_ALLOCS; i+=2)
-        {
-            if (apvAllocs[i] != 0) 
-            {
+        for (i = 0; i < MAX_ALLOCS; i += 2) {
+            if (apvAllocs[i] != 0) {
                 clArena.Free((void*)apvAllocs[i]);
                 apvAllocs[i] = 0;
-	    }
+            }
         }
 
         // Alloc all, free in step-3
-        for (i = 0; i < MAX_ALLOCS; i++)
-        {
+        for (i = 0; i < MAX_ALLOCS; i++) {
             apvAllocs[i] = clArena.Allocate(1);
         }
-        for (i = 1; i < MAX_ALLOCS; i+=3)
-        {
-            if (apvAllocs[i] != 0) 
-            {
+        for (i = 1; i < MAX_ALLOCS; i += 3) {
+            if (apvAllocs[i] != 0) {
                 clArena.Free((void*)apvAllocs[i]);
                 apvAllocs[i] = 0;
-	    }
+            }
         }
-        for (i = 0; i < MAX_ALLOCS; i+=3)
-        {
-            if (apvAllocs[i] != 0) 
-            {
+        for (i = 0; i < MAX_ALLOCS; i += 3) {
+            if (apvAllocs[i] != 0) {
                 clArena.Free((void*)apvAllocs[i]);
                 apvAllocs[i] = 0;
-	    }
+            }
         }
-        for (i = 2; i < MAX_ALLOCS; i+=3)
-        {
-            if (apvAllocs[i] != 0) 
-            {
+        for (i = 2; i < MAX_ALLOCS; i += 3) {
+            if (apvAllocs[i] != 0) {
                 clArena.Free((void*)apvAllocs[i]);
                 apvAllocs[i] = 0;
-	    }
+            }
         }
 
         // free in non-sequential order...
-        for(i = 0; i < MAX_ALLOCS; i+=2)
-        {
+        for (i = 0; i < MAX_ALLOCS; i += 2) {
             apvAllocs[i] = clArena.Allocate(1);
         }
-        for(i = 1; i < MAX_ALLOCS; i+=2)
-        {
+        for (i = 1; i < MAX_ALLOCS; i += 2) {
             apvAllocs[i] = clArena.Allocate(1);
         }
-        for (i = 0; i < MAX_ALLOCS; i++)
-        {
-            if (apvAllocs[i] != 0) 
-            {
+        for (i = 0; i < MAX_ALLOCS; i++) {
+            if (apvAllocs[i] != 0) {
                 clArena.Free((void*)apvAllocs[i]);
                 apvAllocs[i] = 0;
-	    }
+            }
         }
 
         // Test point - we didn't crash out magnificently doing low-level
@@ -141,46 +121,37 @@ TEST(ut_arena_alloc_free)
 TEST_END
 
 //===========================================================================
-void HeapScriptTest(void *pvParam_)
+void HeapScriptTest(void* pvParam_)
 {
     uint16_t u16Index = ((uint16_t)pvParam_);
     uint16_t i;
 
-    void *pvData;
+    void* pvData;
 
-    while(1)
-    {
-        for (i = u16Index; i < MAX_ALLOCS; i+=2)
-        {
+    while (1) {
+        for (i = u16Index; i < MAX_ALLOCS; i += 2) {
             apvAllocs[i] = clArena.Allocate(1);
         }
-        for (i = u16Index; i < MAX_ALLOCS; i+=2)
-        {
-            if (apvAllocs[i] != 0) 
-            {
+        for (i = u16Index; i < MAX_ALLOCS; i += 2) {
+            if (apvAllocs[i] != 0) {
                 clArena.Free((void*)apvAllocs[i]);
                 apvAllocs[i] = 0;
-	    }
+            }
         }
-        for (i = u16Index; i < MAX_ALLOCS; i+=2)
-        {
+        for (i = u16Index; i < MAX_ALLOCS; i += 2) {
             apvAllocs[i] = clArena.Allocate(1);
-            if (apvAllocs[i] != 0) 
-            {
+            if (apvAllocs[i] != 0) {
                 clArena.Free((void*)apvAllocs[i]);
                 apvAllocs[i] = 0;
-	    }
+            }
         }
-        for (i = 0; i < 200; i++)
-        {
-            switch(i & 7)
-            {
+        for (i = 0; i < 200; i++) {
+            switch (i & 7) {
                 case 0:
                 case 2:
                 case 6:
                     pvData = clArena.Allocate(au16Sizes[3]);
-                    if (pvData)
-                    {
+                    if (pvData) {
                         MemUtil::SetMemory(pvData, 0xFF, au16Sizes[3]);
                         clArena.Free(pvData);
                     }
@@ -189,22 +160,19 @@ void HeapScriptTest(void *pvParam_)
                 case 3:
                 case 5:
                     pvData = clArena.Allocate(au16Sizes[0]);
-                    if (pvData)
-                    {
+                    if (pvData) {
                         MemUtil::SetMemory(pvData, 0xFF, au16Sizes[0]);
                         clArena.Free(pvData);
                     }
                     break;
                 case 7:
                     pvData = clArena.Allocate(au16Sizes[1]);
-                    if (pvData)
-                    {
+                    if (pvData) {
                         MemUtil::SetMemory(pvData, 0xFF, au16Sizes[1]);
                         clArena.Free(pvData);
                     }
                     break;
-                default:
-                    break;
+                default: break;
             }
         }
     }
@@ -227,8 +195,8 @@ TEST(ut_arena_multithread)
     // Note that there's no interaction between objects alloc'd in one thread
     // and free'd in another
 
-    clTestThread1.Init( aucTestStack1, TEST_STACK_SIZE, 1, HeapScriptTest, (void*)0);
-    clTestThread2.Init( aucTestStack2, TEST_STACK_SIZE, 1, HeapScriptTest, (void*)1);
+    clTestThread1.Init(aucTestStack1, TEST_STACK_SIZE, 1, HeapScriptTest, (void*)0);
+    clTestThread2.Init(aucTestStack2, TEST_STACK_SIZE, 1, HeapScriptTest, (void*)1);
 
     Scheduler::GetCurrentThread()->SetPriority(7);
 
@@ -240,8 +208,7 @@ TEST(ut_arena_multithread)
     clTestThread1.Start();
     clTestThread2.Start();
 
-    for (int i = 0; i < 10; i++)
-    {
+    for (int i = 0; i < 10; i++) {
         Thread::Sleep(500);
 
         // 1 point for each 500ms of testing
@@ -258,6 +225,4 @@ TEST_END
 // Test Whitelist Goes Here
 //===========================================================================
 TEST_CASE_START
-  TEST_CASE(ut_arena_alloc_free),
-  TEST_CASE(ut_arena_multithread),
-TEST_CASE_END
+TEST_CASE(ut_arena_alloc_free), TEST_CASE(ut_arena_multithread), TEST_CASE_END

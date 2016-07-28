@@ -17,13 +17,11 @@ bool BrLives::Decrement(void)
 {
     m_bUpdate = true;
     m_u8Lives--;
-    if (!m_u8Lives)
-    {
+    if (!m_u8Lives) {
         return false;
     }
     return true;
 }
-
 
 //---------------------------------------------------------------------------
 void BrLives::Increment(void)
@@ -32,12 +30,10 @@ void BrLives::Increment(void)
     m_u8Lives++;
 }
 
-
 //---------------------------------------------------------------------------
 void BrLives::Draw(void)
 {
-    if (!m_bUpdate)
-    {
+    if (!m_bUpdate) {
         return;
     }
 
@@ -78,4 +74,3 @@ uint8_t BrLives::GetLives(void)
 {
     return m_u8Lives;
 }
-

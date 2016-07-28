@@ -272,7 +272,7 @@ See license.txt for more information
     diagnostic functionality when Mark3-based applications are run on the
     flavr AVR simulator.
 */
-#define KERNEL_AWARE_SIMULATION          (1)
+#define KERNEL_AWARE_SIMULATION          (0)
 
 /*!
     Enabling this feature removes the necessity for the user to dedicate

@@ -26,12 +26,11 @@ See license.txt for more information
 //---------------------------------------------------------------------------
 void KernelTimer::Config(void)
 {
-       
 }
 
 //---------------------------------------------------------------------------
 void KernelTimer::Start(void)
-{    
+{
     M3_SysTick_Config(TIMER_FREQ); // 1KHz fixed clock...
     M3_NVIC_EnableIRQ(M3_SYSTICK_IRQn);
 }
@@ -69,7 +68,7 @@ uint32_t KernelTimer::GetOvertime(void)
 
 //---------------------------------------------------------------------------
 uint32_t KernelTimer::SetExpiry(uint32_t u32Interval_)
-{    
+{
     return 0;
 }
 
@@ -86,7 +85,7 @@ uint8_t KernelTimer::DI(void)
 
 //---------------------------------------------------------------------------
 void KernelTimer::EI(void)
-{    
+{
     KernelTimer::RI(0);
 }
 

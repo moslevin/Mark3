@@ -16,7 +16,7 @@ See license.txt for more information
 #include "bitstream.h"
 
 //---------------------------------------------------------------------------
-void BitStreamer::Init(uint8_t *pu8Data_, uint16_t u16Size_)
+void BitStreamer::Init(uint8_t* pu8Data_, uint16_t u16Size_)
 {
     m_pu8Data = pu8Data_;
     m_u8BitIndex = 0;
@@ -27,8 +27,7 @@ void BitStreamer::Init(uint8_t *pu8Data_, uint16_t u16Size_)
 //---------------------------------------------------------------------------
 void BitStreamer::AdvanceByte(void)
 {
-    if (m_u8BitIndex != 0)
-    {
+    if (m_u8BitIndex != 0) {
         m_u8BitIndex = 0;
         m_u16ByteIndex++;
     }
@@ -42,17 +41,13 @@ uint8_t BitStreamer::ReadBits(uint8_t u8NumBits_)
     uint8_t u8IterBits;
     uint8_t u8Shift = 0;
 
-    while (u8NumBits_)
-    {
+    while (u8NumBits_) {
         // Check to see whether or not the bitstream read will past the end
         // of the current byte's index.
-        if (u8NumBits_ < (8 - m_u8BitIndex))
-        {
+        if (u8NumBits_ < (8 - m_u8BitIndex)) {
             // If not, read everything all in one iteration
             u8IterBits = u8NumBits_;
-        }
-        else
-        {
+        } else {
             // Otherwise, read what we can in this iteration.
             u8IterBits = (8 - m_u8BitIndex);
         }
@@ -65,8 +60,7 @@ uint8_t BitStreamer::ReadBits(uint8_t u8NumBits_)
 
         // Update the bit index (and byte index, if we've reached the end of the word)
         m_u8BitIndex += u8NumBits_;
-        if (m_u8BitIndex == 8)
-        {
+        if (m_u8BitIndex == 8) {
             m_u8BitIndex = 0;
             m_u16ByteIndex++;
         }
@@ -75,8 +69,7 @@ uint8_t BitStreamer::ReadBits(uint8_t u8NumBits_)
         u8NumBits_ -= u8IterBits;
 
         // If there are bits yet to be read
-        if (u8NumBits_)
-        {
+        if (u8NumBits_) {
             // Figure out how much to shift the current return value by
             u8Shift += u8IterBits;
 

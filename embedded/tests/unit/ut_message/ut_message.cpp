@@ -22,7 +22,7 @@ See license.txt for more information
 
 static Thread clMsgThread;
 
-#define MSG_STACK_SIZE  (192)
+#define MSG_STACK_SIZE (192)
 static K_WORD aucMsgStack[MSG_STACK_SIZE];
 
 static MessageQueue clMsgQ;
@@ -32,62 +32,50 @@ static volatile uint8_t u8PassCount = 0;
 // Local Defines
 //===========================================================================
 
-void MsgConsumer(void *unused_)
+void MsgConsumer(void* unused_)
 {
-    Message *pclMsg;
+    Message* pclMsg;
     uint8_t i;
 
-    for (i = 0; i < 20; i++)
-    {
+    for (i = 0; i < 20; i++) {
         pclMsg = clMsgQ.Receive();
         u8PassCount = 0;
 
-        if (pclMsg)
-        {
+        if (pclMsg) {
             u8PassCount++;
-        }
-        else
-        {
+        } else {
             u8PassCount = 0;
             continue;
         }
 
-        switch(i)
-        {
+        switch (i) {
             case 0:
-                if (0 == pclMsg->GetCode())
-                {
+                if (0 == pclMsg->GetCode()) {
                     u8PassCount++;
                 }
-                if (0 == pclMsg->GetData())
-                {
+                if (0 == pclMsg->GetData()) {
                     u8PassCount++;
                 }
                 break;
             case 1:
-                if (1337 == (pclMsg->GetCode()) )
-                {
+                if (1337 == (pclMsg->GetCode())) {
                     u8PassCount++;
                 }
-                if (7331 == (uint16_t)(pclMsg->GetData()))
-                {
+                if (7331 == (uint16_t)(pclMsg->GetData())) {
                     u8PassCount++;
                 }
 
             case 2:
-                if (0xA0A0== (pclMsg->GetCode()) )
-                {
+                if (0xA0A0 == (pclMsg->GetCode())) {
                     u8PassCount++;
                 }
-                if (0xC0C0 == (uint16_t)(pclMsg->GetData()))
-                {
+                if (0xC0C0 == (uint16_t)(pclMsg->GetData())) {
                     u8PassCount++;
                 }
 
                 break;
 
-            default:
-                break;
+            default: break;
         }
         GlobalMessagePool::Push(pclMsg);
     }
@@ -103,7 +91,7 @@ TEST(ut_message_tx_rx)
     // message queue.  This test also relies on priority scheduling working
     // as expected.
 
-    Message *pclMsg;
+    Message* pclMsg;
 
     clMsgThread.Init(aucMsgStack, MSG_STACK_SIZE, 7, MsgConsumer, 0);
 
@@ -113,7 +101,7 @@ TEST(ut_message_tx_rx)
 
     // Get a message from the pool
     pclMsg = GlobalMessagePool::Pop();
-    EXPECT_FAIL_FALSE( pclMsg );
+    EXPECT_FAIL_FALSE(pclMsg);
 
     // Send the message to the consumer thread
     pclMsg->SetData(0);
@@ -124,7 +112,7 @@ TEST(ut_message_tx_rx)
     EXPECT_EQUALS(u8PassCount, 3);
 
     pclMsg = GlobalMessagePool::Pop();
-    EXPECT_FAIL_FALSE( pclMsg );
+    EXPECT_FAIL_FALSE(pclMsg);
 
     // Send the message to the consumer thread
     pclMsg->SetCode(1337);
@@ -135,7 +123,7 @@ TEST(ut_message_tx_rx)
     EXPECT_EQUALS(u8PassCount, 3);
 
     pclMsg = GlobalMessagePool::Pop();
-    EXPECT_FAIL_FALSE( pclMsg );
+    EXPECT_FAIL_FALSE(pclMsg);
 
     // Send the message to the consumer thread
     pclMsg->SetCode(0xA0A0);
@@ -155,11 +143,10 @@ TEST(ut_message_exhaust)
     // Test - exhaust the global message pool and ensure that we eventually
     // get "NULL" returned when the pool is depleted, and not some other
     // unexpected condition/system failure.
-    for (int i = 0; i < GLOBAL_MESSAGE_POOL_SIZE; i++)
-    {
-        EXPECT_FAIL_FALSE( GlobalMessagePool::Pop() );
+    for (int i = 0; i < GLOBAL_MESSAGE_POOL_SIZE; i++) {
+        EXPECT_FAIL_FALSE(GlobalMessagePool::Pop());
     }
-    EXPECT_FALSE( GlobalMessagePool::Pop());
+    EXPECT_FALSE(GlobalMessagePool::Pop());
 
     // Test is over - re-init the pool..
     GlobalMessagePool::Init();
@@ -168,44 +155,37 @@ TEST_END
 
 static volatile bool bTimedOut = false;
 //===========================================================================
-void MsgTimed(void *unused)
+void MsgTimed(void* unused)
 {
-    Message *pclRet;
+    Message* pclRet;
     u8PassCount = 0;
     pclRet = clMsgQ.Receive(10);
-    if (0 == pclRet)
-    {
+    if (0 == pclRet) {
         u8PassCount++;
-    }
-    else
-    {
+    } else {
         GlobalMessagePool::Push(pclRet);
     }
 
     pclRet = clMsgQ.Receive(1000);
-    if (0 != pclRet)
-    {
+    if (0 != pclRet) {
         u8PassCount++;
-    }
-    else
-    {
+    } else {
         GlobalMessagePool::Push(pclRet);
     }
 
-    while(1)
-    {
+    while (1) {
         pclRet = clMsgQ.Receive();
         GlobalMessagePool::Push(pclRet);
     }
- }
+}
 
 //===========================================================================
 TEST(ut_message_timed_rx)
 {
-    Message *pclMsg;
+    Message* pclMsg;
 
     pclMsg = GlobalMessagePool::Pop();
-    EXPECT_FAIL_FALSE( pclMsg );
+    EXPECT_FAIL_FALSE(pclMsg);
 
     // Send the message to the consumer thread
     pclMsg->SetData(0);
@@ -217,12 +197,12 @@ TEST(ut_message_timed_rx)
 
     // Just let the timeout expire
     Thread::Sleep(11);
-    EXPECT_EQUALS( u8PassCount, 1 );
+    EXPECT_EQUALS(u8PassCount, 1);
 
     // other thread has a timeout set... Don't leave them waiting!
     clMsgQ.Send(pclMsg);
 
-    EXPECT_EQUALS( u8PassCount, 2 );
+    EXPECT_EQUALS(u8PassCount, 2);
 
     clMsgQ.Send(pclMsg);
 
@@ -234,7 +214,4 @@ TEST_END
 // Test Whitelist Goes Here
 //===========================================================================
 TEST_CASE_START
-  TEST_CASE(ut_message_tx_rx),
-  TEST_CASE(ut_message_exhaust),
-  TEST_CASE(ut_message_timed_rx),
-TEST_CASE_END
+TEST_CASE(ut_message_tx_rx), TEST_CASE(ut_message_exhaust), TEST_CASE(ut_message_timed_rx), TEST_CASE_END

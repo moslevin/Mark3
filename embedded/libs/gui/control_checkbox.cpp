@@ -26,29 +26,13 @@ See license.txt for more information
 #include "gui_palette.h"
 
 //---------------------------------------------------------------------------
-#define TEXT_X_OFFSET        (13)
+#define TEXT_X_OFFSET (13)
 
 //---------------------------------------------------------------------------
-static const uint8_t aucBox[] =
-{ 0xE7,
-  0x81,
-  0x81,
-  0x81,
-  0x81,
-  0x81,
-  0x81,
-  0xE7 };
+static const uint8_t aucBox[] = { 0xE7, 0x81, 0x81, 0x81, 0x81, 0x81, 0x81, 0xE7 };
 
 //---------------------------------------------------------------------------
-static const uint8_t aucCheck[] =
-{ 0,
-  0,
-  0x3C,
-  0x3C,
-  0x3C,
-  0x3C,
-  0,
-  0 };
+static const uint8_t aucCheck[] = { 0, 0, 0x3C, 0x3C, 0x3C, 0x3C, 0, 0 };
 
 //---------------------------------------------------------------------------
 void CheckBoxControl::Init()
@@ -63,7 +47,7 @@ void CheckBoxControl::Init()
 //---------------------------------------------------------------------------
 void CheckBoxControl::Draw()
 {
-    GraphicsDriver *pclDriver = GetParentWindow()->GetDriver();
+    GraphicsDriver* pclDriver = GetParentWindow()->GetDriver();
     uint16_t u16X, u16Y;
     uint16_t u16TextWidth;
 
@@ -73,12 +57,9 @@ void CheckBoxControl::Draw()
     {
         DrawRectangle_t stRect;
 
-        if (GetParentWindow()->IsInFocus(this))
-        {
+        if (GetParentWindow()->IsInFocus(this)) {
             stRect.u32ineColor = m_uBoxColor;
-        }
-        else
-        {
+        } else {
             stRect.u32ineColor = m_uBackColor;
         }
 
@@ -101,12 +82,9 @@ void CheckBoxControl::Draw()
         stStamp.pu8Data = (uint8_t*)aucBox;
         pclDriver->Stamp(&stStamp);
 
-        if (m_bChecked)
-        {
+        if (m_bChecked) {
             stStamp.uColor = m_uBoxColor;
-        }
-        else
-        {
+        } else {
             stStamp.uColor = m_uBackColor;
         }
         stStamp.pu8Data = (uint8_t*)aucCheck;
@@ -128,7 +106,7 @@ void CheckBoxControl::Draw()
 }
 
 //---------------------------------------------------------------------------
-GuiReturn_t CheckBoxControl::ProcessEvent( GuiEvent_t *pstEvent_ )
+GuiReturn_t CheckBoxControl::ProcessEvent(GuiEvent_t* pstEvent_)
 {
     uint16_t u16XOffset, u16YOffset;
 
@@ -136,103 +114,75 @@ GuiReturn_t CheckBoxControl::ProcessEvent( GuiEvent_t *pstEvent_ )
 
     GUI_DEBUG_PRINT("ButtonControl::ProcessEvent\n");
 
-    switch (pstEvent_->u8EventType)
-    {
-        case EVENT_TYPE_JOYSTICK:
-        {
+    switch (pstEvent_->u8EventType) {
+        case EVENT_TYPE_JOYSTICK: {
             // If this is a space bar or an enter key, behave like a mouse click.
-            if( pstEvent_->stJoystick.Current.bButton1 && (!pstEvent_->stJoystick.Previous.bButton1))
-            {
-                if (m_bChecked == true)
-                {
+            if (pstEvent_->stJoystick.Current.bButton1 && (!pstEvent_->stJoystick.Previous.bButton1)) {
+                if (m_bChecked == true) {
                     m_bChecked = false;
-                }
-                else
-                {
+                } else {
                     m_bChecked = true;
                 }
 
-                if (m_pfCheckCallback)
-                {
+                if (m_pfCheckCallback) {
                     m_pfCheckCallback(m_bChecked);
                 }
                 SetStale();
             }
-        }
-        break;
-        case EVENT_TYPE_KEYBOARD:
-        {
+        } break;
+        case EVENT_TYPE_KEYBOARD: {
             // If this is a space bar or an enter key, behave like a mouse click.
-            if ((KEYCODE_SPACE == pstEvent_->stKey.u8KeyCode) ||
-                (KEYCODE_RETURN == pstEvent_->stKey.u8KeyCode))
-            {
-                if (pstEvent_->stKey.bKeyState)
-                {
+            if ((KEYCODE_SPACE == pstEvent_->stKey.u8KeyCode) || (KEYCODE_RETURN == pstEvent_->stKey.u8KeyCode)) {
+                if (pstEvent_->stKey.bKeyState) {
                     m_bChecked = true;
-                }
-                else
-                {
+                } else {
                     m_bChecked = false;
                 }
 
-                if (m_pfCheckCallback)
-                {
+                if (m_pfCheckCallback) {
                     m_pfCheckCallback(m_bChecked);
                 }
                 SetStale();
             }
-        }
-            break;
-        case EVENT_TYPE_MOUSE:
-        {
+        } break;
+        case EVENT_TYPE_MOUSE: {
             // Is this control currently in the "active"/pressed state?
-            if (m_bChecked)
-            {
+            if (m_bChecked) {
                 // Check to see if the movement is out-of-bounds based on the coordinates.
                 // If so, de-activate the control
-                if (pstEvent_->stMouse.bLeftState)
-                {
-                    if ((pstEvent_->stMouse.u16X >= GetLeft() + u16XOffset) &&
-                        (pstEvent_->stMouse.u16X < GetLeft() + u16XOffset + GetWidth()-1) &&
-                        (pstEvent_->stMouse.u16Y >= GetTop() + u16YOffset) &&
-                        (pstEvent_->stMouse.u16Y < GetTop() + u16YOffset + GetHeight() - 1))
-                    {
+                if (pstEvent_->stMouse.bLeftState) {
+                    if ((pstEvent_->stMouse.u16X >= GetLeft() + u16XOffset)
+                        && (pstEvent_->stMouse.u16X < GetLeft() + u16XOffset + GetWidth() - 1)
+                        && (pstEvent_->stMouse.u16Y >= GetTop() + u16YOffset)
+                        && (pstEvent_->stMouse.u16Y < GetTop() + u16YOffset + GetHeight() - 1)) {
                         m_bChecked = false;
                         SetStale();
-                        if (m_pfCheckCallback)
-                        {
+                        if (m_pfCheckCallback) {
                             m_pfCheckCallback(m_bChecked);
                         }
                     }
                 }
-            }
-            else if (!m_bChecked)
-            {
+            } else if (!m_bChecked) {
                 // If we registered a down-click in the bounding box, set the state of the
                 // control to activated.
-                if (pstEvent_->stMouse.bLeftState)
-                {
-                    if ((pstEvent_->stMouse.u16X >= GetLeft() + u16XOffset) &&
-                        (pstEvent_->stMouse.u16X < GetLeft() + u16XOffset + GetWidth()-1) &&
-                        (pstEvent_->stMouse.u16Y >= GetTop() + u16YOffset) &&
-                        (pstEvent_->stMouse.u16Y < GetTop() + u16YOffset + GetHeight() - 1))
-                    {
+                if (pstEvent_->stMouse.bLeftState) {
+                    if ((pstEvent_->stMouse.u16X >= GetLeft() + u16XOffset)
+                        && (pstEvent_->stMouse.u16X < GetLeft() + u16XOffset + GetWidth() - 1)
+                        && (pstEvent_->stMouse.u16Y >= GetTop() + u16YOffset)
+                        && (pstEvent_->stMouse.u16Y < GetTop() + u16YOffset + GetHeight() - 1)) {
                         m_bChecked = true;
                         SetStale();
-                        if (m_pfCheckCallback)
-                        {
+                        if (m_pfCheckCallback) {
                             m_pfCheckCallback(m_bChecked);
                         }
                     }
                 }
             }
 
-            if (!IsInFocus())
-            {
+            if (!IsInFocus()) {
                 GetParentWindow()->SetFocus(this);
                 SetStale();
             }
-        }
-            break;
+        } break;
     }
 }

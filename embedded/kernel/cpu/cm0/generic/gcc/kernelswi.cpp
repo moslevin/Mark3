@@ -27,13 +27,13 @@ See license.txt for more information
 //---------------------------------------------------------------------------
 void KernelSWI::Config(void)
 {
-    M3_NVIC_SetPriority(M3_SVC_IRQn,    (1<<__NVIC_PRIO_BITS) - 1);
-    M3_NVIC_SetPriority(M3_PENDSV_IRQn, (1<<__NVIC_PRIO_BITS) - 1);
+    M3_NVIC_SetPriority(M3_SVC_IRQn, (1 << __NVIC_PRIO_BITS) - 1);
+    M3_NVIC_SetPriority(M3_PENDSV_IRQn, (1 << __NVIC_PRIO_BITS) - 1);
 }
 
-//---------------------------------------------------------------------------    
+//---------------------------------------------------------------------------
 void KernelSWI::Start(void)
-{        
+{
     // Nothing to do...
 }
 
@@ -58,10 +58,10 @@ void KernelSWI::RI(bool bEnable_)
 
 //---------------------------------------------------------------------------
 void KernelSWI::Clear(void)
-{    
+{
     // There's no convenient CMSIS function call for PendSV set/clear,
     // But we do at least have some structs/macros.
-    
+
     // Note that set/clear each have their own bits in the same register.
     // Setting the "set" or "clear" bit results in the desired operation.
     SCB->ICSR = SCB_ICSR_PENDSVCLR_Msk;
@@ -69,6 +69,6 @@ void KernelSWI::Clear(void)
 
 //---------------------------------------------------------------------------
 void KernelSWI::Trigger(void)
-{    
+{
     SCB->ICSR = SCB_ICSR_PENDSVSET_Msk;
 }

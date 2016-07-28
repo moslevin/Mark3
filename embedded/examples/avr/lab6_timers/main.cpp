@@ -23,25 +23,27 @@ Takeaway:
 
 ===========================================================================*/
 #if !KERNEL_USE_IDLE_FUNC
-# error "This demo requires KERNEL_USE_IDLE_FUNC"
+#error "This demo requires KERNEL_USE_IDLE_FUNC"
 #endif
 
 extern "C" {
-void __cxa_pure_virtual(void) { }
+void __cxa_pure_virtual(void)
+{
+}
 }
 
 //---------------------------------------------------------------------------
 // This block declares the thread data for one main application thread.  It
 // defines a thread object, stack (in word-array form), and the entry-point
 // function used by the application thread.
-#define APP1_STACK_SIZE      (320/sizeof(K_WORD))
-static Thread  clApp1Thread;
-static K_WORD  awApp1Stack[APP1_STACK_SIZE];
-static void    App1Main(void *unused_);
+#define APP1_STACK_SIZE (320 / sizeof(K_WORD))
+static Thread clApp1Thread;
+static K_WORD awApp1Stack[APP1_STACK_SIZE];
+static void App1Main(void* unused_);
 
 //---------------------------------------------------------------------------
-static void PeriodicCallback(Thread *owner, void *pvData_);
-static void OneShotCallback(Thread *owner, void *pvData_);
+static void PeriodicCallback(Thread* owner, void* pvData_);
+static void OneShotCallback(Thread* owner, void* pvData_);
 
 //---------------------------------------------------------------------------
 int main(void)
@@ -49,7 +51,7 @@ int main(void)
     // See the annotations in previous labs for details on init.
     Kernel::Init();
 
-    clApp1Thread.Init(  awApp1Stack,  sizeof(awApp1Stack),  1, App1Main,  0);
+    clApp1Thread.Init(awApp1Stack, sizeof(awApp1Stack), 1, App1Main, 0);
 
     clApp1Thread.Start();
 
@@ -59,31 +61,31 @@ int main(void)
 }
 
 //---------------------------------------------------------------------------
-void PeriodicCallback(Thread *owner, void *pvData_)
+void PeriodicCallback(Thread* owner, void* pvData_)
 {
     // Timer callback function used to post a semaphore.  Posting the semaphore
     // will wake up a thread that's pending on that semaphore.
-    Semaphore *pclSem = (Semaphore*)pvData_;
+    Semaphore* pclSem = (Semaphore*)pvData_;
     pclSem->Post();
 }
 
 //---------------------------------------------------------------------------
-void OneShotCallback(Thread *owner, void *pvData_)
+void OneShotCallback(Thread* owner, void* pvData_)
 {
     KernelAware::Print("One-shot timer expired.\n");
 }
 
 //---------------------------------------------------------------------------
-void App1Main(void *unused_)
+void App1Main(void* unused_)
 {
-    Timer       clMyTimer;  // Periodic timer object
-    Timer       clOneShot;  // One-shot timer object
+    Timer clMyTimer; // Periodic timer object
+    Timer clOneShot; // One-shot timer object
 
-    Semaphore   clMySem;    // Semaphore used to wake this thread
+    Semaphore clMySem; // Semaphore used to wake this thread
 
     // Initialize a binary semaphore (maximum value of one, initial value of
     // zero).
-    clMySem.Init(0,1);
+    clMySem.Init(0, 1);
 
     // Start a timer that triggers every 500ms that will call PeriodicCallback.
     // This timer simulates an external stimulus or event that would require
@@ -99,8 +101,7 @@ void App1Main(void *unused_)
     // from the execution of this thread.
     clOneShot.Start(false, 2500, OneShotCallback, 0);
 
-    while(1)
-    {
+    while (1) {
         // Wait until the semaphore is posted from the timer expiry
         clMySem.Pend();
 
@@ -109,4 +110,3 @@ void App1Main(void *unused_)
         KernelAware::Print("Thread Triggered.\n");
     }
 }
-

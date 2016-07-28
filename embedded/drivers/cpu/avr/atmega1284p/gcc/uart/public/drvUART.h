@@ -27,23 +27,41 @@ See license.txt for more information
 //---------------------------------------------------------------------------
 // UART defines - user-configurable for different targets
 //---------------------------------------------------------------------------
-#define UART_SRA                (UCSR0A)
-#define UART_SRB                (UCSR0B)
-#define UART_SRC                (UCSR0C)
-#define UART_BAUDH              (UBRR0H)
-#define UART_BAUDL              (UBRR0L)
-#define UART_RXEN               (RXEN0)
-#define UART_TXEN               (TXEN0)
-#define UART_TXCIE              (TXCIE0)
-#define UART_RXCIE              (RXCIE0)
-#define UART_UDR                (UDR0)
-#define UART_UDRE               (UDRE0)
-#define UART_RXC                (RXC0)
+#define UART0_SRA                (UCSR0A)
+#define UART0_SRB                (UCSR0B)
+#define UART0_SRC                (UCSR0C)
+#define UART0_BAUDH              (UBRR0H)
+#define UART0_BAUDL              (UBRR0L)
+#define UART0_RXEN               (RXEN0)
+#define UART0_TXEN               (TXEN0)
+#define UART0_TXCIE              (TXCIE0)
+#define UART0_RXCIE              (RXCIE0)
+#define UART0_UDR                (UDR0)
+#define UART0_UDRE               (UDRE0)
+#define UART0_RXC                (RXC0)
 
-#define UART_DEFAULT_BAUD       ((uint32_t)57600)
+#define UART0_RX_ISR             (USART0_RX_vect)
+#define UART0_TX_ISR             (USART0_TX_vect)
 
-#define UART_RX_ISR             (UART0_RX_vect)
-#define UART_TX_ISR             (UART0_TX_vect)
+//---------------------------------------------------------------------------
+#define UART1_SRA                (UCSR1A)
+#define UART1_SRB                (UCSR1B)
+#define UART1_SRC                (UCSR1C)
+#define UART1_BAUDH              (UBRR1H)
+#define UART1_BAUDL              (UBRR1L)
+#define UART1_RXEN               (RXEN1)
+#define UART1_TXEN               (TXEN1)
+#define UART1_TXCIE              (TXCIE1)
+#define UART1_RXCIE              (RXCIE1)
+#define UART1_UDR                (UDR1)
+#define UART1_UDRE               (UDRE1)
+#define UART1_RXC                (RXC1)
+
+#define UART1_RX_ISR             (USART1_RX_vect)
+#define UART1_TX_ISR             (USART1_TX_vect)
+
+#define UART_DEFAULT_BAUD        ((uint32_t)57600)
+
 
 //---------------------------------------------------------------------------
 typedef enum
@@ -54,7 +72,8 @@ typedef enum
     CMD_SET_RX_CALLBACK,
     CMD_SET_RX_ECHO,
     CMD_SET_RX_ENABLE,
-    CMD_SET_RX_DISABLE
+    CMD_SET_RX_DISABLE,
+	CMD_SET_IDENTITY
 } CMD_UART;
 
 class ATMegaUART;
@@ -121,6 +140,7 @@ private:
     void SetBaud(void);
     void StartTx(void);
     
+	uint8_t m_u8Identity;			   //!< Which physical UART this driver corresponds to
     uint8_t m_u8TxSize;                //!< Size of the TX Buffer
     uint8_t m_u8TxHead;                //!< Head index
     uint8_t m_u8TxTail;                //!< Tail index

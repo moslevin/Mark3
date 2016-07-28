@@ -4,61 +4,58 @@
 #include "thread.h"
 
 //---------------------------------------------------------------------------
-void GraphicsUOLED::WriteByte( uint8_t u8Byte_ )
+void GraphicsUOLED::WriteByte(uint8_t u8Byte_)
 {
-    while (!m_pclDriver->Write(1, &u8Byte_)) { /* do nothing */ }
+    while (!m_pclDriver->Write(1, &u8Byte_)) { /* do nothing */
+    }
 }
 
 //---------------------------------------------------------------------------
-void GraphicsUOLED::WriteWord( uint16_t u16Word_ )
+void GraphicsUOLED::WriteWord(uint16_t u16Word_)
 {
     uint8_t u8Byte = (uint8_t)(u16Word_ >> 8);
-    while (!m_pclDriver->Write(1, &u8Byte)) { /* do nothing */ }
+    while (!m_pclDriver->Write(1, &u8Byte)) { /* do nothing */
+    }
 
     u8Byte = (uint8_t)u16Word_;
-    while (!m_pclDriver->Write(1, &u8Byte)) { /* do nothing */ }
+    while (!m_pclDriver->Write(1, &u8Byte)) { /* do nothing */
+    }
 }
 
 //---------------------------------------------------------------------------
-uint8_t GraphicsUOLED::ReadByte( void )
+uint8_t GraphicsUOLED::ReadByte(void)
 {
     uint8_t u8Response;
-    while (!m_pclDriver->Read(1, &u8Response)) { /* do nothing */ }
-
-    return u8Response;
-}
-
-//---------------------------------------------------------------------------
-uint8_t GraphicsUOLED::WaitAck( void )
-{
-    uint16_t u16Timeout = SERIAL_TIMEOUT_MAX;
-    uint8_t u8Response = 0;
-    
-    while (u16Timeout--)
-    {
-        if(m_pclDriver->Read(1, &u8Response))
-        {
-            break;
-        }
-        Thread::USleep(1000);   //100us sleep
+    while (!m_pclDriver->Read(1, &u8Response)) { /* do nothing */
     }
 
     return u8Response;
 }
 
+//---------------------------------------------------------------------------
+uint8_t GraphicsUOLED::WaitAck(void)
+{
+    uint16_t u16Timeout = SERIAL_TIMEOUT_MAX;
+    uint8_t u8Response = 0;
+
+    while (u16Timeout--) {
+        if (m_pclDriver->Read(1, &u8Response)) {
+            break;
+        }
+        Thread::USleep(1000); // 100us sleep
+    }
+
+    return u8Response;
+}
 
 //---------------------------------------------------------------------------
-void GraphicsUOLED::WriteVector( DataVector_t *pstVector_, uint8_t u8Count_)
+void GraphicsUOLED::WriteVector(DataVector_t* pstVector_, uint8_t u8Count_)
 {
     uint8_t u8Index = 0;
-    while (u8Index < u8Count_)
-    {
-        if (1 == pstVector_->u8Len)
-        {
+    while (u8Index < u8Count_) {
+        if (1 == pstVector_->u8Len) {
             WriteByte(pstVector_->u16Data);
-        }
-        else if (2 == pstVector_->u8Len)
-        {
+        } else if (2 == pstVector_->u8Len) {
             WriteWord(pstVector_->u16Data);
         }
         u8Index++;
@@ -67,16 +64,16 @@ void GraphicsUOLED::WriteVector( DataVector_t *pstVector_, uint8_t u8Count_)
 }
 
 //---------------------------------------------------------------------------
-#define COMMAND_HEADER  \
-{ \
-    uint8_t u8Retry = COMMAND_RETRY_COUNT;  \
-    while (u8Retry--) \
-    { \
-
-#define COMMAND_FOOTER \
-        if (ACK_BYTE == WaitAck()) { break; } \
-    } \
-}
+#define COMMAND_HEADER                                                                                                 \
+    {                                                                                                                  \
+        uint8_t u8Retry = COMMAND_RETRY_COUNT;                                                                         \
+        while (u8Retry--) {
+#define COMMAND_FOOTER                                                                                                 \
+    if (ACK_BYTE == WaitAck()) {                                                                                       \
+        break;                                                                                                         \
+    }                                                                                                                  \
+    }                                                                                                                  \
+    }
 
 //---------------------------------------------------------------------------
 void GraphicsUOLED::ClearScreen()
@@ -84,15 +81,15 @@ void GraphicsUOLED::ClearScreen()
     COMMAND_HEADER
 
     WriteWord(GFX_CLEAR_SCREEN);
-    
+
     COMMAND_FOOTER
 }
 
 //---------------------------------------------------------------------------
-void GraphicsUOLED::Point(DrawPoint_t *pstPoint_)
+void GraphicsUOLED::Point(DrawPoint_t* pstPoint_)
 {
     COMMAND_HEADER
-    
+
     DataVector_t astVector[4];
 
     astVector[0].u16Data = GFX_PUT_PIXEL;
@@ -110,10 +107,10 @@ void GraphicsUOLED::Point(DrawPoint_t *pstPoint_)
 }
 
 //---------------------------------------------------------------------------
-void GraphicsUOLED::Line(DrawLine_t *pstLine_)
+void GraphicsUOLED::Line(DrawLine_t* pstLine_)
 {
     COMMAND_HEADER
-    
+
     DataVector_t astVector[6];
 
     astVector[0].u16Data = GFX_DRAW_LINE;
@@ -135,7 +132,7 @@ void GraphicsUOLED::Line(DrawLine_t *pstLine_)
 }
 
 //---------------------------------------------------------------------------
-void GraphicsUOLED::SetOutlineColor( COLOR uColor_ )
+void GraphicsUOLED::SetOutlineColor(COLOR uColor_)
 {
     COMMAND_HEADER
 
@@ -150,23 +147,19 @@ void GraphicsUOLED::SetOutlineColor( COLOR uColor_ )
 }
 
 //---------------------------------------------------------------------------
-void GraphicsUOLED::Circle(DrawCircle_t *pstCircle_)
+void GraphicsUOLED::Circle(DrawCircle_t* pstCircle_)
 {
-    if (pstCircle_->bFill)
-    {
+    if (pstCircle_->bFill) {
         SetOutlineColor(pstCircle_->u32ineColor);
-    }    
+    }
 
     COMMAND_HEADER
-    
+
     DataVector_t astVector[5];
 
-    if (pstCircle_->bFill)
-    {
+    if (pstCircle_->bFill) {
         astVector[0].u16Data = GFX_DRAW_CIRCLE_FILLED;
-    }
-    else
-    {
+    } else {
         astVector[0].u16Data = GFX_DRAW_CIRCLE;
     }
     astVector[0].u8Len = 2;
@@ -177,13 +170,10 @@ void GraphicsUOLED::Circle(DrawCircle_t *pstCircle_)
     astVector[2].u8Len = 2;
     astVector[3].u16Data = pstCircle_->u16Radius;
     astVector[3].u8Len = 2;
-    
-    if (pstCircle_->bFill)
-    {
+
+    if (pstCircle_->bFill) {
         astVector[4].u16Data = pstCircle_->uFillColor;
-    }
-    else
-    {
+    } else {
         astVector[4].u16Data = pstCircle_->u32ineColor;
     }
     astVector[4].u8Len = 2;
@@ -194,23 +184,19 @@ void GraphicsUOLED::Circle(DrawCircle_t *pstCircle_)
 }
 
 //---------------------------------------------------------------------------
-void GraphicsUOLED::Rectangle(DrawRectangle_t *pstRectangle_)
+void GraphicsUOLED::Rectangle(DrawRectangle_t* pstRectangle_)
 {
-    if (pstRectangle_->bFill)
-    {
+    if (pstRectangle_->bFill) {
         SetOutlineColor(pstRectangle_->u32ineColor);
-    }    
+    }
 
     COMMAND_HEADER
-    
+
     DataVector_t astVector[6];
 
-    if (pstRectangle_->bFill)
-    {
+    if (pstRectangle_->bFill) {
         astVector[0].u16Data = GFX_DRAW_RECTANGLE_FILLED;
-    }
-    else
-    {
+    } else {
         astVector[0].u16Data = GFX_DRAW_RECTANGLE;
     }
     astVector[0].u8Len = 2;
@@ -224,12 +210,9 @@ void GraphicsUOLED::Rectangle(DrawRectangle_t *pstRectangle_)
     astVector[4].u16Data = pstRectangle_->u16Bottom;
     astVector[4].u8Len = 2;
 
-    if (pstRectangle_->bFill)
-    {
+    if (pstRectangle_->bFill) {
         astVector[5].u16Data = pstRectangle_->uFillColor;
-    }
-    else
-    {
+    } else {
         astVector[5].u16Data = pstRectangle_->u32ineColor;
     }
     astVector[5].u8Len = 2;
@@ -240,7 +223,7 @@ void GraphicsUOLED::Rectangle(DrawRectangle_t *pstRectangle_)
 }
 
 //---------------------------------------------------------------------------
-void GraphicsUOLED::TriangleWire(DrawPoly_t *pstTriangle_)
+void GraphicsUOLED::TriangleWire(DrawPoly_t* pstTriangle_)
 {
     COMMAND_HEADER
     DataVector_t astVector[8];
@@ -267,15 +250,14 @@ void GraphicsUOLED::TriangleWire(DrawPoly_t *pstTriangle_)
 }
 
 //---------------------------------------------------------------------------
-void GraphicsUOLED::Polygon(DrawPoly_t *pstPoly_)
+void GraphicsUOLED::Polygon(DrawPoly_t* pstPoly_)
 {
     uint8_t i;
 
     COMMAND_HEADER
     WriteWord(GFX_DRAW_POLYGON);
     WriteWord(pstPoly_->u16NumPoints);
-    for (i = 0; i < pstPoly_->u16NumPoints; i++)
-    {
+    for (i = 0; i < pstPoly_->u16NumPoints; i++) {
         WriteWord(pstPoly_->pstVector[i].u16X);
         WriteWord(pstPoly_->pstVector[i].u16Y);
     }
@@ -315,21 +297,19 @@ void GraphicsUOLED::MoveOrigin(uint16_t u16X_, uint16_t u16Y_)
 }
 
 //---------------------------------------------------------------------------
-void GraphicsUOLED::Text(DrawText_t *pstText_)
+void GraphicsUOLED::Text(DrawText_t* pstText_)
 {
     MoveOrigin(pstText_->u16Left, pstText_->u16Top);
-    if (m_uTextColor != pstText_->uColor)
-    {
+    if (m_uTextColor != pstText_->uColor) {
         SetFontFGColor(pstText_->uColor);
         m_uTextColor = pstText_->uColor;
     }
 
     COMMAND_HEADER
-    const char *pcCursor = pstText_->pcString;
+    const char* pcCursor = pstText_->pcString;
 
     WriteWord(TEXT_PUT_STRING);
-    while (*pcCursor)
-    {
+    while (*pcCursor) {
         WriteByte(*pcCursor++);
     }
     WriteByte(0);
@@ -339,13 +319,12 @@ void GraphicsUOLED::Text(DrawText_t *pstText_)
 }
 
 //---------------------------------------------------------------------------
-uint16_t GraphicsUOLED::TextWidth(DrawText_t *pstText_)
+uint16_t GraphicsUOLED::TextWidth(DrawText_t* pstText_)
 {
     uint16_t u16RetVal = 0;
-    const char *pcCursor = pstText_->pcString;
+    const char* pcCursor = pstText_->pcString;
 
-    while (*pcCursor)
-    {
+    while (*pcCursor) {
         u16RetVal += 8;
     }
     return u16RetVal;

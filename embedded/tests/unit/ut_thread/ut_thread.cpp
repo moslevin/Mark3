@@ -27,7 +27,7 @@ See license.txt for more information
 //===========================================================================
 // Local Defines
 //===========================================================================
-#define TEST_STACK_SIZE     (224)
+#define TEST_STACK_SIZE (224)
 static K_WORD aucStack1[TEST_STACK_SIZE];
 static K_WORD aucStack2[TEST_STACK_SIZE];
 static K_WORD aucStack3[TEST_STACK_SIZE];
@@ -44,10 +44,9 @@ static volatile uint32_t u32RR2;
 static volatile uint32_t u32RR3;
 
 //===========================================================================
-static void ThreadEntryPoint1(void *unused_)
+static void ThreadEntryPoint1(void* unused_)
 {
-    while(1)
-    {
+    while (1) {
         clSem2.Pend(); // block until the test thread kicks u16
         clSem1.Post();
     }
@@ -62,7 +61,7 @@ TEST(ut_threadcreate)
 {
     // Test point - Create a thread, verify that the thread actually starts.
     clSem1.Init(0, 1);
-    clSem2.Init(0,1);
+    clSem2.Init(0, 1);
 
     // Initialize our thread
     clThread1.Init(aucStack1, TEST_STACK_SIZE, 7, ThreadEntryPoint1, NULL);
@@ -110,7 +109,7 @@ TEST_END
 
 //===========================================================================
 static ProfileTimer clProfiler1;
-static void ThreadSleepEntryPoint(void *unused_)
+static void ThreadSleepEntryPoint(void* unused_)
 {
     unused_ = unused_;
 
@@ -125,7 +124,7 @@ static void ThreadSleepEntryPoint(void *unused_)
     clSem2.Post();
 
     clSem1.Pend();
-    Thread::Sleep(500);
+    Thread::Sleep(200);
     clSem2.Post();
 
     // Exit this thread.
@@ -155,37 +154,34 @@ TEST(ut_threadsleep)
     clSem2.Pend();
     clProfiler1.Stop();
 
-
-    EXPECT_GTE( (clProfiler1.GetCurrent() * CLOCK_DIVIDE), (SYSTEM_FREQ / 200));
-    EXPECT_LTE( (clProfiler1.GetCurrent() * CLOCK_DIVIDE), (SYSTEM_FREQ / 200) + (SYSTEM_FREQ / 200) );
-
-    clSem1.Post();
-    clProfiler1.Start();
-    clSem2.Pend();
-    clProfiler1.Stop();
-
-    EXPECT_GTE( (clProfiler1.GetCurrent() * CLOCK_DIVIDE), SYSTEM_FREQ / 20 );
-    EXPECT_LTE( (clProfiler1.GetCurrent() * CLOCK_DIVIDE), (SYSTEM_FREQ / 20) + (SYSTEM_FREQ / 200));
-
+    EXPECT_GTE((clProfiler1.GetCurrent() * CLOCK_DIVIDE), (SYSTEM_FREQ / 200));
+    EXPECT_LTE((clProfiler1.GetCurrent() * CLOCK_DIVIDE), (SYSTEM_FREQ / 200) + (SYSTEM_FREQ / 200));
 
     clSem1.Post();
     clProfiler1.Start();
     clSem2.Pend();
     clProfiler1.Stop();
 
-    EXPECT_GTE( (clProfiler1.GetCurrent() * CLOCK_DIVIDE), SYSTEM_FREQ / 2 );
-    EXPECT_LTE( (clProfiler1.GetCurrent() * CLOCK_DIVIDE), (SYSTEM_FREQ / 2) + (SYSTEM_FREQ / 200) );
+    EXPECT_GTE((clProfiler1.GetCurrent() * CLOCK_DIVIDE), SYSTEM_FREQ / 20);
+    EXPECT_LTE((clProfiler1.GetCurrent() * CLOCK_DIVIDE), (SYSTEM_FREQ / 20) + (SYSTEM_FREQ / 200));
+
+    clSem1.Post();
+    clProfiler1.Start();
+    clSem2.Pend();
+    clProfiler1.Stop();
+
+    EXPECT_GTE((clProfiler1.GetCurrent() * CLOCK_DIVIDE), SYSTEM_FREQ / 5);
+    EXPECT_LTE((clProfiler1.GetCurrent() * CLOCK_DIVIDE), (SYSTEM_FREQ / 5) + (SYSTEM_FREQ / 200));
 
     Profiler::Stop();
 }
 TEST_END
 
 //===========================================================================
-void RR_EntryPoint(void *value_)
+void RR_EntryPoint(void* value_)
 {
-    volatile uint32_t *pu32Value = (uint32_t*)value_;
-    while(1)
-    {
+    volatile uint32_t* pu32Value = (uint32_t*)value_;
+    while (1) {
         (*pu32Value)++;
     }
 }
@@ -201,9 +197,9 @@ TEST(ut_roundrobin)
     // Create three threads that only increment counters, and keep them at
     // the same priority in order to test the roundrobin functionality of
     // the scheduler
-    clThread1.Init( aucStack1, TEST_STACK_SIZE, 1, RR_EntryPoint, (void*)&u32RR1);
-    clThread2.Init( aucStack2, TEST_STACK_SIZE, 1, RR_EntryPoint, (void*)&u32RR2);
-    clThread3.Init( aucStack3, TEST_STACK_SIZE, 1, RR_EntryPoint, (void*)&u32RR3);
+    clThread1.Init(aucStack1, TEST_STACK_SIZE, 1, RR_EntryPoint, (void*)&u32RR1);
+    clThread2.Init(aucStack2, TEST_STACK_SIZE, 1, RR_EntryPoint, (void*)&u32RR2);
+    clThread3.Init(aucStack3, TEST_STACK_SIZE, 1, RR_EntryPoint, (void*)&u32RR3);
 
     u32RR1 = 0;
     u32RR2 = 0;
@@ -226,42 +222,33 @@ TEST(ut_roundrobin)
     Scheduler::GetCurrentThread()->SetPriority(1);
 
     // Compare the three counters - they should be nearly identical
-    if (u32RR1 > u32RR2)
-    {
+    if (u32RR1 > u32RR2) {
         u32Max = u32RR1;
-    }
-    else
-    {
+    } else {
         u32Max = u32RR2;
     }
-    if (u32Max < u32RR3)
-    {
+    if (u32Max < u32RR3) {
         u32Max = u32RR3;
     }
 
-    if (u32RR1 < u32RR2)
-    {
+    if (u32RR1 < u32RR2) {
         u32Min = u32RR1;
-    }
-    else
-    {
+    } else {
         u32Min = u32RR2;
     }
-    if (u32Min > u32RR3)
-    {
+    if (u32Min > u32RR3) {
         u32Min = u32RR3;
     }
     u32Range = u32Max - u32Min;
     u32Avg = (u32RR1 + u32RR2 + u32RR3) / 3;
 
     // Max-Min delta should not exceed 1% of average for this simple test
-    EXPECT_LT( u32Range, u32Avg / 100);
+    EXPECT_LT(u32Range, u32Avg / 100);
 
     // Make sure none of the component values are 0
-    EXPECT_FAIL_EQUALS( u32RR1, 0 );
-    EXPECT_FAIL_EQUALS( u32RR2, 0 );
-    EXPECT_FAIL_EQUALS( u32RR3, 0 );
-
+    EXPECT_FAIL_EQUALS(u32RR1, 0);
+    EXPECT_FAIL_EQUALS(u32RR2, 0);
+    EXPECT_FAIL_EQUALS(u32RR3, 0);
 }
 TEST_END
 
@@ -276,9 +263,9 @@ TEST(ut_quanta)
     // Create three threads that only increment counters - similar to the
     // previous test.  However, modify the thread quanta such that each thread
     // will get a different proportion of the CPU cycles.
-    clThread1.Init( aucStack1, TEST_STACK_SIZE, 1, RR_EntryPoint, (void*)&u32RR1);
-    clThread2.Init( aucStack2, TEST_STACK_SIZE, 1, RR_EntryPoint, (void*)&u32RR2);
-    clThread3.Init( aucStack3, TEST_STACK_SIZE, 1, RR_EntryPoint, (void*)&u32RR3);
+    clThread1.Init(aucStack1, TEST_STACK_SIZE, 1, RR_EntryPoint, (void*)&u32RR1);
+    clThread2.Init(aucStack2, TEST_STACK_SIZE, 1, RR_EntryPoint, (void*)&u32RR2);
+    clThread3.Init(aucStack3, TEST_STACK_SIZE, 1, RR_EntryPoint, (void*)&u32RR3);
 
     u32RR1 = 0;
     u32RR2 = 0;
@@ -307,8 +294,8 @@ TEST(ut_quanta)
     Scheduler::GetCurrentThread()->SetPriority(1);
 
     // Test point - make sure that Q3 > Q2 > Q1
-    EXPECT_GT( u32RR2, u32RR1 );
-    EXPECT_GT( u32RR3, u32RR2 );
+    EXPECT_GT(u32RR2, u32RR1);
+    EXPECT_GT(u32RR3, u32RR2);
 
     // scale the counters relative to the largest value, and compare.
     u32RR1 *= 3;
@@ -316,29 +303,21 @@ TEST(ut_quanta)
     u32RR2 = (u32RR2 + 1) / 2;
 
     // After scaling, they should be nearly identical (well, close at least)
-    if (u32RR1 > u32RR2)
-    {
+    if (u32RR1 > u32RR2) {
         u32Max = u32RR1;
-    }
-    else
-    {
+    } else {
         u32Max = u32RR2;
     }
-    if (u32Max < u32RR3)
-    {
+    if (u32Max < u32RR3) {
         u32Max = u32RR3;
     }
 
-    if (u32RR1 < u32RR2)
-    {
+    if (u32RR1 < u32RR2) {
         u32Min = u32RR1;
-    }
-    else
-    {
+    } else {
         u32Min = u32RR2;
     }
-    if (u32Min > u32RR3)
-    {
+    if (u32Min > u32RR3) {
         u32Min = u32RR3;
     }
     u32Range = u32Max - u32Min;
@@ -346,18 +325,17 @@ TEST(ut_quanta)
 
 #if KERNEL_TIMERS_TICKLESS
     // Max-Min delta should not exceed 5% of average for this test
-    EXPECT_LT( u32Range, u32Avg / 20);
+    EXPECT_LT(u32Range, u32Avg / 20);
 #else
     // Max-Min delta should not exceed 20% of average for this test -- tick-based timers
     // are coarse, and prone to thread preference due to phase.
-    EXPECT_LT( u32Range, u32Avg / 5);
+    EXPECT_LT(u32Range, u32Avg / 5);
 #endif
 
-
     // Make sure none of the component values are 0
-    EXPECT_FAIL_EQUALS( u32RR1, 0 );
-    EXPECT_FAIL_EQUALS( u32RR2, 0 );
-    EXPECT_FAIL_EQUALS( u32RR3, 0 );
+    EXPECT_FAIL_EQUALS(u32RR1, 0);
+    EXPECT_FAIL_EQUALS(u32RR2, 0);
+    EXPECT_FAIL_EQUALS(u32RR3, 0);
 }
 TEST_END
 
@@ -365,10 +343,5 @@ TEST_END
 // Test Whitelist Goes Here
 //===========================================================================
 TEST_CASE_START
-  TEST_CASE(ut_threadcreate),
-  TEST_CASE(ut_threadstop),
-  TEST_CASE(ut_threadexit),
-  TEST_CASE(ut_threadsleep),
-  TEST_CASE(ut_roundrobin),
-  TEST_CASE(ut_quanta),
-TEST_CASE_END
+TEST_CASE(ut_threadcreate), TEST_CASE(ut_threadstop), TEST_CASE(ut_threadexit), TEST_CASE(ut_threadsleep),
+    TEST_CASE(ut_roundrobin), TEST_CASE(ut_quanta), TEST_CASE_END

@@ -25,9 +25,9 @@ See license.txt for more information
 #include <avr/io.h>
 #include <avr/interrupt.h>
 
-#define TCCR1B_INIT        ((1 << WGM12) | (1 << CS12))
-#define TIMER_IMSK        (1 << OCIE1A)
-#define TIMER_IFR        (1 << OCF1A)
+#define TCCR1B_INIT ((1 << WGM12) | (1 << CS12))
+#define TIMER_IMSK (1 << OCIE1A)
+#define TIMER_IFR (1 << OCF1A)
 
 //---------------------------------------------------------------------------
 void KernelTimer::Config(void)
@@ -56,7 +56,7 @@ void KernelTimer::Stop(void)
 #if KERNEL_TIMERS_TICKLESS
     TIFR1 &= ~TIMER_IFR;
     TIMSK1 &= ~TIMER_IMSK;
-    TCCR1B &= ~(1 << CS12);      // Disable count...
+    TCCR1B &= ~(1 << CS12); // Disable count...
     TCNT1 = 0;
     OCR1A = 0;
 #endif
@@ -98,12 +98,9 @@ uint32_t KernelTimer::TimeToExpiry(void)
     uint16_t u16Read = KernelTimer::Read();
     uint16_t u16OCR1A = OCR1A;
 
-    if (u16Read >= u16OCR1A)
-    {
+    if (u16Read >= u16OCR1A) {
         return 0;
-    }
-    else
-    {
+    } else {
         return (uint32_t)(u16OCR1A - u16Read);
     }
 #else
@@ -122,13 +119,10 @@ uint32_t KernelTimer::SetExpiry(uint32_t u32Interval_)
 {
 #if KERNEL_TIMERS_TICKLESS
     uint16_t u16SetInterval;
-    if (u32Interval_ > 65535)
-    {
+    if (u32Interval_ > 65535) {
         u16SetInterval = 65535;
-    }
-    else
-    {
-        u16SetInterval = (uint16_t)u32Interval_ ;
+    } else {
+        u16SetInterval = (uint16_t)u32Interval_;
     }
 
     OCR1A = u16SetInterval;
@@ -142,7 +136,7 @@ uint32_t KernelTimer::SetExpiry(uint32_t u32Interval_)
 void KernelTimer::ClearExpiry(void)
 {
 #if KERNEL_TIMERS_TICKLESS
-    OCR1A = 65535;                    // Clear the compare value
+    OCR1A = 65535; // Clear the compare value
 #endif
 }
 
@@ -151,8 +145,8 @@ uint8_t KernelTimer::DI(void)
 {
 #if KERNEL_TIMERS_TICKLESS
     bool bEnabled = ((TIMSK1 & (TIMER_IMSK)) != 0);
-    TIFR1 &= ~TIMER_IFR;      // Clear interrupt flags
-    TIMSK1 &= ~TIMER_IMSK;    // Disable interrupt
+    TIFR1 &= ~TIMER_IFR;   // Clear interrupt flags
+    TIMSK1 &= ~TIMER_IMSK; // Disable interrupt
     return bEnabled;
 #else
     return 0;
@@ -169,12 +163,9 @@ void KernelTimer::EI(void)
 void KernelTimer::RI(bool bEnable_)
 {
 #if KERNEL_TIMERS_TICKLESS
-    if (bEnable_)
-    {
-        TIMSK1 |= (1 << OCIE1A);    // Enable interrupt
-    }
-    else
-    {
+    if (bEnable_) {
+        TIMSK1 |= (1 << OCIE1A); // Enable interrupt
+    } else {
         TIMSK1 &= ~(1 << OCIE1A);
     }
 #endif

@@ -21,24 +21,23 @@ See license.txt for more information
 #include "draw.h"
 
 //---------------------------------------------------------------------------
-void Tile_8x8::LoadTile (TileDef_t *pstTileDef_)
+void Tile_8x8::LoadTile(TileDef_t* pstTileDef_)
 {
     BitStreamer clStream;
 
     m_u8Width = pstTileDef_->m_u8Width;
     m_u8Height = pstTileDef_->m_u8Height;
 
-    // Tile size = ((width of the tile in pixels * bits-per-pixel encoded) / 8) rounded to the next byte * number of rows.
-    uint16_t u16TileSize = (((uint16_t)pstTileDef_->m_u8Width * ((uint16_t)pstTileDef_->m_eFormat + 1)) + 7)  >> 3;
-    COLOR *puBufPtr = m_auTileBuffer;
+    // Tile size = ((width of the tile in pixels * bits-per-pixel encoded) / 8) rounded to the next byte * number of
+    // rows.
+    uint16_t u16TileSize = (((uint16_t)pstTileDef_->m_u8Width * ((uint16_t)pstTileDef_->m_eFormat + 1)) + 7) >> 3;
+    COLOR* puBufPtr = m_auTileBuffer;
 
     u16TileSize *= (uint16_t)(pstTileDef_->m_u8Height);
 
-    clStream.Init( pstTileDef_->m_pu8Data, u16TileSize );
-    for (uint8_t i = 0; i < pstTileDef_->m_u8Height; i++)
-    {
-        for (uint8_t j = 0; j < pstTileDef_->m_u8Width; j++)
-        {
+    clStream.Init(pstTileDef_->m_pu8Data, u16TileSize);
+    for (uint8_t i = 0; i < pstTileDef_->m_u8Height; i++) {
+        for (uint8_t j = 0; j < pstTileDef_->m_u8Width; j++) {
             uint8_t u8ColorIndex = clStream.ReadBits((uint8_t)pstTileDef_->m_eFormat + 1);
             *puBufPtr++ = pstTileDef_->m_puPalette[u8ColorIndex];
         }
@@ -48,7 +47,7 @@ void Tile_8x8::LoadTile (TileDef_t *pstTileDef_)
 }
 
 //---------------------------------------------------------------------------
-void Tile_8x8::Render(GraphicsDriver *pclDriver_, uint16_t u16X_, uint16_t u16Y_)
+void Tile_8x8::Render(GraphicsDriver* pclDriver_, uint16_t u16X_, uint16_t u16Y_)
 {
     DrawBitmap_t stBitmap;
 

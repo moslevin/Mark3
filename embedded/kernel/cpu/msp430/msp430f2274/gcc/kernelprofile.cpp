@@ -13,7 +13,7 @@ See license.txt for more information
 ===========================================================================*/
 /*!
     \file kernelprofile.cpp
-    
+
     \brief ATMega328p Profiling timer implementation
 */
 
@@ -23,27 +23,23 @@ See license.txt for more information
 #include "kernelprofile.h"
 #include "threadport.h"
 
-
 #if KERNEL_USE_PROFILER
 uint32_t Profiler::m_u32Epoch;
 
 //---------------------------------------------------------------------------
 void Profiler::Init()
 {
-
 }
 
 //---------------------------------------------------------------------------
 void Profiler::Start()
 {
-
-}    
+}
 
 //---------------------------------------------------------------------------
 void Profiler::Stop()
 {
-
-}    
+}
 //---------------------------------------------------------------------------
 uint16_t Profiler::Read()
 {

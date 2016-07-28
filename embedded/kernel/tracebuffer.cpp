@@ -12,8 +12,8 @@ Copyright (c) 2012-2016 Funkenstein Software Consulting, all rights reserved.
 See license.txt for more information
 ===========================================================================*/
 /*!
-	\file tracebuffer.cpp
-	\brief Kernel trace buffer class definition	
+    \file tracebuffer.cpp
+    \brief Kernel trace buffer class definition
 */
 
 #include "kerneltypes.h"
@@ -25,9 +25,9 @@ See license.txt for more information
 #include "dbg_file_list.h"
 #include "buffalogger.h"
 #if defined(DBG_FILE)
-# error "Debug logging file token already defined!  Bailing."
+#error "Debug logging file token already defined!  Bailing."
 #else
-# define DBG_FILE _DBG___KERNEL_TRACEBUFFER_CPP
+#define DBG_FILE _DBG___KERNEL_TRACEBUFFER_CPP
 #endif
 
 #include "kerneldebug.h"
@@ -39,7 +39,7 @@ See license.txt for more information
 TraceBufferCallback_t TraceBuffer::m_pfCallback;
 uint16_t TraceBuffer::m_u16Index;
 uint16_t TraceBuffer::m_u16SyncNumber;
-uint16_t TraceBuffer::m_au16Buffer[ (TRACE_BUFFER_SIZE/sizeof(uint16_t)) ];
+uint16_t TraceBuffer::m_au16Buffer[(TRACE_BUFFER_SIZE / sizeof(uint16_t))];
 
 //---------------------------------------------------------------------------
 void TraceBuffer::Init()
@@ -47,9 +47,9 @@ void TraceBuffer::Init()
 }
 
 //---------------------------------------------------------------------------
-void TraceBuffer::Write( uint16_t *pu16Data_, uint16_t u16Size_ )
+void TraceBuffer::Write(uint16_t* pu16Data_, uint16_t u16Size_)
 {
-	// Pipe the data directly to the circular buffer
+    // Pipe the data directly to the circular buffer
     uint16_t u16Start;
 
     // Update the circular buffer index in a critical section. The
@@ -58,8 +58,7 @@ void TraceBuffer::Write( uint16_t *pu16Data_, uint16_t u16Size_ )
     uint16_t u16NextIndex;
     u16Start = m_u16Index;
     u16NextIndex = m_u16Index + u16Size_;
-    if (u16NextIndex >= (sizeof(m_au16Buffer) / sizeof(uint16_t)) )
-    {
+    if (u16NextIndex >= (sizeof(m_au16Buffer) / sizeof(uint16_t))) {
         u16NextIndex -= (sizeof(m_au16Buffer) / sizeof(uint16_t));
     }
     m_u16Index = u16NextIndex;
@@ -69,16 +68,12 @@ void TraceBuffer::Write( uint16_t *pu16Data_, uint16_t u16Size_ )
     uint16_t i;
     bool bCallback = false;
     bool bPingPong = false;
-    for (i = 0; i < u16Size_; i++)
-    {
+    for (i = 0; i < u16Size_; i++) {
         m_au16Buffer[u16Start++] = pu16Data_[i];
-        if (u16Start >= (sizeof(m_au16Buffer) / sizeof(uint16_t)) )
-        {
+        if (u16Start >= (sizeof(m_au16Buffer) / sizeof(uint16_t))) {
             u16Start = 0;
             bCallback = true;
-        }
-        else if (u16Start == ((sizeof(m_au16Buffer) / sizeof(uint16_t)) / 2))
-        {
+        } else if (u16Start == ((sizeof(m_au16Buffer) / sizeof(uint16_t)) / 2)) {
             bPingPong = true;
             bCallback = true;
         }
@@ -96,4 +91,3 @@ void TraceBuffer::Write( uint16_t *pu16Data_, uint16_t u16Size_ )
 }
 
 #endif
-

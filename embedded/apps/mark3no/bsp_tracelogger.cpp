@@ -9,10 +9,10 @@ static uint8_t au8LoggerStack[320];
 static Semaphore clLoggerSem;
 static volatile bool bPingPong;
 static volatile uint16_t u16LogLen;
-static volatile uint16_t *pu16Log;
+static volatile uint16_t* pu16Log;
 
 //---------------------------------------------------------------------------
-static void LoggerCallback(uint16_t *pu16Data_, uint16_t u16Len_, bool bPingPong_)
+static void LoggerCallback(uint16_t* pu16Data_, uint16_t u16Len_, bool bPingPong_)
 {
     CS_ENTER();
     bPingPong = bPingPong_;
@@ -28,8 +28,7 @@ static void LoggerMain(void* unused_)
 {
     Driver* pclUART = DriverList::FindByPath("/dev/tty0");
 
-    while (1)
-    {
+    while (1) {
         uint8_t* src;
         uint16_t len;
 
@@ -41,8 +40,7 @@ static void LoggerMain(void* unused_)
         CS_EXIT();
 
         uint16_t written = 0;
-        while (len != written)
-        {
+        while (len != written) {
             written += pclUART->Write(len - written, src + written);
         }
     }
@@ -52,9 +50,9 @@ static void LoggerMain(void* unused_)
 void bsp_tracelogger_init(void)
 {
     //-- Init the trace logger thread
-    clLoggerThread.Init(  au8LoggerStack,  320,  1, LoggerMain,  0);
+    clLoggerThread.Init(au8LoggerStack, 320, 1, LoggerMain, 0);
     clLoggerThread.Start();
 
-    clLoggerSem.Init(0,1);
-    TraceBuffer::SetCallback( LoggerCallback );
+    clLoggerSem.Init(0, 1);
+    TraceBuffer::SetCallback(LoggerCallback);
 }

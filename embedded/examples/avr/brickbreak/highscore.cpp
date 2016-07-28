@@ -9,17 +9,17 @@
 
 //---------------------------------------------------------------------------
 #ifdef __AVR__
-    #include <avr/eeprom.h>
-    #define READ_EE_BYTE(x) eeprom_read_byte(x)
-    #define READ_EE_BLOCK(x, y, z) eeprom_read_block(x, y, z)
-    #define WRITE_EE_BLOCK(x, y, z) eeprom_write_block(x, y, z)
+#include <avr/eeprom.h>
+#define READ_EE_BYTE(x) eeprom_read_byte(x)
+#define READ_EE_BLOCK(x, y, z) eeprom_read_block(x, y, z)
+#define WRITE_EE_BLOCK(x, y, z) eeprom_write_block(x, y, z)
 #else
-    #include <stdio.h>
+#include <stdio.h>
 
-    uint8_t aucEEData[64];
-    #define READ_EE_BYTE(x) aucEEData[(K_ADDR)x]
-    #define READ_EE_BLOCK(x,y,z) MemUtil::CopyMemory(x, (void*)&aucEEData[(K_ADDR)y], z)
-    #define WRITE_EE_BLOCK(x,y,z) MemUtil::CopyMemory((void*)&aucEEData[(K_ADDR)y], x, z)
+uint8_t aucEEData[64];
+#define READ_EE_BYTE(x) aucEEData[(K_ADDR)x]
+#define READ_EE_BLOCK(x, y, z) MemUtil::CopyMemory(x, (void*)&aucEEData[(K_ADDR)y], z)
+#define WRITE_EE_BLOCK(x, y, z) MemUtil::CopyMemory((void*)&aucEEData[(K_ADDR)y], x, z)
 #endif
 
 //---------------------------------------------------------------------------
@@ -28,22 +28,19 @@ void HighScore::CheckInit(void)
     uint8_t u8Val;
 
 #if defined(__AVR__)
-    uint8_t *pu8KeyVal = (uint8_t*)((K_ADDR)(NUM_HIGH_SCORES * sizeof(HighScore_t)));
+    uint8_t* pu8KeyVal = (uint8_t*)((K_ADDR)(NUM_HIGH_SCORES * sizeof(HighScore_t)));
     u8Val = eeprom_read_byte(pu8KeyVal);
-    if (u8Val != 0x69)
-    {
+    if (u8Val != 0x69) {
         eeprom_write_byte(pu8KeyVal, 0x69);
     }
 #else
     u8Val = aucEEData[NUM_HIGH_SCORES * sizeof(HighScore_t)];
-    if (u8Val != 0x69)
-    {
+    if (u8Val != 0x69) {
         aucEEData[NUM_HIGH_SCORES * sizeof(HighScore_t)] = 0x69;
     }
 #endif
 
-    if (u8Val == 0x69)
-    {
+    if (u8Val == 0x69) {
         return;
     }
 
@@ -79,15 +76,13 @@ void HighScore::CheckInit(void)
     stScore.acName[3] = '\0';
     stScore.u32Score = 10000;
     WriteScore(4, &stScore);
-
 }
 
 //---------------------------------------------------------------------------
-void HighScore::ReadScore(uint8_t u8Rank_, HighScore_t *pstScore_)
+void HighScore::ReadScore(uint8_t u8Rank_, HighScore_t* pstScore_)
 {
-
 #if defined(__AVR__)
-    uint8_t *pu8EEData;
+    uint8_t* pu8EEData;
     pu8EEData = (uint8_t*)((K_ADDR)u8Rank_ * sizeof(HighScore_t));
     eeprom_read_block((void*)pstScore_, (const void*)pu8EEData, sizeof(HighScore_t));
 #else
@@ -96,10 +91,10 @@ void HighScore::ReadScore(uint8_t u8Rank_, HighScore_t *pstScore_)
 }
 
 //---------------------------------------------------------------------------
-void HighScore::WriteScore(uint8_t u8Rank_, HighScore_t *pstScore_)
+void HighScore::WriteScore(uint8_t u8Rank_, HighScore_t* pstScore_)
 {
 #if defined(__AVR__)
-    uint8_t *pu8EEData;
+    uint8_t* pu8EEData;
     pu8EEData = (uint8_t*)((K_ADDR)u8Rank_ * sizeof(HighScore_t));
     WRITE_EE_BLOCK((const void*)pstScore_, (void*)pu8EEData, sizeof(HighScore_t));
 #else
@@ -112,11 +107,9 @@ bool HighScore::IsHighScore(uint32_t u32Score_)
 {
     HighScore_t stScore;
 
-    for (uint8_t i = 0; i < NUM_HIGH_SCORES; i++)
-    {
+    for (uint8_t i = 0; i < NUM_HIGH_SCORES; i++) {
         ReadScore(i, &stScore);
-        if (u32Score_ > stScore.u32Score)
-        {
+        if (u32Score_ > stScore.u32Score) {
             return true;
         }
     }
@@ -124,18 +117,15 @@ bool HighScore::IsHighScore(uint32_t u32Score_)
 }
 
 //---------------------------------------------------------------------------
-void HighScore::AddNewScore(HighScore_t *pstNew_)
+void HighScore::AddNewScore(HighScore_t* pstNew_)
 {
     HighScore_t stScore;
     HighScore_t stMoveScore;
 
-    for (uint8_t i = 0; i < NUM_HIGH_SCORES; i++)
-    {
+    for (uint8_t i = 0; i < NUM_HIGH_SCORES; i++) {
         ReadScore(i, &stScore);
-        if (pstNew_->u32Score > stScore.u32Score)
-        {            
-            for (uint8_t j = NUM_HIGH_SCORES - 1; j > i; j--)
-            {
+        if (pstNew_->u32Score > stScore.u32Score) {
+            for (uint8_t j = NUM_HIGH_SCORES - 1; j > i; j--) {
                 ReadScore(j - 1, &stMoveScore);
                 WriteScore(j, &stMoveScore);
             }

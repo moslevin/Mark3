@@ -23,10 +23,10 @@ See license.txt for more information
 #include "control_groupbox.h"
 #include "gui_palette.h"
 
-#define BORDER_OFFSET           (2)
-#define TEXT_X_OFFSET           (4)
-#define TEXT_Y_OFFSET           (0)
-#define HEADER_HEIGHT           (16)
+#define BORDER_OFFSET (2)
+#define TEXT_X_OFFSET (4)
+#define TEXT_Y_OFFSET (0)
+#define HEADER_HEIGHT (16)
 
 //---------------------------------------------------------------------------
 void GroupBoxControl::Init()
@@ -41,8 +41,8 @@ void GroupBoxControl::Init()
 //---------------------------------------------------------------------------
 void GroupBoxControl::Draw()
 {
-    GUI_DEBUG_PRINT( "GroupBoxControl::Draw()\n");
-    GraphicsDriver *pclDriver = GetParentWindow()->GetDriver();
+    GUI_DEBUG_PRINT("GroupBoxControl::Draw()\n");
+    GraphicsDriver* pclDriver = GetParentWindow()->GetDriver();
     uint16_t u16X, u16Y;
     uint16_t u16TextWidth;
 
@@ -53,7 +53,7 @@ void GroupBoxControl::Draw()
         DrawRectangle_t stRectangle;
         stRectangle.bFill = true;
         stRectangle.u16Left = GetLeft() + u16X;
-        stRectangle.u16Right = stRectangle.u16Left + GetWidth() -1;
+        stRectangle.u16Right = stRectangle.u16Left + GetWidth() - 1;
 
         stRectangle.u16Top = GetTop() + u16Y;
         stRectangle.u16Bottom = stRectangle.u16Top + HEADER_HEIGHT - 1;
@@ -69,7 +69,7 @@ void GroupBoxControl::Draw()
         stRectangle.u32ineColor = m_uPanelColor;
         stRectangle.uFillColor = m_uPanelColor;
 
-        pclDriver->Rectangle(&stRectangle);        
+        pclDriver->Rectangle(&stRectangle);
     }
 
     // Draw the caption
@@ -84,5 +84,4 @@ void GroupBoxControl::Draw()
         u16TextWidth = pclDriver->TextWidth(&stText);
         pclDriver->Text(&stText);
     }
-
 }

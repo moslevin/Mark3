@@ -13,7 +13,7 @@ See license.txt for more information
 ===========================================================================*/
 /*!
 
-    \file   kernel++.cpp 
+    \file   kernel++.cpp
 
     \brief  Test harness
 
@@ -27,23 +27,22 @@ See license.txt for more information
 
 //---------------------------------------------------------------------------
 // Global objects
-static ProfileTimer clProfiler100m;      //!< Profiling timer
-static ProfileTimer clProfiler10m;       //!< Profiling timer
-static ProfileTimer clProfiler1m;        //!< Profiling timer
+static ProfileTimer clProfiler100m; //!< Profiling timer
+static ProfileTimer clProfiler10m;  //!< Profiling timer
+static ProfileTimer clProfiler1m;   //!< Profiling timer
 static ProfileTimer clProfiler1;
 static ProfileTimer clProfiler2;
 static ProfileTimer clProfiler3;
-static MessageQueue clMsgQ;              //!< Message Queue for timers
+static MessageQueue clMsgQ; //!< Message Queue for timers
 
 //---------------------------------------------------------------------------
 
-void MemSet( void *pvData_, unsigned char u8Value_, unsigned short u16Count_ )
+void MemSet(void* pvData_, unsigned char u8Value_, unsigned short u16Count_)
 {
-    unsigned char *pu8Data = (unsigned char*)pvData_;
+    unsigned char* pu8Data = (unsigned char*)pvData_;
     unsigned short i;
-    for (i = 0; i < u16Count_; i++)
-    {
-        pu8Data[i]= u8Value_;
+    for (i = 0; i < u16Count_; i++) {
+        pu8Data[i] = u8Value_;
     }
 }
 
@@ -53,32 +52,32 @@ static Timer clTimer2;
 static Timer clTimer3;
 static Semaphore clTimerSem;
 //---------------------------------------------------------------------------
-void TCallback( Thread *pclOwner_, void *data_ )
+void TCallback(Thread* pclOwner_, void* data_)
 {
     clTimerSem.Post();
 }
 
 //---------------------------------------------------------------------------
-static void TCallbackMulti1( Thread *pclOwner_, void *data_ )
+static void TCallbackMulti1(Thread* pclOwner_, void* data_)
 {
     // Send a message to a queue
-    Message *pclMsg = GlobalMessagePool::Pop();
+    Message* pclMsg = GlobalMessagePool::Pop();
     pclMsg->SetCode(0);
     clMsgQ.Send(pclMsg);
 }
 //---------------------------------------------------------------------------
-static void TCallbackMulti2( Thread *pclOwner_, void *data_ )
+static void TCallbackMulti2(Thread* pclOwner_, void* data_)
 {
     // Send a message to a queue
-    Message *pclMsg = GlobalMessagePool::Pop();
+    Message* pclMsg = GlobalMessagePool::Pop();
     pclMsg->SetCode(1);
     clMsgQ.Send(pclMsg);
 }
 //---------------------------------------------------------------------------
-static void TCallbackMulti3( Thread *pclOwner_, void *data_ )
+static void TCallbackMulti3(Thread* pclOwner_, void* data_)
 {
     // Send a message to a queue
-    Message *pclMsg = GlobalMessagePool::Pop();
+    Message* pclMsg = GlobalMessagePool::Pop();
     pclMsg->SetCode(2);
     clMsgQ.Send(pclMsg);
 }
@@ -109,20 +108,17 @@ TEST(ut_timer_sanity_multi)
     clProfiler2.Start();
     clTimer3.Start(true, 19, TCallbackMulti3, NULL);
     clProfiler3.Start();
-    
+
     bool bDone = false;
-    for (i = 0; i < 10000; i++)
-    {
-        Message *pclMsg;
+    for (i = 0; i < 10000; i++) {
+        Message* pclMsg;
         pclMsg = clMsgQ.Receive();
-        switch  (pclMsg->GetCode()) 
-        {
+        switch (pclMsg->GetCode()) {
             case 0:
                 clProfiler1.Stop();
                 aulDelta[0] = clProfiler1.GetCurrent() * 8;
                 clProfiler1.Start();
-                if ((aulDelta[0] < (6 * 16000L)) || (aulDelta[0] > (8 * 16000L)))
-                {
+                if ((aulDelta[0] < (6 * 16000L)) || (aulDelta[0] > (8 * 16000L))) {
                     EXPECT_TRUE(0);
                     bDone = true;
                 }
@@ -131,8 +127,7 @@ TEST(ut_timer_sanity_multi)
                 clProfiler2.Stop();
                 aulDelta[1] = clProfiler2.GetCurrent() * 8;
                 clProfiler2.Start();
-                if ((aulDelta[1] < (12 * 16000L)) || (aulDelta[1] > (14*16000L)))
-                {
+                if ((aulDelta[1] < (12 * 16000L)) || (aulDelta[1] > (14 * 16000L))) {
                     EXPECT_TRUE(0);
                     bDone = true;
                 }
@@ -141,24 +136,20 @@ TEST(ut_timer_sanity_multi)
                 clProfiler3.Stop();
                 aulDelta[2] = clProfiler3.GetCurrent() * 8;
                 clProfiler3.Start();
-                if ((aulDelta[2] < (18 * 16000L)) || (aulDelta[2] > (20*16000L)))
-                {
+                if ((aulDelta[2] < (18 * 16000L)) || (aulDelta[2] > (20 * 16000L))) {
                     EXPECT_TRUE(0);
                     bDone = true;
                 }
                 break;
-            default:
-                break;    
+            default: break;
         }
         GlobalMessagePool::Push(pclMsg);
-        if (bDone)
-        {
+        if (bDone) {
             break;
         }
     }
-    
-    if (!bDone)
-    {
+
+    if (!bDone) {
         EXPECT_TRUE(1);
     }
 
@@ -193,15 +184,13 @@ TEST(ut_timer_sanity_precision)
     bool bPass = true;
     // 1ms repeated counter
     clTimer.Start(true, 1, TCallback, NULL);
-    for (i = 0; i < 10000; i++)
-    {
+    for (i = 0; i < 10000; i++) {
         clProfiler1m.Start();
 
         clTimerSem.Pend();
         clProfiler1m.Stop();
         u32Delta = clProfiler1m.GetCurrent() * 8;
-        if ((u32Delta < 12000) || (u32Delta > 20000))
-        {
+        if ((u32Delta < 12000) || (u32Delta > 20000)) {
             // Write error...
             bPass = false;
             break;
@@ -209,18 +198,16 @@ TEST(ut_timer_sanity_precision)
     }
     clTimer.Stop();
     EXPECT_TRUE(bPass);
-    
+
     bPass = true;
     // 10ms repeated counter
     clTimer.Start(true, 10, TCallback, NULL);
-    for (i = 0; i < 1000; i++)
-    {
+    for (i = 0; i < 1000; i++) {
         clProfiler10m.Start();
         clTimerSem.Pend();
         clProfiler10m.Stop();
         u32Delta = clProfiler10m.GetCurrent() * 8;
-        if ((u32Delta < 155000) || (u32Delta > 165000))
-        {
+        if ((u32Delta < 155000) || (u32Delta > 165000)) {
             // Write error...
             bPass = false;
             break;
@@ -232,14 +219,12 @@ TEST(ut_timer_sanity_precision)
 
     // 100ms repeated counter
     clTimer.Start(true, 100, TCallback, NULL);
-    for (i = 0; i < 100; i++)
-    {
+    for (i = 0; i < 100; i++) {
         clProfiler100m.Start();
         clTimerSem.Pend();
         clProfiler100m.Stop();
         u32Delta = clProfiler100m.GetCurrent() * 8;
-        if ((u32Delta < 1595000) || (u32Delta > 1605000))
-        {
+        if ((u32Delta < 1595000) || (u32Delta > 1605000)) {
             // Write error...
             bPass = false;
             break;
@@ -254,7 +239,4 @@ TEST_END
 // Test Whitelist Goes Here
 //===========================================================================
 TEST_CASE_START
-  TEST_CASE(ut_timer_sanity_precision),
-  TEST_CASE(ut_timer_sanity_multi),
-TEST_CASE_END
-
+TEST_CASE(ut_timer_sanity_precision), TEST_CASE(ut_timer_sanity_multi), TEST_CASE_END

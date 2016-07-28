@@ -28,9 +28,9 @@ See license.txt for more information
 Thread clThread1;
 Thread clThread2;
 
-#define THREAD1_STACK_SIZE      (256)
+#define THREAD1_STACK_SIZE (256)
 K_WORD aucThreadStack1[THREAD1_STACK_SIZE];
-#define THREAD2_STACK_SIZE      (160)
+#define THREAD2_STACK_SIZE (160)
 K_WORD aucThreadStack2[THREAD2_STACK_SIZE];
 
 EventFlag clFlagGroup;
@@ -38,7 +38,7 @@ volatile uint8_t u8FlagCount = 0;
 volatile uint8_t u8TimeoutCount = 0;
 
 //---------------------------------------------------------------------------
-void WaitOnFlag1Any(void *unused_)
+void WaitOnFlag1Any(void* unused_)
 {
     clFlagGroup.Wait(0x0001, EVENT_FLAG_ANY);
     u8FlagCount++;
@@ -47,7 +47,7 @@ void WaitOnFlag1Any(void *unused_)
 }
 
 //---------------------------------------------------------------------------
-void WaitOnMultiAny(void *unused_)
+void WaitOnMultiAny(void* unused_)
 {
     clFlagGroup.Wait(0x5555, EVENT_FLAG_ANY);
     u8FlagCount++;
@@ -56,7 +56,7 @@ void WaitOnMultiAny(void *unused_)
 }
 
 //---------------------------------------------------------------------------
-void WaitOnMultiAll(void *unused_)
+void WaitOnMultiAll(void* unused_)
 {
     clFlagGroup.Wait(0x5555, EVENT_FLAG_ALL);
     u8FlagCount++;
@@ -65,11 +65,10 @@ void WaitOnMultiAll(void *unused_)
 }
 
 //---------------------------------------------------------------------------
-void WaitOnAny(void *mask_)
+void WaitOnAny(void* mask_)
 {
     uint16_t u16Mask = *((uint16_t*)mask_);
-    while(1)
-    {
+    while (1) {
         clFlagGroup.Wait(u16Mask, EVENT_FLAG_ANY);
         u8FlagCount++;
         clFlagGroup.Clear(u16Mask);
@@ -77,11 +76,10 @@ void WaitOnAny(void *mask_)
 }
 
 //---------------------------------------------------------------------------
-void WaitOnAll(void *mask_)
+void WaitOnAll(void* mask_)
 {
     uint16_t u16Mask = *((uint16_t*)mask_);
-    while(1)
-    {
+    while (1) {
         clFlagGroup.Wait(u16Mask, EVENT_FLAG_ALL);
         u8FlagCount++;
         clFlagGroup.Clear(u16Mask);
@@ -89,39 +87,30 @@ void WaitOnAll(void *mask_)
 }
 
 //---------------------------------------------------------------------------
-void TimedWait(void *time_)
+void TimedWait(void* time_)
 {
     uint16_t u16Ret;
     uint16_t u16Time = *((uint16_t*)time_);
     u16Ret = clFlagGroup.Wait(0x0001, EVENT_FLAG_ALL, u16Time);
-    if (u16Ret == 0x0001)
-    {
+    if (u16Ret == 0x0001) {
         u8FlagCount++;
-    }
-    else if (u16Ret == 0x0000)
-    {
+    } else if (u16Ret == 0x0000) {
         u8TimeoutCount++;
     }
     clFlagGroup.Clear(0x0001);
     Scheduler::GetCurrentThread()->Exit();
-
 }
 
-
 //---------------------------------------------------------------------------
-void TimedWaitAll(void *time_)
+void TimedWaitAll(void* time_)
 {
     uint16_t u16Ret;
     uint16_t u16Time = *((uint16_t*)time_);
-    while(1)
-    {
+    while (1) {
         u16Ret = clFlagGroup.Wait(0x0001, EVENT_FLAG_ALL, 200);
-        if (u16Ret == 0x0001)
-        {
+        if (u16Ret == 0x0001) {
             u8FlagCount++;
-        }
-        else if (u16Ret == 0x0000)
-        {            
+        } else if (u16Ret == 0x0000) {
             Scheduler::GetCurrentThread()->SetExpired(false);
             u8TimeoutCount++;
         }
@@ -152,17 +141,13 @@ TEST(ut_waitany)
     EXPECT_EQUALS(u8FlagCount, 0);
 
     u16Mask = 0x0001;
-    while(u16Mask)
-    {
+    while (u16Mask) {
         clFlagGroup.Set(u16Mask);
         Thread::Sleep(100);
 
-        if (u16Mask != 0x8000)
-        {
+        if (u16Mask != 0x8000) {
             EXPECT_EQUALS(u8FlagCount, 0);
-        }
-        else
-        {
+        } else {
             EXPECT_EQUALS(u8FlagCount, 1);
         }
 
@@ -186,27 +171,22 @@ TEST(ut_waitany)
 
     // Test point - the flag set should kick the test thread on even-indexed
     // counters indexes.
-    for (i = 0; i < 16; i++)
-    {
+    for (i = 0; i < 16; i++) {
         uint8_t u8LastFlagCount = u8FlagCount;
 
         clFlagGroup.Set((uint16_t)(1 << i));
 
         Thread::Sleep(100);
-        if ((i & 1) == 0)
-        {
+        if ((i & 1) == 0) {
             EXPECT_EQUALS(u8FlagCount, u8LastFlagCount);
-        }
-        else
-        {
-            EXPECT_EQUALS(u8FlagCount, u8LastFlagCount+1);
+        } else {
+            EXPECT_EQUALS(u8FlagCount, u8LastFlagCount + 1);
         }
     }
 
     clThread1.Exit();
 }
 TEST_END
-
 
 //===========================================================================
 TEST(ut_waitall)
@@ -227,17 +207,13 @@ TEST(ut_waitall)
     EXPECT_EQUALS(u8FlagCount, 0);
 
     u16Mask = 0x0001;
-    while(u16Mask)
-    {
+    while (u16Mask) {
         clFlagGroup.Set(u16Mask);
         Thread::Sleep(100);
 
-        if (u16Mask != 0x8000)
-        {
+        if (u16Mask != 0x8000) {
             EXPECT_EQUALS(u8FlagCount, 0);
-        }
-        else
-        {
+        } else {
             EXPECT_EQUALS(u8FlagCount, 1);
         }
 
@@ -261,20 +237,16 @@ TEST(ut_waitall)
 
     // Test point - the flag set should kick the test thread on even-indexed
     // counters indexes.
-    for (i = 0; i < 16; i++)
-    {
+    for (i = 0; i < 16; i++) {
         uint8_t u8LastFlagCount = u8FlagCount;
 
         clFlagGroup.Set((uint16_t)(1 << i));
 
         Thread::Sleep(100);
-        if (i != 15)
-        {
+        if (i != 15) {
             EXPECT_EQUALS(u8FlagCount, u8LastFlagCount);
-        }
-        else
-        {
-            EXPECT_EQUALS(u8FlagCount, u8LastFlagCount+1);
+        } else {
+            EXPECT_EQUALS(u8FlagCount, u8LastFlagCount + 1);
         }
     }
 
@@ -285,7 +257,6 @@ TEST_END
 //---------------------------------------------------------------------------
 TEST(ut_flag_multiwait)
 {
-
     // Test - ensure that all forms of event-flag unblocking work when there
     // are multiple threads blocked on the same flag.
 
@@ -342,7 +313,6 @@ TEST(ut_flag_multiwait)
     u8FlagCount = 0;
     clFlagGroup.Clear(0xFFFF);
 
-
     clThread1.Init(aucThreadStack1, THREAD1_STACK_SIZE, 7, WaitOnMultiAny, 0);
     clThread2.Init(aucThreadStack2, THREAD2_STACK_SIZE, 7, WaitOnMultiAny, 0);
 
@@ -386,7 +356,6 @@ TEST(ut_flag_multiwait)
     Thread::Sleep(100);
 
     EXPECT_EQUALS(u8FlagCount, 2);
-
 
     u8FlagCount = 0;
     clFlagGroup.Clear(0xFFFF);
@@ -445,7 +414,6 @@ TEST(ut_timedwait)
 
     EXPECT_EQUALS(u8TimeoutCount, 0);
     EXPECT_EQUALS(u8FlagCount, 1);
-
 
     // Test point - verify negative test case (timeouts), followed by a
     // positive test result.
@@ -530,8 +498,6 @@ TEST(ut_timedwait)
 
     EXPECT_EQUALS(u8TimeoutCount, 5);
     EXPECT_EQUALS(u8FlagCount, 5);
-
-
 }
 TEST_END
 
@@ -539,8 +505,4 @@ TEST_END
 // Test Whitelist Goes Here
 //===========================================================================
 TEST_CASE_START
-  TEST_CASE(ut_waitany),
-  TEST_CASE(ut_waitall),
-  TEST_CASE(ut_flag_multiwait),
-  TEST_CASE(ut_timedwait),
-TEST_CASE_END
+TEST_CASE(ut_waitany), TEST_CASE(ut_waitall), TEST_CASE(ut_flag_multiwait), TEST_CASE(ut_timedwait), TEST_CASE_END

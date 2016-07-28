@@ -40,27 +40,29 @@ a thread object and stack for Idle functionality.
 
 ===========================================================================*/
 #if !KERNEL_USE_IDLE_FUNC
-# error "This demo requires KERNEL_USE_IDLE_FUNC"
+#error "This demo requires KERNEL_USE_IDLE_FUNC"
 #endif
 
 extern "C" {
-void __cxa_pure_virtual(void) { }
+void __cxa_pure_virtual(void)
+{
+}
 }
 
 //---------------------------------------------------------------------------
 // This block declares the thread data for the main application thread.  It
 // defines a thread object, stack (in word-array form), and the entry-point
 // function used by the application thread.
-#define APP_STACK_SIZE      (320/sizeof(K_WORD))
-static Thread  clAppThread;
-static K_WORD  awAppStack[APP_STACK_SIZE];
-static void    AppMain(void *unused_);
+#define APP_STACK_SIZE (320 / sizeof(K_WORD))
+static Thread clAppThread;
+static K_WORD awAppStack[APP_STACK_SIZE];
+static void AppMain(void* unused_);
 
 //---------------------------------------------------------------------------
 // This block declares the special function called from with the special
 // Kernel-Idle context.  We use the Kernel::SetIdleFunc() API to ensure that
 // this function is called to provide our idle context.
-static void    IdleMain(void);
+static void IdleMain(void);
 
 //---------------------------------------------------------------------------
 int main(void)
@@ -73,7 +75,7 @@ int main(void)
     // level 0 is still reserved for idle functionality.  Application threads
     // should never be scheduled at priority level 0 when the idle function is
     // used instead of an idle thread.
-    clAppThread.Init(  awAppStack,  sizeof(awAppStack),  1, AppMain,  0);
+    clAppThread.Init(awAppStack, sizeof(awAppStack), 1, AppMain, 0);
     clAppThread.Start();
 
     // This function is used to install our specified idle function to be called
@@ -88,11 +90,10 @@ int main(void)
 }
 
 //---------------------------------------------------------------------------
-void AppMain(void *unused_)
+void AppMain(void* unused_)
 {
     // Same as in lab1.
-    while(1)
-    {
+    while (1) {
         KernelAware::Print("Hello World!\n");
         Thread::Sleep(1000);
     }
@@ -110,4 +111,3 @@ void IdleMain(void)
     // it's worthwhile keeping this function brief, limited to absolutely
     // necessary functionality, and with minimal stack use.
 }
-

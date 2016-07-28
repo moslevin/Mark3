@@ -24,35 +24,37 @@ Takeaway:
 
 ===========================================================================*/
 #if !KERNEL_USE_IDLE_FUNC
-# error "This demo requires KERNEL_USE_IDLE_FUNC"
+#error "This demo requires KERNEL_USE_IDLE_FUNC"
 #endif
 
 extern "C" {
-void __cxa_pure_virtual(void) { }
+void __cxa_pure_virtual(void)
+{
+}
 }
 
 //---------------------------------------------------------------------------
 // This block declares the thread data for one main application thread.  It
 // defines a thread object, stack (in word-array form), and the entry-point
 // function used by the application thread.
-#define APP1_STACK_SIZE      (320/sizeof(K_WORD))
-static Thread  clApp1Thread;
-static K_WORD  awApp1Stack[APP1_STACK_SIZE];
-static void    App1Main(void *unused_);
+#define APP1_STACK_SIZE (320 / sizeof(K_WORD))
+static Thread clApp1Thread;
+static K_WORD awApp1Stack[APP1_STACK_SIZE];
+static void App1Main(void* unused_);
 
 //---------------------------------------------------------------------------
 // This block declares the thread data for one main application thread.  It
 // defines a thread object, stack (in word-array form), and the entry-point
 // function used by the application thread.
-#define APP2_STACK_SIZE      (320/sizeof(K_WORD))
-static Thread  clApp2Thread;
-static K_WORD  awApp2Stack[APP2_STACK_SIZE];
-static void    App2Main(void *unused_);
+#define APP2_STACK_SIZE (320 / sizeof(K_WORD))
+static Thread clApp2Thread;
+static K_WORD awApp2Stack[APP2_STACK_SIZE];
+static void App2Main(void* unused_);
 
 //---------------------------------------------------------------------------
 // This is the mutex that we'll use to synchronize two threads in this
 // demo application.
-static Mutex   clMyMutex;
+static Mutex clMyMutex;
 
 // This counter variable is the "shared resource" in the example, protected
 // by the mutex.  Only one thread should be given access to the counter at
@@ -65,8 +67,8 @@ int main(void)
     // See the annotations in previous labs for details on init.
     Kernel::Init();
 
-    clApp1Thread.Init(  awApp1Stack,  sizeof(awApp1Stack),  1, App1Main,  0);
-    clApp2Thread.Init(  awApp2Stack,  sizeof(awApp2Stack),  1, App2Main,  0);
+    clApp1Thread.Init(awApp1Stack, sizeof(awApp1Stack), 1, App1Main, 0);
+    clApp2Thread.Init(awApp2Stack, sizeof(awApp2Stack), 1, App2Main, 0);
 
     clApp1Thread.Start();
     clApp2Thread.Start();
@@ -80,10 +82,9 @@ int main(void)
 }
 
 //---------------------------------------------------------------------------
-void App1Main(void *unused_)
+void App1Main(void* unused_)
 {
-    while(1)
-    {
+    while (1) {
         // Claim the mutex.  This will prevent any other thread from claiming
         // this lock simulatenously.  As a result, the other thread has to
         // wait until we're done before it can do its work.  You will notice
@@ -97,8 +98,7 @@ void App1Main(void *unused_)
 
         KernelAware::Print("Thread1: Start\n");
         u32Counter++;
-        while (u32Counter <= 1000000)
-        {
+        while (u32Counter <= 1000000) {
             u32Counter++;
         }
         u32Counter = 0;
@@ -110,10 +110,9 @@ void App1Main(void *unused_)
 }
 
 //---------------------------------------------------------------------------
-void App2Main(void *unused_)
+void App2Main(void* unused_)
 {
-    while(1)
-    {
+    while (1) {
         // Claim the mutex.  This will prevent any other thread from claiming
         // this lock simulatenously.  As a result, the other thread has to
         // wait until we're done before it can do its work.  You will notice
@@ -127,8 +126,7 @@ void App2Main(void *unused_)
 
         KernelAware::Print("Thread2: Start\n");
         u32Counter++;
-        while (u32Counter <= 1000000)
-        {
+        while (u32Counter <= 1000000) {
             u32Counter++;
         }
         u32Counter = 0;
@@ -138,4 +136,3 @@ void App2Main(void *unused_)
         clMyMutex.Release();
     }
 }
-

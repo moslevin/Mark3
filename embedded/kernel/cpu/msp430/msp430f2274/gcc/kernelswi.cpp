@@ -31,7 +31,7 @@ void KernelSWI::Config(void)
 
 //---------------------------------------------------------------------------
 void KernelSWI::Start(void)
-{        
+{
     P1IE = 0x04;
 }
 
@@ -52,12 +52,9 @@ uint8_t KernelSWI::DI()
 //---------------------------------------------------------------------------
 void KernelSWI::RI(bool bEnable_)
 {
-    if (bEnable_)
-    {
+    if (bEnable_) {
         P1IE |= 0x04;
-    }
-    else
-    {
+    } else {
         P1IE &= ~0x04;
     }
 }

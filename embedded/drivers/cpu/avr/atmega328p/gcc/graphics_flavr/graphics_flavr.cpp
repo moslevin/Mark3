@@ -13,7 +13,7 @@ See license.txt for more information
 ===========================================================================*/
 /*!
     \file graphics_flavr.cpp
-    
+
     \brief Graphics driver implementation for flAVR co-simulation
 */
 
@@ -24,10 +24,10 @@ See license.txt for more information
 #include "draw.h"
 
 volatile uint8_t g_u8GfxCommand = 0;
-volatile DrawPoint_t *g_pclPoint = 0;
+volatile DrawPoint_t* g_pclPoint = 0;
 
 //---------------------------------------------------------------------------
-void GraphicsFlavr::DrawPixel(DrawPoint_t *pstPoint_)
+void GraphicsFlavr::DrawPixel(DrawPoint_t* pstPoint_)
 {
     g_pclPoint = pstPoint_;
     g_u8GfxCommand = 1;

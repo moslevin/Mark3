@@ -27,30 +27,31 @@ Takeaway:
 
 ===========================================================================*/
 #if !KERNEL_USE_IDLE_FUNC
-# error "This demo requires KERNEL_USE_IDLE_FUNC"
+#error "This demo requires KERNEL_USE_IDLE_FUNC"
 #endif
 
 extern "C" {
-void __cxa_pure_virtual(void) { }
+void __cxa_pure_virtual(void)
+{
+}
 }
 
 //---------------------------------------------------------------------------
-#define APP_STACK_SIZE      (256/sizeof(K_WORD))
-static Thread  clApp1Thread;
-static K_WORD  awApp1Stack[APP_STACK_SIZE];
-static void    App1Main(void *unused_);
+#define APP_STACK_SIZE (256 / sizeof(K_WORD))
+static Thread clApp1Thread;
+static K_WORD awApp1Stack[APP_STACK_SIZE];
+static void App1Main(void* unused_);
 
 //---------------------------------------------------------------------------
-static Thread  clApp2Thread;
-static K_WORD  awApp2Stack[APP_STACK_SIZE];
-static void    App2Main(void *unused_);
+static Thread clApp2Thread;
+static K_WORD awApp2Stack[APP_STACK_SIZE];
+static void App2Main(void* unused_);
 
 //---------------------------------------------------------------------------
 static Mailbox clMailbox;
 static uint8_t au8MBData[100];
 
-typedef struct
-{
+typedef struct {
     uint8_t au8Buffer[10];
 } MBType_t;
 
@@ -61,10 +62,10 @@ int main(void)
     Kernel::Init();
 
     // Initialize the threads used in this example
-    clApp1Thread.Init(  awApp1Stack,  sizeof(awApp1Stack),  1, App1Main,  0);
+    clApp1Thread.Init(awApp1Stack, sizeof(awApp1Stack), 1, App1Main, 0);
     clApp1Thread.Start();
 
-    clApp2Thread.Init(  awApp2Stack,  sizeof(awApp2Stack),  2, App2Main,  0);
+    clApp2Thread.Init(awApp2Stack, sizeof(awApp2Stack), 2, App2Main, 0);
     clApp2Thread.Start();
 
     // Initialize the mailbox used in this example
@@ -76,10 +77,9 @@ int main(void)
 }
 
 //---------------------------------------------------------------------------
-void App1Main(void *unused_)
+void App1Main(void* unused_)
 {
-    while (1)
-    {
+    while (1) {
         MBType_t stMsg;
 
         // Wait until there is an envelope available in the shared mailbox, and
@@ -90,10 +90,9 @@ void App1Main(void *unused_)
 }
 
 //---------------------------------------------------------------------------
-void App2Main(void *unused_)
+void App2Main(void* unused_)
 {
-    while (1)
-    {
+    while (1) {
         MBType_t stMsg;
 
         // Place a bunch of envelopes in the mailbox, and then wait for a
@@ -104,10 +103,8 @@ void App2Main(void *unused_)
 
         KernelAware::Print("Messages Begin\n");
 
-        for (uint8_t i = 0; i < 10; i++)
-        {
-            for (uint8_t j = 0; j < 10; j++)
-            {
+        for (uint8_t i = 0; i < 10; i++) {
+            for (uint8_t j = 0; j < 10; j++) {
                 stMsg.au8Buffer[j] = (i * 10) + j;
             }
             clMailbox.Send(&stMsg);

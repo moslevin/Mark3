@@ -27,10 +27,9 @@ static Thread clThread;
 static K_WORD awStack[192];
 static volatile uint8_t u8Count = 0;
 
-static void NotifyThread(void *unused_)
+static void NotifyThread(void* unused_)
 {
-    while(1)
-    {
+    while (1) {
         Thread::Sleep(50);
         clNotify.Signal();
         u8Count++;
@@ -45,15 +44,13 @@ TEST(ut_notify)
     clThread.Init(awStack, 192, 2, NotifyThread, NULL);
     clThread.Start();
 
-    for (int i = 0; i < 10; i++)
-    {
+    for (int i = 0; i < 10; i++) {
         clNotify.Wait(0);
     }
     clThread.Stop();
     EXPECT_EQUALS(u8Count, 10);
 }
 TEST_END
-
 
 //===========================================================================
 // Define Test Cases Here
@@ -62,18 +59,15 @@ TEST(ut_notify_timeout)
 {
     clThread.Start();
     u8Count = 0;
-    for (int i = 0; i < 10; i++)
-    {
+    for (int i = 0; i < 10; i++) {
         clNotify.Wait(100, 0);
     }
     clThread.Stop();
     EXPECT_EQUALS(u8Count, 10);
 
-
     clThread.Start();
     u8Count = 0;
-    for (int i = 0; i < 10; i++)
-    {
+    for (int i = 0; i < 10; i++) {
         clNotify.Wait(3, 0);
     }
     clThread.Stop();
@@ -85,6 +79,4 @@ TEST_END
 // Test Whitelist Goes Here
 //===========================================================================
 TEST_CASE_START
-  TEST_CASE(ut_notify),
-  TEST_CASE(ut_notify_timeout),
-TEST_CASE_END
+TEST_CASE(ut_notify), TEST_CASE(ut_notify_timeout), TEST_CASE_END

@@ -41,7 +41,7 @@ static uint32_t u32TimeVal;
 static uint32_t u32TempTime;
 static volatile uint32_t u32CallbackCount = 0;
 
-static void TimerCallback( Thread *pclOwner_, void *pvVal_ )
+static void TimerCallback(Thread* pclOwner_, void* pvVal_)
 {
     clTimerSem.Post();
     u32CallbackCount++;
@@ -58,7 +58,7 @@ TEST(ut_timer_tolerance)
     // Test point - 1ms timer should take at least 1ms
     clProfileTimer.Init();
     clProfileTimer.Start();
-    clTimer1.Start( false, 1, TimerCallback, 0 );
+    clTimer1.Start(false, 1, TimerCallback, 0);
     clTimerSem.Pend();
     clProfileTimer.Stop();
 
@@ -73,7 +73,7 @@ TEST(ut_timer_tolerance)
     // Test point - 10ms timer should take at least 10ms
     clProfileTimer.Init();
     clProfileTimer.Start();
-    clTimer1.Start( false, 10, TimerCallback, 0 );
+    clTimer1.Start(false, 10, TimerCallback, 0);
     clTimerSem.Pend();
     clProfileTimer.Stop();
 
@@ -83,13 +83,13 @@ TEST(ut_timer_tolerance)
     EXPECT_GT(u32TimeVal, u32TempTime);
 
     // Test point - 10ms timer should be no more than 12ms
-    u32TempTime += 2* (SYSTEM_FREQ / 1000);
+    u32TempTime += 2 * (SYSTEM_FREQ / 1000);
     EXPECT_LT(u32TimeVal, u32TempTime);
 
     // Test point - 100ms timer should take at least 100ms
     clProfileTimer.Init();
     clProfileTimer.Start();
-    clTimer1.Start( false, 100, TimerCallback, 0 );
+    clTimer1.Start(false, 100, TimerCallback, 0);
     clTimerSem.Pend();
     clProfileTimer.Stop();
 
@@ -105,7 +105,7 @@ TEST(ut_timer_tolerance)
     // Test point - 1000ms timer should take at least 100ms
     clProfileTimer.Init();
     clProfileTimer.Start();
-    clTimer1.Start( false, 1000, TimerCallback, 0 );
+    clTimer1.Start(false, 1000, TimerCallback, 0);
     clTimerSem.Pend();
     clProfileTimer.Stop();
 
@@ -115,13 +115,12 @@ TEST(ut_timer_tolerance)
     EXPECT_GT(u32TimeVal, u32TempTime);
 
     // Test point - 1000ms timer should be no more than 1002ms
-    u32TempTime += 2* (SYSTEM_FREQ / 1000);
+    u32TempTime += 2 * (SYSTEM_FREQ / 1000);
     EXPECT_LT(u32TimeVal, u32TempTime);
 
     Profiler::Stop();
 }
 TEST_END
-
 
 TEST(ut_timer_longrun)
 {
@@ -137,11 +136,10 @@ TEST(ut_timer_longrun)
     // Test point - long running timer accuracy; 10-second timer
     // expires after 10 seconds.
     clProfileTimer.Init();
-    clTimer1.Start( false, 10000, TimerCallback, 0 );
+    clTimer1.Start(false, 10000, TimerCallback, 0);
     u32CallbackCount = 0;
 
-    while (!u32CallbackCount)
-    {
+    while (!u32CallbackCount) {
         clProfileTimer.Start();
         Thread::Sleep(100);
         clProfileTimer.Stop();
@@ -180,10 +178,9 @@ TEST(ut_timer_repeat)
     clProfileTimer.Init();
     clProfileTimer.Start();
 
-    clTimer1.Start( true, 10, TimerCallback, 0 );
+    clTimer1.Start(true, 10, TimerCallback, 0);
 
-    while (u32CallbackCount < 100)
-    {
+    while (u32CallbackCount < 100) {
         clTimerSem.Pend();
     }
 
@@ -217,7 +214,6 @@ TEST(ut_timer_repeat)
 #endif
 
     Profiler::Stop();
-
 }
 TEST_END
 
@@ -235,11 +231,11 @@ TEST(ut_timer_multi)
     clProfileTimer3.Init();
 
     clProfileTimer.Start();
-    clTimer1.Start( false, 100, TimerCallback, 0 );
+    clTimer1.Start(false, 100, TimerCallback, 0);
     clProfileTimer2.Start();
-    clTimer2.Start( false, 200, TimerCallback, 0 );
+    clTimer2.Start(false, 200, TimerCallback, 0);
     clProfileTimer3.Start();
-    clTimer3.Start( false, 50, TimerCallback, 0 );
+    clTimer3.Start(false, 50, TimerCallback, 0);
 
     // Each timer expiry will post the semaphore.
     clTimerSem.Pend();
@@ -279,13 +275,9 @@ TEST(ut_timer_multi)
 }
 TEST_END
 
-
 //===========================================================================
 // Test Whitelist Goes Here
 //===========================================================================
 TEST_CASE_START
-  TEST_CASE(ut_timer_tolerance),
-  TEST_CASE(ut_timer_longrun),
-  TEST_CASE(ut_timer_repeat),
-  TEST_CASE(ut_timer_multi),
-TEST_CASE_END
+TEST_CASE(ut_timer_tolerance), TEST_CASE(ut_timer_longrun), TEST_CASE(ut_timer_repeat), TEST_CASE(ut_timer_multi),
+    TEST_CASE_END

@@ -89,7 +89,6 @@ TEST(ut_logic)
 
     // signed 32-bit values
     EXPECT_FAIL_EQUALS(4294967295, 0);
-
 }
 TEST_END
 
@@ -97,5 +96,4 @@ TEST_END
 // Test Whitelist Goes Here
 //===========================================================================
 TEST_CASE_START
-  TEST_CASE(ut_logic),
-TEST_CASE_END
+TEST_CASE(ut_logic), TEST_CASE_END

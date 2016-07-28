@@ -19,81 +19,60 @@ See license.txt for more information
 #include "sys_tc.h"
 
 //---------------------------------------------------------------------------
-void SysTC::SetInterface( TCXBit_t eBit_ )
+void SysTC::SetInterface(TCXBit_t eBit_)
 {
     m_uTCXBit = eBit_;
     m_pstTC = GetInterface();
 }
 
 //---------------------------------------------------------------------------
-void SysTC::SetCaptureVal( uint8_t u8Index_, uint32_t u32CaptureVal_ )
+void SysTC::SetCaptureVal(uint8_t u8Index_, uint32_t u32CaptureVal_)
 {
-    switch (m_eMode)
-    {
-        case TC_MODE_16BIT:
-            m_pstTC->COUNT16.CC[u8Index_].reg = (uint16_t)u32CaptureVal_;
-            break;
-        case TC_MODE_8BIT:
-            m_pstTC->COUNT8.CC[u8Index_].reg = (uint8_t)u32CaptureVal_;
-            break;
-        case TC_MODE_32BIT:
-            m_pstTC->COUNT32.CC[u8Index_].reg = (uint32_t)u32CaptureVal_;
-            break;
-        default:
-            break;
+    switch (m_eMode) {
+        case TC_MODE_16BIT: m_pstTC->COUNT16.CC[u8Index_].reg = (uint16_t)u32CaptureVal_; break;
+        case TC_MODE_8BIT: m_pstTC->COUNT8.CC[u8Index_].reg = (uint8_t)u32CaptureVal_; break;
+        case TC_MODE_32BIT: m_pstTC->COUNT32.CC[u8Index_].reg = (uint32_t)u32CaptureVal_; break;
+        default: break;
     }
 }
 
 //---------------------------------------------------------------------------
-void SysTC::EnableCapture( uint8_t u8Index_, bool bEnable_)
+void SysTC::EnableCapture(uint8_t u8Index_, bool bEnable_)
 {
-    switch (u8Index_)
-    {
-        case 0:
-            m_bCapture0 = bEnable_;
+    switch (u8Index_) {
+        case 0: m_bCapture0 = bEnable_;
         case 1:
-            // m_bCapture1 = bEnable_;
-        default:
-            break;
+        // m_bCapture1 = bEnable_;
+        default: break;
     }
 }
 
 //---------------------------------------------------------------------------
-uint32_t SysTC::GetCount( void )
+uint32_t SysTC::GetCount(void)
 {
     //!! Will need to check out the example code for define names...
     m_pstTC = GetInterface();
 
     // If we're not continuously reading the count register...
-    if(!((m_eSyncReg == TC_READSYNC_COUNT) && m_bSyncContinuous))
-    {
+    if (!((m_eSyncReg == TC_READSYNC_COUNT) && m_bSyncContinuous)) {
         // Request a single read of the count register
-        m_pstTC->COUNT16.READREQ.reg = TC_READREQ_RREQ |
-                                        (0x10 << TC_READREQ_ADDR_Pos);
+        m_pstTC->COUNT16.READREQ.reg = TC_READREQ_RREQ | (0x10 << TC_READREQ_ADDR_Pos);
     }
 
     // Wait for clock domain synchronization
     WriteSync();
-    switch (m_eMode)
-    {
-        case TC_MODE_16BIT:
-            return (uint32_t)m_pstTC->COUNT16.COUNT.reg;
-            break;
-        case TC_MODE_8BIT:
-            return (uint32_t)m_pstTC->COUNT8.COUNT.reg;
-            break;
-        case TC_MODE_32BIT:
-            return m_pstTC->COUNT32.COUNT.reg;
-            break;
-        default:
-            break;
+    switch (m_eMode) {
+        case TC_MODE_16BIT: return (uint32_t)m_pstTC->COUNT16.COUNT.reg; break;
+        case TC_MODE_8BIT: return (uint32_t)m_pstTC->COUNT8.COUNT.reg; break;
+        case TC_MODE_32BIT: return m_pstTC->COUNT32.COUNT.reg; break;
+        default: break;
     }
 
     return 0;
 }
 
 //---------------------------------------------------------------------------
-void SysTC::Start( void )
+void SysTC::Start(void)
 {
     SetupClocks();
     SetupRegisters();
@@ -104,84 +83,48 @@ void SysTC::Start( void )
 }
 
 //---------------------------------------------------------------------------
-void SysTC::Stop( void )
+void SysTC::Stop(void)
 {
     WriteSync();
     m_pstTC->COUNT16.CTRLA.reg &= ~TC_CTRLA_ENABLE;
 }
 
 //---------------------------------------------------------------------------
-void SysTC::EnableInterrupt( TCInt_t eInt_ )
+void SysTC::EnableInterrupt(TCInt_t eInt_)
 {
-    switch(eInt_)
-    {
-    case TC_INT_ERR:
-        m_pstTC->COUNT32.INTENSET.reg = TC_INTENSET_ERR;
-        break;
-    case TC_INT_MC0:
-        m_pstTC->COUNT32.INTENSET.reg = TC_INTENSET_MC(0);
-        break;
-    case TC_INT_MC1:
-        m_pstTC->COUNT32.INTENSET.reg = TC_INTENSET_MC(1);
-        break;
-    case TC_INT_OVF:
-        m_pstTC->COUNT32.INTENSET.reg = TC_INTENSET_OVF;
-        break;
-    case TC_INT_SYNCRDY:
-        m_pstTC->COUNT32.INTENSET.reg = TC_INTENSET_SYNCRDY;
-        break;
-    default:
-        break;
+    switch (eInt_) {
+        case TC_INT_ERR: m_pstTC->COUNT32.INTENSET.reg = TC_INTENSET_ERR; break;
+        case TC_INT_MC0: m_pstTC->COUNT32.INTENSET.reg = TC_INTENSET_MC(0); break;
+        case TC_INT_MC1: m_pstTC->COUNT32.INTENSET.reg = TC_INTENSET_MC(1); break;
+        case TC_INT_OVF: m_pstTC->COUNT32.INTENSET.reg = TC_INTENSET_OVF; break;
+        case TC_INT_SYNCRDY: m_pstTC->COUNT32.INTENSET.reg = TC_INTENSET_SYNCRDY; break;
+        default: break;
     }
 }
 
 //---------------------------------------------------------------------------
-void SysTC::DisableInterrupt( TCInt_t eInt_ )
+void SysTC::DisableInterrupt(TCInt_t eInt_)
 {
-    switch(eInt_)
-    {
-    case TC_INT_ERR:
-        m_pstTC->COUNT32.INTFLAG.reg &= ~TC_INTENSET_ERR;
-        break;
-    case TC_INT_MC0:
-        m_pstTC->COUNT32.INTFLAG.reg &= ~TC_INTENSET_MC(0);
-        break;
-    case TC_INT_MC1:
-        m_pstTC->COUNT32.INTFLAG.reg &= ~TC_INTENSET_MC(1);
-        break;
-    case TC_INT_OVF:
-        m_pstTC->COUNT32.INTFLAG.reg &= ~TC_INTENSET_OVF;
-        break;
-    case TC_INT_SYNCRDY:
-        m_pstTC->COUNT32.INTFLAG.reg &= ~TC_INTENSET_SYNCRDY;
-        break;
-    default:
-        break;
+    switch (eInt_) {
+        case TC_INT_ERR: m_pstTC->COUNT32.INTFLAG.reg &= ~TC_INTENSET_ERR; break;
+        case TC_INT_MC0: m_pstTC->COUNT32.INTFLAG.reg &= ~TC_INTENSET_MC(0); break;
+        case TC_INT_MC1: m_pstTC->COUNT32.INTFLAG.reg &= ~TC_INTENSET_MC(1); break;
+        case TC_INT_OVF: m_pstTC->COUNT32.INTFLAG.reg &= ~TC_INTENSET_OVF; break;
+        case TC_INT_SYNCRDY: m_pstTC->COUNT32.INTFLAG.reg &= ~TC_INTENSET_SYNCRDY; break;
+        default: break;
     }
 }
 
 //---------------------------------------------------------------------------
-void SysTC::ClearInterrupt( TCInt_t eInt_)
+void SysTC::ClearInterrupt(TCInt_t eInt_)
 {
-    switch(eInt_)
-    {
-        case TC_INT_ERR:
-        m_pstTC->COUNT32.INTENCLR.reg = TC_INTENSET_ERR;
-        break;
-        case TC_INT_MC0:
-        m_pstTC->COUNT32.INTENCLR.reg = TC_INTENSET_MC(0);
-        break;
-        case TC_INT_MC1:
-        m_pstTC->COUNT32.INTENCLR.reg = TC_INTENSET_MC(1);
-        break;
-        case TC_INT_OVF:
-        m_pstTC->COUNT32.INTENCLR.reg = TC_INTENSET_OVF;
-        break;
-        case TC_INT_SYNCRDY:
-        m_pstTC->COUNT32.INTENCLR.reg = TC_INTENSET_SYNCRDY;
-        break;
-        default:
-            break;
+    switch (eInt_) {
+        case TC_INT_ERR: m_pstTC->COUNT32.INTENCLR.reg = TC_INTENSET_ERR; break;
+        case TC_INT_MC0: m_pstTC->COUNT32.INTENCLR.reg = TC_INTENSET_MC(0); break;
+        case TC_INT_MC1: m_pstTC->COUNT32.INTENCLR.reg = TC_INTENSET_MC(1); break;
+        case TC_INT_OVF: m_pstTC->COUNT32.INTENCLR.reg = TC_INTENSET_OVF; break;
+        case TC_INT_SYNCRDY: m_pstTC->COUNT32.INTENCLR.reg = TC_INTENSET_SYNCRDY; break;
+        default: break;
     }
 }
 
@@ -189,57 +132,30 @@ void SysTC::ClearInterrupt( TCInt_t eInt_)
 uint8_t SysTC::GetInterfaceIndex()
 {
     uint8_t u8Int;
-    switch (m_eMode)
-    {
-        case TC_MODE_8BIT:
-            u8Int = (uint8_t)m_uTCXBit.e8Bit;
-            break;
-        case TC_MODE_16BIT:
-            u8Int = ((uint8_t)m_uTCXBit.e16Bit) << 1;
-            break;
-        case TC_MODE_32BIT:
-            u8Int = ((uint8_t)m_uTCXBit.e32Bit) << 2;
-            break;
-        default:
-            u8Int = (uint8_t)m_uTCXBit.e8Bit;
-            break;
+    switch (m_eMode) {
+        case TC_MODE_8BIT: u8Int = (uint8_t)m_uTCXBit.e8Bit; break;
+        case TC_MODE_16BIT: u8Int = ((uint8_t)m_uTCXBit.e16Bit) << 1; break;
+        case TC_MODE_32BIT: u8Int = ((uint8_t)m_uTCXBit.e32Bit) << 2; break;
+        default: u8Int = (uint8_t)m_uTCXBit.e8Bit; break;
     }
     return u8Int;
 }
 
 //---------------------------------------------------------------------------
-Tc *SysTC::GetInterface()
+Tc* SysTC::GetInterface()
 {
     uint8_t u8Int = GetInterfaceIndex();
-    Tc *pstTC = 0;
-    switch (u8Int)
-    {
-    case 0:
-        pstTC = TC0;
-        break;
-    case 1:
-        pstTC = TC1;
-        break;
-    case 2:
-        pstTC = TC2;
-        break;
-    case 3:
-        pstTC = TC3;
-        break;
-    case 4:
-        pstTC = TC4;
-        break;
-    case 5:
-        pstTC = TC5;
-        break;
-    case 6:
-        pstTC = TC6;
-        break;
-    case 7:
-        pstTC = TC7;
-        break;
-    default:
-        break;
+    Tc* pstTC = 0;
+    switch (u8Int) {
+        case 0: pstTC = TC0; break;
+        case 1: pstTC = TC1; break;
+        case 2: pstTC = TC2; break;
+        case 3: pstTC = TC3; break;
+        case 4: pstTC = TC4; break;
+        case 5: pstTC = TC5; break;
+        case 6: pstTC = TC6; break;
+        case 7: pstTC = TC7; break;
+        default: break;
     }
     return pstTC;
 }
@@ -247,14 +163,14 @@ Tc *SysTC::GetInterface()
 //---------------------------------------------------------------------------
 void SysTC::SetupClocks()
 {
-    //Enable the TCx Clock from the power-management module
+    // Enable the TCx Clock from the power-management module
     uint8_t u8Int = GetInterfaceIndex();
     SysClock clClock;
 
     PM->APBCMASK.reg |= 1 << (PM_APBCMASK_TC0_Pos + u8Int);
 
     // Setup the clock/generator link attached to this peripheral
-    u8Int >>= 1;    // Clocks are grouped in pairs of TCx
+    u8Int >>= 1; // Clocks are grouped in pairs of TCx
     clClock.SetClockID((Clock_t)(u8Int + (uint8_t)CLK_TC0_1));
 
     clClock.SetGenerator(m_eClockGen);
@@ -273,46 +189,32 @@ void SysTC::SetupRegisters()
 
     m_pstTC = GetInterface();
 
-    u32CtrlA = (((uint32_t)m_eWaveformMode) << TC_CTRLA_WAVEGEN_Pos)
-            | (((uint32_t)m_eMode) << TC_CTRLA_MODE_Pos)
-            | (((uint32_t)m_ePrescalar) << TC_CTRLA_PRESCALER_Pos)
-            | (((uint32_t)m_ePresync) << TC_CTRLA_PRESCSYNC_Pos);
+    u32CtrlA = (((uint32_t)m_eWaveformMode) << TC_CTRLA_WAVEGEN_Pos) | (((uint32_t)m_eMode) << TC_CTRLA_MODE_Pos)
+               | (((uint32_t)m_ePrescalar) << TC_CTRLA_PRESCALER_Pos)
+               | (((uint32_t)m_ePresync) << TC_CTRLA_PRESCSYNC_Pos);
 
-    u32CtrlB = (((uint32_t)m_bOneShot) << TC_CTRLBSET_ONESHOT_Pos)
-            | (((uint32_t)m_bDirection) << TC_CTRLBSET_DIR_Pos);
+    u32CtrlB = (((uint32_t)m_bOneShot) << TC_CTRLBSET_ONESHOT_Pos) | (((uint32_t)m_bDirection) << TC_CTRLBSET_DIR_Pos);
 
-    u32CtrlC = (((uint32_t)m_bCapture0) << TC_CTRLC_CPTEN_Pos)
-            | (((uint32_t)m_bInvert0) << TC_CTRLC_INVEN_Pos);
+    u32CtrlC = (((uint32_t)m_bCapture0) << TC_CTRLC_CPTEN_Pos) | (((uint32_t)m_bInvert0) << TC_CTRLC_INVEN_Pos);
 
     u32EventCtrl = (((uint32_t)m_bMatchCompare0) << TC_EVCTRL_MCEO_Pos)
-                | (((uint32_t)m_bOverflowEnable) << TC_EVCTRL_OVFEO_Pos)
-                | (((uint32_t)m_bTCEventEnable) << TC_EVCTRL_TCEI_Pos)
-                | (((uint32_t)m_bTCEventInvert) << TC_EVCTRL_TCINV_Pos);
+                   | (((uint32_t)m_bOverflowEnable) << TC_EVCTRL_OVFEO_Pos)
+                   | (((uint32_t)m_bTCEventEnable) << TC_EVCTRL_TCEI_Pos)
+                   | (((uint32_t)m_bTCEventInvert) << TC_EVCTRL_TCINV_Pos);
 
-    if (m_bSyncContinuous)
-    {
+    if (m_bSyncContinuous) {
         u32ReadReq |= (((uint32_t)m_bSyncContinuous) << TC_READREQ_RCONT_Pos);
-        if (m_eSyncReg == TC_READSYNC_CC0)
-        {
+        if (m_eSyncReg == TC_READSYNC_CC0) {
             u32ReadReq |= (0x18 << TC_READREQ_ADDR_Pos);
-        }
-        else if (m_eSyncReg == TC_READSYNC_CC1)
-        {
-            if (m_eMode == TC_MODE_8BIT)
-            {
+        } else if (m_eSyncReg == TC_READSYNC_CC1) {
+            if (m_eMode == TC_MODE_8BIT) {
                 u32ReadReq |= (0x19 << TC_READREQ_ADDR_Pos);
-            }
-            else if (m_eMode == TC_MODE_16BIT)
-            {
+            } else if (m_eMode == TC_MODE_16BIT) {
                 u32ReadReq |= (0x1A << TC_READREQ_ADDR_Pos);
-            }
-            else
-            {
+            } else {
                 u32ReadReq |= (0x1C << TC_READREQ_ADDR_Pos);
             }
-        }
-        else
-        {
+        } else {
             u32ReadReq |= (0x10 << TC_READREQ_ADDR_Pos);
         }
     }

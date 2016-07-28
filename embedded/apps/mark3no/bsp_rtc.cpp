@@ -16,7 +16,7 @@ void bsp_rtc_set_on_rtc_tick(on_rtc_tick_t pfOnTick_)
 static void bsp_rtc_hw_init(void)
 {
     // Set up an RTC that expires every second.
-    TCCR2A = 0;	 // Normal mode -- count to top @ 0xFF
+    TCCR2A = 0; // Normal mode -- count to top @ 0xFF
     TCNT2 = 0;
 
     // Enable overflow interrupt
@@ -35,7 +35,7 @@ void bsp_rtc_init(void)
     bsp_rtc_hw_init();
 
     s_clRTC.Init(1); // 1 tick per second
-    calendar_t cal = {0};
+    calendar_t cal = { 0 };
     cal.u8Day = 27;
     cal.eMonth = MONTH_JUNE;
     cal.u16Year = 2016;
@@ -107,8 +107,7 @@ void bsp_rtc_kick(void)
 ISR(TIMER2_OVF_vect)
 {
     s_u32TicksToAdd += 1; // 1-second resolution...
-    if (s_pfOnRTCTick)
-    {
+    if (s_pfOnRTCTick) {
         s_pfOnRTCTick();
     }
 }

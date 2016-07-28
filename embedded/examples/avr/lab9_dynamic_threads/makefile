@@ -10,7 +10,7 @@ APPNAME=lab9_dynamic_threads
 #this is the list of the objects required to build the kernel
 CPP_SOURCE=main.cpp
 
-LIBS=mark3
+LIBS=mark3 memutil
 
 # Include the rest of the script that is actually used for building the 
 # outputs

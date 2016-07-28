@@ -13,19 +13,19 @@ See license.txt for more information
 ===========================================================================*/
 /*!
     \file graphics_st7735.cpp
-    
-    \brief Graphics driver implementation on ST7735 hardware    
+
+    \brief Graphics driver implementation on ST7735 hardware
 */
-/*************************************************** 
-  Note:  This module is based off of 3rd party code, 
-	 see the license below!
-*************************************************** 
+/***************************************************
+  Note:  This module is based off of 3rd party code,
+     see the license below!
+***************************************************
   This is a library for the Adafruit 1.8" SPI display.
   This library works with the Adafruit 1.8" TFT Breakout w/SD card
   ----> http://www.adafruit.com/products/358
   as well as Adafruit raw 1.8" TFT display
   ----> http://www.adafruit.com/products/618
- 
+
   Check out the links above for our tutorials and wiring diagrams
   These displays use SPI to communicate, 4 or 5 pins are required to
   interface (RST is optional)
@@ -45,11 +45,10 @@ See license.txt for more information
 #include <avr/pgmspace.h>
 #include <avr/io.h>
 
-
 // SPI Defines
-#define SPI_CLK_DIV_4			(0x00)
-#define SPI_CLK_MASK			(0x03)
-#define SPI_CLK_MASK_2			(0x01)
+#define SPI_CLK_DIV_4 (0x00)
+#define SPI_CLK_MASK (0x03)
+#define SPI_CLK_MASK_2 (0x01)
 
 // Rather than a bazillion writecommand() and writedata() calls, screen
 // initialization commands and arguments are organized in these tables
@@ -188,31 +187,30 @@ static const uint8_t PROGMEM
     ST7735_DISPON ,    DELAY, //  4: Main screen turn on, no args w/delay
       100 };                  //     100 ms delay
 
-
 //---------------------------------------------------------------------------
 // Companion code to the above tables.  Reads and issues
 // a series of LCD commands stored in PROGMEM byte array.
-void GraphicsST7735::CommandList(const uint8_t *pu8Data_)
+void GraphicsST7735::CommandList(const uint8_t* pu8Data_)
 {
-    uint8_t u8NumCommands = pgm_read_byte(pu8Data_++);      // Number of commands to follow
-    while (u8NumCommands--)                                 // For each command...
+    uint8_t u8NumCommands = pgm_read_byte(pu8Data_++); // Number of commands to follow
+    while (u8NumCommands--)                            // For each command...
     {
-        WriteCommand(pgm_read_byte(pu8Data_++));            // Read, issue command
+        WriteCommand(pgm_read_byte(pu8Data_++)); // Read, issue command
 
-        uint8_t     u8NumArgs = pgm_read_byte(pu8Data_++);  // Number of args to follow
-        uint16_t    u16Ms      = u8NumArgs & DELAY;          // If hibit set, delay follows args
+        uint8_t u8NumArgs = pgm_read_byte(pu8Data_++); // Number of args to follow
+        uint16_t u16Ms = u8NumArgs & DELAY;            // If hibit set, delay follows args
 
-        u8NumArgs &= ~DELAY;                                // Mask out delay bit
+        u8NumArgs &= ~DELAY; // Mask out delay bit
 
-        while(u8NumArgs--)                                  // For each argument...
+        while (u8NumArgs--) // For each argument...
         {
-            WriteData(pgm_read_byte(pu8Data_++));           // Read, issue argument
+            WriteData(pgm_read_byte(pu8Data_++)); // Read, issue argument
         }
 
-        if(u16Ms)                                            // If there's a delay for this command
+        if (u16Ms) // If there's a delay for this command
         {
-            u16Ms = pgm_read_byte(pu8Data_++);               // Read post-command delay time (ms)
-            if(u16Ms == 255)                                 // If 255, delay for 500 ms
+            u16Ms = pgm_read_byte(pu8Data_++); // Read post-command delay time (ms)
+            if (u16Ms == 255)                  // If 255, delay for 500 ms
             {
                 u16Ms = 500;
             }
@@ -222,51 +220,48 @@ void GraphicsST7735::CommandList(const uint8_t *pu8Data_)
 
 #if use_HW_SPI
 //---------------------------------------------------------------------------
-#define TFT_SPI_WRITE(x) \
-{ \
-    TFT_SPI_SPDR = (x); \
-    while( !(TFT_SPI_SPSR & (1 << TFT_SPI_SPIF) ) ) { } \
-}
+#define TFT_SPI_WRITE(x)                                                                                               \
+    {                                                                                                                  \
+        TFT_SPI_SPDR = (x);                                                                                            \
+        while (!(TFT_SPI_SPSR & (1 << TFT_SPI_SPIF))) {                                                                \
+        }                                                                                                              \
+    }
 #else
 //---------------------------------------------------------------------------
-#define TFT_SPI_WRITE(x)	\
-{ \
-    uint8_t u8Mask = 0x80; \
-    while (u8Mask) \
-    { \
-        if (u8Mask & x) \
-        { \
-            TFT_SPI_MOSI_PORT |= TFT_SPI_MOSI_PIN; \
-        } \
-        else \
-        { \
-            TFT_SPI_MOSI_PORT &= ~TFT_SPI_MOSI_PIN; \
-        } \
-        TFT_SPI_SCLK_OUT |= TFT_SPI_SCLK_PIN; \
-        TFT_SPI_SCLK_OUT &= ~TFT_SPI_SCLK_PIN; \
-        u8Mask >>= 1; \
-    } \
-}
+#define TFT_SPI_WRITE(x)                                                                                               \
+    {                                                                                                                  \
+        uint8_t u8Mask = 0x80;                                                                                         \
+        while (u8Mask) {                                                                                               \
+            if (u8Mask & x) {                                                                                          \
+                TFT_SPI_MOSI_PORT |= TFT_SPI_MOSI_PIN;                                                                 \
+            } else {                                                                                                   \
+                TFT_SPI_MOSI_PORT &= ~TFT_SPI_MOSI_PIN;                                                                \
+            }                                                                                                          \
+            TFT_SPI_SCLK_OUT |= TFT_SPI_SCLK_PIN;                                                                      \
+            TFT_SPI_SCLK_OUT &= ~TFT_SPI_SCLK_PIN;                                                                     \
+            u8Mask >>= 1;                                                                                              \
+        }                                                                                                              \
+    }
 
 #endif
 
 //---------------------------------------------------------------------------
-void GraphicsST7735::WriteCommand( uint8_t u8X_ ) 
+void GraphicsST7735::WriteCommand(uint8_t u8X_)
 {
     TFT_CD_PORT &= ~TFT_CD_PIN;
     TFT_CS_PORT &= ~TFT_CS_PIN;
-	TFT_SPI_WRITE(u8X_);
+    TFT_SPI_WRITE(u8X_);
     TFT_CS_PORT |= TFT_CS_PIN;
 }
 
 //---------------------------------------------------------------------------
-void GraphicsST7735::WriteData( uint8_t u8X_ ) 
+void GraphicsST7735::WriteData(uint8_t u8X_)
 {
     TFT_CD_PORT |= TFT_CD_PIN;
     TFT_CS_PORT &= ~TFT_CS_PIN;
-	TFT_SPI_WRITE(u8X_);
+    TFT_SPI_WRITE(u8X_);
     TFT_CS_PORT |= TFT_CS_PIN;
-} 
+}
 
 //---------------------------------------------------------------------------
 void GraphicsST7735::Init()
@@ -287,15 +282,15 @@ void GraphicsST7735::Init()
     // SPI Slave-select ourput high; guarantee we're the master on the bus, and
     // that the SPI HW behaves as expected
     SPI_SS_PORT |= SPI_SS_PIN;
-    SPI_SS_DIR  |= SPI_SS_PIN;
+    SPI_SS_DIR |= SPI_SS_PIN;
 
     // Configure SPI as Master, MSB First, and Enable
-    TFT_SPI_SPCR  =  (1 << MSTR); 	    // Master-mode
-	TFT_SPI_SPCR |=  (1 << SPE);		// Enable.
-	
-	TFT_SPI_SPSR = (1 << SPI2X);		// Double-speed SPI, for faster writes
-	
-    // Implicit - Mode0 -> We  cleared the SPCR earlier, so will already be 0
+    TFT_SPI_SPCR = (1 << MSTR); // Master-mode
+    TFT_SPI_SPCR |= (1 << SPE); // Enable.
+
+    TFT_SPI_SPSR = (1 << SPI2X); // Double-speed SPI, for faster writes
+
+// Implicit - Mode0 -> We  cleared the SPCR earlier, so will already be 0
 #endif
     TFT_SPI_SCLK_DIR |= TFT_SPI_SCLK_PIN;
     TFT_SPI_MOSI_DIR |= TFT_SPI_MOSI_PIN;
@@ -304,9 +299,8 @@ void GraphicsST7735::Init()
     TFT_CS_PORT &= ~TFT_CS_PIN;
 
 #if TFT_RST_PIN
-    if (TFT_RST_PIN)
-    {
-        TFT_RST_DIR  |= TFT_RST_PIN;
+    if (TFT_RST_PIN) {
+        TFT_RST_DIR |= TFT_RST_PIN;
         TFT_RST_PORT |= TFT_RST_PIN;
         Thread::Sleep(500);
 
@@ -318,7 +312,7 @@ void GraphicsST7735::Init()
     }
 #endif
 
-//-- Device-specific commands...    
+    //-- Device-specific commands...
     CommandList(Rcmd1);
 #if (TAB_COLOR == INITR_GREENTAB)
     CommandList(Rcmd2green);
@@ -334,12 +328,10 @@ void GraphicsST7735::Init()
     WriteCommand(ST7735_MADCTL);
     WriteData(0xC0);
 #endif
-
 }
 
-
 //---------------------------------------------------------------------------
-void GraphicsST7735::FastVLine(DrawLine_t *pstLine_)
+void GraphicsST7735::FastVLine(DrawLine_t* pstLine_)
 {
     // Tell the driver which pixels we're going to write
     // (in a bounding-box 1-pixel high, n-pixels wide)
@@ -356,14 +348,13 @@ void GraphicsST7735::FastVLine(DrawLine_t *pstLine_)
     uint16_t u16Pixels = pstLine_->u16Y2 - pstLine_->u16Y1 + 1;
 
     // Set the high/low bytes of the color that we're going to write
-    uint8_t u8High    = (uint8_t)((pstLine_->uColor) >> 8);
-    uint8_t u8Low     = (uint8_t)(pstLine_->uColor & 0xFF);
+    uint8_t u8High = (uint8_t)((pstLine_->uColor) >> 8);
+    uint8_t u8Low = (uint8_t)(pstLine_->uColor & 0xFF);
 
     // Clock the pixel data out
     TFT_CD_OUT |= TFT_CD_PIN;
     TFT_CS_OUT &= ~TFT_CS_PIN;
-    while (u16Pixels--)
-    {
+    while (u16Pixels--) {
         TFT_SPI_WRITE(u8High);
         TFT_SPI_WRITE(u8Low);
     }
@@ -371,7 +362,7 @@ void GraphicsST7735::FastVLine(DrawLine_t *pstLine_)
 }
 
 //---------------------------------------------------------------------------
-void GraphicsST7735::FastHLine(DrawLine_t *pstLine_)
+void GraphicsST7735::FastHLine(DrawLine_t* pstLine_)
 {
     // Tell the driver which pixels we're going to write
     // (in a bounding-box 1-pixel high, n-pixels wide)
@@ -390,14 +381,13 @@ void GraphicsST7735::FastHLine(DrawLine_t *pstLine_)
     uint16_t u16Pixels = pstLine_->u16X2 - pstLine_->u16X1 + 1;
 
     // Set the high/low bytes of the color that we're going to write
-    uint8_t u8High    = (uint8_t)((pstLine_->uColor) >> 8);
-    uint8_t u8Low     = (uint8_t)(pstLine_->uColor & 0xFF);
+    uint8_t u8High = (uint8_t)((pstLine_->uColor) >> 8);
+    uint8_t u8Low = (uint8_t)(pstLine_->uColor & 0xFF);
 
     // Clock the pixel data out
     TFT_CD_OUT |= TFT_CD_PIN;
     TFT_CS_OUT &= ~TFT_CS_PIN;
-    while (u16Pixels--)
-    {
+    while (u16Pixels--) {
         TFT_SPI_WRITE(u8High);
         TFT_SPI_WRITE(u8Low);
     }
@@ -405,20 +395,20 @@ void GraphicsST7735::FastHLine(DrawLine_t *pstLine_)
 }
 
 //---------------------------------------------------------------------------
-void GraphicsST7735::SetOpWindow(DrawRectangle_t *pstRectangle_) 
+void GraphicsST7735::SetOpWindow(DrawRectangle_t* pstRectangle_)
 {
     // Set Column limits
     WriteCommand(ST7735_CASET);
-	WriteData(0x00);
+    WriteData(0x00);
     WriteData(m_u8ColStart + pstRectangle_->u16Left);
-	WriteData(0x00);
+    WriteData(0x00);
     WriteData(m_u8ColStart + pstRectangle_->u16Right);
 
     // Set row limits
     WriteCommand(ST7735_RASET);
-	WriteData(0x00);
+    WriteData(0x00);
     WriteData(m_u8RowStart + pstRectangle_->u16Top);
-	WriteData(0x00);
+    WriteData(0x00);
     WriteData(m_u8RowStart + pstRectangle_->u16Bottom);
 
     WriteCommand(ST7735_RAMWR);
@@ -427,13 +417,13 @@ void GraphicsST7735::SetOpWindow(DrawRectangle_t *pstRectangle_)
 //---------------------------------------------------------------------------
 void GraphicsST7735::ClearScreen()
 {
-	DrawRectangle_t stRect;
+    DrawRectangle_t stRect;
 
     // Optimized operation - clear the screen by performing a giant filled
     // rectangle write.
-	stRect.u16Left = 0;
+    stRect.u16Left = 0;
     stRect.u16Right = m_u16Res16X - 1;
-	stRect.u16Top = 0;
+    stRect.u16Top = 0;
     stRect.u16Bottom = m_u16Res16Y - 1;
     stRect.bFill = true;
     stRect.u32ineColor = COLOR_BLACK;
@@ -442,14 +432,12 @@ void GraphicsST7735::ClearScreen()
     Rectangle(&stRect);
 }
 //---------------------------------------------------------------------------
-void GraphicsST7735::Rectangle(DrawRectangle_t *pstRectangle_)
-{    
+void GraphicsST7735::Rectangle(DrawRectangle_t* pstRectangle_)
+{
     // Write one-big-area if this is a filled rectangle
-    if (pstRectangle_->bFill)
-    {
+    if (pstRectangle_->bFill) {
         // Set the window that we're going to set
-        if (pstRectangle_->u32ineColor != pstRectangle_->uFillColor)
-        {
+        if (pstRectangle_->u32ineColor != pstRectangle_->uFillColor) {
             pstRectangle_->u16Top++;
             pstRectangle_->u16Bottom--;
             pstRectangle_->u16Left++;
@@ -458,26 +446,24 @@ void GraphicsST7735::Rectangle(DrawRectangle_t *pstRectangle_)
 
         SetOpWindow(pstRectangle_);
 
-        uint32_t u32Pixels =  (uint32_t)(pstRectangle_->u16Bottom - pstRectangle_->u16Top + 1) *
-                            (uint32_t)(pstRectangle_->u16Right - pstRectangle_->u16Left + 1);
+        uint32_t u32Pixels = (uint32_t)(pstRectangle_->u16Bottom - pstRectangle_->u16Top + 1)
+                             * (uint32_t)(pstRectangle_->u16Right - pstRectangle_->u16Left + 1);
 
         // Set the high/low bytes of the color that we're going to write
-        uint8_t u8High   = (uint8_t)((pstRectangle_->uFillColor) >> 8);
-        uint8_t u8Low    = (uint8_t)(pstRectangle_->uFillColor & 0xFF);
+        uint8_t u8High = (uint8_t)((pstRectangle_->uFillColor) >> 8);
+        uint8_t u8Low = (uint8_t)(pstRectangle_->uFillColor & 0xFF);
 
         // Clock the pixel data out
         TFT_CD_OUT |= TFT_CD_PIN;
         TFT_CS_OUT &= ~TFT_CS_PIN;
-        while (u32Pixels--)
-        {
+        while (u32Pixels--) {
             TFT_SPI_WRITE(u8High);
             TFT_SPI_WRITE(u8Low);
         }
         TFT_CS_OUT |= TFT_CS_PIN;
 
         // If the line/fill colors are the same, then bail here.
-        if (pstRectangle_->u32ineColor == pstRectangle_->uFillColor)
-        {
+        if (pstRectangle_->u32ineColor == pstRectangle_->uFillColor) {
             return;
         }
 
@@ -513,16 +499,14 @@ void GraphicsST7735::Rectangle(DrawRectangle_t *pstRectangle_)
 }
 
 //---------------------------------------------------------------------------
-void GraphicsST7735::Line(DrawLine_t *pstLine_)
+void GraphicsST7735::Line(DrawLine_t* pstLine_)
 {
     // If the X values are the same, use the "fast" vertical line code
-    if (pstLine_->u16X1 == pstLine_->u16X2)
-    {
+    if (pstLine_->u16X1 == pstLine_->u16X2) {
         FastVLine(pstLine_);
     }
     // If the Y values are the same, use the "fast" horizontal line code
-    else if (pstLine_->u16Y1 == pstLine_->u16Y2)
-    {
+    else if (pstLine_->u16Y1 == pstLine_->u16Y2) {
         FastHLine(pstLine_);
     }
 
@@ -531,11 +515,10 @@ void GraphicsST7735::Line(DrawLine_t *pstLine_)
 }
 
 //---------------------------------------------------------------------------
-void GraphicsST7735::Point(DrawPoint_t *pstPoint_)
+void GraphicsST7735::Point(DrawPoint_t* pstPoint_)
 {
     // Check for pixel data within limits...
-    if ((pstPoint_->u16X >= m_u16Res16X) || (pstPoint_->u16Y >= m_u16Res16Y))
-    {
+    if ((pstPoint_->u16X >= m_u16Res16X) || (pstPoint_->u16Y >= m_u16Res16Y)) {
         return;
     }
 
@@ -559,8 +542,8 @@ void GraphicsST7735::Point(DrawPoint_t *pstPoint_)
     WriteCommand(ST7735_RAMWR);
 
     // Get pixel color data in high/low bytes
-    uint8_t u8High   = (uint8_t)((pstPoint_->uColor) >> 8);
-    uint8_t u8Low    = (uint8_t)(pstPoint_->uColor & 0xFF);
+    uint8_t u8High = (uint8_t)((pstPoint_->uColor) >> 8);
+    uint8_t u8Low = (uint8_t)(pstPoint_->uColor & 0xFF);
 
     // Write the pixel data out
     TFT_CD_OUT |= TFT_CD_PIN;
@@ -573,37 +556,34 @@ void GraphicsST7735::Point(DrawPoint_t *pstPoint_)
 }
 
 //---------------------------------------------------------------------------
-void GraphicsST7735::Bitmap(DrawBitmap_t *pstBitmap_)
+void GraphicsST7735::Bitmap(DrawBitmap_t* pstBitmap_)
 {
     // Only draw 16bpp data - add algorithms to convert later...
-    if (pstBitmap_->u8BPP != 16)
-    {
+    if (pstBitmap_->u8BPP != 16) {
         return;
     }
 
     DrawRectangle_t stRect;
     // Set the window used for drawing the image.
-    stRect.u16Left   = pstBitmap_->u16X;
-    stRect.u16Right  = stRect.u16Left + pstBitmap_->u16Width - 1;
-    stRect.u16Top    = pstBitmap_->u16Y;
+    stRect.u16Left = pstBitmap_->u16X;
+    stRect.u16Right = stRect.u16Left + pstBitmap_->u16Width - 1;
+    stRect.u16Top = pstBitmap_->u16Y;
     stRect.u16Bottom = stRect.u16Top + pstBitmap_->u16Height - 1;
 
     SetOpWindow(&stRect);
 
-    uint32_t u32Pixels = (uint32_t)pstBitmap_->u16Width *
-                        (uint32_t)pstBitmap_->u16Height;
+    uint32_t u32Pixels = (uint32_t)pstBitmap_->u16Width * (uint32_t)pstBitmap_->u16Height;
 
-    uint8_t *pu8Data = pstBitmap_->pu8Data;
+    uint8_t* pu8Data = pstBitmap_->pu8Data;
 
     // Write the pixel data out, assuming native 16-bit format.
     TFT_CD_OUT |= TFT_CD_PIN;
     TFT_CS_OUT &= ~TFT_CS_PIN;
 
-    while (u32Pixels--)
-    {
+    while (u32Pixels--) {
         // Get pixel color data in high/low bytes
-        uint8_t u8Low    = *pu8Data++;
-		uint8_t u8High   = *pu8Data++;        
+        uint8_t u8Low = *pu8Data++;
+        uint8_t u8High = *pu8Data++;
 
         TFT_SPI_WRITE(u8High);
         TFT_SPI_WRITE(u8Low);

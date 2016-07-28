@@ -36,30 +36,32 @@ IPC even more flexibility.
 
 ===========================================================================*/
 #if !KERNEL_USE_IDLE_FUNC
-# error "This demo requires KERNEL_USE_IDLE_FUNC"
+#error "This demo requires KERNEL_USE_IDLE_FUNC"
 #endif
 
 extern "C" {
-void __cxa_pure_virtual(void) { }
+void __cxa_pure_virtual(void)
+{
+}
 }
 
 //---------------------------------------------------------------------------
 // This block declares the thread data for one main application thread.  It
 // defines a thread object, stack (in word-array form), and the entry-point
 // function used by the application thread.
-#define APP1_STACK_SIZE      (320/sizeof(K_WORD))
-static Thread  clApp1Thread;
-static K_WORD  awApp1Stack[APP1_STACK_SIZE];
-static void    App1Main(void *unused_);
+#define APP1_STACK_SIZE (320 / sizeof(K_WORD))
+static Thread clApp1Thread;
+static K_WORD awApp1Stack[APP1_STACK_SIZE];
+static void App1Main(void* unused_);
 
 //---------------------------------------------------------------------------
 // This block declares the thread data for one main application thread.  It
 // defines a thread object, stack (in word-array form), and the entry-point
 // function used by the application thread.
-#define APP2_STACK_SIZE      (320/sizeof(K_WORD))
-static Thread  clApp2Thread;
-static K_WORD  awApp2Stack[APP2_STACK_SIZE];
-static void    App2Main(void *unused_);
+#define APP2_STACK_SIZE (320 / sizeof(K_WORD))
+static Thread clApp2Thread;
+static K_WORD awApp2Stack[APP2_STACK_SIZE];
+static void App2Main(void* unused_);
 
 //---------------------------------------------------------------------------
 static MessageQueue clMsgQ;
@@ -70,8 +72,8 @@ int main(void)
     // See the annotations in previous labs for details on init.
     Kernel::Init();
 
-    clApp1Thread.Init(  awApp1Stack,  sizeof(awApp1Stack),  1, App1Main,  0);
-    clApp2Thread.Init(  awApp2Stack,  sizeof(awApp2Stack),  1, App2Main,  0);
+    clApp1Thread.Init(awApp1Stack, sizeof(awApp1Stack), 1, App1Main, 0);
+    clApp2Thread.Init(awApp2Stack, sizeof(awApp2Stack), 1, App2Main, 0);
 
     clApp1Thread.Start();
     clApp2Thread.Start();
@@ -84,18 +86,17 @@ int main(void)
 }
 
 //---------------------------------------------------------------------------
-void App1Main(void *unused_)
+void App1Main(void* unused_)
 {
     uint16_t u16Data = 0;
-    while(1)
-    {
+    while (1) {
         // This thread grabs a message from the global message pool, sets a
         // code-value and the message data pointer, then sends the message to
         // a message queue object.  Another thread (Thread2) is blocked, waiting
         // for a message to arrive in the queue.
 
         // Get the message object
-        Message *pclMsg = GlobalMessagePool::Pop();
+        Message* pclMsg = GlobalMessagePool::Pop();
 
         // Set the message object's data (contrived in this example)
         pclMsg->SetCode(0x1337);
@@ -111,10 +112,9 @@ void App1Main(void *unused_)
 }
 
 //---------------------------------------------------------------------------
-void App2Main(void *unused_)
+void App2Main(void* unused_)
 {
-    while(1)
-    {
+    while (1) {
         // This thread waits until it receives a message on the shared global
         // message queue.  When it gets the message, it prints out information
         // about the message's code and data, before returning the messaage object
@@ -127,11 +127,11 @@ void App2Main(void *unused_)
         // this thread receives the message, it is "owned" by the thread, and
         // must be returned back to its source message pool when it is no longer
         // needed.
-        Message *pclMsg = clMsgQ.Receive();
+        Message* pclMsg = clMsgQ.Receive();
 
         // We received a message, now print out its information
         KernelAware::Print("Received Message\n");
-        KernelAware::Trace(0, __LINE__, pclMsg->GetCode(), *((uint16_t*)pclMsg->GetData()) );
+        KernelAware::Trace(0, __LINE__, pclMsg->GetCode(), *((uint16_t*)pclMsg->GetData()));
 
         // Done with the message, return it back to the global message queue.
         GlobalMessagePool::Push(pclMsg);

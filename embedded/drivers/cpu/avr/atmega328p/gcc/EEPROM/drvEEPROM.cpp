@@ -28,77 +28,70 @@ See license.txt for more information
 
 //---------------------------------------------------------------------------
 
-#define EEPROM_SIZE        (4096)
+#define EEPROM_SIZE (4096)
 
 //---------------------------------------------------------------------------
 void ATMegaEEPROM::Init()
-{ 
+{
     m_u16Address = 0;
 }
 
 //---------------------------------------------------------------------------
 uint8_t ATMegaEEPROM::Open()
-{ 
-    return 0; 
+{
+    return 0;
 }
 
 //---------------------------------------------------------------------------
 uint8_t ATMegaEEPROM::Close()
-{ 
-    return 0; 
+{
+    return 0;
 }
-    
+
 //---------------------------------------------------------------------------
-uint16_t ATMegaEEPROM::Read( uint16_t u16Bytes_, uint8_t *pu8Data_ )
+uint16_t ATMegaEEPROM::Read(uint16_t u16Bytes_, uint8_t* pu8Data_)
 {
     uint16_t u16NumBytes = u16Bytes_;
 
-    if ((m_u16Address + u16Bytes_) >= EEPROM_SIZE)
-    {
+    if ((m_u16Address + u16Bytes_) >= EEPROM_SIZE) {
         u16NumBytes = EEPROM_SIZE - m_u16Address;
     }
-        
-    if (!u16NumBytes)
-    {
+
+    if (!u16NumBytes) {
         return 0;
     }
 
     eeprom_read_block((void*)pu8Data_, (const void*)m_u16Address, (size_t)u16NumBytes);
     m_u16Address += u16NumBytes;
-        
+
     return u16NumBytes;
 }
 
 //---------------------------------------------------------------------------
-uint16_t ATMegaEEPROM::Write( uint16_t u16Bytes_, uint8_t *pu8Data_ )
+uint16_t ATMegaEEPROM::Write(uint16_t u16Bytes_, uint8_t* pu8Data_)
 {
     uint16_t u16NumBytes = u16Bytes_;
 
-    if ((m_u16Address + u16Bytes_) >= EEPROM_SIZE)
-    {
+    if ((m_u16Address + u16Bytes_) >= EEPROM_SIZE) {
         u16NumBytes = EEPROM_SIZE - m_u16Address;
     }
-    
-    if (!u16NumBytes)
-    {
+
+    if (!u16NumBytes) {
         return 0;
     }
 
     eeprom_write_block((void*)pu8Data_, (void*)m_u16Address, u16NumBytes);
     m_u16Address += u16NumBytes;
-    
+
     return u16NumBytes;
 }
 
 //---------------------------------------------------------------------------
-uint16_t ATMegaEEPROM::Control( uint16_t u16Event_, void *pvIn_, uint16_t u16SizeIn_, void *pvOut_, uint16_t u16SizeOut_ )
+uint16_t ATMegaEEPROM::Control(uint16_t u16Event_, void* pvIn_, uint16_t u16SizeIn_, void* pvOut_, uint16_t u16SizeOut_)
 {
-    switch (u16Event_)
-    {    
-        case EEPROM_CMD_SEEK:
-        {
-            if (u16SizeOut_ < EEPROM_SIZE)
-            {
+    switch (u16Event_) {
+        case EEPROM_CMD_SEEK: {
+            if (u16SizeOut_ < EEPROM_SIZE) {
                 m_u16Address = u16SizeIn_;
             }
             return 1;

@@ -37,8 +37,8 @@ void LabelControl::Init()
 //---------------------------------------------------------------------------
 void LabelControl::Draw()
 {
-    GUI_DEBUG_PRINT( "LabelControl::Draw()\n");
-    GraphicsDriver *pclDriver = GetParentWindow()->GetDriver();
+    GUI_DEBUG_PRINT("LabelControl::Draw()\n");
+    GraphicsDriver* pclDriver = GetParentWindow()->GetDriver();
 
     DrawWindow_t stWindow;
 
@@ -57,9 +57,7 @@ void LabelControl::Draw()
     stText.pstFont = m_pstFont;
     u16TextWidth = pclDriver->TextWidth(&stText);
 
-    if (false == m_bTransparent)
-    {
-
+    if (false == m_bTransparent) {
         stRect.u16Left = GetLeft() + u16X;
         stRect.u16Right = stRect.u16Left + GetWidth() - 1;
         stRect.u16Top = GetTop() + u16Y;
@@ -71,12 +69,11 @@ void LabelControl::Draw()
     }
 
     stWindow.u16Left = stText.u16Left;
-    stWindow.u16Right = stText.u16Left+ GetWidth() - 1;
+    stWindow.u16Right = stText.u16Left + GetWidth() - 1;
     stWindow.u16Top = stText.u16Top;
     stWindow.u16Bottom = stText.u16Top + GetHeight() - 1;
 
-    if (!stText.pstFont)
-    {
+    if (!stText.pstFont) {
         return;
     }
 

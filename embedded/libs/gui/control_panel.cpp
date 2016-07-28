@@ -25,20 +25,20 @@ See license.txt for more information
 //---------------------------------------------------------------------------
 void PanelControl::Draw()
 {
-    GUI_DEBUG_PRINT( "PanelControl::Draw()\n");
-    GraphicsDriver *pclDriver = GetParentWindow()->GetDriver();
-    DrawRectangle_t stRectangle;    
+    GUI_DEBUG_PRINT("PanelControl::Draw()\n");
+    GraphicsDriver* pclDriver = GetParentWindow()->GetDriver();
+    DrawRectangle_t stRectangle;
     uint16_t u16X, u16Y;
-    
+
     GetControlOffset(&u16X, &u16Y);
-    
+
     stRectangle.u16Top = GetTop() + u16Y;
-    stRectangle.u16Bottom = stRectangle.u16Top + GetHeight() -1;
+    stRectangle.u16Bottom = stRectangle.u16Top + GetHeight() - 1;
     stRectangle.u16Left = GetLeft() + u16X;
-    stRectangle.u16Right = stRectangle.u16Left + GetWidth() -1;
+    stRectangle.u16Right = stRectangle.u16Left + GetWidth() - 1;
     stRectangle.bFill = true;
     stRectangle.u32ineColor = m_uColor;
     stRectangle.uFillColor = m_uColor;
-    
+
     pclDriver->Rectangle(&stRectangle);
 }

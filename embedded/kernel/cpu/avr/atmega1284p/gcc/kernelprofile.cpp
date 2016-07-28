@@ -13,7 +13,7 @@ See license.txt for more information
 ===========================================================================*/
 /*!
     \file kernelprofile.cpp
-    
+
     \brief ATMega328p Profiling timer implementation
 */
 
@@ -45,7 +45,7 @@ void Profiler::Start()
     TCNT0 = 0;
     TCCR0B |= (1 << CS01);
     TIMSK0 |= (1 << TOIE0);
-}    
+}
 
 //---------------------------------------------------------------------------
 void Profiler::Stop()
@@ -53,7 +53,7 @@ void Profiler::Stop()
     TIFR0 = 0;
     TCCR0B &= ~(1 << CS01);
     TIMSK0 &= ~(1 << TOIE0);
-}    
+}
 //---------------------------------------------------------------------------
 uint16_t Profiler::Read()
 {

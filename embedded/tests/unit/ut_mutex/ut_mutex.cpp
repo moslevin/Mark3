@@ -23,7 +23,7 @@ See license.txt for more information
 //===========================================================================
 // Local Defines
 //===========================================================================
-#define MUTEX_STACK_SIZE        (256)
+#define MUTEX_STACK_SIZE (256)
 static K_WORD aucTestStack[MUTEX_STACK_SIZE];
 static Thread clMutexThread;
 
@@ -35,9 +35,9 @@ static volatile uint8_t u8Token;
 // Define Test Cases Here
 //===========================================================================
 
-void TypicalMutexTest(void *mutex_)
+void TypicalMutexTest(void* mutex_)
 {
-    Mutex *pclMutex = (Mutex*)mutex_;
+    Mutex* pclMutex = (Mutex*)mutex_;
 
     pclMutex->Claim();
     u8Token = 0x69;
@@ -70,7 +70,7 @@ TEST(ut_typical_mutex)
 
     // Test Point - Verify that the token value hasn't changed (which would
     // indicate the high-priority thread held the mutex...)
-    EXPECT_EQUALS( u8Token, 0x96 );
+    EXPECT_EQUALS(u8Token, 0x96);
 
     // Relese the mutex, see what happens.
     clMutex.Release();
@@ -78,15 +78,14 @@ TEST(ut_typical_mutex)
     // Test Point - Verify that after releasing the mutex, the higher-priority
     // thread immediately resumes, claiming the mutex, and adjusting the
     // token value to its value.  Check the new token value here.
-    EXPECT_EQUALS( u8Token, 0x69 );
-
+    EXPECT_EQUALS(u8Token, 0x69);
 }
 TEST_END
 
 //===========================================================================
-void TimedMutexTest(void *mutex_)
+void TimedMutexTest(void* mutex_)
 {
-    Mutex *pclMutex = (Mutex*)mutex_;
+    Mutex* pclMutex = (Mutex*)mutex_;
 
     pclMutex->Claim();
     Thread::Sleep(20);
@@ -107,21 +106,21 @@ TEST(ut_timed_mutex)
     clMutexThread.Init(aucTestStack, MUTEX_STACK_SIZE, 7, TimedMutexTest, (void*)&clMutex);
     clMutexThread.Start();
 
-    EXPECT_FALSE( clMutex.Claim(10) );
+    EXPECT_FALSE(clMutex.Claim(10));
 
     Thread::Sleep(20);
 
     clMutexThread.Init(aucTestStack, MUTEX_STACK_SIZE, 7, TimedMutexTest, (void*)&clMutex);
     clMutexThread.Start();
 
-    EXPECT_TRUE( clMutex.Claim(30) );
+    EXPECT_TRUE(clMutex.Claim(30));
 }
 TEST_END
 
 //===========================================================================
-void LowPriThread(void *mutex_)
+void LowPriThread(void* mutex_)
 {
-    Mutex *pclMutex = (Mutex*)mutex_;
+    Mutex* pclMutex = (Mutex*)mutex_;
 
     pclMutex->Claim();
 
@@ -129,16 +128,15 @@ void LowPriThread(void *mutex_)
 
     pclMutex->Release();
 
-    while(1)
-    {        
+    while (1) {
         Thread::Sleep(1000);
     }
 }
 
 //===========================================================================
-void HighPriThread(void *mutex_)
+void HighPriThread(void* mutex_)
 {
-    Mutex *pclMutex = (Mutex*)mutex_;
+    Mutex* pclMutex = (Mutex*)mutex_;
 
     pclMutex->Claim();
 
@@ -146,8 +144,7 @@ void HighPriThread(void *mutex_)
 
     pclMutex->Release();
 
-    while(1)
-    {
+    while (1) {
         Thread::Sleep(1000);
     }
 }
@@ -178,8 +175,8 @@ TEST(ut_priority_mutex)
     // Test point - Low-priority thread boost:
     // Check the priorities of the threads.  The low-priority thread
     // should now have the same priority as the high-priority thread
-    EXPECT_EQUALS( clMutexThread.GetCurPriority(), 4 );
-    EXPECT_EQUALS( clTestThread2.GetCurPriority(), 4 );
+    EXPECT_EQUALS(clMutexThread.GetCurPriority(), 4);
+    EXPECT_EQUALS(clTestThread2.GetCurPriority(), 4);
 
     Thread::Sleep(2000);
 
@@ -187,21 +184,16 @@ TEST(ut_priority_mutex)
     // After the threads have relinquished their mutexes, ensure that
     // they are placed back at their correct priorities
 
-    EXPECT_EQUALS( clMutexThread.GetCurPriority(), 2 );
-    EXPECT_EQUALS( clTestThread2.GetCurPriority(), 4 );
+    EXPECT_EQUALS(clMutexThread.GetCurPriority(), 2);
+    EXPECT_EQUALS(clTestThread2.GetCurPriority(), 4);
 
     clMutexThread.Exit();
     clTestThread2.Exit();
 }
 TEST_END
 
-
 //===========================================================================
 // Test Whitelist Goes Here
 //===========================================================================
 TEST_CASE_START
-  TEST_CASE(ut_typical_mutex),
-  TEST_CASE(ut_timed_mutex),
-  TEST_CASE(ut_priority_mutex),
-TEST_CASE_END
-
+TEST_CASE(ut_typical_mutex), TEST_CASE(ut_timed_mutex), TEST_CASE(ut_priority_mutex), TEST_CASE_END

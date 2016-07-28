@@ -34,35 +34,37 @@ allows threads to work cooperatively to achieve a goal in the system.
 
 ===========================================================================*/
 #if !KERNEL_USE_IDLE_FUNC
-# error "This demo requires KERNEL_USE_IDLE_FUNC"
+#error "This demo requires KERNEL_USE_IDLE_FUNC"
 #endif
 
 extern "C" {
-void __cxa_pure_virtual(void) { }
+void __cxa_pure_virtual(void)
+{
+}
 }
 
 //---------------------------------------------------------------------------
 // This block declares the thread data for one main application thread.  It
 // defines a thread object, stack (in word-array form), and the entry-point
 // function used by the application thread.
-#define APP1_STACK_SIZE      (320/sizeof(K_WORD))
-static Thread  clApp1Thread;
-static K_WORD  awApp1Stack[APP1_STACK_SIZE];
-static void    App1Main(void *unused_);
+#define APP1_STACK_SIZE (320 / sizeof(K_WORD))
+static Thread clApp1Thread;
+static K_WORD awApp1Stack[APP1_STACK_SIZE];
+static void App1Main(void* unused_);
 
 //---------------------------------------------------------------------------
 // This block declares the thread data for one main application thread.  It
 // defines a thread object, stack (in word-array form), and the entry-point
 // function used by the application thread.
-#define APP2_STACK_SIZE      (320/sizeof(K_WORD))
-static Thread  clApp2Thread;
-static K_WORD  awApp2Stack[APP2_STACK_SIZE];
-static void    App2Main(void *unused_);
+#define APP2_STACK_SIZE (320 / sizeof(K_WORD))
+static Thread clApp2Thread;
+static K_WORD awApp2Stack[APP2_STACK_SIZE];
+static void App2Main(void* unused_);
 
 //---------------------------------------------------------------------------
 // This is the semaphore that we'll use to synchronize two threads in this
 // demo application
-static Semaphore   clMySem;
+static Semaphore clMySem;
 
 //---------------------------------------------------------------------------
 int main(void)
@@ -81,15 +83,15 @@ int main(void)
     // work is done, the semaphore is posted to indicate that the other thread
     // can use the producer's work product.
 
-    clApp1Thread.Init(  awApp1Stack,  APP1_STACK_SIZE,  1, App1Main,  0);
-    clApp2Thread.Init(  awApp2Stack,  APP2_STACK_SIZE,  1, App2Main,  0);
+    clApp1Thread.Init(awApp1Stack, APP1_STACK_SIZE, 1, App1Main, 0);
+    clApp2Thread.Init(awApp2Stack, APP2_STACK_SIZE, 1, App2Main, 0);
 
     clApp1Thread.Start();
     clApp2Thread.Start();
 
     // Initialize a binary semaphore (maximum value of one, initial value of
     // zero).
-    clMySem.Init(0,1);
+    clMySem.Init(0, 1);
 
     Kernel::Start();
 
@@ -97,10 +99,9 @@ int main(void)
 }
 
 //---------------------------------------------------------------------------
-void App1Main(void *unused_)
+void App1Main(void* unused_)
 {
-    while(1)
-    {
+    while (1) {
         // Wait until the semaphore is posted from the other thread
         KernelAware::Print("Wait\n");
         clMySem.Pend();
@@ -114,23 +115,20 @@ void App1Main(void *unused_)
 }
 
 //---------------------------------------------------------------------------
-void App2Main(void *unused_)
+void App2Main(void* unused_)
 {
     volatile uint32_t u32Counter = 0;
 
-    while(1)
-    {
+    while (1) {
         // Do some work.  Once the work is complete, post the semaphore.  This
         // will cause the other thread to wake up and then take some action.
         // It's a bit contrived, but imagine that the results of this process
         // are necessary to drive the work done by that other thread.
         u32Counter++;
-        if (u32Counter == 1000000)
-        {
+        if (u32Counter == 1000000) {
             u32Counter = 0;
             KernelAware::Print("Posted\n");
             clMySem.Post();
         }
     }
 }
-

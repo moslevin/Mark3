@@ -39,16 +39,15 @@ void GraphicsSDL::Init(void)
 //---------------------------------------------------------------------------
 uint8_t GraphicsSDL::Open()
 {
-    SDL_Init( SDL_INIT_EVERYTHING );
-    m_pstScreen = SDL_SetVideoMode( 128, 128, 32, SDL_SWSURFACE );
+    SDL_Init(SDL_INIT_EVERYTHING);
+    m_pstScreen = SDL_SetVideoMode(128, 128, 32, SDL_SWSURFACE);
     return 0;
 }
 
 //---------------------------------------------------------------------------
 uint8_t GraphicsSDL::Close()
 {
-    if (m_pstScreen)
-    {
+    if (m_pstScreen) {
         SDL_FreeSurface(m_pstScreen);
     }
     SDL_Quit();
@@ -56,30 +55,28 @@ uint8_t GraphicsSDL::Close()
 }
 
 //---------------------------------------------------------------------------
-void GraphicsSDL::DrawPixel(DrawPoint_t *pstPoint_)
+void GraphicsSDL::DrawPixel(DrawPoint_t* pstPoint_)
 {
-    uint32_t *pixels = (uint32_t*)m_pstScreen->pixels;
-    if (((pstPoint_->u16X < m_u16Res16X) && (pstPoint_->u16Y < m_u16Res16Y)) &&
-        ((pstPoint_->u16X >= m_u16Left ) && (pstPoint_->u16Y >= m_u16Top)) &&
-        ((pstPoint_->u16X <= m_u16Right) && (pstPoint_->u16Y <= m_u16Bottom)))
-    {
-        pixels[ ((uint32_t)(pstPoint_->u16Y) * m_pstScreen->w) + (uint32_t)(pstPoint_->u16X) ] = (uint32_t)pstPoint_->uColor;
+    uint32_t* pixels = (uint32_t*)m_pstScreen->pixels;
+    if (((pstPoint_->u16X < m_u16Res16X) && (pstPoint_->u16Y < m_u16Res16Y))
+        && ((pstPoint_->u16X >= m_u16Left) && (pstPoint_->u16Y >= m_u16Top))
+        && ((pstPoint_->u16X <= m_u16Right) && (pstPoint_->u16Y <= m_u16Bottom))) {
+        pixels[((uint32_t)(pstPoint_->u16Y) * m_pstScreen->w) + (uint32_t)(pstPoint_->u16X)]
+            = (uint32_t)pstPoint_->uColor;
     }
 }
 
 //---------------------------------------------------------------------------
-void GraphicsSDL::ReadPixel(DrawPoint_t *pstPoint_)
+void GraphicsSDL::ReadPixel(DrawPoint_t* pstPoint_)
 {
-    uint32_t *pixels = (uint32_t*)m_pstScreen->pixels;
-    pstPoint_->uColor = (COLOR)pixels[ ((uint32_t)(pstPoint_->u16Y) * m_pstScreen->w) + (uint32_t)(pstPoint_->u16X) ];
+    uint32_t* pixels = (uint32_t*)m_pstScreen->pixels;
+    pstPoint_->uColor = (COLOR)pixels[((uint32_t)(pstPoint_->u16Y) * m_pstScreen->w) + (uint32_t)(pstPoint_->u16X)];
 }
 
 //---------------------------------------------------------------------------
 void GraphicsSDL::Flip()
 {
-    if (m_pstScreen)
-    {
+    if (m_pstScreen) {
         SDL_Flip(m_pstScreen);
     }
 }
-

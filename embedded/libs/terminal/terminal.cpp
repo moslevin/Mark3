@@ -20,8 +20,7 @@ void Terminal::Escape(void)
 {
     uint16_t u16Written = 0;
     uint8_t u8Val = 0x1B;
-    while (!u16Written) 
-    {
+    while (!u16Written) {
         u16Written = m_pclDriver->Write(1, &u8Val);
     }
 }
@@ -29,8 +28,7 @@ void Terminal::Escape(void)
 void Terminal::PrintChar(uint8_t u8Val_)
 {
     uint16_t u16Written = 0;
-    while (!u16Written) 
-    {
+    while (!u16Written) {
         u16Written = m_pclDriver->Write(1, &u8Val_);
     }
 }
@@ -39,13 +37,11 @@ void Terminal::PrintVal(uint8_t u8Val_)
 {
     char tmp[4];
     MemUtil::DecimalToString(u8Val_, tmp);
-    char *src = tmp;
-    while (*src) 
-    {
+    char* src = tmp;
+    while (*src) {
         uint16_t u16Written = 0;
-        while (!u16Written) 
-        {
-            u16Written = m_pclDriver->Write(1,(uint8_t*)src);
+        while (!u16Written) {
+            u16Written = m_pclDriver->Write(1, (uint8_t*)src);
         }
         src++;
     }
@@ -90,7 +86,7 @@ void Terminal::SetCursorPos(uint8_t u8X_, uint8_t u8Y_)
     PrintVal(u8X_);
     PrintChar(';');
     PrintVal(u8X_);
-    PrintChar('f');    
+    PrintChar('f');
 }
 
 void Terminal::CursorHome(void)
@@ -247,4 +243,3 @@ void Terminal::SetBackColor(terminal_color_t eColor_)
     PrintChar('0' + eColor_);
     PrintChar('m');
 }
-

@@ -25,8 +25,7 @@ See license.txt for more information
 //---------------------------------------------------------------------------
 void NotificationControl::Draw()
 {
-    if (!m_bVisible)
-    {
+    if (!m_bVisible) {
         return;
     }
 
@@ -34,7 +33,7 @@ void NotificationControl::Draw()
     DrawLine_t stLine;
     DrawText_t stText;
 
-    GraphicsDriver *pclDriver = GetParentWindow()->GetDriver();
+    GraphicsDriver* pclDriver = GetParentWindow()->GetDriver();
 
     uint16_t u16XOffset = 0;
     uint16_t u16HalfWidth = 0;
@@ -56,7 +55,7 @@ void NotificationControl::Draw()
     pclDriver->Line(&stLine);
 
     // Draw the rounded-off rectangle
-    stLine.u16X1 = GetLeft() + u16XOffset ;
+    stLine.u16X1 = GetLeft() + u16XOffset;
     stLine.u16X2 = stLine.u16X1;
 
     stLine.u16Y1 = GetTop() + u16YOffset + 1;
@@ -83,25 +82,20 @@ void NotificationControl::Draw()
     stText.uColor = COLOR_WHITE;
     u16HalfWidth = pclDriver->TextWidth(&stText);
     u16HalfWidth >>= 1;
-    stText.u16Left = GetLeft() + (GetWidth()>>1) - u16HalfWidth + u16XOffset;
+    stText.u16Left = GetLeft() + (GetWidth() >> 1) - u16HalfWidth + u16XOffset;
     stText.u16Top = GetTop() + u16YOffset;
     pclDriver->Text(&stText);
 }
 
 //---------------------------------------------------------------------------
-GuiReturn_t NotificationControl::ProcessEvent( GuiEvent_t *pstEvent_ )
+GuiReturn_t NotificationControl::ProcessEvent(GuiEvent_t* pstEvent_)
 {
-
-    switch (pstEvent_->u8EventType)
-    {
-        case EVENT_TYPE_TIMER:
-        {
-            if (m_bTrigger && m_u16Timeout)
-            {
+    switch (pstEvent_->u8EventType) {
+        case EVENT_TYPE_TIMER: {
+            if (m_bTrigger && m_u16Timeout) {
                 m_u16Timeout--;
 
-                if (!m_u16Timeout)
-                {
+                if (!m_u16Timeout) {
                     m_bVisible = false;
                     m_bTrigger = false;
                     SetStale();
@@ -109,13 +103,12 @@ GuiReturn_t NotificationControl::ProcessEvent( GuiEvent_t *pstEvent_ )
                     uint16_t u16X, u16Y;
                     GetControlOffset(&u16X, &u16Y);
 
-                    GetParentWindow()->InvalidateRegion( GetLeft() + u16X, GetTop() + u16Y, GetWidth(), GetHeight());
+                    GetParentWindow()->InvalidateRegion(GetLeft() + u16X, GetTop() + u16Y, GetWidth(), GetHeight());
                 }
             }
 
             break;
         }
-        default:
-            break;
+        default: break;
     }
 }
