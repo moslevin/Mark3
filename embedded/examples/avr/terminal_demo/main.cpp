@@ -44,8 +44,8 @@ static K_WORD awIdleStack[IDLE_STACK_SIZE];
 static void IdleMain(void* unused_);
 
 //---------------------------------------------------------------------------
-static uint8_t aucTxBuffer[UART_SIZE_TX];
-static uint8_t aucRxBuffer[UART_SIZE_RX];
+static uint8_t    aucTxBuffer[UART_SIZE_TX];
+static uint8_t    aucRxBuffer[UART_SIZE_RX];
 static ATMegaUART clUART; //!< UART device driver object
 
 //---------------------------------------------------------------------------
@@ -83,9 +83,9 @@ void AppMain(void* unused_)
     term.SetBackColor(TERMINAL_COLOR_WHITE);
 
     while (1) {
-        const char* str = "Hello World!\n";
-        uint8_t* src = (uint8_t*)str;
-        uint16_t u16Remain = MemUtil::StringLength(str);
+        const char* str       = "Hello World!\n";
+        uint8_t*    src       = (uint8_t*)str;
+        uint16_t    u16Remain = MemUtil::StringLength(str);
         while (u16Remain) {
             uint16_t u16Written = my_uart->Write(u16Remain, src);
             src += u16Written;

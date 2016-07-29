@@ -34,16 +34,16 @@ of the application.
 // This block declares the thread data for one main application thread.  It
 // defines a thread object, stack (in word-array form), and the entry-point
 // function used by the application thread.
-#define APP1_STACK_SIZE      (320/sizeof(K_WORD))
+#define APP1_STACK_SIZE (320 / sizeof(K_WORD))
 DECLARE_THREAD(hApp1Thread);
-static K_WORD  awApp1Stack[APP1_STACK_SIZE];
-static void    App1Main(void *unused_);
+static K_WORD awApp1Stack[APP1_STACK_SIZE];
+static void App1Main(void* unused_);
 
 //---------------------------------------------------------------------------
 // This block declares the thread stack data for a thread that we'll create
 // dynamically.
-#define APP2_STACK_SIZE      (320/sizeof(K_WORD))
-static K_WORD  awApp2Stack[APP2_STACK_SIZE];
+#define APP2_STACK_SIZE (320 / sizeof(K_WORD))
+static K_WORD awApp2Stack[APP2_STACK_SIZE];
 
 //---------------------------------------------------------------------------
 int main(void)
@@ -51,8 +51,8 @@ int main(void)
     // See the annotations in previous labs for details on init.
     Kernel_Init();
 
-    Thread_Init( hApp1Thread, awApp1Stack,  APP1_STACK_SIZE,  1, App1Main,  0);
-    Thread_Start( hApp1Thread );
+    Thread_Init(hApp1Thread, awApp1Stack, APP1_STACK_SIZE, 1, App1Main, 0);
+    Thread_Start(hApp1Thread);
 
     Kernel_Start();
 
@@ -60,87 +60,84 @@ int main(void)
 }
 
 //---------------------------------------------------------------------------
-static void WorkerMain1(void *arg_)
+static void WorkerMain1(void* arg_)
 {
-    Semaphore_t hSem = (Semaphore_t)arg_;
-    uint32_t ulCount = 0;
+    Semaphore_t hSem    = (Semaphore_t)arg_;
+    uint32_t    ulCount = 0;
 
     // Do some work.  Post a semaphore to notify the other thread that the
     // work has been completed.
-    while (ulCount < 10000)
-    {
+    while (ulCount < 10000) {
         ulCount++;
     }
 
-    KernelAware_Print( "Worker1 -- Done Work\n");
-    Semaphore_Post( hSem );
+    KernelAware_Print("Worker1 -- Done Work\n");
+    Semaphore_Post(hSem);
 
     // Work is completed, just spin now.  Let another thread destory us.
-    while(1) { }
+    while (1) {
+    }
 }
 //---------------------------------------------------------------------------
-static void WorkerMain2(void *arg_)
+static void WorkerMain2(void* arg_)
 {
     uint32_t ulCount = 0;
-    while (ulCount < 10000)
-    {
+    while (ulCount < 10000) {
         ulCount++;
     }
 
-    KernelAware_Print( "Worker2 -- Done Work\n");
+    KernelAware_Print("Worker2 -- Done Work\n");
 
     // A dynamic thread can self-terminate as well:
-    Thread_Exit( Scheduler_GetCurrentThread() );
+    Thread_Exit(Scheduler_GetCurrentThread());
 }
 
 //---------------------------------------------------------------------------
-void App1Main(void *unused_)
+void App1Main(void* unused_)
 {
     DECLARE_THREAD(hMyThread);
     DECLARE_SEMAPHORE(hMySem);
 
-    Semaphore_Init( hMySem, 0,1);
-    while (1)
-    {
+    Semaphore_Init(hMySem, 0, 1);
+    while (1) {
         // Example 1 - create a worker thread at our current priority in order to
         // parallelize some work.
-        Thread_Init( hMyThread, awApp2Stack, APP2_STACK_SIZE, 1, WorkerMain1, (void*)hMySem );
-        Thread_Start( hMyThread );
+        Thread_Init(hMyThread, awApp2Stack, APP2_STACK_SIZE, 1, WorkerMain1, (void*)hMySem);
+        Thread_Start(hMyThread);
 
         // Do some work of our own in parallel, while the other thread works on its project.
         uint32_t ulCount = 0;
-        while (ulCount < 10000)
-        {
+        while (ulCount < 10000) {
             ulCount++;
         }
 
-        KernelAware_Print( "Thread -- Done Work\n" );
+        KernelAware_Print("Thread -- Done Work\n");
 
         // Wait for the other thread to finish its job.
-        Semaphore_Pend( hMySem );
+        Semaphore_Pend(hMySem);
 
         // Once the thread has signalled us, we can safely call "Exit" on the thread to
         // remove it from scheduling and recycle it later.
-        Thread_Exit( hMyThread );
+        Thread_Exit(hMyThread);
 
         // Spin the thread up again to do something else in parallel.  This time, the thread
         // will run completely asynchronously to this thread.
-        Thread_Init( hMyThread, awApp2Stack, APP2_STACK_SIZE, 1, WorkerMain2, 0 );
-        Thread_Start( hMyThread );
+        Thread_Init(hMyThread, awApp2Stack, APP2_STACK_SIZE, 1, WorkerMain2, 0);
+        Thread_Start(hMyThread);
 
         ulCount = 0;
-        while (ulCount < 10000)
-        {
+        while (ulCount < 10000) {
             ulCount++;
         }
 
-        KernelAware_Print( "Thread -- Done Work\n" );
+        KernelAware_Print("Thread -- Done Work\n");
 
         // Check that we're sure the worker thread has terminated before we try running the
         // test loop again.
-        while (Thread_GetState( hMyThread ) != THREAD_STATE_EXIT) { }
+        while (Thread_GetState(hMyThread) != THREAD_STATE_EXIT) {
+        }
 
-        KernelAware_Print ("  Test Done\n");
+        KernelAware_Print("  Test Done\n");
         Thread_Sleep(100);
     }
 }

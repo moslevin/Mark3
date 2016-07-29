@@ -125,11 +125,11 @@ typedef enum {
 } UARTState_t;
 
 //---------------------------------------------------------------------------
-static volatile uint8_t u8TX;       // Current transmit byte register
-static volatile uint8_t u8RX;       // Current received-byte register
-static volatile uint8_t u8Count;    // Number of bits left to shift out
-static volatile bool bPendingRX;    // Whether or not there is a pending RX byte
-static volatile UARTState_t eState; // Current transmit state-machine state.
+static volatile uint8_t     u8TX;       // Current transmit byte register
+static volatile uint8_t     u8RX;       // Current received-byte register
+static volatile uint8_t     u8Count;    // Number of bits left to shift out
+static volatile bool        bPendingRX; // Whether or not there is a pending RX byte
+static volatile UARTState_t eState;     // Current transmit state-machine state.
 
 //---------------------------------------------------------------------------
 void SoftwareUART::Init(uint32_t u32Baud_)
@@ -150,7 +150,7 @@ void SoftwareUART::Init(uint32_t u32Baud_)
     m_u16Prescale = 1024;
 
     // Iteratively determine our ideal prescaler value for the supplied baud rate
-    bool bDone = false;
+    bool     bDone = false;
     uint32_t u32BitPeriod;
     while (!bDone) {
         u32BitPeriod = (SYSTEM_FREQ / (uint32_t)m_u16Prescale) / u32Baud_;
@@ -190,7 +190,7 @@ void SoftwareUART::Init(uint32_t u32Baud_)
     }
 
     m_u8TimerPeriod = (uint8_t)u32BitPeriod;
-    bPendingRX = false;
+    bPendingRX      = false;
 
     TimerInit();
     RxInit();
@@ -209,7 +209,7 @@ void SoftwareUART::SendByte(uint8_t u8Byte_)
     // Set the remaining number of bits to count from the interrupt (-1 for
     // the start bit, which is set in TimerStart()
     u8Count = FRAME_BITS - 1;
-    eState = UART_STATE_TX;
+    eState  = UART_STATE_TX;
 
     // Disable the RX interrupt path while we're sending data (UART is half-duplex)
     SW_UART_RX_INT_DISABLE();
@@ -307,8 +307,8 @@ ISR(INT1_vect)
 
     // Number of interrupts expected for this bit.
     // Start bit + 0.5, bits 1-8, Stop bit.
-    u8Count = 10;
-    u8RX = 0;
+    u8Count    = 10;
+    u8RX       = 0;
     bPendingRX = false;
 
     // Disable the edge-triggered interrupt -- the bits are read by the timer
@@ -343,7 +343,7 @@ ISR(TIMER0_COMPA_vect)
         if (u8Count == 1) {
             SoftwareUART::TimerStop();
             bPendingRX = true;
-            eState = UART_STATE_IDLE;
+            eState     = UART_STATE_IDLE;
 
             SW_UART_RX_INT_ENABLE();
         } else if (u8Count < 10) // Ignore stop bit (u8Count == 10)

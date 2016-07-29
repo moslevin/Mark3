@@ -117,30 +117,30 @@ class NLFS_File;
 /*!
     Permission bit definitions
 */
-#define PERM_UX     (0x0001)
-#define PERM_UW     (0x0002)
-#define PERM_UR     (0x0004)
-#define PERM_U_ALL  ( PERM_UX | PERM_UW | PERM_UR )
+#define PERM_UX (0x0001)
+#define PERM_UW (0x0002)
+#define PERM_UR (0x0004)
+#define PERM_U_ALL (PERM_UX | PERM_UW | PERM_UR)
 
-#define PERM_GX     (0x0008)
-#define PERM_GW     (0x0010)
-#define PERM_GR     (0x0020)
-#define PERM_G_ALL  ( PERM_GX | PERM_GW | PERM_GR )
+#define PERM_GX (0x0008)
+#define PERM_GW (0x0010)
+#define PERM_GR (0x0020)
+#define PERM_G_ALL (PERM_GX | PERM_GW | PERM_GR)
 
-#define PERM_OX     (0x0040)
-#define PERM_OW     (0x0080)
-#define PERM_OR     (0x0100)
-#define PERM_O_ALL  ( PERM_OX | PERM_OW | PERM_OR )
-
-//---------------------------------------------------------------------------
-#define INVALID_BLOCK   (0xFFFFFFFF)
-#define INVALID_NODE    (0xFFFF)
+#define PERM_OX (0x0040)
+#define PERM_OW (0x0080)
+#define PERM_OR (0x0100)
+#define PERM_O_ALL (PERM_OX | PERM_OW | PERM_OR)
 
 //---------------------------------------------------------------------------
-#define FILE_NAME_LENGTH    (16)
+#define INVALID_BLOCK (0xFFFFFFFF)
+#define INVALID_NODE (0xFFFF)
 
-#define FS_CONFIG_BLOCK     (0)
-#define FS_ROOT_BLOCK       (1)
+//---------------------------------------------------------------------------
+#define FILE_NAME_LENGTH (16)
+
+#define FS_CONFIG_BLOCK (0)
+#define FS_ROOT_BLOCK (1)
 
 //---------------------------------------------------------------------------
 /*!
@@ -149,13 +149,12 @@ class NLFS_File;
     consisting of a type specifier, and a union of the data structures
     representing each possible block type.
 */
-typedef enum
-{
-    NLFS_NODE_FREE,     //!< File node is free
-    NLFS_NODE_ROOT,     //!< Root filesystem descriptor
-    NLFS_NODE_FILE,     //!< File node
-    NLFS_NODE_DIR,      //!< Directory node
-// --
+typedef enum {
+    NLFS_NODE_FREE, //!< File node is free
+    NLFS_NODE_ROOT, //!< Root filesystem descriptor
+    NLFS_NODE_FILE, //!< File node
+    NLFS_NODE_DIR,  //!< Directory node
+                    // --
     FILE_BLOCK_COUNTS
 } NLFS_Type_t;
 
@@ -165,45 +164,43 @@ typedef enum
     as for a directory node (although fewer fields are used for that case,
     as documented).
 */
-typedef struct
-{
-    char      acFileName[16];     //!< Arbitrary, 16-char filename
+typedef struct {
+    char acFileName[16]; //!< Arbitrary, 16-char filename
 
-    uint16_t    u16NextPeer;         //!< Index of the next peer file node
-    uint16_t    u16PrevPeer;         //!< Index of the previous peer node
+    uint16_t u16NextPeer; //!< Index of the next peer file node
+    uint16_t u16PrevPeer; //!< Index of the previous peer node
 
-    uint8_t     u8Group;            //!< Group ID of the owner
-    uint8_t     u8User;             //!< user ID of the owner
-    uint16_t    u16Perms;            //!< File permissions (POSIX-style)
+    uint8_t  u8Group;  //!< Group ID of the owner
+    uint8_t  u8User;   //!< user ID of the owner
+    uint16_t u16Perms; //!< File permissions (POSIX-style)
 
-    uint16_t    u16Parent;           //!< Index of the parent file node
-    uint16_t    u16Child;            //!< Index of the first child node
+    uint16_t u16Parent; //!< Index of the parent file node
+    uint16_t u16Child;  //!< Index of the first child node
 
-//-- File-specific
-    uint32_t     u32AllocSize;        //!< Size of the file (allocated)
-    uint32_t     u32FileSize;         //!< Size of the file (in-bytes)
+    //-- File-specific
+    uint32_t u32AllocSize; //!< Size of the file (allocated)
+    uint32_t u32FileSize;  //!< Size of the file (in-bytes)
 
-    uint32_t     u32FirstBlock;       //!< Index of the first file block
-    uint32_t     u32LastBlock;        //!< Index of the last file block
+    uint32_t u32FirstBlock; //!< Index of the first file block
+    uint32_t u32LastBlock;  //!< Index of the last file block
 } NLFS_File_Node_t;
 
 //---------------------------------------------------------------------------
 /*!
     Data structure for the Root-configuration FS-node type
 */
-typedef struct
-{
-    uint16_t    u16NumFiles;         //!< Number of file nodes in the FS
-    uint16_t    u16NumFilesFree;     //!< Number of free file nodes
-    uint16_t    u16NextFreeNode;     //!< Index of the next free file
+typedef struct {
+    uint16_t u16NumFiles;     //!< Number of file nodes in the FS
+    uint16_t u16NumFilesFree; //!< Number of free file nodes
+    uint16_t u16NextFreeNode; //!< Index of the next free file
 
-    uint32_t     u32NumBlocks;        //!< Number of blocks in the FS
-    uint32_t     u32NumBlocksFree;    //!< Number of free blocks
-    uint32_t     u32NextFreeBlock;    //!< Index of the next free block
+    uint32_t u32NumBlocks;     //!< Number of blocks in the FS
+    uint32_t u32NumBlocksFree; //!< Number of free blocks
+    uint32_t u32NextFreeBlock; //!< Index of the next free block
 
-    uint32_t     u32BlockSize;        //!< Size of each block on disk
-    uint32_t     u32BlockOffset;      //!< Byte-offset to the first block struct
-    uint32_t     u32DataOffset;       //!< Byte-offset to the first data block
+    uint32_t u32BlockSize;   //!< Size of each block on disk
+    uint32_t u32BlockOffset; //!< Byte-offset to the first block struct
+    uint32_t u32DataOffset;  //!< Byte-offset to the first data block
 } NLFS_Root_Node_t;
 
 //---------------------------------------------------------------------------
@@ -212,14 +209,13 @@ typedef struct
     the union between the various FS-node data structures.  This is also
     the same data format as how data is stored "on-disk"
 */
-typedef struct
-{
-    NLFS_Type_t     eBlockType;                 //!< Block type ID
+typedef struct {
+    NLFS_Type_t eBlockType; //!< Block type ID
 
-    union   // Depending on the block type, we use one of the following
+    union // Depending on the block type, we use one of the following
     {
-        NLFS_Root_Node_t        stRootNode;     //!< Root Filesystem Node
-        NLFS_File_Node_t        stFileNode;     //!< File/Directory Node
+        NLFS_Root_Node_t stRootNode; //!< Root Filesystem Node
+        NLFS_File_Node_t stFileNode; //!< File/Directory Node
     };
 } NLFS_Node_t;
 
@@ -229,20 +225,16 @@ typedef struct
     block (either in the file, or in the free-data pool), as well as any
     special flags.
 */
-typedef struct
-{
-    uint32_t     u32NextBlock;                //!< Index of the next block
-    union
-    {
-        uint8_t     u8Flags;                //!< Block Flags
-        struct
-        {
-            unsigned int    uAllocated;     //!< 1 if allocated
-            unsigned int    u8heckBit;      //!< used for continuity checks
+typedef struct {
+    uint32_t u32NextBlock; //!< Index of the next block
+    union {
+        uint8_t u8Flags; //!< Block Flags
+        struct {
+            unsigned int uAllocated; //!< 1 if allocated
+            unsigned int u8heckBit;  //!< used for continuity checks
         };
     };
 } NLFS_Block_t;
-
 
 //---------------------------------------------------------------------------
 /*!
@@ -250,27 +242,24 @@ typedef struct
     pretty abstract, as the data represented here is only accessed by the
     underlying physical media drive.
 */
-typedef union
-{
-    void *pvData;
+typedef union {
+    void*    pvData;
     uint32_t u32Data;
     uint64_t u64Data;
-    K_ADDR kaData;
+    K_ADDR   kaData;
 } NLFS_Host_t;
-
 
 //----------------------------------------------------------------------------
 /*!
     Structure used to report the status of a given file
 */
-typedef struct
-{
-    uint32_t   u32AllocSize;  //!< Size of the file including partial blocks
-    uint32_t   u32FileSize;   //!< Actual size of the file
-    uint16_t  u16Perms;      //!< Permissions attached to the file
-    uint8_t   u8User;       //!< user associated with this file
-    uint8_t   u8Group;      //!< Group associated with this file
-    char    acFileName[16]; //!< Copy of the file name
+typedef struct {
+    uint32_t u32AllocSize;   //!< Size of the file including partial blocks
+    uint32_t u32FileSize;    //!< Actual size of the file
+    uint16_t u16Perms;       //!< Permissions attached to the file
+    uint8_t  u8User;         //!< user associated with this file
+    uint8_t  u8Group;        //!< Group associated with this file
+    char     acFileName[16]; //!< Copy of the file name
 } NLFS_File_Stat_t;
 
 //---------------------------------------------------------------------------
@@ -279,9 +268,9 @@ typedef struct
  */
 class NLFS
 {
-friend class NLFS_File;
-public:
+    friend class NLFS_File;
 
+public:
     /*!
      * \brief Format/Create a new filesystem with the configuration specified
      *        in the parameters
@@ -308,14 +297,14 @@ public:
      *                            on the block size - in many scenarios, larger
      *                            blocks can lead to higher throughput.
      */
-    void Format(NLFS_Host_t *puHost_, uint32_t u32TotalSize_, uint16_t u16NumFiles_, uint16_t u16DataBlockSize_);
+    void Format(NLFS_Host_t* puHost_, uint32_t u32TotalSize_, uint16_t u16NumFiles_, uint16_t u16DataBlockSize_);
 
     /*!
      * \brief Re-mount a previously-cerated filesystem using this FS object.
      *
      * \param [in] puHost_ - Pointer to the filesystem object
      */
-    void Mount(NLFS_Host_t *puHost_);
+    void Mount(NLFS_Host_t* puHost_);
 
     /*!
      * \brief Create_File creates a new file object at the specified path
@@ -323,7 +312,7 @@ public:
      * \return ID of the created file, or INVALID_NODE if the path cannot be
      *         resolved, or the file already exists.
      */
-    uint16_t Create_File(const char *szPath_);
+    uint16_t Create_File(const char* szPath_);
 
     /*!
      * \brief Create_Dir creates a new directory at the specified path
@@ -331,21 +320,21 @@ public:
      * \return ID of the created dir, or INVALID_NODE if the path cannot be
      *         resolved, or the file already exists.
      */
-    uint16_t Create_Dir(const char *szPath_);
+    uint16_t Create_Dir(const char* szPath_);
 
     /*!
      * \brief Delete_File Removes a file from disk
      * \param szPath_ Path of the file to remove
      * \return Index of the node deleted or INVALID_NODE on error
      */
-    uint16_t Delete_File(const char *szPath_);
+    uint16_t Delete_File(const char* szPath_);
 
     /*!
      * \brief Delete_Folder Remove a folder from disk
      * \param szPath_ Path of the folder to remove
      * \return Index of the node deleted or INVALID_NODE on error
      */
-    uint16_t Delete_Folder(const char *szPath_);
+    uint16_t Delete_Folder(const char* szPath_);
 
     /*!
      * \brief Cleanup_Node_Links Remove the links between the given node and
@@ -353,7 +342,7 @@ public:
      * \param u16Node_  Index of the node
      * \param pstNode_ Pointer to a local copy of the node data
      */
-    void Cleanup_Node_Links(uint16_t u16Node_, NLFS_Node_t *pstNode_);
+    void Cleanup_Node_Links(uint16_t u16Node_, NLFS_Node_t* pstNode_);
 
     /*!
      * \brief Find_Parent_Dir returns the directory under which the specified
@@ -361,14 +350,14 @@ public:
      * \param [in] szPath_ - Path of the file to find parent directory node for
      * \return directory node ID, or INVALID_NODE if the path is invalid.
      */
-    uint16_t Find_Parent_Dir(const char *szPath_);
+    uint16_t Find_Parent_Dir(const char* szPath_);
 
     /*!
      * \brief Find_File returns the file node ID of the object at a given path
      * \param [in] szPath_ - Path of the file to search for
      * \return file node ID, or INVALID_NODE if the path is invalid.
      */
-    uint16_t Find_File(const char *szPath_);
+    uint16_t Find_File(const char* szPath_);
 
     /*!
      * \brief Print displays a summary of files in the filesystem
@@ -380,33 +369,27 @@ public:
      * \return The size of a data block in the filesystem, as configured at format.
      */
     uint32_t GetBlockSize(void) { return m_stLocalRoot.u32BlockSize; }
-
     /*!
      * \brief GetNumBlocks retrieves the number of data blocks in the filesystem.
      * \return The total number of blocks in the filesystem
      */
     uint32_t GetNumBlocks(void) { return m_stLocalRoot.u32NumBlocks; }
-
     /*!
      * \brief GetNumBlocksFree retrieves the number of free data blocks in the
      *        filesystem.
      * \return The number of available blocks in the filesystem
      */
     uint32_t GetNumBlocksFree(void) { return m_stLocalRoot.u32NumBlocksFree; }
-
     /*!
      * \brief GetNumFiles retrieves the maximum number of files in the filesystem
      * \return The maximum number of files that can be allocated in the system
      */
-    uint32_t GetNumFiles(void)  { return m_stLocalRoot.u16NumFiles; }
-
+    uint32_t GetNumFiles(void) { return m_stLocalRoot.u16NumFiles; }
     /*!
      * \brief GetNumFilesFree retrieves the number of free blocks in the filesystem
      * \return The number of free file nodes in the filesystem
      */
     uint16_t GetNumFilesFree(void) { return m_stLocalRoot.u16NumFilesFree; }
-
-
     /*!
      * \brief GetFirstChild Return the first child node for a node representing
      *                  a directory
@@ -414,14 +397,14 @@ public:
      * \return          Node ID of the first child node or INVALID_NODE on failure
      */
 
-    uint16_t GetFirstChild( uint16_t u16Node_ );
+    uint16_t GetFirstChild(uint16_t u16Node_);
 
     /*!
      * \brief GetNextPeer   Return the Node ID of a File/Directory's next peer
      * \param u16Node_       Node index of the current object
      * \return              Node ID of the next peer object
      */
-    uint16_t GetNextPeer( uint16_t u16Node_ );
+    uint16_t GetNextPeer(uint16_t u16Node_);
 
     /*!
      * \brief GetStat       Get the status of a file on-disk
@@ -429,17 +412,16 @@ public:
      * \param pstStat_      Pointer to the object containing the status
      * \return true on success, false on failure
      */
-    bool GetStat( uint16_t u16Node_, NLFS_File_Stat_t *pstStat_);
+    bool GetStat(uint16_t u16Node_, NLFS_File_Stat_t* pstStat_);
 
 protected:
-
     /*!
      * \brief Find_Last_Slash Finds the location of the last '/' character in a
      *        path.
      * \param [in] szPath_ - String representing a '/' delimited path.
      * \return the byte offset of the last slash char in the path.
      */
-    char Find_Last_Slash(const char *szPath_);
+    char Find_Last_Slash(const char* szPath_);
 
     /*!
      * \brief File_Names_Match Determines if a given path matches the name in a
@@ -448,7 +430,7 @@ protected:
      * \param [in] pstNode_ - pointer to a fs node
      * \return true if the filename in the path matches the filename in the node.
      */
-    bool File_Names_Match(const char *szPath_, NLFS_Node_t *pstNode_);
+    bool File_Names_Match(const char* szPath_, NLFS_Node_t* pstNode_);
 
     /*!
      * \brief Read_Node is an implementation-specific method used to read a
@@ -456,7 +438,7 @@ protected:
      * \param [in] u16Node_ - File node index
      * \param [out] pstNode_ - Pointer to the file node object to read into
      */
-    virtual void Read_Node(uint16_t u16Node_, NLFS_Node_t *pstNode_) = 0;
+    virtual void Read_Node(uint16_t u16Node_, NLFS_Node_t* pstNode_) = 0;
 
     /*!
      * \brief Write_Node is an implementation-specific method used to write a
@@ -464,7 +446,7 @@ protected:
      * \param [in] u16Node_ - File node index
      * \param [in] pstNode_ - Pointer to the file node object to write from
      */
-    virtual void Write_Node(uint16_t u16Node_, NLFS_Node_t *pstNode_) = 0;
+    virtual void Write_Node(uint16_t u16Node_, NLFS_Node_t* pstNode_) = 0;
 
     /*!
      * \brief Read_Block_Header is an implementation-specific method used to read
@@ -472,7 +454,7 @@ protected:
      * \param [in] u32Block_ - data block index
      * \param [out] pstBlock_ - block header structure to read into
      */
-    virtual void Read_Block_Header(uint32_t u32Block_, NLFS_Block_t *pstBlock_) = 0;
+    virtual void Read_Block_Header(uint32_t u32Block_, NLFS_Block_t* pstBlock_) = 0;
 
     /*!
      * \brief Write_Block_Header is an implementation-specific method used to write
@@ -480,7 +462,7 @@ protected:
      * \param [in] u32Block_ - data block index
      * \param [in] pstFileBlock_ - pointer to the local data structure to write from
      */
-    virtual void Write_Block_Header(uint32_t u32Block_, NLFS_Block_t *pstFileBlock_) = 0;
+    virtual void Write_Block_Header(uint32_t u32Block_, NLFS_Block_t* pstFileBlock_) = 0;
 
     /*!
      * \brief Read_Block is an implementation-specific method used to read raw file
@@ -491,7 +473,7 @@ protected:
      * \param [out] pvData_ - output buffer to read into
      * \param [in] u32Len_ - length of data to read (in bytes)
      */
-    virtual void Read_Block(uint32_t u32Block_, uint32_t u32Offset_, void *pvData_, uint32_t u32Len_) = 0;
+    virtual void Read_Block(uint32_t u32Block_, uint32_t u32Offset_, void* pvData_, uint32_t u32Len_) = 0;
 
     /*!
      * \brief Write_Block is an implementation-specific method used to write a
@@ -503,7 +485,7 @@ protected:
      * \param [in] pvData_ - data buffer to write to disk
      * \param [in] u32Len_ - length of data to write (in bytes)
      */
-    virtual void Write_Block(uint32_t u32Block_, uint32_t u32Offset_, void *pvData_, uint32_t u32Len_) = 0;
+    virtual void Write_Block(uint32_t u32Block_, uint32_t u32Offset_, void* pvData_, uint32_t u32Len_) = 0;
 
     /*!
      * \brief RootSync Synchronize the filesystem config in the object back to
@@ -518,13 +500,11 @@ protected:
      *        in order to avoid losing storage blocks.
      */
     void Repair() {}
-
     /*!
      * \brief Print_Free_Details Print details about a free node
      * \param u16Node_ Node to print details for
      */
-    void Print_Free_Details( uint16_t u16Node_);
-
+    void Print_Free_Details(uint16_t u16Node_);
 
     /*!
      * \brief Print_File_Details displays information about a given file node
@@ -576,7 +556,7 @@ protected:
      * \param [in] pstFile_ - Pointer to the file node to add a block to
      * \return Data block ID of the allocated block, or INVALID_BLOCK on failure.
      */
-    uint32_t Append_Block_To_Node(NLFS_Node_t *pstFile_);
+    uint32_t Append_Block_To_Node(NLFS_Node_t* pstFile_);
 
     /*!
      * \brief Create_File_i is the private method used to create a file or directory
@@ -584,17 +564,17 @@ protected:
      * \param [in] eType_ - Type of file to create
      * \return File node ID of the newly created file, or INVALID_NODE on failure.
      */
-    uint16_t Create_File_i(const char *szPath_, NLFS_Type_t eType_);
+    uint16_t Create_File_i(const char* szPath_, NLFS_Type_t eType_);
 
     /*!
      * \brief Set_Node_Name sets the name of a file or directory node
      * \param [in] pstFileNode_ - Pointer to a file node structure to name
      * \param [in] szPath_ - Name for the file
      */
-    void Set_Node_Name( NLFS_Node_t *pstFileNode_, const char *szPath_ );
+    void Set_Node_Name(NLFS_Node_t* pstFileNode_, const char* szPath_);
 
-    NLFS_Host_t *m_puHost;                  //!< Local, cached copy of host FS pointer
-    NLFS_Root_Node_t m_stLocalRoot;         //!< Local, cached copy of root
+    NLFS_Host_t*     m_puHost;      //!< Local, cached copy of host FS pointer
+    NLFS_Root_Node_t m_stLocalRoot; //!< Local, cached copy of root
 };
 
 #endif

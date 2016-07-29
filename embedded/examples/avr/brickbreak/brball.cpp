@@ -110,13 +110,13 @@ void BrBall::Clear(void)
     stRect.bFill = true;
 
     // Undraw previous rectangle
-    stRect.uFillColor = COLOR_BLACK;
+    stRect.uFillColor  = COLOR_BLACK;
     stRect.u32ineColor = COLOR_BLACK;
 
-    stRect.u16Top = m_u16LastY;
+    stRect.u16Top    = m_u16LastY;
     stRect.u16Bottom = stRect.u16Top + BALL_SIZE - 1;
-    stRect.u16Left = m_u16LastX;
-    stRect.u16Right = stRect.u16Left + BALL_SIZE - 1;
+    stRect.u16Left   = m_u16LastX;
+    stRect.u16Right  = stRect.u16Left + BALL_SIZE - 1;
     if (stRect.u16Left < PLAYFIELD_BORDER_WIDTH) {
         stRect.u16Left = PLAYFIELD_BORDER_WIDTH;
     }
@@ -134,11 +134,11 @@ void BrBall::Clear(void)
 void BrBall::Draw(void)
 {
     TileDef_t stTile;
-    stTile.m_eFormat = TILE_2BPP;
-    stTile.m_pu8Data = aucBallTile;
+    stTile.m_eFormat   = TILE_2BPP;
+    stTile.m_pu8Data   = aucBallTile;
     stTile.m_puPalette = auBallPalette;
-    stTile.m_u8Width = 4;
-    stTile.m_u8Height = 4;
+    stTile.m_u8Width   = 4;
+    stTile.m_u8Height  = 4;
 
     clMyTile.LoadTile(&stTile);
     clMyTile.Render(pclDisplay, m_s16X100 / 100, m_s16Y100 / 100);

@@ -22,7 +22,7 @@ See license.txt for more information
 //---------------------------------------------------------------------------
 void JoystickDriver::Scan()
 {
-    m_stLastReport.u16Digital = m_stCurrentReport.u16Digital;
+    m_stLastReport.u16Digital  = m_stCurrentReport.u16Digital;
     m_stLastReport.u16AnalogX1 = m_stCurrentReport.u16AnalogX1;
     m_stLastReport.u16AnalogY1 = m_stCurrentReport.u16AnalogY1;
     m_stLastReport.u16AnalogX2 = m_stCurrentReport.u16AnalogX2;
@@ -33,7 +33,7 @@ void JoystickDriver::Scan()
 //---------------------------------------------------------------------------
 void JoystickDriver::ReadCurrent(JoystickReport* pstReport_)
 {
-    pstReport_->u16Digital = m_stCurrentReport.u16Digital;
+    pstReport_->u16Digital  = m_stCurrentReport.u16Digital;
     pstReport_->u16AnalogX1 = m_stCurrentReport.u16AnalogX1;
     pstReport_->u16AnalogY1 = m_stCurrentReport.u16AnalogY1;
     pstReport_->u16AnalogX2 = m_stCurrentReport.u16AnalogX2;
@@ -43,7 +43,7 @@ void JoystickDriver::ReadCurrent(JoystickReport* pstReport_)
 //---------------------------------------------------------------------------
 void JoystickDriver::ReadPrevious(JoystickReport* pstReport_)
 {
-    pstReport_->u16Digital = m_stLastReport.u16Digital;
+    pstReport_->u16Digital  = m_stLastReport.u16Digital;
     pstReport_->u16AnalogX1 = m_stLastReport.u16AnalogX1;
     pstReport_->u16AnalogY1 = m_stLastReport.u16AnalogY1;
     pstReport_->u16AnalogX2 = m_stLastReport.u16AnalogX2;

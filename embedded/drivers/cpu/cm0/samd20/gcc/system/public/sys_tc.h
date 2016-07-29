@@ -22,18 +22,16 @@ See license.txt for more information
 #include "sys_clocks.h"
 
 //---------------------------------------------------------------------------
-typedef enum
-{
+typedef enum {
     TC_MODE_16BIT,
     TC_MODE_8BIT,
     TC_MODE_32BIT,
-//----
+    //----
     TC_MODE_COUNT
 } TCMode_t;
 
 //---------------------------------------------------------------------------
-typedef enum
-{
+typedef enum {
     TC_8BIT_0,
     TC_8BIT_1,
     TC_8BIT_2,
@@ -42,51 +40,46 @@ typedef enum
     TC_8BIT_5,
     TC_8BIT_6,
     TC_8BIT_7,
-//----
+    //----
     TC_8BIT_COUNT
 } TC8Bit_t;
 
 //---------------------------------------------------------------------------
-typedef enum
-{
+typedef enum {
     TC_16BIT_0_1,
     TC_16BIT_2_3,
     TC_16BIT_4_5,
     TC_16BIT_6_7,
-//----
+    //----
     TC_16BIT_COUNT
 } TC16Bit_t;
 
 //---------------------------------------------------------------------------
-typedef enum
-{
+typedef enum {
     TC_32BIT_0_1_2_3,
     TC_32BIT_4_5_6_7,
-//----
+    //----
     TC_32BIT_COUNT
 } TC32Bit_t;
 
 //---------------------------------------------------------------------------
-typedef union
-{
+typedef union {
     TC8Bit_t  e8Bit;
     TC16Bit_t e16Bit;
     TC32Bit_t e32Bit;
 } TCXBit_t;
 
 //---------------------------------------------------------------------------
-typedef enum
-{
+typedef enum {
     TC_PRESYNCH_GCLK,
     TC_PRESYNCH_PRESCALAR,
     TC_PRESYNCH_RESYNC,
-//----
+    //----
     TC_PRESYNCH_COUNT
 } TCPresynch_t;
 
 //---------------------------------------------------------------------------
-typedef enum
-{
+typedef enum {
     TC_PRESCALAR_1,
     TC_PRESCALAR_2,
     TC_PRESCALAR_4,
@@ -95,44 +88,40 @@ typedef enum
     TC_PRESCALAR_64,
     TC_PRESCALAR_256,
     TC_PRESCALAR_1024,
-//----
+    //----
     TC_PRESCALAR_COUNT
 } TCPrescalar_t;
 
 //---------------------------------------------------------------------------
-typedef enum
-{
+typedef enum {
     TC_WAVEFORM_NORMAL,
     TC_WAVEFORM_MATCH,
     TC_WAVEFORM_NORMAL_PWM,
     TC_WAVEFORM_MATCH_PWM,
-//----
+    //----
     TC_WAVEFORM_COUNT
 } TCWaveformMode_t;
 
 //---------------------------------------------------------------------------
-typedef enum
-{
+typedef enum {
     TC_READSYNC_COUNT,
     TC_READSYNC_CC0,
     TC_READSYNC_CC1,
-//----
+    //----
     TC_READSYNC_COUNTx
 } TCReadSync_t;
 
 //---------------------------------------------------------------------------
-typedef enum
-{
+typedef enum {
     TC_COMMAND_NONE,
     TC_COMMAND_RETRIGGER,
     TC_COMMAND_STOP,
-//----
+    //----
     TC_COMMAND_COUNT
 } TCCommand_t;
 
 //---------------------------------------------------------------------------
-typedef enum
-{
+typedef enum {
     TC_ACTION_OFF,
     TC_ACTION_RETRIGGER,
     TC_ACTION_COUNT,
@@ -141,19 +130,18 @@ typedef enum
     TC_ACTION_PPW,
     TC_ACTION_PWP,
     TC_ACTION_RESERVED_7,
-//----
+    //----
     TC_ACTION_COUNTx
 } TCAction_t;
 
 //---------------------------------------------------------------------------
-typedef enum
-{
-    TC_INT_MC0,    
-	TC_INT_MC1,    
+typedef enum {
+    TC_INT_MC0,
+    TC_INT_MC1,
     TC_INT_SYNCRDY,
     TC_INT_ERR,
     TC_INT_OVF,
-//----
+    //----
     TC_INT_COUNT
 } TCInt_t;
 
@@ -161,68 +149,39 @@ typedef enum
 class SysTC
 {
 public:
-	
-    void SetMode( TCMode_t eMode_ )
-        { m_eMode = eMode_; }
+    void SetMode(TCMode_t eMode_) { m_eMode = eMode_; }
+    void SetInterface(TCXBit_t eBit_);
 
-    void SetInterface( TCXBit_t eBit_ );
+    void SetWaveformMode(TCWaveformMode_t eWaveformMode_) { m_eWaveformMode = eWaveformMode_; }
+    void SetPrescalar(TCPrescalar_t ePrescalar_) { m_ePrescalar = ePrescalar_; }
+    void SetPresynch(TCPresynch_t ePresynch_) { m_ePresync = ePresynch_; }
+    void SyncContinuous(bool bSync_) { m_bSyncContinuous = bSync_; }
+    void SyncRegister(TCReadSync_t eSyncReg_) { m_eSyncReg = eSyncReg_; }
+    void SetOneShot(bool bOneShot_) { m_bOneShot = bOneShot_; }
+    void SetDirection(bool bCountDown_) { m_bDirection = bCountDown_; }
+    void SetCaptureVal(uint8_t u8Index_, uint32_t u32CaptureVal_);
 
-    void SetWaveformMode( TCWaveformMode_t eWaveformMode_ )
-        { m_eWaveformMode = eWaveformMode_; }
+    void SetInvertVal(uint8_t u8Index_, bool bInvert_) { m_bInvert0 = bInvert_; }
+    void EnableOverflow(bool bOverflow_) { m_bOverflowEnable = bOverflow_; }
+    void EnableCapture(uint8_t u8Index_, bool bEnable_);
 
-    void SetPrescalar( TCPrescalar_t ePrescalar_ )
-        { m_ePrescalar = ePrescalar_; }
+    uint32_t GetCount(void);
 
-    void SetPresynch( TCPresynch_t ePresynch_ )
-        { m_ePresync = ePresynch_; }
+    void Start(void);
 
-    void SyncContinuous( bool bSync_ )
-        { m_bSyncContinuous = bSync_; }
+    void Stop(void);
 
-    void SyncRegister( TCReadSync_t eSyncReg_ )
-        { m_eSyncReg = eSyncReg_; }
+    void EnableInterrupt(TCInt_t eInt_);
 
-    void SetOneShot( bool bOneShot_ )
-        { m_bOneShot = bOneShot_; }
+    void DisableInterrupt(TCInt_t eInt_);
 
-    void SetDirection( bool bCountDown_ )
-        { m_bDirection = bCountDown_; }
+    void ClearInterrupt(TCInt_t eInt_);
 
-    void SetCaptureVal( uint8_t u8Index_, uint32_t u32CaptureVal_ );
-
-    void SetInvertVal( uint8_t u8Index_, bool bInvert_ )
-    {
-		m_bInvert0 = bInvert_;	
-    }
-	void EnableOverflow( bool bOverflow_ )
-	{
-		m_bOverflowEnable = bOverflow_;
-	}
-
-    void EnableCapture( uint8_t u8Index_, bool bEnable_);
-
-    uint32_t GetCount( void );
-
-    void Start( void );
-
-    void Stop( void );
-
-    void EnableInterrupt( TCInt_t eInt_ );
-
-    void DisableInterrupt( TCInt_t eInt_ );
-
-    void ClearInterrupt( TCInt_t eInt_);
-
-    void SetClockSource( ClockGenerator_t eClockGen_ )
-    {
-        m_eClockGen = eClockGen_;
-    }
-
+    void SetClockSource(ClockGenerator_t eClockGen_) { m_eClockGen = eClockGen_; }
 private:
-
     uint8_t GetInterfaceIndex();
 
-    Tc *GetInterface();
+    Tc* GetInterface();
 
     void SetupClocks();
 
@@ -230,35 +189,34 @@ private:
 
     void WriteSync()
     {
-        while (m_pstTC->COUNT32.STATUS.reg & TC_STATUS_SYNCBUSY)
-        {
+        while (m_pstTC->COUNT32.STATUS.reg & TC_STATUS_SYNCBUSY) {
             /* Do Nothing */
         }
     }
 
-    ClockGenerator_t    m_eClockGen;
+    ClockGenerator_t m_eClockGen;
 
-    TCMode_t            m_eMode;
-    TCXBit_t            m_uTCXBit;
-    TCWaveformMode_t    m_eWaveformMode;
-    TCPrescalar_t       m_ePrescalar;
-    TCPresynch_t        m_ePresync;
+    TCMode_t         m_eMode;
+    TCXBit_t         m_uTCXBit;
+    TCWaveformMode_t m_eWaveformMode;
+    TCPrescalar_t    m_ePrescalar;
+    TCPresynch_t     m_ePresync;
 
-    bool                m_bSyncContinuous;
-    TCReadSync_t        m_eSyncReg;
+    bool         m_bSyncContinuous;
+    TCReadSync_t m_eSyncReg;
 
-    bool                m_bOneShot;
-    bool                m_bDirection;
+    bool m_bOneShot;
+    bool m_bDirection;
 
-    bool                m_bCapture0;
-    bool                m_bInvert0;
-    bool                m_bMatchCompare0;    
-    bool                m_bOverflowEnable;
-    bool                m_bTCEventEnable;
-    bool                m_bTCEventInvert;
+    bool m_bCapture0;
+    bool m_bInvert0;
+    bool m_bMatchCompare0;
+    bool m_bOverflowEnable;
+    bool m_bTCEventEnable;
+    bool m_bTCEventInvert;
 
-    TCAction_t          m_eAction;
-	Tc					*m_pstTC;
+    TCAction_t m_eAction;
+    Tc*        m_pstTC;
 };
 
 #endif

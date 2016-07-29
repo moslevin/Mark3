@@ -43,7 +43,7 @@ See license.txt for more information
 #include "timerlist.h"
 #endif
 
-Message GlobalMessagePool::m_aclMessagePool[GLOBAL_MESSAGE_POOL_SIZE];
+Message     GlobalMessagePool::m_aclMessagePool[GLOBAL_MESSAGE_POOL_SIZE];
 MessagePool GlobalMessagePool::m_clPool;
 
 //---------------------------------------------------------------------------

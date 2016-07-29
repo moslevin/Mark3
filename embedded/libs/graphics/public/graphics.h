@@ -32,74 +32,74 @@ See license.txt for more information
 class GraphicsDriver : public Driver
 {
 public:
-//---------------------------------------------------------------------------
-/*
- *  The base graphics driver does not implement the set of
- *  virtual methods inherited from the Driver class.  This
- *  is left to the actual hardware implementation.
- */
-//---------------------------------------------------------------------------
-    
+    //---------------------------------------------------------------------------
+    /*
+     *  The base graphics driver does not implement the set of
+     *  virtual methods inherited from the Driver class.  This
+     *  is left to the actual hardware implementation.
+     */
+    //---------------------------------------------------------------------------
+
     /*!
      *  \brief DrawPixel
      *
      *  Draw a single pixel to the display.
      *
-     *  \param pstPoint_ Structure containing the pixel data (color/location) 
+     *  \param pstPoint_ Structure containing the pixel data (color/location)
      *                   to be written.
      */
-    virtual void DrawPixel(DrawPoint_t *pstPoint_) {};
-    
+    virtual void DrawPixel(DrawPoint_t* pstPoint_){};
+
     /*!
      *  \brief ReadPixel
      *
      *  Read a single pixel from the display.
      *
      *  \param pstPoint_ Structure containing the pixel location of the pixel
-     *                   to be read.  The color value will contain the value 
+     *                   to be read.  The color value will contain the value
      *                   from the display when read.
      */
-    virtual void ReadPixel(DrawPoint_t *pstPoint_) {};
-    
-//---------------------------------------------------------------------------
-/*
- *  Raster operations defined using per-pixel rendering.
- *  Can be overridden in inheriting classes.
- */
-//---------------------------------------------------------------------------
+    virtual void ReadPixel(DrawPoint_t* pstPoint_){};
+
+    //---------------------------------------------------------------------------
+    /*
+     *  Raster operations defined using per-pixel rendering.
+     *  Can be overridden in inheriting classes.
+     */
+    //---------------------------------------------------------------------------
     /*!
      *  \brief ClearScreen
      *
-     *  Clear the screen (initializes to all black pixels)    
+     *  Clear the screen (initializes to all black pixels)
      */
     virtual void ClearScreen();
-        
+
     /*!
      *  \brief Point
      *
      *  Draw a pixel to the display.
      *
      *  \param pstPoint_ - pointer to the struct containing the pixel to draw
-     */ 
-    virtual void Point(DrawPoint_t *pstPoint_);
-    
+     */
+    virtual void Point(DrawPoint_t* pstPoint_);
+
     /*!
      *  \brief Line
      *
      *  Draw a line to the display using Bresenham's line drawing algorithm
      *
      *  \param pstLine_ - pointer to the line structure
-     */ 
-    virtual void Line(DrawLine_t *pstLine_);
-    
+     */
+    virtual void Line(DrawLine_t* pstLine_);
+
     /*!
      *  \brief Rectangle
      *
      *  Draws a rectangle on the display
      *
      *  \param pstRectangle_ - pointer to the rectangle struct
-     */ 
-    virtual void Rectangle(DrawRectangle_t *pstRectangle_);
+     */
+    virtual void Rectangle(DrawRectangle_t* pstRectangle_);
 
     /*!
      *  \brief Circle
@@ -107,36 +107,36 @@ public:
      *  Draw a circle to the display
      *
      *  \param pstCircle_ - pointer to the circle to draw
-     */ 
-    virtual void Circle(DrawCircle_t *pstCircle_);
-    
+     */
+    virtual void Circle(DrawCircle_t* pstCircle_);
+
     /*!
      *  \brief Ellipse
      *
      *  Draw an ellipse to the display
      *
      *  \param pstEllipse_ - pointer to the ellipse to draw on the display
-     */ 
-    virtual void Ellipse(DrawEllipse_t *pstEllipse_);
-    
+     */
+    virtual void Ellipse(DrawEllipse_t* pstEllipse_);
+
     /*!
      *  \brief Bitmap
      *
      *  Draw an RGB image on the display
      *
      *  \param pstBitmap_ - pointer to the bitmap object to display
-     */ 
-    virtual void Bitmap(DrawBitmap_t *pstBitmap_);
-    
+     */
+    virtual void Bitmap(DrawBitmap_t* pstBitmap_);
+
     /*!
      *  \brief Stamp
      *
      *  Draws a stamp (a 1-bit bitmap) on the display
      *
      *  \param pstStamp_ - pointer to the stamp object to draw
-     */ 
-    virtual void Stamp(DrawStamp_t *pstStamp_);
-    
+     */
+    virtual void Stamp(DrawStamp_t* pstStamp_);
+
     /*!
      *  \brief Move
      *
@@ -145,27 +145,27 @@ public:
      *
      *  \param pstMove_ - object describing the graphics movement operation
      *      (framebuffer operations only).
-     */ 
-    virtual void Move(DrawMove_t *pstMove_ );
-    
+     */
+    virtual void Move(DrawMove_t* pstMove_);
+
     /*!
      *  \brief TriangleWire
      *
      *  Draw a wireframe triangle to the display.
      *
-     *  \param pstPoly_ Pointer to the polygon to draw.     
+     *  \param pstPoly_ Pointer to the polygon to draw.
      */
-    virtual void TriangleWire(DrawPoly_t *pstPoly_);
-    
+    virtual void TriangleWire(DrawPoly_t* pstPoly_);
+
     /*!
      *  \brief TriangleFill
      *
      *  Draw a filled triangle to the display.
      *
-     *  \param pstPoly_ Pointer to the polygon to draw.     
+     *  \param pstPoly_ Pointer to the polygon to draw.
      */
-    virtual void TriangleFill(DrawPoly_t *pstPoly_);
-    
+    virtual void TriangleFill(DrawPoly_t* pstPoly_);
+
     /*!
      *  \brief Polygon
      *
@@ -173,7 +173,7 @@ public:
      *
      *  \param pstPoly_ - pointer to the polygon object to draw
      */
-    virtual void Polygon(DrawPoly_t *pstPoly_);
+    virtual void Polygon(DrawPoly_t* pstPoly_);
 
     /*!
      *  \brief Text
@@ -181,9 +181,9 @@ public:
      *  Draw a string of text to the display using a bitmap font
      *
      *  \param pstText_ - pointer to the text object to render
-     */ 
-    virtual void Text(DrawText_t *pstText_);
-    
+     */
+    virtual void Text(DrawText_t* pstText_);
+
     /*!
      *  \brief TextFX
      *
@@ -192,7 +192,7 @@ public:
      *  \param pstText_ - pointer to the text object to render
      *  \param pstFX_   - struct defining special text formatting to apply
      **/
-    void TextFX(DrawText_t *pstText_, TextFX_t *pstFX_);
+    void TextFX(DrawText_t* pstText_, TextFX_t* pstFX_);
 
     /*!
      *  \brief TextWidth
@@ -201,8 +201,8 @@ public:
      *  the screen, without actually drawing it to the screen.
      *
      *  \param pstText_ - text object to determine the rendering width
-     */ 
-    virtual uint16_t TextWidth(DrawText_t *pstText_);
+     */
+    virtual uint16_t TextWidth(DrawText_t* pstText_);
 
     /*!
      *  \brief SetWindow
@@ -211,17 +211,17 @@ public:
      *
      *  \param pstWindow_ - pointer to the window struct defining the drawable area
      */
-    void SetWindow( DrawWindow_t *pstWindow_ );
-    
+    void SetWindow(DrawWindow_t* pstWindow_);
+
     /*!
      *  \brief ClearWindow
      *
      *  Clear the window - resetting the boundaries to the entire drawable area of
-     *  the screen.    
+     *  the screen.
      */
     void ClearWindow();
-protected:
 
+protected:
     uint16_t m_u16Res16X;
     uint16_t m_u16Res16Y;
 
@@ -229,9 +229,8 @@ protected:
     uint16_t m_u16Top;
     uint16_t m_u16Right;
     uint16_t m_u16Bottom;
-    
+
     uint8_t m_u8BPP;
 };
 
 #endif
-

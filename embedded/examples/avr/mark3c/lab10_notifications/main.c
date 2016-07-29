@@ -26,19 +26,19 @@ Takeaway:
 
 ===========================================================================*/
 #if !KERNEL_USE_IDLE_FUNC
-# error "This demo requires KERNEL_USE_IDLE_FUNC"
+#error "This demo requires KERNEL_USE_IDLE_FUNC"
 #endif
 
 //---------------------------------------------------------------------------
-#define APP_STACK_SIZE      (256/sizeof(K_WORD))
+#define APP_STACK_SIZE (256 / sizeof(K_WORD))
 DECLARE_THREAD(hApp1Thread);
-static K_WORD  awApp1Stack[APP_STACK_SIZE];
-static void    App1Main(void *unused_);
+static K_WORD awApp1Stack[APP_STACK_SIZE];
+static void App1Main(void* unused_);
 
 //---------------------------------------------------------------------------
 DECLARE_THREAD(hApp2Thread);
-static K_WORD  awApp2Stack[APP_STACK_SIZE];
-static void    App2Main(void *unused_);
+static K_WORD awApp2Stack[APP_STACK_SIZE];
+static void App2Main(void* unused_);
 
 //---------------------------------------------------------------------------
 // Notification object used in the example.
@@ -51,10 +51,10 @@ int main(void)
     Kernel_Init();
 
     // Initialize notifer and notify-ee threads
-    Thread_Init(hApp1Thread, awApp1Stack,  sizeof(awApp1Stack),  1, App1Main,  0);
+    Thread_Init(hApp1Thread, awApp1Stack, sizeof(awApp1Stack), 1, App1Main, 0);
     Thread_Start(hApp1Thread);
 
-    Thread_Init(hApp2Thread, awApp2Stack,  sizeof(awApp2Stack),  1, App2Main,  0);
+    Thread_Init(hApp2Thread, awApp2Stack, sizeof(awApp2Stack), 1, App2Main, 0);
     Thread_Start(hApp2Thread);
 
     // Initialize the Notify objects
@@ -66,10 +66,9 @@ int main(void)
 }
 
 //---------------------------------------------------------------------------
-void App1Main(void *unused_)
+void App1Main(void* unused_)
 {
-    while (1)
-    {
+    while (1) {
         bool bNotified = false;
         // Block the thread until the notification object is signalled from
         // elsewhere.
@@ -79,12 +78,10 @@ void App1Main(void *unused_)
     }
 }
 
-
 //---------------------------------------------------------------------------
-void App2Main(void *unused_)
+void App2Main(void* unused_)
 {
-    while (1)
-    {
+    while (1) {
         // Wait a while, then signal the notification object
 
         KernelAware_Print("T2: Wait 1s\n");

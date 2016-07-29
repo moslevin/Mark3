@@ -43,7 +43,7 @@ static volatile void* apvAllocs[MAX_ALLOCS]; // assuming we have < 128 system he
 TEST(ut_sysheap_calibrate)
 {
     uint16_t u16Min, u16Max, u16Avg;
-    void* pvData;
+    void*    pvData;
 
     // recreate the system heap (you wouldn't do this in a real system, but
     // here, we're the only clients of the heap so we can clobber it)

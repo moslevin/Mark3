@@ -31,8 +31,8 @@ See license.txt for more information
 static volatile void* apvAllocs[MAX_ALLOCS]; // assuming we have < 128 system heap allocs...
 
 #define ARENA_SIZE (200)
-static uint8_t au8Arena[ARENA_SIZE];
-static Arena clArena;
+static uint8_t      au8Arena[ARENA_SIZE];
+static Arena        clArena;
 const static K_ADDR au16Sizes[] = { 4, 8, 12, 20, 32, 52, 84, 0 };
 
 //===========================================================================

@@ -57,7 +57,7 @@ static K_WORD awApp2Stack[APP2_STACK_SIZE];
 
 #if KERNEL_USE_THREAD_CALLOUTS
 #define MAX_THREADS (10)
-static Thread* apclActiveThreads[10];
+static Thread*  apclActiveThreads[10];
 static uint32_t au16ActiveTime[10];
 
 static void PrintThreadSlack(void)
@@ -111,7 +111,7 @@ static void ThreadExitCallout(Thread* pclThread_)
     for (uint8_t i = 0; i < MAX_THREADS; i++) {
         if (apclActiveThreads[i] == pclThread_) {
             apclActiveThreads[i] = 0;
-            au16ActiveTime[i] = 0;
+            au16ActiveTime[i]    = 0;
             break;
         }
     }
@@ -125,7 +125,7 @@ static void ThreadContextSwitchCallback(Thread* pclThread_)
 {
     KernelAware::Print("CS\n");
     static uint16_t u16LastTick = 0;
-    uint16_t u16Ticks = KernelTimer::Read();
+    uint16_t        u16Ticks    = KernelTimer::Read();
 
     CS_ENTER();
     for (uint8_t i = 0; i < MAX_THREADS; i++) {
@@ -161,8 +161,8 @@ int main(void)
 //---------------------------------------------------------------------------
 static void WorkerMain1(void* arg_)
 {
-    Semaphore* pclSem = (Semaphore*)arg_;
-    uint32_t u32Count = 0;
+    Semaphore* pclSem   = (Semaphore*)arg_;
+    uint32_t   u32Count = 0;
 
     // Do some work.  Post a semaphore to notify the other thread that the
     // work has been completed.
@@ -194,7 +194,7 @@ static void WorkerMain2(void* arg_)
 //---------------------------------------------------------------------------
 void App1Main(void* unused_)
 {
-    Thread clMyThread;
+    Thread    clMyThread;
     Semaphore clMySem;
 
     clMySem.Init(0, 1);

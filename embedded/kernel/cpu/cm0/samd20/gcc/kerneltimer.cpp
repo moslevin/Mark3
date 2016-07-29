@@ -40,8 +40,7 @@ static bool bEnabled = 1;
 //---------------------------------------------------------------------------
 static void WriteSync()
 {
-    while (KERNEL_TIMER_TC->COUNT16.STATUS.reg & TC_STATUS_SYNCBUSY) {
-        /* Do Nothing */
+    while (KERNEL_TIMER_TC->COUNT16.STATUS.reg & TC_STATUS_SYNCBUSY) { /* Do Nothing */
     }
 }
 
@@ -110,7 +109,7 @@ void KernelTimer::Config(void)
     WriteSync();
     KERNEL_TIMER_TC->COUNT16.CTRLA.reg |= TC_CTRLA_ENABLE;
 
-    KERNEL_TIMER_TC->COUNT16.INTFLAG.reg = TC_INTFLAG_OVF;
+    KERNEL_TIMER_TC->COUNT16.INTFLAG.reg  = TC_INTFLAG_OVF;
     KERNEL_TIMER_TC->COUNT16.INTENSET.reg = TC_INTENSET_OVF;
 
     WriteSync();

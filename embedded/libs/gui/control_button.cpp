@@ -24,15 +24,15 @@ See license.txt for more information
 
 void ButtonControl::Init()
 {
-    m_szCaption = "Button";
-    m_pstFont = NULL;
-    m_uBGColor = PRIMARY_25;
-    m_uActiveColor = PRIMARY_50;
-    m_u32ineColor = PRIMARY_75;
-    m_uFillColor = PRIMARY_50;
-    m_uTextColor = PRIMARY_100;
-    m_bState = false;
-    m_pfCallback = NULL;
+    m_szCaption      = "Button";
+    m_pstFont        = NULL;
+    m_uBGColor       = PRIMARY_25;
+    m_uActiveColor   = PRIMARY_50;
+    m_u32ineColor    = PRIMARY_75;
+    m_uFillColor     = PRIMARY_50;
+    m_uTextColor     = PRIMARY_100;
+    m_bState         = false;
+    m_pfCallback     = NULL;
     m_pvCallbackData = NULL;
     SetAcceptFocus(true);
 }
@@ -44,18 +44,18 @@ void ButtonControl::Draw()
 
     GraphicsDriver* pclDriver = GetParentWindow()->GetDriver();
 
-    uint16_t u16XOffset = 0;
+    uint16_t u16XOffset   = 0;
     uint16_t u16HalfWidth = 0;
-    uint16_t u16YOffset = 0;
+    uint16_t u16YOffset   = 0;
 
     // Get the location of the control relative to elements higher in the heirarchy
     GetControlOffset(&u16XOffset, &u16YOffset);
 
     // Draw the rounded-off rectangle
-    stLine.u16X1 = GetLeft() + u16XOffset + 1;
-    stLine.u16X2 = stLine.u16X1 + GetWidth() - 3;
-    stLine.u16Y1 = GetTop() + u16YOffset;
-    stLine.u16Y2 = stLine.u16Y1;
+    stLine.u16X1  = GetLeft() + u16XOffset + 1;
+    stLine.u16X2  = stLine.u16X1 + GetWidth() - 3;
+    stLine.u16Y1  = GetTop() + u16YOffset;
+    stLine.u16Y2  = stLine.u16Y1;
     stLine.uColor = m_u32ineColor;
     pclDriver->Line(&stLine);
 
@@ -79,11 +79,11 @@ void ButtonControl::Draw()
     // Draw a rectangle before the text if the BG is specified.
     {
         DrawRectangle_t stRect;
-        stRect.u16Left = GetLeft() + u16XOffset + 1;
-        stRect.u16Right = GetLeft() + GetWidth() + u16XOffset - 2;
-        stRect.u16Top = GetTop() + u16YOffset + 1;
+        stRect.u16Left   = GetLeft() + u16XOffset + 1;
+        stRect.u16Right  = GetLeft() + GetWidth() + u16XOffset - 2;
+        stRect.u16Top    = GetTop() + u16YOffset + 1;
         stRect.u16Bottom = GetTop() + GetHeight() + u16YOffset - 2;
-        stRect.bFill = true;
+        stRect.bFill     = true;
 
         if (m_bState) {
             stRect.uFillColor = m_uActiveColor;
@@ -101,13 +101,13 @@ void ButtonControl::Draw()
     }
 
     // Draw the Text
-    stText.pstFont = m_pstFont;
+    stText.pstFont  = m_pstFont;
     stText.pcString = m_szCaption;
-    stText.uColor = m_uTextColor;
-    u16HalfWidth = pclDriver->TextWidth(&stText);
+    stText.uColor   = m_uTextColor;
+    u16HalfWidth    = pclDriver->TextWidth(&stText);
     u16HalfWidth >>= 1;
     stText.u16Left = GetLeft() + (GetWidth() >> 1) - u16HalfWidth + u16XOffset;
-    stText.u16Top = GetTop() + u16YOffset;
+    stText.u16Top  = GetTop() + u16YOffset;
     pclDriver->Text(&stText);
 }
 

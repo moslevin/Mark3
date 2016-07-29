@@ -30,16 +30,14 @@ See license.txt for more information
 class SlickProgressControl : public GuiControl
 {
 public:
-    virtual void Init();
-    virtual void Draw();
-    virtual GuiReturn_t ProcessEvent( GuiEvent_t *pstEvent_ );
-    virtual void Activate( bool bActivate_ ) {}
-
-    void SetProgress( uint8_t u8Progress_ );
+    virtual void        Init();
+    virtual void        Draw();
+    virtual GuiReturn_t ProcessEvent(GuiEvent_t* pstEvent_);
+    virtual void Activate(bool bActivate_) {}
+    void SetProgress(uint8_t u8Progress_);
 
 private:
     uint8_t m_u8Progress;
 };
 
 #endif
-

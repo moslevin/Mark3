@@ -27,8 +27,8 @@ public:
     bool ReadState(void);
 
 private:
-    volatile uint8_t* m_pu8Port;    //!< Pointer to port input register of port connected to Button
-    volatile uint8_t m_u8Pin;       //!< Pointer to pin on port connected to Button
+    volatile uint8_t* m_pu8Port; //!< Pointer to port input register of port connected to Button
+    volatile uint8_t  m_u8Pin;   //!< Pointer to pin on port connected to Button
 };
 
 #endif // __BUTTON_H__

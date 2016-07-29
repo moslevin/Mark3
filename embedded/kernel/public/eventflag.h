@@ -46,14 +46,17 @@ See license.txt for more information
 class EventFlag : public BlockingObject
 {
 public:
-    void* operator new (size_t sz, void* pv) { return (EventFlag*)pv; };
-
+    void* operator new(size_t sz, void* pv) { return (EventFlag*)pv; };
     ~EventFlag();
 
     /*!
      * \brief Init Initializes the EventFlag object prior to use.
      */
-    void Init() { m_u16SetMask = 0; m_clBlockList.Init(); }
+    void Init()
+    {
+        m_u16SetMask = 0;
+        m_clBlockList.Init();
+    }
 
     /*!
      * \brief Wait - Block a thread on the specific flags in this event flag group
@@ -82,7 +85,7 @@ public:
      *
      * \param pclOwner_ Pointer to the owner thread to unblock.
      */
-    void WakeMe(Thread *pclOwner_);
+    void WakeMe(Thread* pclOwner_);
 
 #endif
 
@@ -106,7 +109,6 @@ public:
     uint16_t GetMask();
 
 private:
-
 #if KERNEL_USE_TIMEOUTS
     /*!
      * \brief Wait_i
@@ -135,9 +137,8 @@ private:
     uint16_t Wait_i(uint16_t u16Mask_, EventFlagOperation_t eMode_);
 #endif
 
-    uint16_t m_u16SetMask;       //!< Event flags currently set in this object
+    uint16_t m_u16SetMask; //!< Event flags currently set in this object
 };
 
-#endif //KERNEL_USE_EVENTFLAG
+#endif // KERNEL_USE_EVENTFLAG
 #endif //__EVENTFLAG_H__
-

@@ -35,7 +35,6 @@ class Terminal
 {
 public:
     void SetDriver(Driver* pclDriver_) { m_pclDriver = pclDriver_; }
-    
     // Cursor commands
     void CursorUp(uint8_t u8Rows_);
     void CursorDown(uint8_t u8Rows_);
@@ -79,6 +78,4 @@ private:
     Driver* m_pclDriver;
 };
 
-
 #endif //__TERMINAL_H__
-

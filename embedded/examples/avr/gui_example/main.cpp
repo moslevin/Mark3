@@ -24,21 +24,21 @@ static GraphicsFlavr clGfx;
 
 //---------------------------------------------------------------------------
 // Window management objects and GUI components.
-static GuiEventSurface clEventSurface;
-static GuiWindow clWindow;
-static LabelControl clLabel;
+static GuiEventSurface   clEventSurface;
+static GuiWindow         clWindow;
+static LabelControl      clLabel;
 static BrushPanelControl clPanel;
-static CheckBoxControl clCheckBox1;
-static CheckBoxControl clCheckBox2;
-static ButtonControl clSlickButton;
-static SevenSegControl clSevenSeg;
-static GroupBoxControl clGroupBox;
-static ProgressControl clProgress;
+static CheckBoxControl   clCheckBox1;
+static CheckBoxControl   clCheckBox2;
+static ButtonControl     clSlickButton;
+static SevenSegControl   clSevenSeg;
+static GroupBoxControl   clGroupBox;
+static ProgressControl   clProgress;
 //---------------------------------------------------------------------------
 // Joystick driver and associated timer object, used to poll the joystick at
 // a fixed frequency
 static FlavrJoystick clJoystick;
-static Timer clJoyTimer;
+static Timer         clJoyTimer;
 
 //---------------------------------------------------------------------------
 // Callback function used to poll the joystick and pass the event back to the
@@ -47,7 +47,7 @@ static void JoyTimerCallback(Thread* pclOwner_, void* pvData_);
 
 //---------------------------------------------------------------------------
 // Tick timer, used to drive animated display elements
-static Timer clTickTimer;
+static Timer         clTickTimer;
 static volatile bool bFlip = false;
 //---------------------------------------------------------------------------
 static void TickTimerCallback(Thread* pclOwner_, void* pvData_);
@@ -91,7 +91,7 @@ void JoyTimerCallback(Thread* pclOwner_, void* pvData_)
     // manages events for our application window.
     GuiEvent_t stEvent;
     stEvent.u8EventType = EVENT_TYPE_JOYSTICK;
-    stEvent.u8TargetID = TARGET_ID_FOCUS;
+    stEvent.u8TargetID  = TARGET_ID_FOCUS;
 
     JoystickReport stReport;
     clJoystick.Scan();
@@ -122,10 +122,10 @@ void TickTimerCallback(Thread* pclOwner_, void* pvData_)
     }
 
     GuiEvent_t stEvent;
-    stEvent.u8EventType = EVENT_TYPE_TIMER;
-    stEvent.u8TargetID = TARGET_ID_BROADCAST;
+    stEvent.u8EventType      = EVENT_TYPE_TIMER;
+    stEvent.u8TargetID       = TARGET_ID_BROADCAST;
     stEvent.stTimer.u16Ticks = 1;
-    bFlip = true;
+    bFlip                    = true;
     clEventSurface.SendEvent(&stEvent);
 }
 
@@ -196,10 +196,10 @@ void AppMain(void* unused_)
 
     {
         DrawWindow_t stWindow;
-        stWindow.u16Top = 0;
+        stWindow.u16Top    = 0;
         stWindow.u16Bottom = 159;
-        stWindow.u16Left = 0;
-        stWindow.u16Right = 127;
+        stWindow.u16Left   = 0;
+        stWindow.u16Right  = 127;
         clGfx.SetWindow(&stWindow);
     }
 

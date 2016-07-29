@@ -13,12 +13,11 @@ See license.txt for more information
 =========================================================================== */
 /*!
 
-    \file   kernelswi.h    
+    \file   kernelswi.h
 
     \brief  Kernel Software interrupt declarations
 
  */
-
 
 #ifndef __KERNELSWI_H_
 #define __KERNELSWI_H_
@@ -26,7 +25,7 @@ See license.txt for more information
 #include "kerneltypes.h"
 //---------------------------------------------------------------------------
 /*!
- *  Class providing the software-interrupt required for context-switching in 
+ *  Class providing the software-interrupt required for context-switching in
  *  the kernel.
  */
 class KernelSWI
@@ -35,7 +34,7 @@ public:
     /*!
      *  \brief Config
      *
-     *  Configure the software interrupt - must be called before any other 
+     *  Configure the software interrupt - must be called before any other
      *  software interrupt functions are called.
      */
     static void Config(void);
@@ -46,46 +45,45 @@ public:
      *  Enable ("Start") the software interrupt functionality
      */
     static void Start(void);
-    
+
     /*!
      *  \brief Stop
      *
      *  Disable the software interrupt functionality
      */
     static void Stop(void);
-    
+
     /*!
      *  \brief Clear
      *
      *  Clear the software interrupt
      */
     static void Clear(void);
-    
+
     /*!
      *  Call the software interrupt
-     *  
+     *
      *  \brief Trigger
      */
     static void Trigger(void);
-    
+
     /*!
      *  \brief DI
      *
      *  Disable the SWI flag itself
-     *  
+     *
      *  \return previous status of the SWI, prior to the DI call
      */
     static uint8_t DI();
-    
+
     /*!
      *  \brief RI
      *
      *  Restore the state of the SWI to the value specified
-     *  
+     *
      *  \param bEnable_ true - enable the SWI, false - disable SWI
-     */        
-    static void RI(bool bEnable_);    
+     */
+    static void RI(bool bEnable_);
 };
-
 
 #endif // __KERNELSIW_H_

@@ -46,8 +46,8 @@ static volatile bool bAddQuantumTimer; // Indicates that a timer add is pending
 
 //---------------------------------------------------------------------------
 Timer Quantum::m_clQuantumTimer; // The global timernodelist_t object
-bool Quantum::m_bActive;
-bool Quantum::m_bInTimer;
+bool  Quantum::m_bActive;
+bool  Quantum::m_bInTimer;
 //---------------------------------------------------------------------------
 /*!
  * \brief QuantumCallback

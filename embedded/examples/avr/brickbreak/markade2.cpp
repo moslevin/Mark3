@@ -58,10 +58,10 @@ static FlavrJoystick clJoy_Sim;
 JoystickDriver* pclJoystick = &clJoy_Sim;
 
 static SoundDriver clSound;
-SoundDriver* pclSound = &clSound;
+SoundDriver*       pclSound = &clSound;
 
 static Semaphore clSem;
-static Timer clTimer;
+static Timer     clTimer;
 
 static SongNote_t astNotes[] = { { TONE(C, 4), NOTE_QUARTER, 32 },
                                  { TONE(D, 4), NOTE_HALF, 32 },
@@ -138,7 +138,7 @@ void AppEntry(void)
     clJoy_Sim.Open();
 
     pclJoystick = &clJoy_Sim;
-    pclDisplay = &clTFT_Sim;
+    pclDisplay  = &clTFT_Sim;
 
     clSound.SetName("/dev/sound");
     clSound.Init();

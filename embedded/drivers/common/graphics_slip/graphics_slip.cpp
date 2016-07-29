@@ -67,10 +67,10 @@ void GraphicsSlip::Init(void)
 {
     m_u16Res16X = 240;
     m_u16Res16Y = 192;
-    m_u8BPP = 16;
-    m_u16Left = 0;
-    m_u16Right = 239;
-    m_u16Top = 0;
+    m_u8BPP     = 16;
+    m_u16Left   = 0;
+    m_u16Right  = 239;
+    m_u16Top    = 0;
     m_u16Bottom = 191;
 
     m_pclSlip->SetDriver(DriverList::FindByPath("/dev/tty"));
@@ -80,12 +80,12 @@ void GraphicsSlip::Init(void)
 void GraphicsSlip::DrawPixel(DrawPoint_t* pstPoint_)
 {
     SlipDataVector astSlipData[2];
-    uint8_t u8EventType = DISPLAY_EVENT_SET_PIXEL;
+    uint8_t        u8EventType = DISPLAY_EVENT_SET_PIXEL;
 
     astSlipData[0].pu8Data = &u8EventType;
-    astSlipData[0].u8Size = 1;
+    astSlipData[0].u8Size  = 1;
     astSlipData[1].pu8Data = (uint8_t*)pstPoint_;
-    astSlipData[1].u8Size = sizeof(DrawPoint_t);
+    astSlipData[1].u8Size  = sizeof(DrawPoint_t);
 
     m_pclSlip->WriteVector(SLIP_CHANNEL_GRAPHICS, astSlipData, 2);
 }
@@ -103,12 +103,12 @@ void GraphicsSlip::ClearScreen(void)
 void GraphicsSlip::Line(DrawLine_t* pstLine_)
 {
     SlipDataVector astSlipData[2];
-    uint8_t u8EventType = DISPLAY_EVENT_LINE;
+    uint8_t        u8EventType = DISPLAY_EVENT_LINE;
 
     astSlipData[0].pu8Data = &u8EventType;
-    astSlipData[0].u8Size = 1;
+    astSlipData[0].u8Size  = 1;
     astSlipData[1].pu8Data = (uint8_t*)pstLine_;
-    astSlipData[1].u8Size = sizeof(DrawLine_t);
+    astSlipData[1].u8Size  = sizeof(DrawLine_t);
 
     m_pclSlip->WriteVector(SLIP_CHANNEL_GRAPHICS, astSlipData, 2);
 }
@@ -117,12 +117,12 @@ void GraphicsSlip::Line(DrawLine_t* pstLine_)
 void GraphicsSlip::Rectangle(DrawRectangle_t* pstRectangle_)
 {
     SlipDataVector astSlipData[2];
-    uint8_t u8EventType = DISPLAY_EVENT_RECTANGLE;
+    uint8_t        u8EventType = DISPLAY_EVENT_RECTANGLE;
 
     astSlipData[0].pu8Data = &u8EventType;
-    astSlipData[0].u8Size = 1;
+    astSlipData[0].u8Size  = 1;
     astSlipData[1].pu8Data = (uint8_t*)pstRectangle_;
-    astSlipData[1].u8Size = sizeof(DrawRectangle_t);
+    astSlipData[1].u8Size  = sizeof(DrawRectangle_t);
 
     m_pclSlip->WriteVector(SLIP_CHANNEL_GRAPHICS, astSlipData, 2);
 }
@@ -131,12 +131,12 @@ void GraphicsSlip::Rectangle(DrawRectangle_t* pstRectangle_)
 void GraphicsSlip::Circle(DrawCircle_t* pstCircle_)
 {
     SlipDataVector astSlipData[2];
-    uint8_t u8EventType = DISPLAY_EVENT_CIRCLE;
+    uint8_t        u8EventType = DISPLAY_EVENT_CIRCLE;
 
     astSlipData[0].pu8Data = &u8EventType;
-    astSlipData[0].u8Size = 1;
+    astSlipData[0].u8Size  = 1;
     astSlipData[1].pu8Data = (uint8_t*)pstCircle_;
-    astSlipData[1].u8Size = sizeof(DrawCircle_t);
+    astSlipData[1].u8Size  = sizeof(DrawCircle_t);
 
     m_pclSlip->WriteVector(SLIP_CHANNEL_GRAPHICS, astSlipData, 2);
 }
@@ -145,12 +145,12 @@ void GraphicsSlip::Circle(DrawCircle_t* pstCircle_)
 void GraphicsSlip::Ellipse(DrawEllipse_t* pstEllipse_)
 {
     SlipDataVector astSlipData[2];
-    uint8_t u8EventType = DISPLAY_EVENT_ELLIPSE;
+    uint8_t        u8EventType = DISPLAY_EVENT_ELLIPSE;
 
     astSlipData[0].pu8Data = &u8EventType;
-    astSlipData[0].u8Size = 1;
+    astSlipData[0].u8Size  = 1;
     astSlipData[1].pu8Data = (uint8_t*)pstEllipse_;
-    astSlipData[1].u8Size = sizeof(DrawEllipse_t);
+    astSlipData[1].u8Size  = sizeof(DrawEllipse_t);
 
     m_pclSlip->WriteVector(SLIP_CHANNEL_GRAPHICS, astSlipData, 2);
 }
@@ -163,11 +163,11 @@ void GraphicsSlip::Stamp(DrawStamp_t* pstStamp_)
     uint8_t u8EventType = DISPLAY_EVENT_STAMP;
 
     astSlipData[0].pu8Data = &u8EventType;
-    astSlipData[0].u8Size = 1;
+    astSlipData[0].u8Size  = 1;
     astSlipData[1].pu8Data = (uint8_t*)pstStamp_;
-    astSlipData[1].u8Size = sizeof(DrawStamp_t) - 2;
+    astSlipData[1].u8Size  = sizeof(DrawStamp_t) - 2;
     astSlipData[2].pu8Data = pstStamp_->pu8Data;
-    astSlipData[2].u8Size = (uint8_t)(((pstStamp_->u16Width + 7) / 8) * pstStamp_->u16Height);
+    astSlipData[2].u8Size  = (uint8_t)(((pstStamp_->u16Width + 7) / 8) * pstStamp_->u16Height);
 
     m_pclSlip->WriteVector(SLIP_CHANNEL_GRAPHICS, astSlipData, 3);
 }

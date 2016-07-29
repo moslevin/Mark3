@@ -59,8 +59,8 @@ uint8_t GuiWindow::GetMaxZOrder()
     GUI_DEBUG_PRINT("GuiWindow::GetMaxZOrder\n");
 
     LinkListNode* pclTempNode;
-    uint8_t u8Z = 0;
-    uint8_t u8TempZ;
+    uint8_t       u8Z = 0;
+    uint8_t       u8TempZ;
 
     pclTempNode = m_clControlList.GetHead();
 
@@ -81,7 +81,7 @@ void GuiWindow::Redraw(bool bRedrawAll_)
     GUI_DEBUG_PRINT("GuiWindow::Redraw\n");
 
     uint8_t u8ControlsLeft = m_u8ControlCount;
-    uint8_t u8CurrentZ = 0;
+    uint8_t u8CurrentZ     = 0;
     uint8_t u8MaxZ;
 
     u8MaxZ = GetMaxZOrder();
@@ -117,27 +117,27 @@ void GuiWindow::Redraw(bool bRedrawAll_)
 void GuiWindow::InvalidateRegion(uint16_t u16Left_, uint16_t u16Top_, uint16_t u16Width_, uint16_t u16Height_)
 {
     LinkListNode* pclTempNode;
-    uint16_t u16Left1, u16Left2, u16Right1, u16Right2, u16Top1, u16Top2, u16Bottom1, u16Bottom2;
+    uint16_t      u16Left1, u16Left2, u16Right1, u16Right2, u16Top1, u16Top2, u16Bottom1, u16Bottom2;
 
     pclTempNode = m_clControlList.GetHead();
 
-    u16Left1 = u16Left_;
-    u16Right1 = u16Left_ + u16Width_ - 1;
-    u16Top1 = u16Top_;
+    u16Left1   = u16Left_;
+    u16Right1  = u16Left_ + u16Width_ - 1;
+    u16Top1    = u16Top_;
     u16Bottom1 = u16Top_ + u16Height_ - 1;
 
     while (pclTempNode) {
         GuiControl* pclControl = static_cast<GuiControl*>(pclTempNode);
-        uint16_t u16X, u16Y;
+        uint16_t    u16X, u16Y;
 
         bool bMatch = false;
 
         // Get the absolute display coordinates
         pclControl->GetControlOffset(&u16X, &u16Y);
 
-        u16Left2 = pclControl->GetLeft() + u16X;
-        u16Right2 = u16Left2 + pclControl->GetWidth() - 1;
-        u16Top2 = pclControl->GetTop() + u16Y;
+        u16Left2   = pclControl->GetLeft() + u16X;
+        u16Right2  = u16Left2 + pclControl->GetWidth() - 1;
+        u16Top2    = pclControl->GetTop() + u16Y;
         u16Bottom2 = u16Top2 + pclControl->GetHeight() - 1;
 
         // If the control has any pixels in the bounding box.
@@ -242,7 +242,7 @@ void GuiWindow::ProcessEvent(GuiEvent_t* pstEvent_)
 
         uint16_t u16TargetX, u16TargetY;
         uint16_t u16OffsetX, u16OffsetY;
-        uint8_t u8MaxZ = 0;
+        uint8_t  u8MaxZ = 0;
 
         LinkListNode* pclTempNode;
         pclTempNode = m_clControlList.GetHead();
@@ -277,7 +277,7 @@ void GuiWindow::ProcessEvent(GuiEvent_t* pstEvent_)
                         // candidate control to accept the event
                         if (pclControl->GetZOrder() >= u8MaxZ) {
                             pclTargetControl = pclControl;
-                            u8MaxZ = pclControl->GetZOrder();
+                            u8MaxZ           = pclControl->GetZOrder();
                         }
                     }
 
@@ -314,7 +314,7 @@ void GuiWindow::CycleFocus(bool bForward_)
     GUI_DEBUG_PRINT("GuiWindow::CycleFocus\n");
 
     // Set starting point and cached copy of current nodes
-    LinkListNode* pclTempNode = static_cast<GuiControl*>(m_clControlList.GetHead());
+    LinkListNode* pclTempNode  = static_cast<GuiControl*>(m_clControlList.GetHead());
     LinkListNode* pclStartNode = m_pclInFocus;
 
     if (bForward_) {
@@ -325,7 +325,7 @@ void GuiWindow::CycleFocus(bool bForward_)
             if (!m_pclInFocus) {
                 return;
             }
-            pclTempNode = static_cast<GuiControl*>(m_pclInFocus);
+            pclTempNode  = static_cast<GuiControl*>(m_pclInFocus);
             pclStartNode = NULL;
         } else {
             // Deactivate the control that's losing focus
@@ -362,7 +362,7 @@ void GuiWindow::CycleFocus(bool bForward_)
             pclTempNode = pclTempNode->GetNext();
         }
     } else {
-        pclTempNode = static_cast<GuiControl*>(m_clControlList.GetTail());
+        pclTempNode  = static_cast<GuiControl*>(m_clControlList.GetTail());
         pclStartNode = m_pclInFocus;
 
         // If there isn't a current focus node, set the focus to the end
@@ -372,7 +372,7 @@ void GuiWindow::CycleFocus(bool bForward_)
             if (!m_pclInFocus) {
                 return;
             }
-            pclTempNode = static_cast<GuiControl*>(m_pclInFocus);
+            pclTempNode  = static_cast<GuiControl*>(m_pclInFocus);
             pclStartNode = NULL;
         } else {
             // Deactivate the control that's losing focus
@@ -477,7 +477,7 @@ bool GuiEventSurface::ProcessEvent()
     GUI_DEBUG_PRINT("GuiEventSurface::ProcessEvent\n");
 
     // read the event from the queue (blocking call)
-    Message* pclMessage = m_clMessageQueue.Receive();
+    Message*   pclMessage = m_clMessageQueue.Receive();
     GuiEvent_t stLocalEvent;
 
     // If we failed to get something from the queue,
@@ -497,7 +497,7 @@ bool GuiEventSurface::ProcessEvent()
     // Special case check - target ID is the highest Z-ordered window(s) ONLY.
     if (stLocalEvent.u8TargetID == TARGET_ID_BROADCAST_Z) {
         LinkListNode* pclTempNode = m_clWindowList.GetHead();
-        uint8_t u8MaxZ = 0;
+        uint8_t       u8MaxZ      = 0;
 
         while (pclTempNode) {
             if (u8MaxZ < (static_cast<GuiWindow*>(pclTempNode))->GetZOrder()) {
@@ -536,7 +536,7 @@ void GuiEventSurface::CopyEvent(GuiEvent_t* pstDst_, GuiEvent_t* pstSrc_)
     GUI_DEBUG_PRINT("GuiEventSurface::CopyEvent\n");
     uint8_t* pu8Dst_ = (uint8_t*)pstDst_;
     uint8_t* pu8Src_ = (uint8_t*)pstSrc_;
-    uint8_t i;
+    uint8_t  i;
     for (i = 0; i < sizeof(GuiEvent_t); i++) {
         *pu8Dst_++ = *pu8Src_++;
     }
@@ -557,8 +557,8 @@ void GuiControl::GetControlOffset(uint16_t* pu16X_, uint16_t* pu16Y_)
 {
     GUI_DEBUG_PRINT("GuiControl::GetControlOffset\n");
     GuiControl* pclTempControl = m_pclParentControl;
-    *pu16X_ = 0;
-    *pu16Y_ = 0;
+    *pu16X_                    = 0;
+    *pu16Y_                    = 0;
     while (pclTempControl) {
         *pu16X_ += pclTempControl->GetLeft();
         *pu16Y_ += pclTempControl->GetTop();

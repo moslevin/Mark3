@@ -99,9 +99,9 @@ void AppEntry(void)
     {
         DrawWindow_t stWindow;
         stWindow.u16Bottom = 159;
-        stWindow.u16Top = 0;
-        stWindow.u16Left = 0;
-        stWindow.u16Right = 127;
+        stWindow.u16Top    = 0;
+        stWindow.u16Left   = 0;
+        stWindow.u16Right  = 127;
         my_gfx->SetWindow(&stWindow);
     }
     Thread::Sleep(10);
@@ -112,17 +112,17 @@ void AppEntry(void)
     while (1) {
         DrawText_t stText;
 
-        stText.u16Left = 8;
-        stText.u16Top = 8;
-        stText.uColor = COLOR_RED;
-        stText.pstFont = &fntTahoma_10_False_False_False_;
+        stText.u16Left  = 8;
+        stText.u16Top   = 8;
+        stText.uColor   = COLOR_RED;
+        stText.pstFont  = &fntTahoma_10_False_False_False_;
         stText.pcString = "Hello World!";
         my_gfx->Text(&stText);
 
-        stText.u16Left = 8;
-        stText.u16Top = 16;
-        stText.uColor = COLOR_RED;
-        stText.pstFont = &fntTahoma_10_False_False_False_;
+        stText.u16Left  = 8;
+        stText.u16Top   = 16;
+        stText.uColor   = COLOR_RED;
+        stText.pstFont  = &fntTahoma_10_False_False_False_;
         stText.pcString = "Goodbye World!";
         my_gfx->Text(&stText);
         Thread::Sleep(10);

@@ -30,7 +30,7 @@ See license.txt for more information
 
 //---------------------------------------------------------------------------
 uint8_t AutoAlloc::m_au8AutoHeap[AUTO_ALLOC_SIZE];
-K_ADDR AutoAlloc::m_aHeapTop;
+K_ADDR  AutoAlloc::m_aHeapTop;
 
 //---------------------------------------------------------------------------
 void AutoAlloc::Init(void)

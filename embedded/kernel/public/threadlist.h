@@ -13,7 +13,7 @@ See license.txt for more information
 =========================================================================== */
 /*!
 
-    \file   threadlist.h    
+    \file   threadlist.h
 
     \brief  Thread linked-list declarations
 
@@ -29,62 +29,65 @@ See license.txt for more information
 class Thread;
 
 /*!
-    This class is used for building thread-management facilities, such as 
+    This class is used for building thread-management facilities, such as
     schedulers, and blocking objects.
  */
 class ThreadList : public CircularLinkList
 {
-public:    
-    void* operator new (size_t sz, void* pv) { return (ThreadList*)pv; };
-
-    /*! 
+public:
+    void* operator new(size_t sz, void* pv) { return (ThreadList*)pv; };
+    /*!
      *  \brief ThreadList
      *
      *  Default constructor - zero-initializes the data.
      */
-    ThreadList() { m_uXPriority = 0; m_pclMap = NULL; }
+    ThreadList()
+    {
+        m_uXPriority = 0;
+        m_pclMap     = NULL;
+    }
 
     /*!
      *  \brief SetPriority
      *
      *  Set the priority of this threadlist (if used for a scheduler).
-     *  
+     *
      *  \param uXPriority_ Priority level of the thread list
      */
     void SetPriority(PRIO_TYPE uXPriority_);
-    
+
     /*!
      *  \brief SetMapPointer
      *
      *  Set the pointer to a bitmap to use for this threadlist.  Once again,
      *  only needed when the threadlist is being used for scheduling purposes.
-     *  
-     *  \param pclMap_ Pointer to the priority map object used to track this 
+     *
+     *  \param pclMap_ Pointer to the priority map object used to track this
      *                 thread.
      */
-    void SetMapPointer(PriorityMap *pclMap_);
-    
+    void SetMapPointer(PriorityMap* pclMap_);
+
     /*!
      *  \brief Add
      *
      *  Add a thread to the threadlist.
-     *  
+     *
      *  \param node_ Pointer to the thread (link list node) to add to the list
      */
-    void Add(LinkListNode *node_);
-    
+    void Add(LinkListNode* node_);
+
     /*!
      *  \brief Add
      *
      *  Add a thread to the threadlist, specifying the flag and priority at
      *  the same time.
-     *  
+     *
      *  \param node_        Pointer to the thread to add (link list node)
-     *  \param pclMap_      Pointer to the bitmap flag to set (if used in 
+     *  \param pclMap_      Pointer to the bitmap flag to set (if used in
      *                      a scheduler context), or NULL for non-scheduler.
      *  \param uXPriority_  Priority of the threadlist
      */
-    void Add(LinkListNode *node_, PriorityMap *pclMap_, PRIO_TYPE uXPriority_);
+    void Add(LinkListNode* node_, PriorityMap* pclMap_, PRIO_TYPE uXPriority_);
 
     /*!
      * \brief AddPriority
@@ -94,33 +97,32 @@ public:
      *
      * \param node_         Pointer to a thread to add to the list.
      */
-    void AddPriority(LinkListNode *node_);
+    void AddPriority(LinkListNode* node_);
 
     /*!
      *  \brief Remove
      *
      *  Remove the specified thread from the threadlist
-     *  
+     *
      *  \param node_ Pointer to the thread to remove
      */
-    void Remove(LinkListNode *node_);
-    
+    void Remove(LinkListNode* node_);
+
     /*!
      *  \brief HighestWaiter
      *
      *  Return a pointer to the highest-priority thread in the thread-list.
-     *  
+     *
      *  \return Pointer to the highest-priority thread
      */
-    Thread *HighestWaiter();
-private:
+    Thread* HighestWaiter();
 
+private:
     //! Priority of the threadlist
-    PRIO_TYPE    m_uXPriority;
-    
+    PRIO_TYPE m_uXPriority;
+
     //! Pointer to the bitmap/flag to set when used for scheduling.
-    PriorityMap *m_pclMap;
+    PriorityMap* m_pclMap;
 };
 
 #endif
-

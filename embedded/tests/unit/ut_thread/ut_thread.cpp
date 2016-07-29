@@ -240,7 +240,7 @@ TEST(ut_roundrobin)
         u32Min = u32RR3;
     }
     u32Range = u32Max - u32Min;
-    u32Avg = (u32RR1 + u32RR2 + u32RR3) / 3;
+    u32Avg   = (u32RR1 + u32RR2 + u32RR3) / 3;
 
     // Max-Min delta should not exceed 1% of average for this simple test
     EXPECT_LT(u32Range, u32Avg / 100);
@@ -321,7 +321,7 @@ TEST(ut_quanta)
         u32Min = u32RR3;
     }
     u32Range = u32Max - u32Min;
-    u32Avg = (u32RR1 + u32RR2 + u32RR3) / 3;
+    u32Avg   = (u32RR1 + u32RR2 + u32RR3) / 3;
 
 #if KERNEL_TIMERS_TICKLESS
     // Max-Min delta should not exceed 5% of average for this test
@@ -343,5 +343,6 @@ TEST_END
 // Test Whitelist Goes Here
 //===========================================================================
 TEST_CASE_START
-TEST_CASE(ut_threadcreate), TEST_CASE(ut_threadstop), TEST_CASE(ut_threadexit), TEST_CASE(ut_threadsleep),
-    TEST_CASE(ut_roundrobin), TEST_CASE(ut_quanta), TEST_CASE_END
+TEST_CASE(ut_threadcreate)
+, TEST_CASE(ut_threadstop), TEST_CASE(ut_threadexit), TEST_CASE(ut_threadsleep), TEST_CASE(ut_roundrobin),
+    TEST_CASE(ut_quanta), TEST_CASE_END

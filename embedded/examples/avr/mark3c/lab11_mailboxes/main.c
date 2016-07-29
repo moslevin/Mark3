@@ -27,26 +27,25 @@ Takeaway:
 
 ===========================================================================*/
 #if !KERNEL_USE_IDLE_FUNC
-# error "This demo requires KERNEL_USE_IDLE_FUNC"
+#error "This demo requires KERNEL_USE_IDLE_FUNC"
 #endif
 
 //---------------------------------------------------------------------------
-#define APP_STACK_SIZE      (256/sizeof(K_WORD))
+#define APP_STACK_SIZE (256 / sizeof(K_WORD))
 DECLARE_THREAD(hApp1Thread);
-static K_WORD  awApp1Stack[APP_STACK_SIZE];
-static void    App1Main(void *unused_);
+static K_WORD awApp1Stack[APP_STACK_SIZE];
+static void App1Main(void* unused_);
 
 //---------------------------------------------------------------------------
 DECLARE_THREAD(hApp2Thread);
-static K_WORD  awApp2Stack[APP_STACK_SIZE];
-static void    App2Main(void *unused_);
+static K_WORD awApp2Stack[APP_STACK_SIZE];
+static void App2Main(void* unused_);
 
 //---------------------------------------------------------------------------
 DECLARE_MAILBOX(hMailbox);
 static uint8_t au8MBData[100];
 
-typedef struct
-{
+typedef struct {
     uint8_t au8Buffer[10];
 } MBType_t;
 
@@ -57,10 +56,10 @@ int main(void)
     Kernel_Init();
 
     // Initialize the threads used in this example
-    Thread_Init(hApp1Thread, awApp1Stack,  sizeof(awApp1Stack),  1, App1Main,  0);
+    Thread_Init(hApp1Thread, awApp1Stack, sizeof(awApp1Stack), 1, App1Main, 0);
     Thread_Start(hApp1Thread);
 
-    Thread_Init(hApp2Thread, awApp2Stack,  sizeof(awApp2Stack),  2, App2Main,  0);
+    Thread_Init(hApp2Thread, awApp2Stack, sizeof(awApp2Stack), 2, App2Main, 0);
     Thread_Start(hApp2Thread);
 
     // Initialize the mailbox used in this example
@@ -72,10 +71,9 @@ int main(void)
 }
 
 //---------------------------------------------------------------------------
-void App1Main(void *unused_)
+void App1Main(void* unused_)
 {
-    while (1)
-    {
+    while (1) {
         MBType_t stMsg;
 
         // Wait until there is an envelope available in the shared mailbox, and
@@ -86,10 +84,9 @@ void App1Main(void *unused_)
 }
 
 //---------------------------------------------------------------------------
-void App2Main(void *unused_)
+void App2Main(void* unused_)
 {
-    while (1)
-    {
+    while (1) {
         MBType_t stMsg;
 
         // Place a bunch of envelopes in the mailbox, and then wait for a
@@ -101,10 +98,8 @@ void App2Main(void *unused_)
         KernelAware_Print("Messages Begin\n");
 
         uint8_t i, j;
-        for (i = 0; i < 10; i++)
-        {
-            for (j = 0; j < 10; j++)
-            {
+        for (i = 0; i < 10; i++) {
+            for (j = 0; j < 10; j++) {
                 stMsg.au8Buffer[j] = (i * 10) + j;
             }
             Mailbox_Send(hMailbox, &stMsg);

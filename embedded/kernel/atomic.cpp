@@ -41,7 +41,7 @@ uint8_t Atomic::Set(uint8_t* pu8Source_, uint8_t u8Val_)
 {
     uint8_t u8Ret;
     CS_ENTER();
-    u8Ret = *pu8Source_;
+    u8Ret       = *pu8Source_;
     *pu8Source_ = u8Val_;
     CS_EXIT();
     return u8Ret;
@@ -51,7 +51,7 @@ uint16_t Atomic::Set(uint16_t* pu16Source_, uint16_t u16Val_)
 {
     uint16_t u16Ret;
     CS_ENTER();
-    u16Ret = *pu16Source_;
+    u16Ret       = *pu16Source_;
     *pu16Source_ = u16Val_;
     CS_EXIT();
     return u16Ret;
@@ -61,7 +61,7 @@ uint32_t Atomic::Set(uint32_t* pu32Source_, uint32_t u32Val_)
 {
     uint32_t u32Ret;
     CS_ENTER();
-    u32Ret = *pu32Source_;
+    u32Ret       = *pu32Source_;
     *pu32Source_ = u32Val_;
     CS_EXIT();
     return u32Ret;

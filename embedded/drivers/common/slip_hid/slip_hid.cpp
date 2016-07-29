@@ -35,9 +35,9 @@ static GuiEventSurface* g_pclSurface;
 //---------------------------------------------------------------------------
 void SlipHidHandler(Driver* pclDriver_, uint8_t u8Channel_, uint8_t* pu8Data_, uint16_t u16Len_)
 {
-    uint8_t u8EventType = pu8Data_[0];
-    GuiEvent_t stGuiEvent;
-    bool bSend = true;
+    uint8_t     u8EventType = pu8Data_[0];
+    GuiEvent_t  stGuiEvent;
+    bool        bSend    = true;
     GuiEvent_t* pstEvent = (GuiEvent_t*)&pu8Data_[1];
 
     if (!pu8Data_ || !u16Len_) {
@@ -45,24 +45,24 @@ void SlipHidHandler(Driver* pclDriver_, uint8_t u8Channel_, uint8_t* pu8Data_, u
     }
 
     stGuiEvent.u8EventType = pstEvent->u8EventType;
-    stGuiEvent.u8TargetID = pstEvent->u8TargetID;
+    stGuiEvent.u8TargetID  = pstEvent->u8TargetID;
 
     switch (u8EventType) {
         case SLIP_HID_MOUSE: {
             MouseEvent_t* pstMouse = (MouseEvent_t*)&pu8Data_[3];
 
             stGuiEvent.stMouse.u8Flags = pstMouse->u8Flags;
-            stGuiEvent.stMouse.u16X = pstMouse->u16X;
-            stGuiEvent.stMouse.u16Y = pstMouse->u16Y;
+            stGuiEvent.stMouse.u16X    = pstMouse->u16X;
+            stGuiEvent.stMouse.u16Y    = pstMouse->u16Y;
         } break;
         case SLIP_HID_JOYSTICK: {
-            JoystickEvent_t* pstJoystick = (JoystickEvent_t*)&pu8Data_[3];
-            stGuiEvent.stJoystick.Current.u16RawData = pstJoystick->Current.u16RawData;
+            JoystickEvent_t* pstJoystick              = (JoystickEvent_t*)&pu8Data_[3];
+            stGuiEvent.stJoystick.Current.u16RawData  = pstJoystick->Current.u16RawData;
             stGuiEvent.stJoystick.Previous.u16RawData = pstJoystick->Previous.u16RawData;
         } break;
         case SLIP_HID_KEYBOARD: {
-            KeyEvent_t* pstKeyboard = (KeyEvent_t*)&pu8Data_[3];
-            stGuiEvent.stKey.u8Flags = pstKeyboard->u8Flags;
+            KeyEvent_t* pstKeyboard    = (KeyEvent_t*)&pu8Data_[3];
+            stGuiEvent.stKey.u8Flags   = pstKeyboard->u8Flags;
             stGuiEvent.stKey.u8KeyCode = pstKeyboard->u8KeyCode;
         } break;
         default: bSend = false; break;

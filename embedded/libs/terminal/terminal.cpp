@@ -19,7 +19,7 @@ See license.txt for more information
 void Terminal::Escape(void)
 {
     uint16_t u16Written = 0;
-    uint8_t u8Val = 0x1B;
+    uint8_t  u8Val      = 0x1B;
     while (!u16Written) {
         u16Written = m_pclDriver->Write(1, &u8Val);
     }

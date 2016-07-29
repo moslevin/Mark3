@@ -53,8 +53,8 @@ void Timer::Start(bool bRepeat_, uint32_t u32IntervalMs_, TimerCallback_t pfCall
 
     SetIntervalMSeconds(u32IntervalMs_);
     m_u32TimerTolerance = 0;
-    m_pfCallback = pfCallback_;
-    m_pvData = pvData_;
+    m_pfCallback        = pfCallback_;
+    m_pvData            = pvData_;
 
     if (!bRepeat_) {
         m_u8Flags = TIMERLIST_FLAG_ONE_SHOT;

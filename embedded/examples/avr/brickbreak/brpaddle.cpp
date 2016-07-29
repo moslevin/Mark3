@@ -47,8 +47,8 @@ void BrPaddle::Init(uint8_t u8Mode_)
 //---------------------------------------------------------------------------
 void BrPaddle::SetPosition(uint16_t u16X_)
 {
-    m_s16X = u16X_;
-    m_sLastX = m_s16X;
+    m_s16X    = u16X_;
+    m_sLastX  = m_s16X;
     m_bUpdate = true;
 }
 
@@ -121,14 +121,14 @@ void BrPaddle::Clear(void)
 {
     DrawRectangle_t stRect;
 
-    stRect.bFill = true;
-    stRect.u16Top = PADDLE_YPOS;
+    stRect.bFill     = true;
+    stRect.u16Top    = PADDLE_YPOS;
     stRect.u16Bottom = PADDLE_YPOS + PADDLE_HEIGHT - 1;
-    stRect.u16Left = m_s16X;
-    stRect.u16Right = m_s16X + m_u8Width;
+    stRect.u16Left   = m_s16X;
+    stRect.u16Right  = m_s16X + m_u8Width;
 
     stRect.u32ineColor = COLOR_BLACK;
-    stRect.uFillColor = COLOR_BLACK;
+    stRect.uFillColor  = COLOR_BLACK;
 
     pclDisplay->Rectangle(&stRect);
     m_bUpdate = true;
@@ -174,11 +174,11 @@ void BrPaddle::Draw(void)
     }
 
     TileDef_t stTile;
-    stTile.m_eFormat = TILE_2BPP;
-    stTile.m_pu8Data = aucPaddleTileR;
+    stTile.m_eFormat   = TILE_2BPP;
+    stTile.m_pu8Data   = aucPaddleTileR;
     stTile.m_puPalette = auPaddlePalette;
-    stTile.m_u8Height = 6;
-    stTile.m_u8Width = 4;
+    stTile.m_u8Height  = 6;
+    stTile.m_u8Width   = 4;
     clMyTile.LoadTile(&stTile);
     clMyTile.Render(pclDisplay, m_s16X, PADDLE_YPOS);
 
@@ -188,19 +188,19 @@ void BrPaddle::Draw(void)
 
     DrawRectangle_t stRect;
 
-    stRect.bFill = true;
-    stRect.u16Top = PADDLE_YPOS;
+    stRect.bFill     = true;
+    stRect.u16Top    = PADDLE_YPOS;
     stRect.u16Bottom = PADDLE_YPOS + PADDLE_HEIGHT - 1;
 
     stRect.u32ineColor = COLOR_BLACK;
-    stRect.uFillColor = COLOR_BLACK;
+    stRect.uFillColor  = COLOR_BLACK;
 
     if (m_s16Vel > 0) {
         if (m_s16X - m_s16Vel < 0) {
-            stRect.u16Left = 0;
+            stRect.u16Left  = 0;
             stRect.u16Right = m_s16X - 1;
         } else {
-            stRect.u16Left = m_s16X - m_s16Vel;
+            stRect.u16Left  = m_s16X - m_s16Vel;
             stRect.u16Right = m_s16X - 1;
         }
         pclDisplay->Rectangle(&stRect);
@@ -208,15 +208,15 @@ void BrPaddle::Draw(void)
 
     if (m_s16Vel < 0) {
         if (m_s16X + m_u8Width - m_s16Vel >= SCREEN_WIDTH) {
-            stRect.u16Left = m_s16X + m_u8Width;
+            stRect.u16Left  = m_s16X + m_u8Width;
             stRect.u16Right = SCREEN_WIDTH - 1;
         } else {
-            stRect.u16Left = m_s16X + m_u8Width;
+            stRect.u16Left  = m_s16X + m_u8Width;
             stRect.u16Right = (uint16_t)(((int16_t)stRect.u16Left) - (m_s16Vel + 1));
         }
         pclDisplay->Rectangle(&stRect);
     }
 
-    m_sLastX = m_s16X;
+    m_sLastX  = m_s16X;
     m_bUpdate = false;
 }

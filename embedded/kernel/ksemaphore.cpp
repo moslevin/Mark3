@@ -110,7 +110,7 @@ void Semaphore::Init(uint16_t u16InitVal_, uint16_t u16MaxVal_)
     // Copy the paramters into the object - set the maximum value for this
     // semaphore to implement either binary or counting semaphores, and set
     // the initial count.  Clear the wait list for this object.
-    m_u16Value = u16InitVal_;
+    m_u16Value    = u16InitVal_;
     m_u16MaxValue = u16MaxVal_;
 
     m_clBlockList.Init();
@@ -122,7 +122,7 @@ bool Semaphore::Post()
     KERNEL_TRACE_1("Posting semaphore, Thread %d", (uint16_t)g_pclCurrent->GetID());
 
     bool bThreadWake = 0;
-    bool bBail = false;
+    bool bBail       = false;
     // Increment the semaphore count - we can mess with threads so ensure this
     // is in a critical section.  We don't just disable the scheudler since
     // we want to be able to do this from within an interrupt context as well.
@@ -171,7 +171,7 @@ void Semaphore::Pend_i(void)
 
 #if KERNEL_USE_TIMEOUTS
     Timer clSemTimer;
-    bool bUseTimer = false;
+    bool  bUseTimer = false;
 #endif
 
     // Once again, messing with thread data - ensure

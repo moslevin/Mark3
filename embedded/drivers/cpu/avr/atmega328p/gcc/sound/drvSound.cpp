@@ -28,14 +28,14 @@ See license.txt for more information
 #include <avr/interrupt.h>
 
 //---------------------------------------------------------------------------
-static volatile uint16_t u16BeatTimer = 0;
-static volatile uint16_t u16NoteIndex = 0;
-static volatile uint16_t u16SweepIdx = 0;
+static volatile uint16_t u16BeatTimer  = 0;
+static volatile uint16_t u16NoteIndex  = 0;
+static volatile uint16_t u16SweepIdx   = 0;
 static volatile uint16_t u16SweepSteps = 0;
 
 static volatile uint16_t target = 0;
-static volatile uint16_t count = 0;
-static volatile uint8_t level = 0;
+static volatile uint16_t count  = 0;
+static volatile uint8_t  level  = 0;
 
 static Timer clTimer;
 
@@ -68,8 +68,8 @@ void SoundDriver::SetTone(SquareWave_t* pstWave_)
 
     CS_ENTER();
     target = pstWave_->u16Freq / 2;
-    level = pstWave_->u8Level;
-    OCR2B = level;
+    level  = pstWave_->u8Level;
+    OCR2B  = level;
     CS_EXIT();
 
     clTimer.Start(false, pstWave_->u16DurationMS, ToneCallback, 0);
@@ -90,8 +90,8 @@ void SongCallback(Thread* pclOwner_, void* pvData_)
 
         CS_ENTER();
         target = pstSong->astNotes[u16NoteIndex].u16Freq / 2;
-        level = pstSong->astNotes[u16NoteIndex].u8Level;
-        OCR2B = level;
+        level  = pstSong->astNotes[u16NoteIndex].u8Level;
+        OCR2B  = level;
         CS_EXIT();
     }
 }
@@ -113,7 +113,7 @@ void SweepCallback(Thread* pstOwner_, void* pvData_)
 
         CS_ENTER();
         target = u16Freq / 2;
-        level = pstSweep->u8Level;
+        level  = pstSweep->u8Level;
         CS_EXIT();
 
         if (u16SweepIdx == u16SweepSteps) {
@@ -133,10 +133,10 @@ void SoundDriver::StartSong(Song_t* pstSong_)
     clTimer.Stop();
 
     CS_ENTER();
-    count = 0;
+    count  = 0;
     target = pstSong_->astNotes[0].u16Freq / 2;
-    level = pstSong_->astNotes[0].u8Level;
-    OCR2B = level;
+    level  = pstSong_->astNotes[0].u8Level;
+    OCR2B  = level;
     CS_EXIT();
 
     clTimer.Start(true, u32BeatTimeMS32, SongCallback, pstSong_);
@@ -151,13 +151,13 @@ void SoundDriver::StartSweep(Sweep_t* pstSweep_)
 
     Open();
 
-    u16SweepIdx = 0;
+    u16SweepIdx   = 0;
     u16SweepSteps = (pstSweep_->u16Duration) / pstSweep_->u16Speed;
 
     CS_ENTER();
     target = pstSweep_->u16FreqStart / 2;
-    level = pstSweep_->u8Level;
-    OCR2B = level;
+    level  = pstSweep_->u8Level;
+    OCR2B  = level;
     CS_EXIT();
 
     clTimer.Start(true, pstSweep_->u16Speed, SweepCallback, pstSweep_);

@@ -124,7 +124,7 @@ void Font_PrintGlyph(Font_t* pstFont_, uint8_t u8Glyph_)
     for (i = 0; i < u8Glyph_; i++) {
         // Glyphs are variable-sized for efficiency - to look up a particular
         // glyph, we must traverse all preceding glyphs in the list
-        u8Width = Font_ReadByte(u16Offset, pstFont_->pu8FontData);
+        u8Width  = Font_ReadByte(u16Offset, pstFont_->pu8FontData);
         u8Height = Font_ReadByte(u16Offset + 1, pstFont_->pu8FontData);
 
         // Adjust the offset to point to the next glyph
@@ -134,7 +134,7 @@ void Font_PrintGlyph(Font_t* pstFont_, uint8_t u8Glyph_)
     // Echo the character out to terminal, using an X for a lit pixel
     // and a space for a vacant pixel
 
-    u8Width = Font_ReadByte(u16Offset, pstFont_->pu8FontData);
+    u8Width  = Font_ReadByte(u16Offset, pstFont_->pu8FontData);
     u8Height = Font_ReadByte(u16Offset + 1, pstFont_->pu8FontData);
 
     u16Offset += sizeof(Glyph_t) - 1;

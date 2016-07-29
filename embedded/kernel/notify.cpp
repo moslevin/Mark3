@@ -110,7 +110,7 @@ void Notify::Wait(bool* pbFlag_)
 #if KERNEL_USE_TIMEOUTS
 bool Notify::Wait(uint32_t u32WaitTimeMS_, bool* pbFlag_)
 {
-    bool bUseTimer = false;
+    bool  bUseTimer = false;
     Timer clNotifyTimer;
 
     CS_ENTER();

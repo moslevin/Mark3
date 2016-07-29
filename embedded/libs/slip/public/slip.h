@@ -14,14 +14,14 @@ See license.txt for more information
 /*!
     \file slip.h
 
-    Serial Line IP framing code.  Also includes code to frame data in 
-    FunkenSlip format for use with SlipTerm on a host PC.  
-    
-    FunkenSlip uses SLIP-framed messages with a pre-defined packet format 
+    Serial Line IP framing code.  Also includes code to frame data in
+    FunkenSlip format for use with SlipTerm on a host PC.
+
+    FunkenSlip uses SLIP-framed messages with a pre-defined packet format
     as follows:
-    
+
     [ Channel ][ Size ][ Data Buffer ][ CRC8 ]
-    
+
     Channel is 1 byte, indicating the type of data carried in the message
 
     Size is 2 bytes, indicating the length of the binary blob that follows
@@ -38,15 +38,14 @@ See license.txt for more information
 #define __SLIP_H__
 
 //---------------------------------------------------------------------------
-typedef enum
-{
-    SLIP_CHANNEL_TERMINAL = 0,   //!< ASCII text mode terminal
-    SLIP_CHANNEL_UNISCOPE,       //!< Uniscope VM command channel
-    SLIP_CHANNEL_NVM,            //!< Non-volatile memory configuration
-    SLIP_CHANNEL_RESET,          //!< Channel used to reset the device...
-    SLIP_CHANNEL_GRAPHICS,       //!< Encoded drawing commands    
-    SLIP_CHANNEL_HID,            //!< HID commands
-//---    
+typedef enum {
+    SLIP_CHANNEL_TERMINAL = 0, //!< ASCII text mode terminal
+    SLIP_CHANNEL_UNISCOPE,     //!< Uniscope VM command channel
+    SLIP_CHANNEL_NVM,          //!< Non-volatile memory configuration
+    SLIP_CHANNEL_RESET,        //!< Channel used to reset the device...
+    SLIP_CHANNEL_GRAPHICS,     //!< Encoded drawing commands
+    SLIP_CHANNEL_HID,          //!< HID commands
+                               //---
     SLIP_CHANNEL_COUNT
 } SlipChannel;
 
@@ -56,11 +55,10 @@ typedef enum
     building and transmitting complex data structures without having to copy
     data into intermediate buffers.
  */
-typedef struct  
-{
-    uint8_t u8Size;             //!< Size of the data buffer
-    uint8_t *pu8Data;           //!< Pointer to the data buffer
-}SlipDataVector;
+typedef struct {
+    uint8_t  u8Size;  //!< Size of the data buffer
+    uint8_t* pu8Data; //!< Pointer to the data buffer
+} SlipDataVector;
 
 //---------------------------------------------------------------------------
 /*!
@@ -74,20 +72,18 @@ public:
      *  \brief SetDriver
      *
      *  Set the driver to attach to this object.
-     *  
+     *
      *  \param pclDriver_ Pointer to the driver to attach
      */
-    void SetDriver( Driver *pclDriver_ ){ m_pclDriver = pclDriver_; }
-    
+    void SetDriver(Driver* pclDriver_) { m_pclDriver = pclDriver_; }
     /*!
      *  \brief GetDriver
      *
      *  Return the pointer to the driver attached to this object
-     *  
+     *
      *  \return Pointer to the driver attached
      */
-    Driver *GetDriver() { return m_pclDriver; }
-
+    Driver* GetDriver() { return m_pclDriver; }
     /*!
      *  \brief EncodeByte
      *
@@ -96,69 +92,69 @@ public:
      *
      *  \param u8Char_ Character to encode
      *  \param aucBuf_ Buffer to encode into
-     *  
+     *
      *  \return # bytes read
      */
-    static uint16_t EncodeByte( uint8_t u8Char_, uint8_t *aucBuf_ );
+    static uint16_t EncodeByte(uint8_t u8Char_, uint8_t* aucBuf_);
 
     /*!
      *  \brief DecodeByte
      *
      *  Decode a byte from a stream into a specified value
-     *  
+     *
      *  Returns    the number of bytes from the source array that were processed,
      *  (1 or 2), or 0 if an end-of-packet (192) was encountered.
-     *  
-     *  
+     *
+     *
      *  \param u8Char_ Destination char
      *  \param aucBuf_ Source buffer
-     *  
+     *
      *  \return # bytes read, or 0 on terminating character (192)
      */
-    static uint16_t DecodeByte( uint8_t *ucChar_, const uint8_t *aucBuf_ );
-    
+    static uint16_t DecodeByte(uint8_t* ucChar_, const uint8_t* aucBuf_);
+
     /*!
      *  \brief WriteData
      *
      *  Write a packet of data in the FunkenSlip format.
-     *  
+     *
      *  Returns    the number of bytes from the source array that were processed,
      *  (1 or 2), or 0 if an end-of-packet (192) was encountered.
-     *  
+     *
      *  \param u8Channel_ Channel to encode the packet to
      *  \param aucBuf_ Payload to encode
      *  \param u16Len_ Length of payload data
      */
-    void WriteData( uint8_t u8Channel_, const char *aucBuf_, uint16_t u16Len_ );
+    void WriteData(uint8_t u8Channel_, const char* aucBuf_, uint16_t u16Len_);
 
     /*!
      *  \brief ReadData
      *
-     *  Read a packet from a specified device, parse, and copy to a specified 
+     *  Read a packet from a specified device, parse, and copy to a specified
      *  output buffer.
-     *  
+     *
      *  \param pu8Channel_ Pointer to a u8har that stores the message channel
      *  \param aucBuf_ Buffer where the message will be decoded
      *  \param u16Len_ Length of the buffer to decode
-     *  
+     *
      *  \return data bytes read, 0 on failure.
      */
-    uint16_t ReadData( uint8_t *pu8Channel_, char *aucBuf_, uint16_t u16Len_ );
+    uint16_t ReadData(uint8_t* pu8Channel_, char* aucBuf_, uint16_t u16Len_);
 
     /*!
      *  \brief WriteVector
      *
-     *  Write a single message composed of multiple data-vector fragments.  
-     *  
+     *  Write a single message composed of multiple data-vector fragments.
+     *
      *  Allows for transmitting complex data structures without requiring buffering.
      *  This operation is zero-copy.
-     *  
+     *
      *  \param u8Channel_ Message channel
-     *  \param astData_ Pointer to the data vector 
+     *  \param astData_ Pointer to the data vector
      *  \param u16Len_ Number of elements in the data vector
      */
-    void WriteVector( uint8_t u8Channel_, SlipDataVector *astData_, uint16_t u16Len_ );
-    
+    void WriteVector(uint8_t u8Channel_, SlipDataVector* astData_, uint16_t u16Len_);
+
     /*!
      *  \brief SendAck
      *
@@ -172,10 +168,10 @@ public:
      *  Send a negative-acknowledgement character to the host
      */
     void SendNack();
-    
+
 private:
-    void WriteByte(uint8_t u8Data_);    
-    Driver *m_pclDriver;    
+    void WriteByte(uint8_t u8Data_);
+    Driver* m_pclDriver;
 };
 
 #endif

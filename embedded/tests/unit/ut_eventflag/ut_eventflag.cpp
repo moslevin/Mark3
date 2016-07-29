@@ -33,8 +33,8 @@ K_WORD aucThreadStack1[THREAD1_STACK_SIZE];
 #define THREAD2_STACK_SIZE (160)
 K_WORD aucThreadStack2[THREAD2_STACK_SIZE];
 
-EventFlag clFlagGroup;
-volatile uint8_t u8FlagCount = 0;
+EventFlag        clFlagGroup;
+volatile uint8_t u8FlagCount    = 0;
 volatile uint8_t u8TimeoutCount = 0;
 
 //---------------------------------------------------------------------------
@@ -91,7 +91,7 @@ void TimedWait(void* time_)
 {
     uint16_t u16Ret;
     uint16_t u16Time = *((uint16_t*)time_);
-    u16Ret = clFlagGroup.Wait(0x0001, EVENT_FLAG_ALL, u16Time);
+    u16Ret           = clFlagGroup.Wait(0x0001, EVENT_FLAG_ALL, u16Time);
     if (u16Ret == 0x0001) {
         u8FlagCount++;
     } else if (u16Ret == 0x0000) {
@@ -160,7 +160,7 @@ TEST(ut_waitany)
 
     clFlagGroup.Init();
     u8FlagCount = 0;
-    u16Mask = 0xAAAA;
+    u16Mask     = 0xAAAA;
 
     clThread1.Init(aucThreadStack1, THREAD1_STACK_SIZE, 7, WaitOnAny, (void*)(&u16Mask));
     clThread1.Start();
@@ -226,7 +226,7 @@ TEST(ut_waitall)
 
     clFlagGroup.Init();
     u8FlagCount = 0;
-    u16Mask = 0xAAAA;
+    u16Mask     = 0xAAAA;
 
     clThread1.Init(aucThreadStack1, THREAD1_STACK_SIZE, 7, WaitOnAll, (void*)(&u16Mask));
     clThread1.Start();
@@ -397,8 +397,8 @@ TEST(ut_timedwait)
     // Test point - verify positive test case (no timeout, no premature
     // unblocking)
     u8TimeoutCount = 0;
-    u8FlagCount = 0;
-    u16Interval = 200;
+    u8FlagCount    = 0;
+    u16Interval    = 200;
 
     clFlagGroup.Init();
 
@@ -418,8 +418,8 @@ TEST(ut_timedwait)
     // Test point - verify negative test case (timeouts), followed by a
     // positive test result.
     u8TimeoutCount = 0;
-    u8FlagCount = 0;
-    u16Interval = 200;
+    u8FlagCount    = 0;
+    u16Interval    = 200;
 
     clFlagGroup.Init();
     clFlagGroup.Clear(0xFFFF);
@@ -440,8 +440,8 @@ TEST(ut_timedwait)
     // Test point - verify negative test case (timeouts), followed by a
     // positive test result.
     u8TimeoutCount = 0;
-    u8FlagCount = 0;
-    u16Interval = 200;
+    u8FlagCount    = 0;
+    u16Interval    = 200;
 
     clFlagGroup.Init();
     clFlagGroup.Clear(0xFFFF);

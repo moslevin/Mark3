@@ -13,7 +13,7 @@ See license.txt for more information
 =========================================================================== */
 /*!
 
-    \file   threadport.h    
+    \file   threadport.h
 
     \brief  ATMega644 Multithreading support.
  */
@@ -27,6 +27,7 @@ See license.txt for more information
 #include <avr/io.h>
 #include <avr/interrupt.h>
 
+// clang-format off
 //---------------------------------------------------------------------------
 //! ASM Macro - simplify the use of ASM directive in C
 #define ASM(x)      asm volatile(x);

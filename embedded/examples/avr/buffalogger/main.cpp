@@ -53,7 +53,7 @@ static Thread clLoggerThread;
 static K_WORD awLoggerStack[APP_STACK_SIZE];
 static void LoggerMain(void* unused_);
 static volatile bool bPingPong;
-static Semaphore clSem;
+static Semaphore     clSem;
 
 //---------------------------------------------------------------------------
 static ATMegaUART clUART;
@@ -66,7 +66,7 @@ static uint8_t aucTxBuffer[UART_SIZE_TX];
 static uint8_t aucRxBuffer[UART_SIZE_RX];
 
 static volatile uint16_t* pu16Log;
-static volatile uint16_t u16LogLen;
+static volatile uint16_t  u16LogLen;
 
 extern "C" {
 void __cxa_pure_virtual(void)
@@ -85,7 +85,7 @@ void LoggerCallback(uint16_t* pu16Data_, uint16_t u16Len_, bool bPingPong_)
 {
     CS_ENTER();
     bPingPong = bPingPong_;
-    pu16Log = pu16Data_;
+    pu16Log   = pu16Data_;
     u16LogLen = u16Len_;
     CS_EXIT();
 

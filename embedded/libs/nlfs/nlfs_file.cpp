@@ -78,11 +78,11 @@ int NLFS_File::Open(NLFS* pclFS_, const char* szPath_, NLFS_File_Mode_t eMode_)
             pclFS_->Push_Free_Block(u32Prev);
         }
 
-        m_u32Offset = 0;
+        m_u32Offset       = 0;
         m_u32CurrentBlock = m_stNode.stFileNode.u32FirstBlock;
     } else {
         // Open file to beginning of file, regardless of mode.
-        m_u32Offset = 0;
+        m_u32Offset       = 0;
         m_u32CurrentBlock = m_stNode.stFileNode.u32FirstBlock;
     }
 
@@ -98,7 +98,7 @@ int NLFS_File::Seek(uint32_t u32Offset_)
 {
     NLFS_Block_t stBlock;
     m_u32CurrentBlock = m_stNode.stFileNode.u32FirstBlock;
-    m_u32Offset = u32Offset_;
+    m_u32Offset       = u32Offset_;
 
     if (INVALID_NODE == m_u16File) {
         DEBUG_PRINT("Error - invalid file");
@@ -118,7 +118,7 @@ int NLFS_File::Seek(uint32_t u32Offset_)
         m_u32CurrentBlock = stBlock.u32NextBlock;
         if ((u32Offset_) && (INVALID_BLOCK == m_u32CurrentBlock)) {
             m_u32CurrentBlock = m_stNode.stFileNode.u32FirstBlock;
-            m_u32Offset = 0;
+            m_u32Offset       = 0;
             return -1;
         }
         m_pclFileSystem->Read_Block_Header(m_u32CurrentBlock, &stBlock);
@@ -134,7 +134,7 @@ int NLFS_File::Read(void* pvBuf_, uint32_t u32Len_)
     uint32_t u32BytesLeft;
     uint32_t u32Offset;
     uint32_t u32Read = 0;
-    bool bBail = false;
+    bool     bBail   = false;
 
     char* szCharBuf = (char*)pvBuf_;
 
@@ -150,14 +150,14 @@ int NLFS_File::Read(void* pvBuf_, uint32_t u32Len_)
 
     DEBUG_PRINT("Reading: %d bytes from file\n", u32Len_);
     while (u32Len_ && !bBail) {
-        u32Offset = m_u32Offset & (m_pclFileSystem->GetBlockSize() - 1);
+        u32Offset    = m_u32Offset & (m_pclFileSystem->GetBlockSize() - 1);
         u32BytesLeft = m_pclFileSystem->GetBlockSize() - u32Offset;
         if (u32BytesLeft > u32Len_) {
             u32BytesLeft = u32Len_;
         }
         if (m_u32Offset + u32BytesLeft >= m_stNode.stFileNode.u32FileSize) {
             u32BytesLeft = m_stNode.stFileNode.u32FileSize - m_u32Offset;
-            bBail = true;
+            bBail        = true;
         }
 
         DEBUG_PRINT("%d bytes left in block, %d len, %x block\n", u32BytesLeft, u32Len_, m_u32CurrentBlock);
@@ -191,7 +191,7 @@ int NLFS_File::Write(void* pvBuf_, uint32_t u32Len_)
     uint32_t u32BytesLeft;
     uint32_t u32Offset;
     uint32_t u32Written = 0;
-    char* szCharBuf = (char*)pvBuf_;
+    char*    szCharBuf  = (char*)pvBuf_;
 
     if (INVALID_NODE == m_u16File) {
         DEBUG_PRINT("Error - invalid file");
@@ -205,7 +205,7 @@ int NLFS_File::Write(void* pvBuf_, uint32_t u32Len_)
 
     DEBUG_PRINT("writing: %d bytes to file\n", u32Len_);
     while (u32Len_) {
-        u32Offset = m_u32Offset & (m_pclFileSystem->GetBlockSize() - 1);
+        u32Offset    = m_u32Offset & (m_pclFileSystem->GetBlockSize() - 1);
         u32BytesLeft = m_pclFileSystem->GetBlockSize() - u32Offset;
         if (u32BytesLeft > u32Len_) {
             u32BytesLeft = u32Len_;
@@ -235,9 +235,9 @@ int NLFS_File::Write(void* pvBuf_, uint32_t u32Len_)
 //----------------------------------------------------------------------------
 int NLFS_File::Close(void)
 {
-    m_u16File = INVALID_NODE;
+    m_u16File         = INVALID_NODE;
     m_u32CurrentBlock = INVALID_BLOCK;
-    m_u32Offset = 0;
-    m_u8Flags = 0;
+    m_u32Offset       = 0;
+    m_u8Flags         = 0;
     return 0;
 }

@@ -83,7 +83,7 @@ uint32_t KernelTimer::SubtractExpiry(uint32_t u32Interval_)
 //---------------------------------------------------------------------------
 uint32_t KernelTimer::TimeToExpiry(void)
 {
-    uint16_t u16Read = KernelTimer::Read();
+    uint16_t u16Read  = KernelTimer::Read();
     uint16_t u16OCR1A = TCC1.PER;
 
     if (u16Read >= u16OCR1A) {

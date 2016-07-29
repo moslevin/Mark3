@@ -37,9 +37,9 @@ See license.txt for more information
 #if KERNEL_USE_DEBUG && !KERNEL_AWARE_SIMULATION
 //---------------------------------------------------------------------------
 TraceBufferCallback_t TraceBuffer::m_pfCallback;
-uint16_t TraceBuffer::m_u16Index;
-uint16_t TraceBuffer::m_u16SyncNumber;
-uint16_t TraceBuffer::m_au16Buffer[(TRACE_BUFFER_SIZE / sizeof(uint16_t))];
+uint16_t              TraceBuffer::m_u16Index;
+uint16_t              TraceBuffer::m_u16SyncNumber;
+uint16_t              TraceBuffer::m_au16Buffer[(TRACE_BUFFER_SIZE / sizeof(uint16_t))];
 
 //---------------------------------------------------------------------------
 void TraceBuffer::Init()
@@ -56,7 +56,7 @@ void TraceBuffer::Write(uint16_t* pu16Data_, uint16_t u16Size_)
     // rest of the operations can take place in any context.
     CS_ENTER();
     uint16_t u16NextIndex;
-    u16Start = m_u16Index;
+    u16Start     = m_u16Index;
     u16NextIndex = m_u16Index + u16Size_;
     if (u16NextIndex >= (sizeof(m_au16Buffer) / sizeof(uint16_t))) {
         u16NextIndex -= (sizeof(m_au16Buffer) / sizeof(uint16_t));
@@ -66,12 +66,12 @@ void TraceBuffer::Write(uint16_t* pu16Data_, uint16_t u16Size_)
 
     // Write the data into the circular buffer.
     uint16_t i;
-    bool bCallback = false;
-    bool bPingPong = false;
+    bool     bCallback = false;
+    bool     bPingPong = false;
     for (i = 0; i < u16Size_; i++) {
         m_au16Buffer[u16Start++] = pu16Data_[i];
         if (u16Start >= (sizeof(m_au16Buffer) / sizeof(uint16_t))) {
-            u16Start = 0;
+            u16Start  = 0;
             bCallback = true;
         } else if (u16Start == ((sizeof(m_au16Buffer) / sizeof(uint16_t)) / 2)) {
             bPingPong = true;

@@ -22,10 +22,10 @@ See license.txt for more information
 //---------------------------------------------------------------------------
 UnitTest::UnitTest()
 {
-    m_bIsActive = false;
+    m_bIsActive     = false;
     m_u16Iterations = 0;
-    m_u16Passed = 0;
-    m_bComplete = false;
+    m_u16Passed     = 0;
+    m_bComplete     = false;
 }
 
 //---------------------------------------------------------------------------

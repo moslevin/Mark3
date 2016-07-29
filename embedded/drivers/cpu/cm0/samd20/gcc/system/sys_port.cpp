@@ -21,7 +21,7 @@ See license.txt for more information
 //---------------------------------------------------------------------------
 SysPort::SysPort()
 {
-    m_ePort = SYS_PORT_A;
+    m_ePort   = SYS_PORT_A;
     m_pstPort = GetPortPointer();
 }
 
@@ -99,8 +99,8 @@ void SysPort::SetPortMux(uint8_t u8PinIndex_, PinMux_t eMuxFunction_)
     uint32_t u32Reg;
     uint32_t u32PinBit = 1 << ((uint32_t)(u8PinIndex_ & 0x0F));
 
-    u32Reg = PORT_WRCONFIG_WRPMUX | (u32PinBit << PORT_WRCONFIG_PINMASK_Pos)
-             | (eMuxFunction_ << PORT_WRCONFIG_PMUX_Pos);
+    u32Reg
+        = PORT_WRCONFIG_WRPMUX | (u32PinBit << PORT_WRCONFIG_PINMASK_Pos) | (eMuxFunction_ << PORT_WRCONFIG_PMUX_Pos);
 
     if (u8PinIndex_ >= 16) {
         u32Reg |= PORT_WRCONFIG_HWSEL; // Accessing upper bits in the register

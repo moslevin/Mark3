@@ -24,11 +24,11 @@ See license.txt for more information
 //---------------------------------------------------------------------------
 void Streamer::Init(uint8_t* pau8Buffer_, uint16_t u16Size_)
 {
-    m_u16Head = 0;
-    m_u16Tail = 0;
-    m_u16Size = u16Size_;
-    m_u16Avail = m_u16Size;
-    m_pau8Buffer = pau8Buffer_;
+    m_u16Head     = 0;
+    m_u16Tail     = 0;
+    m_u16Size     = u16Size_;
+    m_u16Avail    = m_u16Size;
+    m_pau8Buffer  = pau8Buffer_;
     m_pu8LockAddr = 0;
 }
 

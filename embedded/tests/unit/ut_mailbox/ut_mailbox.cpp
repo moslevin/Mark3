@@ -31,7 +31,7 @@ static uint8_t aucMBoxBuffer[128];
 
 static volatile uint8_t aucTxBuf[17] = "abcdefghijklmnop"; // allocate a byte of slack for null-termination
 static volatile uint8_t aucRxBuf[16];
-static volatile bool exit_flag;
+static volatile bool    exit_flag;
 //===========================================================================
 // Define Test Cases Here
 //===========================================================================
@@ -64,7 +64,7 @@ volatile uint16_t u16Timeouts = 0;
 void mbox_timed_test(void* param)
 {
     u16Timeouts = 0;
-    exit_flag = false;
+    exit_flag   = false;
     while (!exit_flag) {
         if (!clMbox.Receive((void*)aucRxBuf, 10)) {
             u16Timeouts++;
@@ -167,5 +167,6 @@ TEST_END
 // Test Whitelist Goes Here
 //===========================================================================
 TEST_CASE_START
-TEST_CASE(mailbox_send_recv), TEST_CASE(mailbox_blocking_receive), TEST_CASE(mailbox_blocking_timed),
-    TEST_CASE(mailbox_send_blocking), TEST_CASE_END
+TEST_CASE(mailbox_send_recv)
+, TEST_CASE(mailbox_blocking_receive), TEST_CASE(mailbox_blocking_timed), TEST_CASE(mailbox_send_blocking),
+    TEST_CASE_END

@@ -87,11 +87,11 @@ uint16_t EventFlag::Wait_i(uint16_t u16Mask_, EventFlagOperation_t eMode_)
 #endif
 {
     bool bThreadYield = false;
-    bool bMatch = false;
+    bool bMatch       = false;
 
 #if KERNEL_USE_TIMEOUTS
     Timer clEventTimer;
-    bool bUseTimer = false;
+    bool  bUseTimer = false;
 #endif
 
     // Ensure we're operating in a critical section while we determine
@@ -185,9 +185,9 @@ uint16_t EventFlag::Wait(uint16_t u16Mask_, EventFlagOperation_t eMode_, uint32_
 //---------------------------------------------------------------------------
 void EventFlag::Set(uint16_t u16Mask_)
 {
-    Thread* pclPrev;
-    Thread* pclCurrent;
-    bool bReschedule = false;
+    Thread*  pclPrev;
+    Thread*  pclCurrent;
+    bool     bReschedule = false;
     uint16_t u16NewMask;
 
     CS_ENTER();
@@ -211,12 +211,12 @@ void EventFlag::Set(uint16_t u16Mask_)
         // see whether or not the current flags match the event-flag conditions
         // on the thread.
         do {
-            pclPrev = pclCurrent;
+            pclPrev    = pclCurrent;
             pclCurrent = static_cast<Thread*>(pclCurrent->GetNext());
 
             // Read the thread's event mask/mode
-            uint16_t u16ThreadMask = pclPrev->GetEventFlagMask();
-            EventFlagOperation_t eThreadMode = pclPrev->GetEventFlagMode();
+            uint16_t             u16ThreadMask = pclPrev->GetEventFlagMask();
+            EventFlagOperation_t eThreadMode   = pclPrev->GetEventFlagMode();
 
             // For the "any" mode - unblock the blocked threads if one or more bits
             // in the thread's bitmask match the object's bitmask
@@ -255,10 +255,10 @@ void EventFlag::Set(uint16_t u16Mask_)
 
         // Second loop - go through and unblock all of the threads that
         // were tagged for unblocking.
-        pclCurrent = static_cast<Thread*>(m_clBlockList.GetHead());
+        pclCurrent   = static_cast<Thread*>(m_clBlockList.GetHead());
         bool bIsTail = false;
         do {
-            pclPrev = pclCurrent;
+            pclPrev    = pclCurrent;
             pclCurrent = static_cast<Thread*>(pclCurrent->GetNext());
 
             // Check to see if this is the condition to terminate the loop

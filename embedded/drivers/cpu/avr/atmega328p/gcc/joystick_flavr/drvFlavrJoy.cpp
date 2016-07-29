@@ -23,7 +23,7 @@ See license.txt for more information
 #include "joystick.h"
 #include "drvFlavrJoy.h"
 
-volatile uint8_t g_u8FlavrJoy = 0;
+volatile uint8_t g_u8FlavrJoy   = 0;
 volatile uint8_t g_u8FlavrJoyUp = 0;
 //---------------------------------------------------------------------------
 #define FLAVR_JOY_UP 0x01
@@ -63,7 +63,7 @@ void FlavrJoystick::ScanInternal()
     uint8_t u8Tmp;
 
     g_u8FlavrJoyUp = 1; //!! This command triggers the kernel-aware simulator to update g_u8FlavrJoy.
-    u8Tmp = g_u8FlavrJoy;
+    u8Tmp          = g_u8FlavrJoy;
 
     if (u8Tmp & FLAVR_JOY_LEFT) {
         m_stCurrentReport.bLeft = true;

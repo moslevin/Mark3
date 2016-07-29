@@ -25,15 +25,15 @@ See license.txt for more information
 //---------------------------------------------------------------------------
 SysUART::SysUART()
 {
-    m_eInterface = SERCOM_IF_0;
-    m_u32Baud = SYSUART_DEFAULT_BAUD;
-    m_u8StopBits = 1;
-    m_eMux = SERCOM_MUX_C;
-    m_eTxPad = SERCOM_PAD_2;
-    m_eRxPad = SERCOM_PAD_3;
-    m_bParity = false;
+    m_eInterface     = SERCOM_IF_0;
+    m_u32Baud        = SYSUART_DEFAULT_BAUD;
+    m_u8StopBits     = 1;
+    m_eMux           = SERCOM_MUX_C;
+    m_eTxPad         = SERCOM_PAD_2;
+    m_eRxPad         = SERCOM_PAD_3;
+    m_bParity        = false;
     m_u32ClockFreqHz = SYSUART_DEFAULT_CLOCKFREQ;
-    m_eClockGen = GCLK_1;
+    m_eClockGen      = GCLK_1;
 }
 
 //---------------------------------------------------------------------------
@@ -78,7 +78,7 @@ bool SysUART::Write(char cChar_)
 //---------------------------------------------------------------------------
 void SysUART::SetupClocks(void)
 {
-    Clock_t eClockID;
+    Clock_t  eClockID;
     SysClock clClock;
 
     // Enable the clock in the power-management module...
@@ -126,13 +126,13 @@ void SysUART::SetupPin(const SERCOM_Lookup_t* pstLUT_)
 uint32_t SysUART::CalculateBaud(void)
 {
     /* Temporary variables  */
-    uint64_t ratio = 0;
-    uint64_t scale = 0;
+    uint64_t ratio           = 0;
+    uint64_t scale           = 0;
     uint64_t baud_calculated = 0;
 
     /* Calculate the BAUD value */
-    ratio = ((16 * (uint64_t)m_u32Baud) << 32) / m_u32ClockFreqHz;
-    scale = ((uint64_t)1 << 32) - ratio;
+    ratio           = ((16 * (uint64_t)m_u32Baud) << 32) / m_u32ClockFreqHz;
+    scale           = ((uint64_t)1 << 32) - ratio;
     baud_calculated = (65536 * scale) >> 32;
 
     return baud_calculated;
@@ -141,10 +141,10 @@ uint32_t SysUART::CalculateBaud(void)
 //---------------------------------------------------------------------------
 void SysUART::SetupRegisters(void)
 {
-    SercomUsart* pstUART = GetPort();
-    uint32_t u32CtrlA = 0;
-    uint32_t u32CtrlB = 0;
-    uint32_t u32Baud = 0;
+    SercomUsart* pstUART  = GetPort();
+    uint32_t     u32CtrlA = 0;
+    uint32_t     u32CtrlB = 0;
+    uint32_t     u32Baud  = 0;
 
     // Register A fields
     // DORD - Data order: 0 = MSB first, 1 = LSB first
@@ -186,7 +186,7 @@ void SysUART::SetupRegisters(void)
     }
 
     WriteSync();
-    u32Baud = CalculateBaud();
+    u32Baud           = CalculateBaud();
     pstUART->BAUD.reg = u32Baud;
     WriteSync();
     pstUART->CTRLA.reg = u32CtrlA;
@@ -232,7 +232,6 @@ SercomUsart* SysUART::GetPort(void)
 void SysUART::WriteSync()
 {
     SercomUsart* pstPort = GetPort();
-    while (pstPort->STATUS.reg & SERCOm_UART_STATUS_SYNCBUSY) {
-        /* Do Nothing */
+    while (pstPort->STATUS.reg & SERCOm_UART_STATUS_SYNCBUSY) { /* Do Nothing */
     }
 }

@@ -13,7 +13,7 @@ See license.txt for more information
 ===========================================================================*/
 /*!
     \file "keycodes.h"
-    
+
     \brief Standard ASCII keyboard codes
 */
 
@@ -22,28 +22,27 @@ See license.txt for more information
 
 #include "kerneltypes.h"
 
-typedef enum
-{
+typedef enum {
     KEYCODE_LBUTTON = 0x01,
     KEYCODE_RBUTTON,
     KEYCODE_CANCEL,
-    KEYCODE_MBUTTON, 
+    KEYCODE_MBUTTON,
     KEYCODE_BACK = 0x08,
-    KEYCODE_TAB, 
+    KEYCODE_TAB,
     KEYCODE_CLEAR = 0x0C,
     KEYCODE_RETURN,
-    KEYCODE_SHIFT = 0x10, 
-    KEYCODE_CONTROL, 
-    KEYCODE_MENU, 
-    KEYCODE_PAUSE, 
-    KEYCODE_CAPITAL, 
-    KEYCODE_ESCAPE = 0x1B, 
+    KEYCODE_SHIFT = 0x10,
+    KEYCODE_CONTROL,
+    KEYCODE_MENU,
+    KEYCODE_PAUSE,
+    KEYCODE_CAPITAL,
+    KEYCODE_ESCAPE = 0x1B,
     KEYCODE_SPACE,
     KEYCODE_PRIOR,
-    KEYCODE_NEXT, 
+    KEYCODE_NEXT,
     KEYCODE_END,
-    KEYCODE_HOME, 
-    KEYCODE_LEFT, 
+    KEYCODE_HOME,
+    KEYCODE_LEFT,
     KEYCODE_UP,
     KEYCODE_RIGHT,
     KEYCODE_DOWN,
@@ -91,26 +90,26 @@ typedef enum
     KEYCODE_Y,
     KEYCODE_Z,
     KEYCODE_NUMPAD0 = 0x60,
-    KEYCODE_NUMPAD1, 
-    KEYCODE_NUMPAD2, 
-    KEYCODE_NUMPAD3, 
-    KEYCODE_NUMPAD4, 
-    KEYCODE_NUMPAD5, 
-    KEYCODE_NUMPAD6, 
-    KEYCODE_NUMPAD7, 
-    KEYCODE_NUMPAD8, 
-    KEYCODE_NUMPAD9, 
+    KEYCODE_NUMPAD1,
+    KEYCODE_NUMPAD2,
+    KEYCODE_NUMPAD3,
+    KEYCODE_NUMPAD4,
+    KEYCODE_NUMPAD5,
+    KEYCODE_NUMPAD6,
+    KEYCODE_NUMPAD7,
+    KEYCODE_NUMPAD8,
+    KEYCODE_NUMPAD9,
     KEYCODE_SEPARATOR = 0x6C,
-    KEYCODE_SUBTRACT, 
-    KEYCODE_DECIMAL, 
-    KEYCODE_DIVIDE, 
-    KEYCODE_F1, 
-    KEYCODE_F2, 
-    KEYCODE_F3, 
-    KEYCODE_F4, 
-    KEYCODE_F5, 
-    KEYCODE_F6, 
-    KEYCODE_F7, 
+    KEYCODE_SUBTRACT,
+    KEYCODE_DECIMAL,
+    KEYCODE_DIVIDE,
+    KEYCODE_F1,
+    KEYCODE_F2,
+    KEYCODE_F3,
+    KEYCODE_F4,
+    KEYCODE_F5,
+    KEYCODE_F6,
+    KEYCODE_F7,
     KEYCODE_F8,
     KEYCODE_F9,
     KEYCODE_F10,
@@ -137,7 +136,7 @@ typedef enum
     KEYCODE_LMENU,
     KEYCODE_RMENU,
     KEYCODE_PLAY = 0xFA,
-    KEYCODE_ZOOM  
+    KEYCODE_ZOOM
 } KEYCODE;
 
 #endif //__KEYCODES_H_

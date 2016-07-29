@@ -13,7 +13,7 @@ See license.txt for more information
 =========================================================================== */
 /*!
     \file streamer.h
-    
+
     \brief Thread/Interrupt-safe byte-based data streaming.
  */
 
@@ -44,7 +44,7 @@ public:
      * \param pu8Buffer_    Blob of memory to use as a circular buffer
      * \param u16Size_      Size of the supplied buffer in bytes
      */
-    void Init(uint8_t *pau8Buffer_, uint16_t u16Size_);
+    void Init(uint8_t* pau8Buffer_, uint16_t u16Size_);
 
     /*!
      * \brief Read
@@ -55,7 +55,7 @@ public:
      * \return              true if data was read, false if data unavailable
      *                      or buffer locked
      */
-    bool Read(uint8_t *pu8Data_);
+    bool Read(uint8_t* pu8Data_);
 
     /*!
      * \brief Write
@@ -88,7 +88,7 @@ public:
      * \param ppu8Data_  Pointer to a pointer of data in the stream
      * \return           true if successful, false if buffer full or locked.
      */
-    bool Claim(uint8_t **ppu8Data_);
+    bool Claim(uint8_t** ppu8Data_);
 
     /*!
      * \brief Lock
@@ -100,7 +100,7 @@ public:
      *
      * \param pu8LockAddr_  Address (within the stream) to set as the lockpoint.
      */
-    void Lock(uint8_t *pu8LockAddr_);
+    void Lock(uint8_t* pu8LockAddr_);
 
     /*!
      * \brief Unlock
@@ -116,15 +116,14 @@ public:
      * \return The current number of bytes available for write in the streams
      */
     uint16_t GetAvailable(void) { return m_u16Size; }
-
 private:
-    uint8_t *m_pau8Buffer;      //!< Pointer to the buffer managed in this object
-    uint8_t *m_pu8LockAddr;     //!< Address of the lock point in the stream
+    uint8_t* m_pau8Buffer;  //!< Pointer to the buffer managed in this object
+    uint8_t* m_pu8LockAddr; //!< Address of the lock point in the stream
 
-    uint16_t m_u16Size;         //!< Size of the stream's circular buffer (in bytes)
-    uint16_t m_u16Avail;        //!< Number of bytes free in the stream
-    uint16_t m_u16Head;         //!< Current head index (write to) of the stream
-    uint16_t m_u16Tail;         //!< Current tail index (read from) of the stream
+    uint16_t m_u16Size;  //!< Size of the stream's circular buffer (in bytes)
+    uint16_t m_u16Avail; //!< Number of bytes free in the stream
+    uint16_t m_u16Head;  //!< Current head index (write to) of the stream
+    uint16_t m_u16Tail;  //!< Current tail index (read from) of the stream
 };
 
 #endif

@@ -28,10 +28,9 @@ See license.txt for more information
 /*!
     \brief Token descriptor struct format
  */
-typedef struct
-{
-    const char *pcToken;  //!< Pointer to the beginning of the token string
-    uint8_t u8Len;          //!< Length of the token (in bytes)
+typedef struct {
+    const char* pcToken; //!< Pointer to the beginning of the token string
+    uint8_t     u8Len;   //!< Length of the token (in bytes)
 } Token_t;
 
 //---------------------------------------------------------------------------
@@ -45,9 +44,7 @@ typedef struct
  */
 class MemUtil
 {
-
 public:
-
     //-----------------------------------------------------------------------
     /*!
      *  \brief DecimalToHex
@@ -58,9 +55,9 @@ public:
      *  \param u8Data_ Value to convert into a string
      *  \param szText_ Destination string buffer (3 bytes minimum)
      */
-    static void DecimalToHex( uint8_t u8Data_, char *szText_ );
-    static void DecimalToHex( uint16_t u16Data_, char *szText_ );
-    static void DecimalToHex( uint32_t u32Data_, char *szText_ );
+    static void DecimalToHex(uint8_t u8Data_, char* szText_);
+    static void DecimalToHex(uint16_t u16Data_, char* szText_);
+    static void DecimalToHex(uint32_t u32Data_, char* szText_);
 
     //-----------------------------------------------------------------------
     /*!
@@ -71,9 +68,9 @@ public:
      *  \param u8Data_ Value to convert into a string
      *  \param szText_ Destination string buffer (4 bytes minimum)
      */
-    static void DecimalToString( uint8_t u8Data_, char *szText_ );
-    static void DecimalToString( uint16_t u16Data_, char *szText_ );
-    static void DecimalToString( uint32_t u32Data_, char *szText_ );
+    static void DecimalToString(uint8_t u8Data_, char* szText_);
+    static void DecimalToString(uint16_t u16Data_, char* szText_);
+    static void DecimalToString(uint32_t u32Data_, char* szText_);
 
     //-----------------------------------------------------------------------
     /*!
@@ -85,7 +82,7 @@ public:
      *  \param u16Len_ Length of the buffer in bytes.
      *  \return 8-bit checksum of the memory block.
      */
-    static uint8_t  Checksum8( const void *pvSrc_, uint16_t u16Len_ );
+    static uint8_t Checksum8(const void* pvSrc_, uint16_t u16Len_);
 
     //-----------------------------------------------------------------------
     /*!
@@ -97,7 +94,7 @@ public:
      *  \param u16Len_ Length of the buffer in bytes.
      *  \return 16-bit checksum of the memory block.
      */
-    static uint16_t Checksum16( const void *pvSrc_, uint16_t u16Len_ );
+    static uint16_t Checksum16(const void* pvSrc_, uint16_t u16Len_);
 
     //-----------------------------------------------------------------------
     /*!
@@ -109,7 +106,7 @@ public:
      *  \return length of the string (in bytes), not including the 0-terminator.
      *
      */
-    static uint16_t StringLength( const char *szStr_ );
+    static uint16_t StringLength(const char* szStr_);
 
     //-----------------------------------------------------------------------
     /*!
@@ -121,7 +118,7 @@ public:
      *  \param szStr2_ Second string to compare
      *  \return true if strings match, false otherwise.
      */
-    static bool CompareStrings( const char *szStr1_, const char *szStr2_ );
+    static bool CompareStrings(const char* szStr1_, const char* szStr2_);
 
     //-----------------------------------------------------------------------
     /*!
@@ -133,7 +130,7 @@ public:
      *  \param pvSrc_ Pointer to the source buffer
      *  \param u16Len_ Number of bytes to copy from source to destination
      */
-    static void CopyMemory( void *pvDst_, const void *pvSrc_, uint16_t u16Len_ );
+    static void CopyMemory(void* pvDst_, const void* pvSrc_, uint16_t u16Len_);
 
     //-----------------------------------------------------------------------
     /*!
@@ -144,7 +141,7 @@ public:
      *  \param szDst_ Pointer to the buffer to copy into
      *  \param szSrc_ Pointer to the buffer to copy data from
      */
-    static void CopyString( char *szDst_, const char *szSrc_ );
+    static void CopyString(char* szDst_, const char* szSrc_);
 
     //-----------------------------------------------------------------------
     /*!
@@ -156,7 +153,7 @@ public:
      *  \param szPattern_ Pattern to search for in the buffer
      *  \return Index of the first instance of the pattern in the buffer, or -1 on no match.
      */
-    static int16_t StringSearch( const char *szBuffer_, const char *szPattern_ );
+    static int16_t StringSearch(const char* szBuffer_, const char* szPattern_);
 
     //-----------------------------------------------------------------------
     /*!
@@ -170,7 +167,7 @@ public:
      *
      *  \return true if the buffers match, false if they do not.
      */
-    static bool CompareMemory( const void *pvMem1_, const void *pvMem2_, uint16_t u16Len_ );
+    static bool CompareMemory(const void* pvMem1_, const void* pvMem2_, uint16_t u16Len_);
 
     //-----------------------------------------------------------------------
     /*!
@@ -182,7 +179,7 @@ public:
      *  \param u8Val_ 8-bit pattern to initialize each byte of destination with
      *  \param u16Len_ Length of the buffer (in bytes) to initialize
      */
-    static void SetMemory( void *pvDst_, uint8_t u8Val_, uint16_t u16Len_ );
+    static void SetMemory(void* pvDst_, uint8_t u8Val_, uint16_t u16Len_);
 
     //-----------------------------------------------------------------------
     /*!
@@ -194,12 +191,7 @@ public:
      * \param u8MaxTokens_ Maximum number of tokens to parse (i.e. size of pastTokens_)
      * \return Count of tokens parsed
      */
-    static uint8_t Tokenize( const char *szBuffer_, Token_t *pastTokens_, uint8_t u8MaxTokens_);    
+    static uint8_t Tokenize(const char* szBuffer_, Token_t* pastTokens_, uint8_t u8MaxTokens_);
 };
 
-
 #endif //__MEMUTIL_H__
-
-
-
-

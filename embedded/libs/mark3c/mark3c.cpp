@@ -219,12 +219,12 @@ Thread_t Scheduler_GetCurrentThread(void)
 // Thread APIs
 //---------------------------------------------------------------------------
 
-void Thread_Init(Thread_t handle,
-                 K_WORD* pwStack_,
-                 uint16_t u16StackSize_,
-                 PRIO_TYPE uXPriority_,
+void Thread_Init(Thread_t      handle,
+                 K_WORD*       pwStack_,
+                 uint16_t      u16StackSize_,
+                 PRIO_TYPE     uXPriority_,
                  ThreadEntry_t pfEntryPoint_,
-                 void* pvArg_)
+                 void*         pvArg_)
 {
     Thread* pclThread = new ((void*)handle) Thread();
     pclThread->Init(pwStack_, u16StackSize_, uXPriority_, pfEntryPoint_, pvArg_);
@@ -357,12 +357,12 @@ void Timer_Init(Timer_t handle)
 }
 
 //---------------------------------------------------------------------------
-void Timer_Start(Timer_t handle,
-                 bool bRepeat_,
-                 uint32_t u32IntervalMs_,
-                 uint32_t u32ToleranceMs_,
+void Timer_Start(Timer_t          handle,
+                 bool             bRepeat_,
+                 uint32_t         u32IntervalMs_,
+                 uint32_t         u32ToleranceMs_,
                  TimerCallbackC_t pfCallback_,
-                 void* pvData_)
+                 void*            pvData_)
 {
     Timer* pclTimer = (Timer*)handle;
     pclTimer->Start(bRepeat_, u32IntervalMs_, u32ToleranceMs_, (TimerCallback_t)pfCallback_, pvData_);

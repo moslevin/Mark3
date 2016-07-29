@@ -30,18 +30,17 @@ See license.txt for more information
  *  This enumeration contains a list of supported commands that can be
  *  executed to invoke a response from a kernel aware host.
  */
-typedef enum
-{
-    KA_COMMAND_IDLE = 0,        //!< Null command, does nothing.
-    KA_COMMAND_PROFILE_INIT,    //!< Initialize a new profiling session
-    KA_COMMAND_PROFILE_START,   //!< Begin a profiling sample
-    KA_COMMAND_PROFILE_STOP,    //!< End a profiling sample
-    KA_COMMAND_PROFILE_REPORT,  //!< Report current profiling session
-    KA_COMMAND_EXIT_SIMULATOR,  //!< Terminate the host simulator
-    KA_COMMAND_TRACE_0,         //!< 0-argument kernel trace
-    KA_COMMAND_TRACE_1,         //!< 1-argument kernel trace
-    KA_COMMAND_TRACE_2,         //!< 2-argument kernel trace
-    KA_COMMAND_PRINT            //!< Print an arbitrary string of data
+typedef enum {
+    KA_COMMAND_IDLE = 0,       //!< Null command, does nothing.
+    KA_COMMAND_PROFILE_INIT,   //!< Initialize a new profiling session
+    KA_COMMAND_PROFILE_START,  //!< Begin a profiling sample
+    KA_COMMAND_PROFILE_STOP,   //!< End a profiling sample
+    KA_COMMAND_PROFILE_REPORT, //!< Report current profiling session
+    KA_COMMAND_EXIT_SIMULATOR, //!< Terminate the host simulator
+    KA_COMMAND_TRACE_0,        //!< 0-argument kernel trace
+    KA_COMMAND_TRACE_1,        //!< 1-argument kernel trace
+    KA_COMMAND_TRACE_2,        //!< 2-argument kernel trace
+    KA_COMMAND_PRINT           //!< Print an arbitrary string of data
 } KernelAwareCommand_t;
 
 //---------------------------------------------------------------------------
@@ -76,7 +75,7 @@ public:
      *
      * \param szStr_ String to use as a tag for the profilng session.
      */
-    static void ProfileInit( const char *szStr_ );
+    static void ProfileInit(const char* szStr_);
 
     //---------------------------------------------------------------------------
     /*!
@@ -86,7 +85,7 @@ public:
      * current profiling counter.
      *
      */
-    static void ProfileStart( void );
+    static void ProfileStart(void);
 
     //---------------------------------------------------------------------------
     /*!
@@ -95,7 +94,7 @@ public:
      * Instruct the kernel-aware simulator to end counting cycles relative to the
      * current profiling counter's iteration.
      */
-    static void ProfileStop( void );
+    static void ProfileStop(void);
 
     //---------------------------------------------------------------------------
     /*!
@@ -105,7 +104,7 @@ public:
      * profiling data.
      *
      */
-    static void ProfileReport( void );
+    static void ProfileReport(void);
 
     //---------------------------------------------------------------------------
     /*!
@@ -115,7 +114,7 @@ public:
      * CPU).
      *
      */
-    static void ExitSimulator( void );
+    static void ExitSimulator(void);
 
     //---------------------------------------------------------------------------
     /*!
@@ -125,7 +124,7 @@ public:
      *
      * \param szStr_
      */
-    static void Print( const char *szStr_ );
+    static void Print(const char* szStr_);
 
     //---------------------------------------------------------------------------
     /*!
@@ -137,8 +136,7 @@ public:
      * \param u16File_   16-bit code representing the file
      * \param u16Line_   16-bit code representing the line in the file
      */
-    static void Trace( uint16_t u16File_,
-                  uint16_t u16Line_);
+    static void Trace(uint16_t u16File_, uint16_t u16Line_);
 
     //---------------------------------------------------------------------------
     /*!
@@ -151,9 +149,7 @@ public:
      * \param u16Line_   16-bit code representing the line in the file
      * \param u16Arg1_   16-bit argument to the format string.
      */
-    static void Trace( uint16_t u16File_,
-                  uint16_t u16Line_,
-                  uint16_t u16Arg1_);
+    static void Trace(uint16_t u16File_, uint16_t u16Line_, uint16_t u16Arg1_);
 
     //---------------------------------------------------------------------------
     /*!
@@ -167,10 +163,7 @@ public:
      * \param u16Arg1_   16-bit argument to the format string.
      * \param u16Arg2_   16-bit argument to the format string.
      */
-    static void Trace( uint16_t u16File_,
-                  uint16_t u16Line_,
-                  uint16_t u16Arg1_,
-                  uint16_t u16Arg2_);
+    static void Trace(uint16_t u16File_, uint16_t u16Line_, uint16_t u16Arg1_, uint16_t u16Arg2_);
 
     //---------------------------------------------------------------------------
     /*!
@@ -185,25 +178,21 @@ public:
     static bool IsSimulatorAware(void);
 
 private:
-
-   //---------------------------------------------------------------------------
-   /*!
-    * \brief Trace_i
-    *
-    * Private function by which the class's Trace() methods are reflected, which
-    * allows u16 to realize a modest code saving.
-    *
-    * \param u16File_   16-bit code representing the file
-    * \param u16Line_   16-bit code representing the line in the file
-    * \param u16Arg1_   16-bit argument to the format string.
-    * \param u16Arg2_   16-bit argument to the format string.
-    * \param eCmd_     Code indicating the number of arguments to emit.
-    */
-    static void Trace_i( uint16_t u16File_,
-                         uint16_t u16Line_,
-                         uint16_t u16Arg1_,
-                         uint16_t u16Arg2_,
-                         KernelAwareCommand_t eCmd_);
+    //---------------------------------------------------------------------------
+    /*!
+     * \brief Trace_i
+     *
+     * Private function by which the class's Trace() methods are reflected, which
+     * allows u16 to realize a modest code saving.
+     *
+     * \param u16File_   16-bit code representing the file
+     * \param u16Line_   16-bit code representing the line in the file
+     * \param u16Arg1_   16-bit argument to the format string.
+     * \param u16Arg2_   16-bit argument to the format string.
+     * \param eCmd_     Code indicating the number of arguments to emit.
+     */
+    static void
+    Trace_i(uint16_t u16File_, uint16_t u16Line_, uint16_t u16Arg1_, uint16_t u16Arg2_, KernelAwareCommand_t eCmd_);
 };
 
 #endif

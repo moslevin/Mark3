@@ -4,11 +4,11 @@
 #include "drvUART.h"
 #include "bsp_uarts.h"
 
-ATMegaUART clUART0;
+ATMegaUART     clUART0;
 static uint8_t au8RX0[32];
 static uint8_t au8TX0[32];
 
-ATMegaUART clUART1;
+ATMegaUART     clUART1;
 static uint8_t au8RX1[32];
 static uint8_t au8TX1[32];
 

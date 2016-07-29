@@ -36,7 +36,7 @@ uint8_t GraphicsUOLED::ReadByte(void)
 uint8_t GraphicsUOLED::WaitAck(void)
 {
     uint16_t u16Timeout = SERIAL_TIMEOUT_MAX;
-    uint8_t u8Response = 0;
+    uint8_t  u8Response = 0;
 
     while (u16Timeout--) {
         if (m_pclDriver->Read(1, &u8Response)) {
@@ -93,13 +93,13 @@ void GraphicsUOLED::Point(DrawPoint_t* pstPoint_)
     DataVector_t astVector[4];
 
     astVector[0].u16Data = GFX_PUT_PIXEL;
-    astVector[0].u8Len = 2;
+    astVector[0].u8Len   = 2;
     astVector[1].u16Data = pstPoint_->u16X;
-    astVector[1].u8Len = 2;
+    astVector[1].u8Len   = 2;
     astVector[2].u16Data = pstPoint_->u16Y;
-    astVector[2].u8Len = 2;
+    astVector[2].u8Len   = 2;
     astVector[3].u16Data = pstPoint_->uColor;
-    astVector[3].u8Len = 2;
+    astVector[3].u8Len   = 2;
 
     WriteVector(astVector, 4);
 
@@ -114,17 +114,17 @@ void GraphicsUOLED::Line(DrawLine_t* pstLine_)
     DataVector_t astVector[6];
 
     astVector[0].u16Data = GFX_DRAW_LINE;
-    astVector[0].u8Len = 2;
+    astVector[0].u8Len   = 2;
     astVector[1].u16Data = pstLine_->u16X1;
-    astVector[1].u8Len = 2;
+    astVector[1].u8Len   = 2;
     astVector[2].u16Data = pstLine_->u16Y1;
-    astVector[2].u8Len = 2;
+    astVector[2].u8Len   = 2;
     astVector[3].u16Data = pstLine_->u16X2;
-    astVector[3].u8Len = 2;
+    astVector[3].u8Len   = 2;
     astVector[4].u16Data = pstLine_->u16Y2;
-    astVector[4].u8Len = 2;
+    astVector[4].u8Len   = 2;
     astVector[5].u16Data = pstLine_->uColor;
-    astVector[5].u8Len = 2;
+    astVector[5].u8Len   = 2;
 
     WriteVector(astVector, 6);
 
@@ -165,11 +165,11 @@ void GraphicsUOLED::Circle(DrawCircle_t* pstCircle_)
     astVector[0].u8Len = 2;
 
     astVector[1].u16Data = pstCircle_->u16X;
-    astVector[1].u8Len = 2;
+    astVector[1].u8Len   = 2;
     astVector[2].u16Data = pstCircle_->u16Y;
-    astVector[2].u8Len = 2;
+    astVector[2].u8Len   = 2;
     astVector[3].u16Data = pstCircle_->u16Radius;
-    astVector[3].u8Len = 2;
+    astVector[3].u8Len   = 2;
 
     if (pstCircle_->bFill) {
         astVector[4].u16Data = pstCircle_->uFillColor;
@@ -202,13 +202,13 @@ void GraphicsUOLED::Rectangle(DrawRectangle_t* pstRectangle_)
     astVector[0].u8Len = 2;
 
     astVector[1].u16Data = pstRectangle_->u16Left;
-    astVector[1].u8Len = 2;
+    astVector[1].u8Len   = 2;
     astVector[2].u16Data = pstRectangle_->u16Top;
-    astVector[2].u8Len = 2;
+    astVector[2].u8Len   = 2;
     astVector[3].u16Data = pstRectangle_->u16Right;
-    astVector[3].u8Len = 2;
+    astVector[3].u8Len   = 2;
     astVector[4].u16Data = pstRectangle_->u16Bottom;
-    astVector[4].u8Len = 2;
+    astVector[4].u8Len   = 2;
 
     if (pstRectangle_->bFill) {
         astVector[5].u16Data = pstRectangle_->uFillColor;
@@ -229,21 +229,21 @@ void GraphicsUOLED::TriangleWire(DrawPoly_t* pstTriangle_)
     DataVector_t astVector[8];
 
     astVector[0].u16Data = GFX_DRAW_TRIANGLE;
-    astVector[0].u8Len = 2;
+    astVector[0].u8Len   = 2;
     astVector[1].u16Data = pstTriangle_->pstVector[0].u16X;
-    astVector[1].u8Len = 2;
+    astVector[1].u8Len   = 2;
     astVector[2].u16Data = pstTriangle_->pstVector[0].u16Y;
-    astVector[2].u8Len = 2;
+    astVector[2].u8Len   = 2;
     astVector[3].u16Data = pstTriangle_->pstVector[1].u16X;
-    astVector[3].u8Len = 2;
+    astVector[3].u8Len   = 2;
     astVector[4].u16Data = pstTriangle_->pstVector[1].u16Y;
-    astVector[4].u8Len = 2;
+    astVector[4].u8Len   = 2;
     astVector[5].u16Data = pstTriangle_->pstVector[2].u16X;
-    astVector[5].u8Len = 2;
+    astVector[5].u8Len   = 2;
     astVector[6].u16Data = pstTriangle_->pstVector[2].u16Y;
-    astVector[6].u8Len = 2;
+    astVector[6].u8Len   = 2;
     astVector[7].u16Data = pstTriangle_->uColor;
-    astVector[7].u8Len = 2;
+    astVector[7].u8Len   = 2;
     WriteVector(astVector, 8);
 
     COMMAND_FOOTER
@@ -272,11 +272,11 @@ void GraphicsUOLED::MoveCursor(uint16_t u16X_, uint16_t u16Y_)
     DataVector_t astVector[3];
 
     astVector[0].u16Data = TEXT_MOVE_CURSOR;
-    astVector[0].u8Len = 2;
+    astVector[0].u8Len   = 2;
     astVector[1].u16Data = (u16Y_ + 4) >> 3;
-    astVector[1].u8Len = 2;
+    astVector[1].u8Len   = 2;
     astVector[2].u16Data = (u16X_ + 4) >> 3;
-    astVector[2].u8Len = 2;
+    astVector[2].u8Len   = 2;
     WriteVector(astVector, 3);
     COMMAND_FOOTER
 }
@@ -287,11 +287,11 @@ void GraphicsUOLED::MoveOrigin(uint16_t u16X_, uint16_t u16Y_)
     DataVector_t astVector[3];
 
     astVector[0].u16Data = GFX_MOVE_ORIGIN;
-    astVector[0].u8Len = 2;
+    astVector[0].u8Len   = 2;
     astVector[1].u16Data = u16X_;
-    astVector[1].u8Len = 2;
+    astVector[1].u8Len   = 2;
     astVector[2].u16Data = u16Y_;
-    astVector[2].u8Len = 2;
+    astVector[2].u8Len   = 2;
     WriteVector(astVector, 3);
     COMMAND_FOOTER
 }
@@ -321,8 +321,8 @@ void GraphicsUOLED::Text(DrawText_t* pstText_)
 //---------------------------------------------------------------------------
 uint16_t GraphicsUOLED::TextWidth(DrawText_t* pstText_)
 {
-    uint16_t u16RetVal = 0;
-    const char* pcCursor = pstText_->pcString;
+    uint16_t    u16RetVal = 0;
+    const char* pcCursor  = pstText_->pcString;
 
     while (*pcCursor) {
         u16RetVal += 8;

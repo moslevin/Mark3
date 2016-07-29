@@ -44,9 +44,9 @@ void SlipTerm::PrintLn(const char* szLine_)
 {
     SlipDataVector astData[2];
     astData[0].pu8Data = (uint8_t*)szLine_;
-    astData[0].u8Size = StrLen(szLine_);
+    astData[0].u8Size  = StrLen(szLine_);
     astData[1].pu8Data = (uint8_t*)"\r\n";
-    astData[1].u8Size = 2;
+    astData[1].u8Size  = 2;
 
     m_clSlip.WriteVector(SLIP_CHANNEL_TERMINAL, astData, 2);
 }

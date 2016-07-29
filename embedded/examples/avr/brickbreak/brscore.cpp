@@ -9,7 +9,7 @@
 void BrScore::Reset(void)
 {
     m_u32Score = 0;
-    m_bUpdate = true;
+    m_bUpdate  = true;
 }
 
 //---------------------------------------------------------------------------
@@ -27,28 +27,28 @@ void BrScore::Draw(void)
     }
     DrawText_t stText;
     stText.pcString = "SCORE";
-    stText.pstFont = &fntPrint_Char_21_6_False_False_False_;
-    stText.uColor = COLOR_RED;
-    stText.u16Left = SCORE_X;
-    stText.u16Top = 0;
+    stText.pstFont  = &fntPrint_Char_21_6_False_False_False_;
+    stText.uColor   = COLOR_RED;
+    stText.u16Left  = SCORE_X;
+    stText.u16Top   = 0;
 
     pclDisplay->Text(&stText);
 
     DrawRectangle_t stRect;
-    stRect.u16Top = 8;
-    stRect.u16Bottom = 15;
-    stRect.u16Left = SCORE_X;
-    stRect.u16Right = stRect.u16Left + 56;
-    stRect.bFill = true;
-    stRect.uFillColor = COLOR_BLACK;
+    stRect.u16Top      = 8;
+    stRect.u16Bottom   = 15;
+    stRect.u16Left     = SCORE_X;
+    stRect.u16Right    = stRect.u16Left + 56;
+    stRect.bFill       = true;
+    stRect.uFillColor  = COLOR_BLACK;
     stRect.u32ineColor = COLOR_BLACK;
     pclDisplay->Rectangle(&stRect);
 
     char acStr[11];
     MemUtil::DecimalToString(m_u32Score, acStr);
 
-    stText.u16Top = 8;
-    stText.uColor = COLOR_WHITE;
+    stText.u16Top   = 8;
+    stText.uColor   = COLOR_WHITE;
     stText.pcString = acStr;
 
     pclDisplay->Text(&stText);

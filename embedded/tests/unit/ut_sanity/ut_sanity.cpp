@@ -312,7 +312,7 @@ TEST_END
 void TestMessageTest(void* pvArg)
 {
     Message* pclMesg;
-    bool bPass = true;
+    bool     bPass = true;
 
     pclMesg = clMsgQ2.Receive();
 
@@ -460,7 +460,7 @@ TEST(ut_sanity_rr)
     volatile uint32_t u32Counter1 = 0;
     volatile uint32_t u32Counter2 = 0;
     volatile uint32_t u32Counter3 = 0;
-    uint32_t u32Delta;
+    uint32_t          u32Delta;
 
     Scheduler::GetCurrentThread()->SetPriority(3);
 
@@ -508,7 +508,7 @@ TEST(ut_sanity_quantum)
     volatile uint32_t u32Counter1 = 0;
     volatile uint32_t u32Counter2 = 0;
     volatile uint32_t u32Counter3 = 0;
-    uint32_t u32Delta;
+    uint32_t          u32Delta;
 
     Scheduler::GetCurrentThread()->SetPriority(3);
 
@@ -595,6 +595,7 @@ TEST_END
 // Test Whitelist Goes Here
 //===========================================================================
 TEST_CASE_START
-TEST_CASE(ut_sanity_sem), TEST_CASE(ut_sanity_timed_sem), TEST_CASE(ut_sanity_sleep), TEST_CASE(ut_sanity_mutex),
-    TEST_CASE(ut_sanity_msg), TEST_CASE(ut_sanity_timed_msg), TEST_CASE(ut_sanity_rr), TEST_CASE(ut_sanity_quantum),
-    TEST_CASE(ut_sanity_timer), TEST_CASE_END
+TEST_CASE(ut_sanity_sem)
+, TEST_CASE(ut_sanity_timed_sem), TEST_CASE(ut_sanity_sleep), TEST_CASE(ut_sanity_mutex), TEST_CASE(ut_sanity_msg),
+    TEST_CASE(ut_sanity_timed_msg), TEST_CASE(ut_sanity_rr), TEST_CASE(ut_sanity_quantum), TEST_CASE(ut_sanity_timer),
+    TEST_CASE_END

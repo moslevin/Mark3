@@ -48,7 +48,7 @@ TimerList TimerScheduler::m_clTimerList;
 //---------------------------------------------------------------------------
 void TimerList::Init(void)
 {
-    m_bTimerActive = 0;
+    m_bTimerActive  = 0;
     m_u32NextWakeup = 0;
 }
 
@@ -56,7 +56,7 @@ void TimerList::Init(void)
 void TimerList::Add(Timer* pclListNode_)
 {
 #if KERNEL_TIMERS_TICKLESS
-    bool bStart = 0;
+    bool    bStart = 0;
     int32_t lDelta;
 #endif
 
@@ -118,7 +118,7 @@ void TimerList::Process(void)
 #if KERNEL_TIMERS_TICKLESS
     uint32_t u32NewExpiry;
     uint32_t u32Overtime;
-    bool bContinue;
+    bool     bContinue;
 #endif
 
     Timer* pclNode;
@@ -136,7 +136,7 @@ void TimerList::Process(void)
         pclPrev = NULL;
 
 #if KERNEL_TIMERS_TICKLESS
-        bContinue = 0;
+        bContinue    = 0;
         u32NewExpiry = MAX_TIMER_TICKS;
 #endif
 
@@ -161,7 +161,7 @@ void TimerList::Process(void)
                         pclNode->m_u8Flags &= ~TIMERLIST_FLAG_ACTIVE;
                     } else {
                         // Reset the interval timer.
-                        //!ToDo - figure out if we need to deal with any overtime here.
+                        //! ToDo - figure out if we need to deal with any overtime here.
                         // I think we're good though...
                         pclNode->m_u32TimeLeft = pclNode->m_u32Interval;
 
@@ -221,7 +221,7 @@ void TimerList::Process(void)
 
         if (u32Overtime >= u32NewExpiry) {
             m_u32NextWakeup = u32Overtime;
-            bContinue = 1;
+            bContinue       = 1;
         }
 
         // If it's taken longer to go through this loop than would take u16 to

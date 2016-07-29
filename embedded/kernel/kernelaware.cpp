@@ -74,16 +74,16 @@ typedef union {
 } KernelAwareData_t;
 
 //---------------------------------------------------------------------------
-volatile bool g_bIsKernelAware; //!< Will be set to true by a kernel-aware host.
-volatile uint8_t g_u8KACommand; //!< Kernel-aware simulator command to execute
-KernelAwareData_t g_stKAData;   //!< Data structure used to communicate with host.
+volatile bool     g_bIsKernelAware; //!< Will be set to true by a kernel-aware host.
+volatile uint8_t  g_u8KACommand;    //!< Kernel-aware simulator command to execute
+KernelAwareData_t g_stKAData;       //!< Data structure used to communicate with host.
 
 //---------------------------------------------------------------------------
 void KernelAware::ProfileInit(const char* szStr_)
 {
     CS_ENTER();
     g_stKAData.Profiler.szName = szStr_;
-    g_u8KACommand = KA_COMMAND_PROFILE_INIT;
+    g_u8KACommand              = KA_COMMAND_PROFILE_INIT;
     CS_EXIT();
 }
 
@@ -137,7 +137,7 @@ void KernelAware::Trace_i(
     g_stKAData.Trace.u16Line = u16Line_;
     g_stKAData.Trace.u16Arg1 = u16Arg1_;
     g_stKAData.Trace.u16Arg2 = u16Arg2_;
-    g_u8KACommand = eCmd_;
+    g_u8KACommand            = eCmd_;
     CS_EXIT();
 }
 
@@ -146,7 +146,7 @@ void KernelAware::Print(const char* szStr_)
 {
     CS_ENTER();
     g_stKAData.Print.szString = szStr_;
-    g_u8KACommand = KA_COMMAND_PRINT;
+    g_u8KACommand             = KA_COMMAND_PRINT;
     CS_EXIT();
 }
 

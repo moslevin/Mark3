@@ -40,19 +40,19 @@ IPC even more flexibility.
 // This block declares the thread data for one main application thread.  It
 // defines a thread object, stack (in word-array form), and the entry-point
 // function used by the application thread.
-#define APP1_STACK_SIZE      (320/sizeof(K_WORD))
+#define APP1_STACK_SIZE (320 / sizeof(K_WORD))
 DECLARE_THREAD(hApp1Thread);
-static K_WORD  awApp1Stack[APP1_STACK_SIZE];
-static void    App1Main(void *unused_);
+static K_WORD awApp1Stack[APP1_STACK_SIZE];
+static void App1Main(void* unused_);
 
 //---------------------------------------------------------------------------
 // This block declares the thread data for one main application thread.  It
 // defines a thread object, stack (in word-array form), and the entry-point
 // function used by the application thread.
-#define APP2_STACK_SIZE      (320/sizeof(K_WORD))
+#define APP2_STACK_SIZE (320 / sizeof(K_WORD))
 DECLARE_THREAD(hApp2Thread);
-static K_WORD  awApp2Stack[APP2_STACK_SIZE];
-static void    App2Main(void *unused_);
+static K_WORD awApp2Stack[APP2_STACK_SIZE];
+static void App2Main(void* unused_);
 
 //---------------------------------------------------------------------------
 DECLARE_MESSAGEQUEUE(hMsgQ);
@@ -63,13 +63,13 @@ int main(void)
     // See the annotations in previous labs for details on init.
     Kernel_Init();
 
-    Thread_Init( hApp1Thread, awApp1Stack,  APP1_STACK_SIZE,  1, App1Main,  0);
-    Thread_Init( hApp2Thread, awApp2Stack,  APP2_STACK_SIZE,  1, App2Main,  0);
+    Thread_Init(hApp1Thread, awApp1Stack, APP1_STACK_SIZE, 1, App1Main, 0);
+    Thread_Init(hApp2Thread, awApp2Stack, APP2_STACK_SIZE, 1, App2Main, 0);
 
-    Thread_Start( hApp1Thread );
-    Thread_Start( hApp2Thread );
+    Thread_Start(hApp1Thread);
+    Thread_Start(hApp2Thread);
 
-    MessageQueue_Init( hMsgQ );
+    MessageQueue_Init(hMsgQ);
 
     Kernel_Start();
 
@@ -77,11 +77,10 @@ int main(void)
 }
 
 //---------------------------------------------------------------------------
-void App1Main(void *unused_)
+void App1Main(void* unused_)
 {
     uint16_t usData = 0;
-    while(1)
-    {
+    while (1) {
         // This thread grabs a message from the global message pool, sets a
         // code-value and the message data pointer, then sends the message to
         // a message queue object.  Another thread (Thread2) is blocked, waiting
@@ -91,12 +90,12 @@ void App1Main(void *unused_)
         Message_t hMsg = GlobalMessagePool_Pop();
 
         // Set the message object's data (contrived in this example)
-        Message_SetCode( hMsg, 0x1337);
+        Message_SetCode(hMsg, 0x1337);
         usData++;
-        Message_SetData( hMsg, &usData);
+        Message_SetData(hMsg, &usData);
 
         // Send the message to the shared message queue
-        MessageQueue_Send( hMsgQ, hMsg);
+        MessageQueue_Send(hMsgQ, hMsg);
 
         // Wait before sending another message.
         Thread_Sleep(20);
@@ -104,10 +103,9 @@ void App1Main(void *unused_)
 }
 
 //---------------------------------------------------------------------------
-void App2Main(void *unused_)
+void App2Main(void* unused_)
 {
-    while(1)
-    {
+    while (1) {
         // This thread waits until it receives a message on the shared global
         // message queue.  When it gets the message, it prints out information
         // about the message's code and data, before returning the messaage object
@@ -120,11 +118,11 @@ void App2Main(void *unused_)
         // this thread receives the message, it is "owned" by the thread, and
         // must be returned back to its source message pool when it is no longer
         // needed.
-        Message_t hMsg = MessageQueue_Receive( hMsgQ );
+        Message_t hMsg = MessageQueue_Receive(hMsgQ);
 
         // We received a message, now print out its information
         KernelAware_Print("Received Message\n");
-        KernelAware_Trace2(0, __LINE__, Message_GetCode( hMsg ), *((uint16_t*)Message_GetData( hMsg )));
+        KernelAware_Trace2(0, __LINE__, Message_GetCode(hMsg), *((uint16_t*)Message_GetData(hMsg)));
 
         // Done with the message, return it back to the global message queue.
         GlobalMessagePool_Push(hMsg);

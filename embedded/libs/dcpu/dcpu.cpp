@@ -252,9 +252,9 @@ void DCPU::MUL()
     uint32_t u32Temp;
 
     DBG_PRINT("MUL\n");
-    u32Temp = (((uint32_t)*a * (uint32_t)*b));
+    u32Temp          = (((uint32_t)*a * (uint32_t)*b));
     m_stRegisters.EX = (uint16_t)(u32Temp >> 16);
-    *b = (uint16_t)(u32Temp & 0x0000FFFF);
+    *b               = (uint16_t)(u32Temp & 0x0000FFFF);
 }
 
 //---------------------------------------------------------------------------
@@ -263,9 +263,9 @@ void DCPU::MLI()
     int32_t lTemp;
 
     DBG_PRINT("MLI\n");
-    lTemp = ((int32_t)(*(int16_t*)a) * (int32_t)(*(int16_t*)b));
+    lTemp            = ((int32_t)(*(int16_t*)a) * (int32_t)(*(int16_t*)b));
     m_stRegisters.EX = (uint16_t)(lTemp >> 16);
-    *b = (uint16_t)(lTemp & 0x0000FFFF);
+    *b               = (uint16_t)(lTemp & 0x0000FFFF);
 }
 
 //---------------------------------------------------------------------------
@@ -275,11 +275,11 @@ void DCPU::DIV()
 
     DBG_PRINT("DIV\n");
     if (*a == 0) {
-        *b = 0;
+        *b               = 0;
         m_stRegisters.EX = 0;
     } else {
-        u16Temp = (uint16_t)((((uint32_t)*b) << 16) / (uint32_t)*a);
-        *b = *b / *a;
+        u16Temp          = (uint16_t)((((uint32_t)*b) << 16) / (uint32_t)*a);
+        *b               = *b / *a;
         m_stRegisters.EX = u16Temp;
     }
 }
@@ -291,11 +291,11 @@ void DCPU::DVI()
 
     DBG_PRINT("DVI\n");
     if (*a == 0) {
-        *b = 0;
+        *b               = 0;
         m_stRegisters.EX = 0;
     } else {
-        u16Temp = (uint16_t)((((int32_t) * ((int16_t*)b)) << 16) / (int32_t)(*(int16_t*)a));
-        *b = (uint16_t)(*(int16_t*)b / *(int16_t*)a);
+        u16Temp          = (uint16_t)((((int32_t) * ((int16_t*)b)) << 16) / (int32_t)(*(int16_t*)a));
+        *b               = (uint16_t)(*(int16_t*)b / *(int16_t*)a);
         m_stRegisters.EX = u16Temp;
     }
 }
@@ -326,7 +326,7 @@ void DCPU::MDI()
 void DCPU::AND()
 {
     DBG_PRINT("AND\n");
-    *b = *b&* a;
+    *b = *b & *a;
 }
 
 //---------------------------------------------------------------------------
@@ -349,7 +349,7 @@ void DCPU::SHR()
     uint16_t u16Temp = (uint16_t)((((uint32_t)*b) << 16) >> (uint32_t)*a);
 
     DBG_PRINT("SHR\n");
-    *b = *b >> *a;
+    *b               = *b >> *a;
     m_stRegisters.EX = u16Temp;
 }
 
@@ -359,7 +359,7 @@ void DCPU::ASR()
     uint16_t u16Temp = (uint16_t)((((int32_t)*b) << 16) >> (int32_t)*a);
 
     DBG_PRINT("ASR\n");
-    *b = (uint16_t)(*(int16_t*)b >> *(int16_t*)a);
+    *b               = (uint16_t)(*(int16_t*)b >> *(int16_t*)a);
     m_stRegisters.EX = u16Temp;
 }
 //---------------------------------------------------------------------------
@@ -368,7 +368,7 @@ void DCPU::SHL()
     uint16_t u16Temp = (uint16_t)((((uint32_t)*b) << (uint32_t)*a) >> 16);
 
     DBG_PRINT("SHL\n");
-    *b = *b << *a;
+    *b               = *b << *a;
     m_stRegisters.EX = u16Temp;
 }
 
@@ -505,7 +505,7 @@ void DCPU::JSR()
 {
     DBG_PRINT("JSR 0x%04X\n", *a);
     m_pu16RAM[m_stRegisters.SP--] = m_stRegisters.PC;
-    m_stRegisters.PC = *a;
+    m_stRegisters.PC              = *a;
 }
 
 //---------------------------------------------------------------------------
@@ -523,8 +523,8 @@ void DCPU::INT()
         m_pu16RAM[m_stRegisters.SP--] = m_stRegisters.PC;
         m_pu16RAM[m_stRegisters.SP--] = m_stRegisters.A;
 
-        m_stRegisters.A = *a;
-        m_stRegisters.PC = m_stRegisters.IA;
+        m_stRegisters.A      = *a;
+        m_stRegisters.PC     = m_stRegisters.IA;
         m_bInterruptQueueing = true;
     } else {
         // Add interrupt message to the queue
@@ -541,7 +541,7 @@ void DCPU::ProcessInterruptQueue()
         m_pu16RAM[m_stRegisters.SP--] = m_stRegisters.PC;
         m_pu16RAM[m_stRegisters.SP--] = m_stRegisters.A;
 
-        m_stRegisters.A = m_au16InterruptQueue[m_u8QueueLevel--];
+        m_stRegisters.A  = m_au16InterruptQueue[m_u8QueueLevel--];
         m_stRegisters.PC = m_stRegisters.IA;
 
         m_bInterruptQueueing = true;
@@ -574,7 +574,7 @@ void DCPU::RFI()
         re-enabling interrupts. */
     m_bInterruptQueueing = false;
 
-    m_stRegisters.A = m_pu16RAM[++m_stRegisters.SP];
+    m_stRegisters.A  = m_pu16RAM[++m_stRegisters.SP];
     m_stRegisters.PC = m_pu16RAM[++m_stRegisters.SP];
 }
 
@@ -648,22 +648,22 @@ void DCPU::Init(uint16_t* pu16RAM_, uint16_t u16RAMSize_, const uint16_t* pu16RO
 {
     m_stRegisters.PC = 0;
     m_stRegisters.SP = u16RAMSize_;
-    m_stRegisters.A = 0;
-    m_stRegisters.B = 0;
-    m_stRegisters.C = 0;
-    m_stRegisters.X = 0;
-    m_stRegisters.Y = 0;
-    m_stRegisters.Z = 0;
-    m_stRegisters.I = 0;
-    m_stRegisters.J = 0;
+    m_stRegisters.A  = 0;
+    m_stRegisters.B  = 0;
+    m_stRegisters.C  = 0;
+    m_stRegisters.X  = 0;
+    m_stRegisters.Y  = 0;
+    m_stRegisters.Z  = 0;
+    m_stRegisters.I  = 0;
+    m_stRegisters.J  = 0;
     m_stRegisters.EX = 0;
     m_stRegisters.IA = 0;
-    m_u32CycleCount = 0;
+    m_u32CycleCount  = 0;
 
-    m_pu16ROM = (uint16_t*)pu16ROM_;
+    m_pu16ROM    = (uint16_t*)pu16ROM_;
     m_u16ROMSize = u16ROMSize_;
 
-    m_pu16RAM = pu16RAM_;
+    m_pu16RAM    = pu16RAM_;
     m_u16RAMSize = u16RAMSize_;
 }
 
@@ -701,7 +701,7 @@ uint8_t DCPU::GetOperand(uint8_t uCopType_, uint16_t** pu16Result_)
             uint16_t u16Temp = m_pu16ROM[m_stRegisters.PC++];
             u16Temp += m_stRegisters.au16Registers[uCopType_ - ARG_WORD_A];
             *pu16Result_ = &m_pu16RAM[u16Temp];
-            u8RetVal = 1;
+            u8RetVal     = 1;
         } break;
         case ARG_PUSH_POP_SP:
             if (*pu16Result_ == a) {
@@ -731,7 +731,7 @@ uint8_t DCPU::GetOperand(uint8_t uCopType_, uint16_t** pu16Result_)
 
         case ARG_LITERAL_0:
             *pu16Result_ = &m_u16TempA;
-            m_u16TempA = (uint16_t)(-1);
+            m_u16TempA   = (uint16_t)(-1);
             break;
         case ARG_LITERAL_1:
         case ARG_LITERAL_2:
@@ -765,7 +765,7 @@ uint8_t DCPU::GetOperand(uint8_t uCopType_, uint16_t** pu16Result_)
         case ARG_LITERAL_1E:
         case ARG_LITERAL_1F:
             *pu16Result_ = &m_u16TempA;
-            m_u16TempA = (uint16_t)(uCopType_ - ARG_LITERAL_1);
+            m_u16TempA   = (uint16_t)(uCopType_ - ARG_LITERAL_1);
             break;
         default: break;
     }
@@ -777,10 +777,10 @@ void DCPU::RunOpcode()
 {
     // Fetch the opcode @ the current program counter
     uint16_t u16Word = m_pu16ROM[m_stRegisters.PC++];
-    uint8_t uCop = (uint8_t)DCPU_NORMAL_OPCODE_MASK(u16Word);
-    uint8_t u8A = (uint8_t)DCPU_A_MASK(u16Word);
-    uint8_t u8B = (uint8_t)DCPU_B_MASK(u16Word);
-    uint8_t u8Size = 1;
+    uint8_t  uCop    = (uint8_t)DCPU_NORMAL_OPCODE_MASK(u16Word);
+    uint8_t  u8A     = (uint8_t)DCPU_A_MASK(u16Word);
+    uint8_t  u8B     = (uint8_t)DCPU_B_MASK(u16Word);
+    uint8_t  u8Size  = 1;
 
     DBG_PRINT("0x%04X: %04X\n", m_stRegisters.PC - 1, u16Word);
 
@@ -891,8 +891,8 @@ void DCPU::SendInterrupt(uint16_t u16Message_)
         m_pu16RAM[m_stRegisters.SP--] = m_stRegisters.PC;
         m_pu16RAM[m_stRegisters.SP--] = m_stRegisters.A;
 
-        m_stRegisters.A = u16Message_;
-        m_stRegisters.PC = m_stRegisters.IA;
+        m_stRegisters.A      = u16Message_;
+        m_stRegisters.PC     = m_stRegisters.IA;
         m_bInterruptQueueing = true;
     } else {
         // Add interrupt message to the queue

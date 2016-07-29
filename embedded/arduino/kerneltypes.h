@@ -23,15 +23,14 @@ See license.txt for more information
 #include <stdbool.h>
 #include <stddef.h>
 
-#define K_ADDR      uint16_t
-#define K_WORD      uint8_t
+#define K_ADDR uint16_t
+#define K_WORD uint8_t
 
 //---------------------------------------------------------------------------
-typedef void (*panic_func_t)( uint16_t u16PanicCode_ );
+typedef void (*panic_func_t)(uint16_t u16PanicCode_);
 
 //---------------------------------------------------------------------------
-typedef enum
-{
+typedef enum {
     EVENT_FLAG_ALL,
     EVENT_FLAG_ANY,
     EVENT_FLAG_ALL_CLEAR,
@@ -41,4 +40,3 @@ typedef enum
 } EventFlagOperation_t;
 
 #endif
-

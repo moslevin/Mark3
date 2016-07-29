@@ -19,15 +19,14 @@ See license.txt for more information
 #ifndef __NLFS_CONFIG_H
 #define __NLFS_CONFIG_H
 
-#define DEBUG       0
+#define DEBUG 0
 
 #if DEBUG
- #include <stdio.h>
- #include <stdlib.h>
- #define DEBUG_PRINT     printf
+#include <stdio.h>
+#include <stdlib.h>
+#define DEBUG_PRINT printf
 #else
- #define DEBUG_PRINT(...)
+#define DEBUG_PRINT(...)
 #endif
-
 
 #endif // NLFS_CONFIG_H

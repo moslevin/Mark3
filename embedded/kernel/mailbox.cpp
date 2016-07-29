@@ -54,11 +54,11 @@ void Mailbox::Init(void* pvBuffer_, uint16_t u16BufferSize_, uint16_t u16Element
     KERNEL_ASSERT(u16ElementSize_);
     KERNEL_ASSERT(pvBuffer_);
 
-    m_pvBuffer = pvBuffer_;
+    m_pvBuffer       = pvBuffer_;
     m_u16ElementSize = u16ElementSize_;
 
     m_u16Count = (u16BufferSize_ / u16ElementSize_);
-    m_u16Free = m_u16Count;
+    m_u16Free  = m_u16Count;
 
     m_u16Head = 0;
     m_u16Tail = 0;
@@ -78,8 +78,8 @@ void Mailbox::Init(void* pvBuffer_, uint16_t u16BufferSize_, uint16_t u16Element
 #if KERNEL_USE_AUTO_ALLOC
 Mailbox* Mailbox::Init(uint16_t u16BufferSize_, uint16_t u16ElementSize_)
 {
-    Mailbox* pclNew = (Mailbox*)AutoAlloc::Allocate(sizeof(Mailbox));
-    void* pvBuffer = AutoAlloc::Allocate(u16BufferSize_);
+    Mailbox* pclNew   = (Mailbox*)AutoAlloc::Allocate(sizeof(Mailbox));
+    void*    pvBuffer = AutoAlloc::Allocate(u16BufferSize_);
     pclNew->Init(pvBuffer, u16BufferSize_, u16ElementSize_);
     return pclNew;
 }
@@ -178,12 +178,12 @@ bool Mailbox::Send_i(const void* pvData_, bool bTail_)
 {
     const void* pvDst;
 
-    bool bRet = false;
+    bool bRet        = false;
     bool bSchedState = Scheduler::SetScheduler(false);
 
 #if KERNEL_USE_TIMEOUTS
     bool bBlock = false;
-    bool bDone = false;
+    bool bDone  = false;
     while (!bDone) {
         // Try to claim a slot first before resorting to blocking.
         if (bBlock) {

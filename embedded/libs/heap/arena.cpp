@@ -37,12 +37,12 @@ void Arena::Init(void* pvBuffer_, K_ADDR u32Size_, K_ADDR* au32Sizes_, uint8_t u
 {
     // Initialize the array of blocklists used in this Arena
     ArenaList* pclList = (ArenaList*)pvBuffer_;
-    m_aclBlockList = (ArenaList*)pvBuffer_;
-    m_u8LargestList = u8NumSizes_ - 1;
+    m_aclBlockList     = (ArenaList*)pvBuffer_;
+    m_u8LargestList    = u8NumSizes_ - 1;
 
     DEBUG_PRINT("Initializing Arena @ 0x%X, %d bytes long\n", pvBuffer_, u32Size_);
     for (uint8_t i = 0; i < u8NumSizes_; i++) {
-        void* p = pclList;
+        void*      p       = pclList;
         ArenaList* pclTemp = new (p) ArenaList();
 
         pclList->Init(au32Sizes_[i]);
@@ -56,7 +56,7 @@ void Arena::Init(void* pvBuffer_, K_ADDR u32Size_, K_ADDR* au32Sizes_, uint8_t u
     // possible, until the whole contiguous buffer is completely
     // accounted for.
     uint32_t u32SizeRemain = u32Size_ - u32MetaSize;
-    K_ADDR uPtr = (K_ADDR)((uint32_t)pvBuffer_ + u32MetaSize);
+    K_ADDR   uPtr          = (K_ADDR)((uint32_t)pvBuffer_ + u32MetaSize);
     while (u32SizeRemain >= (sizeof(HeapBlock) + au32Sizes_[0])) {
         HeapBlock* pclBlock = new ((void*)uPtr) HeapBlock();
 
@@ -145,10 +145,10 @@ void* Arena::Allocate(K_ADDR usize_)
 //---------------------------------------------------------------------------
 void Arena::Free(void* pvBlock_)
 {
-    K_ADDR uBlockAddr = (K_ADDR)pvBlock_ - sizeof(HeapBlock);
-    HeapBlock* pclBlock = (HeapBlock*)uBlockAddr;
-    HeapBlock* pclRight = pclBlock->GetRightSibling();
-    HeapBlock* pclTemp = pclRight;
+    K_ADDR     uBlockAddr = (K_ADDR)pvBlock_ - sizeof(HeapBlock);
+    HeapBlock* pclBlock   = (HeapBlock*)uBlockAddr;
+    HeapBlock* pclRight   = pclBlock->GetRightSibling();
+    HeapBlock* pclTemp    = pclRight;
 
     uint8_t uArenaIndex;
 
@@ -173,7 +173,7 @@ void Arena::Free(void* pvBlock_)
 
     CS_ENTER();
     // Merge left, absorb into left-node.
-    pclTemp = pclBlock->GetLeftSibling();
+    pclTemp  = pclBlock->GetLeftSibling();
     pclRight = pclBlock;
     while (pclTemp && (pclTemp->GetCookie() == HEAP_COOKIE_FREE)) {
         // Remove this free block from its currently allocated arena
@@ -183,7 +183,7 @@ void Arena::Free(void* pvBlock_)
         pclTemp->Coalesce();
 
         pclBlock = pclTemp;
-        pclTemp = pclTemp->GetLeftSibling();
+        pclTemp  = pclTemp->GetLeftSibling();
     }
 
     pclBlock->SetCookie(HEAP_COOKIE_FREE);

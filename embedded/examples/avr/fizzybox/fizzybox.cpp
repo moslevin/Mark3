@@ -84,8 +84,8 @@ static char cmd_dir(CommandLine_t* pstCommand_)
 {
     uint16_t u16Root;
 
-    uint8_t u8Count = 0;
-    char acVal[16] = { 0 };
+    uint8_t u8Count   = 0;
+    char    acVal[16] = { 0 };
 
     NLFS_File_Stat_t stStats;
 
@@ -128,8 +128,8 @@ static char cmd_dir(CommandLine_t* pstCommand_)
 // Print the contents of a file (as ascii) to the terminal
 static char cmd_cat(CommandLine_t* pstCommand_)
 {
-    char acBuf[16];
-    int iBytesRead;
+    char      acBuf[16];
+    int       iBytesRead;
     NLFS_File clFile;
 
     if (!pstCommand_->u8NumOptions) {
@@ -237,7 +237,7 @@ static void PrintString(const char* szStr_, int iLen_)
     }
 }
 
-static Token_t astTokens[12];
+static Token_t       astTokens[12];
 static CommandLine_t stCommand;
 //---------------------------------------------------------------------------
 void AppEntry(void)
@@ -254,7 +254,7 @@ void AppEntry(void)
     // Set up a pre-seeded command to execute in the shell
     {
         const char* szCmd = "cat /e.txt"; // dir /";
-        uint8_t u8NumTokens;
+        uint8_t     u8NumTokens;
 
         u8NumTokens = MemUtil::Tokenize(szCmd, astTokens, 12);
         ShellSupport::TokensToCommandLine(astTokens, u8NumTokens, &stCommand);

@@ -28,7 +28,7 @@ See license.txt for more information
 void KernelTimer::Config(void)
 {
     TACTL = 0;         // Reset the register
-    TAR = 0;           // Clear Timer A
+    TAR   = 0;         // Clear Timer A
     TACTL |= TACLR;    // Reset the clock divider, etc.
     TACTL |= TASSEL_2; // Set the timer to use SMCLK
     TACTL &= ~TAIFG;   // Clear any pending interrupts
@@ -60,7 +60,7 @@ void KernelTimer::Stop(void)
 
     TACCTL0 &= ~CCIE; // Disable TA0 CCR
 
-    TAR = 0;
+    TAR    = 0;
     TACCR0 = 0;
 }
 
@@ -94,7 +94,7 @@ uint32_t KernelTimer::TimeToExpiry(void)
 {
 #if KERNEL_TIMERS_TICKLESS
     uint16_t u16Current = KernelTimer::Read();
-    uint16_t u16Max = TACCR0;
+    uint16_t u16Max     = TACCR0;
     if (u16Max >= u16Current) {
         return 0;
     }

@@ -33,9 +33,7 @@ See license.txt for more information
 class Notify : public BlockingObject
 {
 public:
-
-    void* operator new (size_t sz, void* pv) { return (Notify*)pv; };
-
+    void* operator new(size_t sz, void* pv) { return (Notify*)pv; };
     ~Notify();
 
     /*!
@@ -65,7 +63,7 @@ public:
      * \param pbFlag_ Flag set to false on block, and true
      *                upon wakeup.
      */
-    void Wait( bool *pbFlag_ );
+    void Wait(bool* pbFlag_);
 
 #if KERNEL_USE_TIMEOUTS
     /*!
@@ -80,7 +78,7 @@ public:
      *                      true upon wakeup.
      * \return true on notification, false on timeout
      */
-    bool Wait( uint32_t u32WaitTimeMS_, bool *pbFlag_ );
+    bool Wait(uint32_t u32WaitTimeMS_, bool* pbFlag_);
 #endif
 
     /*!
@@ -92,7 +90,7 @@ public:
      *
      * \param pclChosenOne_ Thread to wake up
      */
-    void WakeMe(Thread *pclChosenOne_);
+    void WakeMe(Thread* pclChosenOne_);
 };
 
 #endif

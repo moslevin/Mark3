@@ -13,11 +13,11 @@ See license.txt for more information
 =========================================================================== */
 /*!
 
-    \file   timerlist.h    
+    \file   timerlist.h
 
     \brief  Timer list declarations
-    
-    These classes implements a linked list of timer objects attached to the 
+
+    These classes implements a linked list of timer objects attached to the
     global kernel timer scheduler.
  */
 
@@ -52,7 +52,7 @@ public:
      *
      *  \param pclListNode_ Pointer to the Timer to Add
      */
-    void Add(Timer *pclListNode_);
+    void Add(Timer* pclListNode_);
 
     /*!
      *  \brief Remove
@@ -61,7 +61,7 @@ public:
      *
      *  \param pclListNode_ Pointer to the Timer to remove
      */
-    void Remove(Timer *pclListNode_);
+    void Remove(Timer* pclListNode_);
 
     /*!
      *  \brief Process

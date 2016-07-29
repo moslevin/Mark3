@@ -79,42 +79,42 @@ public:
      * \param u16Size_ Size (in bytes) of memory requested
      * \return pointer to a data blob allocated
      */
-    static void *Allocate( uint16_t u16Size_ );
+    static void* Allocate(uint16_t u16Size_);
 
 #if KERNEL_USE_SEMAPHORE
-    static Semaphore *NewSemaphore(void);
+    static Semaphore* NewSemaphore(void);
 #endif
 
 #if KERNEL_USE_MUTEX
-    static Mutex *NewMutex(void);
+    static Mutex* NewMutex(void);
 #endif
 
 #if KERNEL_USE_EVENTFLAG
-    static EventFlag *NewEventFlag(void);
+    static EventFlag* NewEventFlag(void);
 #endif
 
 #if KERNEL_USE_MESSAGE
-    static Message *NewMessage(void);
+    static Message*      NewMessage(void);
     static MessageQueue* NewMessageQueue(void);
 #endif
 
 #if KERNEL_USE_NOTIFY
-    static Notify *NewNotify(void);
+    static Notify* NewNotify(void);
 #endif
 
 #if KERNEL_USE_MAILBOX
-    static Mailbox *NewMailbox(void);
+    static Mailbox* NewMailbox(void);
 #endif
 
-    static Thread *NewThread(void);
+    static Thread* NewThread(void);
 
 #if KERNEL_USE_TIMERS
-    static Timer *NewTimer(void);
+    static Timer* NewTimer(void);
 #endif
 
 private:
-    static uint8_t m_au8AutoHeap[ AUTO_ALLOC_SIZE ];    // Heap memory
-    static K_ADDR  m_aHeapTop;                          // Top of the heap
+    static uint8_t m_au8AutoHeap[AUTO_ALLOC_SIZE]; // Heap memory
+    static K_ADDR  m_aHeapTop;                     // Top of the heap
 };
 #endif
 

@@ -22,7 +22,7 @@ See license.txt for more information
 void SysTC::SetInterface(TCXBit_t eBit_)
 {
     m_uTCXBit = eBit_;
-    m_pstTC = GetInterface();
+    m_pstTC   = GetInterface();
 }
 
 //---------------------------------------------------------------------------
@@ -30,7 +30,7 @@ void SysTC::SetCaptureVal(uint8_t u8Index_, uint32_t u32CaptureVal_)
 {
     switch (m_eMode) {
         case TC_MODE_16BIT: m_pstTC->COUNT16.CC[u8Index_].reg = (uint16_t)u32CaptureVal_; break;
-        case TC_MODE_8BIT: m_pstTC->COUNT8.CC[u8Index_].reg = (uint8_t)u32CaptureVal_; break;
+        case TC_MODE_8BIT: m_pstTC->COUNT8.CC[u8Index_].reg   = (uint8_t)u32CaptureVal_; break;
         case TC_MODE_32BIT: m_pstTC->COUNT32.CC[u8Index_].reg = (uint32_t)u32CaptureVal_; break;
         default: break;
     }
@@ -93,10 +93,10 @@ void SysTC::Stop(void)
 void SysTC::EnableInterrupt(TCInt_t eInt_)
 {
     switch (eInt_) {
-        case TC_INT_ERR: m_pstTC->COUNT32.INTENSET.reg = TC_INTENSET_ERR; break;
-        case TC_INT_MC0: m_pstTC->COUNT32.INTENSET.reg = TC_INTENSET_MC(0); break;
-        case TC_INT_MC1: m_pstTC->COUNT32.INTENSET.reg = TC_INTENSET_MC(1); break;
-        case TC_INT_OVF: m_pstTC->COUNT32.INTENSET.reg = TC_INTENSET_OVF; break;
+        case TC_INT_ERR: m_pstTC->COUNT32.INTENSET.reg     = TC_INTENSET_ERR; break;
+        case TC_INT_MC0: m_pstTC->COUNT32.INTENSET.reg     = TC_INTENSET_MC(0); break;
+        case TC_INT_MC1: m_pstTC->COUNT32.INTENSET.reg     = TC_INTENSET_MC(1); break;
+        case TC_INT_OVF: m_pstTC->COUNT32.INTENSET.reg     = TC_INTENSET_OVF; break;
         case TC_INT_SYNCRDY: m_pstTC->COUNT32.INTENSET.reg = TC_INTENSET_SYNCRDY; break;
         default: break;
     }
@@ -119,10 +119,10 @@ void SysTC::DisableInterrupt(TCInt_t eInt_)
 void SysTC::ClearInterrupt(TCInt_t eInt_)
 {
     switch (eInt_) {
-        case TC_INT_ERR: m_pstTC->COUNT32.INTENCLR.reg = TC_INTENSET_ERR; break;
-        case TC_INT_MC0: m_pstTC->COUNT32.INTENCLR.reg = TC_INTENSET_MC(0); break;
-        case TC_INT_MC1: m_pstTC->COUNT32.INTENCLR.reg = TC_INTENSET_MC(1); break;
-        case TC_INT_OVF: m_pstTC->COUNT32.INTENCLR.reg = TC_INTENSET_OVF; break;
+        case TC_INT_ERR: m_pstTC->COUNT32.INTENCLR.reg     = TC_INTENSET_ERR; break;
+        case TC_INT_MC0: m_pstTC->COUNT32.INTENCLR.reg     = TC_INTENSET_MC(0); break;
+        case TC_INT_MC1: m_pstTC->COUNT32.INTENCLR.reg     = TC_INTENSET_MC(1); break;
+        case TC_INT_OVF: m_pstTC->COUNT32.INTENCLR.reg     = TC_INTENSET_OVF; break;
         case TC_INT_SYNCRDY: m_pstTC->COUNT32.INTENCLR.reg = TC_INTENSET_SYNCRDY; break;
         default: break;
     }
@@ -133,10 +133,10 @@ uint8_t SysTC::GetInterfaceIndex()
 {
     uint8_t u8Int;
     switch (m_eMode) {
-        case TC_MODE_8BIT: u8Int = (uint8_t)m_uTCXBit.e8Bit; break;
+        case TC_MODE_8BIT: u8Int  = (uint8_t)m_uTCXBit.e8Bit; break;
         case TC_MODE_16BIT: u8Int = ((uint8_t)m_uTCXBit.e16Bit) << 1; break;
         case TC_MODE_32BIT: u8Int = ((uint8_t)m_uTCXBit.e32Bit) << 2; break;
-        default: u8Int = (uint8_t)m_uTCXBit.e8Bit; break;
+        default: u8Int            = (uint8_t)m_uTCXBit.e8Bit; break;
     }
     return u8Int;
 }
@@ -145,7 +145,7 @@ uint8_t SysTC::GetInterfaceIndex()
 Tc* SysTC::GetInterface()
 {
     uint8_t u8Int = GetInterfaceIndex();
-    Tc* pstTC = 0;
+    Tc*     pstTC = 0;
     switch (u8Int) {
         case 0: pstTC = TC0; break;
         case 1: pstTC = TC1; break;
@@ -164,7 +164,7 @@ Tc* SysTC::GetInterface()
 void SysTC::SetupClocks()
 {
     // Enable the TCx Clock from the power-management module
-    uint8_t u8Int = GetInterfaceIndex();
+    uint8_t  u8Int = GetInterfaceIndex();
     SysClock clClock;
 
     PM->APBCMASK.reg |= 1 << (PM_APBCMASK_TC0_Pos + u8Int);
@@ -181,10 +181,10 @@ void SysTC::SetupClocks()
 //---------------------------------------------------------------------------
 void SysTC::SetupRegisters()
 {
-    uint32_t u32CtrlA = 0;
-    uint32_t u32CtrlB = 0;
-    uint32_t u32CtrlC = 0;
-    uint32_t u32ReadReq = 0;
+    uint32_t u32CtrlA     = 0;
+    uint32_t u32CtrlB     = 0;
+    uint32_t u32CtrlC     = 0;
+    uint32_t u32ReadReq   = 0;
     uint32_t u32EventCtrl = 0;
 
     m_pstTC = GetInterface();

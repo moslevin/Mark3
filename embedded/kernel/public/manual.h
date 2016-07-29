@@ -13,14 +13,14 @@ See license.txt for more information
 ===========================================================================*/
 /*!
     \file manual.h
-    
+
     /brief Ascii-format documentation, used by doxygen to create various
            printable and viewable forms.
 */
 /*!
     \mainpage The Mark3 Realtime Kernel
 
-    \verbatim    
+    \verbatim
          _____        _____        _____        _____
      ___|    _|__  __|_    |__  __|__   |__  __| __  |__  ______
     |    \  /  | ||    \      ||     |     ||  |/ /     ||___   |
@@ -32,7 +32,7 @@ See license.txt for more information
 
     Copyright (c) 2012-2016 Funkenstein Software Consulting, all rights reserved.
     See license for more information
-        
+
     \endverbatim
 
     The Mark3 Realtime Kernel is a completely free, open-source, real-time operating
@@ -391,24 +391,24 @@ See license.txt for more information
 
     \section BUILDKERNEL Building the kernel
 
-	There are 3 main components of the recursive makefile system used to build
-	Mark3 and its associated middleware libraries and examples.  The components
-	are the files "base.mak", "platform.mak", and "build.mak"
+    There are 3 main components of the recursive makefile system used to build
+    Mark3 and its associated middleware libraries and examples.  The components
+    are the files "base.mak", "platform.mak", and "build.mak"
 
     The base.mak file determines how the kernel, drivers, and libraries are
-    built, for what targets, and with what options.  These options are set as 
-	variables that are included in a "platform.mak" file for your target, 
-	located under the /builds directory.  "platform.mak" is included for all
-	build steps, and is the place where all chip/board-specific toolchain
-	configuration takes place.
+    built, for what targets, and with what options.  These options are set as
+    variables that are included in a "platform.mak" file for your target,
+    located under the /builds directory.  "platform.mak" is included for all
+    build steps, and is the place where all chip/board-specific toolchain
+    configuration takes place.
 
     Build.mak contains the base logic which is used to perform a recursive make
     in all project directories. Unless you really know what you're doing, it's best
     to leave this as-is.
 
-	Beyond the essential makefiles, the build system uses a series of environment
-	variables to configure a recursive make-based build system appropriately for
-	a given target part and	toolchain.
+    Beyond the essential makefiles, the build system uses a series of environment
+    variables to configure a recursive make-based build system appropriately for
+    a given target part and	toolchain.
 
     Below is an overview of the main variables used to configure the build.
 
@@ -424,33 +424,36 @@ See license.txt for more information
     environment variables so that they are accessible directly through from the
     command-line
 
-	Once a sane environment has been created, the kernel, libraries, 
-	examples and tests can be built by running ./scripts/build.sh from the root
-	directory.  By default, Mark3 builds for the atmega328p target, but the target
-	can be selected by manually configuring the above environment variables, or by
-	running the included ./scripts/set_target.sh script as follows:
+    Once a sane environment has been created, the kernel, libraries,
+    examples and tests can be built by running ./scripts/build.sh from the root
+    directory.  By default, Mark3 builds for the atmega328p target, but the target
+    can be selected by manually configuring the above environment variables, or by
+    running the included ./scripts/set_target.sh script as follows:
 
-	\verbatim	
-	. ./scripts/set_target.sh <architecture> <variant> <toolchain>
-	\endverbatim
+    \verbatim
+    . ./scripts/set_target.sh <architecture> <variant> <toolchain>
+    \endverbatim
 
-	Where: 
-	\verbatim
-	 <architecture> is the target CPU architecture(i.e. avr, msp430, cm0, cm3, cm4f)
-	 <variant>		is the part name (i.e. atmega328p, msp430f2274, generic)
-	 <toolchain>	is the build toolchain (i.e. gcc)
-	\endverbatim
+    Where:
+    \verbatim
+     <architecture> is the target CPU architecture(i.e. avr, msp430, cm0, cm3, cm4f)
+     <variant>		is the part name (i.e. atmega328p, msp430f2274, generic)
+     <toolchain>	is the build toolchain (i.e. gcc)
+    \endverbatim
 
     Once configured, you can build the source tree using the various make targets:
 
     - make headers
-      - copy all headers in each module's /public subdirectory to the location specified by STAGE environment variable's ./inc subdirectory.
+      - copy all headers in each module's /public subdirectory to the location specified by STAGE environment variable's
+   ./inc subdirectory.
       .
     - make library
-      - regenerate all objects copy marked as libraries (i.e. the kernel + drivers).  Resulting binaries are copied into STAGE's ./lib subdirectory.
+      - regenerate all objects copy marked as libraries (i.e. the kernel + drivers).  Resulting binaries are copied into
+   STAGE's ./lib subdirectory.
       .
     - make binary
-      - build all executable projects in the root directory structure.  In the default distribution, this includes the basic set of demos.
+      - build all executable projects in the root directory structure.  In the default distribution, this includes the
+   basic set of demos.
       .
     .
 
@@ -495,7 +498,7 @@ See license.txt for more information
 
     Once you've placed your code files in the right place, and configured
     the makefile appropriately, call the following sequence to guarantee
-    that your code will be built.  
+    that your code will be built.
 
     \verbatim
     > make headers
@@ -503,12 +506,12 @@ See license.txt for more information
     > make binary
     \endverbatim
 
-	Note that library or app-specific environment variables can be set (or modified
-	from the defaults) from within the body of the makefile.  For example,
-	the CFLAGS, CPPFLAGS, and LFLAGS variables can be used to supply additional chip-
-	specific toolchain flags.  The flags can be used to allow a user to reference
-	chip-specific startup code, headers, middleware, or linker scripts that aren't
-	part of the standard Mark3 distribution.
+    Note that library or app-specific environment variables can be set (or modified
+    from the defaults) from within the body of the makefile.  For example,
+    the CFLAGS, CPPFLAGS, and LFLAGS variables can be used to supply additional chip-
+    specific toolchain flags.  The flags can be used to allow a user to reference
+    chip-specific startup code, headers, middleware, or linker scripts that aren't
+    part of the standard Mark3 distribution.
 
     \section WINBUILD Building on Windows
 
@@ -516,7 +519,7 @@ See license.txt for more information
     prerequisites that need to be taken into consideration before the
     build scripts and makefiles will work as expected.
 
-	Below is an example of setting up the AVR toolchain on Windows:
+    Below is an example of setting up the AVR toolchain on Windows:
 
     <b>Step 1 - Install Latest Atmel Studio IDE</b>
 
@@ -1697,7 +1700,7 @@ See license.txt for more information
         }
     }
     \endcode
-    
+
     So there you have it - an event driven system which uses a global variable
     to synchronize the execution of our task based on the occurrence of an
     interrupt. It's still just a bare-metal, OS-baked-into-the-application system,
@@ -1803,7 +1806,7 @@ See license.txt for more information
         }
     }
     \endcode
-    
+
     This system is very similar to what we had before - however the differences
     are worth discussing. First, we have stimulus from multiple interrupt sources:
     each ISR is responsible for setting a single bit in our global event flag,
@@ -1913,7 +1916,7 @@ See license.txt for more information
         }
     }
     \endcode
-    
+
     In this example, High_Priority_Tasks() can be triggered at any time as a
     result of a software interrupt (SWI),. When a high-priority event is set, the
     code that sets the event calls the SWI as well, which instantly preempts
@@ -1997,7 +2000,7 @@ See license.txt for more information
     \page CANRTOS Can you afford an RTOS?
 
     \section CANRTOSINTRO Intro
-    
+
     Of course, since you're reading the manual for an RTOS that I've been
     developing over the course of the several years, you can guess that the
     conclusion that I draw.
@@ -2502,7 +2505,7 @@ See license.txt for more information
     |                     | Mutex                 |  mutex.cpp/.h                   |
     |                     | Notify                |  notify.cpp/.h                  |
     |IPC/Message-passing  | Mailbox               |  mailbox.cpp/.h                 |
-    |                     | MessageQueue          |  message.cpp/.h                 |    
+    |                     | MessageQueue          |  message.cpp/.h                 |
     |                     | GlobalMessagePool     |  message.cpp/.h                 |
     |Debugging            | Miscellaneous Macros  |  kerneldebug.h                  |
     |                     | KernelAware           |  kernelaware.cpp/.h             |
@@ -2678,7 +2681,7 @@ See license.txt for more information
         }
     }
     \endcode
-    
+
     While that would certainly work and be sufficient for a variety of systems,
     it's a non-deterministic approach (complexity O(n)) whose cost varies
     substantially based on how many priorities have to be evaluated.  It's simple
@@ -2731,7 +2734,7 @@ See license.txt for more information
         priority = priority_lookup_table[priority_bitmap & 0x0F];
     }
     \endcode
-    
+
     Deconstructing this algorithm, you can see that the priority lookup will have
     on O(1) complexity - and is extremely low-cost.
 
@@ -2937,7 +2940,7 @@ See license.txt for more information
     timer routines when the timer interrupt is executed.
 
     \subsection TIMERPA Timer Processing Algorithm
-    
+
     Timer interrupts occur at either a fixed-frequency (tick-based), or at the
     next timer expiry interval (tickless), at which point the timer processing
     algorithm runs.  While the timer count is reset by the timer-interrupt, it is
@@ -3228,8 +3231,8 @@ See license.txt for more information
     - Start/stop a peripheral
     - Handle I/O control operations
     - Perform various read/write operations
-    . 
-    
+    .
+
     At the end of the day, that's pretty much all a device driver has to do, and
     all of the functionality that needs to be presented to the developer.
 
@@ -3241,8 +3244,8 @@ See license.txt for more information
     - Control
     - Read
     - Write
-    . 
-    
+    .
+
     A basic driver framework and API can thus be implemented in five function
     calls - that's it! You could even reduce that further by handling the
     initialize, start, and stop operations inside the "control" operation.
@@ -3259,7 +3262,7 @@ See license.txt for more information
         void DriverList::Add( Driver *pclDriver_ );
         void DriverList::Remove( Driver *pclDriver_ );
     \endcode
-    
+
     DriverList::Add()/Remove() takes a single argument - the pointer to the object
     to operate on.
 
@@ -3385,7 +3388,7 @@ See license.txt for more information
     sections that follow.
 
     <b>Thread Stack Initialization</b>
-   
+
     Before a thread can be used, its stack must first be initialized to its default
     state.  This default state ensures that when the thread is scheduled for the
     first time and its context restored, that it will cause the CPU to jump to
@@ -3501,7 +3504,7 @@ See license.txt for more information
         pclThread_->m_pwStackTop = pulStack;
     }
     \endcode
-        
+
     <b>Kernel Startup</b>
 
     The same general process applies to starting the kernel on an ARM Cortex-M0
@@ -3553,9 +3556,9 @@ See license.txt for more information
             );
     }
     \endcode
-    
+
     <b>First Thread Entry</b>
-    
+
     This handler has the job of taking the first thread object's stack, and
     restoring the default state data in a way that ensures that the thread starts
     executing when returning from the call.
@@ -3720,7 +3723,7 @@ See license.txt for more information
         );
     }
     \endcode
-    
+
     <b>Kernel Timers</b>
 
     ARM Cortex-M series microcontrollers each contain a SysTick timer, which was
@@ -3778,9 +3781,9 @@ See license.txt for more information
         SCB->ICSR |= SCB_ICSR_PENDSTCLR_Msk;
     }
     \endcode
-    
+
     <b>Critical Sections</b>
-    
+
     A "critical section" is a block of code whose execution cannot be interrupted
     by means of context switches or an interrupt.  In a traditional single-core
     operating system, it is typically implemented as a block of code where the
@@ -3838,7 +3841,7 @@ See license.txt for more information
         ); \
     }
     \endcode
-    
+
     <b>Summary</b>
 
     In this section we have investigated how the main non-portable areas of the

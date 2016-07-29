@@ -4,7 +4,7 @@
 
 #include <stdint.h>
 
-static Arena clHeap;
+static Arena   clHeap;
 static uint8_t au8HeapBlob[2048];
 
 void bsp_heap_init(void)

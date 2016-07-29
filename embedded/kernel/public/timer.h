@@ -30,13 +30,13 @@ See license.txt for more information
 class Thread;
 
 //---------------------------------------------------------------------------
-#define TIMERLIST_FLAG_ONE_SHOT         (0x01)    //!< Timer is one-shot
-#define TIMERLIST_FLAG_ACTIVE           (0x02)    //!< Timer is currently active
-#define TIMERLIST_FLAG_CALLBACK         (0x04)    //!< Timer is pending a callback
-#define TIMERLIST_FLAG_EXPIRED          (0x08)    //!< Timer is actually expired.
+#define TIMERLIST_FLAG_ONE_SHOT (0x01) //!< Timer is one-shot
+#define TIMERLIST_FLAG_ACTIVE (0x02)   //!< Timer is currently active
+#define TIMERLIST_FLAG_CALLBACK (0x04) //!< Timer is pending a callback
+#define TIMERLIST_FLAG_EXPIRED (0x08)  //!< Timer is actually expired.
 
 //---------------------------------------------------------------------------
-#define MAX_TIMER_TICKS                 (0x7FFFFFFF)    //!< Maximum value to set
+#define MAX_TIMER_TICKS (0x7FFFFFFF) //!< Maximum value to set
 
 //---------------------------------------------------------------------------
 #if KERNEL_TIMERS_TICKLESS
@@ -55,24 +55,24 @@ class Thread;
     customize these values to suit your system more appropriately.
  */
 //---------------------------------------------------------------------------
-#define SECONDS_TO_TICKS(x)             ((((uint32_t)x) * TIMER_FREQ))
-#define MSECONDS_TO_TICKS(x)            ((((((uint32_t)x) * (TIMER_FREQ/100)) + 5) / 10))
-#define USECONDS_TO_TICKS(x)            ((((((uint32_t)x) * TIMER_FREQ) + 50000) / 1000000))
+#define SECONDS_TO_TICKS(x) ((((uint32_t)x) * TIMER_FREQ))
+#define MSECONDS_TO_TICKS(x) ((((((uint32_t)x) * (TIMER_FREQ / 100)) + 5) / 10))
+#define USECONDS_TO_TICKS(x) ((((((uint32_t)x) * TIMER_FREQ) + 50000) / 1000000))
 
 //---------------------------------------------------------------------------
-#define MIN_TICKS                        (3)    //!< The minimum tick value to set
+#define MIN_TICKS (3) //!< The minimum tick value to set
 //---------------------------------------------------------------------------
 
 #else
 
 //---------------------------------------------------------------------------
 // add time because we don't know how far in an epoch we are when a call is made.
-#define SECONDS_TO_TICKS(x)             (((uint32_t)(x) * 1000) + 1)
-#define MSECONDS_TO_TICKS(x)            ((uint32_t)(x + 1))
-#define USECONDS_TO_TICKS(x)            (((uint32_t)(x + 999)) / 1000)
+#define SECONDS_TO_TICKS(x) (((uint32_t)(x)*1000) + 1)
+#define MSECONDS_TO_TICKS(x) ((uint32_t)(x + 1))
+#define USECONDS_TO_TICKS(x) (((uint32_t)(x + 999)) / 1000)
 
 //---------------------------------------------------------------------------
-#define MIN_TICKS                       (1)    //!< The minimum tick value to set
+#define MIN_TICKS (1) //!< The minimum tick value to set
 //---------------------------------------------------------------------------
 
 #endif // KERNEL_TIMERS_TICKLESS
@@ -88,7 +88,7 @@ class Thread;
  * pvData_ is a pointer to some data or object that needs to know about the
  *         timer's expiry from within the timer interrupt context.
   */
-typedef void (*TimerCallback_t)(Thread *pclOwner_, void *pvData_);
+typedef void (*TimerCallback_t)(Thread* pclOwner_, void* pvData_);
 
 //---------------------------------------------------------------------------
 class TimerList;
@@ -98,25 +98,27 @@ class Quantum;
 class Timer : public LinkListNode
 {
 public:
-    void* operator new (size_t sz, void* pv) { return (Timer*)pv; };
-
+    void* operator new(size_t sz, void* pv) { return (Timer*)pv; };
     /*!
      *  \brief Timer
      *
      *  Default Constructor - Do nothing.  Allow the init call to perform
      *  the necessary object initialization prior to use.
      */
-    Timer()
-    {
-        m_u8Flags = 0;
-    }
-
+    Timer() { m_u8Flags = 0; }
     /*!
      *  \brief Init
      *
      * Re-initialize the Timer to default values.
      */
-    void Init() { ClearNode(); m_u32Interval = 0; m_u32TimerTolerance = 0; m_u32TimeLeft = 0; m_u8Flags = 0; }
+    void Init()
+    {
+        ClearNode();
+        m_u32Interval       = 0;
+        m_u32TimerTolerance = 0;
+        m_u32TimeLeft       = 0;
+        m_u8Flags           = 0;
+    }
 
     /*!
      *  \brief Start
@@ -129,7 +131,7 @@ public:
      *  \param pfCallback_ - Function to call on timer expiry
      *  \param pvData_ - Data to pass into the callback function
      */
-    void Start( bool bRepeat_, uint32_t u32IntervalMs_, TimerCallback_t pfCallback_, void *pvData_ );
+    void Start(bool bRepeat_, uint32_t u32IntervalMs_, TimerCallback_t pfCallback_, void* pvData_);
 
     /*!
      *  \brief Start
@@ -144,7 +146,8 @@ public:
      *  \param pfCallback_ - Function to call on timer expiry
      *  \param pvData_ - Data to pass into the callback function
      */
-    void Start( bool bRepeat_, uint32_t u32IntervalMs_, uint32_t u32ToleranceMs_, TimerCallback_t pfCallback_, void *pvData_ );
+    void
+    Start(bool bRepeat_, uint32_t u32IntervalMs_, uint32_t u32ToleranceMs_, TimerCallback_t pfCallback_, void* pvData_);
 
     /*!
      * \brief Start
@@ -173,8 +176,7 @@ public:
      *             TIMERLIST_FLAG_ONE_SHOT for a one-shot timer,
      *             0 for a continuous timer.
      */
-    void SetFlags (uint8_t u8Flags_) { m_u8Flags = u8Flags_; }
-
+    void SetFlags(uint8_t u8Flags_) { m_u8Flags = u8Flags_; }
     /*!
      *  \brief SetCallback
      *
@@ -182,8 +184,7 @@ public:
      *
      *  \param pfCallback_ Pointer to the callback function to call
      */
-    void SetCallback( TimerCallback_t pfCallback_){ m_pfCallback = pfCallback_; }
-
+    void SetCallback(TimerCallback_t pfCallback_) { m_pfCallback = pfCallback_; }
     /*!
      *  \brief SetData
      *
@@ -191,8 +192,7 @@ public:
      *
      *  \param pvData_ Pointer to data to pass as argument into the callback
      */
-    void SetData( void *pvData_ ){ m_pvData = pvData_; }
-
+    void SetData(void* pvData_) { m_pvData = pvData_; }
     /*!
      *  \brief SetOwner
      *
@@ -201,8 +201,7 @@ public:
      *
      *  \param pclOwner_ Owner thread of this timer object
      */
-    void SetOwner( Thread *pclOwner_){ m_pclOwner = pclOwner_; }
-
+    void SetOwner(Thread* pclOwner_) { m_pclOwner = pclOwner_; }
     /*!
      *  \brief SetIntervalTicks
      *
@@ -228,8 +227,7 @@ public:
      *
      * \return Timer interval in ticks.
      */
-    uint32_t GetInterval()	{ return m_u32Interval; }
-
+    uint32_t GetInterval() { return m_u32Interval; }
     /*!
      *  \brief SetIntervalMSeconds
      *
@@ -259,7 +257,6 @@ public:
     void SetTolerance(uint32_t u32Ticks_);
 
 private:
-
     friend class TimerList;
 
     //! Flags for the timer, defining if the timer is one-shot or repeated
@@ -278,10 +275,10 @@ private:
     uint32_t m_u32TimerTolerance;
 
     //! Pointer to the owner thread
-    Thread  *m_pclOwner;
+    Thread* m_pclOwner;
 
     //! Pointer to the callback data
-    void    *m_pvData;
+    void* m_pvData;
 };
 
 #endif // KERNEL_USE_TIMERS

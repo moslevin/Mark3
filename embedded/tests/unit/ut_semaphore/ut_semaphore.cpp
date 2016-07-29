@@ -51,9 +51,9 @@ TEST_END
 //===========================================================================
 static Thread clThread;
 #define SEM_STACK_SIZE (256)
-static K_WORD aucStack[SEM_STACK_SIZE];
-static Semaphore clSem1;
-static Semaphore clSem2;
+static K_WORD           aucStack[SEM_STACK_SIZE];
+static Semaphore        clSem1;
+static Semaphore        clSem2;
 static volatile uint8_t u8Counter = 0;
 
 //===========================================================================

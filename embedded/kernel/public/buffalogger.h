@@ -25,11 +25,10 @@ See license.txt for more information
 #define STR(s) STR1(s)
 
 //---------------------------------------------------------------------------
-#define EMIT_DBG_STRING(str) \
-do { \
-    const static volatile char log_str[] __attribute__((section (".logger"))) __attribute__((unused)) = str; \
-    const static volatile uint16_t line_id __attribute__((section (".logger"))) __attribute__((unused)) = __LINE__; \
-    const static volatile uint16_t file_id __attribute__((section (".logger"))) __attribute__((unused)) = DBG_FILE; \
-    const static volatile uint16_t sync __attribute__((section (".logger"))) __attribute__((unused)) = 0xCAFE; \
-} while(0);
-
+#define EMIT_DBG_STRING(str)                                                                                             \
+    do {                                                                                                                 \
+        const static volatile char     log_str[] __attribute__((section(".logger"))) __attribute__((unused)) = str;      \
+        const static volatile uint16_t line_id __attribute__((section(".logger"))) __attribute__((unused))   = __LINE__; \
+        const static volatile uint16_t file_id __attribute__((section(".logger"))) __attribute__((unused))   = DBG_FILE; \
+        const static volatile uint16_t sync __attribute__((section(".logger"))) __attribute__((unused))      = 0xCAFE;   \
+    } while (0);

@@ -23,9 +23,7 @@ public:
 
 private:
     uint8_t m_u8Lives;
-    bool	m_bUpdate;
+    bool    m_bUpdate;
 };
 
-
 #endif
-

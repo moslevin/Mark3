@@ -27,8 +27,8 @@ See license.txt for more information
 static K_WORD aucTestStack[MUTEX_STACK_SIZE];
 static Thread clMutexThread;
 
-static K_WORD aucTestStack2[MUTEX_STACK_SIZE];
-static Thread clTestThread2;
+static K_WORD           aucTestStack2[MUTEX_STACK_SIZE];
+static Thread           clTestThread2;
 static volatile uint8_t u8Token;
 
 //===========================================================================

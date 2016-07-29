@@ -22,17 +22,15 @@ See license.txt for more information
 #include <samd20.h>
 
 //---------------------------------------------------------------------------
-typedef enum
-{
+typedef enum {
     SYS_PORT_A,
     SYS_PORT_B,
-//----
+    //----
     SYS_PORT_COUNT
 } PortIdentity_t;
 
 //---------------------------------------------------------------------------
-typedef enum
-{
+typedef enum {
     PIN_MUX_A,
     PIN_MUX_B,
     PIN_MUX_C,
@@ -41,7 +39,7 @@ typedef enum
     PIN_MUX_F,
     PIN_MUX_G,
     PIN_MUX_H,
-//----
+    //----
     PIN_MUX_COUNT
 } PinMux_t;
 
@@ -66,10 +64,10 @@ public:
     void SetPortMux(uint8_t u8PinIndex_, PinMux_t eMuxFunction_);
 
 private:
-    PortGroup *GetPortPointer();
-	
-	PortGroup *m_pstPort;
-	PortIdentity_t m_ePort;
+    PortGroup* GetPortPointer();
+
+    PortGroup*     m_pstPort;
+    PortIdentity_t m_ePort;
 };
 
 //---------------------------------------------------------------------------

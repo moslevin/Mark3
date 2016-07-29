@@ -86,19 +86,19 @@ void SevenSegControl::Draw()
     uint16_t u16ControlOffsetY;
     GetControlOffset(&u16ControlOffsetX, &u16ControlOffsetY);
 
-    stRect.bFill = true;
-    stRect.uFillColor = SET_SEGMENT_COLOR(m_bColon, LCD_SEG_1);
+    stRect.bFill       = true;
+    stRect.uFillColor  = SET_SEGMENT_COLOR(m_bColon, LCD_SEG_1);
     stRect.u32ineColor = stRect.uFillColor;
 
     // Draw Colon
-    stRect.u16Left = GetLeft() + u16ControlOffsetX + (2 * (u16Width + u16Space));
-    stRect.u16Right = stRect.u16Left + u16Space - 1;
-    stRect.u16Top = GetTop() + u16ControlOffsetY + (GetHeight() >> 3);
+    stRect.u16Left   = GetLeft() + u16ControlOffsetX + (2 * (u16Width + u16Space));
+    stRect.u16Right  = stRect.u16Left + u16Space - 1;
+    stRect.u16Top    = GetTop() + u16ControlOffsetY + (GetHeight() >> 3);
     stRect.u16Bottom = GetTop() + u16ControlOffsetY + ((GetHeight() * 3) >> 3);
 
     pclGfx->Rectangle(&stRect);
 
-    stRect.u16Top = GetTop() + ((GetHeight() * 5) >> 3);
+    stRect.u16Top    = GetTop() + ((GetHeight() * 5) >> 3);
     stRect.u16Bottom = GetTop() + ((GetHeight() * 7) >> 3);
 
     pclGfx->Rectangle(&stRect);
@@ -106,8 +106,8 @@ void SevenSegControl::Draw()
     uint16_t u16TmpValue = m_u16Value;
 
     for (uint8_t i = 4; i > 0; i--) {
-        uint16_t u16OffX = GetLeft() + ((u16Width + u16Space) * (i - 1));
-        uint8_t u8SegValue = aucLCDMap[u16TmpValue % 10];
+        uint16_t u16OffX    = GetLeft() + ((u16Width + u16Space) * (i - 1));
+        uint8_t  u8SegValue = aucLCDMap[u16TmpValue % 10];
 
         if (i >= 3) {
             u16OffX += 2 * ((5 * GetWidth()) + 50) / 100;
@@ -116,72 +116,72 @@ void SevenSegControl::Draw()
         u16OffX += u16ControlOffsetX;
 
         // Segment 1 -- Top
-        stRect.u16Left = u16OffX + (u16Width >> 3) + 1;
-        stRect.u16Right = u16OffX + ((7 * u16Width) >> 3) - 1;
-        stRect.u16Top = GetTop() + u16ControlOffsetY;
+        stRect.u16Left   = u16OffX + (u16Width >> 3) + 1;
+        stRect.u16Right  = u16OffX + ((7 * u16Width) >> 3) - 1;
+        stRect.u16Top    = GetTop() + u16ControlOffsetY;
         stRect.u16Bottom = GetTop() + u16ControlOffsetY + (GetHeight() >> 3);
 
-        stRect.uFillColor = SET_SEGMENT_COLOR(u8SegValue, LCD_SEG_1);
+        stRect.uFillColor  = SET_SEGMENT_COLOR(u8SegValue, LCD_SEG_1);
         stRect.u32ineColor = stRect.uFillColor;
 
         pclGfx->Rectangle(&stRect);
 
         // Segment 4 -- Bottom
-        stRect.u16Top = GetTop() + u16ControlOffsetY + ((7 * GetHeight()) >> 3);
+        stRect.u16Top    = GetTop() + u16ControlOffsetY + ((7 * GetHeight()) >> 3);
         stRect.u16Bottom = GetTop() + u16ControlOffsetY + (GetHeight() - 1);
 
-        stRect.uFillColor = SET_SEGMENT_COLOR(u8SegValue, LCD_SEG_4);
+        stRect.uFillColor  = SET_SEGMENT_COLOR(u8SegValue, LCD_SEG_4);
         stRect.u32ineColor = stRect.uFillColor;
 
         pclGfx->Rectangle(&stRect);
 
         // Segment 6 -- Upper Left Vertical
-        stRect.u16Top = GetTop() + u16ControlOffsetY;
+        stRect.u16Top    = GetTop() + u16ControlOffsetY;
         stRect.u16Bottom = GetTop() + u16ControlOffsetY + (GetHeight() >> 1);
-        stRect.u16Left = u16OffX;
-        stRect.u16Right = u16OffX + (u16Width >> 3);
+        stRect.u16Left   = u16OffX;
+        stRect.u16Right  = u16OffX + (u16Width >> 3);
 
-        stRect.uFillColor = SET_SEGMENT_COLOR(u8SegValue, LCD_SEG_6);
+        stRect.uFillColor  = SET_SEGMENT_COLOR(u8SegValue, LCD_SEG_6);
         stRect.u32ineColor = stRect.uFillColor;
 
         pclGfx->Rectangle(&stRect);
 
         // Segment 5 -- Lower Left Vertical
-        stRect.u16Top = GetTop() + u16ControlOffsetY + (GetHeight() >> 1);
+        stRect.u16Top    = GetTop() + u16ControlOffsetY + (GetHeight() >> 1);
         stRect.u16Bottom = GetTop() + u16ControlOffsetY + (GetHeight() - 1);
 
-        stRect.uFillColor = SET_SEGMENT_COLOR(u8SegValue, LCD_SEG_5);
+        stRect.uFillColor  = SET_SEGMENT_COLOR(u8SegValue, LCD_SEG_5);
         stRect.u32ineColor = stRect.uFillColor;
 
         pclGfx->Rectangle(&stRect);
 
         // Segment 2 -- Upper Right Vertical
-        stRect.u16Top = GetTop() + u16ControlOffsetY;
+        stRect.u16Top    = GetTop() + u16ControlOffsetY;
         stRect.u16Bottom = GetTop() + u16ControlOffsetY + (GetHeight() >> 1);
-        stRect.u16Left = u16OffX + ((u16Width * 7) >> 3);
-        stRect.u16Right = u16OffX + u16Width - 1;
+        stRect.u16Left   = u16OffX + ((u16Width * 7) >> 3);
+        stRect.u16Right  = u16OffX + u16Width - 1;
 
-        stRect.uFillColor = SET_SEGMENT_COLOR(u8SegValue, LCD_SEG_2);
+        stRect.uFillColor  = SET_SEGMENT_COLOR(u8SegValue, LCD_SEG_2);
         stRect.u32ineColor = stRect.uFillColor;
 
         pclGfx->Rectangle(&stRect);
 
         // Segment 3 -- Lower Right Vertical
-        stRect.u16Top = GetTop() + u16ControlOffsetY + (GetHeight() >> 1);
+        stRect.u16Top    = GetTop() + u16ControlOffsetY + (GetHeight() >> 1);
         stRect.u16Bottom = GetTop() + u16ControlOffsetY + (GetHeight() - 1);
 
-        stRect.uFillColor = SET_SEGMENT_COLOR(u8SegValue, LCD_SEG_3);
+        stRect.uFillColor  = SET_SEGMENT_COLOR(u8SegValue, LCD_SEG_3);
         stRect.u32ineColor = stRect.uFillColor;
 
         pclGfx->Rectangle(&stRect);
 
         // Segment 7 -- Middle
-        stRect.u16Top = GetTop() + u16ControlOffsetY + ((GetHeight() * 7) >> 4);
+        stRect.u16Top    = GetTop() + u16ControlOffsetY + ((GetHeight() * 7) >> 4);
         stRect.u16Bottom = GetTop() + u16ControlOffsetY + ((GetHeight() * 9) >> 4);
-        stRect.u16Left = u16OffX + (u16Width >> 3) + 1;
-        stRect.u16Right = u16OffX + ((7 * u16Width) >> 3) - 1;
+        stRect.u16Left   = u16OffX + (u16Width >> 3) + 1;
+        stRect.u16Right  = u16OffX + ((7 * u16Width) >> 3) - 1;
 
-        stRect.uFillColor = SET_SEGMENT_COLOR(u8SegValue, LCD_SEG_7);
+        stRect.uFillColor  = SET_SEGMENT_COLOR(u8SegValue, LCD_SEG_7);
         stRect.u32ineColor = stRect.uFillColor;
 
         pclGfx->Rectangle(&stRect);

@@ -25,17 +25,17 @@ See license.txt for more information
 
 //---------------------------------------------------------------------------
 #if !defined(K_ADDR)
-    #define K_ADDR      uint32_t            //!< Primative datatype representing address-size
+#define K_ADDR uint32_t //!< Primative datatype representing address-size
 #endif
 #if !defined(K_WORD)
-    #define K_WORD      uint32_t            //!< Primative datatype representing a data word
+#define K_WORD uint32_t //!< Primative datatype representing a data word
 #endif
 
 //---------------------------------------------------------------------------
 /*!
  * Function pointer type used to implement kernel-panic handlers.
  */
-typedef void (*panic_func_t)( uint16_t u16PanicCode_ );
+typedef void (*panic_func_t)(uint16_t u16PanicCode_);
 
 //---------------------------------------------------------------------------
 /*!
@@ -48,35 +48,33 @@ typedef void (*idle_func_t)(void);
 /*!
  *  Function pointer type used for thread entrypoint functions
  */
-typedef void (*ThreadEntry_t)(void *pvArg_);
+typedef void (*ThreadEntry_t)(void* pvArg_);
 
 //---------------------------------------------------------------------------
 /*!
  * This enumeration describes the different operations supported by the
  * event flag blocking object.
  */
-typedef enum
-{
-    EVENT_FLAG_ALL,             //!< Block until all bits in the specified bitmask are set
-    EVENT_FLAG_ANY,             //!< Block until any bits in the specified bitmask are set
-    EVENT_FLAG_ALL_CLEAR,       //!< Block until all bits in the specified bitmask are cleared
-    EVENT_FLAG_ANY_CLEAR,       //!< Block until any bits in the specified bitmask are cleared
-//---
-    EVENT_FLAG_MODES,           //!< Count of event-flag modes.  Not used by user
-    EVENT_FLAG_PENDING_UNBLOCK  //!< Special code.  Not used by user
+typedef enum {
+    EVENT_FLAG_ALL,            //!< Block until all bits in the specified bitmask are set
+    EVENT_FLAG_ANY,            //!< Block until any bits in the specified bitmask are set
+    EVENT_FLAG_ALL_CLEAR,      //!< Block until all bits in the specified bitmask are cleared
+    EVENT_FLAG_ANY_CLEAR,      //!< Block until any bits in the specified bitmask are cleared
+                               //---
+    EVENT_FLAG_MODES,          //!< Count of event-flag modes.  Not used by user
+    EVENT_FLAG_PENDING_UNBLOCK //!< Special code.  Not used by user
 } EventFlagOperation_t;
 
 //---------------------------------------------------------------------------
 /*!
  *   Enumeration representing the different states a thread can exist in
  */
-typedef enum
-{
+typedef enum {
     THREAD_STATE_EXIT = 0,
     THREAD_STATE_READY,
     THREAD_STATE_BLOCKED,
     THREAD_STATE_STOP,
-//--
+    //--
     THREAD_STATES
 } ThreadState_t;
 

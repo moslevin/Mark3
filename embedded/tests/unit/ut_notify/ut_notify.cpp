@@ -22,9 +22,9 @@ See license.txt for more information
 //===========================================================================
 // Local Defines
 //===========================================================================
-static Notify clNotify;
-static Thread clThread;
-static K_WORD awStack[192];
+static Notify           clNotify;
+static Thread           clThread;
+static K_WORD           awStack[192];
 static volatile uint8_t u8Count = 0;
 
 static void NotifyThread(void* unused_)

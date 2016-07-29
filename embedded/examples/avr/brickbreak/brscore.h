@@ -22,7 +22,7 @@ public:
 
 private:
     uint32_t m_u32Score;
-    bool	m_bUpdate;
+    bool     m_bUpdate;
 };
 
 #endif

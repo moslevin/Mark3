@@ -27,20 +27,20 @@ void BrLevel::Draw(void)
     }
     DrawText_t stText;
     stText.pcString = "LV";
-    stText.pstFont = &fntPrint_Char_21_6_False_False_False_;
-    stText.uColor = COLOR_RED;
-    stText.u16Left = LEVEL_X;
-    stText.u16Top = 0;
+    stText.pstFont  = &fntPrint_Char_21_6_False_False_False_;
+    stText.uColor   = COLOR_RED;
+    stText.u16Left  = LEVEL_X;
+    stText.u16Top   = 0;
 
     pclDisplay->Text(&stText);
 
     DrawRectangle_t stRect;
-    stRect.u16Top = 8;
-    stRect.u16Bottom = 15;
-    stRect.u16Left = LEVEL_X;
-    stRect.u16Right = stRect.u16Left + 15;
-    stRect.bFill = true;
-    stRect.uFillColor = COLOR_BLACK;
+    stRect.u16Top      = 8;
+    stRect.u16Bottom   = 15;
+    stRect.u16Left     = LEVEL_X;
+    stRect.u16Right    = stRect.u16Left + 15;
+    stRect.bFill       = true;
+    stRect.uFillColor  = COLOR_BLACK;
     stRect.u32ineColor = COLOR_BLACK;
     pclDisplay->Rectangle(&stRect);
 
@@ -48,8 +48,8 @@ void BrLevel::Draw(void)
 
     MemUtil::DecimalToString((uint8_t)(m_u8Level + 1), acStr);
 
-    stText.u16Top = 8;
-    stText.uColor = COLOR_WHITE;
+    stText.u16Top   = 8;
+    stText.uColor   = COLOR_WHITE;
     stText.pcString = acStr;
 
     pclDisplay->Text(&stText);

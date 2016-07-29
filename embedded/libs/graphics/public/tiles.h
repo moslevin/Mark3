@@ -27,17 +27,16 @@ See license.txt for more information
     reduce the memory footprint of tiles, by using color-indexing with
     fewer bits-per-pixel than the native pixel-format of the display.
 */
-typedef enum
-{
-    TILE_1BPP = 0,	// Monochrome
-    TILE_2BPP = 1,	// 4-color
-    TILE_3BPP = 2,	// 8-color
-    TILE_4BPP = 3,	// 16-color
-    TILE_5BPP = 4,	// 32-color
-    TILE_6BPP = 5,	// 64-color
-    TILE_7BPP = 6,	// 128-color
-    TILE_8BPP = 7,	// 256-color
-// --
+typedef enum {
+    TILE_1BPP = 0, // Monochrome
+    TILE_2BPP = 1, // 4-color
+    TILE_3BPP = 2, // 8-color
+    TILE_4BPP = 3, // 16-color
+    TILE_5BPP = 4, // 32-color
+    TILE_6BPP = 5, // 64-color
+    TILE_7BPP = 6, // 128-color
+    TILE_8BPP = 7, // 256-color
+                   // --
     TILE_NUM_FORMATS
 } TileFormat_t;
 
@@ -45,20 +44,19 @@ typedef enum
 /*!
   * \brief TileDef_t Structure defining parameters for a color-indexed tile
   */
-typedef struct
-{
-    TileFormat_t m_eFormat;     //!< Color-indexing of the tile (bits-per-pixel)
+typedef struct {
+    TileFormat_t m_eFormat; //!< Color-indexing of the tile (bits-per-pixel)
 
-    uint8_t *m_pu8Data;         //!< Pointer to color-indexed tile data
-    COLOR   *m_puPalette;       //!< Pointer to a palette assigned to this tile
+    uint8_t* m_pu8Data;   //!< Pointer to color-indexed tile data
+    COLOR*   m_puPalette; //!< Pointer to a palette assigned to this tile
 
-    uint8_t m_u8Height;         //!< Height of the tile (in pixels)
-    uint8_t m_u8Width;          //!< Width of the tile (in pixels)
+    uint8_t m_u8Height; //!< Height of the tile (in pixels)
+    uint8_t m_u8Width;  //!< Width of the tile (in pixels)
 } TileDef_t;
 
 //---------------------------------------------------------------------------
 // Class for managing an 8x8, 16bpp-output tile with arbitrary bpp.
-#define TILE_8x8_BUFFER_SIZE	(8 * 8) // 128 "Color".
+#define TILE_8x8_BUFFER_SIZE (8 * 8) // 128 "Color".
 
 class Tile_8x8
 {
@@ -74,7 +72,7 @@ public:
      * \param pstTileDef_ Pointer to a struct containing configuration
      *                    data for the tile to be loaded.
      */
-    void LoadTile (TileDef_t *pstTileDef_);
+    void LoadTile(TileDef_t* pstTileDef_);
 
     /*!
      * \brief Render
@@ -87,13 +85,13 @@ public:
      * \param u16X_ Leftmost pixel index
      * \param u16Y_ Topmost pixel index
      */
-    void Render(GraphicsDriver *pclDriver_, uint16_t u16X_, uint16_t u16Y_);
+    void Render(GraphicsDriver* pclDriver_, uint16_t u16X_, uint16_t u16Y_);
 
 private:
     /*!
      * \brief m_auTileBuffer Object's local storage for tile data
      */
-    COLOR m_auTileBuffer[ TILE_8x8_BUFFER_SIZE ];
+    COLOR m_auTileBuffer[TILE_8x8_BUFFER_SIZE];
 
     /*!
      * \brief m_u8Width Width of the tile (may be smaller than width of buffer)

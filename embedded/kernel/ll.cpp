@@ -111,7 +111,7 @@ void CircularLinkList::Add(LinkListNode* node_)
     node_->prev = m_pstTail;
     node_->next = m_pstHead;
 
-    m_pstTail = node_;
+    m_pstTail       = node_;
     m_pstHead->prev = node_;
 }
 

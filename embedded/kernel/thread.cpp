@@ -55,8 +55,8 @@ Thread::~Thread()
         CS_ENTER();
         m_pclCurrent->Remove(this);
         m_pclCurrent = 0;
-        m_pclOwner = 0;
-        m_eState = THREAD_STATE_EXIT;
+        m_pclOwner   = 0;
+        m_eState     = THREAD_STATE_EXIT;
         CS_EXIT();
     } else if (m_eState != THREAD_STATE_EXIT) {
 #if KERNEL_AWARE_SIMULATION
@@ -90,7 +90,7 @@ void Thread::Init(
     KERNEL_TRACE_1("Entrypoint: %x", (uint16_t)pfEntryPoint_);
 
     // Initialize the thread parameters to their initial values.
-    m_pwStack = pwStack_;
+    m_pwStack    = pwStack_;
     m_pwStackTop = TOP_OF_STACK(pwStack_, u16StackSize_);
 
     m_u16StackSize = u16StackSize_;
@@ -99,11 +99,11 @@ void Thread::Init(
     m_u16Quantum = THREAD_QUANTUM_DEFAULT;
 #endif
 
-    m_uXPriority = uXPriority_;
+    m_uXPriority    = uXPriority_;
     m_uXCurPriority = m_uXPriority;
-    m_pfEntryPoint = pfEntryPoint_;
-    m_pvArg = pvArg_;
-    m_eState = THREAD_STATE_STOP;
+    m_pfEntryPoint  = pfEntryPoint_;
+    m_pvArg         = pvArg_;
+    m_eState        = THREAD_STATE_STOP;
 
 #if KERNEL_USE_THREADNAME
     m_szName = NULL;
@@ -117,7 +117,7 @@ void Thread::Init(
 
     // Add to the global "stop" list.
     CS_ENTER();
-    m_pclOwner = Scheduler::GetThreadList(m_uXPriority);
+    m_pclOwner   = Scheduler::GetThreadList(m_uXPriority);
     m_pclCurrent = Scheduler::GetStopList();
     m_pclCurrent->Add(this);
     CS_EXIT();
@@ -134,7 +134,7 @@ void Thread::Init(
 //---------------------------------------------------------------------------
 Thread* Thread::Init(uint16_t u16StackSize_, PRIO_TYPE uXPriority_, ThreadEntry_t pfEntryPoint_, void* pvArg_)
 {
-    Thread* pclNew = (Thread*)AutoAlloc::Allocate(sizeof(Thread));
+    Thread* pclNew  = (Thread*)AutoAlloc::Allocate(sizeof(Thread));
     K_WORD* pwStack = (K_WORD*)AutoAlloc::Allocate(u16StackSize_);
     pclNew->Init(pwStack, u16StackSize_, uXPriority_, pfEntryPoint_, pvArg_);
     return pclNew;
@@ -151,9 +151,9 @@ void Thread::Start(void)
     CS_ENTER();
     Scheduler::GetStopList()->Remove(this);
     Scheduler::Add(this);
-    m_pclOwner = Scheduler::GetThreadList(m_uXPriority);
+    m_pclOwner   = Scheduler::GetThreadList(m_uXPriority);
     m_pclCurrent = m_pclOwner;
-    m_eState = THREAD_STATE_READY;
+    m_eState     = THREAD_STATE_READY;
 
 #if KERNEL_USE_QUANTUM
     if (Kernel::IsStarted()) {
@@ -193,7 +193,7 @@ void Thread::Stop()
         m_pclCurrent->Remove(this);
     }
 
-    m_pclOwner = Scheduler::GetStopList();
+    m_pclOwner   = Scheduler::GetStopList();
     m_pclCurrent = m_pclOwner;
     m_pclOwner->Add(this);
     m_eState = THREAD_STATE_STOP;
@@ -243,8 +243,8 @@ void Thread::Exit()
     }
 
     m_pclCurrent = 0;
-    m_pclOwner = 0;
-    m_eState = THREAD_STATE_EXIT;
+    m_pclOwner   = 0;
+    m_eState     = THREAD_STATE_EXIT;
 
     // We've removed the thread from scheduling, but interrupts might
     // trigger checks against this thread's currently priority before
@@ -252,7 +252,7 @@ void Thread::Exit()
     // priority to idle to ensure that we always wind up scheduling
     // new threads.
     m_uXCurPriority = 0;
-    m_uXPriority = 0;
+    m_uXPriority    = 0;
 
 #if KERNEL_USE_TIMERS
     // Just to be safe - attempt to remove the thread's timer
@@ -284,7 +284,7 @@ static void ThreadSleepCallback(Thread* pclOwner_, void* pvData_)
 void Thread::Sleep(uint32_t u32TimeMs_)
 {
     Semaphore clSemaphore;
-    Timer* pclTimer = g_pclCurrent->GetTimer();
+    Timer*    pclTimer = g_pclCurrent->GetTimer();
 
     // Create a semaphore that this thread will block on
     clSemaphore.Init(0, 1);
@@ -306,7 +306,7 @@ void Thread::Sleep(uint32_t u32TimeMs_)
 void Thread::USleep(uint32_t u32TimeUs_)
 {
     Semaphore clSemaphore;
-    Timer* pclTimer = g_pclCurrent->GetTimer();
+    Timer*    pclTimer = g_pclCurrent->GetTimer();
 
     // Create a semaphore that this thread will block on
     clSemaphore.Init(0, 1);
@@ -328,9 +328,9 @@ void Thread::USleep(uint32_t u32TimeUs_)
 //---------------------------------------------------------------------------
 uint16_t Thread::GetStackSlack()
 {
-    K_ADDR wTop = (K_ADDR)m_u16StackSize - 1;
+    K_ADDR wTop    = (K_ADDR)m_u16StackSize - 1;
     K_ADDR wBottom = (K_ADDR)0;
-    K_ADDR wMid = ((wTop + wBottom) + 1) / 2;
+    K_ADDR wMid    = ((wTop + wBottom) + 1) / 2;
 
     CS_ENTER();
 
@@ -343,7 +343,7 @@ uint16_t Thread::GetStackSlack()
         if (m_pwStack[wMid] == (K_WORD)(-1))
 #endif
         {
-            //!ToDo : Reverse the logic for MCUs where stack grows UP instead of down
+            //! ToDo : Reverse the logic for MCUs where stack grows UP instead of down
             wTop = wMid;
         } else {
             wBottom = wMid;
@@ -406,7 +406,7 @@ void Thread::SetPriority(PRIO_TYPE uXPriority_)
     CS_EXIT();
 
     m_uXCurPriority = uXPriority_;
-    m_uXPriority = uXPriority_;
+    m_uXPriority    = uXPriority_;
 
     CS_ENTER();
     Scheduler::Add(this);
@@ -494,12 +494,12 @@ void Thread::InitIdle(void)
 {
     ClearNode();
 
-    m_uXPriority = 0;
+    m_uXPriority    = 0;
     m_uXCurPriority = 0;
-    m_pfEntryPoint = 0;
-    m_pvArg = 0;
-    m_u8ThreadID = 255;
-    m_eState = THREAD_STATE_READY;
+    m_pfEntryPoint  = 0;
+    m_pvArg         = 0;
+    m_u8ThreadID    = 255;
+    m_eState        = THREAD_STATE_READY;
 #if KERNEL_USE_THREADNAME
     m_szName = "IDLE";
 #endif

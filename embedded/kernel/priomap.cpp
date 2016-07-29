@@ -25,8 +25,8 @@ See license.txt for more information
 //---------------------------------------------------------------------------
 static uint8_t priority_from_bitmap(PRIO_TYPE uXPrio_)
 {
-    PRIO_TYPE uXMask = (1 << (PRIO_MAP_BITS - 1));
-    uint8_t u8Zeros = 0;
+    PRIO_TYPE uXMask  = (1 << (PRIO_MAP_BITS - 1));
+    uint8_t   u8Zeros = 0;
 
     while (uXMask) {
         if (uXMask & uXPrio_) {

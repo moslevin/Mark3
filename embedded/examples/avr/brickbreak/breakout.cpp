@@ -10,7 +10,7 @@
 //---------------------------------------------------------------------------
 Breakout::Breakout()
 {
-    m_eState = GAME_STATE_TITLE;
+    m_eState     = GAME_STATE_TITLE;
     m_u16Counter = 0;
 }
 
@@ -51,7 +51,7 @@ void Breakout::TransitionToState(GameState_t eState_)
         default: break;
     }
 
-    m_eState = eState_;
+    m_eState     = eState_;
     m_u16Counter = 0;
 
     // Code to prepare for new state.
@@ -177,9 +177,9 @@ void Breakout::GameOverLoop()
 
     DrawText_t stText;
     stText.pcString = "GAME OVER";
-    stText.u16Left = 12;
-    stText.u16Top = 48;
-    stText.pstFont = &fntPrint_Char_21_6_False_False_False_;
+    stText.u16Left  = 12;
+    stText.u16Top   = 48;
+    stText.pstFont  = &fntPrint_Char_21_6_False_False_False_;
 
     switch (m_u16Counter & 0x03) {
         case 0: stText.uColor = COLOR_RED; break;
@@ -190,14 +190,14 @@ void Breakout::GameOverLoop()
     }
 
     TextFX_t stTextFX;
-    stTextFX.u8Flags = TEXTFX_FLAG_SCALE_X | TEXTFX_FLAG_SCALE_Y;
+    stTextFX.u8Flags      = TEXTFX_FLAG_SCALE_X | TEXTFX_FLAG_SCALE_Y;
     stTextFX.u16ScaleX100 = 200;
     stTextFX.u16ScaleY100 = 200;
     pclDisplay->TextFX(&stText, &stTextFX);
     m_u16Counter--;
 
     if (!m_u16Counter) {
-        HighScore clHS;
+        HighScore   clHS;
         HighScore_t stLastHigh;
 
         clHS.CheckInit();
@@ -277,7 +277,7 @@ void Breakout::LoseALife()
     if (!bContinue) {
         TransitionToState(GAME_STATE_GAME_OVER);
     } else {
-        m_u16Counter = 300;
+        m_u16Counter  = 300;
         m_sBallOffset = 6;
         m_clPlayField.ResetBonus();
         m_clBall.Clear();
@@ -312,8 +312,8 @@ void Breakout::UpdateLazer()
 void Breakout::GameLoop()
 {
     uint16_t u16PixX, u16PixY;
-    bool bContinue;
-    bool bFirstUpdate = true;
+    bool     bContinue;
+    bool     bFirstUpdate = true;
 
     // Compute velocity to integrate this frame
     m_clBall.Update();
@@ -426,8 +426,8 @@ void Breakout::GameLoop()
                 bFlipY = true;
                 {
                     SquareWave_t stWave;
-                    stWave.u8Level = 64;
-                    stWave.u16Freq = TONE(C, 5);
+                    stWave.u8Level       = 64;
+                    stWave.u16Freq       = TONE(C, 5);
                     stWave.u16DurationMS = 300;
                     pclSound->Control(SOUND_EVENT_SQUAREWAVE, &stWave, 0, 0, 0);
                 }
@@ -550,25 +550,25 @@ void Breakout::GameLoop()
 //---------------------------------------------------------------------------
 void Breakout::TitleEnter()
 {
-    DrawText_t stText;
+    DrawText_t      stText;
     DrawRectangle_t stRect;
 
     pclDisplay->ClearScreen();
 
     m_u16Counter = 15 * 60;
 
-    stRect.u16Left = 8;
-    stRect.u16Right = SCREEN_WIDTH - 9;
-    stRect.u16Top = 24;
-    stRect.u16Bottom = 80;
-    stRect.bFill = true;
+    stRect.u16Left     = 8;
+    stRect.u16Right    = SCREEN_WIDTH - 9;
+    stRect.u16Top      = 24;
+    stRect.u16Bottom   = 80;
+    stRect.bFill       = true;
     stRect.u32ineColor = RGB_COLOR(MAX_RED / 4, 0, MAX_BLUE / 4);
-    stRect.uFillColor = stRect.u32ineColor;
+    stRect.uFillColor  = stRect.u32ineColor;
 
     pclDisplay->Rectangle(&stRect);
 
-    stRect.bFill = true;
-    stRect.uFillColor = COLOR_PURPLE;
+    stRect.bFill       = true;
+    stRect.uFillColor  = COLOR_PURPLE;
     stRect.u32ineColor = COLOR_WHITE;
 
     for (uint8_t u8Col = 0; u8Col < 10; u8Col++) {
@@ -587,14 +587,14 @@ void Breakout::TitleEnter()
             default: break;
         }
 
-        stRect.u16Left = 8 + (u8Col * (((SCREEN_WIDTH - 16) + 5) / 10));
+        stRect.u16Left  = 8 + (u8Col * (((SCREEN_WIDTH - 16) + 5) / 10));
         stRect.u16Right = stRect.u16Left + (((SCREEN_WIDTH - 16) + 5) / 10);
 
         while (u8Height) {
             stRect.uFillColor = RGB_COLOR((MAX_RED * u8Height) / 10, 0, (MAX_BLUE * u8Height) / 10);
             stRect.u32ineColor
                 = RGB_COLOR((MAX_RED * u8Height) / 10, (MAX_GREEN * u8Height) / 10, (MAX_BLUE * u8Height) / 10);
-            stRect.u16Top = 80 - (u8Height * 6);
+            stRect.u16Top    = 80 - (u8Height * 6);
             stRect.u16Bottom = stRect.u16Top + 5;
 
             pclDisplay->Rectangle(&stRect);
@@ -604,20 +604,20 @@ void Breakout::TitleEnter()
 
     TextFX_t stTextFX;
 
-    stText.pstFont = &fntPrint_Char_21_6_False_False_False_;
+    stText.pstFont  = &fntPrint_Char_21_6_False_False_False_;
     stText.pcString = "(c)2015 - FUNKENSTEIN";
-    stText.u16Left = 5;
-    stText.u16Top = SCREEN_HEIGHT - 8;
-    stText.uColor = COLOR_GREY25;
+    stText.u16Left  = 5;
+    stText.u16Top   = SCREEN_HEIGHT - 8;
+    stText.uColor   = COLOR_GREY25;
 
     pclDisplay->Text(&stText);
 
     stText.pcString = "BRICK";
-    stText.u16Top = 41;
-    stText.u16Left = 23;
-    stText.uColor = COLOR_BLACK;
+    stText.u16Top   = 41;
+    stText.u16Left  = 23;
+    stText.uColor   = COLOR_BLACK;
 
-    stTextFX.u8Flags = TEXTFX_FLAG_SCALE_X | TEXTFX_FLAG_SCALE_Y;
+    stTextFX.u8Flags      = TEXTFX_FLAG_SCALE_X | TEXTFX_FLAG_SCALE_Y;
     stTextFX.u16ScaleX100 = 300;
     stTextFX.u16ScaleY100 = 200;
 
@@ -643,10 +643,10 @@ void Breakout::TitleEnter()
 
     pclDisplay->TextFX(&stText, &stTextFX);
 
-    stText.u16Top = 26;
-    stText.u16Left = 10;
+    stText.u16Top   = 26;
+    stText.u16Left  = 10;
     stText.pcString = "SUPER!";
-    stText.uColor = COLOR_GREY25;
+    stText.uColor   = COLOR_GREY25;
     pclDisplay->Text(&stText);
 
     stText.uColor = COLOR_RED;
@@ -665,9 +665,9 @@ void Breakout::TitleLoop()
 {
     DrawText_t stText;
     stText.pcString = "PRESS START";
-    stText.u16Left = 32;
-    stText.u16Top = 110;
-    stText.pstFont = &fntPrint_Char_21_6_False_False_False_;
+    stText.u16Left  = 32;
+    stText.u16Top   = 110;
+    stText.pstFont  = &fntPrint_Char_21_6_False_False_False_;
 
     if ((m_u16Counter % 120) == 0) {
         stText.uColor = COLOR_WHITE;
@@ -692,7 +692,7 @@ void Breakout::TitleLoop()
 void Breakout::AttractLoopEnter()
 {
     static uint8_t u8Attract = 0;
-    int16_t s16VelX, s16VelY;
+    int16_t        s16VelX, s16VelY;
 
     m_u16Counter = 3600; // One minute @ 60fps
 
@@ -761,7 +761,7 @@ void Breakout::AttractLoop()
 
     do {
         uint8_t u8Flags = 0;
-        bContinue = m_clBall.MoveNextPixel(&u16PixX, &u16PixY);
+        bContinue       = m_clBall.MoveNextPixel(&u16PixX, &u16PixY);
 
         u8Flags |= CheckBrickHit(u16PixX, u16PixY);
         u8Flags |= CheckBrickHit(u16PixX, u16PixY + BALL_SIZE - 1);
@@ -826,10 +826,10 @@ void Breakout::AttractLoop()
     DrawText_t stText;
 
     stText.u16Left = 40;
-    stText.u16Top = 60;
-    stText.uColor = COLOR_RED;
+    stText.u16Top  = 60;
+    stText.uColor  = COLOR_RED;
 
-    stText.pstFont = &fntPrint_Char_21_6_False_False_False_;
+    stText.pstFont  = &fntPrint_Char_21_6_False_False_False_;
     stText.pcString = "GAME OVER";
     pclDisplay->Text(&stText);
 
@@ -855,7 +855,7 @@ void Breakout::HighScoreLoop()
     bool bRedraw = true;
 
     if (!m_u16Counter) {
-        m_u16Counter = 1800; // 3600; // 60 seconds to enter high score;
+        m_u16Counter  = 1800; // 3600; // 60 seconds to enter high score;
         m_u8InitialId = 0;
 
         m_acInitials[0] = 'A';
@@ -866,16 +866,16 @@ void Breakout::HighScoreLoop()
         pclDisplay->ClearScreen();
 
         stText.pcString = "TIME";
-        stText.u16Left = (SCREEN_WIDTH / 2) - 20;
-        stText.u16Top = 8;
-        stText.uColor = COLOR_RED;
+        stText.u16Left  = (SCREEN_WIDTH / 2) - 20;
+        stText.u16Top   = 8;
+        stText.uColor   = COLOR_RED;
         pclDisplay->Text(&stText);
     }
 
     // Deal with the current letter
-    bool bLeft = LeftDown();
+    bool bLeft  = LeftDown();
     bool bRight = RightDown();
-    bool bExit = false;
+    bool bExit  = false;
 
     if (bLeft || bRight) {
         if (bLeft) {
@@ -906,16 +906,16 @@ void Breakout::HighScoreLoop()
 
         TextFX_t stTextFX;
 
-        stRect.bFill = true;
-        stRect.uFillColor = COLOR_BLACK;
+        stRect.bFill       = true;
+        stRect.uFillColor  = COLOR_BLACK;
         stRect.u32ineColor = COLOR_BLACK;
-        stRect.u16Top = 60;
-        stRect.u16Bottom = 76;
-        stRect.u16Left = (SCREEN_WIDTH / 2) - 18;
-        stRect.u16Right = stRect.u16Left + 36;
+        stRect.u16Top      = 60;
+        stRect.u16Bottom   = 76;
+        stRect.u16Left     = (SCREEN_WIDTH / 2) - 18;
+        stRect.u16Right    = stRect.u16Left + 36;
         pclDisplay->Rectangle(&stRect);
 
-        stTextFX.u8Flags = TEXTFX_FLAG_SCALE_X | TEXTFX_FLAG_SCALE_Y;
+        stTextFX.u8Flags      = TEXTFX_FLAG_SCALE_X | TEXTFX_FLAG_SCALE_Y;
         stTextFX.u16ScaleX100 = 200;
         stTextFX.u16ScaleY100 = 200;
 
@@ -926,8 +926,8 @@ void Breakout::HighScoreLoop()
             acTmp[1] = 0;
 
             stText.pcString = acTmp;
-            stText.u16Left = (SCREEN_WIDTH / 2) - 18 + (12 * i);
-            stText.u16Top = 60;
+            stText.u16Left  = (SCREEN_WIDTH / 2) - 18 + (12 * i);
+            stText.u16Top   = 60;
             if (i == m_u8InitialId) {
                 stText.uColor = COLOR_WHITE;
             } else {
@@ -940,8 +940,8 @@ void Breakout::HighScoreLoop()
 
     if (!bExit) {
         stText.pcString = "HIGH SCORE!";
-        stText.u16Left = (SCREEN_WIDTH / 2) - 28;
-        stText.u16Top = 40;
+        stText.u16Left  = (SCREEN_WIDTH / 2) - 28;
+        stText.u16Top   = 40;
         switch (m_u16Counter % 0x03) {
             case 0: stText.uColor = COLOR_RED; break;
             case 1: stText.uColor = COLOR_GREEN; break;
@@ -954,22 +954,22 @@ void Breakout::HighScoreLoop()
     if (((m_u16Counter % 60) == 0) && !bExit) {
         DrawRectangle_t stRect;
 
-        stRect.bFill = true;
-        stRect.uFillColor = COLOR_BLACK;
+        stRect.bFill       = true;
+        stRect.uFillColor  = COLOR_BLACK;
         stRect.u32ineColor = COLOR_BLACK;
-        stRect.u16Top = 8;
-        stRect.u16Bottom = 15;
-        stRect.u16Left = (SCREEN_WIDTH / 2);
-        stRect.u16Right = stRect.u16Left + 15;
+        stRect.u16Top      = 8;
+        stRect.u16Bottom   = 15;
+        stRect.u16Left     = (SCREEN_WIDTH / 2);
+        stRect.u16Right    = stRect.u16Left + 15;
         pclDisplay->Rectangle(&stRect);
 
         char acTimeStr[4];
         MemUtil::DecimalToString((uint16_t)(m_u16Counter / 60), (char*)acTimeStr);
 
         stText.pcString = acTimeStr;
-        stText.u16Left = (SCREEN_WIDTH / 2) + 5;
-        stText.u16Top = 8;
-        stText.uColor = COLOR_RED;
+        stText.u16Left  = (SCREEN_WIDTH / 2) + 5;
+        stText.u16Top   = 8;
+        stText.uColor   = COLOR_RED;
         pclDisplay->Text(&stText);
     }
     m_u16Counter--;
@@ -979,9 +979,9 @@ void Breakout::HighScoreLoop()
     }
 
     if (bExit) {
-        HighScore clHS;
+        HighScore   clHS;
         HighScore_t myScore;
-        myScore.u32Score = m_clScore.GetScore();
+        myScore.u32Score  = m_clScore.GetScore();
         myScore.acName[0] = m_acInitials[0];
         myScore.acName[1] = m_acInitials[1];
         myScore.acName[2] = m_acInitials[2];
@@ -1008,24 +1008,24 @@ void Breakout::ListScoreEnter()
 
     stText.u16Left = 35;
     stText.pstFont = &fntPrint_Char_21_6_False_False_False_;
-    stText.uColor = COLOR_WHITE;
+    stText.uColor  = COLOR_WHITE;
 
     for (uint8_t i = 0; i < 5; i++) {
         HighScore_t stScore;
         clHS.ReadScore(i, &stScore);
-        stText.u16Top = 64 + (i * 8);
-        stText.u16Left = 35;
+        stText.u16Top   = 64 + (i * 8);
+        stText.u16Left  = 35;
         stText.pcString = stScore.acName;
 
         pclDisplay->Text(&stText);
 
-        stText.u16Left = 55;
+        stText.u16Left  = 55;
         stText.pcString = "-";
         pclDisplay->Text(&stText);
 
         char acStr[11];
         MemUtil::DecimalToString(stScore.u32Score, acStr);
-        stText.u16Left = 65;
+        stText.u16Left  = 65;
         stText.pcString = acStr;
         pclDisplay->Text(&stText);
     }
@@ -1043,9 +1043,9 @@ void Breakout::ListScoreLoop()
     m_u16Counter--;
 
     stText.pcString = "HIGH SCORES";
-    stText.u16Left = 35;
-    stText.u16Top = 40;
-    stText.pstFont = &fntPrint_Char_21_6_False_False_False_;
+    stText.u16Left  = 35;
+    stText.u16Top   = 40;
+    stText.pstFont  = &fntPrint_Char_21_6_False_False_False_;
 
     switch (m_u16Counter & 0x03) {
         case 0: stText.uColor = COLOR_RED; break;
@@ -1072,16 +1072,16 @@ void Breakout::ListScoreLoop()
     stRect.uFillColor = stRect.u32ineColor;
 
     // Colorful borders - top
-    stRect.u16Top = 0;
+    stRect.u16Top    = 0;
     stRect.u16Bottom = 7;
-    stRect.u16Left = (m_u16Counter << 3) & (SCREEN_WIDTH - 1);
-    stRect.u16Right = stRect.u16Left + 7;
+    stRect.u16Left   = (m_u16Counter << 3) & (SCREEN_WIDTH - 1);
+    stRect.u16Right  = stRect.u16Left + 7;
     pclDisplay->Rectangle(&stRect);
 
     // Bottom
-    stRect.u16Top = SCREEN_HEIGHT - 8;
+    stRect.u16Top    = SCREEN_HEIGHT - 8;
     stRect.u16Bottom = SCREEN_HEIGHT - 1;
-    stRect.u16Right = (SCREEN_WIDTH - (m_u16Counter << 3)) & (SCREEN_WIDTH - 1);
+    stRect.u16Right  = (SCREEN_WIDTH - (m_u16Counter << 3)) & (SCREEN_WIDTH - 1);
     if (stRect.u16Right == 0) {
         stRect.u16Right = SCREEN_WIDTH - 1;
     } else {
@@ -1091,16 +1091,16 @@ void Breakout::ListScoreLoop()
     pclDisplay->Rectangle(&stRect);
 
     // Left
-    stRect.u16Left = 0;
-    stRect.u16Right = 7;
-    stRect.u16Top = 8 + ((m_u16Counter << 3) % (SCREEN_HEIGHT - 16));
+    stRect.u16Left   = 0;
+    stRect.u16Right  = 7;
+    stRect.u16Top    = 8 + ((m_u16Counter << 3) % (SCREEN_HEIGHT - 16));
     stRect.u16Bottom = stRect.u16Top + 7;
     pclDisplay->Rectangle(&stRect);
 
     // Right
-    stRect.u16Left = SCREEN_WIDTH - 8;
+    stRect.u16Left  = SCREEN_WIDTH - 8;
     stRect.u16Right = SCREEN_WIDTH - 1;
-    stRect.u16Top = (SCREEN_HEIGHT - 16) - ((m_u16Counter << 3) % (SCREEN_HEIGHT - 16));
+    stRect.u16Top   = (SCREEN_HEIGHT - 16) - ((m_u16Counter << 3) % (SCREEN_HEIGHT - 16));
     if (0 == stRect.u16Top) {
         stRect.u16Top = SCREEN_HEIGHT - 16;
     }

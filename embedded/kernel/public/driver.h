@@ -13,7 +13,7 @@ See license.txt for more information
 =========================================================================== */
 /*!
 
-    \file   driver.h    
+    \file   driver.h
 
     \brief  Driver abstraction framework
 
@@ -29,7 +29,7 @@ See license.txt for more information
     to threads associated with the driver.  Drivers are implemented as
     character devices, with the standard array of posix-style accessor methods
     for reading, writing, and general driver control.
-    
+
     A global driver list is provided as a convenient and minimal
     "filesystem" structure, in which devices can be accessed by name.
 
@@ -43,8 +43,8 @@ See license.txt for more information
 
     At the end of the day, that's pretty much all a device driver has to do,
     and all of the functionality that needs to be presented to the developer.
-    
-    We abstract all device drivers using a base-class which implements the 
+
+    We abstract all device drivers using a base-class which implements the
     following methods:
         -Start/Open
         -Stop/Close
@@ -58,11 +58,11 @@ See license.txt for more information
 
     \section DrvAPI Driver API
 
-    In C++, we can implement this as a class to abstract these event handlers, with 
+    In C++, we can implement this as a class to abstract these event handlers, with
     virtual void functions in the base class overridden by the inherited
     objects.
 
-    To add and remove device drivers from the global table, we use the 
+    To add and remove device drivers from the global table, we use the
     following methods:
 
     \code
@@ -70,24 +70,24 @@ See license.txt for more information
     void DriverList::Remove( Driver *pclDriver_ );
     \endcode
 
-    DriverList::Add()/Remove() takes a single arguments � the pointer to he 
+    DriverList::Add()/Remove() takes a single arguments � the pointer to he
     object to operate on.
 
     Once a driver has been added to the table, drivers are opened by NAME using
-    DriverList::FindByName("/dev/name"). This function returns a pointer to 
-    the specified driver if successful, or to a built in /dev/null device 
-    if the path name is invalid.  After a driver is open, that pointer is used 
+    DriverList::FindByName("/dev/name"). This function returns a pointer to
+    the specified driver if successful, or to a built in /dev/null device
+    if the path name is invalid.  After a driver is open, that pointer is used
     for all other driver access functions.
-    
-    This abstraction is incredibly useful � any peripheral or service can be 
-    accessed through a consistent set of APIs, that make it easy to substitute 
-    implementations from one platform to another.  Portability is ensured, the 
-    overhead is negligible, and it emphasizes the reuse of both driver and 
+
+    This abstraction is incredibly useful � any peripheral or service can be
+    accessed through a consistent set of APIs, that make it easy to substitute
+    implementations from one platform to another.  Portability is ensured, the
+    overhead is negligible, and it emphasizes the reuse of both driver and
     application code as separate entities.
 
-    Consider a system with drivers for I2C, SPI, and UART peripherals - under 
+    Consider a system with drivers for I2C, SPI, and UART peripherals - under
     our driver framework, an application can initialize these peripherals
-    and write a greeting to each using the same simple API functions for all 
+    and write a greeting to each using the same simple API functions for all
     drivers:
 
     \code
@@ -99,7 +99,7 @@ See license.txt for more information
     pclUART->Write(12, "Hello World!");
     pclSPI->Write(12, "Hello World!");
     \endcode
-    
+
  */
 
 #include "kerneltypes.h"
@@ -121,33 +121,32 @@ class DriverList;
 class Driver : public LinkListNode
 {
 public:
-    void* operator new (size_t sz, void* pv) { return (Driver*)pv; };
-
+    void* operator new(size_t sz, void* pv) { return (Driver*)pv; };
     /*!
      *  \brief Init
      *
      *  Initialize a driver, must be called prior to use
      */
     virtual void Init() = 0;
-    
+
     /*!
      *  \brief Open
      *
      *  Open a device driver prior to use.
-     *  
+     *
      *  \return Driver-specific return code, 0 = OK, non-0 = error
      */
     virtual uint8_t Open() = 0;
-    
+
     /*!
      *  \brief Close
      *
      *  Close a previously-opened device driver.
-     *          
+     *
      *  \return Driver-specific return code, 0 = OK, non-0 = error
      */
     virtual uint8_t Close() = 0;
-    
+
     /*!
      *  \brief Read
      *
@@ -156,85 +155,78 @@ public:
      *  less than the requested number of bytes read, indicating that there
      *  there was less input than desired, or that as a result of buffering,
      *  the data may not be available.
-     *  
+     *
      *  \param u16Bytes_ Number of bytes to read (<= size of the buffer)
      *  \param pu8Data_ Pointer to a data buffer receiving the read data
-     *  
+     *
      *  \return Number of bytes actually read
      */
-    virtual uint16_t Read( uint16_t u16Bytes_, 
-                                 uint8_t *pu8Data_) = 0;
-                                 
+    virtual uint16_t Read(uint16_t u16Bytes_, uint8_t* pu8Data_) = 0;
+
     /*!
      *  \brief Write
      *
      *  Write a payload of data of a given length to the device.
      *  Depending on the implementation of the driver, the amount of data
-     *  written to the device may be less than the requested number of 
+     *  written to the device may be less than the requested number of
      *  bytes.  A result less than the requested size may indicate that
      *  the device buffer is full, indicating that the user must retry
      *  the write at a later point with the remaining data.
-     *                            
+     *
      *  \param u16Bytes_ Number of bytes to write (<= size of the buffer)
      *  \param pu8Data_ Pointer to a data buffer containing the data to write
      *
      *  \return Number of bytes actually written
      */
-    virtual uint16_t Write( uint16_t u16Bytes_, 
-                                  uint8_t *pu8Data_) = 0;
+    virtual uint16_t Write(uint16_t u16Bytes_, uint8_t* pu8Data_) = 0;
 
-    /*!        
+    /*!
      *  \brief Control
      *
      *  This is the main entry-point for device-specific io and control
      *  operations.  This is used for implementing all "side-channel"
      *  communications with a device, and any device-specific IO
-     *  operations that do not conform to the typical POSIX 
-     *  read/write paradigm.  use of this funciton is analagous to 
+     *  operations that do not conform to the typical POSIX
+     *  read/write paradigm.  use of this funciton is analagous to
      *  the non-POSIX (yet still common) devctl() or ioctl().
-     *  
+     *
      *  \param u16Event_ Code defining the io event (driver-specific)
-     *  \param pvDataIn_ Pointer to the intput data 
+     *  \param pvDataIn_ Pointer to the intput data
      *  \param u16SizeIn_ Size of the input data (in bytes)
      *  \param pvDataOut_ Pointer to the output data
      *  \param u16SizeOut_ Size of the output data (in bytes)
      *
      *  \return Driver-specific return code, 0 = OK, non-0 = error
      */
-    virtual uint16_t Control( uint16_t u16Event_, 
-                                    void *pvDataIn_, 
-                                    uint16_t u16SizeIn_, 
-                                    void *pvDataOut_, 
-                                    uint16_t u16SizeOut_ ) = 0;
-    
+    virtual uint16_t
+    Control(uint16_t u16Event_, void* pvDataIn_, uint16_t u16SizeIn_, void* pvDataOut_, uint16_t u16SizeOut_)
+        = 0;
+
     /*!
      *  \brief SetName
      *
-     *  Set the path for the driver.  Name must be set prior to 
+     *  Set the path for the driver.  Name must be set prior to
      *  access (since driver access is name-based).
-     *  
+     *
      *  \param pcName_ String constant containing the device path
      */
-    void SetName( const char *pcName_ ) { m_pcPath = pcName_; }
-    
+    void SetName(const char* pcName_) { m_pcPath = pcName_; }
     /*!
      *  \brief GetPath
      *
      *  Returns a string containing the device path.
-     *  
+     *
      *  \return pcName_ Return the string constant representing the device path
      */
-    const char *GetPath() { return m_pcPath; }
-    
+    const char* GetPath() { return m_pcPath; }
 private:
-
     //! string pointer that holds the driver path (name)
-    const char *m_pcPath;
+    const char* m_pcPath;
 };
 
 //---------------------------------------------------------------------------
 /*!
- *  List of Driver objects used to keep track of all device drivers in the 
+ *  List of Driver objects used to keep track of all device drivers in the
  *  system.  By default, the list contains a single entity, "/dev/null".
  */
 class DriverList
@@ -243,32 +235,30 @@ public:
     /*!
      *  \brief Init
      *
-     *  Initialize the list of drivers.  Must be called prior to using the 
+     *  Initialize the list of drivers.  Must be called prior to using the
      *  device driver library.
      */
-        
+
     static void Init();
-    
+
     /*!
      *  \brief Add
      *
      *  Add a Driver object to the managed global driver-list.
-     *  
+     *
      *  \param pclDriver_ pointer to the driver object to add to the global
      *         driver list.
      */
-    static void Add( Driver *pclDriver_ ) { m_clDriverList.Add(pclDriver_); }
-    
+    static void Add(Driver* pclDriver_) { m_clDriverList.Add(pclDriver_); }
     /*!
      *  \brief Remove
      *
      *  Remove a driver from the global driver list.
-     *  
-     *  \param pclDriver_ Pointer to the driver object to remove from the 
+     *
+     *  \param pclDriver_ Pointer to the driver object to remove from the
      *         global table
      */
-    static void Remove( Driver *pclDriver_ ) { m_clDriverList.Remove(pclDriver_); }
-    
+    static void Remove(Driver* pclDriver_) { m_clDriverList.Remove(pclDriver_); }
     /*!
      *  \brief FindByPath
      *
@@ -277,14 +267,13 @@ public:
      *  default "/dev/null" object is returned.  In this way, unimplemented drivers
      *  are automatically stubbed out.
      */
-    static Driver *FindByPath( const char *m_pcPath );
+    static Driver* FindByPath(const char* m_pcPath);
 
 private:
-
     //! LinkedList object used to implementing the driver object management
     static DoubleLinkList m_clDriverList;
 };
 
-#endif //KERNEL_USE_DRIVER
+#endif // KERNEL_USE_DRIVER
 
 #endif

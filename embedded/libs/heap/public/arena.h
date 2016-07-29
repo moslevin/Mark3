@@ -26,8 +26,8 @@ See license.txt for more information
 #include "heapblock.h"
 
 //---------------------------------------------------------------------------
-#define ARENA_EXHAUSTED         (255)
-#define ARENA_FULL              (254)
+#define ARENA_EXHAUSTED (255)
+#define ARENA_FULL (254)
 
 //---------------------------------------------------------------------------
 /*!
@@ -54,7 +54,7 @@ public:
      * \param usize_ Size of the heap memory blob in bytes
      * \return
      */
-    void Init( void *pvBuffer_, K_ADDR u32Size_, K_ADDR *au32Sizes_, uint8_t u8NumSizes_ );
+    void Init(void* pvBuffer_, K_ADDR u32Size_, K_ADDR* au32Sizes_, uint8_t u8NumSizes_);
 
     /*!
      * \brief Allocate
@@ -64,7 +64,7 @@ public:
      * \param usize_ Size of object to allocate (in bytes)
      * \return pointer to a chunk of dynamic memory, or 0 on exhaustion.
      */
-    void *Allocate( K_ADDR usize_ );
+    void* Allocate(K_ADDR usize_);
 
     /*!
      * \brief Free
@@ -73,16 +73,16 @@ public:
      *
      * \param pvBlock_ Pointer to the beginning of the object to be freed.
      */
-    void Free( void *pvBlock_ );
+    void Free(void* pvBlock_);
 
     /*!
      * \brief Print
      *
      * Show details about the print via standard output.
      */
-    void Print( void );
-private:
+    void Print(void);
 
+private:
     /*!
      * \brief ListForSize
      *
@@ -92,7 +92,7 @@ private:
      * \param usize_ Size of the object to check
      * \return INdex representing the arena/arena-size
      */
-    uint8_t ListForSize( K_ADDR usize_ );
+    uint8_t ListForSize(K_ADDR usize_);
 
     /*!
      * \brief ListToSatisfy
@@ -103,12 +103,11 @@ private:
      * \param usize_ Size of data to check
      * \return Index representing the arena/arena-size, or 0xF...F on invalid
      */
-    uint8_t ListToSatisfy( K_ADDR usize_ );
+    uint8_t ListToSatisfy(K_ADDR usize_);
 
-    uint8_t    m_u8LargestList;    //!< Index of the largest arena
-    ArenaList  *m_aclBlockList;    //!< Arena linked-list data
-    void       *m_pvData;          //!< Pointer to the raw memory blob managed by this object as a heap.
+    uint8_t    m_u8LargestList; //!< Index of the largest arena
+    ArenaList* m_aclBlockList;  //!< Arena linked-list data
+    void*      m_pvData;        //!< Pointer to the raw memory blob managed by this object as a heap.
 };
 
 #endif
-

@@ -40,7 +40,7 @@ See license.txt for more information
 class ArenaList : private DoubleLinkList
 {
 public:
-    void* operator new (size_t sz, void* pv) { return (ArenaList*)pv; };
+    void* operator new(size_t sz, void* pv) { return (ArenaList*)pv; };
     /*!
      * \brief Init
      *
@@ -48,9 +48,9 @@ public:
      *
      * \param uBlockSize_ Minimum data size for blocks.
      */
-    void Init( K_ADDR uBlockSize_ )
+    void Init(K_ADDR uBlockSize_)
     {
-        m_u16Count = 0;
+        m_u16Count   = 0;
         m_uBlockSize = uBlockSize_;
 
         DoubleLinkList::Init();
@@ -60,11 +60,7 @@ public:
      * \brief GetBlockSize
      * \return The minimum block size for objects in this structure
      */
-    K_ADDR GetBlockSize( void )
-    {
-        return m_uBlockSize;
-    }
-
+    K_ADDR GetBlockSize(void) { return m_uBlockSize; }
     /*!
      * \brief PushBlock
      *
@@ -72,10 +68,9 @@ public:
      *
      * \param pclBlock_ Pointer of the block to add
      */
-    void PushBlock( HeapBlock *pclBlock_ )
+    void PushBlock(HeapBlock* pclBlock_)
     {
-        if (m_u16Count != 65535)
-        {
+        if (m_u16Count != 65535) {
             m_u16Count++;
             Add((LinkListNode*)pclBlock_);
         }
@@ -90,15 +85,13 @@ public:
      * \return Pointer to the first HeapBlock object in the list, or
      *         0 on error (list exhausted).
      */
-    HeapBlock *PopBlock( void )
+    HeapBlock* PopBlock(void)
     {
-        if (m_u16Count)
-        {
+        if (m_u16Count) {
             m_u16Count--;
-            HeapBlock *pclReturn = (HeapBlock*)GetHead();
-            if (pclReturn)
-            {
-                Remove( GetHead( ) );
+            HeapBlock* pclReturn = (HeapBlock*)GetHead();
+            if (pclReturn) {
+                Remove(GetHead());
             }
             return pclReturn;
         }
@@ -112,10 +105,9 @@ public:
      *
      * \param pclBlock_ Pointer of the block to remove
      */
-    void RemoveBlock( HeapBlock *pclBlock_ )
+    void RemoveBlock(HeapBlock* pclBlock_)
     {
-        if (m_u16Count && GetHead( ) )
-        {
+        if (m_u16Count && GetHead()) {
             m_u16Count--;
             Remove((LinkListNode*)pclBlock_);
         }
@@ -125,14 +117,10 @@ public:
      * \brief GetBlockCount
      * \return The current number of available allocations in this list.
      */
-    uint32_t GetBlockCount( void )
-    {
-        return m_u16Count;
-    }
-
+    uint32_t GetBlockCount(void) { return m_u16Count; }
 private:
-    K_ADDR     m_uBlockSize;    //!< The minimum data-size for blocks held in this arena
-    uint16_t   m_u16Count;      //!< Current number of available blocks in this list
+    K_ADDR   m_uBlockSize; //!< The minimum data-size for blocks held in this arena
+    uint16_t m_u16Count;   //!< Current number of available blocks in this list
 };
 
 #endif

@@ -25,7 +25,7 @@ See license.txt for more information
 void PowerBallot::Register(PowerMan* pclManager_)
 {
     m_pclManager = pclManager_;
-    m_u8ID = m_pclManager->GetNextID();
+    m_u8ID       = m_pclManager->GetNextID();
 }
 
 //---------------------------------------------------------------------------
@@ -63,7 +63,7 @@ bool PowerMan::CountBallots(void)
 //---------------------------------------------------------------------------
 void PowerMan::ChangeVote(uint8_t u8Index_, power_vote_t eVote_)
 {
-    uint8_t u8Byte = u8Index_ >> 3;
+    uint8_t u8Byte    = u8Index_ >> 3;
     uint8_t u8BitMask = 1 << (u8Index_ & 0x0007);
 
     CS_ENTER();

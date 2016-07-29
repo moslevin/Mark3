@@ -18,10 +18,10 @@ See license.txt for more information
 //---------------------------------------------------------------------------
 void BitStreamer::Init(uint8_t* pu8Data_, uint16_t u16Size_)
 {
-    m_pu8Data = pu8Data_;
-    m_u8BitIndex = 0;
+    m_pu8Data      = pu8Data_;
+    m_u8BitIndex   = 0;
     m_u16ByteIndex = 0;
-    m_u16Size = 0;
+    m_u16Size      = 0;
 }
 
 //---------------------------------------------------------------------------

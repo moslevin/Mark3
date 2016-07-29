@@ -11,9 +11,9 @@
 class BrBall
 {
 public:
-    void SetPosition( uint16_t u16X_, uint16_t u16Y_ );
+    void SetPosition(uint16_t u16X_, uint16_t u16Y_);
 
-    void SetVelocity( int16_t s16VelX100_, int16_t s16VelY100_ );
+    void SetVelocity(int16_t s16VelX100_, int16_t s16VelY100_);
 
     void ToggleDirX(void);
 
@@ -21,11 +21,11 @@ public:
 
     void Update(void);
 
-    bool MoveNextPixel(uint16_t *pu16X_, uint16_t *pu16Y_);
+    bool MoveNextPixel(uint16_t* pu16X_, uint16_t* pu16Y_);
 
-    void SetX( uint16_t u16X_ );
+    void SetX(uint16_t u16X_);
 
-    void SetY( uint16_t u16Y_ );
+    void SetY(uint16_t u16Y_);
 
     int16_t GetVelX(void);
 
@@ -37,7 +37,6 @@ public:
 
     int16_t GetX(void) { return (m_s16X100 + 50) / 100; }
     int16_t GetY(void) { return (m_s16Y100 + 50) / 100; }
-
 private:
     int16_t m_s16X100;
     int16_t m_s16Y100;
@@ -52,6 +51,4 @@ private:
     uint16_t m_u16LastY;
 };
 
-
 #endif
-

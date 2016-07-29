@@ -13,7 +13,7 @@ See license.txt for more information
 =========================================================================== */
 /*!
 
-    \file   ksemaphore.h    
+    \file   ksemaphore.h
 
     \brief  Semaphore Blocking Object class declarations
 
@@ -37,8 +37,7 @@ See license.txt for more information
 class Semaphore : public BlockingObject
 {
 public:
-    void* operator new (size_t sz, void* pv) { return (Semaphore*)pv; };
-
+    void* operator new(size_t sz, void* pv) { return (Semaphore*)pv; };
     ~Semaphore();
 
     /*!
@@ -55,7 +54,7 @@ public:
      *
      *  To configure a semaphore object for use as a binary semaphore, set values
      *  of 0 and 1 respectively for the initial/maximum value parameters.
-     *  
+     *
      *  Any other combination of values can be used to implement a counting
      *  semaphore.
      *
@@ -63,7 +62,7 @@ public:
      *  \param u16MaxVal_ Maximum value for the semaphore.  Must be nonzero.
      */
     void Init(uint16_t u16InitVal_, uint16_t u16MaxVal_);
-    
+
     /*!
      *  \brief
      *
@@ -79,7 +78,7 @@ public:
      *          is already maxed out.
      */
     bool Post();
-    
+
     /*!
      *  \brief
      *
@@ -88,11 +87,11 @@ public:
      *  priority is higher than that of any other Thread blocked on the object.
      */
     void Pend();
-    
+
     /*!
      *  \brief
      *
-     *  Return the current semaphore counter. This can be 
+     *  Return the current semaphore counter. This can be
      *  usedd by a thread to bypass blocking on a semaphore -
      *  allowing it to do other things until a non-zero count
      *  is returned, instead of blocking until the semaphore
@@ -101,7 +100,7 @@ public:
      *  \return The current semaphore counter value.
      */
     uint16_t GetCount();
-    
+
 #if KERNEL_USE_TIMEOUTS
     /*!
      *  \brief
@@ -110,12 +109,12 @@ public:
      *  the thread will block until the semaphore is pended.
      *  If the specified interval expires before the thread is
      *  unblocked, then the status is returned back to the user.
-     *  
+     *
      *  \return true - semaphore was acquired before the timeout
      *          false - timeout occurred before the semaphore was claimed.
      */
-    bool Pend( uint32_t u32WaitTimeMS_);
-    
+    bool Pend(uint32_t u32WaitTimeMS_);
+
     /*!
      *  \brief
      *
@@ -126,11 +125,10 @@ public:
      *  classes, we have to wrap this as a public method - do not
      *  used this for any other purposes.
      */
-    void WakeMe(Thread *pclChosenOne_);
-#endif  
-    
-private:
+    void WakeMe(Thread* pclChosenOne_);
+#endif
 
+private:
     /*!
      *  \brief
      *
@@ -147,7 +145,7 @@ private:
      * \param u32WaitTimeMS_ Time in MS to wait
      * \return true on success, false on failure.
      */
-    bool Pend_i( uint32_t u32WaitTimeMS_ );
+    bool Pend_i(uint32_t u32WaitTimeMS_);
 #else
     /*!
      * \brief Pend_i
@@ -155,15 +153,13 @@ private:
      * Internal function used to abstract timed and untimed semaphore pend operations.
      *
      */
-    void Pend_i( void );
+    void Pend_i(void);
 #endif
-    
-    uint16_t m_u16Value;         //!< Current count held by the semaphore
-    uint16_t m_u16MaxValue;      //!< Maximum count that can be held by this semaphore
-    
-    
+
+    uint16_t m_u16Value;    //!< Current count held by the semaphore
+    uint16_t m_u16MaxValue; //!< Maximum count that can be held by this semaphore
 };
 
-#endif //KERNEL_USE_SEMAPHORE
+#endif // KERNEL_USE_SEMAPHORE
 
 #endif

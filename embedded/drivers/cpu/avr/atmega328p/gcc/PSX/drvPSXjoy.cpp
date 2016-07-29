@@ -27,7 +27,7 @@ See license.txt for more information
 //---------------------------------------------------------------------------
 void PSXJoystick::Init()
 {
-    m_u8Type = 0;
+    m_u8Type     = 0;
     m_bConnected = false;
 }
 
@@ -94,7 +94,7 @@ void PSXJoystick::ScanInternal()
     CmdByte(PSX_CMD_START, true);
 
     // Get the joypad mode
-    u8JoyMode = CmdByte(PSX_CMD_POLL, false);
+    u8JoyMode   = CmdByte(PSX_CMD_POLL, false);
     m_aucRaw[0] = u8JoyMode;
 
     // Idle - Joypad ready to talk...
@@ -116,7 +116,7 @@ void PSXJoystick::ScanInternal()
         } break;
         default: {
             // Disconnect.
-            u8BytesLeft = 0;
+            u8BytesLeft  = 0;
             m_bConnected = false;
         }
     }
@@ -128,10 +128,10 @@ void PSXJoystick::ScanInternal()
     while (u8BytesLeft && m_bConnected) {
         if (u8BytesLeft != 1) {
             aucData[u8JoyIndex] = CmdByte(PSX_CMD_IDLE, false);
-            m_aucRaw[3] = aucData[u8JoyIndex];
+            m_aucRaw[3]         = aucData[u8JoyIndex];
         } else {
             aucData[u8JoyIndex] = CmdByte(PSX_CMD_IDLE, true);
-            m_aucRaw[4] = aucData[u8JoyIndex];
+            m_aucRaw[4]         = aucData[u8JoyIndex];
         }
 
         // Update indexes.
@@ -151,8 +151,8 @@ void PSXJoystick::ScanInternal()
 uint8_t PSXJoystick::CmdByte(uint8_t u8Cmd_, bool bWaitAck_)
 {
     uint8_t u8ReturnVal = 0;
-    uint8_t u8BitMask = 0x01;
-    uint8_t u8Spin = 0;
+    uint8_t u8BitMask   = 0x01;
+    uint8_t u8Spin      = 0;
 
     // Wait for ack to go high...
     while ((PSX_PORT & PSX_ACK_BIT) == 0) {
@@ -213,14 +213,14 @@ uint8_t PSXJoystick::CmdByte(uint8_t u8Cmd_, bool bWaitAck_)
 void PSXJoystick::Decode(uint8_t u8JoyMode_, uint8_t* pu8Data_)
 {
     // Common to all supported modes...
-    m_stCurrentReport.bSelect = ((pu8Data_[0] & 0x01) == 0);
+    m_stCurrentReport.bSelect   = ((pu8Data_[0] & 0x01) == 0);
     m_stCurrentReport.bButton10 = ((pu8Data_[0] & 0x02) == 0); // L3
-    m_stCurrentReport.bButton9 = ((pu8Data_[0] & 0x04) == 0);  // R3
-    m_stCurrentReport.bStart = ((pu8Data_[0] & 0x08) == 0);
-    m_stCurrentReport.bUp = ((pu8Data_[0] & 0x10) == 0);
-    m_stCurrentReport.bRight = ((pu8Data_[0] & 0x20) == 0);
-    m_stCurrentReport.bDown = ((pu8Data_[0] & 0x40) == 0);
-    m_stCurrentReport.bLeft = ((pu8Data_[0] & 0x80) == 0);
+    m_stCurrentReport.bButton9  = ((pu8Data_[0] & 0x04) == 0); // R3
+    m_stCurrentReport.bStart    = ((pu8Data_[0] & 0x08) == 0);
+    m_stCurrentReport.bUp       = ((pu8Data_[0] & 0x10) == 0);
+    m_stCurrentReport.bRight    = ((pu8Data_[0] & 0x20) == 0);
+    m_stCurrentReport.bDown     = ((pu8Data_[0] & 0x40) == 0);
+    m_stCurrentReport.bLeft     = ((pu8Data_[0] & 0x80) == 0);
 
     // Decode the message data into the appropriate joypad report format
     switch (u8JoyMode_) {

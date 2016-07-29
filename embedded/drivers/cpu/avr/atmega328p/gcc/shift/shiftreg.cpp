@@ -58,19 +58,19 @@ ShiftDriver::Control(uint16_t u16Event_, void* pvDataIn_, uint16_t u16SizeIn_, v
     switch (u16Event_) {
         case SHIFT_SET_CLOCK:
             m_pu8ClockPort = (volatile uint8_t*)pvDataIn_;
-            m_u8ClockBit = (uint8_t)u16SizeIn_;
+            m_u8ClockBit   = (uint8_t)u16SizeIn_;
             break;
         case SHIFT_SET_DATA:
             m_pu8DataPort = (volatile uint8_t*)pvDataIn_;
-            m_u8DataBit = (uint8_t)u16SizeIn_;
+            m_u8DataBit   = (uint8_t)u16SizeIn_;
             break;
         case SHIFT_SET_STROBE:
             m_pu8StrobePort = (volatile uint8_t*)pvDataIn_;
-            m_u8StrobeBit = (uint8_t)u16SizeIn_;
+            m_u8StrobeBit   = (uint8_t)u16SizeIn_;
             break;
         case SHIFT_SET_ENABLE:
             m_pu8EnablePort = (volatile uint8_t*)pvDataIn_;
-            m_u8EnableBit = (uint8_t)u16SizeIn_;
+            m_u8EnableBit   = (uint8_t)u16SizeIn_;
             break;
         default: break;
     }

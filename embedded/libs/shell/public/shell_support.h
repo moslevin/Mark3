@@ -29,16 +29,16 @@ See license.txt for more information
 
 //---------------------------------------------------------------------------
 #ifndef MIN
-    /*!
-        Utility macro used to return the lesser of two values/objects
-    */
-    #define MIN(x,y)        ( ( (x) < (y) ) ? (x) : (y) )
+/*!
+    Utility macro used to return the lesser of two values/objects
+*/
+#define MIN(x, y) (((x) < (y)) ? (x) : (y))
 #endif
 #ifndef MAX
-    /*!
-        Utility macro used to return the greater of two values/objects
-    */
-    #define MAX(x,y)        ( ( (x) > (y) ) ? (x) : (y) )
+/*!
+    Utility macro used to return the greater of two values/objects
+*/
+#define MAX(x, y) (((x) > (y)) ? (x) : (y))
 #endif
 
 //---------------------------------------------------------------------------
@@ -80,25 +80,23 @@ See license.txt for more information
         u8Count  => 1
 
 */
-typedef struct
-{
-    Token_t *pstStart;  //!< Pointer to the beginning of a token array contain the option and its arguments
-    uint8_t u8Count;    //!< Number of tokens in the token array
+typedef struct {
+    Token_t* pstStart; //!< Pointer to the beginning of a token array contain the option and its arguments
+    uint8_t  u8Count;  //!< Number of tokens in the token array
 } Option_t;
 
 //---------------------------------------------------------------------------
 /*!
     Structure containing multiple representations for command-line data
 */
-typedef struct
-{
-    Token_t *pastTokenList;      //!< Pointer to the list of tokens in the commandline
-    uint8_t u8TokenCount;        //!< Count of tokens in the token list
+typedef struct {
+    Token_t* pastTokenList; //!< Pointer to the list of tokens in the commandline
+    uint8_t  u8TokenCount;  //!< Count of tokens in the token list
 
-    Token_t *pstCommand;        //!< Pointer to the token corresponding to the shell command
+    Token_t* pstCommand; //!< Pointer to the token corresponding to the shell command
 
-    Option_t astOptions[12];    //!< Option strucure array built from the token list
-    uint8_t u8NumOptions;       //!< Number of options parsed from the token list
+    Option_t astOptions[12]; //!< Option strucure array built from the token list
+    uint8_t  u8NumOptions;   //!< Number of options parsed from the token list
 } CommandLine_t;
 
 //---------------------------------------------------------------------------
@@ -107,17 +105,16 @@ typedef struct
  * by users of this infrastructure.  Commands return a signed 8-bit result,
  * and take a command-line argument structure as the first and only argument.
  */
-typedef char (*fp_internal_command)( CommandLine_t *pstCommandLine_ );
+typedef char (*fp_internal_command)(CommandLine_t* pstCommandLine_);
 
 //---------------------------------------------------------------------------
 /*!
     Data structure defining a lookup table correlating a command name to its
     handler function.
 */
-typedef struct
-{
-    const char *szCommand;        //!< Command name
-    fp_internal_command pfHandler;  //!< Command handler function
+typedef struct {
+    const char*         szCommand; //!< Command name
+    fp_internal_command pfHandler; //!< Command handler function
 } ShellCommand_t;
 
 //---------------------------------------------------------------------------
@@ -129,7 +126,6 @@ typedef struct
 class ShellSupport
 {
 public:
-
     //---------------------------------------------------------------------------
     /*!
      * \brief RunCommand    Given a command-line, attempts to run the corresponding
@@ -139,7 +135,7 @@ public:
      * \param pstCommands_  Pointer to an array of shell commands to execute against
      * \return 1 on success, 0 on error (command not found)
      */
-    static char RunCommand( CommandLine_t *pstCommand_, const ShellCommand_t *pastShellCommands_ );
+    static char RunCommand(CommandLine_t* pstCommand_, const ShellCommand_t* pastShellCommands_);
 
     //---------------------------------------------------------------------------
     /*!
@@ -152,7 +148,7 @@ public:
      * \param szDest_       Pointer to a destination string which will contain the
      *                      parsed result string
      */
-    static void UnescapeToken( Token_t *pstToken_, char *szDest_ );
+    static void UnescapeToken(Token_t* pstToken_, char* szDest_);
 
     //---------------------------------------------------------------------------
     /*!
@@ -167,7 +163,7 @@ public:
      * \return               Pointer to the command line option on match, or 0 on
      *                       faiulre.
      */
-    static Option_t *CheckForOption( CommandLine_t *pstCommand_, const char *szOption_ );
+    static Option_t* CheckForOption(CommandLine_t* pstCommand_, const char* szOption_);
 
     //---------------------------------------------------------------------------
     /*!
@@ -180,10 +176,7 @@ public:
      *                              the shell command and its arguments.
      * \return  Number of options processed
      */
-    static char TokensToCommandLine(Token_t *pastTokens_, uint8_t u8Tokens_, CommandLine_t *pstCommand_);
-
+    static char TokensToCommandLine(Token_t* pastTokens_, uint8_t u8Tokens_, CommandLine_t* pstCommand_);
 };
-
-
 
 #endif // SHELL_SUPPORT_H

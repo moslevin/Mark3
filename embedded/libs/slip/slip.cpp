@@ -38,12 +38,12 @@ uint16_t Slip::EncodeByte(uint8_t u8Char_, uint8_t* aucBuf_)
         case FRAMING_BYTE:
             aucBuf_[0] = FRAMING_ENC_BYTE;
             aucBuf_[1] = FRAMING_SUB_BYTE;
-            u16Len = 2;
+            u16Len     = 2;
             break;
         case FRAMING_ENC_BYTE:
             aucBuf_[0] = FRAMING_ENC_BYTE;
             aucBuf_[1] = FRAMING_SUB_ENC_BYTE;
-            u16Len = 2;
+            u16Len     = 2;
             break;
         default: aucBuf_[0] = u8Char_;
     }
@@ -58,16 +58,16 @@ uint16_t Slip::DecodeByte(uint8_t* ucChar_, const uint8_t* aucBuf_)
     if (aucBuf_[0] == FRAMING_ENC_BYTE) {
         if (aucBuf_[1] == FRAMING_SUB_BYTE) {
             *ucChar_ = FRAMING_BYTE;
-            u16Len = 2;
+            u16Len   = 2;
         } else if (aucBuf_[1] == FRAMING_SUB_ENC_BYTE) {
             *ucChar_ = FRAMING_ENC_BYTE;
-            u16Len = 2;
+            u16Len   = 2;
         } else {
             *ucChar_ = 0;
-            u16Len = 0;
+            u16Len   = 0;
         }
     } else if (aucBuf_[0] == FRAMING_BYTE) {
-        u16Len = 0;
+        u16Len   = 0;
         *ucChar_ = 0;
     } else {
         *ucChar_ = aucBuf_[0];
@@ -79,8 +79,8 @@ uint16_t Slip::DecodeByte(uint8_t* ucChar_, const uint8_t* aucBuf_)
 void Slip::WriteByte(uint8_t u8Data_)
 {
     uint16_t u16Size = 0;
-    uint16_t u16Idx = 0;
-    uint8_t aucBuf[2];
+    uint16_t u16Idx  = 0;
+    uint8_t  aucBuf[2];
     u16Size = EncodeByte(u8Data_, aucBuf);
     while (u16Idx < u16Size) {
         u16Idx += m_pclDriver->Write(u16Size, &aucBuf[u16Idx]);
@@ -91,7 +91,7 @@ void Slip::WriteByte(uint8_t u8Data_)
 uint16_t Slip::ReadData(uint8_t* pu8Channel_, char* aucBuf_, uint16_t u16Len_)
 {
     uint16_t u16ReadCount;
-    uint8_t u8TempCount;
+    uint8_t  u8TempCount;
     uint16_t u16Valid = 0;
     uint16_t u16CRC;
     uint16_t u16CRC_Calc = 0;
@@ -147,7 +147,7 @@ uint16_t Slip::ReadData(uint8_t* pu8Channel_, char* aucBuf_, uint16_t u16Len_)
 //---------------------------------------------------------------------------
 void Slip::WriteData(uint8_t u8Channel_, const char* aucBuf_, uint16_t u16Len_)
 {
-    uint8_t aucTmp[2];
+    uint8_t  aucTmp[2];
     uint16_t u16CRC = 0;
 
     // Lightweight protocol built on-top of SLIP.
@@ -206,9 +206,9 @@ void Slip::SendNack()
 //---------------------------------------------------------------------------
 void Slip::WriteVector(uint8_t u8Channel_, SlipDataVector* astData_, uint16_t u16Len_)
 {
-    uint8_t aucTmp[2];
+    uint8_t  aucTmp[2];
     uint16_t u16CRC = 0;
-    uint8_t i, j;
+    uint8_t  i, j;
     uint16_t u16TotalLen = 0;
 
     // Calculate the total length of all message fragments

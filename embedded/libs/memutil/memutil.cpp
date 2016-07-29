@@ -48,7 +48,7 @@ void MemUtil::DecimalToHex(uint8_t u8Data_, char* szText_)
         u8Max = 1;
     }
 
-    u8Tmp = u8Data_;
+    u8Tmp          = u8Data_;
     szText_[u8Max] = 0;
     while (u8Max--) {
         if ((u8Tmp & 0x0F) <= 9) {
@@ -63,8 +63,8 @@ void MemUtil::DecimalToHex(uint8_t u8Data_, char* szText_)
 //---------------------------------------------------------------------------
 void MemUtil::DecimalToHex(uint16_t u16Data_, char* szText_)
 {
-    uint16_t u16Tmp = u16Data_;
-    uint16_t u16Max = 1;
+    uint16_t u16Tmp     = u16Data_;
+    uint16_t u16Max     = 1;
     uint16_t u16Compare = 0x0010;
 
     KERNEL_ASSERT(szText_);
@@ -74,7 +74,7 @@ void MemUtil::DecimalToHex(uint16_t u16Data_, char* szText_)
         u16Compare <<= 4;
     }
 
-    u16Tmp = u16Data_;
+    u16Tmp          = u16Data_;
     szText_[u16Max] = 0;
     while (u16Max--) {
         if ((u16Tmp & 0x0F) <= 9) {
@@ -89,8 +89,8 @@ void MemUtil::DecimalToHex(uint16_t u16Data_, char* szText_)
 //---------------------------------------------------------------------------
 void MemUtil::DecimalToHex(uint32_t u32Data_, char* szText_)
 {
-    uint32_t u32Tmp = u32Data_;
-    uint32_t u32Max = 1;
+    uint32_t u32Tmp     = u32Data_;
+    uint32_t u32Max     = 1;
     uint32_t u32Compare = 0x0010;
 
     KERNEL_ASSERT(szText_);
@@ -100,7 +100,7 @@ void MemUtil::DecimalToHex(uint32_t u32Data_, char* szText_)
         u32Compare <<= 4;
     }
 
-    u32Tmp = u32Data_;
+    u32Tmp          = u32Data_;
     szText_[u32Max] = 0;
     while (u32Max--) {
         if ((u32Tmp & 0x0F) <= 9) {
@@ -138,8 +138,8 @@ void MemUtil::DecimalToString(uint8_t u8Data_, char* szText_)
 //---------------------------------------------------------------------------
 void MemUtil::DecimalToString(uint16_t u16Data_, char* szText_)
 {
-    uint16_t u16Tmp = u16Data_;
-    uint16_t u16Max = 1;
+    uint16_t u16Tmp     = u16Data_;
+    uint16_t u16Max     = 1;
     uint16_t u16Compare = 10;
 
     KERNEL_ASSERT(szText_);
@@ -159,8 +159,8 @@ void MemUtil::DecimalToString(uint16_t u16Data_, char* szText_)
 //---------------------------------------------------------------------------
 void MemUtil::DecimalToString(uint32_t u32Data_, char* szText_)
 {
-    uint32_t u32Tmp = u32Data_;
-    uint32_t u32Max = 1;
+    uint32_t u32Tmp     = u32Data_;
+    uint32_t u32Max     = 1;
     uint32_t u32Compare = 10;
 
     KERNEL_ASSERT(szText_);
@@ -181,7 +181,7 @@ void MemUtil::DecimalToString(uint32_t u32Data_, char* szText_)
 // Basic checksum routines
 uint8_t MemUtil::Checksum8(const void* pvSrc_, uint16_t u16Len_)
 {
-    uint8_t u8Ret = 0;
+    uint8_t  u8Ret  = 0;
     uint8_t* pcData = (uint8_t*)pvSrc_;
 
     KERNEL_ASSERT(pvSrc_);
@@ -281,8 +281,8 @@ void MemUtil::CopyString(char* szDst_, const char* szSrc_)
 //---------------------------------------------------------------------------
 int16_t MemUtil::StringSearch(const char* szBuffer_, const char* szPattern_)
 {
-    char* szTmpPat = (char*)szPattern_;
-    int16_t i16Idx = 0;
+    char*   szTmpPat = (char*)szPattern_;
+    int16_t i16Idx   = 0;
     int16_t i16Start;
     KERNEL_ASSERT(szBuffer_);
     KERNEL_ASSERT(szPattern_);
@@ -345,7 +345,7 @@ uint8_t MemUtil::Tokenize(const char* szBuffer_, Token_t* pastTokens_, uint8_t u
 {
     uint8_t u8CurrArg = 0;
     uint8_t u8LastArg = 0;
-    uint8_t i = 0;
+    uint8_t i         = 0;
 
     bool bEscape = false;
 
@@ -387,7 +387,7 @@ uint8_t MemUtil::Tokenize(const char* szBuffer_, Token_t* pastTokens_, uint8_t u
         }
 
         pastTokens_[u8CurrArg].pcToken = &(szBuffer_[u8LastArg]);
-        pastTokens_[u8CurrArg].u8Len = i - u8LastArg;
+        pastTokens_[u8CurrArg].u8Len   = i - u8LastArg;
         u8CurrArg++;
         if (u8CurrArg >= u8MaxTokens_) {
             return u8MaxTokens_;
@@ -402,7 +402,7 @@ uint8_t MemUtil::Tokenize(const char* szBuffer_, Token_t* pastTokens_, uint8_t u
     }
     if (i && !szBuffer_[i] && (i - u8LastArg)) {
         pastTokens_[u8CurrArg].pcToken = &(szBuffer_[u8LastArg]);
-        pastTokens_[u8CurrArg].u8Len = i - u8LastArg;
+        pastTokens_[u8CurrArg].u8Len   = i - u8LastArg;
         u8CurrArg++;
     }
     return u8CurrArg;

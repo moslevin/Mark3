@@ -45,8 +45,8 @@ See license.txt for more information
 #include "kerneldebug.h"
 #include "tracebuffer.h"
 
-bool Kernel::m_bIsStarted;
-bool Kernel::m_bIsPanic;
+bool         Kernel::m_bIsStarted;
+bool         Kernel::m_bIsPanic;
 panic_func_t Kernel::m_pfPanic;
 
 #if KERNEL_USE_STACK_GUARD
@@ -54,13 +54,13 @@ uint16_t Kernel::m_u16GuardThreshold;
 #endif
 
 #if KERNEL_USE_IDLE_FUNC
-idle_func_t Kernel::m_pfIdle;
+idle_func_t  Kernel::m_pfIdle;
 FakeThread_t Kernel::m_clIdle;
 #endif
 
 #if KERNEL_USE_THREAD_CALLOUTS
-ThreadCreateCallout_t Kernel::m_pfThreadCreateCallout;
-ThreadExitCallout_t Kernel::m_pfThreadExitCallout;
+ThreadCreateCallout_t  Kernel::m_pfThreadCreateCallout;
+ThreadExitCallout_t    Kernel::m_pfThreadExitCallout;
 ThreadContextCallout_t Kernel::m_pfThreadContextCallout;
 #endif
 //---------------------------------------------------------------------------

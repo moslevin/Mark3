@@ -44,16 +44,16 @@ a thread object and stack for Idle functionality.
 // This block declares the thread data for the main application thread.  It
 // defines a thread object, stack (in word-array form), and the entry-point
 // function used by the application thread.
-#define APP_STACK_SIZE      (320/sizeof(K_WORD))
+#define APP_STACK_SIZE (320 / sizeof(K_WORD))
 DECLARE_THREAD(hAppThread);
-static K_WORD  awAppStack[APP_STACK_SIZE];
-static void    AppMain(void *unused_);
+static K_WORD awAppStack[APP_STACK_SIZE];
+static void AppMain(void* unused_);
 
 //---------------------------------------------------------------------------
 // This block declares the special function called from with the special
 // Kernel-Idle context.  We use the Kernel_SetIdleFunc() API to ensure that
 // this function is called to provide our idle context.
-static void    IdleMain(void);
+static void IdleMain(void);
 
 //---------------------------------------------------------------------------
 int main(void)
@@ -66,8 +66,8 @@ int main(void)
     // level 0 is still reserved for idle functionality.  Application threads
     // should never be scheduled at priority level 0 when the idle function is
     // used instead of an idle thread.
-    Thread_Init( hAppThread, awAppStack,  APP_STACK_SIZE,  1, AppMain,  0);
-    Thread_Start( hAppThread );
+    Thread_Init(hAppThread, awAppStack, APP_STACK_SIZE, 1, AppMain, 0);
+    Thread_Start(hAppThread);
 
     // This function is used to install our specified idle function to be called
     // whenever there are no ready threads in the system.  Note that if no
@@ -75,18 +75,17 @@ int main(void)
     // function is essentially a null operation.
     Kernel_SetIdleFunc(IdleMain);
 
-    Thread_Start( hAppThread );
+    Thread_Start(hAppThread);
     Kernel_Start();
 
     return 0;
 }
 
 //---------------------------------------------------------------------------
-void AppMain(void *unused_)
+void AppMain(void* unused_)
 {
     // Same as in lab1.
-    while(1)
-    {
+    while (1) {
         KernelAware_Print("Hello World!\n");
         Thread_Sleep(10);
     }
@@ -104,4 +103,3 @@ void IdleMain(void)
     // it's worthwhile keeping this function brief, limited to absolutely
     // necessary functionality, and with minimal stack use.
 }
-

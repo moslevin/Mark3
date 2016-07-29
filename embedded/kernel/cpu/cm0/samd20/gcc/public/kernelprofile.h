@@ -13,7 +13,7 @@ See license.txt for more information
 =========================================================================== */
 /*!
     \file kernelprofile.h
-    
+
     \brief Profiling timer hardware interface
  */
 
@@ -27,8 +27,8 @@ See license.txt for more information
 #if KERNEL_USE_PROFILER
 
 //---------------------------------------------------------------------------
-#define TICKS_PER_OVERFLOW              (256)
-#define CLOCK_DIVIDE                    (8)
+#define TICKS_PER_OVERFLOW (256)
+#define CLOCK_DIVIDE (8)
 
 //---------------------------------------------------------------------------
 /*!
@@ -40,51 +40,49 @@ public:
     /*!
      *  \brief Init
      *
-     *  Initialize the global system profiler.  Must be 
+     *  Initialize the global system profiler.  Must be
      *  called prior to use.
      */
     static void Init();
-    
+
     /*!
      *  \brief Start
      *
      *  Start the global profiling timer service.
      */
     static void Start();
-    
+
     /*!
      *  \brief Stop
      *
      *  Stop the global profiling timer service
      */
     static void Stop();
-    
+
     /*!
      *  \brief Read
      *
-     *  Read the current tick count in the timer.  
+     *  Read the current tick count in the timer.
      */
     static uint16_t Read();
-    
+
     /*!
      *  \brief Process
      *
      *  Process the profiling counters from ISR.
      */
     static void Process();
-    
+
     /*!
      *  \brief GetEpoch
      *
-     *  Return the current timer epoch    
+     *  Return the current timer epoch
      */
-    static uint32_t GetEpoch(){ return m_u32Epoch; }
+    static uint32_t GetEpoch() { return m_u32Epoch; }
 private:
-
     static uint32_t m_u32Epoch;
 };
 
-#endif //KERNEL_USE_PROFILER
+#endif // KERNEL_USE_PROFILER
 
 #endif
-

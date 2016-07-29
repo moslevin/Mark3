@@ -29,10 +29,10 @@ void GraphicsSDL::Init(void)
 {
     m_u16Res16X = 128;
     m_u16Res16Y = 128;
-    m_u8BPP = 32;
-    m_u16Left = 0;
-    m_u16Right = 127;
-    m_u16Top = 0;
+    m_u8BPP     = 32;
+    m_u16Left   = 0;
+    m_u16Right  = 127;
+    m_u16Top    = 0;
     m_u16Bottom = 127;
 }
 
@@ -69,7 +69,7 @@ void GraphicsSDL::DrawPixel(DrawPoint_t* pstPoint_)
 //---------------------------------------------------------------------------
 void GraphicsSDL::ReadPixel(DrawPoint_t* pstPoint_)
 {
-    uint32_t* pixels = (uint32_t*)m_pstScreen->pixels;
+    uint32_t* pixels  = (uint32_t*)m_pstScreen->pixels;
     pstPoint_->uColor = (COLOR)pixels[((uint32_t)(pstPoint_->u16Y) * m_pstScreen->w) + (uint32_t)(pstPoint_->u16X)];
 }
 

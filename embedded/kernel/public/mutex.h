@@ -13,10 +13,10 @@ See license.txt for more information
 =========================================================================== */
 /*!
 
-    \file   mutex.h    
+    \file   mutex.h
 
     \brief  Mutual exclusion class declaration
-    
+
     Resource locks are implemented using mutual exclusion semaphores (Mutex_t).
     Protected blocks can be placed around any resource that may only be accessed
     by one thread at a time.  If additional threads attempt to access the
@@ -68,9 +68,7 @@ See license.txt for more information
 class Mutex : public BlockingObject
 {
 public:
-
-    void* operator new (size_t sz, void* pv) { return (Mutex*)pv; };
-
+    void* operator new(size_t sz, void* pv) { return (Mutex*)pv; };
     ~Mutex();
 
     /*!
@@ -108,12 +106,12 @@ public:
      *  Claim a mutex, with timeout.
      *
      *  \param u32WaitTimeMS_
-     *  
+     *
      *  \return true - mutex was claimed within the time period specified
      *          false - mutex operation timed-out before the claim operation.
      */
     bool Claim(uint32_t u32WaitTimeMS_);
-    
+
     /*!
      *  \brief WakeMe
      *
@@ -124,15 +122,15 @@ public:
      *  classes, we have to wrap this as a public method - do not
      *  use this for any other purposes.
      *
-     *  \param pclOwner_ Thread to unblock from this object.        
+     *  \param pclOwner_ Thread to unblock from this object.
      */
-    void WakeMe( Thread *pclOwner_ );
+    void WakeMe(Thread* pclOwner_);
 
 #endif
 
     /*!
      *  \brief Release
-     *  
+     *
      *  Release the mutex.  When the mutex is released, another object can enter
      *  the mutex-protected region.
      *
@@ -151,16 +149,14 @@ public:
      *
      */
     void Release();
-    
-private:
 
+private:
     /*!
      *  \brief WakeNext
      *
      *  Wake the next thread waiting on the Mutex.
      */
     uint8_t WakeNext();
-    
 
 #if KERNEL_USE_TIMEOUTS
     /*!
@@ -171,7 +167,7 @@ private:
      * \param u32WaitTimeMS_ Time in MS to wait, 0 for infinite
      * \return true on successful claim, false otherwise
       */
-    bool Claim_i( uint32_t u32WaitTimeMS_ );
+    bool Claim_i(uint32_t u32WaitTimeMS_);
 #else
     /*!
      * \brief Claim_i
@@ -182,14 +178,12 @@ private:
     void Claim_i(void);
 #endif
 
-    uint8_t m_u8Recurse;    //!< The recursive lock-count when a mutex is claimed multiple times by the same owner
-    bool m_bReady;          //!< State of the mutex - true = ready, false = claimed
-    uint8_t m_u8MaxPri;     //!< Maximum priority of thread in queue, used for priority inheritence
-    Thread *m_pclOwner;     //!< Pointer to the thread that owns the mutex (when claimed)
-    
+    uint8_t m_u8Recurse; //!< The recursive lock-count when a mutex is claimed multiple times by the same owner
+    bool    m_bReady;    //!< State of the mutex - true = ready, false = claimed
+    uint8_t m_u8MaxPri;  //!< Maximum priority of thread in queue, used for priority inheritence
+    Thread* m_pclOwner;  //!< Pointer to the thread that owns the mutex (when claimed)
 };
 
-#endif //KERNEL_USE_MUTEX
+#endif // KERNEL_USE_MUTEX
 
 #endif //__MUTEX_H_
-

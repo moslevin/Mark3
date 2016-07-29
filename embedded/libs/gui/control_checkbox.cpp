@@ -38,9 +38,9 @@ static const uint8_t aucCheck[] = { 0, 0, 0x3C, 0x3C, 0x3C, 0x3C, 0, 0 };
 void CheckBoxControl::Init()
 {
     SetAcceptFocus(true);
-    m_uBackColor = PRIMARY_0;
-    m_uBoxColor = PRIMARY_50;
-    m_uFontColor = PRIMARY_100;
+    m_uBackColor      = PRIMARY_0;
+    m_uBoxColor       = PRIMARY_50;
+    m_uFontColor      = PRIMARY_100;
     m_pfCheckCallback = 0;
 }
 
@@ -48,8 +48,8 @@ void CheckBoxControl::Init()
 void CheckBoxControl::Draw()
 {
     GraphicsDriver* pclDriver = GetParentWindow()->GetDriver();
-    uint16_t u16X, u16Y;
-    uint16_t u16TextWidth;
+    uint16_t        u16X, u16Y;
+    uint16_t        u16TextWidth;
 
     GetControlOffset(&u16X, &u16Y);
 
@@ -64,22 +64,22 @@ void CheckBoxControl::Draw()
         }
 
         stRect.uFillColor = m_uBackColor;
-        stRect.u16Top = u16Y + GetTop();
-        stRect.u16Left = u16X + GetLeft();
-        stRect.u16Right = stRect.u16Left + GetWidth() - 1;
-        stRect.u16Bottom = stRect.u16Top + GetHeight() - 1;
-        stRect.bFill = true;
+        stRect.u16Top     = u16Y + GetTop();
+        stRect.u16Left    = u16X + GetLeft();
+        stRect.u16Right   = stRect.u16Left + GetWidth() - 1;
+        stRect.u16Bottom  = stRect.u16Top + GetHeight() - 1;
+        stRect.bFill      = true;
         pclDriver->Rectangle(&stRect);
     }
 
     {
         DrawStamp_t stStamp;
-        stStamp.uColor = m_uBoxColor;
-        stStamp.u16Y = u16Y + GetTop() + ((GetHeight() - 5) >> 1) - 1;
-        stStamp.u16X = u16X + GetLeft() + 2;
-        stStamp.u16Width = 8;
+        stStamp.uColor    = m_uBoxColor;
+        stStamp.u16Y      = u16Y + GetTop() + ((GetHeight() - 5) >> 1) - 1;
+        stStamp.u16X      = u16X + GetLeft() + 2;
+        stStamp.u16Width  = 8;
         stStamp.u16Height = 8;
-        stStamp.pu8Data = (uint8_t*)aucBox;
+        stStamp.pu8Data   = (uint8_t*)aucBox;
         pclDriver->Stamp(&stStamp);
 
         if (m_bChecked) {
@@ -94,10 +94,10 @@ void CheckBoxControl::Draw()
     // Draw the caption
     {
         DrawText_t stText;
-        stText.u16Left = u16X + GetLeft() + TEXT_X_OFFSET;
-        stText.u16Top = u16Y + GetTop();
-        stText.uColor = m_uFontColor;
-        stText.pstFont = m_pstFont;
+        stText.u16Left  = u16X + GetLeft() + TEXT_X_OFFSET;
+        stText.u16Top   = u16Y + GetTop();
+        stText.uColor   = m_uFontColor;
+        stText.pstFont  = m_pstFont;
         stText.pcString = m_szCaption;
 
         u16TextWidth = pclDriver->TextWidth(&stText);

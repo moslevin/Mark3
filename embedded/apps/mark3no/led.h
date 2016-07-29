@@ -39,8 +39,8 @@ public:
     void Toggle();
 
 private:
-    volatile uint8_t* m_pu8Port;   //!< Port connected to the LED
-    uint8_t m_u8Pin ;              //!< Port pin connected to the LED
+    volatile uint8_t* m_pu8Port; //!< Port connected to the LED
+    uint8_t           m_u8Pin;   //!< Port pin connected to the LED
 };
 
 #endif // __LED_H__

@@ -24,8 +24,7 @@ See license.txt for more information
 
 //---------------------------------------------------------------------------
 // Enumeration defining the various Clock Generator IDs in the system.
-typedef enum
-{
+typedef enum {
     GCLK_0 = 0,
     GCLK_1,
     GCLK_2,
@@ -34,14 +33,13 @@ typedef enum
     GCLK_5,
     GCLK_6,
     GCLK_7,
-//---
-    GCLK_COUNT  //!< Number of GCLKs in the system
+    //---
+    GCLK_COUNT //!< Number of GCLKs in the system
 } ClockGenerator_t;
 
 //---------------------------------------------------------------------------
 // Enumeration of various clocks in the system
-typedef enum
-{
+typedef enum {
     CLK_DFLL48 = 0,
     CLK_WDT,
     CLK_RTC,
@@ -70,46 +68,43 @@ typedef enum
     CLK_AC_ANA,
     CLK_DAC,
     CLK_PTC,
-//----
+    //----
     CLK_COUNT //!< Number of clocks in the system
 } Clock_t;
 
 //---------------------------------------------------------------------------
 // Different clock divider modes
-typedef enum
-{
+typedef enum {
     DIV_MODE_LINEAR = 0,
     DIV_MODE_EXPONENTIAL,
-//----
-    DIV_MODE_NUM    //!< Number of clock divider modes
+    //----
+    DIV_MODE_NUM //!< Number of clock divider modes
 } ClockDivideMode_t;
 
 //---------------------------------------------------------------------------
 // Error codes used by the Clock APIs
-typedef enum
-{
+typedef enum {
     CLK_ERR_EOK = 0,
     CLK_ERR_ARGS,
     CLK_ERR_RANGE,
     CLK_ERR_LOCKED,
-//----
-    SYS_ERR_NUM    //!< Number of error codes
+    //----
+    SYS_ERR_NUM //!< Number of error codes
 } ClockError_t;
 
 //---------------------------------------------------------------------------
 // Enumeration of all clock sources in the system
-typedef enum
-{
-	GCLK_SRC_XOSC = 0,
-	GCLK_SRC_GCLKIN,
-	GCLK_SRC_GCLKGEN1,
-	GCLK_SRC_OSCULP32K,
-	GCLK_SRC_OSC32K,
-	GCLK_SRC_XOSC32K,
-	GCLK_SRC_OSC8M,
-	GCLK_SRC_DFLL48M,
-//----
-    GCLK_SRC_NUM	//!< Number of clock generator sources
+typedef enum {
+    GCLK_SRC_XOSC = 0,
+    GCLK_SRC_GCLKIN,
+    GCLK_SRC_GCLKGEN1,
+    GCLK_SRC_OSCULP32K,
+    GCLK_SRC_OSC32K,
+    GCLK_SRC_XOSC32K,
+    GCLK_SRC_OSC8M,
+    GCLK_SRC_DFLL48M,
+    //----
+    GCLK_SRC_NUM //!< Number of clock generator sources
 } ClockGenSource_t;
 
 //---------------------------------------------------------------------------
@@ -118,26 +113,26 @@ class SysClock
 public:
     SysClock();
 
-    SysClock( Clock_t eClock_ );
+    SysClock(Clock_t eClock_);
 
-    ClockError_t SetClockID( Clock_t eClock_ );
+    ClockError_t SetClockID(Clock_t eClock_);
 
-    ClockError_t SetGenerator( ClockGenerator_t eClockGen_ );
+    ClockError_t SetGenerator(ClockGenerator_t eClockGen_);
 
-    void LockOnEnable( bool bLock_ );
+    void LockOnEnable(bool bLock_);
 
-    ClockError_t Setup( Clock_t eClock_, ClockGenerator_t eClockGen_, bool bLock_ );
+    ClockError_t Setup(Clock_t eClock_, ClockGenerator_t eClockGen_, bool bLock_);
 
-    void CommitConfig( void );
+    void CommitConfig(void);
 
-    void Enable( bool bEnable_ );
+    void Enable(bool bEnable_);
 
 private:
     void WriteChannel();
 
-    Clock_t             m_eClock;
-    ClockGenerator_t    m_eClockGen;
-    bool                m_bLock;
+    Clock_t          m_eClock;
+    ClockGenerator_t m_eClockGen;
+    bool             m_bLock;
 };
 
 //---------------------------------------------------------------------------
@@ -146,51 +141,49 @@ class SysClockGenerator
 public:
     SysClockGenerator();
 
-    SysClockGenerator( ClockGenerator_t eClockGen_ );
+    SysClockGenerator(ClockGenerator_t eClockGen_);
 
-    ClockError_t SetGenerator( ClockGenerator_t eGen_ );
+    ClockError_t SetGenerator(ClockGenerator_t eGen_);
 
-    void SetClockSource( ClockGenSource_t eClockSrc_ );
+    void SetClockSource(ClockGenSource_t eClockSrc_);
 
-    void OutputOffState( bool bState_ );
+    void OutputOffState(bool bState_);
 
-    void PinOutput( bool bOutput_ );
+    void PinOutput(bool bOutput_);
 
-    void RunInStandby( bool bOutput_ );
+    void RunInStandby(bool bOutput_);
 
-    void ImproveDutyCycle( bool bImprove_ );
+    void ImproveDutyCycle(bool bImprove_);
 
-    void SetDivisor( ClockDivideMode_t eMode_, uint16_t u16Divisor_ );
+    void SetDivisor(ClockDivideMode_t eMode_, uint16_t u16Divisor_);
 
     void CommitConfig(void);
 
 private:
-
     bool IsSyncing();
     void WriteSync();
     void WriteGenerator();
     void WriteGeneratorDiv();
 
-	ClockGenSource_t	m_eClockSrc;
-    ClockGenerator_t    m_eClockGen;
+    ClockGenSource_t m_eClockSrc;
+    ClockGenerator_t m_eClockGen;
 
-    uint16_t            m_u16Divisor;
-    ClockDivideMode_t   m_eDivMode;
+    uint16_t          m_u16Divisor;
+    ClockDivideMode_t m_eDivMode;
 
-    bool                m_bRunInStandby;
-    bool                m_bOutputToPin;
-    bool                m_bOutputOffValue;
-    bool                m_bImproveDutyCycle;
+    bool m_bRunInStandby;
+    bool m_bOutputToPin;
+    bool m_bOutputOffValue;
+    bool m_bImproveDutyCycle;
 };
 
 //---------------------------------------------------------------------------
-typedef enum
-{
+typedef enum {
     OSC8M_PRESCALAR_1 = 0,
     OSC8M_PRESCALAR_2,
     OSC8M_PRESCALAR_4,
     OSC8M_PRESCALAR_8,
-//----
+    //----
     OSC8M_PRESCALAR_COUNT
 } OSC8M_Prescaler_t;
 
@@ -207,18 +200,17 @@ public:
     void RunInStandby(bool bRunInStandby_);
 
     void CommitConfig();
-	
+
     void Enable(bool bEnable_);
 
 private:
     OSC8M_Prescaler_t m_ePrescalar;
-    bool             m_bOnDemand;
-    bool             m_bRunStandby;
+    bool              m_bOnDemand;
+    bool              m_bRunStandby;
 };
 
 //---------------------------------------------------------------------------
-typedef enum
-{
+typedef enum {
     XOSC32K_STARTUP_1 = 0,
     XOSC32K_STARTUP_32,
     XOSC32K_STARTUP_2K,
@@ -227,7 +219,7 @@ typedef enum
     XOSC32K_STARTUP_32K,
     XOSC32K_STARTUP_64K,
     XOSC32K_STARTUP_128K,
-//----
+    //----
     XOSCS32K_STARTUP_COUNT
 } XOSC32K_StartupTime_t;
 
@@ -236,9 +228,9 @@ class Source_XOSC32K
 {
 public:
     Source_XOSC32K();
-    
+
     void StartupTime(XOSC32K_StartupTime_t eTime_);
-    
+
     void Enable32KHz(bool bEnable_);
 
     void Enable1KHz(bool bEnable_);
@@ -252,71 +244,70 @@ public:
     void RunInStandby(bool bRunInStandby_);
 
     void CommitConfig();
-	
+
     void Enable(bool bEnable_);
 
 private:
     XOSC32K_StartupTime_t m_eStartupTime;
-    bool            m_bEnable32KHz;
-    bool            m_bEnable1KHz;
-    bool            m_bAutoAmp;
-    bool            m_bExternalXtal;
-    bool            m_bOnDemand;
-    bool            m_bRunStandby;
+    bool                  m_bEnable32KHz;
+    bool                  m_bEnable1KHz;
+    bool                  m_bAutoAmp;
+    bool                  m_bExternalXtal;
+    bool                  m_bOnDemand;
+    bool                  m_bRunStandby;
 };
 
 //---------------------------------------------------------------------------
 class Source_DFLL48M
 {
 public:
+    Source_DFLL48M();
 
-	Source_DFLL48M();
-	
-	void ClockMode(bool bClosedLoop_);
-	
-	void RunOnDemand(bool bRunOnDemand_);
-	
+    void ClockMode(bool bClosedLoop_);
+
+    void RunOnDemand(bool bRunOnDemand_);
+
     void RunInStandby(bool bRunInStandby_);
-	
-	void ChillCycle(bool bEnable_);
-	
-	void LoseLockAfterWakeup(bool bEnable_);
-	
-	void QuickLock(bool bEnable_);
-	
-	void Multiplier(uint16_t u16Multiplier_);
-	
-	void MaxCoarseStep(uint8_t u8Step_);
-	
-	void MaxFineStep(uint16_t u16Step_);
-	
-	void CoarseAdjust(uint8_t u8Val_);
-	
-	void FineAdjust(uint16_t u16Val_);
-	
-	void CommitConfig();
-	
-	void Enable(bool bEnable_);
-	
+
+    void ChillCycle(bool bEnable_);
+
+    void LoseLockAfterWakeup(bool bEnable_);
+
+    void QuickLock(bool bEnable_);
+
+    void Multiplier(uint16_t u16Multiplier_);
+
+    void MaxCoarseStep(uint8_t u8Step_);
+
+    void MaxFineStep(uint16_t u16Step_);
+
+    void CoarseAdjust(uint8_t u8Val_);
+
+    void FineAdjust(uint16_t u16Val_);
+
+    void CommitConfig();
+
+    void Enable(bool bEnable_);
+
 private:
-	void WaitSync();
-	
-	//-- Control register values
-	bool		m_bRunStandby;
-	bool		m_bOnDemand;
-	bool		m_bChillCycle;
-	bool		m_bQuickLock;
-	bool		m_bLoseLockAfterWake;
-	bool		m_bClockMode;
-	
-	//-- Multiplier register values
-	uint16_t	m_u16Multiplier;
-	uint16_t	m_u16MaxFineStep;
-	uint8_t		m_u8MaxCoarseStep;
-	
-	//-- Value register values
-	uint16_t	m_u16FineAdjust;
-	uint8_t		m_u8CoarseAdjust;
+    void WaitSync();
+
+    //-- Control register values
+    bool m_bRunStandby;
+    bool m_bOnDemand;
+    bool m_bChillCycle;
+    bool m_bQuickLock;
+    bool m_bLoseLockAfterWake;
+    bool m_bClockMode;
+
+    //-- Multiplier register values
+    uint16_t m_u16Multiplier;
+    uint16_t m_u16MaxFineStep;
+    uint8_t  m_u8MaxCoarseStep;
+
+    //-- Value register values
+    uint16_t m_u16FineAdjust;
+    uint8_t  m_u8CoarseAdjust;
 };
 
 #endif // __SYS_CLOCKS_H__

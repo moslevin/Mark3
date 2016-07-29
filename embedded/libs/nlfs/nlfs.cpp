@@ -26,7 +26,7 @@ See license.txt for more information
 char NLFS::Find_Last_Slash(const char* szPath_)
 {
     uint8_t u8LastSlash = 0;
-    uint8_t i = 0;
+    uint8_t i           = 0;
     while (szPath_[i]) {
         if (szPath_[i] == '/') {
             u8LastSlash = i;
@@ -133,7 +133,7 @@ void NLFS::Print_Node_Details(uint16_t u16Node_)
 //---------------------------------------------------------------------------
 uint16_t NLFS::Pop_Free_Node(void)
 {
-    uint16_t u16RetVal = m_stLocalRoot.u16NextFreeNode;
+    uint16_t    u16RetVal = m_stLocalRoot.u16NextFreeNode;
     NLFS_Node_t stFileNode;
 
     if (INVALID_NODE == u16RetVal) {
@@ -142,7 +142,7 @@ uint16_t NLFS::Pop_Free_Node(void)
 
     // Update Claimed node
     Read_Node(u16RetVal, &stFileNode);
-    m_stLocalRoot.u16NextFreeNode = stFileNode.stFileNode.u16NextPeer;
+    m_stLocalRoot.u16NextFreeNode     = stFileNode.stFileNode.u16NextPeer;
     stFileNode.stFileNode.u16NextPeer = INVALID_NODE;
     DEBUG_PRINT("Node %d allocated, next free %d\n", u16RetVal, m_stLocalRoot.u16NextFreeNode);
     Write_Node(u16RetVal, &stFileNode);
@@ -163,7 +163,7 @@ void NLFS::Push_Free_Node(uint16_t u16Node_)
 
     Read_Node(u16Node_, &stFileNode);
     stFileNode.stFileNode.u16NextPeer = m_stLocalRoot.u16NextFreeNode;
-    m_stLocalRoot.u16NextFreeNode = u16Node_;
+    m_stLocalRoot.u16NextFreeNode     = u16Node_;
 
     Write_Node(u16Node_, &stFileNode);
 
@@ -179,9 +179,9 @@ void NLFS::Push_Free_Node(uint16_t u16Node_)
 //---------------------------------------------------------------------------
 uint32_t NLFS::Pop_Free_Block(void)
 {
-    uint32_t u32RetVal = m_stLocalRoot.u32NextFreeBlock;
+    uint32_t     u32RetVal = m_stLocalRoot.u32NextFreeBlock;
     NLFS_Block_t stFileBlock;
-    NLFS_Node_t stFileNode;
+    NLFS_Node_t  stFileNode;
 
     if ((INVALID_BLOCK == u32RetVal) || (0 == m_stLocalRoot.u32NumBlocksFree)) {
         DEBUG_PRINT("Out of data blocks\n");
@@ -211,11 +211,11 @@ uint32_t NLFS::Pop_Free_Block(void)
 void NLFS::Push_Free_Block(uint32_t u32Block_)
 {
     NLFS_Block_t stFileBlock;
-    NLFS_Node_t stFileNode;
+    NLFS_Node_t  stFileNode;
 
     Read_Block_Header(u32Block_, &stFileBlock);
 
-    stFileBlock.u32NextBlock = m_stLocalRoot.u32NextFreeBlock;
+    stFileBlock.u32NextBlock       = m_stLocalRoot.u32NextFreeBlock;
     m_stLocalRoot.u32NextFreeBlock = u32Block_;
 
     Write_Block_Header(u32Block_, &stFileBlock);
@@ -231,7 +231,7 @@ void NLFS::Push_Free_Block(uint32_t u32Block_)
 //---------------------------------------------------------------------------
 uint32_t NLFS::Append_Block_To_Node(NLFS_Node_t* pstFile_)
 {
-    uint32_t u32Block;
+    uint32_t     u32Block;
     NLFS_Block_t stFileBlock;
 
     // Allocate a new block
@@ -244,7 +244,7 @@ uint32_t NLFS::Append_Block_To_Node(NLFS_Node_t* pstFile_)
     DEBUG_PRINT("reading block header\n");
     Read_Block_Header(u32Block, &stFileBlock);
     stFileBlock.u32NextBlock = INVALID_BLOCK;
-    stFileBlock.uAllocated = 1;
+    stFileBlock.uAllocated   = 1;
 
     DEBUG_PRINT("writing block header\n");
     Write_Block_Header(u32Block, &stFileBlock);
@@ -271,12 +271,12 @@ uint32_t NLFS::Append_Block_To_Node(NLFS_Node_t* pstFile_)
 //---------------------------------------------------------------------------
 uint16_t NLFS::Find_Parent_Dir(const char* szPath_)
 {
-    int i, j;
-    uint8_t u8LastSlash = 0;
-    uint16_t u16RetVal;
-    char szTempName[FILE_NAME_LENGTH];
+    int         i, j;
+    uint8_t     u8LastSlash = 0;
+    uint16_t    u16RetVal;
+    char        szTempName[FILE_NAME_LENGTH];
     NLFS_Node_t stFileNode;
-    uint16_t u16TempPeer;
+    uint16_t    u16TempPeer;
 
     Read_Node(FS_ROOT_BLOCK, &stFileNode);
 
@@ -301,7 +301,7 @@ uint16_t NLFS::Find_Parent_Dir(const char* szPath_)
     i = 1;
     while (szPath_[i] && i < u8LastSlash) {
         NLFS_Node_t stTempNode;
-        bool bMatch = false;
+        bool        bMatch = false;
 
         j = 0;
         MemUtil::SetMemory(szTempName, 0, FILE_NAME_LENGTH);
@@ -483,11 +483,11 @@ uint16_t NLFS::Create_File_i(const char* szPath_, NLFS_Type_t eType_)
     stFileNode.stFileNode.u32FileSize = 0;
 
     // Set the default user and group, as well as perms
-    stFileNode.stFileNode.u8User = 0; //!! ToDo - set real user/group IDs
-    stFileNode.stFileNode.u8Group = 0;
+    stFileNode.stFileNode.u8User   = 0; //!! ToDo - set real user/group IDs
+    stFileNode.stFileNode.u8Group  = 0;
     stFileNode.stFileNode.u16Perms = PERM_U_ALL | PERM_G_ALL | PERM_O_ALL;
 
-    stFileNode.stFileNode.u16Child = INVALID_NODE;
+    stFileNode.stFileNode.u16Child  = INVALID_NODE;
     stFileNode.stFileNode.u16Parent = u16RootNodes;
 
     // Update the parent node.
@@ -503,12 +503,12 @@ uint16_t NLFS::Create_File_i(const char* szPath_, NLFS_Type_t eType_)
         Read_Node(stFileNode.stFileNode.u16NextPeer, &stPeerNode);
 
         stPeerNode.stFileNode.u16PrevPeer = u16Node;
-        stParentNode.stFileNode.u16Child = u16Node;
+        stParentNode.stFileNode.u16Child  = u16Node;
 
         DEBUG_PRINT("updating peer's prev: %d\n", stPeerNode.stFileNode.u16PrevPeer);
         Write_Node(stFileNode.stFileNode.u16NextPeer, &stPeerNode);
     } else {
-        stParentNode.stFileNode.u16Child = u16Node;
+        stParentNode.stFileNode.u16Child  = u16Node;
         stFileNode.stFileNode.u16NextPeer = INVALID_NODE;
         stFileNode.stFileNode.u16PrevPeer = INVALID_NODE;
     }
@@ -594,7 +594,7 @@ void NLFS::Cleanup_Node_Links(uint16_t u16Node_, NLFS_Node_t* pstNode_)
             DEBUG_PRINT("j\n");
         }
     }
-    pstNode_->stFileNode.u16Parent = INVALID_NODE;
+    pstNode_->stFileNode.u16Parent   = INVALID_NODE;
     pstNode_->stFileNode.u16PrevPeer = INVALID_NODE;
     pstNode_->stFileNode.u16NextPeer = INVALID_NODE;
 }
@@ -602,7 +602,7 @@ void NLFS::Cleanup_Node_Links(uint16_t u16Node_, NLFS_Node_t* pstNode_)
 //---------------------------------------------------------------------------
 uint16_t NLFS::Delete_Folder(const char* szPath_)
 {
-    uint16_t u16Node = Find_File(szPath_);
+    uint16_t    u16Node = Find_File(szPath_);
     NLFS_Node_t stNode;
 
     if (INVALID_NODE == u16Node) {
@@ -641,10 +641,10 @@ uint16_t NLFS::Delete_Folder(const char* szPath_)
 //---------------------------------------------------------------------------
 uint16_t NLFS::Delete_File(const char* szPath_)
 {
-    uint16_t u16Node = Find_File(szPath_);
-    uint32_t u32Curr;
-    uint32_t u32Prev;
-    NLFS_Node_t stNode;
+    uint16_t     u16Node = Find_File(szPath_);
+    uint32_t     u32Curr;
+    uint32_t     u32Prev;
+    NLFS_Node_t  stNode;
     NLFS_Block_t stBlock;
 
     if (INVALID_NODE == u16Node) {
@@ -691,7 +691,7 @@ void NLFS::Format(NLFS_Host_t* puHost_, uint32_t u32TotalSize_, uint16_t u16NumF
     uint32_t i;
     uint32_t u32NumBlocks;
 
-    NLFS_Node_t stFileNode;
+    NLFS_Node_t  stFileNode;
     NLFS_Block_t stFileBlock;
 
     // Compute number of data blocks (based on FS Size and the number of file blocks)
@@ -705,17 +705,17 @@ void NLFS::Format(NLFS_Host_t* puHost_, uint32_t u32TotalSize_, uint16_t u16NumF
     m_puHost = puHost_;
 
     // Set the local copies of the data block byte-offset, as well as the data-block size
-    m_stLocalRoot.u16NumFiles = u16NumFiles_;
+    m_stLocalRoot.u16NumFiles     = u16NumFiles_;
     m_stLocalRoot.u16NumFilesFree = m_stLocalRoot.u16NumFiles - 2;
     m_stLocalRoot.u16NextFreeNode = 2;
 
-    m_stLocalRoot.u32NumBlocks = u32NumBlocks;
+    m_stLocalRoot.u32NumBlocks     = u32NumBlocks;
     m_stLocalRoot.u32NumBlocksFree = u32NumBlocks;
     m_stLocalRoot.u32NextFreeBlock = 0;
 
-    m_stLocalRoot.u32BlockSize = ((((uint32_t)u16DataBlockSize_) + 3) & ~3);
+    m_stLocalRoot.u32BlockSize   = ((((uint32_t)u16DataBlockSize_) + 3) & ~3);
     m_stLocalRoot.u32BlockOffset = (((uint32_t)u16NumFiles_) * sizeof(NLFS_Node_t));
-    m_stLocalRoot.u32DataOffset = m_stLocalRoot.u32BlockOffset + (((uint32_t)u32NumBlocks) * sizeof(NLFS_Block_t));
+    m_stLocalRoot.u32DataOffset  = m_stLocalRoot.u32BlockOffset + (((uint32_t)u32NumBlocks) * sizeof(NLFS_Block_t));
 
     // Create root data block node
     MemUtil::CopyMemory(&(stFileNode.stRootNode), &m_stLocalRoot, sizeof(m_stLocalRoot));
@@ -733,18 +733,18 @@ void NLFS::Format(NLFS_Host_t* puHost_, uint32_t u32TotalSize_, uint16_t u16NumF
 
     stFileNode.stFileNode.u16NextPeer = INVALID_NODE;
     stFileNode.stFileNode.u16PrevPeer = INVALID_NODE;
-    stFileNode.stFileNode.u8Group = 0;
-    stFileNode.stFileNode.u8User = 0;
-    stFileNode.stFileNode.u16Perms = PERM_U_ALL | PERM_G_ALL | PERM_O_ALL;
+    stFileNode.stFileNode.u8Group     = 0;
+    stFileNode.stFileNode.u8User      = 0;
+    stFileNode.stFileNode.u16Perms    = PERM_U_ALL | PERM_G_ALL | PERM_O_ALL;
 
     stFileNode.stFileNode.u16Parent = INVALID_NODE;
-    stFileNode.stFileNode.u16Child = INVALID_NODE;
+    stFileNode.stFileNode.u16Child  = INVALID_NODE;
 
     stFileNode.stFileNode.u32AllocSize = 0;
-    stFileNode.stFileNode.u32FileSize = 0;
+    stFileNode.stFileNode.u32FileSize  = 0;
 
     stFileNode.stFileNode.u32FirstBlock = INVALID_BLOCK;
-    stFileNode.stFileNode.u32LastBlock = INVALID_BLOCK;
+    stFileNode.stFileNode.u32LastBlock  = INVALID_BLOCK;
 
     DEBUG_PRINT("Writing mount point\n");
     Write_Node(1, &stFileNode);
@@ -845,10 +845,10 @@ bool NLFS::GetStat(uint16_t u16Node_, NLFS_File_Stat_t* pstStat_)
     }
     Read_Node(u16Node_, &stTemp);
     pstStat_->u32AllocSize = stTemp.stFileNode.u32AllocSize;
-    pstStat_->u32FileSize = stTemp.stFileNode.u32FileSize;
-    pstStat_->u8Group = stTemp.stFileNode.u8Group;
-    pstStat_->u8User = stTemp.stFileNode.u8User;
-    pstStat_->u16Perms = stTemp.stFileNode.u16Perms;
+    pstStat_->u32FileSize  = stTemp.stFileNode.u32FileSize;
+    pstStat_->u8Group      = stTemp.stFileNode.u8Group;
+    pstStat_->u8User       = stTemp.stFileNode.u8User;
+    pstStat_->u16Perms     = stTemp.stFileNode.u16Perms;
     MemUtil::CopyMemory(pstStat_->acFileName, stTemp.stFileNode.acFileName, 16);
     return true;
 }

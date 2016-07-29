@@ -13,7 +13,7 @@ See license.txt for more information
 =========================================================================== */
 /*!
 
-    \file   threadport.h    
+    \file   threadport.h
 
     \brief  Cortex M-0 Multithreading support.
  */
@@ -24,6 +24,7 @@ See license.txt for more information
 #include "kerneltypes.h"
 #include "thread.h"
 
+// clang-format off
 //---------------------------------------------------------------------------
 //! ASM Macro - simplify the use of ASM directive in C
 #define ASM      asm volatile

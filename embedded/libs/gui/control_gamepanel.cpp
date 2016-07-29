@@ -43,7 +43,7 @@ GuiReturn_t GamePanelControl::ProcessEvent(GuiEvent_t* pstEvent_)
         case EVENT_TYPE_KEYBOARD: break;
         case EVENT_TYPE_MOUSE: break;
         case EVENT_TYPE_JOYSTICK:
-            m_stJoy.Current.u16RawData = pstEvent_->stJoystick.Current.u16RawData;
+            m_stJoy.Current.u16RawData  = pstEvent_->stJoystick.Current.u16RawData;
             m_stJoy.Previous.u16RawData = pstEvent_->stJoystick.Previous.u16RawData;
             break;
     }

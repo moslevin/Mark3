@@ -13,9 +13,9 @@ See license.txt for more information
 ===========================================================================*/
 /*!
     \file graphics_sdl.h
-    
+
     \brief Graphics driver implementation using libSDL
-    
+
     Graphics driver implementation sitting on top of the cross-platform
     SDL graphics library.
 */
@@ -35,25 +35,26 @@ See license.txt for more information
 class GraphicsSDL : public GraphicsDriver
 {
 public:
-//---------------------------------------------------------
-    virtual void Init();
-    virtual uint8_t Open();
-    virtual uint8_t Close();
-    virtual uint16_t Read( uint16_t u16Bytes_, uint8_t *pu8Data_ )
-        { return 0; }
-    virtual uint16_t Write( uint16_t u16Bytes_, uint8_t *pu8Data_ )
-        { return 0; }
-    virtual uint16_t Control( uint16_t u16Event_, void *pvDataIn_, uint16_t u16SizeIn_, void *pvDataOut_, uint16_t u16SizeOut_ )
-        { return 0; }        
-        
-//---------------------------------------------------------
-    virtual void DrawPixel(DrawPoint_t *pstPoint_);
-    virtual void ReadPixel(DrawPoint_t *pstPoint_);
-//---------------------------------------------------------
-/*
-    Raster operations defined using per-pixel rendering.
-    Can be overridden in inheriting classes.
-*/
+    //---------------------------------------------------------
+    virtual void     Init();
+    virtual uint8_t  Open();
+    virtual uint8_t  Close();
+    virtual uint16_t Read(uint16_t u16Bytes_, uint8_t* pu8Data_) { return 0; }
+    virtual uint16_t Write(uint16_t u16Bytes_, uint8_t* pu8Data_) { return 0; }
+    virtual uint16_t
+    Control(uint16_t u16Event_, void* pvDataIn_, uint16_t u16SizeIn_, void* pvDataOut_, uint16_t u16SizeOut_)
+    {
+        return 0;
+    }
+
+    //---------------------------------------------------------
+    virtual void DrawPixel(DrawPoint_t* pstPoint_);
+    virtual void ReadPixel(DrawPoint_t* pstPoint_);
+    //---------------------------------------------------------
+    /*
+        Raster operations defined using per-pixel rendering.
+        Can be overridden in inheriting classes.
+    */
     // virtual void ClearScreen();
     // virtual void Point(DrawPoint_t *pstPoint_);
     // virtual void Line(DrawLine_t *pstLine_);
@@ -71,9 +72,9 @@ public:
     // virtual uint16_t TextWidth(DrawText_t *pstText_) {return 0;}
 
     void Flip();
-    
+
 private:
-    SDL_Surface *m_pstScreen;
+    SDL_Surface* m_pstScreen;
 };
 
 #endif

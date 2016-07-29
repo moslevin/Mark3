@@ -25,7 +25,7 @@ static Thread clMsgThread;
 #define MSG_STACK_SIZE (192)
 static K_WORD aucMsgStack[MSG_STACK_SIZE];
 
-static MessageQueue clMsgQ;
+static MessageQueue     clMsgQ;
 static volatile uint8_t u8PassCount = 0;
 
 //===========================================================================
@@ -35,10 +35,10 @@ static volatile uint8_t u8PassCount = 0;
 void MsgConsumer(void* unused_)
 {
     Message* pclMsg;
-    uint8_t i;
+    uint8_t  i;
 
     for (i = 0; i < 20; i++) {
-        pclMsg = clMsgQ.Receive();
+        pclMsg      = clMsgQ.Receive();
         u8PassCount = 0;
 
         if (pclMsg) {
@@ -159,7 +159,7 @@ void MsgTimed(void* unused)
 {
     Message* pclRet;
     u8PassCount = 0;
-    pclRet = clMsgQ.Receive(10);
+    pclRet      = clMsgQ.Receive(10);
     if (0 == pclRet) {
         u8PassCount++;
     } else {

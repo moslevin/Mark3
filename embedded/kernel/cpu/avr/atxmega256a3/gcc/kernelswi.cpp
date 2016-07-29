@@ -46,7 +46,7 @@ void KernelSWI::Config(void)
 
     TCC0.INTCTRLB = 0; // Disable ABCD Capture compare interrupts.
 
-    EVSYS.CH0MUX = 0;  // Manual event generation
+    EVSYS.CH0MUX  = 0; // Manual event generation
     EVSYS.CH0CTRL = 0; // Single-sample events.
 }
 

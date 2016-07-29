@@ -22,19 +22,19 @@
 #include "bsp_tracelogger.h"
 #include "bsp_uarts.h"
 
-static Thread clApp1;
+static Thread  clApp1;
 static uint8_t au8Stack1[320];
 
-static Thread clApp2;
+static Thread  clApp2;
 static uint8_t au8Stack2[320];
 
-static Thread clApp3;
+static Thread  clApp3;
 static uint8_t au8Stack3[320];
 
-static Thread clApp4;
+static Thread  clApp4;
 static uint8_t au8Stack4[320];
 
-static Thread clApp5;
+static Thread  clApp5;
 static uint8_t au8Stack5[320];
 
 static void App1(void* param)
@@ -56,7 +56,7 @@ static void App2(void* param)
 static void WriteString(Driver* pclDriver_, const char* szData_)
 {
     uint16_t u16Written = 0;
-    uint8_t* src = (uint8_t*)szData_;
+    uint8_t* src        = (uint8_t*)szData_;
 
     while (*src != '\0') {
         u16Written = pclDriver_->Write(1, src++);
@@ -68,7 +68,7 @@ static void WriteString(Driver* pclDriver_, const char* szData_)
 }
 
 static Semaphore clRTCSem;
-static void OnRTCTick(void)
+static void      OnRTCTick(void)
 {
     clRTCSem.Post();
 }
@@ -80,12 +80,12 @@ static void App3(void* param)
 
     {
         calendar_t cal = { 0 };
-        cal.u8Day = 27;
-        cal.eMonth = MONTH_JUNE;
-        cal.u16Year = 2016;
-        cal.u8Hour = 20;
-        cal.u8Minute = 50;
-        cal.u8Second = 0;
+        cal.u8Day      = 27;
+        cal.eMonth     = MONTH_JUNE;
+        cal.u16Year    = 2016;
+        cal.u8Hour     = 20;
+        cal.u8Minute   = 50;
+        cal.u8Second   = 0;
 
         bsp_rtc_set_datetime(&cal);
     }
@@ -136,7 +136,7 @@ static void App3(void* param)
 static void App4(void* param)
 {
     Driver* pclUART = DriverList::FindByPath("/dev/tty0");
-    bool bState;
+    bool    bState;
 
     while (1) {
         const char* szStr = "Tommy can you hear me?\r\n"; // 24 chars?

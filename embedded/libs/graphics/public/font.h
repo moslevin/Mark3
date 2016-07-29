@@ -23,32 +23,28 @@ See license.txt for more information
 #include "fontport.h"
 
 //---------------------------------------------------------------------------
-typedef struct
-{
-    uint8_t u8Width;        //!< Width of this font glyph in pixels
-    uint8_t u8Height;       //!< Height of this font glyph in pixels
-    uint8_t u8VOffset;      //!< Vertical offset of this glyph
-    uint8_t aucData[1];     //!< Glyph data array
+typedef struct {
+    uint8_t u8Width;    //!< Width of this font glyph in pixels
+    uint8_t u8Height;   //!< Height of this font glyph in pixels
+    uint8_t u8VOffset;  //!< Vertical offset of this glyph
+    uint8_t aucData[1]; //!< Glyph data array
 } Glyph_t;
 
 //---------------------------------------------------------------------------
 /*!
-    The size of the glyph is the width*height (in bytes), plus the overhead 
+    The size of the glyph is the width*height (in bytes), plus the overhead
     of the struct parameters.
 */
-#define GLYPH_SIZE(x) \
-    (((uint16_t)((x->u8Width + 7) >> 3) * (uint16_t)(x->u8Height)) + sizeof(Glyph_t) - 1)
+#define GLYPH_SIZE(x) (((uint16_t)((x->u8Width + 7) >> 3) * (uint16_t)(x->u8Height)) + sizeof(Glyph_t) - 1)
 
 //---------------------------------------------------------------------------
-typedef struct
-{
-    uint8_t u8Size;
-    uint8_t u8Flags;
-    uint8_t u8StartChar;
-    uint8_t u8MaxChar;
-    const char *szName;
-    const FONT_STORAGE_TYPE *pu8FontData;    
+typedef struct {
+    uint8_t                  u8Size;
+    uint8_t                  u8Flags;
+    uint8_t                  u8StartChar;
+    uint8_t                  u8MaxChar;
+    const char*              szName;
+    const FONT_STORAGE_TYPE* pu8FontData;
 } Font_t;
 
 #endif
-

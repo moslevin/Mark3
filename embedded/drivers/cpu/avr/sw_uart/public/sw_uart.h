@@ -25,24 +25,23 @@ See license.txt for more information
 class SoftwareUART
 {
 public:
-    void Init( uint32_t u32Baud_ );
+    void Init(uint32_t u32Baud_);
 
-    void SendByte( uint8_t u8Byte_ );
+    void SendByte(uint8_t u8Byte_);
 
     static void TimerStop(void);
 
     uint8_t ReceiveByte(void);
 
 private:
-
     void TimerStart(void);
-   
+
     void TimerInit(void);
 
     void RxInit(void);
 
     uint16_t m_u16Prescale;
-    uint8_t m_u8TimerPeriod;
+    uint8_t  m_u8TimerPeriod;
 };
 
 #endif

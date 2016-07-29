@@ -24,9 +24,8 @@ class UnitTest
 {
 public:
     void SetName(const char* szName_) { m_szName = szName_; }
-    void Start() { m_bIsActive = 1; }
-
-    void Pass()
+    void                     Start() { m_bIsActive = 1; }
+    void                     Pass()
     {
         if (m_bComplete) {
             return;
@@ -52,18 +51,15 @@ public:
         }
     }
 
-    void Complete() { m_bComplete = 1; }
-
+    void        Complete() { m_bComplete = 1; }
     const char* GetName() { return m_szName; }
-
-    uint8_t GetResult() { return m_bStatus; }
-
+    uint8_t     GetResult() { return m_bStatus; }
 private:
     const char* m_szName;
-    bool m_bIsActive;
-    bool m_bComplete;
-    bool m_bStatus;
-    uint32_t m_u32Iterations;
+    bool        m_bIsActive;
+    bool        m_bComplete;
+    bool        m_bStatus;
+    uint32_t    m_u32Iterations;
 };
 
 //---------------------------------------------------------------------------
@@ -71,7 +67,7 @@ static volatile uint8_t u8TestVal;
 
 //---------------------------------------------------------------------------
 static ATMegaUART clUART;
-static uint8_t aucTxBuf[32];
+static uint8_t    aucTxBuf[32];
 
 #define PROFILE_TEST 1
 #if PROFILE_TEST
@@ -105,7 +101,7 @@ static ProfileTimer clSchedulerTimer;
 
 //---------------------------------------------------------------------------
 static Semaphore clSemaphore;
-static Mutex clMutex;
+static Mutex     clMutex;
 
 #define UNIT_TEST 0
 #if UNIT_TEST
@@ -123,7 +119,7 @@ static UnitTest clMutexTest;
 
 static MessageQueue clMsgQ1;
 static MessageQueue clMsgQ2;
-static UnitTest clMsgQTest;
+static UnitTest     clMsgQTest;
 
 static UnitTest clRoundRobinTest;
 static UnitTest clQuantumTest;
@@ -193,7 +189,7 @@ static void IdleMain(void* unused)
 // Basic string routines
 uint16_t KUtil_Strlen(const char* szStr_)
 {
-    char* pcData = (char*)szStr_;
+    char*    pcData = (char*)szStr_;
     uint16_t u16Len = 0;
 
     while (*pcData++) {
@@ -306,7 +302,7 @@ static void Semaphore_Profiling()
 static void Mutex_Profiling()
 {
     uint16_t i;
-    Mutex clMutex;
+    Mutex    clMutex;
 
     for (i = 0; i < 10; i++) {
         clMutexInitTimer.Start();
@@ -417,8 +413,8 @@ static void PrintWait(Driver* pclDriver_, uint16_t u16Size_, const char* data)
 //---------------------------------------------------------------------------
 void ProfilePrint(ProfileTimer* pclProfile, const char* szName_)
 {
-    Driver* pclUART = DriverList::FindByPath("/dev/tty");
-    char szBuf[16];
+    Driver*  pclUART = DriverList::FindByPath("/dev/tty");
+    char     szBuf[16];
     uint32_t u32Val = pclProfile->GetAverage() - clProfileOverhead.GetAverage();
     u32Val *= 8;
     for (int i = 0; i < 16; i++) {
@@ -602,7 +598,7 @@ void UT_MutexTest(void)
 //---------------------------------------------------------------------------
 void TestMessageTest(void* pvArg)
 {
-    Thread* pstThis = Scheduler::GetCurrentThread();
+    Thread*  pstThis = Scheduler::GetCurrentThread();
     Message* pclMesg;
 
     pclMesg = clMsgQ2.Receive();
@@ -741,7 +737,7 @@ void UT_RoundRobinTest(void)
     volatile uint32_t u32Counter1 = 0;
     volatile uint32_t u32Counter2 = 0;
     volatile uint32_t u32Counter3 = 0;
-    uint32_t u32Delta;
+    uint32_t          u32Delta;
 
     clRoundRobinTest.Start();
 
@@ -796,7 +792,7 @@ void UT_QuantumTest(void)
     volatile uint32_t u32Counter1 = 0;
     volatile uint32_t u32Counter2 = 0;
     volatile uint32_t u32Counter3 = 0;
-    uint32_t u32Delta;
+    uint32_t          u32Delta;
 
     clQuantumTest.Start();
 

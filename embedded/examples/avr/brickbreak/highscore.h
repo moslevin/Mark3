@@ -8,16 +8,13 @@
 
 #include "brcommon.h"
 
-#define NUM_HIGH_SCORES			(5)
+#define NUM_HIGH_SCORES (5)
 //---------------------------------------------------------------------------
-typedef struct
-{
-    union
-    {
-        struct
-        {
+typedef struct {
+    union {
+        struct {
             uint32_t u32Score;
-            char acName[4];
+            char     acName[4];
         };
         uint8_t aucRawData[8];
     };
@@ -30,13 +27,13 @@ class HighScore
 public:
     void CheckInit(void);
 
-    void ReadScore(uint8_t u8Rank_, HighScore_t *pstScore_);
+    void ReadScore(uint8_t u8Rank_, HighScore_t* pstScore_);
 
-    void WriteScore(uint8_t u8Rank_, HighScore_t *pstScore_);
+    void WriteScore(uint8_t u8Rank_, HighScore_t* pstScore_);
 
     bool IsHighScore(uint32_t u32Score_);
 
-    void AddNewScore(HighScore_t *pstNew_);
+    void AddNewScore(HighScore_t* pstNew_);
 
 private:
 };

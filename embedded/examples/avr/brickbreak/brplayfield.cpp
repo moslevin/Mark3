@@ -38,7 +38,7 @@ const uint16_t au16LevelData[][LEVEL_NUM_ROWS] LEVEL_MEM
         { 0xC03, 0xC63, 0xD6B, 0xCF3, 0xDFB, 0xCF3, 0xCF3, 0xDFB, 0xD6B, 0xC63 },
         { 0xFFF, 0x7FF, 0x383, 0x1C3, 0xE3, 0xC70, 0xC38, 0xC1C, 0xFFE, 0xFFF },
         {
-         0xC, 0x1E, 0xC, 0x0, 0x7FE, 0xFFF, 0xFFF, 0xFFF, 0xFFF, 0x7FE,
+            0xC, 0x1E, 0xC, 0x0, 0x7FE, 0xFFF, 0xFFF, 0xFFF, 0xFFF, 0x7FE,
         },
         { 0x1C7, 0x5D7, 0x1C7, 0xE38, 0xEBA, 0xE38, 0x1C7, 0x5D7, 0x1C7, 0xFFF },
         { 0x444, 0x666, 0x626, 0xEEE, 0xFFF, 0xFFF, 0x777, 0x666, 0x666, 0x222 },
@@ -69,16 +69,16 @@ static BrLevelType_t aeLevelTypes[NUM_LEVELS]
 //---------------------------------------------------------------------------
 void BrPlayField::LoadLevel(uint16_t u16Level_)
 {
-    uint16_t u16LevelIdx = u16Level_ % NUM_LEVELS;
-    const uint16_t* pu16Data = &(au16LevelData[u16LevelIdx][0]);
+    uint16_t        u16LevelIdx = u16Level_ % NUM_LEVELS;
+    const uint16_t* pu16Data    = &(au16LevelData[u16LevelIdx][0]);
 
     m_bHitCieling = false;
 
     m_u16BricksLeft = 0;
-    m_u8Bonusimer = 0;
-    m_u16RandValue = 1;
-    m_u8Col = 0;
-    m_u8Row = 0;
+    m_u8Bonusimer   = 0;
+    m_u16RandValue  = 1;
+    m_u8Col         = 0;
+    m_u8Row         = 0;
 
     for (uint8_t i = 0; i < LEVEL_NUM_ROWS; i++) {
         m_clLevelData.au16Data[i] = READ_LEVEL_MEM(pu16Data++);
@@ -99,35 +99,35 @@ void BrPlayField::Draw(void)
 {
     DrawRectangle_t stRect;
 
-    stRect.bFill = true;
-    stRect.uFillColor = COLOR_BLUE;
+    stRect.bFill       = true;
+    stRect.uFillColor  = COLOR_BLUE;
     stRect.u32ineColor = COLOR_BLUE;
-    stRect.u16Left = 0;
-    stRect.u16Right = PLAYFIELD_BORDER_WIDTH - 1;
-    stRect.u16Top = HUD_HEIGHT;
-    stRect.u16Bottom = PADDLE_YPOS;
+    stRect.u16Left     = 0;
+    stRect.u16Right    = PLAYFIELD_BORDER_WIDTH - 1;
+    stRect.u16Top      = HUD_HEIGHT;
+    stRect.u16Bottom   = PADDLE_YPOS;
 
     pclDisplay->Rectangle(&stRect);
 
-    stRect.u16Left = PLAYFIELD_RIGHT_BORDER;
+    stRect.u16Left  = PLAYFIELD_RIGHT_BORDER;
     stRect.u16Right = PLAYFIELD_RIGHT_BORDER + PLAYFIELD_BORDER_WIDTH - 1;
 
     pclDisplay->Rectangle(&stRect);
 
-    stRect.u16Top = HUD_HEIGHT;
+    stRect.u16Top    = HUD_HEIGHT;
     stRect.u16Bottom = HUD_HEIGHT + PLAYFIELD_BORDER_HEIGHT;
-    stRect.u16Left = 0;
-    stRect.u16Right = SCREEN_WIDTH - 1;
+    stRect.u16Left   = 0;
+    stRect.u16Right  = SCREEN_WIDTH - 1;
 
     pclDisplay->Rectangle(&stRect);
 
-    stRect.u16Top = HUD_HEIGHT + PLAYFIELD_BORDER_HEIGHT;
-    stRect.u16Bottom = stRect.u16Top + (LEVEL_NUM_ROWS * BRICK_HEIGHT) + PLAYFIELD_BRICK_MARGIN;
-    stRect.u16Left = PLAYFIELD_LEFT_BORDER;
-    stRect.u16Right = PLAYFIELD_RIGHT_BORDER - 1;
-    stRect.uFillColor = COLOR_BLACK;
+    stRect.u16Top      = HUD_HEIGHT + PLAYFIELD_BORDER_HEIGHT;
+    stRect.u16Bottom   = stRect.u16Top + (LEVEL_NUM_ROWS * BRICK_HEIGHT) + PLAYFIELD_BRICK_MARGIN;
+    stRect.u16Left     = PLAYFIELD_LEFT_BORDER;
+    stRect.u16Right    = PLAYFIELD_RIGHT_BORDER - 1;
+    stRect.uFillColor  = COLOR_BLACK;
     stRect.u32ineColor = COLOR_BLACK;
-    stRect.bFill = true;
+    stRect.bFill       = true;
 
     pclDisplay->Rectangle(&stRect);
 
@@ -144,12 +144,12 @@ void BrPlayField::Draw(void)
 void BrPlayField::ClearBrick_i(uint8_t u8Row_, uint8_t u8Col_)
 {
     DrawRectangle_t stRect;
-    stRect.u16Top = (PLAYFIELD_BRICK_MARGIN + HUD_HEIGHT + PLAYFIELD_BORDER_HEIGHT) + (u8Row_ * BRICK_HEIGHT);
-    stRect.u16Bottom = stRect.u16Top + BRICK_HEIGHT - 1;
-    stRect.u16Left = PLAYFIELD_BORDER_WIDTH + (u8Col_ * BRICK_WIDTH);
-    stRect.u16Right = stRect.u16Left + BRICK_WIDTH - 1;
-    stRect.bFill = true;
-    stRect.uFillColor = COLOR_BLACK;
+    stRect.u16Top      = (PLAYFIELD_BRICK_MARGIN + HUD_HEIGHT + PLAYFIELD_BORDER_HEIGHT) + (u8Row_ * BRICK_HEIGHT);
+    stRect.u16Bottom   = stRect.u16Top + BRICK_HEIGHT - 1;
+    stRect.u16Left     = PLAYFIELD_BORDER_WIDTH + (u8Col_ * BRICK_WIDTH);
+    stRect.u16Right    = stRect.u16Left + BRICK_WIDTH - 1;
+    stRect.bFill       = true;
+    stRect.uFillColor  = COLOR_BLACK;
     stRect.u32ineColor = COLOR_BLACK;
     pclDisplay->Rectangle(&stRect);
 
@@ -264,7 +264,7 @@ void BrPlayField::LevelAction(uint8_t u8Flags_)
             if ((u8Flags_ == LEVEL_ACTION_PADDLE_HIT) || (u8Flags_ == LEVEL_ACTION_WALL_HIT)
                 || (u8Flags_ == LEVEL_ACTION_CIELING_HIT)) {
                 uint8_t u8MaxCount = LEVEL_NUM_COLS;
-                bool bDone = false;
+                bool    bDone      = false;
                 while (u8MaxCount--) {
                     uint8_t u8Row2 = (m_u8Row + 1) % LEVEL_NUM_ROWS;
                     uint8_t u8Col2 = m_u8Col;
@@ -305,7 +305,7 @@ Special_t BrPlayField::SelectBonus()
 
     ShowBonustring(eBonus);
     m_u16SpecialTime = 30 * 60;
-    m_eSpecial = eBonus;
+    m_eSpecial       = eBonus;
 
     return eBonus;
 }
@@ -313,25 +313,25 @@ Special_t BrPlayField::SelectBonus()
 //---------------------------------------------------------------------------
 void BrPlayField::ShowBonustring(Special_t eBonus_)
 {
-    DrawText_t stText;
+    DrawText_t  stText;
     const char* pcBonus;
 
     stText.pstFont = &fntPrint_Char_21_6_False_False_False_;
     switch (eBonus_) {
-        case SPECIAL_1UP: pcBonus = "1UP"; break;
-        case SPECIAL_BONUS: pcBonus = "BONUS"; break;
-        case SPECIAL_CATCH: pcBonus = "CATCH"; break;
+        case SPECIAL_1UP: pcBonus       = "1UP"; break;
+        case SPECIAL_BONUS: pcBonus     = "BONUS"; break;
+        case SPECIAL_CATCH: pcBonus     = "CATCH"; break;
         case SPECIAL_FIREPOWER: pcBonus = "LAZER"; break;
-        case SPECIAL_LONG: pcBonus = "LONG"; break;
-        case SPECIAL_SKIP: pcBonus = "SKIP"; break;
-        case SPECIAL_SLOW: pcBonus = "SLOW"; break;
-        default: pcBonus = "BONUS"; break;
+        case SPECIAL_LONG: pcBonus      = "LONG"; break;
+        case SPECIAL_SKIP: pcBonus      = "SKIP"; break;
+        case SPECIAL_SLOW: pcBonus      = "SLOW"; break;
+        default: pcBonus                = "BONUS"; break;
     }
 
     stText.pcString = pcBonus;
-    stText.u16Top = 0;
-    stText.u16Left = 46;
-    stText.uColor = COLOR_RED;
+    stText.u16Top   = 0;
+    stText.u16Left  = 46;
+    stText.uColor   = COLOR_RED;
     pclDisplay->Text(&stText);
 
     m_u8Bonusimer = 120;
@@ -341,13 +341,13 @@ void BrPlayField::ShowBonustring(Special_t eBonus_)
 void BrPlayField::ClearBonustring()
 {
     DrawRectangle_t stRect;
-    stRect.u16Left = 46;
-    stRect.u16Right = stRect.u16Left + 36;
-    stRect.u16Top = 0;
-    stRect.u16Bottom = 8;
+    stRect.u16Left     = 46;
+    stRect.u16Right    = stRect.u16Left + 36;
+    stRect.u16Top      = 0;
+    stRect.u16Bottom   = 8;
     stRect.u32ineColor = COLOR_BLACK;
-    stRect.uFillColor = COLOR_BLACK;
-    stRect.bFill = true;
+    stRect.uFillColor  = COLOR_BLACK;
+    stRect.bFill       = true;
 
     pclDisplay->Rectangle(&stRect);
 }
@@ -446,14 +446,14 @@ void BrPlayField::SetBonus(uint8_t u8Row_, uint8_t u8Col_)
 void BrPlayField::DrawBrick(uint8_t u8Row_, uint8_t u8Col_, uint8_t u8Mode_)
 {
     DrawRectangle_t stRect;
-    COLOR uColor;
+    COLOR           uColor;
 
     // Main body...
-    stRect.u16Top = HUD_HEIGHT + PLAYFIELD_BRICK_MARGIN + PLAYFIELD_BORDER_HEIGHT + (u8Row_ * BRICK_HEIGHT);
+    stRect.u16Top    = HUD_HEIGHT + PLAYFIELD_BRICK_MARGIN + PLAYFIELD_BORDER_HEIGHT + (u8Row_ * BRICK_HEIGHT);
     stRect.u16Bottom = stRect.u16Top + (BRICK_HEIGHT - 1);
-    stRect.u16Left = PLAYFIELD_BORDER_WIDTH + (u8Col_ * BRICK_WIDTH);
-    stRect.u16Right = stRect.u16Left + (BRICK_WIDTH - 1);
-    stRect.bFill = true;
+    stRect.u16Left   = PLAYFIELD_BORDER_WIDTH + (u8Col_ * BRICK_WIDTH);
+    stRect.u16Right  = stRect.u16Left + (BRICK_WIDTH - 1);
+    stRect.bFill     = true;
 
     if (!u8Mode_) {
         switch (u8Row_) {
@@ -472,7 +472,7 @@ void BrPlayField::DrawBrick(uint8_t u8Row_, uint8_t u8Col_, uint8_t u8Mode_)
     } else {
         uColor = COLOR_GREY75;
     }
-    stRect.uFillColor = uColor;
+    stRect.uFillColor  = uColor;
     stRect.u32ineColor = uColor;
 
     pclDisplay->Rectangle(&stRect);
@@ -500,10 +500,10 @@ void BrPlayField::DrawBrick(uint8_t u8Row_, uint8_t u8Col_, uint8_t u8Mode_)
     }
 
     stLine.uColor = uColor;
-    stLine.u16X1 = PLAYFIELD_BORDER_WIDTH + (u8Col_ * BRICK_WIDTH);
-    stLine.u16X2 = stLine.u16X1 + (BRICK_WIDTH - 1);
-    stLine.u16Y1 = HUD_HEIGHT + PLAYFIELD_BRICK_MARGIN + PLAYFIELD_BORDER_HEIGHT + (u8Row_ * BRICK_HEIGHT);
-    stLine.u16Y2 = stLine.u16Y1;
+    stLine.u16X1  = PLAYFIELD_BORDER_WIDTH + (u8Col_ * BRICK_WIDTH);
+    stLine.u16X2  = stLine.u16X1 + (BRICK_WIDTH - 1);
+    stLine.u16Y1  = HUD_HEIGHT + PLAYFIELD_BRICK_MARGIN + PLAYFIELD_BORDER_HEIGHT + (u8Row_ * BRICK_HEIGHT);
+    stLine.u16Y2  = stLine.u16Y1;
     pclDisplay->Line(&stLine);
 
     // -Left
@@ -531,10 +531,10 @@ void BrPlayField::DrawBrick(uint8_t u8Row_, uint8_t u8Col_, uint8_t u8Mode_)
     }
 
     stLine.uColor = uColor;
-    stLine.u16X1 = PLAYFIELD_BORDER_WIDTH + (u8Col_ * BRICK_WIDTH) + 1;
-    stLine.u16X2 = stLine.u16X1 + (BRICK_WIDTH - 2);
-    stLine.u16Y1 = HUD_HEIGHT + PLAYFIELD_BRICK_MARGIN + PLAYFIELD_BORDER_HEIGHT + ((u8Row_ + 1) * BRICK_HEIGHT) - 1;
-    stLine.u16Y2 = stLine.u16Y1;
+    stLine.u16X1  = PLAYFIELD_BORDER_WIDTH + (u8Col_ * BRICK_WIDTH) + 1;
+    stLine.u16X2  = stLine.u16X1 + (BRICK_WIDTH - 2);
+    stLine.u16Y1  = HUD_HEIGHT + PLAYFIELD_BRICK_MARGIN + PLAYFIELD_BORDER_HEIGHT + ((u8Row_ + 1) * BRICK_HEIGHT) - 1;
+    stLine.u16Y2  = stLine.u16Y1;
     pclDisplay->Line(&stLine);
 
     // Outer-right

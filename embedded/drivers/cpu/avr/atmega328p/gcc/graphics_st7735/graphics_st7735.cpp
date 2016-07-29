@@ -197,8 +197,8 @@ void GraphicsST7735::CommandList(const uint8_t* pu8Data_)
     {
         WriteCommand(pgm_read_byte(pu8Data_++)); // Read, issue command
 
-        uint8_t u8NumArgs = pgm_read_byte(pu8Data_++); // Number of args to follow
-        uint16_t u16Ms = u8NumArgs & DELAY;            // If hibit set, delay follows args
+        uint8_t  u8NumArgs = pgm_read_byte(pu8Data_++); // Number of args to follow
+        uint16_t u16Ms     = u8NumArgs & DELAY;         // If hibit set, delay follows args
 
         u8NumArgs &= ~DELAY; // Mask out delay bit
 
@@ -271,7 +271,7 @@ void GraphicsST7735::Init()
 
     m_u16Res16X = ST7735_TFTWIDTH;
     m_u16Res16Y = ST7735_TFTHEIGHT;
-    m_u8BPP = 16;
+    m_u8BPP     = 16;
 
     TFT_CD_DIR |= TFT_CD_PIN;
     TFT_CS_DIR |= TFT_CS_PIN;
@@ -337,9 +337,9 @@ void GraphicsST7735::FastVLine(DrawLine_t* pstLine_)
     // (in a bounding-box 1-pixel high, n-pixels wide)
     DrawRectangle_t stRect;
 
-    stRect.u16Left = pstLine_->u16X1;
-    stRect.u16Right = stRect.u16Left;
-    stRect.u16Top = pstLine_->u16Y1;
+    stRect.u16Left   = pstLine_->u16X1;
+    stRect.u16Right  = stRect.u16Left;
+    stRect.u16Top    = pstLine_->u16Y1;
     stRect.u16Bottom = pstLine_->u16Y2;
 
     SetOpWindow(&stRect);
@@ -349,7 +349,7 @@ void GraphicsST7735::FastVLine(DrawLine_t* pstLine_)
 
     // Set the high/low bytes of the color that we're going to write
     uint8_t u8High = (uint8_t)((pstLine_->uColor) >> 8);
-    uint8_t u8Low = (uint8_t)(pstLine_->uColor & 0xFF);
+    uint8_t u8Low  = (uint8_t)(pstLine_->uColor & 0xFF);
 
     // Clock the pixel data out
     TFT_CD_OUT |= TFT_CD_PIN;
@@ -369,9 +369,9 @@ void GraphicsST7735::FastHLine(DrawLine_t* pstLine_)
     {
         DrawRectangle_t stRect;
 
-        stRect.u16Left = pstLine_->u16X1;
-        stRect.u16Right = pstLine_->u16X2;
-        stRect.u16Top = pstLine_->u16Y1;
+        stRect.u16Left   = pstLine_->u16X1;
+        stRect.u16Right  = pstLine_->u16X2;
+        stRect.u16Top    = pstLine_->u16Y1;
         stRect.u16Bottom = stRect.u16Top;
 
         SetOpWindow(&stRect);
@@ -382,7 +382,7 @@ void GraphicsST7735::FastHLine(DrawLine_t* pstLine_)
 
     // Set the high/low bytes of the color that we're going to write
     uint8_t u8High = (uint8_t)((pstLine_->uColor) >> 8);
-    uint8_t u8Low = (uint8_t)(pstLine_->uColor & 0xFF);
+    uint8_t u8Low  = (uint8_t)(pstLine_->uColor & 0xFF);
 
     // Clock the pixel data out
     TFT_CD_OUT |= TFT_CD_PIN;
@@ -421,13 +421,13 @@ void GraphicsST7735::ClearScreen()
 
     // Optimized operation - clear the screen by performing a giant filled
     // rectangle write.
-    stRect.u16Left = 0;
-    stRect.u16Right = m_u16Res16X - 1;
-    stRect.u16Top = 0;
-    stRect.u16Bottom = m_u16Res16Y - 1;
-    stRect.bFill = true;
+    stRect.u16Left     = 0;
+    stRect.u16Right    = m_u16Res16X - 1;
+    stRect.u16Top      = 0;
+    stRect.u16Bottom   = m_u16Res16Y - 1;
+    stRect.bFill       = true;
     stRect.u32ineColor = COLOR_BLACK;
-    stRect.uFillColor = COLOR_BLACK;
+    stRect.uFillColor  = COLOR_BLACK;
 
     Rectangle(&stRect);
 }
@@ -451,7 +451,7 @@ void GraphicsST7735::Rectangle(DrawRectangle_t* pstRectangle_)
 
         // Set the high/low bytes of the color that we're going to write
         uint8_t u8High = (uint8_t)((pstRectangle_->uFillColor) >> 8);
-        uint8_t u8Low = (uint8_t)(pstRectangle_->uFillColor & 0xFF);
+        uint8_t u8Low  = (uint8_t)(pstRectangle_->uFillColor & 0xFF);
 
         // Clock the pixel data out
         TFT_CD_OUT |= TFT_CD_PIN;
@@ -477,10 +477,10 @@ void GraphicsST7735::Rectangle(DrawRectangle_t* pstRectangle_)
     DrawLine_t stLine;
 
     // Top/Bottom lines
-    stLine.u16X1 = pstRectangle_->u16Left;
-    stLine.u16X2 = pstRectangle_->u16Right;
-    stLine.u16Y1 = pstRectangle_->u16Top;
-    stLine.u16Y2 = stLine.u16Y1;
+    stLine.u16X1  = pstRectangle_->u16Left;
+    stLine.u16X2  = pstRectangle_->u16Right;
+    stLine.u16Y1  = pstRectangle_->u16Top;
+    stLine.u16Y2  = stLine.u16Y1;
     stLine.uColor = pstRectangle_->u32ineColor;
     FastHLine(&stLine);
 
@@ -543,7 +543,7 @@ void GraphicsST7735::Point(DrawPoint_t* pstPoint_)
 
     // Get pixel color data in high/low bytes
     uint8_t u8High = (uint8_t)((pstPoint_->uColor) >> 8);
-    uint8_t u8Low = (uint8_t)(pstPoint_->uColor & 0xFF);
+    uint8_t u8Low  = (uint8_t)(pstPoint_->uColor & 0xFF);
 
     // Write the pixel data out
     TFT_CD_OUT |= TFT_CD_PIN;
@@ -565,9 +565,9 @@ void GraphicsST7735::Bitmap(DrawBitmap_t* pstBitmap_)
 
     DrawRectangle_t stRect;
     // Set the window used for drawing the image.
-    stRect.u16Left = pstBitmap_->u16X;
-    stRect.u16Right = stRect.u16Left + pstBitmap_->u16Width - 1;
-    stRect.u16Top = pstBitmap_->u16Y;
+    stRect.u16Left   = pstBitmap_->u16X;
+    stRect.u16Right  = stRect.u16Left + pstBitmap_->u16Width - 1;
+    stRect.u16Top    = pstBitmap_->u16Y;
     stRect.u16Bottom = stRect.u16Top + pstBitmap_->u16Height - 1;
 
     SetOpWindow(&stRect);
@@ -582,7 +582,7 @@ void GraphicsST7735::Bitmap(DrawBitmap_t* pstBitmap_)
 
     while (u32Pixels--) {
         // Get pixel color data in high/low bytes
-        uint8_t u8Low = *pu8Data++;
+        uint8_t u8Low  = *pu8Data++;
         uint8_t u8High = *pu8Data++;
 
         TFT_SPI_WRITE(u8High);

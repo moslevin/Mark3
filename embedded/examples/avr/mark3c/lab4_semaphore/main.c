@@ -38,19 +38,19 @@ allows threads to work cooperatively to achieve a goal in the system.
 // This block declares the thread data for one main application thread.  It
 // defines a thread object, stack (in word-array form), and the entry-point
 // function used by the application thread.
-#define APP1_STACK_SIZE      (320/sizeof(K_WORD))
+#define APP1_STACK_SIZE (320 / sizeof(K_WORD))
 DECLARE_THREAD(hApp1Thread);
-static K_WORD  awApp1Stack[APP1_STACK_SIZE];
-static void    App1Main(void *unused_);
+static K_WORD awApp1Stack[APP1_STACK_SIZE];
+static void App1Main(void* unused_);
 
 //---------------------------------------------------------------------------
 // This block declares the thread data for one main application thread.  It
 // defines a thread object, stack (in word-array form), and the entry-point
 // function used by the application thread.
-#define APP2_STACK_SIZE      (320/sizeof(K_WORD))
+#define APP2_STACK_SIZE (320 / sizeof(K_WORD))
 DECLARE_THREAD(hApp2Thread);
-static K_WORD  awApp2Stack[APP2_STACK_SIZE];
-static void    App2Main(void *unused_);
+static K_WORD awApp2Stack[APP2_STACK_SIZE];
+static void App2Main(void* unused_);
 
 //---------------------------------------------------------------------------
 // This is the semaphore that we'll use to synchronize two threads in this
@@ -74,15 +74,15 @@ int main(void)
     // work is done, the semaphore is posted to indicate that the other thread
     // can use the producer's work product.
 
-    Thread_Init( hApp1Thread, awApp1Stack,  APP1_STACK_SIZE,  1, App1Main,  0);
-    Thread_Init( hApp2Thread, awApp2Stack,  APP2_STACK_SIZE,  1, App2Main,  0);
+    Thread_Init(hApp1Thread, awApp1Stack, APP1_STACK_SIZE, 1, App1Main, 0);
+    Thread_Init(hApp2Thread, awApp2Stack, APP2_STACK_SIZE, 1, App2Main, 0);
 
-    Thread_Start( hApp1Thread );
-    Thread_Start( hApp2Thread );
+    Thread_Start(hApp1Thread);
+    Thread_Start(hApp2Thread);
 
     // Initialize a binary semaphore (maximum value of one, initial value of
     // zero).
-    Semaphore_Init( hMySem, 0,1);
+    Semaphore_Init(hMySem, 0, 1);
 
     Kernel_Start();
 
@@ -90,14 +90,13 @@ int main(void)
 }
 
 //---------------------------------------------------------------------------
-void App1Main(void *unused_)
+void App1Main(void* unused_)
 {
-    while(1)
-    {
+    while (1) {
         // Wait until the semaphore is posted from the other thread
         KernelAware_Print("Wait\n");
-        Semaphore_Pend( hMySem );
-		
+        Semaphore_Pend(hMySem);
+
         // Producer thread has finished doing its work -- do something to
         // consume its output.  Once again - a contrived example, but we
         // can imagine that printing out the message is "consuming" the output
@@ -107,24 +106,20 @@ void App1Main(void *unused_)
 }
 
 //---------------------------------------------------------------------------
-void App2Main(void *unused_)
+void App2Main(void* unused_)
 {
     volatile uint32_t ulCounter = 0;
 
-    while(1)
-    {
+    while (1) {
         // Do some work.  Once the work is complete, post the semaphore.  This
         // will cause the other thread to wake up and then take some action.
         // It's a bit contrived, but imagine that the results of this process
         // are necessary to drive the work done by that other thread.
         ulCounter++;
-        if (ulCounter == 1000)
-        {
+        if (ulCounter == 1000) {
             ulCounter = 0;
             KernelAware_Print("Posted\n");
             Semaphore_Post(hMySem);
-
         }
     }
 }
-

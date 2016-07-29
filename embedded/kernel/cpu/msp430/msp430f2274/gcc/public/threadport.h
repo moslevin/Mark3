@@ -13,7 +13,7 @@ See license.txt for more information
 =========================================================================== */
 /*!
 
-    \file   threadport.h    
+    \file   threadport.h
 
     \brief  MSP430 Multithreading support.
  */
@@ -27,6 +27,7 @@ See license.txt for more information
 #include <msp430.h>
 #include <in430.h>
 
+// clang-format off
 //---------------------------------------------------------------------------
 extern volatile uint8_t g_u8CSCount;
 extern volatile uint16_t g_u16SR;

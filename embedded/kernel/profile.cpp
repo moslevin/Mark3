@@ -42,10 +42,10 @@ See license.txt for more information
 //---------------------------------------------------------------------------
 void ProfileTimer::Init()
 {
-    m_u32Cumulative = 0;
+    m_u32Cumulative       = 0;
     m_u32CurrentIteration = 0;
-    m_u16Iterations = 0;
-    m_bActive = 0;
+    m_u16Iterations       = 0;
+    m_bActive             = 0;
 }
 
 //---------------------------------------------------------------------------
@@ -54,8 +54,8 @@ void ProfileTimer::Start()
     if (!m_bActive) {
         CS_ENTER();
         m_u32CurrentIteration = 0;
-        m_u32InitialEpoch = Profiler::GetEpoch();
-        m_u16Initial = Profiler::Read();
+        m_u32InitialEpoch     = Profiler::GetEpoch();
+        m_u16Initial          = Profiler::Read();
         CS_EXIT();
         m_bActive = 1;
     }
@@ -96,7 +96,7 @@ uint32_t ProfileTimer::GetCurrent()
         uint32_t u32Epoch;
         CS_ENTER();
         u16Current = Profiler::Read();
-        u32Epoch = Profiler::GetEpoch();
+        u32Epoch   = Profiler::GetEpoch();
         CS_EXIT();
         return ComputeCurrentTicks(u16Current, u32Epoch);
     }

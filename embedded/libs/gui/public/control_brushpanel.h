@@ -26,13 +26,11 @@ See license.txt for more information
 class BrushPanelControl : public GuiControl
 {
 public:
-    virtual void Init() { SetAcceptFocus(false); }
-    virtual void Draw();
-    virtual GuiReturn_t ProcessEvent( GuiEvent_t *pstEvent_ ) { return GUI_EVENT_OK; }
-    virtual void Activate( bool bActivate_ ) {}
-
+    virtual void        Init() { SetAcceptFocus(false); }
+    virtual void        Draw();
+    virtual GuiReturn_t ProcessEvent(GuiEvent_t* pstEvent_) { return GUI_EVENT_OK; }
+    virtual void Activate(bool bActivate_) {}
 private:
-
 };
 
 #endif

@@ -93,8 +93,8 @@ void ThreadPort::InitStack(Thread* pclThread_)
 {
     uint32_t* pu32Stack;
     uint32_t* pu32Temp;
-    uint32_t u32Addr;
-    uint16_t i;
+    uint32_t  u32Addr;
+    uint16_t  i;
 
     // Get the entrypoint for the thread
     u32Addr = (uint32_t)(pclThread_->m_pfEntryPoint);

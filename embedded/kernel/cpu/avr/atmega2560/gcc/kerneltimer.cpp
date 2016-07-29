@@ -40,7 +40,7 @@ void KernelTimer::Start(void)
 {
 #if !KERNEL_TIMERS_TICKLESS
     TCCR1B = ((1 << WGM12) | (1 << CS11) | (1 << CS10));
-    OCR1A = ((SYSTEM_FREQ / 1000) / 64);
+    OCR1A  = ((SYSTEM_FREQ / 1000) / 64);
 #else
     TCCR1B |= (1 << CS12);
 #endif
@@ -95,7 +95,7 @@ uint32_t KernelTimer::SubtractExpiry(uint32_t u32Interval_)
 uint32_t KernelTimer::TimeToExpiry(void)
 {
 #if KERNEL_TIMERS_TICKLESS
-    uint16_t u16Read = KernelTimer::Read();
+    uint16_t u16Read  = KernelTimer::Read();
     uint16_t u16OCR1A = OCR1A;
 
     if (u16Read >= u16OCR1A) {

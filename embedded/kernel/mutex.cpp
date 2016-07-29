@@ -109,10 +109,10 @@ uint8_t Mutex::WakeNext()
 void Mutex::Init()
 {
     // Reset the data in the mutex
-    m_bReady = 1;      // The mutex is free.
-    m_u8MaxPri = 0;    // Set the maximum priority inheritence state
-    m_pclOwner = NULL; // Clear the mutex owner
-    m_u8Recurse = 0;   // Reset recurse count
+    m_bReady    = 1;    // The mutex is free.
+    m_u8MaxPri  = 0;    // Set the maximum priority inheritence state
+    m_pclOwner  = NULL; // Clear the mutex owner
+    m_u8Recurse = 0;    // Reset recurse count
 }
 
 //---------------------------------------------------------------------------
@@ -126,7 +126,7 @@ void Mutex::Claim_i(void)
 
 #if KERNEL_USE_TIMEOUTS
     Timer clTimer;
-    bool bUseTimer = false;
+    bool  bUseTimer = false;
 #endif
 
     // Disable the scheduler while claiming the mutex - we're dealing with all
@@ -137,10 +137,10 @@ void Mutex::Claim_i(void)
     // Check to see if the mutex is claimed or not
     if (m_bReady != 0) {
         // Mutex isn't claimed, claim it.
-        m_bReady = 0;
+        m_bReady    = 0;
         m_u8Recurse = 0;
-        m_u8MaxPri = g_pclCurrent->GetPriority();
-        m_pclOwner = g_pclCurrent;
+        m_u8MaxPri  = g_pclCurrent->GetPriority();
+        m_pclOwner  = g_pclCurrent;
 
         Scheduler::SetScheduler(1);
 
@@ -261,7 +261,7 @@ void Mutex::Release()
     // No threads are waiting on this semaphore?
     if (m_clBlockList.GetHead() == NULL) {
         // Re-initialize the mutex to its default values
-        m_bReady = 1;
+        m_bReady   = 1;
         m_u8MaxPri = 0;
         m_pclOwner = NULL;
     } else {

@@ -29,20 +29,21 @@ See license.txt for more information
 class SlickGroupBoxControl : public GuiControl
 {
 public:
-    virtual void Init() { SetAcceptFocus(false); m_uBGColor = COLOR_BLACK; }
-    virtual void Draw();
-    virtual GuiReturn_t ProcessEvent( GuiEvent_t *pstEvent_ ) { return GUI_EVENT_OK; }
-    virtual void Activate( bool bActivate_ ) {}
-
-    void SetFont( Font_t *pstFont_ ) { m_pstFont = pstFont_; }
-    void SetCaption( const char *pcCaption_ ) { m_pcCaption = pcCaption_; }
-    void SetBGColor( COLOR uColor_ ) { m_uBGColor = uColor_; }
+    virtual void Init()
+    {
+        SetAcceptFocus(false);
+        m_uBGColor = COLOR_BLACK;
+    }
+    virtual void        Draw();
+    virtual GuiReturn_t ProcessEvent(GuiEvent_t* pstEvent_) { return GUI_EVENT_OK; }
+    virtual void Activate(bool bActivate_) {}
+    void SetFont(Font_t* pstFont_) { m_pstFont = pstFont_; }
+    void SetCaption(const char* pcCaption_) { m_pcCaption = pcCaption_; }
+    void SetBGColor(COLOR uColor_) { m_uBGColor = uColor_; }
 private:
-
-    Font_t *m_pstFont;
-    const char *m_pcCaption;
-    COLOR m_uBGColor;
+    Font_t*     m_pstFont;
+    const char* m_pcCaption;
+    COLOR       m_uBGColor;
 };
 
 #endif
-

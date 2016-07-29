@@ -42,16 +42,16 @@ static const char* s_szDayNames[] = { "Sunday", "Monday", "Tuesday", "Wednesday"
 //---------------------------------------------------------------------------
 void RTC::Init(uint32_t u32TicksPerSecond_)
 {
-    m_stCalendar.u8Day = 0;
-    m_stCalendar.eMonth = MONTH_JANUARY;
-    m_stCalendar.u16Year = 2016;
-    m_stCalendar.u8Hour = 0;
+    m_stCalendar.u8Day    = 0;
+    m_stCalendar.eMonth   = MONTH_JANUARY;
+    m_stCalendar.u16Year  = 2016;
+    m_stCalendar.u8Hour   = 0;
     m_stCalendar.u8Minute = 0;
     m_stCalendar.u8Second = 0;
     m_stCalendar.u32Ticks = 0;
 
     m_u32TicksPerSecond = u32TicksPerSecond_;
-    m_u32Seconds = 0;
+    m_u32Seconds        = 0;
 }
 
 //---------------------------------------------------------------------------
@@ -149,7 +149,7 @@ void RTC::AddTime(uint32_t u32Ticks_)
             }
         }
 
-        m_stCalendar.u8Day = 0;
+        m_stCalendar.u8Day  = 0;
         m_stCalendar.eMonth = (month_t)((int)m_stCalendar.eMonth + 1);
         if (m_stCalendar.eMonth != MONTHS_PER_YEAR) {
             break;
@@ -180,7 +180,7 @@ bool RTC::GetUptime(uint32_t* pu32Seconds_, uint32_t* pu32Ticks_)
         return false;
     }
     *pu32Seconds_ = m_u32Seconds;
-    *pu32Ticks_ = m_stCalendar.u32Ticks;
+    *pu32Ticks_   = m_stCalendar.u32Ticks;
 }
 
 //---------------------------------------------------------------------------

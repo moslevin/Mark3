@@ -31,10 +31,10 @@ uint32_t Profiler::m_u32Epoch;
 //---------------------------------------------------------------------------
 void Profiler::Init()
 {
-    TCCR0A = 0;
-    TCCR0B = 0;
-    TIFR0 = 0;
-    TIMSK0 = 0;
+    TCCR0A     = 0;
+    TCCR0B     = 0;
+    TIFR0      = 0;
+    TIMSK0     = 0;
     m_u32Epoch = 0;
 }
 

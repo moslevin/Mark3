@@ -45,9 +45,9 @@ public:
      * \param u8Val_ New value to set in the variable
      * \return Previously-set value
      */
-    static uint8_t Set( uint8_t *pu8Source_, uint8_t u8Val_ );
-    static uint16_t Set( uint16_t *pu16Source_, uint16_t u16Val_ );
-    static uint32_t Set( uint32_t *pu32Source_, uint32_t u32Val_ );
+    static uint8_t Set(uint8_t* pu8Source_, uint8_t u8Val_);
+    static uint16_t Set(uint16_t* pu16Source_, uint16_t u16Val_);
+    static uint32_t Set(uint32_t* pu32Source_, uint32_t u32Val_);
 
     /*!
      * \brief Add Add a value to a variable in an uninterruptable operation
@@ -55,9 +55,9 @@ public:
      * \param u8Val_ Value to add to the variable
      * \return Previously-held value in pu8Source_
      */
-    static uint8_t Add( uint8_t *pu8Source_, uint8_t u8Val_ );
-    static uint16_t Add( uint16_t *pu16Source_, uint16_t u16Val_ );
-    static uint32_t Add( uint32_t *pu32Source_, uint32_t u32Val_ );
+    static uint8_t Add(uint8_t* pu8Source_, uint8_t u8Val_);
+    static uint16_t Add(uint16_t* pu16Source_, uint16_t u16Val_);
+    static uint32_t Add(uint32_t* pu32Source_, uint32_t u32Val_);
 
     /*!
      * \brief Sub Subtract a value from a variable in an uninterruptable operation
@@ -65,9 +65,9 @@ public:
      * \param u8Val_ Value to subtract from the variable
      * \return Previously-held value in pu8Source_
      */
-    static uint8_t Sub( uint8_t *pu8Source_, uint8_t u8Val_ );
-    static uint16_t Sub( uint16_t *pu16Source_, uint16_t u16Val_ );
-    static uint32_t Sub( uint32_t *pu32Source_, uint32_t u32Val_ );
+    static uint8_t Sub(uint8_t* pu8Source_, uint8_t u8Val_);
+    static uint16_t Sub(uint16_t* pu16Source_, uint16_t u16Val_);
+    static uint32_t Sub(uint32_t* pu32Source_, uint32_t u32Val_);
 
     /*!
      * \brief TestAndSet Test to see if a variable is set, and set it if
@@ -83,7 +83,7 @@ public:
      *
      * \return true - Lock value was "true" on entry, false - Lock was set
      */
-    static bool TestAndSet( bool *pbLock );
+    static bool TestAndSet(bool* pbLock);
 };
 
 #endif // KERNEL_USE_ATOMIC

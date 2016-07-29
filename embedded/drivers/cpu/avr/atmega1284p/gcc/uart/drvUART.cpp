@@ -76,13 +76,13 @@ void ATMegaUART::SetBaud(void)
 void ATMegaUART::Init(void)
 {
     // Set up the FIFOs
-    m_u8TxHead = 0;
-    m_u8TxTail = 0;
-    m_u8RxHead = 0;
-    m_u8RxTail = 0;
-    m_bEcho = 0;
-    m_u8RxEscape = '\n';
-    pfCallback = NULL;
+    m_u8TxHead    = 0;
+    m_u8TxTail    = 0;
+    m_u8RxHead    = 0;
+    m_u8RxTail    = 0;
+    m_bEcho       = 0;
+    m_u8RxEscape  = '\n';
+    pfCallback    = NULL;
     m_bRxOverflow = 0;
     m_u32BaudRate = UART_DEFAULT_BAUD;
 
@@ -99,13 +99,13 @@ uint8_t ATMegaUART::Open()
         UART0_SRB |= (1 << UART0_RXEN) | (1 << UART0_TXEN);
         UART0_SRB |= (1 << UART0_RXCIE) | (1 << UART0_TXCIE);
         // Set frame format: 8 N 1
-        UART0_SRC = 0x06;
+        UART0_SRC  = 0x06;
         pclActive0 = this;
     } else {
         UART1_SRB |= (1 << UART1_RXEN) | (1 << UART1_TXEN);
         UART1_SRB |= (1 << UART1_RXCIE) | (1 << UART1_TXCIE);
         // Set frame format: 8 N 1
-        UART1_SRC = 0x06;
+        UART1_SRC  = 0x06;
         pclActive1 = this;
     }
 
@@ -132,14 +132,14 @@ uint16_t ATMegaUART::Control(uint16_t u16CmdId_, void* pvIn_, uint16_t u16SizeIn
     switch ((CMD_UART)u16CmdId_) {
         case CMD_SET_BAUDRATE: {
             uint32_t u32BaudRate = *((uint32_t*)pvIn_);
-            m_u32BaudRate = u32BaudRate;
+            m_u32BaudRate        = u32BaudRate;
             SetBaud();
         } break;
         case CMD_SET_BUFFERS: {
             m_pu8RxBuffer = (uint8_t*)pvIn_;
             m_pu8TxBuffer = (uint8_t*)pvOut_;
-            m_u8RxSize = u16SizeIn_;
-            m_u8TxSize = u16SizeOut_;
+            m_u8RxSize    = u16SizeIn_;
+            m_u8TxSize    = u16SizeOut_;
         } break;
         case CMD_SET_RX_ESCAPE: {
             m_u8RxEscape = *((uint8_t*)pvIn_);
@@ -179,9 +179,9 @@ uint16_t ATMegaUART::Read(uint16_t u16SizeIn_, uint8_t* pvData_)
     // actually read.  If less than the 1 length, this indicates that
     // the buffer is full and that the app needs to wait.
 
-    uint16_t i = 0;
+    uint16_t i       = 0;
     uint16_t u16Read = 0;
-    bool bExit = 0;
+    bool     bExit   = 0;
     uint8_t* pu8Data = (uint8_t*)pvData_;
 
     for (i = 0; i < u16SizeIn_; i++) {
@@ -217,12 +217,12 @@ uint16_t ATMegaUART::Write(uint16_t u16SizeOut_, uint8_t* pvData_)
     // Write a string of characters of length N.  Return the number of bytes
     // actually written.  If less than the 1 length, this indicates that
     // the buffer is full and that the app needs to wait.
-    uint16_t i = 0;
+    uint16_t i          = 0;
     uint16_t u16Written = 0;
-    uint8_t u8Next;
-    bool bActivate = 0;
-    bool bExit = 0;
-    uint8_t* pu8Data = (uint8_t*)pvData_;
+    uint8_t  u8Next;
+    bool     bActivate = 0;
+    bool     bExit     = 0;
+    uint8_t* pu8Data   = (uint8_t*)pvData_;
 
     // If the head = tail, we need to start sending data out the data ourselves.
     if (m_u8TxHead == m_u8TxTail) {

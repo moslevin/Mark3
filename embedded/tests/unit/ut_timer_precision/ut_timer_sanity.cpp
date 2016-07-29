@@ -46,10 +46,10 @@ void MemSet(void* pvData_, unsigned char u8Value_, unsigned short u16Count_)
     }
 }
 
-static Timer clTimer;
-static Timer clTimer1;
-static Timer clTimer2;
-static Timer clTimer3;
+static Timer     clTimer;
+static Timer     clTimer1;
+static Timer     clTimer2;
+static Timer     clTimer3;
 static Semaphore clTimerSem;
 //---------------------------------------------------------------------------
 void TCallback(Thread* pclOwner_, void* data_)
@@ -181,7 +181,7 @@ TEST(ut_timer_sanity_precision)
     Profiler::Start();
 
     uint32_t i;
-    bool bPass = true;
+    bool     bPass = true;
     // 1ms repeated counter
     clTimer.Start(true, 1, TCallback, NULL);
     for (i = 0; i < 10000; i++) {

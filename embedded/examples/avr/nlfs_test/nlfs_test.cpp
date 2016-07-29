@@ -111,7 +111,7 @@ void PrintString(const char* szStr_)
 }
 
 NLFS_Host_t clHost;
-NLFS_File clFile;
+NLFS_File   clFile;
 
 //---------------------------------------------------------------------------
 void NLFS_Test(void)

@@ -29,7 +29,7 @@ void HighScore::CheckInit(void)
 
 #if defined(__AVR__)
     uint8_t* pu8KeyVal = (uint8_t*)((K_ADDR)(NUM_HIGH_SCORES * sizeof(HighScore_t)));
-    u8Val = eeprom_read_byte(pu8KeyVal);
+    u8Val              = eeprom_read_byte(pu8KeyVal);
     if (u8Val != 0x69) {
         eeprom_write_byte(pu8KeyVal, 0x69);
     }
@@ -49,32 +49,32 @@ void HighScore::CheckInit(void)
     stScore.acName[1] = 'O';
     stScore.acName[2] = 'S';
     stScore.acName[3] = '\0';
-    stScore.u32Score = 50000;
+    stScore.u32Score  = 50000;
     WriteScore(0, &stScore);
 
     stScore.acName[0] = 'E';
     stScore.acName[1] = 'S';
     stScore.acName[2] = 'S';
-    stScore.u32Score = 40000;
+    stScore.u32Score  = 40000;
     WriteScore(1, &stScore);
 
     stScore.acName[0] = 'C';
     stScore.acName[1] = 'A';
     stScore.acName[2] = 'S';
-    stScore.u32Score = 30000;
+    stScore.u32Score  = 30000;
     WriteScore(2, &stScore);
 
     stScore.acName[0] = 'M';
     stScore.acName[1] = 'A';
     stScore.acName[2] = 'S';
-    stScore.u32Score = 20000;
+    stScore.u32Score  = 20000;
     WriteScore(3, &stScore);
 
     stScore.acName[0] = 'B';
     stScore.acName[1] = 'A';
     stScore.acName[2] = 'S';
     stScore.acName[3] = '\0';
-    stScore.u32Score = 10000;
+    stScore.u32Score  = 10000;
     WriteScore(4, &stScore);
 }
 

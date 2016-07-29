@@ -53,25 +53,25 @@ void GraphicsDriver::Line(DrawLine_t* pstLine_)
     // www.cs.unc.edu/~mcmillan/comp136/Lecture6/Lines.html
 
     DrawPoint_t stPoint;
-    int16_t s16X1 = (int16_t)pstLine_->u16X1;
-    int16_t s16X2 = (int16_t)pstLine_->u16X2;
-    int16_t s16Y1 = (int16_t)pstLine_->u16Y1;
-    int16_t s16Y2 = (int16_t)pstLine_->u16Y2;
-    int16_t s16DeltaY = s16Y2 - s16Y1;
-    int16_t s16DeltaX = s16X2 - s16X1;
-    char cStepx, cStepy;
+    int16_t     s16X1     = (int16_t)pstLine_->u16X1;
+    int16_t     s16X2     = (int16_t)pstLine_->u16X2;
+    int16_t     s16Y1     = (int16_t)pstLine_->u16Y1;
+    int16_t     s16Y2     = (int16_t)pstLine_->u16Y2;
+    int16_t     s16DeltaY = s16Y2 - s16Y1;
+    int16_t     s16DeltaX = s16X2 - s16X1;
+    char        cStepx, cStepy;
     stPoint.uColor = pstLine_->uColor;
 
     if (s16DeltaY < 0) {
         s16DeltaY = -s16DeltaY;
-        cStepy = -1;
+        cStepy    = -1;
     } else {
         cStepy = 1;
     }
 
     if (s16DeltaX < 0) {
         s16DeltaX = -s16DeltaX;
-        cStepx = -1;
+        cStepx    = -1;
     } else {
         cStepx = 1;
     }
@@ -133,7 +133,7 @@ void GraphicsDriver::Rectangle(DrawRectangle_t* pstRectangle_)
 
     // Draw four orthogonal lines...
     stPoint.uColor = pstRectangle_->u32ineColor;
-    stPoint.u16Y = pstRectangle_->u16Top;
+    stPoint.u16Y   = pstRectangle_->u16Top;
     for (stPoint.u16X = pstRectangle_->u16Left; stPoint.u16X <= pstRectangle_->u16Right; stPoint.u16X++) {
         DrawPixel(&stPoint);
     }
@@ -158,9 +158,9 @@ void GraphicsDriver::Rectangle(DrawRectangle_t* pstRectangle_)
 void GraphicsDriver::Circle(DrawCircle_t* pstCircle_)
 {
     DrawPoint_t stPoint;
-    int16_t s16X;
-    int16_t s16Y;
-    uint32_t u32RadSquare;
+    int16_t     s16X;
+    int16_t     s16Y;
+    uint32_t    u32RadSquare;
 
     uint32_t u32XSquare;
     uint32_t u32YSquare;
@@ -223,13 +223,13 @@ void GraphicsDriver::Circle(DrawCircle_t* pstCircle_)
 void GraphicsDriver::Ellipse(DrawEllipse_t* pstEllipse_)
 {
     DrawPoint_t stPoint;
-    int16_t s16X;
-    int16_t s16Y;
-    uint32_t u32Radius;
-    uint32_t u32HSquare;
-    uint32_t u32VSquare;
-    uint32_t u32XSquare;
-    uint32_t u32YSquare;
+    int16_t     s16X;
+    int16_t     s16Y;
+    uint32_t    u32Radius;
+    uint32_t    u32HSquare;
+    uint32_t    u32VSquare;
+    uint32_t    u32XSquare;
+    uint32_t    u32YSquare;
 
     u32HSquare = (uint32_t)pstEllipse_->u16Width;
     u32HSquare *= u32HSquare;
@@ -275,7 +275,7 @@ void GraphicsDriver::Bitmap(DrawBitmap_t* pstBitmap_)
     uint16_t u16Col;
 
     DrawPoint_t stPoint;
-    COLOR* pColor = (COLOR*)(pstBitmap_->pu8Data);
+    COLOR*      pColor = (COLOR*)(pstBitmap_->pu8Data);
     for (u16Row = pstBitmap_->u16Y; u16Row < (pstBitmap_->u16Y + pstBitmap_->u16Height); u16Row++) {
         for (u16Col = pstBitmap_->u16X; u16Col < (pstBitmap_->u16X + pstBitmap_->u16Width); u16Col++) {
             stPoint.u16X = u16Col;
@@ -293,10 +293,10 @@ void GraphicsDriver::Bitmap(DrawBitmap_t* pstBitmap_)
 //---------------------------------------------------------------------------
 void GraphicsDriver::Stamp(DrawStamp_t* pstStamp_)
 {
-    uint16_t u16Row;
-    uint16_t u16Col;
-    uint16_t u16Shift;
-    uint16_t u16Index;
+    uint16_t    u16Row;
+    uint16_t    u16Col;
+    uint16_t    u16Shift;
+    uint16_t    u16Index;
     DrawPoint_t stPoint;
 
     u16Index = 0;
@@ -305,8 +305,8 @@ void GraphicsDriver::Stamp(DrawStamp_t* pstStamp_)
         for (u16Col = pstStamp_->u16X; u16Col < (pstStamp_->u16X + pstStamp_->u16Width); u16Col++) {
             // If the packed bit in the bitmap is a "1", draw the color.
             if (pstStamp_->pu8Data[u16Index] & u16Shift) {
-                stPoint.u16X = u16Col;
-                stPoint.u16Y = u16Row;
+                stPoint.u16X   = u16Col;
+                stPoint.u16Y   = u16Row;
                 stPoint.uColor = pstStamp_->uColor;
                 DrawPixel(&stPoint);
             }
@@ -329,10 +329,10 @@ void GraphicsDriver::Stamp(DrawStamp_t* pstStamp_)
 void GraphicsDriver::Move(DrawMove_t* pstMove_)
 {
     DrawPoint_t stPoint;
-    int32_t s16X;
-    int32_t s16Y;
-    int32_t s16XInc = 0;
-    int32_t s16YInc = 0;
+    int32_t     s16X;
+    int32_t     s16Y;
+    int32_t     s16XInc = 0;
+    int32_t     s16YInc = 0;
 
     bool bLeftToRight = false;
     bool bTopToBottom = false;
@@ -379,12 +379,12 @@ void GraphicsDriver::Move(DrawMove_t* pstMove_)
 //---------------------------------------------------------------------------
 void GraphicsDriver::Text(DrawText_t* pstText_)
 {
-    uint16_t u16X, u16Y;
-    uint16_t u16StartX;
-    uint16_t u16StartY;
-    uint16_t u16CharOffsetX;
-    uint16_t u16CharIndex = 0;
-    uint8_t* pu8Data = (uint8_t*)pstText_->pstFont->pu8FontData;
+    uint16_t    u16X, u16Y;
+    uint16_t    u16StartX;
+    uint16_t    u16StartY;
+    uint16_t    u16CharOffsetX;
+    uint16_t    u16CharIndex = 0;
+    uint8_t*    pu8Data      = (uint8_t*)pstText_->pstFont->pu8FontData;
     DrawPoint_t stPoint;
 
     // set the color for this element.
@@ -405,7 +405,7 @@ void GraphicsDriver::Text(DrawText_t* pstText_)
         for (u16X = 0; u16X < pstText_->pcString[u16CharIndex]; u16X++) {
             // Glyphs are variable-sized for efficiency - to look up a particular
             // glyph, we must traverse all preceding glyphs in the list
-            u8Width = Font_ReadByte(u16Offset, pu8Data);
+            u8Width  = Font_ReadByte(u16Offset, pu8Data);
             u8Height = Font_ReadByte(u16Offset + 1, pu8Data);
 
             // Adjust the offset to point to the next glyph
@@ -413,8 +413,8 @@ void GraphicsDriver::Text(DrawText_t* pstText_)
         }
 
         // Header information:  glyph size and vertical offset
-        u8Width = Font_ReadByte(u16Offset++, pu8Data);
-        u8Height = Font_ReadByte(u16Offset++, pu8Data);
+        u8Width   = Font_ReadByte(u16Offset++, pu8Data);
+        u8Height  = Font_ReadByte(u16Offset++, pu8Data);
         u8VOffset = Font_ReadByte(u16Offset++, pu8Data);
 
         u16StartY = pstText_->u16Top + (uint16_t)u8VOffset;
@@ -423,7 +423,7 @@ void GraphicsDriver::Text(DrawText_t* pstText_)
         // Draw the font from left->right, top->bottom
         for (u16Y = u16StartY; u16Y < u16StartY + (uint16_t)u8Height; u16Y++) {
             uint8_t u8TempChar = Font_ReadByte(u16Offset, pu8Data);
-            u8Bitmask = 0x80;
+            u8Bitmask          = 0x80;
 
             for (u16X = u16CharOffsetX + u16StartX; u16X < u16CharOffsetX + u16StartX + (uint16_t)u8Width; u16X++) {
                 if (!u8Bitmask) {
@@ -456,14 +456,14 @@ void GraphicsDriver::Text(DrawText_t* pstText_)
 //---------------------------------------------------------------------------
 void GraphicsDriver::TextFX(DrawText_t* pstText_, TextFX_t* pstFX_)
 {
-    uint16_t u16X, u16Y;
-    uint16_t u16PartialX = 0;
-    uint16_t u16PartialY = 0;
-    uint16_t u16StartX;
-    uint16_t u16StartY;
-    uint16_t u16CharOffsetX;
-    uint16_t u16CharIndex = 0;
-    uint8_t* pu8Data = (uint8_t*)pstText_->pstFont->pu8FontData;
+    uint16_t    u16X, u16Y;
+    uint16_t    u16PartialX = 0;
+    uint16_t    u16PartialY = 0;
+    uint16_t    u16StartX;
+    uint16_t    u16StartY;
+    uint16_t    u16CharOffsetX;
+    uint16_t    u16CharIndex = 0;
+    uint8_t*    pu8Data      = (uint8_t*)pstText_->pstFont->pu8FontData;
     DrawPoint_t stPoint;
 
     // set the color for this element.
@@ -484,7 +484,7 @@ void GraphicsDriver::TextFX(DrawText_t* pstText_, TextFX_t* pstFX_)
         for (u16X = 0; u16X < pstText_->pcString[u16CharIndex]; u16X++) {
             // Glyphs are variable-sized for efficiency - to look up a particular
             // glyph, we must traverse all preceding glyphs in the list
-            u8Width = Font_ReadByte(u16Offset, pu8Data);
+            u8Width  = Font_ReadByte(u16Offset, pu8Data);
             u8Height = Font_ReadByte(u16Offset + 1, pu8Data);
 
             // Adjust the offset to point to the next glyph
@@ -492,8 +492,8 @@ void GraphicsDriver::TextFX(DrawText_t* pstText_, TextFX_t* pstFX_)
         }
 
         // Header information:  glyph size and vertical offset
-        u8Width = Font_ReadByte(u16Offset++, pu8Data);
-        u8Height = Font_ReadByte(u16Offset++, pu8Data);
+        u8Width   = Font_ReadByte(u16Offset++, pu8Data);
+        u8Height  = Font_ReadByte(u16Offset++, pu8Data);
         u8VOffset = Font_ReadByte(u16Offset++, pu8Data);
 
         u16StartY = pstText_->u16Top + (uint16_t)u8VOffset;
@@ -502,15 +502,15 @@ void GraphicsDriver::TextFX(DrawText_t* pstText_, TextFX_t* pstFX_)
         // Draw the font from left->right, top->bottom
         for (u16Y = u16StartY; u16Y < u16StartY + (uint16_t)u8Height; u16Y++) {
             uint8_t u8TempChar = Font_ReadByte(u16Offset, pu8Data);
-            u8Bitmask = 0x80;
-            u16PartialY = 0;
-            u16PartialX = 0;
+            u8Bitmask          = 0x80;
+            u16PartialY        = 0;
+            u16PartialX        = 0;
 
             uint16_t u16TempPartialX = 0;
 
             for (u16X = u16CharOffsetX + u16StartX; u16X < u16CharOffsetX + u16StartX + (uint16_t)u8Width; u16X++) {
                 uint16_t u16TempPartialY = 0;
-                u16PartialY = 0;
+                u16PartialY              = 0;
                 if (!u8Bitmask) {
                     u8Bitmask = 0x80;
                     u16Offset++;
@@ -527,19 +527,19 @@ void GraphicsDriver::TextFX(DrawText_t* pstText_, TextFX_t* pstFX_)
                     uint16_t u16RawX, u16RawY;
 
                     if (pstFX_->u8Flags & TEXTFX_FLAG_SCALE_X) {
-                        u16RawX = u16StartX + (((u16DeltaX * pstFX_->u16ScaleX100)) / 100);
+                        u16RawX         = u16StartX + (((u16DeltaX * pstFX_->u16ScaleX100)) / 100);
                         u16TempPartialX = pstFX_->u16ScaleX100;
                     } else {
-                        u16RawX = u16X;
+                        u16RawX         = u16X;
                         u16TempPartialX = 100;
                     }
                     u16TempPartialX += u16PartialX;
 
                     if (pstFX_->u8Flags & TEXTFX_FLAG_SCALE_Y) {
-                        u16RawY = u16StartY + (((u16DeltaY * pstFX_->u16ScaleY100)) / 100);
+                        u16RawY         = u16StartY + (((u16DeltaY * pstFX_->u16ScaleY100)) / 100);
                         u16TempPartialY = pstFX_->u16ScaleY100;
                     } else {
-                        u16RawY = u16Y;
+                        u16RawY         = u16Y;
                         u16TempPartialY = 100;
                     }
                     u16TempPartialY += u16PartialY;
@@ -552,12 +552,12 @@ void GraphicsDriver::TextFX(DrawText_t* pstText_, TextFX_t* pstFX_)
                         stPoint.uColor = pstText_->uColor;
                     }
 
-                    //!ToDo - Add rotation
+                    //! ToDo - Add rotation
 
                     stPoint.u16X = u16RawX;
                     while (u16TempPartialX >= 50) {
                         stPoint.u16Y = u16RawY;
-                        u16BLAH = u16TempPartialY;
+                        u16BLAH      = u16TempPartialY;
                         while (u16BLAH >= 50) {
                             DrawPixel(&stPoint);
                             stPoint.u16Y++;
@@ -612,7 +612,7 @@ uint16_t GraphicsDriver::TextWidth(DrawText_t* pstText_)
         for (u16X = 0; u16X < pstText_->pcString[u16CharIndex]; u16X++) {
             // Glyphs are variable-sized for efficiency - to look up a particular
             // glyph, we must traverse all preceding glyphs in the list
-            u8Width = Font_ReadByte(u16Offset, pu8Data);
+            u8Width  = Font_ReadByte(u16Offset, pu8Data);
             u8Height = Font_ReadByte(u16Offset + 1, pu8Data);
 
             // Adjust the offset to point to the next glyph
@@ -660,20 +660,20 @@ void GraphicsDriver::TriangleWire(DrawPoly_t* pstPoly_)
 void GraphicsDriver::TriangleFill(DrawPoly_t* pstPoly_)
 {
     // Drawing a raster-filled triangle:
-    uint8_t u8MaxEdge = 0;
+    uint8_t u8MaxEdge  = 0;
     uint8_t u8MinEdge1 = 0, u8MinEdge2 = 0;
     int16_t s16Max = 0;
     int16_t s16Temp;
 
-    int16_t s16DeltaX1, s16DeltaX2;
-    int16_t s16DeltaY1, s16DeltaY2;
-    char cStepX1, cStepX2;
-    char cStepY;
-    int16_t s16X1, s16X2, s16X3, s16Y1, s16Y2, s16Y3;
-    int16_t s16TempX1, s16TempY1, s16TempX2, s16TempY2;
-    int16_t s16Fraction1;
-    int16_t s16Fraction2;
-    int16_t i;
+    int16_t     s16DeltaX1, s16DeltaX2;
+    int16_t     s16DeltaY1, s16DeltaY2;
+    char        cStepX1, cStepX2;
+    char        cStepY;
+    int16_t     s16X1, s16X2, s16X3, s16Y1, s16Y2, s16Y3;
+    int16_t     s16TempX1, s16TempY1, s16TempX2, s16TempY2;
+    int16_t     s16Fraction1;
+    int16_t     s16Fraction2;
+    int16_t     i;
     DrawPoint_t stPoint;
 
     // Figure out which line segment is the longest
@@ -682,8 +682,8 @@ void GraphicsDriver::TriangleFill(DrawPoly_t* pstPoly_)
         s16Temp = -s16Temp;
     }
     if (s16Temp > s16Max) {
-        s16Max = s16Temp;
-        u8MaxEdge = 0;
+        s16Max     = s16Temp;
+        u8MaxEdge  = 0;
         u8MinEdge1 = 1;
         u8MinEdge2 = 2;
     }
@@ -693,8 +693,8 @@ void GraphicsDriver::TriangleFill(DrawPoly_t* pstPoly_)
         s16Temp = -s16Temp;
     }
     if (s16Temp > s16Max) {
-        s16Max = s16Temp;
-        u8MaxEdge = 1;
+        s16Max     = s16Temp;
+        u8MaxEdge  = 1;
         u8MinEdge1 = 2;
         u8MinEdge2 = 0;
     }
@@ -704,8 +704,8 @@ void GraphicsDriver::TriangleFill(DrawPoly_t* pstPoly_)
         s16Temp = -s16Temp;
     }
     if (s16Temp > s16Max) {
-        s16Max = s16Temp;
-        u8MaxEdge = 2;
+        s16Max     = s16Temp;
+        u8MaxEdge  = 2;
         u8MinEdge1 = 0;
         u8MinEdge2 = 1;
     }
@@ -722,7 +722,7 @@ void GraphicsDriver::TriangleFill(DrawPoly_t* pstPoly_)
     // Figure out whether or not we're drawing up-down or down-up
     s16DeltaY1 = s16Y1 - s16Y2;
     if (s16DeltaY1 < 0) {
-        cStepY = -1;
+        cStepY     = -1;
         s16DeltaY1 = -s16DeltaY1;
     } else {
         cStepY = 1;
@@ -730,7 +730,7 @@ void GraphicsDriver::TriangleFill(DrawPoly_t* pstPoly_)
 
     s16DeltaX1 = s16X1 - s16X2;
     if (s16DeltaX1 < 0) {
-        cStepX1 = -1;
+        cStepX1    = -1;
         s16DeltaX1 = -s16DeltaX1;
     } else {
         cStepX1 = 1;
@@ -738,7 +738,7 @@ void GraphicsDriver::TriangleFill(DrawPoly_t* pstPoly_)
 
     s16DeltaY2 = s16Y1 - s16Y3;
     if (s16DeltaY2 < 0) {
-        cStepY = -1;
+        cStepY     = -1;
         s16DeltaY2 = -s16DeltaY2;
     } else {
         cStepY = 1;
@@ -746,7 +746,7 @@ void GraphicsDriver::TriangleFill(DrawPoly_t* pstPoly_)
 
     s16DeltaX2 = s16X1 - s16X3;
     if (s16DeltaX2 < 0) {
-        cStepX2 = -1;
+        cStepX2    = -1;
         s16DeltaX2 = -s16DeltaX2;
     } else {
         cStepX2 = 1;
@@ -802,13 +802,13 @@ void GraphicsDriver::TriangleFill(DrawPoly_t* pstPoly_)
     s16DeltaX2 = s16X3 - s16X2;
 
     if (s16DeltaX2 < 0) {
-        cStepX2 = -1;
+        cStepX2    = -1;
         s16DeltaX2 = -s16DeltaX2;
     } else {
         cStepX2 = 1;
     }
     if (s16DeltaY2 < 0) {
-        cStepY = -1;
+        cStepY     = -1;
         s16DeltaY2 = -s16DeltaY2;
     } else {
         cStepY = 1;
@@ -858,18 +858,18 @@ void GraphicsDriver::TriangleFill(DrawPoly_t* pstPoly_)
 void GraphicsDriver::Polygon(DrawPoly_t* pstPoly_)
 {
     uint16_t i, j, k;
-    bool bState = false;
+    bool     bState = false;
 
-    DrawPoly_t stTempPoly;
+    DrawPoly_t   stTempPoly;
     DrawVector_t astTempVec[3];
 
     if (pstPoly_->u16NumPoints < 3) {
         return;
     }
 
-    stTempPoly.uColor = pstPoly_->uColor;
-    stTempPoly.bFill = pstPoly_->bFill;
-    stTempPoly.pstVector = astTempVec;
+    stTempPoly.uColor       = pstPoly_->uColor;
+    stTempPoly.bFill        = pstPoly_->bFill;
+    stTempPoly.pstVector    = astTempVec;
     stTempPoly.u16NumPoints = 3;
 
     astTempVec[0].u16X = pstPoly_->pstVector[0].u16X;
@@ -877,7 +877,7 @@ void GraphicsDriver::Polygon(DrawPoly_t* pstPoly_)
     astTempVec[0].u16Y = pstPoly_->pstVector[0].u16Y;
     astTempVec[1].u16Y = pstPoly_->pstVector[1].u16Y;
 
-    j = 2;
+    j                  = 2;
     astTempVec[2].u16X = pstPoly_->pstVector[pstPoly_->u16NumPoints - 1].u16X;
     astTempVec[2].u16Y = pstPoly_->pstVector[pstPoly_->u16NumPoints - 1].u16Y;
 
@@ -897,12 +897,12 @@ void GraphicsDriver::Polygon(DrawPoly_t* pstPoly_)
         astTempVec[1].u16Y = astTempVec[2].u16Y;
 
         if (!bState) {
-            bState = true;
+            bState             = true;
             astTempVec[2].u16X = pstPoly_->pstVector[j].u16X;
             astTempVec[2].u16Y = pstPoly_->pstVector[j].u16Y;
             j++;
         } else {
-            bState = false;
+            bState             = false;
             astTempVec[2].u16X = pstPoly_->pstVector[k].u16X;
             astTempVec[2].u16Y = pstPoly_->pstVector[k].u16Y;
             k--;
@@ -920,13 +920,13 @@ void GraphicsDriver::SetWindow(DrawWindow_t* pstWindow_)
 {
     if ((pstWindow_->u16Left <= pstWindow_->u16Right) && (pstWindow_->u16Right < m_u16Res16X)
         && (pstWindow_->u16Left < m_u16Res16X)) {
-        m_u16Left = pstWindow_->u16Left;
+        m_u16Left  = pstWindow_->u16Left;
         m_u16Right = pstWindow_->u16Right;
     }
 
     if ((pstWindow_->u16Top <= pstWindow_->u16Bottom) && (pstWindow_->u16Top < m_u16Top)
         && (pstWindow_->u16Bottom < m_u16Bottom)) {
-        m_u16Top = pstWindow_->u16Top;
+        m_u16Top    = pstWindow_->u16Top;
         m_u16Bottom = pstWindow_->u16Bottom;
     }
 }
@@ -934,8 +934,8 @@ void GraphicsDriver::SetWindow(DrawWindow_t* pstWindow_)
 //----------------------------------------------------------------------------
 void GraphicsDriver::ClearWindow()
 {
-    m_u16Left = 0;
-    m_u16Top = 0;
-    m_u16Right = m_u16Res16X - 1;
+    m_u16Left   = 0;
+    m_u16Top    = 0;
+    m_u16Right  = m_u16Res16X - 1;
     m_u16Bottom = m_u16Res16Y - 1;
 }

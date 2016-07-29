@@ -13,7 +13,7 @@ See license.txt for more information
 ===========================================================================*/
 /*!
 
-    \file   driver.h    
+    \file   driver.h
 
     \brief  Driver abstraction framework for Mark3C
 */
@@ -27,33 +27,32 @@ See license.txt for more information
 #if KERNEL_USE_DRIVER
 
 #ifdef __cplusplus
-    extern "C" {
+extern "C" {
 #endif
 
 //---------------------------------------------------------------------------
-typedef uint8_t (*OpenFunc_t)(void *pvCtx_);
-typedef uint8_t (*CloseFunc_t)(void *pvCtx_);
-typedef uint16_t (*ReadFunc_t)(void *pvCtx_, uint16_t usSize_, uint8_t *pucData_ );
-typedef uint16_t (*WriteFunc_t)(void *pvCtx_, uint16_t usSize_, uint8_t *pucData_ );
-typedef uint16_t (*ControlFunc_t)(void *pvCtx, uint16_t usEvent_, uint16_t usInSize_, uint8_t *pucIn_, uint16_t usOutSize_, uint8_t *pucOut_);
+typedef uint8_t (*OpenFunc_t)(void* pvCtx_);
+typedef uint8_t (*CloseFunc_t)(void* pvCtx_);
+typedef uint16_t (*ReadFunc_t)(void* pvCtx_, uint16_t usSize_, uint8_t* pucData_);
+typedef uint16_t (*WriteFunc_t)(void* pvCtx_, uint16_t usSize_, uint8_t* pucData_);
+typedef uint16_t (*ControlFunc_t)(
+    void* pvCtx, uint16_t usEvent_, uint16_t usInSize_, uint8_t* pucIn_, uint16_t usOutSize_, uint8_t* pucOut_);
 
 //---------------------------------------------------------------------------
-typedef struct
-{
-    OpenFunc_t        pfOpen;
-    CloseFunc_t       pfClose;
-    ReadFunc_t        pfRead;
-    WriteFunc_t       pfWrite;
-    ControlFunc_t     pfControl;
+typedef struct {
+    OpenFunc_t    pfOpen;
+    CloseFunc_t   pfClose;
+    ReadFunc_t    pfRead;
+    WriteFunc_t   pfWrite;
+    ControlFunc_t pfControl;
 } DriverVTable_t;
 
 //---------------------------------------------------------------------------
-typedef struct _Driver
-{
-    struct _Driver  *next;      //!< Linked-list node -- must go first
+typedef struct _Driver {
+    struct _Driver* next; //!< Linked-list node -- must go first
 
-    DriverVTable_t  *pstVTable; //!< Pointer to the VTable object for this driver-type
-    const char      *szName;    //!< Driver's name/path variable
+    DriverVTable_t* pstVTable; //!< Pointer to the VTable object for this driver-type
+    const char*     szName;    //!< Driver's name/path variable
 } Driver_t;
 
 //---------------------------------------------------------------------------
@@ -67,7 +66,7 @@ typedef struct _Driver
  * \brief Driver_Init Initialize a driver, must be called prior to use
  * \param pstDriver_  Pointer to the driver object to initialize.
  */
-void Driver_Init( Driver_t *pstDriver_ );
+void Driver_Init(Driver_t* pstDriver_);
 
 //---------------------------------------------------------------------------
 /*!
@@ -75,7 +74,7 @@ void Driver_Init( Driver_t *pstDriver_ );
  * \param pstDriver_ Pointer to the driver object to open
  * \return Driver-specific return code, 0 = OK, non-0 = error
  */
-uint8_t Driver_Open( Driver_t *pstDriver_ );
+uint8_t Driver_Open(Driver_t* pstDriver_);
 
 //---------------------------------------------------------------------------
 /*!
@@ -83,7 +82,7 @@ uint8_t Driver_Open( Driver_t *pstDriver_ );
  * \param pstDriver_ Pointer to the driver object to close
  * \return Driver-specific return code, 0 = OK, non-0 = error
  */
-uint8_t Driver_Close( Driver_t *pstDriver_ );
+uint8_t Driver_Close(Driver_t* pstDriver_);
 
 //---------------------------------------------------------------------------
 /*!
@@ -100,7 +99,7 @@ uint8_t Driver_Close( Driver_t *pstDriver_ );
  * \param pucData_   Pointer to a data buffer receiving the read data
  * \return Number of bytes read from the device.
  */
-uint16_t Driver_Read( Driver_t *pstDriver_, uint16_t usSize_, uint8_t *pucData_ );
+uint16_t Driver_Read(Driver_t* pstDriver_, uint16_t usSize_, uint8_t* pucData_);
 
 //---------------------------------------------------------------------------
 /*!
@@ -118,7 +117,7 @@ uint16_t Driver_Read( Driver_t *pstDriver_, uint16_t usSize_, uint8_t *pucData_ 
  * \param pucData_  Pointer to a data buffer containing the data to write
  * \return
  */
-uint16_t Driver_Write( Driver_t *pstDriver_, uint16_t usSize_, uint8_t *pucData_ );
+uint16_t Driver_Write(Driver_t* pstDriver_, uint16_t usSize_, uint8_t* pucData_);
 
 //---------------------------------------------------------------------------
 /*!
@@ -139,7 +138,12 @@ uint16_t Driver_Write( Driver_t *pstDriver_, uint16_t usSize_, uint8_t *pucData_
  * \param pucOut_    Pointer to the output data
  * \return
  */
-uint16_t Driver_Control( Driver_t *pstDriver_, uint16_t usEvent_, uint16_t usInSize_, uint8_t *pucIn_, uint16_t usOutSize_, uint8_t *pucOut_);
+uint16_t Driver_Control(Driver_t* pstDriver_,
+                        uint16_t  usEvent_,
+                        uint16_t  usInSize_,
+                        uint8_t*  pucIn_,
+                        uint16_t  usOutSize_,
+                        uint8_t*  pucOut_);
 
 //---------------------------------------------------------------------------
 /*!
@@ -151,7 +155,7 @@ uint16_t Driver_Control( Driver_t *pstDriver_, uint16_t usEvent_, uint16_t usInS
  * \param pstDriver_  Pointer to a driver to set the name of
  * \param pcName_     String constant containing the device path
  */
-void Driver_SetName( Driver_t *pstDriver_, const char *pcName_ );
+void Driver_SetName(Driver_t* pstDriver_, const char* pcName_);
 
 //---------------------------------------------------------------------------
 /*!
@@ -162,7 +166,7 @@ void Driver_SetName( Driver_t *pstDriver_, const char *pcName_ );
  * \param pstDriver_ Pointer of the driver to read the name of
  * \return Return the string constant representing the device path
  */
-const char *Driver_GetPath( Driver_t *pstDriver_ );
+const char* Driver_GetPath(Driver_t* pstDriver_);
 
 //---------------------------------------------------------------------------
 /*!
@@ -171,7 +175,7 @@ const char *Driver_GetPath( Driver_t *pstDriver_ );
  *  List of Driver objects used to keep track of all device drivers in the
  *  system.  By default, the list contains a single entity, "/dev/null".
  */
-void DriverList_Init( void );
+void DriverList_Init(void);
 
 //---------------------------------------------------------------------------
 /*!
@@ -183,7 +187,7 @@ void DriverList_Init( void );
  * \param pcPath   Name of the driver/path to the driver
  * \return Pointer to a driver found in the search, or NULL on no match found.
  */
-Driver_t *DriverList_FindByPath( const char *pcPath );
+Driver_t* DriverList_FindByPath(const char* pcPath);
 
 //---------------------------------------------------------------------------
 /*!
@@ -195,13 +199,12 @@ Driver_t *DriverList_FindByPath( const char *pcPath );
  *
  * \param pstDriver_ Pointer to the driver to add to the global path space.
  */
-void DriverList_Add( Driver_t *pstDriver_ );
+void DriverList_Add(Driver_t* pstDriver_);
 
 #ifdef __cplusplus
-    }
+}
 #endif
 
-#endif //KERNEL_USE_DRIVER
+#endif // KERNEL_USE_DRIVER
 
 #endif
-

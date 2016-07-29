@@ -59,7 +59,7 @@ void* BlockHeap::Create(void* pvHeap_, uint16_t u16Size_, uint16_t u16BlockSize_
 {
     uint16_t u16NodeCount = u16Size_ / (sizeof(BlockHeapNode) + u16BlockSize_);
 
-    K_ADDR adNode = (K_ADDR)pvHeap_;
+    K_ADDR adNode    = (K_ADDR)pvHeap_;
     K_ADDR adMaxNode = (K_ADDR)((K_ADDR)pvHeap_ + (K_ADDR)u16Size_);
     m_clList.Init();
 
@@ -68,7 +68,7 @@ void* BlockHeap::Create(void* pvHeap_, uint16_t u16Size_, uint16_t u16BlockSize_
     for (uint16_t i = 0; i < u16NodeCount; i++) {
         // Create a pointer back to the source list.
         BlockHeapNode* pclTemp = (BlockHeapNode*)adNode;
-        pclTemp->m_clHeap = this;
+        pclTemp->m_clHeap      = this;
 
         // Add the node to the block list
         m_clList.Add((LinkListNode*)pclTemp);
@@ -119,8 +119,8 @@ void BlockHeap::Free(void* pvData_)
 //---------------------------------------------------------------------------
 void FixedHeap::Create(void* pvHeap_, HeapConfig* pclHeapConfig_)
 {
-    uint16_t i = 0;
-    void* pvTemp = pvHeap_;
+    uint16_t i      = 0;
+    void*    pvTemp = pvHeap_;
     while (pclHeapConfig_[i].m_u16BlockSize != 0) {
         pvTemp = pclHeapConfig_[i].m_clHeap.Create(
             pvTemp,
@@ -134,8 +134,8 @@ void FixedHeap::Create(void* pvHeap_, HeapConfig* pclHeapConfig_)
 //---------------------------------------------------------------------------
 void* FixedHeap::Alloc(uint16_t u16Size_)
 {
-    void* pvRet = 0;
-    uint16_t i = 0;
+    void*    pvRet = 0;
+    uint16_t i     = 0;
 
     // Go through all heaps, trying to find the smallest one that
     // has a free item to satisfy the allocation

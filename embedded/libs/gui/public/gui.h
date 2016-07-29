@@ -29,69 +29,63 @@ See license.txt for more information
 
 #include "keycodes.h"
 
-#define GUI_DEBUG            (0)
+#define GUI_DEBUG (0)
 
 #if GUI_DEBUG
-    #include <stdio.h>
-    #include <stdlib.h>
-    #include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
-    #define GUI_DEBUG_PRINT        printf
+#define GUI_DEBUG_PRINT printf
 #else
 #define GUI_DEBUG_PRINT(...)
 #endif
-
 
 //---------------------------------------------------------------------------
 /*!
     Event state defintions, used for determining whether or not a button or
     key is in the "up" or "down" contact state.
  */
-#define EVENT_STATE_UP            (0)
-#define EVENT_STATE_DOWN          (1)
+#define EVENT_STATE_UP (0)
+#define EVENT_STATE_DOWN (1)
 
 //---------------------------------------------------------------------------
-#define MAX_WINDOW_CONTROLS        (251) //!< Maximum number of controls per window
+#define MAX_WINDOW_CONTROLS (251) //!< Maximum number of controls per window
 
-#define TARGET_ID_BROADCAST_Z      (252) //!< Broadcast event to all controls in the topmost window
-#define TARGET_ID_BROADCAST        (253) //!< Send event to all controls in all windows
-#define TARGET_ID_FOCUS            (254) //!< Send event to the in-focus control
-#define TARGET_ID_HIGH_Z           (255) //!< Send event to the highest Z-order control
-
+#define TARGET_ID_BROADCAST_Z (252) //!< Broadcast event to all controls in the topmost window
+#define TARGET_ID_BROADCAST (253)   //!< Send event to all controls in all windows
+#define TARGET_ID_FOCUS (254)       //!< Send event to the in-focus control
+#define TARGET_ID_HIGH_Z (255)      //!< Send event to the highest Z-order control
 
 //---------------------------------------------------------------------------
 /*!
     Enumeration defining the various UI event codes.
  */
-typedef enum
-{
-    EVENT_TYPE_KEYBOARD,     //!< Keypress event
-    EVENT_TYPE_MOUSE,        //!< Mouse movement or click event
-    EVENT_TYPE_TOUCH,        //!< Touchscreen movement event
-    EVENT_TYPE_JOYSTICK,     //!< Joystick event
-    EVENT_TYPE_TIMER,        //!< Timer event
-//---
-    EVENT_TYPE_COUNT         //!< Count of different event types supported
+typedef enum {
+    EVENT_TYPE_KEYBOARD, //!< Keypress event
+    EVENT_TYPE_MOUSE,    //!< Mouse movement or click event
+    EVENT_TYPE_TOUCH,    //!< Touchscreen movement event
+    EVENT_TYPE_JOYSTICK, //!< Joystick event
+    EVENT_TYPE_TIMER,    //!< Timer event
+                         //---
+    EVENT_TYPE_COUNT     //!< Count of different event types supported
 } GuiEventType_t;
 
 //---------------------------------------------------------------------------
 /*!
     Keyboard UI event structure definition.
  */
-typedef struct
-{
-    uint8_t u8KeyCode;        //!< 8-bit value representing a keyboard scan code
-    union
-    {
-        uint8_t u8Flags;     //!< Flags indicating modifiers to the event
-        struct
-        {
-            unsigned int bKeyState:1;        //!< Key is being pressed or released
-            unsigned int bShiftState:1;      //!< Whether or not shift is pressed
-            unsigned int bCtrlState:1;       //!< Whether or not CTRL is pressed
-            unsigned int bAltState:1;        //!< Whether or not ALT it pressed
-            unsigned int bWinState:1;        //!< Whether or not the Window/Clover key is pressed
-            unsigned int bFnState:1;         //!< Whether or not a special function key is pressed
+typedef struct {
+    uint8_t u8KeyCode; //!< 8-bit value representing a keyboard scan code
+    union {
+        uint8_t u8Flags; //!< Flags indicating modifiers to the event
+        struct {
+            unsigned int bKeyState : 1;   //!< Key is being pressed or released
+            unsigned int bShiftState : 1; //!< Whether or not shift is pressed
+            unsigned int bCtrlState : 1;  //!< Whether or not CTRL is pressed
+            unsigned int bAltState : 1;   //!< Whether or not ALT it pressed
+            unsigned int bWinState : 1;   //!< Whether or not the Window/Clover key is pressed
+            unsigned int bFnState : 1;    //!< Whether or not a special function key is pressed
         };
     };
 } KeyEvent_t;
@@ -100,21 +94,18 @@ typedef struct
 /*!
     Mouse UI event structure
  */
-typedef struct
-{
-    uint16_t u16X;        //!< absolute X location of the mouse (pixel)
-    uint16_t u16Y;        //!< absolute Y location of the mouse (pixel)
+typedef struct {
+    uint16_t u16X; //!< absolute X location of the mouse (pixel)
+    uint16_t u16Y; //!< absolute Y location of the mouse (pixel)
 
-    union
-    {
-        uint8_t u8Flags;    //!< modifier flags for the event
-        struct
-        {
-            unsigned int bLeftState:1;         //!< State of the left mouse button
-            unsigned int bRightState:1;        //!< State of the right mouse button
-            unsigned int bMiddleState:1;       //!< State of the middle mouse button
-            unsigned int bScrollUp:1;          //!< State of the scroll wheel (UP)
-            unsigned int bScrollDown:1;        //!< State of the scroll wheel (DOWN)
+    union {
+        uint8_t u8Flags; //!< modifier flags for the event
+        struct {
+            unsigned int bLeftState : 1;   //!< State of the left mouse button
+            unsigned int bRightState : 1;  //!< State of the right mouse button
+            unsigned int bMiddleState : 1; //!< State of the middle mouse button
+            unsigned int bScrollUp : 1;    //!< State of the scroll wheel (UP)
+            unsigned int bScrollDown : 1;  //!< State of the scroll wheel (DOWN)
         };
     };
 } MouseEvent_t;
@@ -123,17 +114,14 @@ typedef struct
 /*!
     Touch UI event structure
  */
-typedef struct
-{
-    uint16_t u16X;        //!< Absolute touch location (pixels)
-    uint16_t u16Y;        //!< Absolute touch location (pixels)
+typedef struct {
+    uint16_t u16X; //!< Absolute touch location (pixels)
+    uint16_t u16Y; //!< Absolute touch location (pixels)
 
-    union
-    {
-        uint16_t u8Flags;        //!< Modifier flags
-        struct
-        {
-            unsigned int bTouch:1;    //!< Whether or not touch is up or down
+    union {
+        uint16_t u8Flags; //!< Modifier flags
+        struct {
+            unsigned int bTouch : 1; //!< Whether or not touch is up or down
         };
     };
 } TouchEvent_t;
@@ -142,56 +130,51 @@ typedef struct
 /*!
     Joystick UI event structure
  */
-typedef struct
-{
-    union
-    {
-        uint16_t u16RawData;            //!< Raw joystick data
-        struct
-        {
-            unsigned int bUp:1;         //!< D-pad UP state
-            unsigned int bDown:1;       //!< D-pad DOWN state
-            unsigned int bLeft:1;       //!< D-pad LEFT state
-            unsigned int bRight:1;      //!< D-pad RIGHT state
+typedef struct {
+    union {
+        uint16_t u16RawData; //!< Raw joystick data
+        struct {
+            unsigned int bUp : 1;    //!< D-pad UP state
+            unsigned int bDown : 1;  //!< D-pad DOWN state
+            unsigned int bLeft : 1;  //!< D-pad LEFT state
+            unsigned int bRight : 1; //!< D-pad RIGHT state
 
-            unsigned int bButton1:1;    //!< Joystick Button1 state
-            unsigned int bButton2:1;    //!< Joystick Button2 state
-            unsigned int bButton3:1;    //!< Joystick Button3 state
-            unsigned int bButton4:1;    //!< Joystick Button4 state
-            unsigned int bButton5:1;    //!< Joystick Button5 state
-            unsigned int bButton6:1;    //!< Joystick Button6 state
-            unsigned int bButton7:1;    //!< Joystick Button7 state
-            unsigned int bButton8:1;    //!< Joystick Button8 state
-            unsigned int bButton9:1;    //!< Joystick Button9 state
-            unsigned int bButton10:1;   //!< Joystick Button10 state
+            unsigned int bButton1 : 1;  //!< Joystick Button1 state
+            unsigned int bButton2 : 1;  //!< Joystick Button2 state
+            unsigned int bButton3 : 1;  //!< Joystick Button3 state
+            unsigned int bButton4 : 1;  //!< Joystick Button4 state
+            unsigned int bButton5 : 1;  //!< Joystick Button5 state
+            unsigned int bButton6 : 1;  //!< Joystick Button6 state
+            unsigned int bButton7 : 1;  //!< Joystick Button7 state
+            unsigned int bButton8 : 1;  //!< Joystick Button8 state
+            unsigned int bButton9 : 1;  //!< Joystick Button9 state
+            unsigned int bButton10 : 1; //!< Joystick Button10 state
 
-            unsigned int bSelect:1;     //!< Start button state
-            unsigned int bStart:1;      //!< Select button state
+            unsigned int bSelect : 1; //!< Start button state
+            unsigned int bStart : 1;  //!< Select button state
         };
     } Current;
-    union
-    {
-        uint16_t u16RawData;            //!< Raw joystick data
-        struct
-        {
-            unsigned int bUp:1;         //!< D-pad UP state
-            unsigned int bDown:1;       //!< D-pad DOWN state
-            unsigned int bLeft:1;       //!< D-pad LEFT state
-            unsigned int bRight:1;      //!< D-pad RIGHT state
+    union {
+        uint16_t u16RawData; //!< Raw joystick data
+        struct {
+            unsigned int bUp : 1;    //!< D-pad UP state
+            unsigned int bDown : 1;  //!< D-pad DOWN state
+            unsigned int bLeft : 1;  //!< D-pad LEFT state
+            unsigned int bRight : 1; //!< D-pad RIGHT state
 
-            unsigned int bButton1:1;    //!< Joystick Button1 state
-            unsigned int bButton2:1;    //!< Joystick Button2 state
-            unsigned int bButton3:1;    //!< Joystick Button3 state
-            unsigned int bButton4:1;    //!< Joystick Button4 state
-            unsigned int bButton5:1;    //!< Joystick Button5 state
-            unsigned int bButton6:1;    //!< Joystick Button6 state
-            unsigned int bButton7:1;    //!< Joystick Button7 state
-            unsigned int bButton8:1;    //!< Joystick Button8 state
-            unsigned int bButton9:1;    //!< Joystick Button9 state
-            unsigned int bButton10:1;   //!< Joystick Button10 state
+            unsigned int bButton1 : 1;  //!< Joystick Button1 state
+            unsigned int bButton2 : 1;  //!< Joystick Button2 state
+            unsigned int bButton3 : 1;  //!< Joystick Button3 state
+            unsigned int bButton4 : 1;  //!< Joystick Button4 state
+            unsigned int bButton5 : 1;  //!< Joystick Button5 state
+            unsigned int bButton6 : 1;  //!< Joystick Button6 state
+            unsigned int bButton7 : 1;  //!< Joystick Button7 state
+            unsigned int bButton8 : 1;  //!< Joystick Button8 state
+            unsigned int bButton9 : 1;  //!< Joystick Button9 state
+            unsigned int bButton10 : 1; //!< Joystick Button10 state
 
-            unsigned int bSelect:1;     //!< Start button state
-            unsigned int bStart:1;      //!< Select button state
+            unsigned int bSelect : 1; //!< Start button state
+            unsigned int bStart : 1;  //!< Select button state
         };
     } Previous;
 } JoystickEvent_t;
@@ -200,9 +183,8 @@ typedef struct
 /*!
     Timer UI event structure
  */
-typedef struct
-{
-    uint16_t u16Ticks;    //!< Number of clock ticks (arbitrary) that have elapsed
+typedef struct {
+    uint16_t u16Ticks; //!< Number of clock ticks (arbitrary) that have elapsed
 } TimerEvent_t;
 
 //---------------------------------------------------------------------------
@@ -210,13 +192,11 @@ typedef struct
     Composite UI event structure.  Depending on the event type, can contain
     either a keyboard, mouse, touch, joystick, timer event, etc.
  */
-typedef struct
-{
-    uint8_t u8EventType;        //!< GuiEventType_t event type
-    uint8_t u8TargetID;         //!< Control index that this event is targeted towards
-    union
-    {
-        KeyEvent_t        stKey;     //!< Keyboard data
+typedef struct {
+    uint8_t u8EventType; //!< GuiEventType_t event type
+    uint8_t u8TargetID;  //!< Control index that this event is targeted towards
+    union {
+        KeyEvent_t      stKey;      //!< Keyboard data
         MouseEvent_t    stMouse;    //!< Mouse data
         TouchEvent_t    stTouch;    //!< Touchscreen data
         JoystickEvent_t stJoystick; //!< Joystick data
@@ -226,13 +206,12 @@ typedef struct
 } GuiEvent_t;
 
 //---------------------------------------------------------------------------
-typedef enum
-{
-    GUI_EVENT_OK = 0,       //!< No problem
-    GUI_EVENT_CONSUMED,     //!< Event was consumed
-    GUI_EVENT_CANCEL,       //!< Event processing canceled
-    GUI_EVENT_RETRY,        //!< Retry processing the event
-//---
+typedef enum {
+    GUI_EVENT_OK = 0,   //!< No problem
+    GUI_EVENT_CONSUMED, //!< Event was consumed
+    GUI_EVENT_CANCEL,   //!< Event processing canceled
+    GUI_EVENT_RETRY,    //!< Retry processing the event
+                        //---
     GUI_EVENT_COUNT
 } GuiReturn_t;
 
@@ -248,7 +227,6 @@ class GuiControl;
  */
 class GuiWindow : public LinkListNode
 {
-
 public:
     /*!
      *  Initialize the GUI Window object prior to use.  Must be called before
@@ -257,8 +235,8 @@ public:
     void Init()
     {
         m_u8ControlCount = 0;
-        m_pclDriver = NULL;
-        m_szName = "";
+        m_pclDriver      = NULL;
+        m_szName         = "";
         ClearNode();
     }
 
@@ -269,8 +247,7 @@ public:
      *
      *  \param pclDriver_ Pointer to the graphics driver
      */
-    void SetDriver( GraphicsDriver *pclDriver_ ) { m_pclDriver = pclDriver_; }
-
+    void SetDriver(GraphicsDriver* pclDriver_) { m_pclDriver = pclDriver_; }
     /*!
      *  \brief GetDriver
      *
@@ -278,8 +255,7 @@ public:
      *
      *  \return Pointer to the Window's graphics driver
      */
-    GraphicsDriver *GetDriver() { return m_pclDriver; }
-
+    GraphicsDriver* GetDriver() { return m_pclDriver; }
     /*!
      *  \brief AddControl
      *
@@ -291,7 +267,7 @@ public:
      *  \param pclControl_ Pointer to the control object to add
      *  \param pclParent_  Pointer to the control's "parent" object (or NULL)
      */
-    void AddControl( GuiControl *pclControl_, GuiControl *pclParent_ );
+    void AddControl(GuiControl* pclControl_, GuiControl* pclParent_);
 
     /*!
      *  \brief RemoveControl
@@ -300,7 +276,7 @@ public:
      *
      *  \param pclControl_ Pointer to the control object to remove
      */
-    void RemoveControl( GuiControl *pclControl_ );
+    void RemoveControl(GuiControl* pclControl_);
 
     /*!
      *  \brief GetMaxZOrder
@@ -319,7 +295,7 @@ public:
      *  initialization), the entire window will need to be redrawn cleanly.
      *  This behavior is defined by the value of the bRedrawAll_ parameter.
      */
-    void Redraw( bool bRedrawAll_ );
+    void Redraw(bool bRedrawAll_);
 
     /*!
      *  \brief ProcessEvent
@@ -329,7 +305,7 @@ public:
      *  controls, or all controls in the window depending on the
      *  event payload.
      */
-    void ProcessEvent( GuiEvent_t *pstEvent_ );
+    void ProcessEvent(GuiEvent_t* pstEvent_);
 
     /*!
      *  \brief SetFocus
@@ -339,7 +315,7 @@ public:
      *
      *  \param pclControl_ Pointer to the control object to set focus on.
      */
-    void SetFocus( GuiControl *pclControl_ );
+    void SetFocus(GuiControl* pclControl_);
 
     /*!
      *  \brief IsInFocus
@@ -351,10 +327,9 @@ public:
      *  \return true - the selected control is the active control on the window
      *          false - otherwise
      */
-    bool IsInFocus( GuiControl *pclControl_ )
+    bool IsInFocus(GuiControl* pclControl_)
     {
-        if (m_pclInFocus == pclControl_)
-        {
+        if (m_pclInFocus == pclControl_) {
             return true;
         }
         return false;
@@ -367,8 +342,7 @@ public:
      *
      *  \param u16Top_ Topmost pixel of the window
      */
-    void SetTop( uint16_t u16Top_ )          { m_u16Top = u16Top_; }
-
+    void SetTop(uint16_t u16Top_) { m_u16Top = u16Top_; }
     /*!
      *  \brief SetLeft
      *
@@ -376,8 +350,7 @@ public:
      *
      *  \param u16Left_ Leftmost pixel of the window
      */
-    void SetLeft( uint16_t u16Left_ )      { m_u16Left = u16Left_; }
-
+    void SetLeft(uint16_t u16Left_) { m_u16Left = u16Left_; }
     /*!
      *  \brief SetHeight
      *
@@ -385,8 +358,7 @@ public:
      *
      *  \param u16Height_ Height of the window in pixels
      */
-    void SetHeight( uint16_t u16Height_ ) { m_u16Height = u16Height_; }
-
+    void SetHeight(uint16_t u16Height_) { m_u16Height = u16Height_; }
     /*!
      *  \brief SetWidth
      *
@@ -394,8 +366,7 @@ public:
      *
      *  \param u16Width_ Width of the window in pixels
      */
-    void SetWidth( uint16_t u16Width_ )      { m_u16Width = u16Width_; }
-
+    void SetWidth(uint16_t u16Width_) { m_u16Width = u16Width_; }
     /*!
      *  \brief GetTop
      *
@@ -403,8 +374,7 @@ public:
      *
      *  \return Topmost pixel of the window
      */
-    uint16_t GetTop()             { return m_u16Top; }
-
+    uint16_t GetTop() { return m_u16Top; }
     /*!
      *  \brief GetLeft
      *
@@ -412,8 +382,7 @@ public:
      *
      *  \return Leftmost pixel of the window
      */
-    uint16_t GetLeft()             { return m_u16Left; }
-
+    uint16_t GetLeft() { return m_u16Left; }
     /*!
      *  \brief GetHeight
      *
@@ -421,8 +390,7 @@ public:
      *
      *  \return Height of the window in pixels
      */
-    uint16_t GetHeight()         { return m_u16Height; }
-
+    uint16_t GetHeight() { return m_u16Height; }
     /*!
      *  \brief GetWidth
      *
@@ -430,22 +398,19 @@ public:
      *
      *  \return Width of the window in pixels
      */
-    uint16_t GetWidth()         { return m_u16Width; }
-
+    uint16_t GetWidth() { return m_u16Width; }
     /*!
      *  \brief GetZOrder
      *
      *  Get the Z-order of the window on the event surface
      */
-    uint8_t GetZOrder()         { return m_u8Z; }
-
+    uint8_t GetZOrder() { return m_u8Z; }
     /*!
      *  \brief SetZOrder
      *
      *  Set the Z-order of the window on the event surface
      */
-    void SetZOrder( uint8_t u8Z_ ) { m_u8Z = u8Z_; }
-
+    void SetZOrder(uint8_t u8Z_) { m_u8Z = u8Z_; }
     /*!
      *  \brief CycleFocus
      *
@@ -454,22 +419,20 @@ public:
      *  \param bForward_ - Cycle to the next control when true,
      *                     previous control when false
      */
-    void CycleFocus( bool bForward_ );
+    void CycleFocus(bool bForward_);
 
     /*!
      *  \brief SetName
      *
      *  Set the name for this window
      */
-    void SetName( const char *szName_ ) { m_szName = szName_; }
-
+    void SetName(const char* szName_) { m_szName = szName_; }
     /*!
      *  \brief GetName
 
      *  Return the name of this window
      */
-    const char *GetName() { return m_szName; }
-
+    const char* GetName() { return m_szName; }
     /*!
      *  \brief InvalidateRegion
      *
@@ -477,21 +440,21 @@ public:
      *  coordinates specified in the parameters (top and left) refer to absolute
      *  display coordinates, and are not relative to coordinates within a window.
      */
-    void InvalidateRegion( uint16_t u16Left_, uint16_t u16Top_, uint16_t u16Width_, uint16_t u16Height_ );
+    void InvalidateRegion(uint16_t u16Left_, uint16_t u16Top_, uint16_t u16Width_, uint16_t u16Height_);
 
 private:
-    uint16_t m_u16Top;       //!< Topmost pixel of the window on the event surface
-    uint16_t m_u16Left;      //!< Leftmost pixel of the window on the event surface
-    uint16_t m_u16Height;    //!< Height of the window in pixels
-    uint16_t m_u16Width;        //!< Width of the window in pixels
+    uint16_t m_u16Top;    //!< Topmost pixel of the window on the event surface
+    uint16_t m_u16Left;   //!< Leftmost pixel of the window on the event surface
+    uint16_t m_u16Height; //!< Height of the window in pixels
+    uint16_t m_u16Width;  //!< Width of the window in pixels
 
-    uint8_t  m_u8Z;             //!< Z-order of the window on the event surface
-    const char  *m_szName;      //!< Name applied to this window
+    uint8_t     m_u8Z;    //!< Z-order of the window on the event surface
+    const char* m_szName; //!< Name applied to this window
 
-    DoubleLinkList m_clControlList;  //!< List of controls managed by this window
-    GuiControl *m_pclInFocus;        //!< Pointer to the control in event focus
-    uint8_t m_u8ControlCount;        //!< Number of controls in this window
-    GraphicsDriver *m_pclDriver;     //!< Graphics driver for this window.
+    DoubleLinkList  m_clControlList;  //!< List of controls managed by this window
+    GuiControl*     m_pclInFocus;     //!< Pointer to the control in event focus
+    uint8_t         m_u8ControlCount; //!< Number of controls in this window
+    GraphicsDriver* m_pclDriver;      //!< Graphics driver for this window.
 };
 
 //---------------------------------------------------------------------------
@@ -516,7 +479,11 @@ public:
      *  Initialize an event surface before use.  Must be called prior to
      *  any other object methods.
      */
-    void Init() { m_clMessageQueue.Init(); m_clWindowList.Init(); }
+    void Init()
+    {
+        m_clMessageQueue.Init();
+        m_clWindowList.Init();
+    }
 
     /*!
      * \brief SetMessagePool
@@ -525,8 +492,7 @@ public:
      *
      * \param pclMessagePool_ Pointer to the message pool.
      */
-    void SetMessagePool( MessagePool* pclMessagePool_ ) { m_pclMessagePool = pclMessagePool_; }
-
+    void SetMessagePool(MessagePool* pclMessagePool_) { m_pclMessagePool = pclMessagePool_; }
     /*!
      * \brief SetHeap
      *
@@ -535,8 +501,7 @@ public:
      *
      * \param pclHeap_  Pointer to the heap to set.
      */
-    void SetHeap( FixedHeap* pclHeap_ ) { m_pclHeap = pclHeap_; }
-
+    void SetHeap(FixedHeap* pclHeap_) { m_pclHeap = pclHeap_; }
     /*!
      *  \brief AddWindow
      *
@@ -544,7 +509,7 @@ public:
      *
      *  \param pclWindow_ Pointer to the window object to add to the sruface
      */
-    void AddWindow( GuiWindow *pclWindow_ );
+    void AddWindow(GuiWindow* pclWindow_);
 
     /*!
      *  \brief RemoveWindow
@@ -553,7 +518,7 @@ public:
      *
      *  \param pclWindow_ Pointer to the window object to remove from the surface
      */
-    void RemoveWindow( GuiWindow *pclWindow_ );
+    void RemoveWindow(GuiWindow* pclWindow_);
 
     /*!
      *  \brief SendEvent
@@ -564,7 +529,7 @@ public:
      *  \param pstEvent_ Pointer to an event to send
      *  \return true on success, false on failure
      */
-    bool SendEvent( GuiEvent_t *pstEvent_ );
+    bool SendEvent(GuiEvent_t* pstEvent_);
 
     /*!
      *  \brief ProcessEvent
@@ -579,13 +544,12 @@ public:
      *  Get the count of pending events in the event surface's queue.
      */
     uint8_t GetEventCount() { return m_clMessageQueue.GetCount(); }
-
     /*!
      *  \brief FindWindowByName
      *
      *  Return a pointer to a window by name, or NULL on failure
      */
-    GuiWindow *FindWindowByName( const char *szName_ );
+    GuiWindow* FindWindowByName(const char* szName_);
 
     /*!
      *  \brief InvalidateRegion
@@ -594,7 +558,7 @@ public:
      *  coordinates specified in the parameters (top and left) refer to absolute
      *  display coordinates, and are not relative to coordinates within a window.
      */
-    void InvalidateRegion( uint16_t u16Left_, uint16_t u16Top_, uint16_t u16Width_, uint16_t u16Height_ );
+    void InvalidateRegion(uint16_t u16Left_, uint16_t u16Top_, uint16_t u16Width_, uint16_t u16Height_);
 
 private:
     /*!
@@ -605,7 +569,7 @@ private:
      *  \param pstDst_ Destination event pointer
      *  \param pstSrc_ Source event pointer
      */
-    void CopyEvent( GuiEvent_t *pstDst_, GuiEvent_t *pstSrc_ );
+    void CopyEvent(GuiEvent_t* pstDst_, GuiEvent_t* pstSrc_);
 
 private:
     /*!
@@ -616,17 +580,17 @@ private:
     /*!
      *  Message queue used to manage window events
      */
-    MessageQueue   m_clMessageQueue;
+    MessageQueue m_clMessageQueue;
 
     /*!
      *  Message pool used for sending/receiving event messages
      */
-    MessagePool   *m_pclMessagePool;
+    MessagePool* m_pclMessagePool;
 
     /*!
      *  Heap used to manage object data allocations
      */
-    FixedHeap     *m_pclHeap;
+    FixedHeap* m_pclHeap;
 };
 
 //---------------------------------------------------------------------------
@@ -665,7 +629,7 @@ public:
      *
      *  \param pstEvent_ Pointer to a struct containing the event data
      */
-    virtual GuiReturn_t ProcessEvent( GuiEvent_t *pstEvent_ ) = 0;
+    virtual GuiReturn_t ProcessEvent(GuiEvent_t* pstEvent_) = 0;
 
     /*!
      *  \brief SetTop
@@ -674,8 +638,7 @@ public:
      *
      *  \param u16Top_ Topmost pixel of the control
      */
-    void SetTop( uint16_t u16Top_ )          { m_u16Top = u16Top_; }
-
+    void SetTop(uint16_t u16Top_) { m_u16Top = u16Top_; }
     /*!
      *  \brief SetLeft
      *
@@ -683,8 +646,7 @@ public:
      *
      *  \param u16Left_ Leftmost pixel of the control
      */
-    void SetLeft( uint16_t u16Left_ )      { m_u16Left = u16Left_; }
-
+    void SetLeft(uint16_t u16Left_) { m_u16Left = u16Left_; }
     /*!
      *  \brief SetHeight
      *
@@ -692,8 +654,7 @@ public:
      *
      *  \param u16Height_ Height of the control in pixels
      */
-    void SetHeight( uint16_t u16Height_ ) { m_u16Height = u16Height_; }
-
+    void SetHeight(uint16_t u16Height_) { m_u16Height = u16Height_; }
     /*!
      *  \brief SetWidth
      *
@@ -701,8 +662,7 @@ public:
      *
      *  \param u16Width_ Width of the control in pixels
      */
-    void SetWidth( uint16_t u16Width_ )      { m_u16Width = u16Width_; }
-
+    void SetWidth(uint16_t u16Width_) { m_u16Width = u16Width_; }
     /*!
      *  \brief SetZOrder
      *
@@ -710,8 +670,7 @@ public:
      *
      *  \param u8Z_ Z order of the control
      */
-    void SetZOrder( uint8_t u8Z_ )          { m_u8ZOrder = u8Z_; }
-
+    void SetZOrder(uint8_t u8Z_) { m_u8ZOrder = u8Z_; }
     /*!
      *  \brief SetControlIndex
      *
@@ -720,8 +679,7 @@ public:
      *
      *  \param u8Idx_ Focus index of the control
      */
-    void SetControlIndex( uint8_t u8Idx_ ) { m_u8ControlIndex = u8Idx_; }
-
+    void SetControlIndex(uint8_t u8Idx_) { m_u8ControlIndex = u8Idx_; }
     /*!
      *  \brief GetTop
      *
@@ -729,8 +687,7 @@ public:
      *
      *  \return Topmost pixel of the control
      */
-    uint16_t GetTop()             { return m_u16Top; }
-
+    uint16_t GetTop() { return m_u16Top; }
     /*!
      *  \brief GetLeft
      *
@@ -738,8 +695,7 @@ public:
      *
      *  \return Leftmost pixel of the control
      */
-    uint16_t GetLeft()             { return m_u16Left; }
-
+    uint16_t GetLeft() { return m_u16Left; }
     /*!
      *  \brief GetHeight
      *
@@ -748,8 +704,7 @@ public:
      *
      *  \return Height of the control in pixels
      */
-    uint16_t GetHeight()         { return m_u16Height; }
-
+    uint16_t GetHeight() { return m_u16Height; }
     /*!
      *  \brief GetWidth
      *
@@ -757,8 +712,7 @@ public:
      *
      *  \return Width of the control in pixels
      */
-    uint16_t GetWidth()         { return m_u16Width; }
-
+    uint16_t GetWidth() { return m_u16Width; }
     /*!
      *  \brief GetZOrder
      *
@@ -766,8 +720,7 @@ public:
      *
      *  \return Z-order of the control
      */
-    uint8_t  GetZOrder()        { return m_u8ZOrder; }
-
+    uint8_t GetZOrder() { return m_u8ZOrder; }
     /*!
      *  \brief GetControlIndex
      *
@@ -775,8 +728,7 @@ public:
      *
      *  \return The control index of the control
      */
-    uint8_t  GetControlIndex()     { return m_u8ControlIndex; }
-
+    uint8_t GetControlIndex() { return m_u8ControlIndex; }
     /*!
      *  \brief IsStale
      *
@@ -784,8 +736,7 @@ public:
      *
      *  \return true - control needs redrawing, false - control is intact.
      */
-    bool     IsStale()            { return m_bStale; }
-
+    bool IsStale() { return m_bStale; }
     /*!
      *  \brief GetControlOffset
      *
@@ -798,7 +749,7 @@ public:
      *  \param pus16X_ Pointer to the uint16_t containing the leftmost pixel
      *  \param pus16Y_ Pointer to the uint16_t containing the topmost pixel
      */
-    void GetControlOffset( uint16_t *pu16X_, uint16_t *pu16Y_ );
+    void GetControlOffset(uint16_t* pu16X_, uint16_t* pu16Y_);
 
     /*!
      *  \brief IsInFocus
@@ -807,11 +758,7 @@ public:
      *
      *  \return true if this control is in focus, false otherwise
      */
-    bool  IsInFocus()
-    {
-        return m_pclParentWindow->IsInFocus(this);
-    }
-
+    bool IsInFocus() { return m_pclParentWindow->IsInFocus(this); }
     /*!
      *  \brief Activate
      *
@@ -820,7 +767,7 @@ public:
      *
      *  \param bActivate_ - true to activate, false to deactivate
      */
-    virtual void Activate( bool bActivate_ ) = 0;
+    virtual void Activate(bool bActivate_) = 0;
 
 protected:
     friend class GuiWindow;
@@ -838,8 +785,7 @@ protected:
      *
      *  \param pclParent_ Pointer to the control's parent control
      */
-    void SetParentControl( GuiControl *pclParent_ ) { m_pclParentControl = pclParent_; }
-
+    void SetParentControl(GuiControl* pclParent_) { m_pclParentControl = pclParent_; }
     /*!
      *  \brief SetParentWindow
      *
@@ -850,8 +796,7 @@ protected:
      *
      *  \param pclWindow_ Pointer to the control's parent window.
      */
-    void SetParentWindow( GuiWindow *pclWindow_ )    { m_pclParentWindow  = pclWindow_; }
-
+    void SetParentWindow(GuiWindow* pclWindow_) { m_pclParentWindow = pclWindow_; }
     /*!
      *  \brief GetParentControl
      *
@@ -859,8 +804,7 @@ protected:
      *
      *  \return Pointer to the Control's currently assigned parent control.
      */
-    GuiControl *GetParentControl()                     { return m_pclParentControl; }
-
+    GuiControl* GetParentControl() { return m_pclParentControl; }
     /*!
      *  \brief GetParentWindow
      *
@@ -868,8 +812,7 @@ protected:
      *
      *  \return Pointer to the control's window
      */
-    GuiWindow *GetParentWindow()                     { return m_pclParentWindow; }
-
+    GuiWindow* GetParentWindow() { return m_pclParentWindow; }
     /*!
      *  \brief ClearStale
      *
@@ -877,42 +820,39 @@ protected:
      *  redraw has been completed
      *
      */
-    void ClearStale()                                 { m_bStale = false; }
-
+    void ClearStale() { m_bStale = false; }
     /*!
      *  \brief SetStale
      *
      *  Signal that the object needs to be redrawn.
      */
-    void SetStale()                                 { m_bStale = true; }
-
+    void SetStale() { m_bStale = true; }
     /*!
      *  \brief SetAcceptFocus
      *
      *  Tell the control whether or not to accept focus.
      */
-    void SetAcceptFocus( bool bFocus_ )             { m_bAcceptsFocus = bFocus_; }
-
+    void SetAcceptFocus(bool bFocus_) { m_bAcceptsFocus = bFocus_; }
     /*!
      *  \brief AcceptsFocus
      *
      *  Returns whether or not this control accepts focus.
      */
-    bool AcceptsFocus()                             { return m_bAcceptsFocus; }
+    bool AcceptsFocus() { return m_bAcceptsFocus; }
 private:
     /*! true if the control is stale and needs to be redrawn, false otherwise */
-    bool     m_bStale;
+    bool m_bStale;
 
     /*! Whether or not the control accepts focus or not */
-    bool   m_bAcceptsFocus;
+    bool m_bAcceptsFocus;
 
     /*! The Z-Order (depth) of the control. Only the highest order controls
         are visible at any given location  */
-    uint8_t  m_u8ZOrder;
+    uint8_t m_u8ZOrder;
 
     /*! Index of the control in the window.  This is used for setting focus
         when transitioning from control to control on a window  */
-    uint8_t  m_u8ControlIndex;
+    uint8_t m_u8ControlIndex;
 
     /*! Topmost location of the control on the window  */
     uint16_t m_u16Top;
@@ -927,10 +867,10 @@ private:
     uint16_t m_u16Height;
 
     /*! Pointer to the parent control  */
-    GuiControl *m_pclParentControl;
+    GuiControl* m_pclParentControl;
 
     /*! Pointer to the parent window associated with this control  */
-    GuiWindow  *m_pclParentWindow;
+    GuiWindow* m_pclParentWindow;
 };
 
 //---------------------------------------------------------------------------
@@ -941,11 +881,10 @@ private:
 class StubControl : public GuiControl
 {
 public:
-    virtual void Init() {  }
-    virtual void Draw() {  }
-    virtual GuiReturn_t ProcessEvent( GuiEvent_t *pstEvent_ ) { return GUI_EVENT_OK; }
-    virtual void Activate( bool bActivate_ ) { }
+    virtual void        Init() {}
+    virtual void        Draw() {}
+    virtual GuiReturn_t ProcessEvent(GuiEvent_t* pstEvent_) { return GUI_EVENT_OK; }
+    virtual void Activate(bool bActivate_) {}
 };
 
 #endif
-

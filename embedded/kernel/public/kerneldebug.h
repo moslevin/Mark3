@@ -13,7 +13,7 @@ See license.txt for more information
 ===========================================================================*/
 /*!
     \file kerneldebug.h
-	
+
     \brief Macros and functions used for assertions, kernel traces, etc.
 */
 
@@ -32,91 +32,105 @@ See license.txt for more information
 #if (KERNEL_USE_DEBUG && !KERNEL_AWARE_SIMULATION && KERNEL_ENABLE_LOGGING)
 
 //---------------------------------------------------------------------------
-#define KERNEL_TRACE( x )	\
-{ 	\
-    EMIT_DBG_STRING( x ); \
-    uint16_t au16Msg__[4]; \
-    au16Msg__[0] = 0xACDC;  \
-    au16Msg__[1] = DBG_FILE; \
-    au16Msg__[2] = __LINE__; \
-    au16Msg__[3] = TraceBuffer::Increment() ; \
-    TraceBuffer::Write(au16Msg__, 4); \
+#define KERNEL_TRACE(x)                                                                                                \
+    \
+{                                                                                                               \
+        EMIT_DBG_STRING(x);                                                                                            \
+        uint16_t au16Msg__[4];                                                                                         \
+        au16Msg__[0] = 0xACDC;                                                                                         \
+        au16Msg__[1] = DBG_FILE;                                                                                       \
+        au16Msg__[2] = __LINE__;                                                                                       \
+        au16Msg__[3] = TraceBuffer::Increment();                                                                       \
+        TraceBuffer::Write(au16Msg__, 4);                                                                              \
+    \
 };
 
 //---------------------------------------------------------------------------
-#define KERNEL_TRACE_1( x, arg1 ) \
-{ 	\
-    EMIT_DBG_STRING( x ); \
-    uint16_t au16Msg__[5]; \
-    au16Msg__[0] = 0xACDC;  \
-    au16Msg__[1] = DBG_FILE; \
-    au16Msg__[2] = __LINE__; \
-    au16Msg__[3] = TraceBuffer::Increment(); \
-    au16Msg__[4] = arg1; \
-    TraceBuffer::Write(au16Msg__, 5); \
+#define KERNEL_TRACE_1(x, arg1)                                                                                        \
+    \
+{                                                                                                               \
+        EMIT_DBG_STRING(x);                                                                                            \
+        uint16_t au16Msg__[5];                                                                                         \
+        au16Msg__[0] = 0xACDC;                                                                                         \
+        au16Msg__[1] = DBG_FILE;                                                                                       \
+        au16Msg__[2] = __LINE__;                                                                                       \
+        au16Msg__[3] = TraceBuffer::Increment();                                                                       \
+        au16Msg__[4] = arg1;                                                                                           \
+        TraceBuffer::Write(au16Msg__, 5);                                                                              \
+    \
 }
 
 //---------------------------------------------------------------------------
-#define KERNEL_TRACE_2( x, arg1, arg2 ) \
-{ 	\
-    EMIT_DBG_STRING( x ); \
-    uint16_t au16Msg__[6]; \
-    au16Msg__[0] = 0xACDC;  \
-    au16Msg__[1] = DBG_FILE; \
-    au16Msg__[2] = __LINE__; \
-    au16Msg__[3] = TraceBuffer::Increment(); \
-    au16Msg__[4] = arg1; \
-    au16Msg__[5] = arg2; \
-    TraceBuffer::Write(au16Msg__, 6); \
+#define KERNEL_TRACE_2(x, arg1, arg2)                                                                                  \
+    \
+{                                                                                                               \
+        EMIT_DBG_STRING(x);                                                                                            \
+        uint16_t au16Msg__[6];                                                                                         \
+        au16Msg__[0] = 0xACDC;                                                                                         \
+        au16Msg__[1] = DBG_FILE;                                                                                       \
+        au16Msg__[2] = __LINE__;                                                                                       \
+        au16Msg__[3] = TraceBuffer::Increment();                                                                       \
+        au16Msg__[4] = arg1;                                                                                           \
+        au16Msg__[5] = arg2;                                                                                           \
+        TraceBuffer::Write(au16Msg__, 6);                                                                              \
+    \
 }
 
 //---------------------------------------------------------------------------
-#define KERNEL_ASSERT( x ) \
-{		\
-	if( ( x ) == false ) \
-	{	\
-        EMIT_DBG_STRING( "ASSERT FAILED" ); \
-        uint16_t au16Msg__[4];	\
-        au16Msg__[0] = 0xACDC;	\
-        au16Msg__[1] = DBG_FILE;	\
-        au16Msg__[2] = __LINE__; \
-        au16Msg__[3] = TraceBuffer::Increment(); \
-        TraceBuffer::Write(au16Msg__, 4); \
-        Kernel::Panic(PANIC_ASSERT_FAILED); \
-	}	\
+#define KERNEL_ASSERT(x)                                                                                               \
+    \
+{                                                                                                               \
+        if ((x) == false) {                                                                                            \
+            EMIT_DBG_STRING("ASSERT FAILED");                                                                          \
+            uint16_t au16Msg__[4];                                                                                     \
+            au16Msg__[0] = 0xACDC;                                                                                     \
+            au16Msg__[1] = DBG_FILE;                                                                                   \
+            au16Msg__[2] = __LINE__;                                                                                   \
+            au16Msg__[3] = TraceBuffer::Increment();                                                                   \
+            TraceBuffer::Write(au16Msg__, 4);                                                                          \
+            Kernel::Panic(PANIC_ASSERT_FAILED);                                                                        \
+        }                                                                                                              \
+    \
 }
 #elif (KERNEL_USE_DEBUG && KERNEL_AWARE_SIMULATION && KERNEL_ENABLE_LOGGING)
 
 //---------------------------------------------------------------------------
-#define KERNEL_TRACE( x )	\
-{ 	\
-    EMIT_DBG_STRING( x ); \
-    KernelAware::Trace( DBG_FILE, __LINE__ ); \
+#define KERNEL_TRACE(x)                                                                                                \
+    \
+{                                                                                                               \
+        EMIT_DBG_STRING(x);                                                                                            \
+        KernelAware::Trace(DBG_FILE, __LINE__);                                                                        \
+    \
 };
 
 //---------------------------------------------------------------------------
-#define KERNEL_TRACE_1( x, arg1 ) \
-{ 	\
-    EMIT_DBG_STRING( x ); \
-    KernelAware::Trace( DBG_FILE, __LINE__, arg1 ); \
+#define KERNEL_TRACE_1(x, arg1)                                                                                        \
+    \
+{                                                                                                               \
+        EMIT_DBG_STRING(x);                                                                                            \
+        KernelAware::Trace(DBG_FILE, __LINE__, arg1);                                                                  \
+    \
 }
 
 //---------------------------------------------------------------------------
-#define KERNEL_TRACE_2( x, arg1, arg2 ) \
-{ 	\
-    EMIT_DBG_STRING( x ); \
-    KernelAware::Trace( DBG_FILE, __LINE__, arg1, arg2 ); \
+#define KERNEL_TRACE_2(x, arg1, arg2)                                                                                  \
+    \
+{                                                                                                               \
+        EMIT_DBG_STRING(x);                                                                                            \
+        KernelAware::Trace(DBG_FILE, __LINE__, arg1, arg2);                                                            \
+    \
 }
 
 //---------------------------------------------------------------------------
-#define KERNEL_ASSERT( x ) \
-{		\
-    if( ( x ) == false ) \
-    {	\
-        EMIT_DBG_STRING( "ASSERT FAILED" ); \
-        KernelAware::Trace( DBG_FILE, __LINE__ ); \
-        Kernel::Panic( PANIC_ASSERT_FAILED ); \
-    }	\
+#define KERNEL_ASSERT(x)                                                                                               \
+    \
+{                                                                                                               \
+        if ((x) == false) {                                                                                            \
+            EMIT_DBG_STRING("ASSERT FAILED");                                                                          \
+            KernelAware::Trace(DBG_FILE, __LINE__);                                                                    \
+            Kernel::Panic(PANIC_ASSERT_FAILED);                                                                        \
+        }                                                                                                              \
+    \
 }
 
 #else
@@ -125,106 +139,119 @@ See license.txt for more information
 // macros to ensure that the expressions compile (albeit, by elimination
 // during pre-processing).
 //---------------------------------------------------------------------------
-#define KERNEL_TRACE( x )               //!< Null Kernel Trace Macro
+#define KERNEL_TRACE(x) //!< Null Kernel Trace Macro
 //---------------------------------------------------------------------------
-#define KERNEL_TRACE_1( x, arg1 )       //!< Null Kernel Trace Macro
+#define KERNEL_TRACE_1(x, arg1) //!< Null Kernel Trace Macro
 //---------------------------------------------------------------------------
-#define KERNEL_TRACE_2( x, arg1, arg2 ) //!< Null Kernel Trace Macro
+#define KERNEL_TRACE_2(x, arg1, arg2) //!< Null Kernel Trace Macro
 //---------------------------------------------------------------------------
-#define KERNEL_ASSERT( x )              //!< Null Kernel Assert Macro
+#define KERNEL_ASSERT(x) //!< Null Kernel Assert Macro
 
 #endif // KERNEL_USE_DEBUG
-
 
 //---------------------------------------------------------------------------
 #if (KERNEL_USE_DEBUG && !KERNEL_AWARE_SIMULATION && KERNEL_ENABLE_USER_LOGGING)
 
 //---------------------------------------------------------------------------
-#define USER_TRACE( x )	\
-{ 	\
-    EMIT_DBG_STRING( x ); \
-    uint16_t au16Msg__[4]; \
-    au16Msg__[0] = 0xACDC;  \
-    au16Msg__[1] = DBG_FILE; \
-    au16Msg__[2] = __LINE__; \
-    au16Msg__[3] = TraceBuffer::Increment() ; \
-    TraceBuffer::Write(au16Msg__, 4); \
+#define USER_TRACE(x)                                                                                                  \
+    \
+{                                                                                                               \
+        EMIT_DBG_STRING(x);                                                                                            \
+        uint16_t au16Msg__[4];                                                                                         \
+        au16Msg__[0] = 0xACDC;                                                                                         \
+        au16Msg__[1] = DBG_FILE;                                                                                       \
+        au16Msg__[2] = __LINE__;                                                                                       \
+        au16Msg__[3] = TraceBuffer::Increment();                                                                       \
+        TraceBuffer::Write(au16Msg__, 4);                                                                              \
+    \
 };
 
 //---------------------------------------------------------------------------
-#define USER_TRACE_1( x, arg1 ) \
-{ 	\
-    EMIT_DBG_STRING( x ); \
-    uint16_t au16Msg__[5]; \
-    au16Msg__[0] = 0xACDC;  \
-    au16Msg__[1] = DBG_FILE; \
-    au16Msg__[2] = __LINE__; \
-    au16Msg__[3] = TraceBuffer::Increment(); \
-    au16Msg__[4] = arg1; \
-    TraceBuffer::Write(au16Msg__, 5); \
+#define USER_TRACE_1(x, arg1)                                                                                          \
+    \
+{                                                                                                               \
+        EMIT_DBG_STRING(x);                                                                                            \
+        uint16_t au16Msg__[5];                                                                                         \
+        au16Msg__[0] = 0xACDC;                                                                                         \
+        au16Msg__[1] = DBG_FILE;                                                                                       \
+        au16Msg__[2] = __LINE__;                                                                                       \
+        au16Msg__[3] = TraceBuffer::Increment();                                                                       \
+        au16Msg__[4] = arg1;                                                                                           \
+        TraceBuffer::Write(au16Msg__, 5);                                                                              \
+    \
 }
 
 //---------------------------------------------------------------------------
-#define USER_TRACE_2( x, arg1, arg2 ) \
-{ 	\
-    EMIT_DBG_STRING( x ); \
-    uint16_t au16Msg__[6]; \
-    au16Msg__[0] = 0xACDC;  \
-    au16Msg__[1] = DBG_FILE; \
-    au16Msg__[2] = __LINE__; \
-    au16Msg__[3] = TraceBuffer::Increment(); \
-    au16Msg__[4] = arg1; \
-    au16Msg__[5] = arg2; \
-    TraceBuffer::Write(au16Msg__, 6); \
+#define USER_TRACE_2(x, arg1, arg2)                                                                                    \
+    \
+{                                                                                                               \
+        EMIT_DBG_STRING(x);                                                                                            \
+        uint16_t au16Msg__[6];                                                                                         \
+        au16Msg__[0] = 0xACDC;                                                                                         \
+        au16Msg__[1] = DBG_FILE;                                                                                       \
+        au16Msg__[2] = __LINE__;                                                                                       \
+        au16Msg__[3] = TraceBuffer::Increment();                                                                       \
+        au16Msg__[4] = arg1;                                                                                           \
+        au16Msg__[5] = arg2;                                                                                           \
+        TraceBuffer::Write(au16Msg__, 6);                                                                              \
+    \
 }
 
 //---------------------------------------------------------------------------
-#define USER_ASSERT( x ) \
-{		\
-    if( ( x ) == false ) \
-    {	\
-        EMIT_DBG_STRING( "ASSERT FAILED" ); \
-        uint16_t au16Msg__[4];	\
-        au16Msg__[0] = 0xACDC;	\
-        au16Msg__[1] = DBG_FILE;	\
-        au16Msg__[2] = __LINE__; \
-        au16Msg__[3] = TraceBuffer::Increment(); \
-        TraceBuffer::Write(au16Msg__, 4); \
-        Kernel::Panic(PANIC_ASSERT_FAILED); \
-    }	\
+#define USER_ASSERT(x)                                                                                                 \
+    \
+{                                                                                                               \
+        if ((x) == false) {                                                                                            \
+            EMIT_DBG_STRING("ASSERT FAILED");                                                                          \
+            uint16_t au16Msg__[4];                                                                                     \
+            au16Msg__[0] = 0xACDC;                                                                                     \
+            au16Msg__[1] = DBG_FILE;                                                                                   \
+            au16Msg__[2] = __LINE__;                                                                                   \
+            au16Msg__[3] = TraceBuffer::Increment();                                                                   \
+            TraceBuffer::Write(au16Msg__, 4);                                                                          \
+            Kernel::Panic(PANIC_ASSERT_FAILED);                                                                        \
+        }                                                                                                              \
+    \
 }
 #elif (KERNEL_USE_DEBUG && KERNEL_AWARE_SIMULATION && KERNEL_ENABLE_USER_LOGGING)
 
 //---------------------------------------------------------------------------
-#define USER_TRACE( x )	\
-{ 	\
-    EMIT_DBG_STRING( x ); \
-    KernelAware::Trace( DBG_FILE, __LINE__ ); \
+#define USER_TRACE(x)                                                                                                  \
+    \
+{                                                                                                               \
+        EMIT_DBG_STRING(x);                                                                                            \
+        KernelAware::Trace(DBG_FILE, __LINE__);                                                                        \
+    \
 };
 
 //---------------------------------------------------------------------------
-#define USER_TRACE_1( x, arg1 ) \
-{ 	\
-    EMIT_DBG_STRING( x ); \
-    KernelAware::Trace( DBG_FILE, __LINE__, arg1 ); \
+#define USER_TRACE_1(x, arg1)                                                                                          \
+    \
+{                                                                                                               \
+        EMIT_DBG_STRING(x);                                                                                            \
+        KernelAware::Trace(DBG_FILE, __LINE__, arg1);                                                                  \
+    \
 }
 
 //---------------------------------------------------------------------------
-#define USER_TRACE_2( x, arg1, arg2 ) \
-{ 	\
-    EMIT_DBG_STRING( x ); \
-    KernelAware::Trace( DBG_FILE, __LINE__, arg1, arg2 ); \
+#define USER_TRACE_2(x, arg1, arg2)                                                                                    \
+    \
+{                                                                                                               \
+        EMIT_DBG_STRING(x);                                                                                            \
+        KernelAware::Trace(DBG_FILE, __LINE__, arg1, arg2);                                                            \
+    \
 }
 
 //---------------------------------------------------------------------------
-#define USER_ASSERT( x ) \
-{		\
-    if( ( x ) == false ) \
-    {	\
-        EMIT_DBG_STRING( "ASSERT FAILED" ); \
-        KernelAware::Trace( DBG_FILE, __LINE__ ); \
-        Kernel::Panic( PANIC_ASSERT_FAILED ); \
-    }	\
+#define USER_ASSERT(x)                                                                                                 \
+    \
+{                                                                                                               \
+        if ((x) == false) {                                                                                            \
+            EMIT_DBG_STRING("ASSERT FAILED");                                                                          \
+            KernelAware::Trace(DBG_FILE, __LINE__);                                                                    \
+            Kernel::Panic(PANIC_ASSERT_FAILED);                                                                        \
+        }                                                                                                              \
+    \
 }
 
 #else
@@ -233,13 +260,13 @@ See license.txt for more information
 // macros to ensure that the expressions compile (albeit, by elimination
 // during pre-processing).
 //---------------------------------------------------------------------------
-#define USER_TRACE( x )               //!< Null Kernel Trace Macro
+#define USER_TRACE(x) //!< Null Kernel Trace Macro
 //---------------------------------------------------------------------------
-#define USER_TRACE_1( x, arg1 )       //!< Null Kernel Trace Macro
+#define USER_TRACE_1(x, arg1) //!< Null Kernel Trace Macro
 //---------------------------------------------------------------------------
-#define USER_TRACE_2( x, arg1, arg2 ) //!< Null Kernel Trace Macro
+#define USER_TRACE_2(x, arg1, arg2) //!< Null Kernel Trace Macro
 //---------------------------------------------------------------------------
-#define USER_ASSERT( x )              //!< Null Kernel Assert Macro
+#define USER_ASSERT(x) //!< Null Kernel Assert Macro
 
 #endif // KERNEL_USE_DEBUG
 

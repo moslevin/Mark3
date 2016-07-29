@@ -33,7 +33,7 @@ static volatile uint8_t u8TestVal;
 
 //---------------------------------------------------------------------------
 static Semaphore clSemaphore;
-static Mutex clMutex;
+static Mutex     clMutex;
 
 //---------------------------------------------------------------------------
 static Thread clMainThread;
@@ -157,7 +157,7 @@ static void Semaphore_Profiling()
 static void Mutex_Profiling()
 {
     uint16_t i;
-    Mutex clMutex;
+    Mutex    clMutex;
 
     CS_ENTER();
     KernelAware::ProfileInit("MutexInit");

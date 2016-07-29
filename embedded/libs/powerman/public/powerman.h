@@ -23,13 +23,13 @@ See license.txt for more information
 
 #include "mark3.h"
 
-#define MAX_BALLOTS         (48)
+#define MAX_BALLOTS (48)
 
 //---------------------------------------------------------------------------
 typedef enum {
-    POWER_VOTE_NONE,    //!< Abstain from voting
-    POWER_VOTE_SLEEP,   //!< Vote to sleep
-    POWER_VOTE_WAKE     //!< Vote to stay awake
+    POWER_VOTE_NONE,  //!< Abstain from voting
+    POWER_VOTE_SLEEP, //!< Vote to sleep
+    POWER_VOTE_WAKE   //!< Vote to stay awake
 } power_vote_t;
 
 //---------------------------------------------------------------------------
@@ -78,7 +78,6 @@ public:
     bool CountBallots(void);
 
 protected:
-
     friend class PowerBallot;
 
     /*!
@@ -104,9 +103,9 @@ protected:
     uint8_t GetNextID();
 
 private:
-    uint8_t m_au8SleepBallots[MAX_BALLOTS / 8];   //!< Bitmap indicating "sleep" votes
-    uint8_t m_au8WakeBallots[MAX_BALLOTS / 8];    //!< Bitmap indication "wake" votes
-    uint8_t m_u8ID;                               //!< Auto-incrementing ID, used to identify ballots
+    uint8_t m_au8SleepBallots[MAX_BALLOTS / 8]; //!< Bitmap indicating "sleep" votes
+    uint8_t m_au8WakeBallots[MAX_BALLOTS / 8];  //!< Bitmap indication "wake" votes
+    uint8_t m_u8ID;                             //!< Auto-incrementing ID, used to identify ballots
 };
 
 #endif //__POWERMAN_H__

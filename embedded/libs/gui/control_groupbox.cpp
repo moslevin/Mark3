@@ -32,8 +32,8 @@ See license.txt for more information
 void GroupBoxControl::Init()
 {
     m_uHeaderColor = SECONDARY_2_50;
-    m_uFontColor = SECONDARY_2_100;
-    m_uPanelColor = SECONDARY_2_0;
+    m_uFontColor   = SECONDARY_2_100;
+    m_uPanelColor  = SECONDARY_2_0;
 
     SetAcceptFocus(false);
 }
@@ -43,31 +43,31 @@ void GroupBoxControl::Draw()
 {
     GUI_DEBUG_PRINT("GroupBoxControl::Draw()\n");
     GraphicsDriver* pclDriver = GetParentWindow()->GetDriver();
-    uint16_t u16X, u16Y;
-    uint16_t u16TextWidth;
+    uint16_t        u16X, u16Y;
+    uint16_t        u16TextWidth;
 
     GetControlOffset(&u16X, &u16Y);
 
     // Draw the background panel, starting with the caption header
     {
         DrawRectangle_t stRectangle;
-        stRectangle.bFill = true;
-        stRectangle.u16Left = GetLeft() + u16X;
+        stRectangle.bFill    = true;
+        stRectangle.u16Left  = GetLeft() + u16X;
         stRectangle.u16Right = stRectangle.u16Left + GetWidth() - 1;
 
-        stRectangle.u16Top = GetTop() + u16Y;
+        stRectangle.u16Top    = GetTop() + u16Y;
         stRectangle.u16Bottom = stRectangle.u16Top + HEADER_HEIGHT - 1;
 
         stRectangle.u32ineColor = m_uHeaderColor;
-        stRectangle.uFillColor = m_uHeaderColor;
+        stRectangle.uFillColor  = m_uHeaderColor;
 
         pclDriver->Rectangle(&stRectangle);
 
-        stRectangle.u16Top = GetTop() + u16Y + HEADER_HEIGHT;
+        stRectangle.u16Top    = GetTop() + u16Y + HEADER_HEIGHT;
         stRectangle.u16Bottom = stRectangle.u16Top + GetHeight() - HEADER_HEIGHT;
 
         stRectangle.u32ineColor = m_uPanelColor;
-        stRectangle.uFillColor = m_uPanelColor;
+        stRectangle.uFillColor  = m_uPanelColor;
 
         pclDriver->Rectangle(&stRectangle);
     }
@@ -75,10 +75,10 @@ void GroupBoxControl::Draw()
     // Draw the caption
     {
         DrawText_t stText;
-        stText.u16Left = GetLeft() + u16X + TEXT_X_OFFSET;
-        stText.u16Top = GetTop() + u16Y + TEXT_Y_OFFSET;
-        stText.uColor = m_uFontColor;
-        stText.pstFont = m_pstFont;
+        stText.u16Left  = GetLeft() + u16X + TEXT_X_OFFSET;
+        stText.u16Top   = GetTop() + u16Y + TEXT_Y_OFFSET;
+        stText.uColor   = m_uFontColor;
+        stText.pstFont  = m_pstFont;
         stText.pcString = m_pcCaption;
 
         u16TextWidth = pclDriver->TextWidth(&stText);

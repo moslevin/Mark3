@@ -13,7 +13,7 @@ See license.txt for more information
 =========================================================================== */
 /*!
     \file slipterm.h
-    
+
     \brief Serial debug interface using SLIP serial, and Funkenslip serial
            port multiplexing
  */
@@ -23,11 +23,11 @@ See license.txt for more information
 #include "slip.h"
 
 //---------------------------------------------------------------------------
-#define SEVERITY_DEBUG                4
-#define SEVERITY_INFO                3
-#define SEVERITY_WARN                2
-#define SEVERITY_CRITICAL            1
-#define SEVERITY_CATASTROPHIC        0
+#define SEVERITY_DEBUG 4
+#define SEVERITY_INFO 3
+#define SEVERITY_WARN 2
+#define SEVERITY_CRITICAL 1
+#define SEVERITY_CATASTROPHIC 0
 
 //---------------------------------------------------------------------------
 #ifndef __SLIPTERM_H__
@@ -48,7 +48,7 @@ public:
      *  functionality.
      */
     void Init();
-    
+
     /*!
      *  \brief PrintLn
      *
@@ -57,42 +57,42 @@ public:
      *
      *  \param szLine_ String to print
      */
-    void PrintLn( const char *szLine_ );
+    void PrintLn(const char* szLine_);
 
     /*!
      *  \brief PrintLn
      *
-     *  Print a string of text to the SLIP interface, but only if the 
-     *  current logging verbosity level is greater than or equal to the 
+     *  Print a string of text to the SLIP interface, but only if the
+     *  current logging verbosity level is greater than or equal to the
      *  specified message severity
-     *  
+     *
      *  \param u8Severity_ Message severity level, 0 = highest severity
      *  \param szLine_ String to print
      */
-    void PrintLn( uint8_t u8Severity_, const char *szLine_ );
-    
-    /*!        
+    void PrintLn(uint8_t u8Severity_, const char* szLine_);
+
+    /*!
      *  \brief SetVerbosity
      *
      *  Set the logging verbosity level - the minimum severity level that
-     *  will be printed to the terminal.  The higher the number, the 
+     *  will be printed to the terminal.  The higher the number, the
      *  more chatty the output.
      */
-    void SetVerbosity( uint8_t u8Level_ ) { m_u8Verbosity = u8Level_; }
+    void SetVerbosity(uint8_t u8Level_) { m_u8Verbosity = u8Level_; }
 private:
     /*!
      *  \brief StrLen
      *
      *  Quick 'n' dirty StrLen functionality used for printing the string.
-     *  
+     *
      *  \return Length of the string (in bytes)
      */
-    uint16_t StrLen( const char *szString_ );
-    
-    uint8_t m_u8Verbosity;     //!< Verbosity level.  Messages with a severity 
-                            //!< level greater than this Are not displayed.
-    
-    Slip m_clSlip;        //!< Slip object that this module interfaces with
+    uint16_t StrLen(const char* szString_);
+
+    uint8_t m_u8Verbosity; //!< Verbosity level.  Messages with a severity
+                           //!< level greater than this Are not displayed.
+
+    Slip m_clSlip; //!< Slip object that this module interfaces with
 };
 
 #endif

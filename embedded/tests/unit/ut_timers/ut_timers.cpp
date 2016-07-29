@@ -30,15 +30,15 @@ See license.txt for more information
 //===========================================================================
 // Local Defines
 //===========================================================================
-static Timer clTimer1;
-static Timer clTimer2;
-static Timer clTimer3;
-static Semaphore clTimerSem;
-static ProfileTimer clProfileTimer;
-static ProfileTimer clProfileTimer2;
-static ProfileTimer clProfileTimer3;
-static uint32_t u32TimeVal;
-static uint32_t u32TempTime;
+static Timer             clTimer1;
+static Timer             clTimer2;
+static Timer             clTimer3;
+static Semaphore         clTimerSem;
+static ProfileTimer      clProfileTimer;
+static ProfileTimer      clProfileTimer2;
+static ProfileTimer      clProfileTimer3;
+static uint32_t          u32TimeVal;
+static uint32_t          u32TempTime;
 static volatile uint32_t u32CallbackCount = 0;
 
 static void TimerCallback(Thread* pclOwner_, void* pvVal_)
@@ -62,7 +62,7 @@ TEST(ut_timer_tolerance)
     clTimerSem.Pend();
     clProfileTimer.Stop();
 
-    u32TimeVal = clProfileTimer.GetCurrent() * CLOCK_DIVIDE;
+    u32TimeVal  = clProfileTimer.GetCurrent() * CLOCK_DIVIDE;
     u32TempTime = SYSTEM_FREQ / 1000;
     EXPECT_GT(u32TimeVal, u32TempTime);
 
@@ -77,7 +77,7 @@ TEST(ut_timer_tolerance)
     clTimerSem.Pend();
     clProfileTimer.Stop();
 
-    u32TimeVal = clProfileTimer.GetCurrent() * CLOCK_DIVIDE;
+    u32TimeVal  = clProfileTimer.GetCurrent() * CLOCK_DIVIDE;
     u32TempTime = SYSTEM_FREQ / 100;
 
     EXPECT_GT(u32TimeVal, u32TempTime);
@@ -93,7 +93,7 @@ TEST(ut_timer_tolerance)
     clTimerSem.Pend();
     clProfileTimer.Stop();
 
-    u32TimeVal = clProfileTimer.GetCurrent() * CLOCK_DIVIDE;
+    u32TimeVal  = clProfileTimer.GetCurrent() * CLOCK_DIVIDE;
     u32TempTime = SYSTEM_FREQ / 10;
 
     EXPECT_GT(u32TimeVal, u32TempTime);
@@ -109,7 +109,7 @@ TEST(ut_timer_tolerance)
     clTimerSem.Pend();
     clProfileTimer.Stop();
 
-    u32TimeVal = clProfileTimer.GetCurrent() * CLOCK_DIVIDE;
+    u32TimeVal  = clProfileTimer.GetCurrent() * CLOCK_DIVIDE;
     u32TempTime = SYSTEM_FREQ;
 
     EXPECT_GT(u32TimeVal, u32TempTime);
@@ -148,7 +148,7 @@ TEST(ut_timer_longrun)
 
     clProfileTimer.Stop();
 
-    u32TimeVal = clProfileTimer.GetAverage() * CLOCK_DIVIDE * u32SleepCount;
+    u32TimeVal  = clProfileTimer.GetAverage() * CLOCK_DIVIDE * u32SleepCount;
     u32TempTime = SYSTEM_FREQ * 10;
 
     EXPECT_GT(u32TimeVal, u32TempTime);
@@ -187,7 +187,7 @@ TEST(ut_timer_repeat)
     clProfileTimer.Stop();
     clTimer1.Stop();
 
-    u32TimeVal = clProfileTimer.GetCurrent() * CLOCK_DIVIDE;
+    u32TimeVal  = clProfileTimer.GetCurrent() * CLOCK_DIVIDE;
     u32TempTime = SYSTEM_FREQ;
 
     EXPECT_GT(u32TimeVal, u32TempTime);
@@ -248,7 +248,7 @@ TEST(ut_timer_multi)
     clProfileTimer2.Stop();
 
     // Test Point - Timer 1 expired @ 100ms, with a 1 ms tolerance
-    u32TimeVal = clProfileTimer.GetCurrent() * CLOCK_DIVIDE;
+    u32TimeVal  = clProfileTimer.GetCurrent() * CLOCK_DIVIDE;
     u32TempTime = SYSTEM_FREQ / 10;
     EXPECT_GT(u32TimeVal, u32TempTime);
 
@@ -256,7 +256,7 @@ TEST(ut_timer_multi)
     EXPECT_LT(u32TimeVal, u32TempTime);
 
     // Test Point - Timer 2 expired @ 200ms, with a 1 ms tolerance
-    u32TimeVal = clProfileTimer2.GetCurrent() * CLOCK_DIVIDE;
+    u32TimeVal  = clProfileTimer2.GetCurrent() * CLOCK_DIVIDE;
     u32TempTime = SYSTEM_FREQ / 5;
     EXPECT_GT(u32TimeVal, u32TempTime);
 
@@ -264,7 +264,7 @@ TEST(ut_timer_multi)
     EXPECT_LT(u32TimeVal, u32TempTime);
 
     // Test Point - Timer 3 expired @ 50ms, with a 1 ms tolerance
-    u32TimeVal = clProfileTimer3.GetCurrent() * CLOCK_DIVIDE;
+    u32TimeVal  = clProfileTimer3.GetCurrent() * CLOCK_DIVIDE;
     u32TempTime = SYSTEM_FREQ / 20;
     EXPECT_GT(u32TimeVal, u32TempTime);
 
@@ -279,5 +279,5 @@ TEST_END
 // Test Whitelist Goes Here
 //===========================================================================
 TEST_CASE_START
-TEST_CASE(ut_timer_tolerance), TEST_CASE(ut_timer_longrun), TEST_CASE(ut_timer_repeat), TEST_CASE(ut_timer_multi),
-    TEST_CASE_END
+TEST_CASE(ut_timer_tolerance)
+, TEST_CASE(ut_timer_longrun), TEST_CASE(ut_timer_repeat), TEST_CASE(ut_timer_multi), TEST_CASE_END

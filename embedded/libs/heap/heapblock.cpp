@@ -39,12 +39,12 @@ HeapBlock* HeapBlock::Split(K_ADDR usize_)
 
     K_ADDR u32eftBlockSize = ROUND_UP(usize_) + sizeof(HeapBlock);
 
-    K_ADDR uThisBlockSize = m_uDataSize + sizeof(HeapBlock);
+    K_ADDR uThisBlockSize  = m_uDataSize + sizeof(HeapBlock);
     K_ADDR uRightBlockSize = uThisBlockSize - u32eftBlockSize;
 
     m_uDataSize = ROUND_UP(usize_);
 
-    K_ADDR uNewAddr = (K_ADDR) this + u32eftBlockSize;
+    K_ADDR     uNewAddr      = (K_ADDR)this + u32eftBlockSize;
     HeapBlock* pclRightBlock = (HeapBlock*)uNewAddr;
 
     pclRightBlock->Init();
@@ -83,7 +83,7 @@ void HeapBlock::Coalesce(void)
 //---------------------------------------------------------------------------
 void* HeapBlock::GetDataPointer(void)
 {
-    K_ADDR uAddr = (K_ADDR) this;
+    K_ADDR uAddr = (K_ADDR)this;
     uAddr += sizeof(HeapBlock);
     return (void*)uAddr;
 }

@@ -28,13 +28,12 @@ See license.txt for more information
 //---------------------------------------------------------------------------
 // UART defines - user-configurable for different targets
 //---------------------------------------------------------------------------
-#define UART_DEFAULT_BAUD       ((uint32_t)57600)
+#define UART_DEFAULT_BAUD ((uint32_t)57600)
 
 //---------------------------------------------------------------------------
-typedef enum
-{
+typedef enum {
     CMD_SET_BAUDRATE = 0x80,
-    CMD_SET_BUFFERS,    
+    CMD_SET_BUFFERS,
     CMD_SET_RX_ESCAPE,
     CMD_SET_RX_CALLBACK,
     CMD_SET_RX_ECHO,
@@ -47,32 +46,23 @@ class D20_UART;
 typedef struct _UartData_t UartData_t;
 
 //---------------------------------------------------------------------------
-typedef void (*UART_Rx_Callback_t)( D20_UART *pclUART );
+typedef void (*UART_Rx_Callback_t)(D20_UART* pclUART);
 
 //---------------------------------------------------------------------------
 class D20_UART : public Driver
 {
-    
-public:        
-    virtual void Init();
-    virtual uint8_t Open();
-    virtual uint8_t Close();
-    virtual uint16_t Read( uint16_t u16Bytes_, 
-                           uint8_t *pu8Data_ );
-                             
-    virtual uint16_t Write( uint16_t u16Bytes_, 
-                            uint8_t *pu8Data_ );
+public:
+    virtual void     Init();
+    virtual uint8_t  Open();
+    virtual uint8_t  Close();
+    virtual uint16_t Read(uint16_t u16Bytes_, uint8_t* pu8Data_);
 
-    virtual uint16_t Control( uint16_t u16Event_, 
-                              void *pvIn_, 
-                              uint16_t u16SizeIn_, 
-                              void *pvOut_, 
-                              uint16_t u16SizeOut_ );
+    virtual uint16_t Write(uint16_t u16Bytes_, uint8_t* pu8Data_);
+
+    virtual uint16_t Control(uint16_t u16Event_, void* pvIn_, uint16_t u16SizeIn_, void* pvOut_, uint16_t u16SizeOut_);
 
 private:
-
     SysUART m_clUART;
-
 };
 
-#endif 
+#endif

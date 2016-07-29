@@ -2,13 +2,13 @@
 #include "tracebuffer.h"
 
 //---------------------------------------------------------------------------
-static Thread clLoggerThread;
+static Thread  clLoggerThread;
 static uint8_t au8LoggerStack[320];
 
 //---------------------------------------------------------------------------
-static Semaphore clLoggerSem;
-static volatile bool bPingPong;
-static volatile uint16_t u16LogLen;
+static Semaphore          clLoggerSem;
+static volatile bool      bPingPong;
+static volatile uint16_t  u16LogLen;
 static volatile uint16_t* pu16Log;
 
 //---------------------------------------------------------------------------
@@ -16,7 +16,7 @@ static void LoggerCallback(uint16_t* pu16Data_, uint16_t u16Len_, bool bPingPong
 {
     CS_ENTER();
     bPingPong = bPingPong_;
-    pu16Log = pu16Data_;
+    pu16Log   = pu16Data_;
     u16LogLen = u16Len_;
     CS_EXIT();
 

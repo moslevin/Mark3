@@ -102,7 +102,7 @@ uint16_t RAMDriver::Control(uint16_t u16Event_, void* pvIn_, uint16_t u16SizeIn_
             return 1;
         }
         case EEPROM_CMD_SET_BUFFER: {
-            m_pcData = (uint8_t*)pvIn_;
+            m_pcData  = (uint8_t*)pvIn_;
             m_u16Size = u16SizeIn_;
         }
     }

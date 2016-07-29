@@ -53,7 +53,7 @@ public:
      * \param u32Seed1_ Seed value for LFSR register 1
      * \param u32Seed2_ Seed value for LFSR register 2
      */
-    void Seed( uint32_t u32Seed1_, uint32_t u32Seed2_ );
+    void Seed(uint32_t u32Seed1_, uint32_t u32Seed2_);
 
     /*!
      * \brief GetRandom
@@ -65,7 +65,6 @@ public:
     uint16_t GetRandom();
 
 private:
-
     /*!
      * \brief Shift
      *
@@ -75,12 +74,10 @@ private:
      * \param u32Mask_ Bitmask to apply as an XOR
      * \return new value in the LFSR register
      */
-    uint32_t Shift( uint32_t *pu32LFSR_, uint32_t u32Mask_ );
+    uint32_t Shift(uint32_t* pu32LFSR_, uint32_t u32Mask_);
 
     uint32_t m_u32LFSR1;
     uint32_t m_u32LFSR2;
-
 };
 
 #endif
-

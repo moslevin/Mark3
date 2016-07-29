@@ -34,15 +34,15 @@ See license.txt for more information
 #include <in430.h>
 
 //---------------------------------------------------------------------------
-volatile uint8_t g_u8CSCount;
+volatile uint8_t  g_u8CSCount;
 volatile uint16_t g_u16SR;
 //---------------------------------------------------------------------------
 void ThreadPort::InitStack(Thread* pclThread_)
 {
     // Initialize the stack for a Thread
-    uint16_t u16Addr;
+    uint16_t  u16Addr;
     uint16_t* pu16Stack;
-    uint16_t i;
+    uint16_t  i;
 
     // Get the address of the thread's entry function
     u16Addr = (uint16_t)(pclThread_->m_pfEntryPoint);
@@ -135,7 +135,7 @@ void ThreadPort::StartThreads()
     KernelSWI::Start(); // enable the task switch SWI
 
     g_u8CSCount = 0; // Reset the critical section counter
-    g_u16SR = 0;
+    g_u16SR     = 0;
     // Restore the context...
     Thread_RestoreContext(); // restore the context of the first running thread
     ASM("reti");             // return from interrupt - will return to the first scheduled thread

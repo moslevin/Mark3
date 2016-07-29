@@ -47,8 +47,8 @@ char ShellSupport::RunCommand(CommandLine_t* pstCommand_, const ShellCommand_t* 
 void ShellSupport::UnescapeToken(Token_t* pstToken_, char* szDest_)
 {
     const char* szSrc = pstToken_->pcToken;
-    int i;
-    int j = 0;
+    int         i;
+    int         j = 0;
     for (i = 0; i < pstToken_->u8Len; i++) {
         //-- Escape characters
         if ('\\' == szSrc[i]) {
@@ -57,10 +57,10 @@ void ShellSupport::UnescapeToken(Token_t* pstToken_, char* szDest_)
                 break;
             }
             switch (szSrc[i]) {
-                case 't': szDest_[j++] = '\t'; break;
-                case 'r': szDest_[j++] = '\r'; break;
-                case 'n': szDest_[j++] = '\n'; break;
-                case ' ': szDest_[j++] = ' '; break;
+                case 't': szDest_[j++]  = '\t'; break;
+                case 'r': szDest_[j++]  = '\r'; break;
+                case 'n': szDest_[j++]  = '\n'; break;
+                case ' ': szDest_[j++]  = ' '; break;
                 case '\\': szDest_[j++] = '\\'; break;
                 case '\"': szDest_[j++] = '\"'; break;
                 default: break;
@@ -82,7 +82,7 @@ void ShellSupport::UnescapeToken(Token_t* pstToken_, char* szDest_)
 //---------------------------------------------------------------------------
 Option_t* ShellSupport::CheckForOption(CommandLine_t* pstCommand_, const char* szOption_)
 {
-    char i;
+    char    i;
     uint8_t tmp_len;
     for (i = 0; i < pstCommand_->u8NumOptions; i++) {
         tmp_len = MIN(MemUtil::StringLength(szOption_), pstCommand_->astOptions[i].pstStart->u8Len);
@@ -98,9 +98,9 @@ Option_t* ShellSupport::CheckForOption(CommandLine_t* pstCommand_, const char* s
 //---------------------------------------------------------------------------
 char ShellSupport::TokensToCommandLine(Token_t* pastTokens_, uint8_t u8Tokens_, CommandLine_t* pstCommand_)
 {
-    char count = 0;
-    char token = 0;
-    char option = 0;
+    char count                = 0;
+    char token                = 0;
+    char option               = 0;
     pstCommand_->u8NumOptions = 0;
 
     if (!u8Tokens_) {
@@ -114,7 +114,7 @@ char ShellSupport::TokensToCommandLine(Token_t* pastTokens_, uint8_t u8Tokens_, 
     token = 1;
     while (token < u8Tokens_ && option < 12) {
         pstCommand_->astOptions[option].pstStart = &pastTokens_[token];
-        count = 1;
+        count                                    = 1;
         token++;
         while (token < u8Tokens_ && pastTokens_[token].pcToken[0] != '-') {
             token++;
@@ -124,8 +124,8 @@ char ShellSupport::TokensToCommandLine(Token_t* pastTokens_, uint8_t u8Tokens_, 
         option++;
     }
 
-    pstCommand_->u8NumOptions = option;
-    pstCommand_->u8TokenCount = u8Tokens_;
+    pstCommand_->u8NumOptions  = option;
+    pstCommand_->u8TokenCount  = u8Tokens_;
     pstCommand_->pastTokenList = pastTokens_;
     return option;
 }

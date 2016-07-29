@@ -29,7 +29,7 @@ public:
      * \param pu8Data_ Pointer to raw data to be streamed
      * \param u16Size_ Size of pu8Data_ in bytes
      */
-    void Init(uint8_t *pu8Data_, uint16_t u16Size_);
+    void Init(uint8_t* pu8Data_, uint16_t u16Size_);
 
     /*!
      * \brief AdvanceByte
@@ -52,8 +52,8 @@ public:
     uint8_t ReadBits(uint8_t u8NumBits_);
 
 private:
-    uint8_t *m_pu8Data;      //!< Pointer to the data being streamed
-    uint8_t m_u8BitIndex;    //!< Current "bit" index in the current byte
+    uint8_t* m_pu8Data;      //!< Pointer to the data being streamed
+    uint8_t  m_u8BitIndex;   //!< Current "bit" index in the current byte
     uint16_t m_u16ByteIndex; //!< Current "byte" index in the stream
     uint16_t m_u16Size;      //!< Length of data (in bytes)
 };

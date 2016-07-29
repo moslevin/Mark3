@@ -40,7 +40,7 @@ static ATMegaUART clUART; //!< UART device driver object
 
 //---------------------------------------------------------------------------
 #if !KERNEL_USE_IDLE_FUNC
-static Thread IdleThread; //!< Idle thread - runs when app can't
+static Thread  IdleThread; //!< Idle thread - runs when app can't
 static uint8_t aucIdleStack[STACK_SIZE_IDLE];
 #endif
 
@@ -56,7 +56,7 @@ static void IdleEntry(void);
 void MyUnitTest::PrintTestResult()
 {
     char acTemp[6];
-    int iLen;
+    int  iLen;
 
     PrintString("Test ");
     PrintString(GetName());

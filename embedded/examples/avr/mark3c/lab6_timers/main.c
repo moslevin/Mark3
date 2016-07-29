@@ -27,14 +27,14 @@ Takeaway:
 // This block declares the thread data for one main application thread.  It
 // defines a thread object, stack (in word-array form), and the entry-point
 // function used by the application thread.
-#define APP1_STACK_SIZE      (320/sizeof(K_WORD))
+#define APP1_STACK_SIZE (320 / sizeof(K_WORD))
 DECLARE_THREAD(hApp1Thread);
-static K_WORD  awApp1Stack[APP1_STACK_SIZE];
-static void    App1Main(void *unused_);
+static K_WORD awApp1Stack[APP1_STACK_SIZE];
+static void App1Main(void* unused_);
 
 //---------------------------------------------------------------------------
-static void PeriodicCallback(Thread_t owner, void *pvData_);
-static void OneShotCallback(Thread_t owner, void *pvData_);
+static void PeriodicCallback(Thread_t owner, void* pvData_);
+static void OneShotCallback(Thread_t owner, void* pvData_);
 
 //---------------------------------------------------------------------------
 int main(void)
@@ -42,41 +42,41 @@ int main(void)
     // See the annotations in previous labs for details on init.
     Kernel_Init();
 
-    Thread_Init( hApp1Thread, awApp1Stack,  APP1_STACK_SIZE,  1, App1Main,  0);
-    Thread_Start( hApp1Thread );
-    
+    Thread_Init(hApp1Thread, awApp1Stack, APP1_STACK_SIZE, 1, App1Main, 0);
+    Thread_Start(hApp1Thread);
+
     Kernel_Start();
 
     return 0;
 }
 
 //---------------------------------------------------------------------------
-void PeriodicCallback(Thread_t owner, void *pvData_)
+void PeriodicCallback(Thread_t owner, void* pvData_)
 {
     // Timer callback function used to post a semaphore.  Posting the semaphore
     // will wake up a thread that's pending on that semaphore.
     Semaphore_t hSem = (Semaphore_t)pvData_;
-    Semaphore_Post( hSem );
+    Semaphore_Post(hSem);
 }
 
 //---------------------------------------------------------------------------
-void OneShotCallback(Thread_t owner, void *pvData_)
+void OneShotCallback(Thread_t owner, void* pvData_)
 {
     KernelAware_Print("One-shot timer expired.\n");
 }
 
 //---------------------------------------------------------------------------
-void App1Main(void *unused_)
+void App1Main(void* unused_)
 {
-    DECLARE_TIMER(hMyTimer);  // Periodic timer object
-    DECLARE_TIMER(hOneShot);  // One-shot timer object
+    DECLARE_TIMER(hMyTimer); // Periodic timer object
+    DECLARE_TIMER(hOneShot); // One-shot timer object
 
-    DECLARE_SEMAPHORE(hMySem);    // Semaphore used to wake this thread
+    DECLARE_SEMAPHORE(hMySem); // Semaphore used to wake this thread
 
     // Initialize a binary semaphore (maximum value of one, initial value of
     // zero).
-    Semaphore_Init( hMySem, 0, 1 );
-    
+    Semaphore_Init(hMySem, 0, 1);
+
     // Start a timer that triggers every 500ms that will call PeriodicCallback.
     // This timer simulates an external stimulus or event that would require
     // an action to be taken by this thread, but would be serviced by an
@@ -85,20 +85,18 @@ void App1Main(void *unused_)
     // PeriodicCallback will post the semaphore which wakes the thread
     // up to perform an action.  Here that action consists of a trivial message
     // print.
-    Timer_Start( hMyTimer, true, 50, 0, PeriodicCallback, (void*)hMySem);
+    Timer_Start(hMyTimer, true, 50, 0, PeriodicCallback, (void*)hMySem);
 
     // Set up a one-shot timer to print a message after 2.5 seconds, asynchronously
     // from the execution of this thread.
-    Timer_Start( hOneShot, false, 250, 0, OneShotCallback, 0);
+    Timer_Start(hOneShot, false, 250, 0, OneShotCallback, 0);
 
-    while(1)
-    {
+    while (1) {
         // Wait until the semaphore is posted from the timer expiry
-        Semaphore_Pend( hMySem );
-        
+        Semaphore_Pend(hMySem);
+
         // Take some action after the timer posts the semaphore to wake this
         // thread.
         KernelAware_Print("Thread Triggered.\n");
     }
 }
-

@@ -24,10 +24,9 @@ See license.txt for more information
 #include "kerneltypes.h"
 #include "driver.h"
 
-typedef enum
-{
-    EEPROM_CMD_SEEK = 0x80,  //!< Set the current EEPROM address, used for read/write
-    EEPROM_CMD_SET_BUFFER    //!< Set the data buffer and buffer size before use
+typedef enum {
+    EEPROM_CMD_SEEK = 0x80, //!< Set the current EEPROM address, used for read/write
+    EEPROM_CMD_SET_BUFFER   //!< Set the data buffer and buffer size before use
 } EEPROM_Cmd_t;
 
 class RAMDriver;
@@ -35,24 +34,19 @@ class RAMDriver;
 class RAMDriver : public Driver
 {
 public:
-    virtual void Init();
-    virtual uint8_t Open();
-    virtual uint8_t Close();
-    virtual uint16_t Read( uint16_t u16Bytes_,
-                            uint8_t *pu8Data_ );
-        
-    virtual uint16_t Write( uint16_t u16Bytes_,
-                            uint8_t *pu8Data_ );
-        
-    virtual uint16_t Control( uint16_t u16Event_,
-                              void *pvIn_,
-                              uint16_t u16SizeIn_,
-                              void *pvOut_,
-                              uint16_t u16SizeOut_ );
+    virtual void     Init();
+    virtual uint8_t  Open();
+    virtual uint8_t  Close();
+    virtual uint16_t Read(uint16_t u16Bytes_, uint8_t* pu8Data_);
+
+    virtual uint16_t Write(uint16_t u16Bytes_, uint8_t* pu8Data_);
+
+    virtual uint16_t Control(uint16_t u16Event_, void* pvIn_, uint16_t u16SizeIn_, void* pvOut_, uint16_t u16SizeOut_);
+
 private:
-    uint16_t m_u16Address;        
+    uint16_t m_u16Address;
     uint16_t m_u16Size;
-    uint8_t *m_pcData;
+    uint8_t* m_pcData;
 };
 
-#endif 
+#endif

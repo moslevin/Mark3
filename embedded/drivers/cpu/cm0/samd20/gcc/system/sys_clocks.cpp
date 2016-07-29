@@ -21,9 +21,9 @@ See license.txt for more information
 //---------------------------------------------------------------------------
 SysClock::SysClock()
 {
-    m_eClock = CLK_DFLL48;
+    m_eClock    = CLK_DFLL48;
     m_eClockGen = GCLK_0;
-    m_bLock = false;
+    m_bLock     = false;
 }
 
 //---------------------------------------------------------------------------
@@ -112,13 +112,13 @@ void SysClock::WriteChannel()
 //---------------------------------------------------------------------------
 SysClockGenerator::SysClockGenerator()
 {
-    m_eClockGen = GCLK_0;
-    m_eDivMode = DIV_MODE_LINEAR;
-    m_eClockSrc = GCLK_SRC_OSC8M;
-    m_u16Divisor = 0;
-    m_bRunInStandby = true;
-    m_bOutputToPin = false;
-    m_bOutputOffValue = false;
+    m_eClockGen         = GCLK_0;
+    m_eDivMode          = DIV_MODE_LINEAR;
+    m_eClockSrc         = GCLK_SRC_OSC8M;
+    m_u16Divisor        = 0;
+    m_bRunInStandby     = true;
+    m_bOutputToPin      = false;
+    m_bOutputOffValue   = false;
     m_bImproveDutyCycle = true;
 }
 
@@ -172,7 +172,7 @@ void SysClockGenerator::ImproveDutyCycle(bool bImprove_)
 //---------------------------------------------------------------------------
 void SysClockGenerator::SetDivisor(ClockDivideMode_t eMode_, uint16_t u16Divisor_)
 {
-    m_eDivMode = eMode_;
+    m_eDivMode   = eMode_;
     m_u16Divisor = u16Divisor_;
 }
 
@@ -180,7 +180,7 @@ void SysClockGenerator::SetDivisor(ClockDivideMode_t eMode_, uint16_t u16Divisor
 void SysClockGenerator::CommitConfig(void)
 {
     uint32_t u32GenCtrl = 0;
-    uint32_t u32GenDiv = 0;
+    uint32_t u32GenDiv  = 0;
 
     u32GenCtrl = m_eClockGen << GCLK_GENCTRL_ID_Pos | m_eClockSrc << GCLK_GENCTRL_SRC_Pos;
 
@@ -244,8 +244,8 @@ void SysClockGenerator::WriteGeneratorDiv()
 //---------------------------------------------------------------------------
 Source_OSC8M::Source_OSC8M()
 {
-    m_ePrescalar = OSC8M_PRESCALAR_1;
-    m_bOnDemand = true;
+    m_ePrescalar  = OSC8M_PRESCALAR_1;
+    m_bOnDemand   = true;
     m_bRunStandby = false;
 }
 
@@ -300,13 +300,13 @@ void Source_OSC8M::Enable(bool bEnable_)
 //---------------------------------------------------------------------------
 Source_XOSC32K::Source_XOSC32K()
 {
-    m_eStartupTime = XOSC32K_STARTUP_32K;
-    m_bEnable32KHz = true;
-    m_bEnable1KHz = false;
-    m_bAutoAmp = true;
+    m_eStartupTime  = XOSC32K_STARTUP_32K;
+    m_bEnable32KHz  = true;
+    m_bEnable1KHz   = false;
+    m_bAutoAmp      = true;
     m_bExternalXtal = true;
-    m_bOnDemand = true;
-    m_bRunStandby = false;
+    m_bOnDemand     = true;
+    m_bRunStandby   = false;
 }
 
 //---------------------------------------------------------------------------
@@ -356,9 +356,11 @@ void Source_XOSC32K::CommitConfig()
 {
     uint32_t u32Reg;
     u32Reg = SYSCTRL->XOSC32K.reg;
-    u32Reg
-        &= ~(SYSCTRL_XOSC32K_STARTUP_Msk | SYSCTRL_XOSC32K_EN1K | SYSCTRL_XOSC32K_EN32K | SYSCTRL_XOSC32K_AAMPEN
-             | SYSCTRL_XOSC32K_ENABLE | SYSCTRL_XOSC32K_XTALEN | SYSCTRL_XOSC32K_ONDEMAND | SYSCTRL_XOSC32K_RUNSTDBY);
+    u32Reg &= ~(SYSCTRL_XOSC32K_STARTUP_Msk | SYSCTRL_XOSC32K_EN1K | SYSCTRL_XOSC32K_EN32K | SYSCTRL_XOSC32K_AAMPEN
+                | SYSCTRL_XOSC32K_ENABLE
+                | SYSCTRL_XOSC32K_XTALEN
+                | SYSCTRL_XOSC32K_ONDEMAND
+                | SYSCTRL_XOSC32K_RUNSTDBY);
 
     u32Reg |= ((uint32_t)m_eStartupTime << SYSCTRL_XOSC32K_STARTUP_Pos);
 
@@ -395,19 +397,19 @@ void Source_XOSC32K::Enable(bool bEnable_)
 //---------------------------------------------------------------------------
 Source_DFLL48M::Source_DFLL48M()
 {
-    m_bRunStandby = false;
-    m_bOnDemand = true;
-    m_bChillCycle = true;
-    m_bQuickLock = true;
+    m_bRunStandby        = false;
+    m_bOnDemand          = true;
+    m_bChillCycle        = true;
+    m_bQuickLock         = true;
     m_bLoseLockAfterWake = true;
-    m_bClockMode = true;
+    m_bClockMode         = true;
 
-    m_u16Multiplier = 6;
+    m_u16Multiplier   = 6;
     m_u8MaxCoarseStep = 1;
-    m_u16MaxFineStep = 1;
+    m_u16MaxFineStep  = 1;
 
     m_u8CoarseAdjust = (0x1F / 4);
-    m_u16FineAdjust = (0xFF / 4);
+    m_u16FineAdjust  = (0xFF / 4);
 }
 
 //---------------------------------------------------------------------------
@@ -479,8 +481,8 @@ void Source_DFLL48M::FineAdjust(uint16_t u16Val_)
 //---------------------------------------------------------------------------
 void Source_DFLL48M::CommitConfig()
 {
-    uint32_t u32Mul = 0;
-    uint32_t u32Val = 0;
+    uint32_t u32Mul  = 0;
+    uint32_t u32Val  = 0;
     uint32_t u32Ctrl = 0;
     SysClock clClock;
 
