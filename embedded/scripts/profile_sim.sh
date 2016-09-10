@@ -46,11 +46,14 @@ echo "\section PROFILEATE Date Performed " >> ${outfile}
 date >> ${outfile}
 echo "\section COMPVER Compiler Information " >> ${outfile}
 echo "The kernel and test code used in these results were built using the following compiler:" >> ${outfile}
-echo "\code" >> ${outfile}
+echo "@code" >> ${outfile}
+echo "" >> ${outfile}
 avr-gcc -v >> ${outfile} 2>> ${outfile}
-echo "\endcode" >> ${outfile}
-echo "\section PROFRES Profiling Results" >> ${outfile}
+echo "@endcode" >> ${outfile}
+echo "" >> ${outfile}
 
+echo "\section PROFRES Profiling Results" >> ${outfile}
+echo  "@code" >> ${outfile}
 metric="SI:"
 metric_name="Semaphore Initialization"
 compute_profile
@@ -95,6 +98,6 @@ metric="SC:"
 metric_name="Thread Schedule"
 compute_profile
 
-echo "    . " >> ${outfile}
+echo "@endcode" >> ${outfile}
 echo "*/" >> ${outfile}
 

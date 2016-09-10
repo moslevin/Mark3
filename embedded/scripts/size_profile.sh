@@ -112,6 +112,7 @@ elif [ "${FORMAT}" = "doxygen" ]; then
     echo    "\section SIZEPROFILERES  Profiling Results"
 
     echo    "Mark3 Module Size Report:"
+    echo    "@code"
 fi
 
 
@@ -341,15 +342,17 @@ if [ "${FORMAT}" = "console" ]; then
     echo    "================================================================="
     echo    "Total Size               : " ${TOTAL_SIZE} "Bytes"
 else
-    echo    "    ."
+    echo    "@endcode"
     echo    ""
     echo    "Mark3 Kernel Size Summary:"
+    echo    "@code"
     echo    "    - Kernel                   : " ${KERNEL_SIZE} "Bytes"
     echo    "    - Synchronization Objects  : " ${SYNCOBJ_SIZE} "Bytes"
     echo    "    - Port                     : " ${PORT_SIZE} "Bytes"
     echo    "    - Features                 : " ${FEATURE_SIZE} "Bytes"
     echo    "    - Total Size               : " ${TOTAL_SIZE} "Bytes"
-    echo    "    ."
+    echo    "@endcode"
+
     echo "*/"
     echo "#endif // __SIZE_REPORT_H__"
 fi
