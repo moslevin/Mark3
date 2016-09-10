@@ -49,7 +49,6 @@ void CheckBoxControl::Draw()
 {
     GraphicsDriver* pclDriver = GetParentWindow()->GetDriver();
     uint16_t        u16X, u16Y;
-    uint16_t        u16TextWidth;
 
     GetControlOffset(&u16X, &u16Y);
 
@@ -99,8 +98,6 @@ void CheckBoxControl::Draw()
         stText.uColor   = m_uFontColor;
         stText.pstFont  = m_pstFont;
         stText.pcString = m_szCaption;
-
-        u16TextWidth = pclDriver->TextWidth(&stText);
         pclDriver->Text(&stText);
     }
 }
@@ -185,4 +182,6 @@ GuiReturn_t CheckBoxControl::ProcessEvent(GuiEvent_t* pstEvent_)
             }
         } break;
     }
+
+    return GUI_EVENT_OK;
 }

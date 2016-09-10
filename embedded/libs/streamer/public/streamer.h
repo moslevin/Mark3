@@ -58,6 +58,14 @@ public:
     bool Read(uint8_t* pu8Data_);
 
     /*!
+     * \brief Read
+     * \param pu8Data_
+     * \param u16Len_
+     * \return
+     */
+    uint16_t Read(uint8_t* pu8Data_, uint16_t u16Len_);
+
+    /*!
      * \brief Write
      *
      * Write a byte of data into the stream.
@@ -67,6 +75,14 @@ public:
      *                      or buffer locked at index.
      */
     bool Write(uint8_t u8Data_);
+
+    /*!
+     * \brief Write
+     * \param pu8Data_
+     * \param u16Len_
+     * \return
+     */
+    uint16_t Write(uint8_t* pu8Data_, uint16_t u16Len_);
 
     /*!
      * \brief Claim

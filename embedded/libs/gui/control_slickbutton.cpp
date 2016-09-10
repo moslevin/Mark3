@@ -248,6 +248,7 @@ GuiReturn_t SlickButtonControl::ProcessEvent(GuiEvent_t* pstEvent_)
             }
         } break;
     }
+    return GUI_EVENT_OK;
 }
 
 //---------------------------------------------------------------------------

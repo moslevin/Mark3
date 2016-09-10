@@ -104,8 +104,8 @@ void TimedWait(void* time_)
 //---------------------------------------------------------------------------
 void TimedWaitAll(void* time_)
 {
+    (void)time_;
     uint16_t u16Ret;
-    uint16_t u16Time = *((uint16_t*)time_);
     while (1) {
         u16Ret = clFlagGroup.Wait(0x0001, EVENT_FLAG_ALL, 200);
         if (u16Ret == 0x0001) {

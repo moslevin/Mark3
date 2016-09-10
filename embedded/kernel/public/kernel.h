@@ -82,7 +82,7 @@ public:
      *
      * \param pfPanic_ Panic function pointer
      */
-    static void SetPanic(panic_func_t pfPanic_) { m_pfPanic = pfPanic_; }
+    static void SetPanic(PanicFunc_t pfPanic_) { m_pfPanic = pfPanic_; }
     /*!
      * \brief IsPanic Returns whether or not the kernel is in a panic state
      * \return Whether or not the kernel is in a panic state
@@ -100,7 +100,7 @@ public:
      *        are available to be scheduled by the scheduler.
      * \param pfIdle_ Pointer to the idle function
      */
-    static void SetIdleFunc(idle_func_t pfIdle_) { m_pfIdle = pfIdle_; }
+    static void SetIdleFunc(IdleFunc_t pfIdle_) { m_pfIdle = pfIdle_; }
     /*!
      * \brief IdleFunc Call the low-priority idle function when no active
      *        threads are available to be scheduled.
@@ -198,9 +198,9 @@ public:
 private:
     static bool         m_bIsStarted; //!< true if kernel is running, false otherwise
     static bool         m_bIsPanic;   //!< true if kernel is in panic state, false otherwise
-    static panic_func_t m_pfPanic;    //!< set panic function
+    static PanicFunc_t m_pfPanic;    //!< set panic function
 #if KERNEL_USE_IDLE_FUNC
-    static idle_func_t  m_pfIdle; //!< set idle function
+    static IdleFunc_t  m_pfIdle; //!< set idle function
     static FakeThread_t m_clIdle; //!< Idle thread object (note: not a real thread)
 #endif
 

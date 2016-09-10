@@ -212,10 +212,10 @@ void Kernel_Start(void);
 bool Kernel_IsStarted(void);
 /*!
  * \brief Kernel_SetPanic
- * \sa void Kernel::SetPanic(panic_func_t pfPanic_)
+ * \sa void Kernel::SetPanic(PanicFunc_t pfPanic_)
  * \param pfPanic_ Panic function pointer
  */
-void Kernel_SetPanic(panic_func_t pfPanic_);
+void Kernel_SetPanic(PanicFunc_t pfPanic_);
 /*!
  * \brief Kernel_IsPanic
  * \sa bool Kernel::IsPanic()
@@ -231,10 +231,10 @@ void Kernel_Panic(uint16_t u16Cause_);
 #if KERNEL_USE_IDLE_FUNC
 /*!
  * \brief Kernel_SetIdleFunc
- * \sa void Kernel::SetIdleFunc(idle_func_t pfIdle_)
+ * \sa void Kernel::SetIdleFunc(IdleFunc_t pfIdle_)
  * \param pfIdle_ Pointer to the idle function
  */
-void Kernel_SetIdleFunc(idle_func_t pfIdle_);
+void Kernel_SetIdleFunc(IdleFunc_t pfIdle_);
 #endif
 
 #if KERNEL_USE_THREAD_CALLOUTS
@@ -243,41 +243,41 @@ void Kernel_SetIdleFunc(idle_func_t pfIdle_);
  * \sa Kernel::SetThreadCreateCallout
  * \param pfCreate_ Function to calll on thread creation
  */
-static void Kernel_SetThreadCreateCallout(thread_create_callout_t pfCreate_);
+void Kernel_SetThreadCreateCallout(thread_create_callout_t pfCreate_);
 /*!
  * \brief Kernel_SetThreadExitCallout
  * \sa Kernel::SetThreadExitCallout
  * \param pfExit_ Function to call on thread exit
  */
-static void Kernel_SetThreadExitCallout(thread_exit_callout_t pfExit_);
+void Kernel_SetThreadExitCallout(thread_exit_callout_t pfExit_);
 
 /*!
  * \brief Kernel_SetThreadContextSwitchCallout
  * \sa Kernel::SetThreadContextSwitchCallout
  * \param pfContext_ Function to call prior to each context switch
  */
-static void Kernel_SetThreadContextSwitchCallout(thread_context_callout_t pfContext_);
+void Kernel_SetThreadContextSwitchCallout(thread_context_callout_t pfContext_);
 
 /*!
  * \brief Kernel_GetThreadCreateCallout
  * \sa Kernel::GetThreadCreateCallout
  * \return Current function called on each thread creation
  */
-static thread_create_callout_t Kernel_GetThreadCreateCallout(void);
+thread_create_callout_t Kernel_GetThreadCreateCallout(void);
 
 /*!
  * \brief Kernel_GetThreadExitCallout
  * \sa Kernel::GetThreadExitCallout
  * \return Current function called on each thread exit
  */
-static thread_exit_callout_t Kernel_GetThreadExitCallout(void);
+thread_exit_callout_t Kernel_GetThreadExitCallout(void);
 
 /*!
  * \brief Kernel_GetThreadContextSwitchCallout
  * \sa Kernel::GetThreadContextSwitchCallout
  * \return Current function called on each context switch
  */
-static thread_context_callout_t Kernel_GetThreadContextSwitchCallout(void);
+thread_context_callout_t Kernel_GetThreadContextSwitchCallout(void);
 #endif
 
 #if KERNEL_USE_STACK_GUARD

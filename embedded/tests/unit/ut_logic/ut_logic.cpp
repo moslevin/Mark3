@@ -60,11 +60,11 @@ TEST(ut_logic)
     EXPECT_EQUALS(65535, 65535);
 
     // unsigned 32-bit values
-    EXPECT_EQUALS(-214783648, -214783648);
-    EXPECT_EQUALS(214783647, 214783647);
+    EXPECT_EQUALS(-214783648l, -214783648l);
+    EXPECT_EQUALS(214783647l, 214783647l);
 
     // signed 32-bit values
-    EXPECT_EQUALS(4294967295, 4294967295);
+    EXPECT_EQUALS(4294967295u, 4294967295u);
 
     // Ensure that various 8-32 bit values meet equality conditions
     EXPECT_FAIL_EQUALS(0, -1);
@@ -84,11 +84,11 @@ TEST(ut_logic)
     EXPECT_FAIL_EQUALS(65535, 0);
 
     // unsigned 32-bit values
-    EXPECT_FAIL_EQUALS(-214783648, -1);
-    EXPECT_FAIL_EQUALS(214783647, 1);
+    EXPECT_FAIL_EQUALS(-214783648l, -1);
+    EXPECT_FAIL_EQUALS(214783647l, 1);
 
     // signed 32-bit values
-    EXPECT_FAIL_EQUALS(4294967295, 0);
+    EXPECT_FAIL_EQUALS(4294967295u, 0);
 }
 TEST_END
 

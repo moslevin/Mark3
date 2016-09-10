@@ -27,16 +27,50 @@ See license.txt for more information
 #define K_WORD uint8_t
 
 //---------------------------------------------------------------------------
-typedef void (*panic_func_t)(uint16_t u16PanicCode_);
+/*!
+ * Function pointer type used to implement kernel-panic handlers.
+ */
+typedef void (*PanicFunc_t)(uint16_t u16PanicCode_);
 
 //---------------------------------------------------------------------------
+/*!
+ * Function pointer type used to implement the idle function, where support
+ * for an idle function (as opposed to an idle thread) exists.
+ */
+typedef void (*IdleFunc_t)(void);
+
+//---------------------------------------------------------------------------
+/*!
+ *  Function pointer type used for thread entrypoint functions
+ */
+typedef void (*ThreadEntry_t)(void* pvArg_);
+
+//---------------------------------------------------------------------------
+/*!
+ * This enumeration describes the different operations supported by the
+ * event flag blocking object.
+ */
 typedef enum {
-    EVENT_FLAG_ALL,
-    EVENT_FLAG_ANY,
-    EVENT_FLAG_ALL_CLEAR,
-    EVENT_FLAG_ANY_CLEAR,
-    EVENT_FLAG_MODES,
-    EVENT_FLAG_PENDING_UNBLOCK
+    EVENT_FLAG_ALL,            //!< Block until all bits in the specified bitmask are set
+    EVENT_FLAG_ANY,            //!< Block until any bits in the specified bitmask are set
+    EVENT_FLAG_ALL_CLEAR,      //!< Block until all bits in the specified bitmask are cleared
+    EVENT_FLAG_ANY_CLEAR,      //!< Block until any bits in the specified bitmask are cleared
+                               //---
+    EVENT_FLAG_MODES,          //!< Count of event-flag modes.  Not used by user
+    EVENT_FLAG_PENDING_UNBLOCK //!< Special code.  Not used by user
 } EventFlagOperation_t;
+
+//---------------------------------------------------------------------------
+/*!
+ *   Enumeration representing the different states a thread can exist in
+ */
+typedef enum {
+    THREAD_STATE_EXIT = 0,
+    THREAD_STATE_READY,
+    THREAD_STATE_BLOCKED,
+    THREAD_STATE_STOP,
+    //--
+    THREAD_STATES
+} ThreadState_t;
 
 #endif

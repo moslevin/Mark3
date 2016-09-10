@@ -47,14 +47,14 @@ See license.txt for more information
 
 bool         Kernel::m_bIsStarted;
 bool         Kernel::m_bIsPanic;
-panic_func_t Kernel::m_pfPanic;
+PanicFunc_t Kernel::m_pfPanic;
 
 #if KERNEL_USE_STACK_GUARD
 uint16_t Kernel::m_u16GuardThreshold;
 #endif
 
 #if KERNEL_USE_IDLE_FUNC
-idle_func_t  Kernel::m_pfIdle;
+IdleFunc_t  Kernel::m_pfIdle;
 FakeThread_t Kernel::m_clIdle;
 #endif
 

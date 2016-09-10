@@ -32,8 +32,6 @@ void GamePanelControl::Draw()
 //---------------------------------------------------------------------------
 GuiReturn_t GamePanelControl::ProcessEvent(GuiEvent_t* pstEvent_)
 {
-    uint16_t u16XOffset, u16YOffset;
-
     switch (pstEvent_->u8EventType) {
         case EVENT_TYPE_TIMER:
             // Every tick, call Draw().  This is used to kick the state

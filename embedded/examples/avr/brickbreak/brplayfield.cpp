@@ -172,14 +172,14 @@ uint8_t BrPlayField::ClearBrick(uint16_t u16X_, uint16_t u16Y_)
 
     uint8_t u8Ret = 0;
 
-    if (u16Y_ == ((PLAYFIELD_BRICK_MARGIN + HUD_HEIGHT + PLAYFIELD_BORDER_HEIGHT) + (u8Row * BRICK_HEIGHT))) {
+    if (u16Y_ == (uint16_t)((PLAYFIELD_BRICK_MARGIN + HUD_HEIGHT + PLAYFIELD_BORDER_HEIGHT) + (u8Row * BRICK_HEIGHT))) {
         u8Ret |= BRICK_HIT_TOP;
-    } else if (u16Y_ == ((PLAYFIELD_BRICK_MARGIN + HUD_HEIGHT + PLAYFIELD_BORDER_HEIGHT - 1)
+    } else if (u16Y_ == (uint16_t)((PLAYFIELD_BRICK_MARGIN + HUD_HEIGHT + PLAYFIELD_BORDER_HEIGHT - 1)
                          + ((u8Row + 1) * BRICK_HEIGHT))) {
         u8Ret |= BRICK_HIT_BOTTOM;
-    } else if (u16X_ == (PLAYFIELD_BORDER_WIDTH + (u8Col * BRICK_WIDTH))) {
+    } else if (u16X_ == (uint16_t)(PLAYFIELD_BORDER_WIDTH + (u8Col * BRICK_WIDTH))) {
         u8Ret |= BRICK_HIT_LEFT;
-    } else if (u16X_ == ((PLAYFIELD_BORDER_WIDTH - 1) + ((u8Col + 1) * BRICK_WIDTH))) {
+    } else if (u16X_ == (uint16_t)((PLAYFIELD_BORDER_WIDTH - 1) + ((u8Col + 1) * BRICK_WIDTH))) {
         u8Ret |= BRICK_HIT_RIGHT;
     }
 
@@ -293,7 +293,7 @@ void BrPlayField::LevelAction(uint8_t u8Flags_)
                 GetRandomData();
             }
             break;
-        deafult:
+        default:
             break;
     }
 }
@@ -446,7 +446,7 @@ void BrPlayField::SetBonus(uint8_t u8Row_, uint8_t u8Col_)
 void BrPlayField::DrawBrick(uint8_t u8Row_, uint8_t u8Col_, uint8_t u8Mode_)
 {
     DrawRectangle_t stRect;
-    COLOR           uColor;
+    COLOR           uColor = COLOR_BLACK;
 
     // Main body...
     stRect.u16Top    = HUD_HEIGHT + PLAYFIELD_BRICK_MARGIN + PLAYFIELD_BORDER_HEIGHT + (u8Row_ * BRICK_HEIGHT);

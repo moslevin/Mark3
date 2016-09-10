@@ -23,8 +23,13 @@ See license.txt for more information
 #include <stdbool.h>
 
 //---------------------------------------------------------------------------
-static uint8_t priority_from_bitmap(PRIO_TYPE uXPrio_)
+static inline uint8_t priority_from_bitmap(PRIO_TYPE uXPrio_)
 {
+#if defined HW_CLZ
+    // Support hardware-accelerated Count-leading-zeros instruction
+    return (PRIO_MAP_BITS - CLZ(uXPrio_));
+#else
+    // Default un-optimized count-leading zeros operation
     PRIO_TYPE uXMask  = (1 << (PRIO_MAP_BITS - 1));
     uint8_t   u8Zeros = 0;
 
@@ -37,6 +42,7 @@ static uint8_t priority_from_bitmap(PRIO_TYPE uXPrio_)
         u8Zeros++;
     }
     return 0;
+#endif
 }
 
 //---------------------------------------------------------------------------

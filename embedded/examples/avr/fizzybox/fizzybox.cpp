@@ -137,7 +137,7 @@ static char cmd_cat(CommandLine_t* pstCommand_)
         return -1;
     }
 
-    if (INVALID_NODE == clFile.Open(&clNLFS, pstCommand_->astOptions[0].pstStart->pcToken, NLFS_FILE_READ)) {
+    if (-1 == clFile.Open(&clNLFS, pstCommand_->astOptions[0].pstStart->pcToken, NLFS_FILE_READ)) {
         PrintString("File Not Found\n");
         return -1;
     }

@@ -1,3 +1,6 @@
+ifeq ($(ARCH), avr)
+ifeq ($(VARIANT), atmega1284p)
+
 # Include common prelude make file
 include $(ROOT_DIR)base.mak
 
@@ -25,3 +28,6 @@ LIBS=mark3 drvUART rtc memutil nlfs heap
 # Include the rest of the script that is actually used for building the 
 # outputs
 include $(ROOT_DIR)build.mak
+
+endif
+endif

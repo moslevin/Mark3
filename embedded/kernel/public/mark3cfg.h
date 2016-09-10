@@ -83,6 +83,15 @@ See license.txt for more information
 #define KERNEL_TIMERS_TICKLESS (1)
 #endif
 
+#if KERNEL_TIMERS_TICKLESS
+/*!
+    When using tickless timers, it is useful to define a minimum sleep
+    value.  In the event that a delay/sleep/timeout value lower than this
+    is provided to a timer-based API, the minimum value will be substituted.
+*/
+#define KERNEL_TIMERS_MINIMUM_DELAY_US  (25)
+#endif
+
 /*!
     By default, if you opt to enable kernel timers, you also get timeout-
     enabled versions of the blocking object APIs along with it.  This

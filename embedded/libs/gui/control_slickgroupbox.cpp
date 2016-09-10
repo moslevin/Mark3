@@ -32,7 +32,6 @@ void SlickGroupBoxControl::Draw()
     GUI_DEBUG_PRINT("GroupBoxControl::Draw()\n");
     GraphicsDriver* pclDriver = GetParentWindow()->GetDriver();
     uint16_t        u16X, u16Y;
-    uint16_t        u16TextWidth;
 
     GetControlOffset(&u16X, &u16Y);
 
@@ -112,7 +111,6 @@ void SlickGroupBoxControl::Draw()
         stText.pstFont  = m_pstFont;
         stText.pcString = m_pcCaption;
 
-        u16TextWidth = pclDriver->TextWidth(&stText);
         pclDriver->Text(&stText);
     }
 }

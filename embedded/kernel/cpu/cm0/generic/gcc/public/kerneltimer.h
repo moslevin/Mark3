@@ -135,7 +135,6 @@ public:
      */
     static void ClearExpiry(void);
 
-private:
     /*!
      *  \brief Read
      *

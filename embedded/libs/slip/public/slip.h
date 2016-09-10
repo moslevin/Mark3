@@ -50,6 +50,11 @@ typedef enum {
 } SlipChannel;
 
 //---------------------------------------------------------------------------
+#define SLIP_OFFSET_CHANNEL     (0)
+#define SLIP_OFFSET_SIZE        (1)
+#define SLIP_OFFSET_DATA        (3)
+
+//---------------------------------------------------------------------------
 /*!
     Data structure used for vector-based SLIP data transmission.  Allows for
     building and transmitting complex data structures without having to copy

@@ -28,8 +28,8 @@ Button clButtons[2];
 
 static Timer clButtonTimer;
 
-static on_button_up_t   apfButtonUp[2];
-static on_button_down_t apfButtonDown[2];
+static OnButtonUp_t   apfButtonUp[2];
+static OnButtonDown_t apfButtonDown[2];
 
 static volatile bool bExpectedB[2];
 
@@ -91,7 +91,7 @@ void bsp_buttons_init(void)
 }
 
 //---------------------------------------------------------------------------
-void bsp_buttons_set_callbacks(Button* pclButton_, on_button_down_t pfOnDown_, on_button_up_t pfOnUp_)
+void bsp_buttons_set_callbacks(Button* pclButton_, OnButtonDown_t pfOnDown_, OnButtonUp_t pfOnUp_)
 {
     uint8_t i = 0;
     if (pclButton_ == &clButtons[0]) {

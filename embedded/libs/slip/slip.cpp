@@ -27,8 +27,8 @@ See license.txt for more information
 #define FRAMING_SUB_ENC_BYTE (221) //!< Byte to substitute for the substitute-byte
 
 //---------------------------------------------------------------------------
-#define ACchar (69)  //!< Acknowledgement character
-#define NACchar (96) //!< Non-acknowledgement character
+#define ACK_CHAR (69)  //!< Acknowledgement character
+#define NACK_CHAR (96) //!< Non-acknowledgement character
 
 //---------------------------------------------------------------------------
 uint16_t Slip::EncodeByte(uint8_t u8Char_, uint8_t* aucBuf_)
@@ -194,13 +194,13 @@ void Slip::WriteData(uint8_t u8Channel_, const char* aucBuf_, uint16_t u16Len_)
 //---------------------------------------------------------------------------
 void Slip::SendAck()
 {
-    WriteByte(ACchar);
+    WriteByte(ACK_CHAR);
 }
 
 //---------------------------------------------------------------------------
 void Slip::SendNack()
 {
-    WriteByte(NACchar);
+    WriteByte(NACK_CHAR);
 }
 
 //---------------------------------------------------------------------------

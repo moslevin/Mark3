@@ -38,18 +38,28 @@ See license.txt for more information
     In practice, systems rarely need more than 32 priority levels, with the
     most complex having the capacity for 256.
 */
-#define KERNEL_NUM_PRIORITIES            (8)
+#define KERNEL_NUM_PRIORITIES (8)
+
+#if (KERNEL_NUM_PRIORITIES <= 64)
+#define PRIO_TYPE uint8_t // Can be set to larger (but not smaller) type
+#elif (KERNEL_NUM_PRIORITIES <= 256)
+#define PRIO_TYPE uint16_t // Can be set to larger (but not smaller) type
+#elif (KERNEL_NUM_PRIORITIES <= 1024)
+#define PRIO_TYPE uint32_t
+#else
+#error "Mark3 supports a maximum of 1024 priorities"
+#endif
 
 /*!
     The following options is related to all kernel time-tracking.
 
-    -timers provide a way for events to be periodically triggered in a 
+    -timers provide a way for events to be periodically triggered in a
      lightweight manner.  These can be periodic, or one-shot.
 
     -Thread Quantum (usedd for round-robin scheduling) is dependent on this
      module, as is Thread Sleep functionality.
 */
-#define KERNEL_USE_TIMERS                (1)
+#define KERNEL_USE_TIMERS (1)
 
 /*!
     If you've opted to use the kernel timers module, you have an option
@@ -70,7 +80,16 @@ See license.txt for more information
     particular timer variant desired.
 */
 #if KERNEL_USE_TIMERS
-    #define KERNEL_TIMERS_TICKLESS       (1)
+#define KERNEL_TIMERS_TICKLESS (1)
+#endif
+
+#if KERNEL_TIMERS_TICKLESS
+/*!
+    When using tickless timers, it is useful to define a minimum sleep
+    value.  In the event that a delay/sleep/timeout value lower than this
+    is provided to a timer-based API, the minimum value will be substituted.
+*/
+#define KERNEL_TIMERS_MINIMUM_DELAY_US  (25)
 #endif
 
 /*!
@@ -85,59 +104,59 @@ See license.txt for more information
     code-size reasons.
 */
 #if KERNEL_USE_TIMERS
-    #define KERNEL_USE_TIMEOUTS          (1)
+#define KERNEL_USE_TIMEOUTS (1)
 #else
-    #define KERNEL_USE_TIMEOUTS          (0)
+#define KERNEL_USE_TIMEOUTS (0)
 #endif
 
 /*!
     Do you want to enable time quanta?  This is useful when you want to have
     tasks in the same priority group share time in a controlled way.  This
-    allows equal tasks to use unequal amounts of the CPU, which is a great 
+    allows equal tasks to use unequal amounts of the CPU, which is a great
     way to set up CPU budgets per thread in a round-robin scheduling system.
-    If enabled, you can specify a number of ticks that serves as the default 
-    time period (quantum).  Unless otherwise specified, every thread in a 
+    If enabled, you can specify a number of ticks that serves as the default
+    time period (quantum).  Unless otherwise specified, every thread in a
     priority will get the default quantum.
 */
-#if KERNEL_USE_TIMERS    
-    #define KERNEL_USE_QUANTUM           (1)
+#if KERNEL_USE_TIMERS
+#define KERNEL_USE_QUANTUM (1)
 #else
-    #define KERNEL_USE_QUANTUM           (0)
+#define KERNEL_USE_QUANTUM (0)
 #endif
 
 /*!
     This value defines the default thread quantum when KERNEL_USE_QUANTUM is
     enabled.  The thread quantum value is in milliseconds
 */
-#define THREAD_QUANTUM_DEFAULT           (4)
+#define THREAD_QUANTUM_DEFAULT (4)
 
 /*!
     This is a simple blocking object, where a thread (or threads) are guaranteed
     to block until an asynchronous event signals the object.
 */
-#define KERNEL_USE_NOTIFY                (1)
+#define KERNEL_USE_NOTIFY (1)
 
 /*!
-    Do you want the ability to use counting/binary semaphores for thread 
+    Do you want the ability to use counting/binary semaphores for thread
     synchronization?  Enabling this features provides fully-blocking semaphores
-    and enables all API functions declared in semaphore.h.  If you have to 
+    and enables all API functions declared in semaphore.h.  If you have to
     pick one blocking mechanism, this is the one to choose.
 */
-#define KERNEL_USE_SEMAPHORE             (1)
+#define KERNEL_USE_SEMAPHORE (1)
 
 /*!
     Do you want the ability to use mutual exclusion semaphores (mutex) for
     resource/block protection?  Enabling this feature provides mutexes, with
     priority inheritence, as declared in mutex.h.
  */
-#define KERNEL_USE_MUTEX                 (1)
+#define KERNEL_USE_MUTEX (1)
 
 /*!
     Provides additional event-flag based blocking.  This relies on an
     additional per-thread flag-mask to be allocated, which adds 2 bytes
     to the size of each thread object.
 */
-#define KERNEL_USE_EVENTFLAG             (1)
+#define KERNEL_USE_EVENTFLAG (1)
 
 /*!
     Enable inter-thread messaging using message queues.  This is the preferred
@@ -145,9 +164,9 @@ See license.txt for more information
     anywhere a semaphore or event-flag is insufficient.
 */
 #if KERNEL_USE_SEMAPHORE
-    #define KERNEL_USE_MESSAGE           (1)
+#define KERNEL_USE_MESSAGE (1)
 #else
-    #define KERNEL_USE_MESSAGE           (0)
+#define KERNEL_USE_MESSAGE (0)
 #endif
 
 /*!
@@ -158,7 +177,7 @@ See license.txt for more information
     and simplify data management.
 */
 #if KERNEL_USE_MESSAGE
-    #define GLOBAL_MESSAGE_POOL_SIZE     (8)
+#define GLOBAL_MESSAGE_POOL_SIZE (8)
 #endif
 
 /*!
@@ -171,9 +190,9 @@ See license.txt for more information
     buffer that can be used as a blocking FIFO or LIFO queue.
 */
 #if KERNEL_USE_SEMAPHORE
-    #define KERNEL_USE_MAILBOX           (1)
+#define KERNEL_USE_MAILBOX (1)
 #else
-    #define KERNEL_USE_MAILBOX           (0)
+#define KERNEL_USE_MAILBOX (0)
 #endif
 
 /*!
@@ -181,23 +200,23 @@ See license.txt for more information
     This enables the Thread::Sleep() API.
 */
 #if KERNEL_USE_TIMERS && KERNEL_USE_SEMAPHORE
-    #define KERNEL_USE_SLEEP             (1)
+#define KERNEL_USE_SLEEP (1)
 #else
-    #define KERNEL_USE_SLEEP             (0)
+#define KERNEL_USE_SLEEP (0)
 #endif
 
 /*!
-    Enabling device drivers provides a posix-like filesystem interface for 
+    Enabling device drivers provides a posix-like filesystem interface for
     peripheral device drivers.
 */
-#define KERNEL_USE_DRIVER                (1)
+#define KERNEL_USE_DRIVER (0)
 
 /*!
     Provide Thread method to allow the user to set a name for each
     thread in the system.  Adds a const char* pointer to the size
     of the thread object.
 */
-#define KERNEL_USE_THREADNAME            (0)
+#define KERNEL_USE_THREADNAME (0)
 
 /*!
     Provide extra Thread methods to allow the application to create
@@ -205,48 +224,47 @@ See license.txt for more information
     designs implementing worker threads, or threads that can be restarted
     after encountering error conditions.
 */
-#define KERNEL_USE_DYNAMIC_THREADS       (1)
+#define KERNEL_USE_DYNAMIC_THREADS (1)
 
 /*!
     Provides extra classes for profiling the performance of code.  useful
     for debugging and development, but uses an additional hardware timer.
 */
-#define KERNEL_USE_PROFILER              (1)
+#define KERNEL_USE_PROFILER (0)
 
 /*!
-    Provides extra logic for kernel debugging, and instruments the kernel 
+    Provides extra logic for kernel debugging, and instruments the kernel
     with extra asserts, and kernel trace functionality.
 */
-#define KERNEL_USE_DEBUG                 (0)
+#define KERNEL_USE_DEBUG (1)
 
 #if KERNEL_USE_DEBUG
-    /*!
-        Set this to 1 to enable very chatty kernel logging.  Since most
-        important things in the kernel emit logs, a large log-buffer and
-        fast output are required in order to keep up.  This is a pretty
-        advanced power-user type feature, so it's disabled by default.
-     */
-    #define KERNEL_ENABLE_LOGGING        (0)
+/*!
+    Set this to 1 to enable very chatty kernel logging.  Since most
+    important things in the kernel emit logs, a large log-buffer and
+    fast output are required in order to keep up.  This is a pretty
+    advanced power-user type feature, so it's disabled by default.
+ */
+#define KERNEL_ENABLE_LOGGING (0)
 
-    /*!
-        This enables a set of logging macros similar to the kernel-logging
-        macros; however, these can be enabled or disabled independently.
-        This allows for user-code to benefit from the built-in kernel
-        logging macros without having to account for the super-high-volume
-        of logs generated by kernel code.
-     */
-    #define KERNEL_ENABLE_USER_LOGGING   (1)    //!< 1 to enable logging outside of kernel code
+/*!
+    This enables a set of logging macros similar to the kernel-logging
+    macros; however, these can be enabled or disabled independently.
+    This allows for user-code to benefit from the built-in kernel
+    logging macros without having to account for the super-high-volume
+    of logs generated by kernel code.
+ */
+#define KERNEL_ENABLE_USER_LOGGING (1) //!< 1 to enable logging outside of kernel code
 #else
-    #define KERNEL_ENABLE_LOGGING        (0)
-    #define KERNEL_ENABLE_USER_LOGGING   (0)
+#define KERNEL_ENABLE_LOGGING (0)
+#define KERNEL_ENABLE_USER_LOGGING (0)
 #endif
-
 
 /*!
     Provides support for atomic operations, including addition, subtraction,
     set, and test-and-set.  Add/Sub/Set contain 8, 16, and 32-bit variants.
 */
-#define KERNEL_USE_ATOMIC                (0)
+#define KERNEL_USE_ATOMIC (0)
 
 /*!
     "Safe unlinking" performs extra checks on data to make sure that there
@@ -254,7 +272,7 @@ See license.txt for more information
     goes beyond pointer checks, adding a layer of structural and metadata
     validation to help detect system corruption early.
 */
-#define SAFE_UNLINK                      (0)
+#define SAFE_UNLINK (0)
 
 /*!
     Include support for kernel-aware simulation.  Enabling this feature
@@ -262,7 +280,7 @@ See license.txt for more information
     diagnostic functionality when Mark3-based applications are run on the
     flavr AVR simulator.
 */
-#define KERNEL_AWARE_SIMULATION          (1)
+#define KERNEL_AWARE_SIMULATION (1)
 
 /*!
     Enabling this feature removes the necessity for the user to dedicate
@@ -271,7 +289,11 @@ See license.txt for more information
     slight overhead to the context switch and scheduler, as a special case
     has to be taken into account.
 */
-#define KERNEL_USE_IDLE_FUNC             (1)
+#if !defined(ARM)
+#define KERNEL_USE_IDLE_FUNC (1) // Supported everywhere but ARM
+#else
+#define KERNEL_USE_IDLE_FUNC (0) // Not currently supported on ARM
+#endif
 
 /*!
     This feature enables an additional set of APIs that allow for objects
@@ -279,10 +301,32 @@ See license.txt for more information
     explicitly allocate them (from stack, heap, or static memory). Note
     that auto-alloc memory cannot be reclaimed.
 */
-#define KERNEL_USE_AUTO_ALLOC            (0)
+#define KERNEL_USE_AUTO_ALLOC (0)
 
 #if KERNEL_USE_AUTO_ALLOC
-    #define AUTO_ALLOC_SIZE              (512)
+#define AUTO_ALLOC_SIZE (512)
+#endif
+
+/*!
+    This feature provides additional kernel APIs to register callout
+    functions that are activated when threads are created or exited.
+    This is useful for implementing low-level instrumentation based on
+    information held in the threads.
+*/
+#define KERNEL_USE_THREAD_CALLOUTS (0)
+
+/*!
+    This feature, when enabled, tells the kernel to check whether any
+    Thread's stack has been exhausted (or slack falls below a certain
+    safety threshold) before executing each context switch.  Enabling
+    this is the most effective means to guard against stack corruption
+    and stack overflow in the kernel, at the cost of increased context
+    switch latency.
+*/
+#define KERNEL_USE_STACK_GUARD (0)
+
+#if KERNEL_USE_STACK_GUARD
+#define KERNEL_STACK_GUARD_DEFAULT (32) // words
 #endif
 
 #endif

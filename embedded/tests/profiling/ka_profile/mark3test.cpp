@@ -156,7 +156,6 @@ static void Semaphore_Profiling()
 //---------------------------------------------------------------------------
 static void Mutex_Profiling()
 {
-    uint16_t i;
     Mutex    clMutex;
 
     CS_ENTER();

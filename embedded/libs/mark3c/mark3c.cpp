@@ -124,7 +124,7 @@ bool Kernel_IsStarted(void)
 }
 
 //---------------------------------------------------------------------------
-void Kernel_SetPanic(panic_func_t pfPanic_)
+void Kernel_SetPanic(PanicFunc_t pfPanic_)
 {
     Kernel::SetPanic(pfPanic_);
 }
@@ -143,7 +143,7 @@ void Kernel_Panic(uint16_t u16Cause_)
 
 #if KERNEL_USE_IDLE_FUNC
 //---------------------------------------------------------------------------
-void Kernel_SetIdleFunc(idle_func_t pfIdle_)
+void Kernel_SetIdleFunc(IdleFunc_t pfIdle_)
 {
     Kernel::SetIdleFunc(pfIdle_);
 }
@@ -151,39 +151,39 @@ void Kernel_SetIdleFunc(idle_func_t pfIdle_)
 
 #if KERNEL_USE_THREAD_CALLOUTS
 //---------------------------------------------------------------------------
-static void Kernel_SetThreadCreateCallout(thread_create_callout_t pfCreate_)
+void Kernel_SetThreadCreateCallout(thread_create_callout_t pfCreate_)
 {
     Kernel::SetThreadCreateCallout((ThreadCreateCallout_t)pfCreate_);
 }
 
 //---------------------------------------------------------------------------
-static void Kernel_SetThreadExitCallout(thread_exit_callout_t pfExit_)
+void Kernel_SetThreadExitCallout(thread_exit_callout_t pfExit_)
 {
     Kernel::SetThreadExitCallout((ThreadExitCallout_t)pfExit_);
 }
 
 //---------------------------------------------------------------------------
-static void Kernel_SetThreadContextSwitchCallout(thread_context_callout_t pfContext_)
+void Kernel_SetThreadContextSwitchCallout(thread_context_callout_t pfContext_)
 {
     Kernel::SetThreadContextSwitchCallout((ThreadContextCallout_t)pfContext_);
 }
 
 //---------------------------------------------------------------------------
-static thread_create_callout_t Kernel_GetThreadCreateCallout(void)
+thread_create_callout_t Kernel_GetThreadCreateCallout(void)
 {
     return (thread_create_callout_t)Kernel::GetThreadCreateCallout();
 }
 
 //---------------------------------------------------------------------------
-static thread_exit_callout_t Kernel_GetThreadExitCallout(void)
+thread_exit_callout_t Kernel_GetThreadExitCallout(void)
 {
     return (thread_exit_callout_t)Kernel::GetThreadExitCallout();
 }
 
 //---------------------------------------------------------------------------
-static thread_context_callout_t Kernel_GetThreadContextSwitchCallout(void)
+thread_context_callout_t Kernel_GetThreadContextSwitchCallout(void)
 {
-    return (thread_exit_callout_t)Kernel::GetThreadContextSwitchCallout();
+    return (thread_context_callout_t)Kernel::GetThreadContextSwitchCallout();
 }
 
 #endif

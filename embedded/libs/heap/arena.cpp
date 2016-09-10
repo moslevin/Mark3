@@ -41,11 +41,10 @@ void Arena::Init(void* pvBuffer_, K_ADDR u32Size_, K_ADDR* au32Sizes_, uint8_t u
     m_u8LargestList    = u8NumSizes_ - 1;
 
     DEBUG_PRINT("Initializing Arena @ 0x%X, %d bytes long\n", pvBuffer_, u32Size_);
-    for (uint8_t i = 0; i < u8NumSizes_; i++) {
-        void*      p       = pclList;
-        ArenaList* pclTemp = new (p) ArenaList();
+    for (uint8_t i = 0; i < u8NumSizes_; i++) {        
+        ArenaList* pclTemp = new ((void*)pclList) ArenaList();
 
-        pclList->Init(au32Sizes_[i]);
+        pclTemp->Init(au32Sizes_[i]);
         pclList++;
     }
 

@@ -62,6 +62,7 @@ bool RTC::GetDateTime(calendar_t* pstCal_)
     }
     *pstCal_ = m_stCalendar;
     pstCal_->u8Day++;
+    return true;
 }
 
 //---------------------------------------------------------------------------
@@ -181,6 +182,7 @@ bool RTC::GetUptime(uint32_t* pu32Seconds_, uint32_t* pu32Ticks_)
     }
     *pu32Seconds_ = m_u32Seconds;
     *pu32Ticks_   = m_stCalendar.u32Ticks;
+    return true;
 }
 
 //---------------------------------------------------------------------------

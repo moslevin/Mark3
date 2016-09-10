@@ -48,14 +48,12 @@ void LabelControl::Draw()
 
     DrawText_t      stText;
     DrawRectangle_t stRect;
-    uint16_t        u16TextWidth;
 
     stText.u16Top   = GetTop() + u16Y;
     stText.u16Left  = GetLeft() + u16X;
     stText.uColor   = m_uFontColor;
     stText.pcString = m_pcCaption;
     stText.pstFont  = m_pstFont;
-    u16TextWidth    = pclDriver->TextWidth(&stText);
 
     if (false == m_bTransparent) {
         stRect.u16Left     = GetLeft() + u16X;

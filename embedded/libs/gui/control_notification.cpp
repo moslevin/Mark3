@@ -111,4 +111,5 @@ GuiReturn_t NotificationControl::ProcessEvent(GuiEvent_t* pstEvent_)
         }
         default: break;
     }
+    return GUI_EVENT_OK;
 }

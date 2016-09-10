@@ -5,10 +5,10 @@
 #include "bsp_rtc.h"
 
 static RTC               s_clRTC;
-static on_rtc_tick_t     s_pfOnRTCTick;
+static OnRTCTick_t     s_pfOnRTCTick;
 static volatile uint32_t s_u32TicksToAdd = 0;
 
-void bsp_rtc_set_on_rtc_tick(on_rtc_tick_t pfOnTick_)
+void bsp_rtc_set_on_rtc_tick(OnRTCTick_t pfOnTick_)
 {
     s_pfOnRTCTick = pfOnTick_;
 }

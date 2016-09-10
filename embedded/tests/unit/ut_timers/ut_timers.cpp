@@ -167,7 +167,6 @@ TEST(ut_timer_repeat)
     // operations (1.2 seconds is about as high as we get, since it's
     // so high resolution).  So, use sleeps and multiple iterations
     // w/averaging in order to verify.
-    uint32_t u32SleepCount = 0;
     Profiler::Start();
     clTimerSem.Init(0, 1);
 

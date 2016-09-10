@@ -117,6 +117,12 @@ void Timer::SetIntervalMSeconds(uint32_t u32MSeconds_)
 //---------------------------------------------------------------------------
 void Timer::SetIntervalUSeconds(uint32_t u32USeconds_)
 {
+#if KERNEL_TIMERS_TICKLESS
+    if (u32USeconds_ < KERNEL_TIMERS_MINIMUM_DELAY_US) {
+        u32USeconds_ = KERNEL_TIMERS_MINIMUM_DELAY_US;
+    }
+#endif
+
     m_u32Interval = USECONDS_TO_TICKS(u32USeconds_);
 }
 

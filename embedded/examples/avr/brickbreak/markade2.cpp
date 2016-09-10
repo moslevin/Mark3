@@ -63,21 +63,11 @@ SoundDriver*       pclSound = &clSound;
 static Semaphore clSem;
 static Timer     clTimer;
 
-static SongNote_t astNotes[] = { { TONE(C, 4), NOTE_QUARTER, 32 },
-                                 { TONE(D, 4), NOTE_HALF, 32 },
-                                 { TONE(E, 4), NOTE_QUARTER, 16 },
-                                 { TONE(F, 4), NOTE_HALF, 16 },
-                                 { 0, 0, 0 } };
-
-static Song_t stSong = { 128, astNotes };
-
 //---------------------------------------------------------------------------
 #define STACK_SIZE_APP (320)  //!< Size of the main app's stack
-#define STACK_SIZE_IDLE (320) //!< Size of the idle thread stack
 
 //---------------------------------------------------------------------------
 static uint8_t aucAppStack[STACK_SIZE_APP];
-static uint8_t aucIdleStack[STACK_SIZE_IDLE];
 
 //---------------------------------------------------------------------------
 static void AppEntry(void);

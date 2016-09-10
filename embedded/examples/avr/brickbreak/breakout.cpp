@@ -692,7 +692,7 @@ void Breakout::TitleLoop()
 void Breakout::AttractLoopEnter()
 {
     static uint8_t u8Attract = 0;
-    int16_t        s16VelX, s16VelY;
+    int16_t        s16VelX = 0, s16VelY = 0;
 
     m_u16Counter = 3600; // One minute @ 60fps
 

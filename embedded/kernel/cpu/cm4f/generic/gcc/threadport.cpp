@@ -200,7 +200,7 @@ void ThreadPort::StartThreads()
 void ThreadPort_StartFirstThread(void)
 {
     ASM(" ldr r0, =0xE000ED08 \n"
-        " mov r0, [r0] \n"
+        " ldr r0, [r0] \n"
         " ldr r1, [r0] \n"
         " msr msp, r1 \n"
         " cpsie i \n"

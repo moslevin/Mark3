@@ -149,7 +149,7 @@ void BrPaddle::Draw(void)
         if (m_u8Mode & PADDLE_MODE_LASER) {
             switch (i) {
                 case 0:
-                case 5: stLine.uColor = stLine.uColor = RGB_COLOR(MAX_RED / 3, 0, MAX_BLUE / 3); break;
+                case 5: stLine.uColor = RGB_COLOR(MAX_RED / 3, 0, MAX_BLUE / 3); break;
                 case 1:
                 case 4: stLine.uColor = RGB_COLOR(MAX_RED / 2, 0, MAX_BLUE / 2); break;
                 case 2:

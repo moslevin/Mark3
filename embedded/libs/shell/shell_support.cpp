@@ -28,13 +28,13 @@ See license.txt for more information
 char ShellSupport::RunCommand(CommandLine_t* pstCommand_, const ShellCommand_t* pastShellCommands_)
 {
     uint8_t i = 0;
-    uint8_t tmp_len;
+    uint8_t u8TmpLen;
     while (pastShellCommands_[i].szCommand) {
-        tmp_len = MIN(pstCommand_->pstCommand->u8Len, MemUtil::StringLength(pastShellCommands_[i].szCommand));
+        u8TmpLen = MIN(pstCommand_->pstCommand->u8Len, MemUtil::StringLength(pastShellCommands_[i].szCommand));
 
         if (true == MemUtil::CompareMemory((const void*)pastShellCommands_[i].szCommand,
                                            (const void*)(pstCommand_->pstCommand->pcToken),
-                                           tmp_len)) {
+                                           u8TmpLen)) {
             pastShellCommands_[i].pfHandler(pstCommand_);
             return 1;
         }
@@ -47,8 +47,8 @@ char ShellSupport::RunCommand(CommandLine_t* pstCommand_, const ShellCommand_t* 
 void ShellSupport::UnescapeToken(Token_t* pstToken_, char* szDest_)
 {
     const char* szSrc = pstToken_->pcToken;
-    int         i;
-    int         j = 0;
+    uint8_t     i;
+    uint8_t     j = 0;
     for (i = 0; i < pstToken_->u8Len; i++) {
         //-- Escape characters
         if ('\\' == szSrc[i]) {
@@ -82,13 +82,13 @@ void ShellSupport::UnescapeToken(Token_t* pstToken_, char* szDest_)
 //---------------------------------------------------------------------------
 Option_t* ShellSupport::CheckForOption(CommandLine_t* pstCommand_, const char* szOption_)
 {
-    char    i;
-    uint8_t tmp_len;
+    uint8_t i;
+    uint8_t u8TmpLen;
     for (i = 0; i < pstCommand_->u8NumOptions; i++) {
-        tmp_len = MIN(MemUtil::StringLength(szOption_), pstCommand_->astOptions[i].pstStart->u8Len);
+        u8TmpLen = MIN(MemUtil::StringLength(szOption_), pstCommand_->astOptions[i].pstStart->u8Len);
 
         if (true == MemUtil::CompareMemory(
-                        (const void*)szOption_, (const void*)(pstCommand_->astOptions[i].pstStart->pcToken), tmp_len)) {
+                        (const void*)szOption_, (const void*)(pstCommand_->astOptions[i].pstStart->pcToken), u8TmpLen)) {
             return &(pstCommand_->astOptions[i]);
         }
     }
@@ -98,10 +98,10 @@ Option_t* ShellSupport::CheckForOption(CommandLine_t* pstCommand_, const char* s
 //---------------------------------------------------------------------------
 char ShellSupport::TokensToCommandLine(Token_t* pastTokens_, uint8_t u8Tokens_, CommandLine_t* pstCommand_)
 {
-    char count                = 0;
-    char token                = 0;
-    char option               = 0;
     pstCommand_->u8NumOptions = 0;
+    uint8_t u8Token             = 0;
+    uint8_t u8Count             = 0;
+    uint8_t u8Option            = 0;
 
     if (!u8Tokens_) {
         return -1;
@@ -111,21 +111,21 @@ char ShellSupport::TokensToCommandLine(Token_t* pastTokens_, uint8_t u8Tokens_, 
     pstCommand_->pstCommand = &pastTokens_[0];
 
     // Parse out options
-    token = 1;
-    while (token < u8Tokens_ && option < 12) {
-        pstCommand_->astOptions[option].pstStart = &pastTokens_[token];
-        count                                    = 1;
-        token++;
-        while (token < u8Tokens_ && pastTokens_[token].pcToken[0] != '-') {
-            token++;
-            count++;
+    u8Token = 1;
+    while (u8Token < u8Tokens_ && u8Option < 12) {
+        pstCommand_->astOptions[u8Option].pstStart = &pastTokens_[u8Token];
+        u8Count                                    = 1;
+        u8Token++;
+        while (u8Token < u8Tokens_ && pastTokens_[u8Token].pcToken[0] != '-') {
+            u8Token++;
+            u8Count++;
         }
-        pstCommand_->astOptions[option].u8Count = count;
-        option++;
+        pstCommand_->astOptions[u8Option].u8Count = u8Count;
+        u8Option++;
     }
 
-    pstCommand_->u8NumOptions  = option;
+    pstCommand_->u8NumOptions  = u8Option;
     pstCommand_->u8TokenCount  = u8Tokens_;
     pstCommand_->pastTokenList = pastTokens_;
-    return option;
+    return u8Option;
 }

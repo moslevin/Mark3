@@ -33,6 +33,12 @@ of the application.
 #if !KERNEL_USE_IDLE_FUNC
 #error "This demo requires KERNEL_USE_IDLE_FUNC"
 #endif
+#if !KERNEL_USE_THREAD_CALLOUTS
+#error "This demo requires KERNEL_USE_THREAD_CALLOUTS"
+#endif
+#if !KERNEL_TIMERS_TICKLESS
+#error "This demo requires KERNEL_TIMERS_TICKLESS"
+#endif
 
 extern "C" {
 void __cxa_pure_virtual(void)
