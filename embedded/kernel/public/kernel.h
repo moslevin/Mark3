@@ -196,11 +196,11 @@ public:
 #endif
 
 private:
-    static bool         m_bIsStarted; //!< true if kernel is running, false otherwise
-    static bool         m_bIsPanic;   //!< true if kernel is in panic state, false otherwise
+    static bool        m_bIsStarted; //!< true if kernel is running, false otherwise
+    static bool        m_bIsPanic;   //!< true if kernel is in panic state, false otherwise
     static PanicFunc_t m_pfPanic;    //!< set panic function
 #if KERNEL_USE_IDLE_FUNC
-    static IdleFunc_t  m_pfIdle; //!< set idle function
+    static IdleFunc_t   m_pfIdle; //!< set idle function
     static FakeThread_t m_clIdle; //!< Idle thread object (note: not a real thread)
 #endif
 

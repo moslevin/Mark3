@@ -132,6 +132,18 @@ public:
      * \return The current number of bytes available for write in the streams
      */
     uint16_t GetAvailable(void) { return m_u16Size; }
+    /*!
+     * \brief CanRead
+     * \return true if the stream has any unread data
+     */
+    bool CanRead(void);
+
+    /*!
+     * \brief CanWrite
+     * \return true if the stream has any free space
+     */
+    bool CanWrite(void);
+
 private:
     uint8_t* m_pau8Buffer;  //!< Pointer to the buffer managed in this object
     uint8_t* m_pu8LockAddr; //!< Address of the lock point in the stream

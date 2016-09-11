@@ -50,9 +50,9 @@ typedef enum {
 } SlipChannel;
 
 //---------------------------------------------------------------------------
-#define SLIP_OFFSET_CHANNEL     (0)
-#define SLIP_OFFSET_SIZE        (1)
-#define SLIP_OFFSET_DATA        (3)
+#define SLIP_OFFSET_CHANNEL (0)
+#define SLIP_OFFSET_SIZE (1)
+#define SLIP_OFFSET_DATA (3)
 
 //---------------------------------------------------------------------------
 /*!

@@ -89,7 +89,7 @@ See license.txt for more information
     value.  In the event that a delay/sleep/timeout value lower than this
     is provided to a timer-based API, the minimum value will be substituted.
 */
-#define KERNEL_TIMERS_MINIMUM_DELAY_US  (25)
+#define KERNEL_TIMERS_MINIMUM_DELAY_US (25)
 #endif
 
 /*!

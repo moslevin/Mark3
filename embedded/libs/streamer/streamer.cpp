@@ -210,6 +210,34 @@ uint16_t Streamer::Write(uint8_t* pu8Data_, uint16_t u16Len_)
 }
 
 //---------------------------------------------------------------------------
+bool Streamer::CanRead(void)
+{
+    bool bRc = true;
+    CS_ENTER();
+    if (m_u16Avail == m_u16Size)
+    {
+        bRc = false;
+    }
+    CS_EXIT();
+    return bRc;
+}
+
+//---------------------------------------------------------------------------
+bool Streamer::CanWrite(void)
+{
+    bool bRc = false;
+
+    CS_ENTER();
+    if (m_u16Avail)
+    {
+        bRc = true;
+    }
+    CS_EXIT();
+
+    return bRc;
+}
+
+//---------------------------------------------------------------------------
 bool Streamer::Claim(uint8_t** pu8Addr_)
 {
     bool rc = true;

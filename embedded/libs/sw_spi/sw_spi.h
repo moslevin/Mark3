@@ -22,10 +22,7 @@ See license.txt for more information
 #include <stdint.h>
 
 //---------------------------------------------------------------------------
-typedef enum {
-    SPI_LEVEL_LOW  = 0,
-    SPI_LEVEL_HIGH = 1
-} spi_level_t;
+typedef enum { SPI_LEVEL_LOW = 0, SPI_LEVEL_HIGH = 1 } spi_level_t;
 
 //---------------------------------------------------------------------------
 typedef enum {
@@ -42,6 +39,7 @@ public:
     void Init(uint32_t u32Freq_, spi_mode_t eMode_);
 
     void Transfer(uint8_t* pu8Input_, uint8_t* pu8Output_, uint16_t u16Len_);
+
 private:
     virtual void BitDelay(void) = 0;
 
@@ -51,11 +49,9 @@ private:
 
     virtual void SetClock(spi_level_t eLevel_) = 0;
 
-    uint32_t    m_u32BitDelayUS;
-    bool        m_bPolarity;
-    bool        m_bPhase;
+    uint32_t m_u32BitDelayUS;
+    bool     m_bPolarity;
+    bool     m_bPhase;
 };
 
-
 #endif // __SW_SPI_H__
-

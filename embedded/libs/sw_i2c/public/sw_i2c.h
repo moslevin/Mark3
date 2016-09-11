@@ -22,16 +22,16 @@ See license.txt for more information
 #include <stdint.h>
 //---------------------------------------------------------------------------
 typedef enum {
-    I2C_LOW       = 0,  //!< Logic low, zero, GND, etc, etc.
-    I2C_HIGH      = 1   //!< Logic high, 1, VCC, etc, etc.
+    I2C_LOW  = 0, //!< Logic low, zero, GND, etc, etc.
+    I2C_HIGH = 1  //!< Logic high, 1, VCC, etc, etc.
 } i2c_level_t;
 
 //---------------------------------------------------------------------------
 typedef enum {
-    I2C_OK       = 0,   //!< Successful operation
-    I2C_NACK,           //!< Read or write was NACK'd
-    I2C_TIMEOUT,        //!< Device did not respond after in clock stretch window
-    I2C_BUS_ERROR       //!< Bus arbitration error (slave holds SDA low)
+    I2C_OK = 0,   //!< Successful operation
+    I2C_NACK,     //!< Read or write was NACK'd
+    I2C_TIMEOUT,  //!< Device did not respond after in clock stretch window
+    I2C_BUS_ERROR //!< Bus arbitration error (slave holds SDA low)
 } i2c_return_t;
 
 //---------------------------------------------------------------------------
@@ -121,7 +121,6 @@ public:
     void BusIdle(void);
 
 private:
-
     /*!
      * \brief BitDelay
      *
@@ -236,10 +235,8 @@ private:
      */
     i2c_return_t RecvAck(bool* pbAck_);
 
-    uint32_t m_u32BitDelayUS;   //!< Half-bit delay in microseconds
-    bool     m_bStarted;        //!< Transaction state -- true = started, false = idle
+    uint32_t m_u32BitDelayUS; //!< Half-bit delay in microseconds
+    bool     m_bStarted;      //!< Transaction state -- true = started, false = idle
 };
 
-
 #endif //__SW_I2C_H__
-
