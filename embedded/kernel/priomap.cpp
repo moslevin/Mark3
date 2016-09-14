@@ -18,6 +18,7 @@ See license.txt for more information
 
 #include "mark3.h"
 #include "priomap.h"
+#include "threadport.h"
 
 #include <stdint.h>
 #include <stdbool.h>
@@ -27,7 +28,8 @@ static inline uint8_t priority_from_bitmap(PRIO_TYPE uXPrio_)
 {
 #if defined HW_CLZ
     // Support hardware-accelerated Count-leading-zeros instruction
-    return (PRIO_MAP_BITS - CLZ(uXPrio_));
+    uint8_t rc = CLZ(uXPrio_);
+    return PRIO_MAP_BITS - rc;
 #else
     // Default un-optimized count-leading zeros operation
     PRIO_TYPE uXMask  = (1 << (PRIO_MAP_BITS - 1));

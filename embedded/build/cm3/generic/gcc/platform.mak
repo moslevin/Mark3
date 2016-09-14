@@ -14,7 +14,8 @@ CXFLAGS=-Os                 \
         -ffunction-sections \
         -ffreestanding      \
         -DK_ADDR=uint32_t   \
-        -DK_WORD=uint32_t
+        -DK_WORD=uint32_t   \
+        -DPRIO_MAP_WORD_SIZE=4
 
 ### These values are generic and may be overridden when building for a particular target ###.
 ARM_C_FLAGS=-mthumb                     \

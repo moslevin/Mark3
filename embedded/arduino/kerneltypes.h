@@ -25,6 +25,7 @@ See license.txt for more information
 
 #define K_ADDR uint16_t
 #define K_WORD uint8_t
+#define PRIO_MAP_WORD_SIZE (1)
 
 //---------------------------------------------------------------------------
 /*!

@@ -33,9 +33,9 @@ ifeq ($(IS_APP), 1)
 endif
 
 # the target is specified in the user makefile
-all : banner binary 
+all : banner headers directories library binary
 
-# Display what we're building
+# Display what we're cleaning
 clean_banner : $(realpath .)
 	@echo
 	@echo ------------------------------------------------------------
@@ -62,10 +62,19 @@ source_banner : $(realpath .)
 	@echo ------------------------------------------------------------
 	@echo [ Copying Source Files $^ ]
 	@echo ------------------------------------------------------------
-	
-# Get rid of all of the binary objects created previous... 
-clean : clean_banner
-	 @$(RMCMD) $(USR_OBJS)
+
+# Display what we're cleaning
+clean_headers_banner : $(realpath .)
+	@echo
+	@echo ------------------------------------------------------------
+	@echo [ Cleaning Staged Public Headers $^ ]
+	@echo ------------------------------------------------------------
+
+clean_headers : clean_headers_banner $(wildcard $(INC_DIR)*.h)
+	@$(RMCMD) $(wildcard $(INC_DIR)*.h)
+
+clean_code : clean_banner 
+	@$(RMCMD) $(USR_OBJS)
 ifeq ($(IS_LIB),1)
 	 @$(RMCMD) $(OBJ_DIR_FINAL)lib$(LIBNAME).a
 endif
@@ -79,15 +88,19 @@ endif
 	do \
 		if test -f $$i/makefile; then \
 			cd $$i ;\
-			$(MAKE) --no-print-directory clean ;\
+			$(MAKE) --no-print-directory clean_code ;\
 			cd .. ;\
 		fi ;\
 	done
 
+# Get rid of all of the binary objects created previous... 
+clean : clean_banner clean_headers clean_code
+	@echo "[ DONE ]"
+
 #----------------------------------------------------------------------------
 # Copy public header files to the staging directory
 #----------------------------------------------------------------------------
-headers : headers_banner
+headers : headers_banner $(wildcard $(PUBLIC_DIR)/*.h) $(wildcard $(CPU_SPEC_HEADERS)/*.h)
 	@if test -d $(PUBLIC_DIR); then \
 		if test -d $(INC_DIR); then \
 			if test -f $(wildcard *.h); then \
@@ -251,6 +264,7 @@ $(LIB_DIR) :
 	fi;
 
 $(LIB_DIR)$(ARCH) : $(LIB_DIR)
+
 	@if test ! -d $(LIB_DIR)$(ARCH); then \
 		mkdir $(LIB_DIR)$(ARCH)    ;\
 	fi;

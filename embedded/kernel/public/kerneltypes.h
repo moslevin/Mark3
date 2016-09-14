@@ -25,10 +25,52 @@ See license.txt for more information
 
 //---------------------------------------------------------------------------
 #if !defined(K_ADDR)
-#define K_ADDR uint32_t //!< Primative datatype representing address-size
+# if defined(AVR)
+#  warning "using platform default size for K_ADDR - uint8_t"
+#  define K_ADDR uint16_t
+# elif defined(MSP430)
+#  warning "using platform default size for K_ADDR - uint16_t"
+#  define K_ADDR uint16_t
+# elif defined(ARM)
+#  warning "using platform default size for K_ADDR - uint32_t"
+#  define K_ADDR uint32_t
+# else
+#  warning "No K_ADDR defined -- defaulting to 32 bits"
+#  define K_ADDR uint32_t
+# endif
 #endif
+
 #if !defined(K_WORD)
-#define K_WORD uint32_t //!< Primative datatype representing a data word
+# if defined(AVR)
+#  warning "using platform default size for K_WORD - uint8_t"
+#  define K_WORD uint8_t
+# elif defined(MSP430)
+#  warning "using platform default size for K_WORD - uint16_t"
+#  define K_WORD uint16_t
+# elif defined(ARM)
+#  warning "using platform default size for K_WORD - uint32_t"
+#  define K_WORD uint32_t
+# else
+#  warning "No K_WORD defined -- defaulting to 32 bits"
+#  define K_ADDR uint32_t
+# endif
+#endif
+
+#if !defined(PRIO_MAP_WORD_SIZE)
+# if defined(AVR)
+#  warning "using platform default size for PRIO_MAP_WORD_SIZE - sizeof(uint8_t)"
+#  define PRIO_MAP_WORD_SIZE    (1)
+# elif defined(MSP430)
+#  warning "using platform default size for PRIO_MAP_WORD_SIZE - sizeof(uint16_t)"
+#  define PRIO_MAP_WORD_SIZE    (2)
+# elif defined(ARM)
+#  warning "using platform default size for PRIO_MAP_WORD_SIZE - sizeof(uint32_t)"
+#  define PRIO_MAP_WORD_SIZE    (4)
+# else
+#  warning "No PRIO_MAP_WORD_SIZE defined - default to sizeof(uint32_t)"
+#  define PRIO_MAP_WORD_SIZE    (4)
+#endif
+
 #endif
 
 //---------------------------------------------------------------------------

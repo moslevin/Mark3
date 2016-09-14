@@ -39,8 +39,7 @@ See license.txt for more information
 //------------------------------------------------------------------------
 // Use hardware accelerated count-leading zero
 #define HW_CLZ (1)
-extern unsigned char __clz(unsigned int x);
-#define CLZ(x)      __clz((x))
+#define CLZ(x)      __builtin_clz((x))
 
 //------------------------------------------------------------------------
 //! These macros *must* be used in matched-pairs !

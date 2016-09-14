@@ -37,8 +37,10 @@ See license.txt for more information
 #define STACK_GROWS_DOWN           (1)
 
 //------------------------------------------------------------------------
-//! These macros *must* be used in matched-pairs !
-//! Nesting *is* supported !
+// Use hardware accelerated count-leading zero
+#define HW_CLZ (1)
+//extern unsigned char __clz(unsigned int x);
+#define CLZ(x)      __builtin_clz((x))
 
 //------------------------------------------------------------------------
 #ifndef xDMB

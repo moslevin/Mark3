@@ -25,13 +25,10 @@ See license.txt for more information
 //---------------------------------------------------------------------------
 // Define the type used to store the priority map based on the word size of
 // the underlying host architecture.
-#if (K_WORD == uint8_t)
-#define PRIO_MAP_WORD_SIZE (1)
-#elif (K_WORD == uint16_t)
-#define PRIO_MAP_WORD_SIZE (2)
-#elif (K_WORD == uint32_t)
-#define PRIO_MAP_WORD_SIZE (4)
+#if !defined(PRIO_MAP_WORD_SIZE)
+#error "undefined PRIO_MAP_WORD_SIZE"
 #endif
+
 #define PRIO_MAP_WORD_TYPE K_WORD
 
 // Size of the map index type in bits

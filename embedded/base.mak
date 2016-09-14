@@ -1,6 +1,6 @@
 #----------------------------------------------------------------------------
 # Mark3 Base makefile - defines the common variables for all makefiles
-# Copyright (c) 20112012 Funkenstein Software Consulting
+# Copyright (c) 2012 Funkenstein Software Consulting
 #----------------------------------------------------------------------------
 
 # These are target specific, modify to suit your platform and environment

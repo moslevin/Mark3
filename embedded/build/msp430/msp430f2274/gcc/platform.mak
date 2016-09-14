@@ -3,8 +3,8 @@
 CC=msp430-gcc
 CPP=msp430-g++
 
-CFLAGS=-funsigned-char -funsigned-bitfields -Os -g3 -fpack-struct  -fshort-enums -Wall -c -mmcu=$(VARIANT) -DK_ADDR=uint16_t -DK_WORD=uint16_t
-CPPFLAGS=-funsigned-char -funsigned-bitfields -Os -g3 -fpack-struct -fshort-enums -Wall -c -mmcu=$(VARIANT) -DK_ADDR=uint16_t -DK_WORD=uint16_t
+CFLAGS=-funsigned-char -funsigned-bitfields -Os -g3 -fpack-struct  -fshort-enums -Wall -c -mmcu=$(VARIANT) -DMSP430 -DK_ADDR=uint16_t -DK_WORD=uint16_t -DPRIO_MAP_WORD_SIZE=2
+CPPFLAGS=-funsigned-char -funsigned-bitfields -Os -g3 -fpack-struct -fshort-enums -Wall -c -mmcu=$(VARIANT) -DMSP430 -DK_ADDR=uint16_t -DK_WORD=uint16_t -DPRIO_MAP_WORD_SIZE=2
 
 LINK=msp430-gcc
 LFLAGS=-Wl,--start-group -Wl,-lm  -Wl,--end-group -Wl,--gc-sections -mmcu=$(VARIANT)
