@@ -41,11 +41,8 @@ public:
      *
      *  Default constructor - zero-initializes the data.
      */
-    ThreadList()
-    {
-        m_uXPriority = 0;
-        m_pclMap     = NULL;
-    }
+    ThreadList() : m_uXPriority(0), m_pclMap(NULL)
+    { }
 
     /*!
      *  \brief SetPriority
@@ -54,7 +51,7 @@ public:
      *
      *  \param uXPriority_ Priority level of the thread list
      */
-    void SetPriority(PRIO_TYPE uXPriority_);
+    void SetPriority(PORT_PRIO_TYPE uXPriority_);
 
     /*!
      *  \brief SetMapPointer
@@ -87,7 +84,7 @@ public:
      *                      a scheduler context), or NULL for non-scheduler.
      *  \param uXPriority_  Priority of the threadlist
      */
-    void Add(LinkListNode* node_, PriorityMap* pclMap_, PRIO_TYPE uXPriority_);
+    void Add(LinkListNode* node_, PriorityMap* pclMap_, PORT_PRIO_TYPE uXPriority_);
 
     /*!
      * \brief AddPriority
@@ -119,7 +116,7 @@ public:
 
 private:
     //! Priority of the threadlist
-    PRIO_TYPE m_uXPriority;
+    PORT_PRIO_TYPE m_uXPriority;
 
     //! Pointer to the bitmap/flag to set when used for scheduling.
     PriorityMap* m_pclMap;

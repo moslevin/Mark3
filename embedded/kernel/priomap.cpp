@@ -24,15 +24,15 @@ See license.txt for more information
 #include <stdbool.h>
 
 //---------------------------------------------------------------------------
-static inline uint8_t priority_from_bitmap(PRIO_TYPE uXPrio_)
+static inline uint8_t priority_from_bitmap(PORT_PRIO_TYPE uXPrio_)
 {
-#if defined HW_CLZ
+#if HW_CLZ
     // Support hardware-accelerated Count-leading-zeros instruction
-    uint8_t rc = CLZ(uXPrio_);
-    return PRIO_MAP_BITS - rc;
+    uint8_t rc = PRIO_MAP_BITS - CLZ(uXPrio_);
+    return rc;
 #else
     // Default un-optimized count-leading zeros operation
-    PRIO_TYPE uXMask  = (1 << (PRIO_MAP_BITS - 1));
+    PORT_PRIO_TYPE uXMask  = (1 << (PRIO_MAP_BITS - 1));
     uint8_t   u8Zeros = 0;
 
     while (uXMask) {
@@ -61,11 +61,11 @@ PriorityMap::PriorityMap()
 }
 
 //---------------------------------------------------------------------------
-void PriorityMap::Set(PRIO_TYPE uXPrio_)
+void PriorityMap::Set(PORT_PRIO_TYPE uXPrio_)
 {
-    PRIO_TYPE uXPrioBit = PRIO_BIT(uXPrio_);
+    PORT_PRIO_TYPE uXPrioBit = PRIO_BIT(uXPrio_);
 #if PRIO_MAP_MULTI_LEVEL
-    PRIO_TYPE uXWordIdx = PRIO_MAP_WORD_INDEX(uXPrio_);
+    PORT_PRIO_TYPE uXWordIdx = PRIO_MAP_WORD_INDEX(uXPrio_);
 
     m_auXPriorityMap[uXWordIdx] |= (1 << uXPrioBit);
     m_uXPriorityMapL2 |= (1 << uXWordIdx);
@@ -75,11 +75,11 @@ void PriorityMap::Set(PRIO_TYPE uXPrio_)
 }
 
 //---------------------------------------------------------------------------
-void PriorityMap::Clear(PRIO_TYPE uXPrio_)
+void PriorityMap::Clear(PORT_PRIO_TYPE uXPrio_)
 {
-    PRIO_TYPE uXPrioBit = PRIO_BIT(uXPrio_);
+    PORT_PRIO_TYPE uXPrioBit = PRIO_BIT(uXPrio_);
 #if PRIO_MAP_MULTI_LEVEL
-    PRIO_TYPE uXWordIdx = PRIO_MAP_WORD_INDEX(uXPrio_);
+    PORT_PRIO_TYPE uXWordIdx = PRIO_MAP_WORD_INDEX(uXPrio_);
 
     m_auXPriorityMap[uXWordIdx] &= ~(1 << uXPrioBit);
     if (!m_auXPriorityMap[uXWordIdx]) {
@@ -91,18 +91,18 @@ void PriorityMap::Clear(PRIO_TYPE uXPrio_)
 }
 
 //---------------------------------------------------------------------------
-PRIO_TYPE PriorityMap::HighestPriority(void)
+PORT_PRIO_TYPE PriorityMap::HighestPriority(void)
 {
 #if PRIO_MAP_MULTI_LEVEL
-    PRIO_TYPE uXMapIdx = priority_from_bitmap(m_uXPriorityMapL2);
+    PORT_PRIO_TYPE uXMapIdx = priority_from_bitmap(m_uXPriorityMapL2);
     if (!uXMapIdx) {
         return 0;
     }
     uXMapIdx--;
-    PRIO_TYPE uXPrio = priority_from_bitmap(m_auXPriorityMap[uXMapIdx]);
+    PORT_PRIO_TYPE uXPrio = priority_from_bitmap(m_auXPriorityMap[uXMapIdx]);
     uXPrio += (uXMapIdx * PRIO_MAP_BITS);
 #else
-    PRIO_TYPE uXPrio = priority_from_bitmap(m_uXPriorityMap);
+    PORT_PRIO_TYPE uXPrio = priority_from_bitmap(m_uXPriorityMap);
 #endif
     return uXPrio;
 }

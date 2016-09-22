@@ -22,7 +22,7 @@ ifeq ($(VARIANT), atmega1284p)
     LFLAGS+=-Wl,-section-start=.text=0x1e000
     CFLAGS+=-DPAGE_SIZE=256
     CFLAGS+=-DBAUD_RATE=115200
-    CFLAGS+=-DSYSTEM_FREQ=20000000
+    CFLAGS+=-DPORT_SYSTEM_FREQ=20000000
 endif
 
 endif

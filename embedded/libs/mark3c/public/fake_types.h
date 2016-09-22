@@ -49,7 +49,7 @@ typedef struct {
 //---------------------------------------------------------------------------
 typedef struct {
     Fake_LinkedList fake_list;
-    PRIO_TYPE       m_uXPriority;
+    PORT_PRIO_TYPE       m_uXPriority;
     void*           m_pclMap;
 } Fake_ThreadList;
 
@@ -71,8 +71,8 @@ typedef struct {
     K_WORD*             m_pwStackTop;
     K_WORD*             m_pwStack;
     uint8_t             m_u8ThreadID;
-    PRIO_TYPE           m_uXPriority;
-    PRIO_TYPE           m_uXCurPriority;
+    PORT_PRIO_TYPE           m_uXPriority;
+    PORT_PRIO_TYPE           m_uXCurPriority;
     uint8_t             m_eState;
 #if KERNEL_USE_THREADNAME
     const char* m_szName;

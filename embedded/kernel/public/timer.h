@@ -37,7 +37,7 @@ class Thread;
 
 //---------------------------------------------------------------------------
 #define MAX_TIMER_TICKS (0x7FFFFFFF) //!< Maximum value to set
-
+#define TIMER_TICKS_INVALID (0x80000000)
 //---------------------------------------------------------------------------
 #if KERNEL_TIMERS_TICKLESS
 
@@ -55,9 +55,9 @@ class Thread;
     customize these values to suit your system more appropriately.
  */
 //---------------------------------------------------------------------------
-#define SECONDS_TO_TICKS(x) ((((uint32_t)x) * TIMER_FREQ))
-#define MSECONDS_TO_TICKS(x) ((((((uint32_t)x) * (TIMER_FREQ / 100)) + 5) / 10))
-#define USECONDS_TO_TICKS(x) ((((((uint32_t)x) * TIMER_FREQ) + 50000) / 1000000))
+#define SECONDS_TO_TICKS(x) ((((uint32_t)x) * PORT_TIMER_FREQ))
+#define MSECONDS_TO_TICKS(x) ((((((uint32_t)x) * (PORT_TIMER_FREQ / 100)) + 5) / 10))
+#define USECONDS_TO_TICKS(x) ((((((uint32_t)x) * PORT_TIMER_FREQ) + 50000) / 1000000))
 
 //---------------------------------------------------------------------------
 #define MIN_TICKS (3) //!< The minimum tick value to set

@@ -66,6 +66,9 @@ void TimerList::Add(Timer* pclListNode_)
     if (GetHead() == NULL) {
         bStart = 1;
     }
+    if (pclListNode_->m_u32Interval < PORT_MIN_TIMER_TICKS) {
+        pclListNode_->m_u32Interval = PORT_MIN_TIMER_TICKS;
+    }
 #endif
 
     pclListNode_->ClearNode();
@@ -77,11 +80,11 @@ void TimerList::Add(Timer* pclListNode_)
 #if KERNEL_TIMERS_TICKLESS
     if (!bStart) {
         // If the new interval is less than the amount of time remaining...
-        lDelta = KernelTimer::TimeToExpiry() - pclListNode_->m_u32Interval;
+        lDelta = (int32_t)((uint32_t)KernelTimer::TimeToExpiry() - pclListNode_->m_u32Interval);
 
         if (lDelta > 0) {
             // Set the new expiry time on the timer.
-            m_u32NextWakeup = KernelTimer::SubtractExpiry((uint32_t)lDelta);
+            m_u32NextWakeup = (uint32_t)KernelTimer::SubtractExpiry((uint32_t)lDelta);
         }
     } else {
         m_u32NextWakeup = pclListNode_->m_u32Interval;
@@ -137,7 +140,7 @@ void TimerList::Process(void)
 
 #if KERNEL_TIMERS_TICKLESS
         bContinue    = 0;
-        u32NewExpiry = MAX_TIMER_TICKS;
+        u32NewExpiry = MAX_TIMER_TICKS; // Used to indicate that no timers are pending
 #endif
 
         // Subtract the elapsed time interval from each active timer.
@@ -148,8 +151,8 @@ void TimerList::Process(void)
 #if KERNEL_TIMERS_TICKLESS
                 if (pclNode->m_u32TimeLeft <= m_u32NextWakeup)
 #else
-            pclNode->m_u32TimeLeft--;
-            if (0 == pclNode->m_u32TimeLeft)
+                pclNode->m_u32TimeLeft--;
+                if (0 == pclNode->m_u32TimeLeft)
 #endif
                 {
                     // Yes - set the "callback" flag - we'll execute the callbacks later
@@ -178,7 +181,7 @@ void TimerList::Process(void)
                 }
 #if KERNEL_TIMERS_TICKLESS
                 else {
-                    // Not expiring, but determine how int32_t to run the next timer interval for.
+                    // Not expiring, but determine how long to run the next timer interval for.
                     pclNode->m_u32TimeLeft -= m_u32NextWakeup;
                     if (pclNode->m_u32TimeLeft < u32NewExpiry) {
                         u32NewExpiry = pclNode->m_u32TimeLeft;
@@ -217,14 +220,14 @@ void TimerList::Process(void)
 #if KERNEL_TIMERS_TICKLESS
         // Check to see how much time has elapsed since the time we
         // acknowledged the interrupt...
-        u32Overtime = KernelTimer::GetOvertime();
+        u32Overtime = (uint32_t)KernelTimer::GetOvertime();
 
         if (u32Overtime >= u32NewExpiry) {
             m_u32NextWakeup = u32Overtime;
             bContinue       = 1;
         }
 
-        // If it's taken longer to go through this loop than would take u16 to
+        // If it's taken longer to go through this loop than would take us to
         // the next expiry, re-run the timing loop
 
     } while (bContinue);
@@ -237,7 +240,7 @@ void TimerList::Process(void)
         // Update the timer with the new "Next Wakeup" value, plus whatever
         // overtime has accumulated since the last time we called this handler
 
-        m_u32NextWakeup = KernelTimer::SetExpiry(u32NewExpiry + u32Overtime);
+        m_u32NextWakeup = (uint32_t)KernelTimer::SetExpiry(u32NewExpiry + u32Overtime);
     }
 #endif
 #if KERNEL_USE_QUANTUM

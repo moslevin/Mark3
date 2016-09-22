@@ -109,6 +109,7 @@ See license.txt for more information
 #define __NLFS_H__
 
 #include "kerneltypes.h"
+#include "mark3cfg.h"
 #include <stdint.h>
 
 class NLFS_File;

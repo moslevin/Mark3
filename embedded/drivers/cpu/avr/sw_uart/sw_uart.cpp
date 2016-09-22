@@ -109,7 +109,7 @@ See license.txt for more information
 }
 
 //---------------------------------------------------------------------------
-#define SYSTEM_FREQ (16000000)
+#define PORT_SYSTEM_FREQ (16000000)
 
 //---------------------------------------------------------------------------
 #define FRAME_BITS (10) // 8 data bits, 1 start, 1 stop bit.
@@ -153,7 +153,7 @@ void SoftwareUART::Init(uint32_t u32Baud_)
     bool     bDone = false;
     uint32_t u32BitPeriod;
     while (!bDone) {
-        u32BitPeriod = (SYSTEM_FREQ / (uint32_t)m_u16Prescale) / u32Baud_;
+        u32BitPeriod = (PORT_SYSTEM_FREQ / (uint32_t)m_u16Prescale) / u32Baud_;
         if (u32BitPeriod >= 256) {
             // Bail, this is as low as we go...
             if (m_u16Prescale == 1) {
@@ -184,7 +184,7 @@ void SoftwareUART::Init(uint32_t u32Baud_)
         }
     }
 
-    u32BitPeriod = ((SYSTEM_FREQ / (uint32_t)m_u16Prescale) / u32Baud_) - 1;
+    u32BitPeriod = ((PORT_SYSTEM_FREQ / (uint32_t)m_u16Prescale) / u32Baud_) - 1;
     if (u32BitPeriod > 255) {
         u32BitPeriod = 255;
     }

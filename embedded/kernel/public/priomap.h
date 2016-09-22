@@ -25,19 +25,19 @@ See license.txt for more information
 //---------------------------------------------------------------------------
 // Define the type used to store the priority map based on the word size of
 // the underlying host architecture.
-#if !defined(PRIO_MAP_WORD_SIZE)
-#error "undefined PRIO_MAP_WORD_SIZE"
+#if !defined(PORT_PRIO_MAP_WORD_SIZE)
+#error "undefined PORT_PRIO_MAP_WORD_SIZE"
 #endif
 
 #define PRIO_MAP_WORD_TYPE K_WORD
 
 // Size of the map index type in bits
-#define PRIO_MAP_BITS (8 * PRIO_MAP_WORD_SIZE)
+#define PRIO_MAP_BITS (8 * PORT_PRIO_MAP_WORD_SIZE)
 
 // # of bits in an integer used to represent the number of bits in the map.
 // Used for bitshifting the bit index away from the map index.
 // i.e. 3 == 8 bits, 4 == 16 bits, 5 == 32 bits, etc...
-#define PRIO_MAP_WORD_SHIFT (2 + PRIO_MAP_WORD_SIZE)
+#define PRIO_MAP_WORD_SHIFT (2 + PORT_PRIO_MAP_WORD_SIZE)
 
 // Bitmask used to separate out the priorities first-level bitmap from its
 // second-level map index for a given priority
@@ -82,14 +82,14 @@ public:
      *                  given priority
      * \param uXPrio_   Priority level to set the bitmap data for.
      */
-    void Set(PRIO_TYPE uXPrio_);
+    void Set(PORT_PRIO_TYPE uXPrio_);
 
     /*!
      * \brief Clear     Clear the priority map bitmap data, at all levels, for the
      *                  given priority.
      * \param uXPrio_   Priority level to clear the bitmap data for.
      */
-    void Clear(PRIO_TYPE uXPrio_);
+    void Clear(PORT_PRIO_TYPE uXPrio_);
 
     /*!
      * \brief HighestPriority
@@ -99,7 +99,7 @@ public:
      *
      * \return Highest priority ready-thread's number.
      */
-    PRIO_TYPE HighestPriority(void);
+    PORT_PRIO_TYPE HighestPriority(void);
 
 private:
 #if PRIO_MAP_MULTI_LEVEL

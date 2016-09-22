@@ -91,6 +91,9 @@ void Timer::Start()
 //---------------------------------------------------------------------------
 void Timer::Stop()
 {
+    if (!(m_u8Flags & TIMERLIST_FLAG_ACTIVE)) {
+            return;
+    }
     TimerScheduler::Remove(this);
 }
 

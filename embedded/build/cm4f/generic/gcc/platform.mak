@@ -12,10 +12,7 @@ CXFLAGS=-Os                 \
         -c                  \
         -fdata-sections     \
         -ffunction-sections \
-        -ffreestanding      \
-        -DK_ADDR=uint32_t   \
-        -DK_WORD=uint32_t   \
-        -DPRIO_MAP_WORD_SIZE=4
+        -ffreestanding
 
 ### These values are generic and may be overridden when building for a particular target ###.
 ARM_C_FLAGS=-mthumb                     \
@@ -26,8 +23,12 @@ ARM_C_FLAGS=-mthumb                     \
             -DUSE_FULL_ASSERT           \
             -fmessage-length=0          \
             -mfloat-abi=hard            \
-            -mfpu=fpv4-sp-d16           
-   
+            -mfpu=fpv4-sp-d16           \
+            -D__CM4_REV=0x0001          \
+            -D__MPU_PRESENT=1           \
+            -D__NVIC_PRIO_BITS=4        \
+            -D__Vendor_SysTickConfig=0  \
+            -D__FPU_PRESENT=1
 
 CFLAGS=$(CXFLAGS) $(ARM_C_FLAGS)
 CPPFLAGS=$(CXFLAGS) $(ARM_C_FLAGS) -fno-rtti

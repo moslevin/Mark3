@@ -40,7 +40,7 @@ void KernelTimer::Start(void)
 {
 #if !KERNEL_TIMERS_TICKLESS
     TCCR1B = ((1 << WGM12) | (1 << CS11) | (1 << CS10));
-    OCR1A  = ((SYSTEM_FREQ / 1000) / 64);
+    OCR1A  = ((PORT_SYSTEM_FREQ / 1000) / 64);
 #else
     TCCR1B |= (1 << CS12);
 #endif

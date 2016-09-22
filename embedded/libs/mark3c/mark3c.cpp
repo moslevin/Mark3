@@ -222,7 +222,7 @@ Thread_t Scheduler_GetCurrentThread(void)
 void Thread_Init(Thread_t      handle,
                  K_WORD*       pwStack_,
                  uint16_t      u16StackSize_,
-                 PRIO_TYPE     uXPriority_,
+                 PORT_PRIO_TYPE     uXPriority_,
                  ThreadEntry_t pfEntryPoint_,
                  void*         pvArg_)
 {
@@ -259,13 +259,13 @@ const char* Thread_GetName(Thread_t handle)
 #endif
 
 //---------------------------------------------------------------------------
-PRIO_TYPE Thread_GetPriority(Thread_t handle)
+PORT_PRIO_TYPE Thread_GetPriority(Thread_t handle)
 {
     Thread* pclThread = (Thread*)handle;
     return pclThread->GetPriority();
 }
 //---------------------------------------------------------------------------
-PRIO_TYPE Thread_GetCurPriority(Thread_t handle)
+PORT_PRIO_TYPE Thread_GetCurPriority(Thread_t handle)
 {
     Thread* pclThread = (Thread*)handle;
     return pclThread->GetCurPriority();
@@ -286,7 +286,7 @@ uint16_t Thread_GetQuantum(Thread_t handle)
 #endif
 
 //---------------------------------------------------------------------------
-void Thread_SetPriority(Thread_t handle, PRIO_TYPE uXPriority_)
+void Thread_SetPriority(Thread_t handle, PORT_PRIO_TYPE uXPriority_)
 {
     Thread* pclThread = (Thread*)handle;
     pclThread->SetPriority(uXPriority_);

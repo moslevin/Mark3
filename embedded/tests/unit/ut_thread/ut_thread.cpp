@@ -154,24 +154,24 @@ TEST(ut_threadsleep)
     clSem2.Pend();
     clProfiler1.Stop();
 
-    EXPECT_GTE((clProfiler1.GetCurrent() * CLOCK_DIVIDE), (SYSTEM_FREQ / 200));
-    EXPECT_LTE((clProfiler1.GetCurrent() * CLOCK_DIVIDE), (SYSTEM_FREQ / 200) + (SYSTEM_FREQ / 200));
+    EXPECT_GTE((clProfiler1.GetCurrent() * CLOCK_DIVIDE), (PORT_SYSTEM_FREQ / 200));
+    EXPECT_LTE((clProfiler1.GetCurrent() * CLOCK_DIVIDE), (PORT_SYSTEM_FREQ / 200) + (PORT_SYSTEM_FREQ / 200));
 
     clSem1.Post();
     clProfiler1.Start();
     clSem2.Pend();
     clProfiler1.Stop();
 
-    EXPECT_GTE((clProfiler1.GetCurrent() * CLOCK_DIVIDE), SYSTEM_FREQ / 20);
-    EXPECT_LTE((clProfiler1.GetCurrent() * CLOCK_DIVIDE), (SYSTEM_FREQ / 20) + (SYSTEM_FREQ / 200));
+    EXPECT_GTE((clProfiler1.GetCurrent() * CLOCK_DIVIDE), PORT_SYSTEM_FREQ / 20);
+    EXPECT_LTE((clProfiler1.GetCurrent() * CLOCK_DIVIDE), (PORT_SYSTEM_FREQ / 20) + (PORT_SYSTEM_FREQ / 200));
 
     clSem1.Post();
     clProfiler1.Start();
     clSem2.Pend();
     clProfiler1.Stop();
 
-    EXPECT_GTE((clProfiler1.GetCurrent() * CLOCK_DIVIDE), SYSTEM_FREQ / 5);
-    EXPECT_LTE((clProfiler1.GetCurrent() * CLOCK_DIVIDE), (SYSTEM_FREQ / 5) + (SYSTEM_FREQ / 200));
+    EXPECT_GTE((clProfiler1.GetCurrent() * CLOCK_DIVIDE), PORT_SYSTEM_FREQ / 5);
+    EXPECT_LTE((clProfiler1.GetCurrent() * CLOCK_DIVIDE), (PORT_SYSTEM_FREQ / 5) + (PORT_SYSTEM_FREQ / 200));
 
     Profiler::Stop();
 }

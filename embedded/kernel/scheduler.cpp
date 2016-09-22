@@ -62,7 +62,7 @@ void Scheduler::Init()
 //---------------------------------------------------------------------------
 void Scheduler::Schedule()
 {
-    PRIO_TYPE uXPrio;
+    PORT_PRIO_TYPE uXPrio;
 
     uXPrio = m_clPrioMap.HighestPriority();
 

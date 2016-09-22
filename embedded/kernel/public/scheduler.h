@@ -138,7 +138,7 @@ public:
      *
      *  \return Pointer to the ThreadList for the given priority level
      */
-    static ThreadList* GetThreadList(PRIO_TYPE uXPriority_) { return &m_aclPriorities[uXPriority_]; }
+    static ThreadList* GetThreadList(PORT_PRIO_TYPE uXPriority_) { return &m_aclPriorities[uXPriority_]; }
     /*!
      *  \brief GetStopList
      *

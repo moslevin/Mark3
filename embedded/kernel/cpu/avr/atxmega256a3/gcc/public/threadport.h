@@ -46,6 +46,22 @@ See license.txt for more information
 #define STACK_GROWS_DOWN           (1)
 
 //---------------------------------------------------------------------------
+// Lookup table based count-leading zeros implementation.
+inline uint8_t __mark3_clz8(uint8_t in_)
+{
+    static const uint8_t u8Lookup[] = {4, 3, 2, 2, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0};
+    uint8_t hi = __builtin_avr_swap(in_) & 0x0F;
+    if (hi) {
+        return u8Lookup[hi];
+    }
+    return 4 + u8Lookup[in_];
+}
+
+//---------------------------------------------------------------------------
+#define HW_CLZ   (1)
+#define CLZ(x)  __mark3_clz8(x)
+
+//---------------------------------------------------------------------------
 //! Save the context of the Thread
 #define Thread_SaveContext() \
 ASM("push r0"); \

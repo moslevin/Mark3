@@ -19,14 +19,10 @@ See license.txt for more information
  */
 
 #include "kerneltypes.h"
+#include "mark3cfg.h"
+
 #ifndef __KERNELTIMER_H_
 #define __KERNELTIMER_H_
-
-//---------------------------------------------------------------------------
-extern "C" uint32_t SystemCoreClock;
-
-#define SYSTEM_FREQ (SystemCoreClock)
-#define TIMER_FREQ ((uint32_t)(SYSTEM_FREQ / 1000)) // Timer ticks per second...
 
 //---------------------------------------------------------------------------
 /*!

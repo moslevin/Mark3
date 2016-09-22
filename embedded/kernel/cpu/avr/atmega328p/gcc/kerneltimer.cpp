@@ -40,7 +40,7 @@ void KernelTimer::Start(void)
 {
 #if !KERNEL_TIMERS_TICKLESS
     TCCR1B = ((1 << WGM12) | (1 << CS11) | (1 << CS10));
-    OCR1A  = ((SYSTEM_FREQ / 1000) / 64);
+    OCR1A  = ((PORT_SYSTEM_FREQ / 1000) / 64);
 #else
     TCCR1B |= (1 << CS12);
 #endif
@@ -63,7 +63,7 @@ void KernelTimer::Stop(void)
 }
 
 //---------------------------------------------------------------------------
-uint16_t KernelTimer::Read(void)
+PORT_TIMER_COUNT_TYPE KernelTimer::Read(void)
 {
 #if KERNEL_TIMERS_TICKLESS
     volatile uint16_t u16Read1;
@@ -81,18 +81,18 @@ uint16_t KernelTimer::Read(void)
 }
 
 //---------------------------------------------------------------------------
-uint32_t KernelTimer::SubtractExpiry(uint32_t u32Interval_)
+PORT_TIMER_COUNT_TYPE KernelTimer::SubtractExpiry(PORT_TIMER_COUNT_TYPE uInterval)
 {
 #if KERNEL_TIMERS_TICKLESS
-    OCR1A -= (uint16_t)u32Interval_;
-    return (uint32_t)OCR1A;
+    OCR1A -= uInterval;
+    return OCR1A;
 #else
     return 0;
 #endif
 }
 
 //---------------------------------------------------------------------------
-uint32_t KernelTimer::TimeToExpiry(void)
+PORT_TIMER_COUNT_TYPE KernelTimer::TimeToExpiry(void)
 {
 #if KERNEL_TIMERS_TICKLESS
     uint16_t u16Read  = KernelTimer::Read();
@@ -101,7 +101,7 @@ uint32_t KernelTimer::TimeToExpiry(void)
     if (u16Read >= u16OCR1A) {
         return 0;
     } else {
-        return (uint32_t)(u16OCR1A - u16Read);
+        return (u16OCR1A - u16Read);
     }
 #else
     return 0;
@@ -109,13 +109,13 @@ uint32_t KernelTimer::TimeToExpiry(void)
 }
 
 //---------------------------------------------------------------------------
-uint32_t KernelTimer::GetOvertime(void)
+PORT_TIMER_COUNT_TYPE KernelTimer::GetOvertime(void)
 {
     return KernelTimer::Read();
 }
 
 //---------------------------------------------------------------------------
-uint32_t KernelTimer::SetExpiry(uint32_t u32Interval_)
+PORT_TIMER_COUNT_TYPE KernelTimer::SetExpiry(uint32_t u32Interval_)
 {
 #if KERNEL_TIMERS_TICKLESS
     uint16_t u16SetInterval;
@@ -126,7 +126,7 @@ uint32_t KernelTimer::SetExpiry(uint32_t u32Interval_)
     }
 
     OCR1A = u16SetInterval;
-    return (uint32_t)u16SetInterval;
+    return u16SetInterval;
 #else
     return 0;
 #endif

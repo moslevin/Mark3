@@ -68,7 +68,7 @@ Thread::~Thread()
 
 //---------------------------------------------------------------------------
 void Thread::Init(
-    K_WORD* pwStack_, uint16_t u16StackSize_, PRIO_TYPE uXPriority_, ThreadEntry_t pfEntryPoint_, void* pvArg_)
+    K_WORD* pwStack_, uint16_t u16StackSize_, PORT_PRIO_TYPE uXPriority_, ThreadEntry_t pfEntryPoint_, void* pvArg_)
 {
     static uint8_t u8ThreadID = 0;
 
@@ -132,7 +132,7 @@ void Thread::Init(
 
 #if KERNEL_USE_AUTO_ALLOC
 //---------------------------------------------------------------------------
-Thread* Thread::Init(uint16_t u16StackSize_, PRIO_TYPE uXPriority_, ThreadEntry_t pfEntryPoint_, void* pvArg_)
+Thread* Thread::Init(uint16_t u16StackSize_, PORT_PRIO_TYPE uXPriority_, ThreadEntry_t pfEntryPoint_, void* pvArg_)
 {
     Thread* pclNew  = (Thread*)AutoAlloc::Allocate(sizeof(Thread));
     K_WORD* pwStack = (K_WORD*)AutoAlloc::Allocate(u16StackSize_);
@@ -382,7 +382,7 @@ void Thread::Yield()
 }
 
 //---------------------------------------------------------------------------
-void Thread::SetPriorityBase(PRIO_TYPE uXPriority_)
+void Thread::SetPriorityBase(PORT_PRIO_TYPE uXPriority_)
 {
     GetCurrent()->Remove(this);
 
@@ -392,7 +392,7 @@ void Thread::SetPriorityBase(PRIO_TYPE uXPriority_)
 }
 
 //---------------------------------------------------------------------------
-void Thread::SetPriority(PRIO_TYPE uXPriority_)
+void Thread::SetPriority(PORT_PRIO_TYPE uXPriority_)
 {
     bool bSchedule = 0;
 
@@ -431,7 +431,7 @@ void Thread::SetPriority(PRIO_TYPE uXPriority_)
 }
 
 //---------------------------------------------------------------------------
-void Thread::InheritPriority(PRIO_TYPE uXPriority_)
+void Thread::InheritPriority(PORT_PRIO_TYPE uXPriority_)
 {
     SetOwner(Scheduler::GetThreadList(uXPriority_));
     m_uXCurPriority = uXPriority_;

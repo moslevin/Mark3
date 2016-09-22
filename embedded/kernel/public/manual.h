@@ -3747,7 +3747,7 @@ See license.txt for more information
     \code{.cpp}
     void KernelTimer::Start(void)
     {
-        SysTick_Config(SYSTEM_FREQ / 1000); // 1KHz fixed clock...
+        SysTick_Config(PORT_SYSTEM_FREQ / 1000); // 1KHz fixed clock...
         NVIC_EnableIRQ(SysTick_IRQn);
     }
 

@@ -36,7 +36,7 @@ void KernelTimer::Config(void)
 #if KERNEL_TIMERS_TICKLESS
     TACTL |= ID_3; // Divide-by-8
 #else
-    TACCR0 = (uint16_t)TIMER_FREQ; // Set interrupts to occur at tick freq.
+    TACCR0 = (uint16_t)PORT_TIMER_FREQ; // Set interrupts to occur at tick freq.
 #endif
 }
 

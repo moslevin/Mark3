@@ -55,7 +55,7 @@ void Profiler::Stop()
     TIMSK0 &= ~(1 << TOIE0);
 }
 //---------------------------------------------------------------------------
-uint16_t Profiler::Read()
+PORT_TIMER_COUNT_TYPE Profiler::Read()
 {
     uint16_t u16Ret;
     CS_ENTER();

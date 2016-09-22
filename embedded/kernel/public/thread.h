@@ -79,7 +79,7 @@ public:
      *                       entrypoint function.
      */
     void
-    Init(K_WORD* pwStack_, uint16_t u16StackSize_, PRIO_TYPE uXPriority_, ThreadEntry_t pfEntryPoint_, void* pvArg_);
+    Init(K_WORD* pwStack_, uint16_t u16StackSize_, PORT_PRIO_TYPE uXPriority_, ThreadEntry_t pfEntryPoint_, void* pvArg_);
 
 #if KERNEL_USE_AUTO_ALLOC
     /*!
@@ -165,7 +165,7 @@ public:
      *  \return Priority of the current thread
      */
 
-    PRIO_TYPE GetPriority(void) { return m_uXPriority; }
+    PORT_PRIO_TYPE GetPriority(void) { return m_uXPriority; }
     /*!
      *  \brief GetCurPriority
      *
@@ -173,7 +173,7 @@ public:
      *
      *  \return Priority of the current thread
      */
-    PRIO_TYPE GetCurPriority(void) { return m_uXCurPriority; }
+    PORT_PRIO_TYPE GetCurPriority(void) { return m_uXCurPriority; }
 #if KERNEL_USE_QUANTUM
     /*!
      *  \brief SetQuantum
@@ -221,7 +221,7 @@ public:
      *
      *  \param uXPriority_ New priority of the thread
      */
-    void SetPriority(PRIO_TYPE uXPriority_);
+    void SetPriority(PORT_PRIO_TYPE uXPriority_);
 
     /*!
      *  \brief InheritPriority
@@ -232,7 +232,7 @@ public:
      *
      *  \param uXPriority_  New Priority to boost to.
      */
-    void InheritPriority(PRIO_TYPE uXPriority_);
+    void InheritPriority(PORT_PRIO_TYPE uXPriority_);
 
 #if KERNEL_USE_DYNAMIC_THREADS
     /*!
@@ -404,7 +404,7 @@ private:
      *
      *  \param uXPriority_
      */
-    void SetPriorityBase(PRIO_TYPE uXPriority_);
+    void SetPriorityBase(PORT_PRIO_TYPE uXPriority_);
 
     //! Pointer to the top of the thread's stack
     K_WORD* m_pwStackTop;
@@ -416,10 +416,10 @@ private:
     uint8_t m_u8ThreadID;
 
     //! Default priority of the thread
-    PRIO_TYPE m_uXPriority;
+    PORT_PRIO_TYPE m_uXPriority;
 
     //! Current priority of the thread (priority inheritence)
-    PRIO_TYPE m_uXCurPriority;
+    PORT_PRIO_TYPE m_uXCurPriority;
 
     //! Enum indicating the thread's current state
     ThreadState_t m_eState;
@@ -494,10 +494,10 @@ typedef struct {
     uint8_t m_u8ThreadID;
 
     //! Default priority of the thread
-    PRIO_TYPE m_uXPriority;
+    PORT_PRIO_TYPE m_uXPriority;
 
     //! Current priority of the thread (priority inheritence)
-    PRIO_TYPE m_uXCurPriority;
+    PORT_PRIO_TYPE m_uXCurPriority;
 
     //! Enum indicating the thread's current state
     ThreadState_t m_eState;

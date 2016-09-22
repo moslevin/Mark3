@@ -25,17 +25,6 @@ See license.txt for more information
 #define __KERNELTIMER_H_
 
 //---------------------------------------------------------------------------
-#if KERNEL_TIMERS_TICKLESS
-#error "Tickless timers are not supported on this port"
-#endif
-
-//---------------------------------------------------------------------------
-extern "C" uint32_t SystemCoreClock;
-
-#define SYSTEM_FREQ (SystemCoreClock)
-#define TIMER_FREQ ((uint32_t)(SYSTEM_FREQ / 1000)) // Timer ticks per second...
-
-//---------------------------------------------------------------------------
 /*!
     Hardware timer interface, used by all scheduling/timer subsystems.
  */

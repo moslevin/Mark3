@@ -40,13 +40,7 @@ See license.txt for more information
 */
 #define KERNEL_NUM_PRIORITIES (8)
 
-#if (KERNEL_NUM_PRIORITIES <= 64)
-#define PRIO_TYPE uint8_t // Can be set to larger (but not smaller) type
-#elif (KERNEL_NUM_PRIORITIES <= 256)
-#define PRIO_TYPE uint16_t // Can be set to larger (but not smaller) type
-#elif (KERNEL_NUM_PRIORITIES <= 1024)
-#define PRIO_TYPE uint32_t
-#else
+#if KERNEL_NUM_PRIORITIES > 1024
 #error "Mark3 supports a maximum of 1024 priorities"
 #endif
 
@@ -328,5 +322,7 @@ See license.txt for more information
 #if KERNEL_USE_STACK_GUARD
 #define KERNEL_STACK_GUARD_DEFAULT (32) // words
 #endif
+
+#include "portcfg.h"    //!< include CPU/Port specific configuration options
 
 #endif

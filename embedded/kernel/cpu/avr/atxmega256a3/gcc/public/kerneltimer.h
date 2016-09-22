@@ -25,17 +25,6 @@ See license.txt for more information
 #define __KERNELTIMER_H_
 
 //---------------------------------------------------------------------------
-#if !defined(SYSTEM_FREQ)
-#define SYSTEM_FREQ ((uint32_t)16000000)
-#endif
-
-#if KERNEL_TIMERS_TICKLESS
-#define TIMER_FREQ ((uint32_t)(SYSTEM_FREQ / 256))
-#else
-#define TIMER_FREQ ((uint32_t)(SYSTEM_FREQ / 1000))
-#endif
-
-//---------------------------------------------------------------------------
 /*!
     Hardware timer interface, used by all scheduling/timer subsystems.
  */

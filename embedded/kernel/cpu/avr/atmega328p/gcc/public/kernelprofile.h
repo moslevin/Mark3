@@ -64,7 +64,7 @@ public:
      *
      *  Read the current tick count in the timer.
      */
-    static uint16_t Read();
+    static PORT_TIMER_COUNT_TYPE Read();
 
     /*!
      *  \brief Process

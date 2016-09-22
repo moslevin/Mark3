@@ -37,7 +37,7 @@ See license.txt for more information
 #include "kerneldebug.h"
 
 //---------------------------------------------------------------------------
-void ThreadList::SetPriority(PRIO_TYPE uXPriority_)
+void ThreadList::SetPriority(PORT_PRIO_TYPE uXPriority_)
 {
     m_uXPriority = uXPriority_;
 }
@@ -69,14 +69,14 @@ void ThreadList::AddPriority(LinkListNode* node_)
         Add(node_);
         return;
     }
-    PRIO_TYPE uXHeadPri = pclCurr->GetCurPriority();
+    PORT_PRIO_TYPE uXHeadPri = pclCurr->GetCurPriority();
 
     Thread* pclTail = static_cast<Thread*>(GetTail());
     Thread* pclNode = static_cast<Thread*>(node_);
 
     // Set the threadlist's priority level, flag pointer, and then add the
     // thread to the threadlist
-    PRIO_TYPE uXPriority = pclNode->GetCurPriority();
+    PORT_PRIO_TYPE uXPriority = pclNode->GetCurPriority();
     do {
         if (uXPriority > pclCurr->GetCurPriority()) {
             break;
@@ -98,7 +98,7 @@ void ThreadList::AddPriority(LinkListNode* node_)
 }
 
 //---------------------------------------------------------------------------
-void ThreadList::Add(LinkListNode* node_, PriorityMap* pclMap_, PRIO_TYPE uXPriority_)
+void ThreadList::Add(LinkListNode* node_, PriorityMap* pclMap_, PORT_PRIO_TYPE uXPriority_)
 {
     // Set the threadlist's priority level, flag pointer, and then add the
     // thread to the threadlist

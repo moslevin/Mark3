@@ -63,7 +63,7 @@ TEST(ut_timer_tolerance)
     clProfileTimer.Stop();
 
     u32TimeVal  = clProfileTimer.GetCurrent() * CLOCK_DIVIDE;
-    u32TempTime = SYSTEM_FREQ / 1000;
+    u32TempTime = PORT_SYSTEM_FREQ / 1000;
     EXPECT_GT(u32TimeVal, u32TempTime);
 
     // Test point - 1ms timer should be no more than 3ms
@@ -78,12 +78,12 @@ TEST(ut_timer_tolerance)
     clProfileTimer.Stop();
 
     u32TimeVal  = clProfileTimer.GetCurrent() * CLOCK_DIVIDE;
-    u32TempTime = SYSTEM_FREQ / 100;
+    u32TempTime = PORT_SYSTEM_FREQ / 100;
 
     EXPECT_GT(u32TimeVal, u32TempTime);
 
     // Test point - 10ms timer should be no more than 12ms
-    u32TempTime += 2 * (SYSTEM_FREQ / 1000);
+    u32TempTime += 2 * (PORT_SYSTEM_FREQ / 1000);
     EXPECT_LT(u32TimeVal, u32TempTime);
 
     // Test point - 100ms timer should take at least 100ms
@@ -94,15 +94,15 @@ TEST(ut_timer_tolerance)
     clProfileTimer.Stop();
 
     u32TimeVal  = clProfileTimer.GetCurrent() * CLOCK_DIVIDE;
-    u32TempTime = SYSTEM_FREQ / 10;
+    u32TempTime = PORT_SYSTEM_FREQ / 10;
 
     EXPECT_GT(u32TimeVal, u32TempTime);
 
     // Test point - 100ms timer should be no more than 102ms
-    u32TempTime += 2 * (SYSTEM_FREQ / 1000);
+    u32TempTime += 2 * (PORT_SYSTEM_FREQ / 1000);
     EXPECT_LT(u32TimeVal, u32TempTime);
 
-    // Test point - 1000ms timer should take at least 100ms
+    // Test point - 500ms timer should take at least 500ms
     clProfileTimer.Init();
     clProfileTimer.Start();
     clTimer1.Start(false, 1000, TimerCallback, 0);
@@ -110,12 +110,12 @@ TEST(ut_timer_tolerance)
     clProfileTimer.Stop();
 
     u32TimeVal  = clProfileTimer.GetCurrent() * CLOCK_DIVIDE;
-    u32TempTime = SYSTEM_FREQ;
+    u32TempTime = PORT_SYSTEM_FREQ;
 
     EXPECT_GT(u32TimeVal, u32TempTime);
 
-    // Test point - 1000ms timer should be no more than 1002ms
-    u32TempTime += 2 * (SYSTEM_FREQ / 1000);
+    // Test point - 500ms timer should be no more than 502ms
+    u32TempTime += 2 * (PORT_SYSTEM_FREQ / 1000);
     EXPECT_LT(u32TimeVal, u32TempTime);
 
     Profiler::Stop();
@@ -149,12 +149,12 @@ TEST(ut_timer_longrun)
     clProfileTimer.Stop();
 
     u32TimeVal  = clProfileTimer.GetAverage() * CLOCK_DIVIDE * u32SleepCount;
-    u32TempTime = SYSTEM_FREQ * 10;
+    u32TempTime = PORT_SYSTEM_FREQ * 10;
 
     EXPECT_GT(u32TimeVal, u32TempTime);
 
     // Test point - 100ms accuracy over 10 seconds
-    u32TempTime += SYSTEM_FREQ / 10;
+    u32TempTime += PORT_SYSTEM_FREQ / 10;
     EXPECT_LT(u32TimeVal, u32TempTime);
 
     Profiler::Stop();
@@ -187,17 +187,17 @@ TEST(ut_timer_repeat)
     clTimer1.Stop();
 
     u32TimeVal  = clProfileTimer.GetCurrent() * CLOCK_DIVIDE;
-    u32TempTime = SYSTEM_FREQ;
+    u32TempTime = PORT_SYSTEM_FREQ;
 
     EXPECT_GT(u32TimeVal, u32TempTime);
 
 #if KERNEL_TIMERS_TICKLESS
     // Test point - 50ms (5%) maximum tolerance for callback overhead, etc.
-    u32TempTime += SYSTEM_FREQ / 20;
+    u32TempTime += PORT_SYSTEM_FREQ / 20;
     EXPECT_LT(u32TimeVal, u32TempTime);
 #else
     // Test point - 100ms (10%) maximum tolerance for callback overhead, etc.
-    u32TempTime += SYSTEM_FREQ / 10;
+    u32TempTime += PORT_SYSTEM_FREQ / 10;
     EXPECT_LT(u32TimeVal, u32TempTime);
 #endif
 
@@ -248,26 +248,26 @@ TEST(ut_timer_multi)
 
     // Test Point - Timer 1 expired @ 100ms, with a 1 ms tolerance
     u32TimeVal  = clProfileTimer.GetCurrent() * CLOCK_DIVIDE;
-    u32TempTime = SYSTEM_FREQ / 10;
+    u32TempTime = PORT_SYSTEM_FREQ / 10;
     EXPECT_GT(u32TimeVal, u32TempTime);
 
-    u32TempTime += SYSTEM_FREQ / 1000;
+    u32TempTime += PORT_SYSTEM_FREQ / 1000;
     EXPECT_LT(u32TimeVal, u32TempTime);
 
     // Test Point - Timer 2 expired @ 200ms, with a 1 ms tolerance
     u32TimeVal  = clProfileTimer2.GetCurrent() * CLOCK_DIVIDE;
-    u32TempTime = SYSTEM_FREQ / 5;
+    u32TempTime = PORT_SYSTEM_FREQ / 5;
     EXPECT_GT(u32TimeVal, u32TempTime);
 
-    u32TempTime += SYSTEM_FREQ / 1000;
+    u32TempTime += PORT_SYSTEM_FREQ / 1000;
     EXPECT_LT(u32TimeVal, u32TempTime);
 
     // Test Point - Timer 3 expired @ 50ms, with a 1 ms tolerance
     u32TimeVal  = clProfileTimer3.GetCurrent() * CLOCK_DIVIDE;
-    u32TempTime = SYSTEM_FREQ / 20;
+    u32TempTime = PORT_SYSTEM_FREQ / 20;
     EXPECT_GT(u32TimeVal, u32TempTime);
 
-    u32TempTime += SYSTEM_FREQ / 1000;
+    u32TempTime += PORT_SYSTEM_FREQ / 1000;
     EXPECT_LT(u32TimeVal, u32TempTime);
 
     Profiler::Stop();

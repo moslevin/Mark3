@@ -22,9 +22,7 @@ See license.txt for more information
 #define __KERNELTIMER_H_
 
 #include "kerneltypes.h"
-//---------------------------------------------------------------------------
-#define SYSTEM_FREQ ((uint32_t)16000000)
-#define TIMER_FREQ ((uint32_t)(SYSTEM_FREQ / 256)) // Timer ticks per second...
+#include "mark3cfg.h"
 
 //---------------------------------------------------------------------------
 /*!

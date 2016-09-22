@@ -124,8 +124,8 @@ See license.txt for more information
  *  correct baud rate.
  */
 /*------------------------------------------------------------------------- */
-#ifndef SYSTEM_FREQ
-#define SYSTEM_FREQ (16000000)
+#ifndef PORT_SYSTEM_FREQ
+#define PORT_SYSTEM_FREQ (16000000)
 #endif
 
 /*------------------------------------------------------------------------- */
@@ -244,10 +244,10 @@ static void Serial_Init(void)
 
 /* Set baud rate */
 #if (BAUD_RATE > 57600)
-    u16BaudTemp = (uint16_t)(((SYSTEM_FREQ / 16) / (BAUD_RATE >> 1)) - 1);
+    u16BaudTemp = (uint16_t)(((PORT_SYSTEM_FREQ / 16) / (BAUD_RATE >> 1)) - 1);
     UCSRA |= (1 << U2X);
 #else
-    u16BaudTemp = (uint16_t)(((SYSTEM_FREQ / 16) / BAUD_RATE) - 1);
+    u16BaudTemp = (uint16_t)(((PORT_SYSTEM_FREQ / 16) / BAUD_RATE) - 1);
 #endif
     BAUD_H = (uint8_t)(u16BaudTemp >> 8);
     BAUD_L = (uint8_t)(u16BaudTemp & 0x00FF);

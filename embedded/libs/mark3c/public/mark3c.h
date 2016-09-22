@@ -321,7 +321,7 @@ Thread_t Scheduler_GetCurrentThread(void);
 // Thread APIs
 /*!
  * \brief Thread_Init
- * \sa void Thread::Init(K_WORD *pwStack_, uint16_t u16StackSize_, PRIO_TYPE uXPriority_, ThreadEntry_t pfEntryPoint_,
+ * \sa void Thread::Init(K_WORD *pwStack_, uint16_t u16StackSize_, PORT_PRIO_TYPE uXPriority_, ThreadEntry_t pfEntryPoint_,
  * void *pvArg_)
  * \param handle        Handle of the thread to initialize
  * \param pwStack_      Pointer to the stack to use for the thread
@@ -335,7 +335,7 @@ Thread_t Scheduler_GetCurrentThread(void);
 void Thread_Init(Thread_t      handle,
                  K_WORD*       pwStack_,
                  uint16_t      u16StackSize_,
-                 PRIO_TYPE     uXPriority_,
+                 PORT_PRIO_TYPE     uXPriority_,
                  ThreadEntry_t pfEntryPoint_,
                  void*         pvArg_);
 /*!
@@ -368,18 +368,18 @@ const char* Thread_GetName(Thread_t handle);
 #endif
 /*!
  * \brief Thread_GetPriority
- * \sa PRIO_TYPE Thread::GetPriority()
+ * \sa PORT_PRIO_TYPE Thread::GetPriority()
  * \param handle Handle of the thread
  * \return Current priority of the thread not considering priority inheritence
  */
-PRIO_TYPE Thread_GetPriority(Thread_t handle);
+PORT_PRIO_TYPE Thread_GetPriority(Thread_t handle);
 /*!
  * \brief Thread_GetCurPriority
- * \sa PRIO_TYPE Thread::GetCurPriority()
+ * \sa PORT_PRIO_TYPE Thread::GetCurPriority()
  * \param handle Handle of the thread
  * \return Current priority of the thread considering priority inheritence
  */
-PRIO_TYPE Thread_GetCurPriority(Thread_t handle);
+PORT_PRIO_TYPE Thread_GetCurPriority(Thread_t handle);
 #if KERNEL_USE_QUANTUM
 /*!
  * \brief Thread_SetQuantum
@@ -398,11 +398,11 @@ uint16_t Thread_GetQuantum(Thread_t handle);
 #endif
 /*!
  * \brief Thread_SetPriority
- * \sa void Thread::SetPriority(PRIO_TYPE uXPriority_)
+ * \sa void Thread::SetPriority(PORT_PRIO_TYPE uXPriority_)
  * \param handle Handle of the thread
  * \param uXPriority_ New priority level
  */
-void Thread_SetPriority(Thread_t handle, PRIO_TYPE uXPriority_);
+void Thread_SetPriority(Thread_t handle, PORT_PRIO_TYPE uXPriority_);
 #if KERNEL_USE_DYNAMIC_THREADS
 /*!
  * \brief Thread_Exit

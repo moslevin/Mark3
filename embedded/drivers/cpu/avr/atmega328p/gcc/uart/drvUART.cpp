@@ -38,7 +38,7 @@ void ATMegaUART::SetBaud(void)
     uint16_t u16PortTemp;
 
     // Calculate the baud rate from the value in the driver.
-    u16BaudTemp = (uint16_t)(((SYSTEM_FREQ / 16) / m_u32BaudRate) - 1);
+    u16BaudTemp = (uint16_t)(((PORT_SYSTEM_FREQ / 16) / m_u32BaudRate) - 1);
 
     // Save the current port config registers
     u16PortTemp = UART_SRB;

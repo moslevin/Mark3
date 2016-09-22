@@ -25,17 +25,6 @@ See license.txt for more information
 #define __KERNELTIMER_H_
 
 //---------------------------------------------------------------------------
-#if !defined(SYSTEM_FREQ)
-#define SYSTEM_FREQ ((uint32_t)16000000)
-#endif
-
-#if KERNEL_TIMERS_TICKLESS
-#define TIMER_FREQ ((uint32_t)(SYSTEM_FREQ / 256))
-#else
-#define TIMER_FREQ ((uint32_t)(SYSTEM_FREQ / 1000))
-#endif
-
-//---------------------------------------------------------------------------
 /*!
     Hardware timer interface, used by all scheduling/timer subsystems.
  */
@@ -96,7 +85,7 @@ public:
      *  \param u32Interval_ Time (in HW-specific) ticks to subtract
      *  \return Value in ticks stored in the timer's expiry register
      */
-    static uint32_t SubtractExpiry(uint32_t u32Interval_);
+    static PORT_TIMER_COUNT_TYPE SubtractExpiry(PORT_TIMER_COUNT_TYPE uInterval_);
 
     /*!
      *  \brief TimeToExpiry
@@ -106,7 +95,7 @@ public:
      *
      *  \return Time before next expiry in platform-specific ticks
      */
-    static uint32_t TimeToExpiry(void);
+    static PORT_TIMER_COUNT_TYPE TimeToExpiry(void);
 
     /*!
      *  \brief SetExpiry
@@ -116,7 +105,7 @@ public:
      *  \param u32Interval_ Desired interval in ticks to set the timer for
      *  \return Actual number of ticks set (may be less than desired)
      */
-    static uint32_t SetExpiry(uint32_t u32Interval_);
+    static PORT_TIMER_COUNT_TYPE SetExpiry(uint32_t u32Interval_);
 
     /*!
      *  \brief GetOvertime
@@ -126,7 +115,7 @@ public:
      *
      *  \return Number of ticks that have elapsed after last timer expiration
      */
-    static uint32_t GetOvertime(void);
+    static PORT_TIMER_COUNT_TYPE GetOvertime(void);
 
     /*!
      *  \brief ClearExpiry
@@ -142,7 +131,7 @@ public:
      *
      *  \return Value held in the timer register
      */
-    static uint16_t Read(void);
+    static PORT_TIMER_COUNT_TYPE Read(void);
 };
 
 #endif //__KERNELTIMER_H_
