@@ -16,16 +16,12 @@ See license.txt for more information
     \brief Basic data type primatives used throughout the OS
 */
 
-#ifndef __KERNELTYPES_H__
-#define __KERNELTYPES_H__
-
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
 
-#define K_ADDR uint16_t
-#define K_WORD uint8_t
-#define PRIO_MAP_WORD_SIZE (1)
+#ifndef __KERNELTYPES_H__
+#define __KERNELTYPES_H__
 
 //---------------------------------------------------------------------------
 /*!
