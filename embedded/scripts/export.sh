@@ -148,6 +148,7 @@ case ${TARGET} in
 		mv ${TARGET_DIR}/Mark3/*.h ${TARGET_DIR}/Mark3/inc
 		cp -f ./arduino/mark3cfg.h_arduino ${TARGET_DIR}/Mark3/inc/mark3cfg.h
 		cp -f ./arduino/kerneltypes.h ${TARGET_DIR}/Mark3/inc/kerneltypes.h
+		cp -f ./arduino/portcfg.h ${TARGET_DIR}/Mark3/inc/portcfg.h
 		cp -f ./arduino/mark3.h_arduino ${TARGET_DIR}/Mark3/mark3.h
 		cp -f ./arduino/keywords.txt ${TARGET_DIR}/Mark3
 		SOURCE_FILES=`ls -1 ${TARGET_DIR}/Mark3/*.cpp`

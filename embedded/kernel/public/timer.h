@@ -95,6 +95,16 @@ class TimerList;
 class TimerScheduler;
 class Quantum;
 
+//---------------------------------------------------------------------------
+/*!
+ * \brief Kernel-managed software timers.
+ *
+ * Kernel-managed timers, used to provide high-precision high-resolution
+ * delays.  Functionality is useful to both user-code, and is used extensively
+ * within the kernel and its blocking objects to implement round-robin
+ * scheduling, thread sleep, and timeouts.  Relies on a single hardware timer,
+ * which is multiplexed through the kernel.
+ */
 class Timer : public LinkListNode
 {
 public:

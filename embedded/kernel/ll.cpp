@@ -91,6 +91,7 @@ void DoubleLinkList::Remove(LinkListNode* node_)
     if (node_ == m_pstTail) {
         m_pstTail = node_->prev;
     }
+    node_->ClearNode();
 }
 
 //---------------------------------------------------------------------------
