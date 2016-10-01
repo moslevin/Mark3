@@ -120,6 +120,14 @@ public:
      */
     void BusIdle(void);
 
+protected:
+    /*!
+     * \brief GetDelayTimeUsec
+     *
+     * \return Return the half-bit delay time in microseconds
+     */
+    uint32_t GetDelayTimeUsec(void) { return m_u32BitDelayUS; }
+
 private:
     /*!
      * \brief BitDelay

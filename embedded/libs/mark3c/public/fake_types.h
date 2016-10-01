@@ -41,7 +41,6 @@ typedef struct {
 
 //---------------------------------------------------------------------------
 typedef struct {
-    void* vtab_ptr;
     void* head;
     void* tail;
 } Fake_LinkedList;
@@ -49,13 +48,16 @@ typedef struct {
 //---------------------------------------------------------------------------
 typedef struct {
     Fake_LinkedList fake_list;
-    PORT_PRIO_TYPE       m_uXPriority;
+    PORT_PRIO_TYPE  m_uXPriority;
     void*           m_pclMap;
 } Fake_ThreadList;
 
 //---------------------------------------------------------------------------
 typedef struct {
     Fake_LinkedListNode m_ll_node;
+#if KERNEL_EXTRA_CHECKS
+    uint8_t             m_u8Initialized;
+#endif
     uint8_t             m_u8Flags;
     void*               m_pfCallback;
     uint32_t            m_u32Interval;
@@ -71,8 +73,8 @@ typedef struct {
     K_WORD*             m_pwStackTop;
     K_WORD*             m_pwStack;
     uint8_t             m_u8ThreadID;
-    PORT_PRIO_TYPE           m_uXPriority;
-    PORT_PRIO_TYPE           m_uXCurPriority;
+    PORT_PRIO_TYPE      m_uXPriority;
+    PORT_PRIO_TYPE      m_uXCurPriority;
     uint8_t             m_eState;
 #if KERNEL_USE_THREADNAME
     const char* m_szName;
@@ -100,6 +102,9 @@ typedef struct {
 //---------------------------------------------------------------------------
 typedef struct {
     Fake_ThreadList thread_list;
+#if KERNEL_EXTRA_CHECKS
+    uint8_t         m_u8Initialized;
+#endif
     uint16_t        m_u16Value;
     uint16_t        m_u16MaxValue;
 } Fake_Semaphore;
@@ -107,6 +112,9 @@ typedef struct {
 //---------------------------------------------------------------------------
 typedef struct {
     Fake_ThreadList thread_list;
+#if KERNEL_EXTRA_CHECKS
+    uint8_t         m_u8Initialized;
+#endif
     uint8_t         m_u8Recurse;
     bool            m_bReady;
     uint8_t         m_u8MaxPri;
@@ -143,11 +151,17 @@ typedef struct {
 //---------------------------------------------------------------------------
 typedef struct {
     Fake_ThreadList thread_list;
+#if KERNEL_EXTRA_CHECKS
+    uint8_t         m_u8Initialized;
+#endif
 } Fake_Notify;
 
 //---------------------------------------------------------------------------
 typedef struct {
     Fake_ThreadList thread_list;
+#if KERNEL_EXTRA_CHECKS
+    uint8_t         m_u8Initialized;
+#endif
     uint16_t        m_u16EventFlag;
 } Fake_EventFlag;
 

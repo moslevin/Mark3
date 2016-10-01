@@ -186,7 +186,7 @@ i2c_return_t SoftwareI2C::WriteBit(bool bBit_)
         return I2C_TIMEOUT;
     }
 
-    if (!bBit_) {
+    if (bBit_) {
         if (!CheckBus()) {
             return I2C_BUS_ERROR;
         }
