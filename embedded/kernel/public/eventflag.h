@@ -52,11 +52,7 @@ public:
     /*!
      * \brief Init Initializes the EventFlag object prior to use.
      */
-    void Init()
-    {
-        m_u16SetMask = 0;
-        m_clBlockList.Init();
-    }
+    void Init();
 
     /*!
      * \brief Wait - Block a thread on the specific flags in this event flag group

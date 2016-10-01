@@ -45,8 +45,41 @@ See license.txt for more information
 #if KERNEL_USE_TIMERS
 
 //---------------------------------------------------------------------------
+Timer::Timer()
+{
+#if KERNEL_EXTRA_CHECKS
+    m_u8Initialized = TIMER_INVALID_COOKIE;
+#endif
+    m_u8Flags = 0;
+}
+
+//---------------------------------------------------------------------------
+void Timer::Init()
+{
+#if KERNEL_EXTRA_CHECKS
+    if (IsInitialized()) {
+        KERNEL_ASSERT((m_u8Flags & TIMERLIST_FLAG_ACTIVE) == 0);
+    }
+#endif
+
+    ClearNode();
+    m_u32Interval       = 0;
+    m_u32TimerTolerance = 0;
+    m_u32TimeLeft       = 0;
+    m_u8Flags           = 0;
+
+#if KERNEL_EXTRA_CHECKS
+    SetInitialized();
+#endif
+}
+
+//---------------------------------------------------------------------------
 void Timer::Start(bool bRepeat_, uint32_t u32IntervalMs_, TimerCallback_t pfCallback_, void* pvData_)
 {
+#if KERNEL_EXTRA_CHECKS
+    KERNEL_ASSERT(IsInitialized());
+#endif
+
     if (m_u8Flags & TIMERLIST_FLAG_ACTIVE) {
         return;
     }
@@ -69,6 +102,10 @@ void Timer::Start(bool bRepeat_, uint32_t u32IntervalMs_, TimerCallback_t pfCall
 void Timer::Start(
     bool bRepeat_, uint32_t u32IntervalMs_, uint32_t u32ToleranceMs_, TimerCallback_t pfCallback_, void* pvData_)
 {
+#if KERNEL_EXTRA_CHECKS
+    KERNEL_ASSERT(IsInitialized());
+#endif
+
     if (m_u8Flags & TIMERLIST_FLAG_ACTIVE) {
         return;
     }
@@ -80,6 +117,10 @@ void Timer::Start(
 //---------------------------------------------------------------------------
 void Timer::Start()
 {
+#if KERNEL_EXTRA_CHECKS
+    KERNEL_ASSERT(IsInitialized());
+#endif
+
     if (m_u8Flags & TIMERLIST_FLAG_ACTIVE) {
         return;
     }
@@ -91,6 +132,10 @@ void Timer::Start()
 //---------------------------------------------------------------------------
 void Timer::Stop()
 {
+#if KERNEL_EXTRA_CHECKS
+    KERNEL_ASSERT(IsInitialized());
+#endif
+
     if (!(m_u8Flags & TIMERLIST_FLAG_ACTIVE)) {
             return;
     }
@@ -100,6 +145,10 @@ void Timer::Stop()
 //---------------------------------------------------------------------------
 void Timer::SetIntervalTicks(uint32_t u32Ticks_)
 {
+#if KERNEL_EXTRA_CHECKS
+    KERNEL_ASSERT(IsInitialized());
+#endif
+
     m_u32Interval = u32Ticks_;
 }
 
@@ -108,18 +157,30 @@ void Timer::SetIntervalTicks(uint32_t u32Ticks_)
 //---------------------------------------------------------------------------
 void Timer::SetIntervalSeconds(uint32_t u32Seconds_)
 {
+#if KERNEL_EXTRA_CHECKS
+    KERNEL_ASSERT(IsInitialized());
+#endif
+
     m_u32Interval = SECONDS_TO_TICKS(u32Seconds_);
 }
 
 //---------------------------------------------------------------------------
 void Timer::SetIntervalMSeconds(uint32_t u32MSeconds_)
 {
+#if KERNEL_EXTRA_CHECKS
+    KERNEL_ASSERT(IsInitialized());
+#endif
+
     m_u32Interval = MSECONDS_TO_TICKS(u32MSeconds_);
 }
 
 //---------------------------------------------------------------------------
 void Timer::SetIntervalUSeconds(uint32_t u32USeconds_)
 {
+#if KERNEL_EXTRA_CHECKS
+    KERNEL_ASSERT(IsInitialized());
+#endif
+
 #if KERNEL_TIMERS_TICKLESS
     if (u32USeconds_ < KERNEL_TIMERS_MINIMUM_DELAY_US) {
         u32USeconds_ = KERNEL_TIMERS_MINIMUM_DELAY_US;
@@ -132,6 +193,9 @@ void Timer::SetIntervalUSeconds(uint32_t u32USeconds_)
 //---------------------------------------------------------------------------
 void Timer::SetTolerance(uint32_t u32Ticks_)
 {
+#if KERNEL_EXTRA_CHECKS
+    KERNEL_ASSERT(IsInitialized());
+#endif
     m_u32TimerTolerance = u32Ticks_;
 }
 

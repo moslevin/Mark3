@@ -67,7 +67,8 @@ typedef enum {
     THREAD_STATE_BLOCKED,
     THREAD_STATE_STOP,
     //--
-    THREAD_STATES
+    THREAD_STATES,
+    THREAD_STATE_INVALID
 } ThreadState_t;
 
 #endif

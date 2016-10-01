@@ -103,7 +103,6 @@ void Thread::Init(
     m_uXCurPriority = m_uXPriority;
     m_pfEntryPoint  = pfEntryPoint_;
     m_pvArg         = pvArg_;
-    m_eState        = THREAD_STATE_STOP;
 
 #if KERNEL_USE_THREADNAME
     m_szName = NULL;
@@ -119,6 +118,7 @@ void Thread::Init(
     CS_ENTER();
     m_pclOwner   = Scheduler::GetThreadList(m_uXPriority);
     m_pclCurrent = Scheduler::GetStopList();
+    m_eState     = THREAD_STATE_STOP;
     m_pclCurrent->Add(this);
     CS_EXIT();
 
@@ -128,6 +128,7 @@ void Thread::Init(
         pfCallout(this);
     }
 #endif
+
 }
 
 #if KERNEL_USE_AUTO_ALLOC
@@ -144,6 +145,10 @@ Thread* Thread::Init(uint16_t u16StackSize_, PORT_PRIO_TYPE uXPriority_, ThreadE
 //---------------------------------------------------------------------------
 void Thread::Start(void)
 {
+#if KERNEL_EXTRA_CHECKS
+    KERNEL_ASSERT(IsInitialized());
+#endif
+
     // Remove the thread from the scheduler's "stopped" list, and add it
     // to the scheduler's ready list at the proper priority.
     KERNEL_TRACE_1("Starting Thread %d", (uint16_t)m_u8ThreadID);
@@ -176,7 +181,14 @@ void Thread::Start(void)
 //---------------------------------------------------------------------------
 void Thread::Stop()
 {
+#if KERNEL_EXTRA_CHECKS
+    KERNEL_ASSERT(IsInitialized());
+#endif
+
     bool bReschedule = 0;
+    if (m_eState == THREAD_STATE_STOP) {
+        return;
+    }
 
     CS_ENTER();
 
@@ -216,9 +228,16 @@ void Thread::Stop()
 //---------------------------------------------------------------------------
 void Thread::Exit()
 {
+#if KERNEL_EXTRA_CHECKS
+    KERNEL_ASSERT(IsInitialized());
+#endif
+
     bool bReschedule = 0;
 
     KERNEL_TRACE_1("Exit Thread %d", m_u8ThreadID);
+    if (m_eState == THREAD_STATE_EXIT) {
+        return;
+    }
 
 #if KERNEL_USE_THREAD_CALLOUTS
     ThreadExitCallout_t pfCallout = Kernel::GetThreadExitCallout();
@@ -328,6 +347,10 @@ void Thread::USleep(uint32_t u32TimeUs_)
 //---------------------------------------------------------------------------
 uint16_t Thread::GetStackSlack()
 {
+#if KERNEL_EXTRA_CHECKS
+    KERNEL_ASSERT(IsInitialized());
+#endif
+
     K_ADDR wTop    = (K_ADDR)m_u16StackSize - 1;
     K_ADDR wBottom = (K_ADDR)0;
     K_ADDR wMid    = ((wTop + wBottom) + 1) / 2;
@@ -359,6 +382,7 @@ uint16_t Thread::GetStackSlack()
 //---------------------------------------------------------------------------
 void Thread::Yield()
 {
+
     CS_ENTER();
     // Run the scheduler
     if (Scheduler::IsEnabled()) {
@@ -384,6 +408,10 @@ void Thread::Yield()
 //---------------------------------------------------------------------------
 void Thread::SetPriorityBase(PORT_PRIO_TYPE uXPriority_)
 {
+#if KERNEL_EXTRA_CHECKS
+    KERNEL_ASSERT(IsInitialized());
+#endif
+
     GetCurrent()->Remove(this);
 
     SetCurrent(Scheduler::GetThreadList(m_uXPriority));
@@ -394,6 +422,10 @@ void Thread::SetPriorityBase(PORT_PRIO_TYPE uXPriority_)
 //---------------------------------------------------------------------------
 void Thread::SetPriority(PORT_PRIO_TYPE uXPriority_)
 {
+#if KERNEL_EXTRA_CHECKS
+    KERNEL_ASSERT(IsInitialized());
+#endif
+
     bool bSchedule = 0;
 
     CS_ENTER();
@@ -433,6 +465,10 @@ void Thread::SetPriority(PORT_PRIO_TYPE uXPriority_)
 //---------------------------------------------------------------------------
 void Thread::InheritPriority(PORT_PRIO_TYPE uXPriority_)
 {
+#if KERNEL_EXTRA_CHECKS
+    KERNEL_ASSERT(IsInitialized());
+#endif
+
     SetOwner(Scheduler::GetThreadList(uXPriority_));
     m_uXCurPriority = uXPriority_;
 }
@@ -471,6 +507,10 @@ void Thread::ContextSwitchSWI()
 //---------------------------------------------------------------------------
 Timer* Thread::GetTimer()
 {
+#if KERNEL_EXTRA_CHECKS
+    KERNEL_ASSERT(IsInitialized());
+#endif
+
     return &m_clTimer;
 }
 #endif
@@ -478,12 +518,20 @@ Timer* Thread::GetTimer()
 //---------------------------------------------------------------------------
 void Thread::SetExpired(bool bExpired_)
 {
+#if KERNEL_EXTRA_CHECKS
+    KERNEL_ASSERT(IsInitialized());
+#endif
+
     m_bExpired = bExpired_;
 }
 
 //---------------------------------------------------------------------------
 bool Thread::GetExpired()
 {
+#if KERNEL_EXTRA_CHECKS
+    KERNEL_ASSERT(IsInitialized());
+#endif
+
     return m_bExpired;
 }
 #endif
@@ -492,6 +540,7 @@ bool Thread::GetExpired()
 //---------------------------------------------------------------------------
 void Thread::InitIdle(void)
 {
+    m_eState        = THREAD_STATE_READY;
     ClearNode();
 
     m_uXPriority    = 0;
@@ -499,7 +548,6 @@ void Thread::InitIdle(void)
     m_pfEntryPoint  = 0;
     m_pvArg         = 0;
     m_u8ThreadID    = 255;
-    m_eState        = THREAD_STATE_READY;
 #if KERNEL_USE_THREADNAME
     m_szName = "IDLE";
 #endif

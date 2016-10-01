@@ -57,6 +57,11 @@ See license.txt for more information
 #if KERNEL_USE_MUTEX || KERNEL_USE_SEMAPHORE || KERNEL_USE_EVENTFLAG
 
 //---------------------------------------------------------------------------
+// Cookies used to determine whether or not an object has been initialized
+#define BLOCKING_INVALID_COOKIE         (0x3C)
+#define BLOCKING_INIT_COOKIE            (0xC3)
+
+//---------------------------------------------------------------------------
 /*!
  *  Class implementing thread-blocking primatives.  used for implementing
  *  things like semaphores, mutexes, message queues, or anything else that
@@ -64,6 +69,12 @@ See license.txt for more information
  */
 class BlockingObject
 {
+public:
+#if KERNEL_EXTRA_CHECKS
+    BlockingObject() { m_u8Initialized = BLOCKING_INVALID_COOKIE; }
+    ~BlockingObject() { m_u8Initialized = BLOCKING_INVALID_COOKIE; }
+#endif
+
 protected:
     /*!
      *  \brief Block
@@ -115,6 +126,27 @@ protected:
      *  on a given object.
      */
     ThreadList m_clBlockList;
+
+#if KERNEL_EXTRA_CHECKS
+    /*!
+     * Token used to check whether or not the object has been initialized
+     * prior to use.
+     */
+    uint8_t m_u8Initialized;
+
+    /*!
+     * \brief SetInitialized
+     */
+    void SetInitialized(void) { m_u8Initialized = BLOCKING_INIT_COOKIE; }
+
+    /*!
+     * \brief IsInitialized
+     * \return
+     */
+    bool IsInitialized(void) { return (m_u8Initialized == BLOCKING_INIT_COOKIE); }
+
+#endif
+
 };
 
 #endif

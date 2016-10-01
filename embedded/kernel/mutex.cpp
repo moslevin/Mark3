@@ -108,11 +108,20 @@ uint8_t Mutex::WakeNext()
 //---------------------------------------------------------------------------
 void Mutex::Init()
 {
+    // Cannot re-init a mutex which has threads blocked on it
+#if KERNEL_EXTRA_CHECKS
+    KERNEL_ASSERT(!m_clBlockList.GetHead());
+#endif
+
     // Reset the data in the mutex
     m_bReady    = 1;    // The mutex is free.
     m_u8MaxPri  = 0;    // Set the maximum priority inheritence state
     m_pclOwner  = NULL; // Clear the mutex owner
     m_u8Recurse = 0;    // Reset recurse count
+
+#if KERNEL_EXTRA_CHECKS
+    SetInitialized();
+#endif
 }
 
 //---------------------------------------------------------------------------
@@ -122,6 +131,10 @@ bool Mutex::Claim_i(uint32_t u32WaitTimeMS_)
 void Mutex::Claim_i(void)
 #endif
 {
+#if KERNEL_EXTRA_CHECKS
+    KERNEL_ASSERT(IsInitialized());
+#endif
+
     KERNEL_TRACE_1("Claiming Mutex, Thread %d", (uint16_t)g_pclCurrent->GetID());
 
 #if KERNEL_USE_TIMEOUTS
@@ -232,6 +245,10 @@ bool Mutex::Claim(uint32_t u32WaitTimeMS_)
 //---------------------------------------------------------------------------
 void Mutex::Release()
 {
+#if KERNEL_EXTRA_CHECKS
+    KERNEL_ASSERT(IsInitialized());
+#endif
+
     KERNEL_TRACE_1("Releasing Mutex, Thread %d", (uint16_t)g_pclCurrent->GetID());
 
     bool bSchedule = 0;

@@ -81,6 +81,10 @@ Semaphore::~Semaphore()
 //---------------------------------------------------------------------------
 void Semaphore::WakeMe(Thread* pclChosenOne_)
 {
+#if KERNEL_EXTRA_CHECKS
+    KERNEL_ASSERT(IsInitialized());
+#endif
+
     // Remove from the semaphore waitlist and back to its ready list.
     UnBlock(pclChosenOne_);
 }
@@ -107,18 +111,29 @@ uint8_t Semaphore::WakeNext()
 //---------------------------------------------------------------------------
 void Semaphore::Init(uint16_t u16InitVal_, uint16_t u16MaxVal_)
 {
+#if KERNEL_EXTRA_CHECKS
+    KERNEL_ASSERT(!m_clBlockList.GetHead());
+#endif
+
     // Copy the paramters into the object - set the maximum value for this
     // semaphore to implement either binary or counting semaphores, and set
     // the initial count.  Clear the wait list for this object.
     m_u16Value    = u16InitVal_;
     m_u16MaxValue = u16MaxVal_;
 
-    m_clBlockList.Init();
+#if KERNEL_EXTRA_CHECKS
+    SetInitialized();
+#endif
+
 }
 
 //---------------------------------------------------------------------------
 bool Semaphore::Post()
 {
+#if KERNEL_EXTRA_CHECKS
+    KERNEL_ASSERT(IsInitialized());
+#endif
+
     KERNEL_TRACE_1("Posting semaphore, Thread %d", (uint16_t)g_pclCurrent->GetID());
 
     bool bThreadWake = 0;
@@ -167,6 +182,10 @@ bool Semaphore::Pend_i(uint32_t u32WaitTimeMS_)
 void Semaphore::Pend_i(void)
 #endif
 {
+#if KERNEL_EXTRA_CHECKS
+    KERNEL_ASSERT(IsInitialized());
+#endif
+
     KERNEL_TRACE_1("Pending semaphore, Thread %d", (uint16_t)g_pclCurrent->GetID());
 
 #if KERNEL_USE_TIMEOUTS
@@ -233,6 +252,9 @@ bool Semaphore::Pend(uint32_t u32WaitTimeMS_)
 //---------------------------------------------------------------------------
 uint16_t Semaphore::GetCount()
 {
+#if KERNEL_EXTRA_CHECKS
+    KERNEL_ASSERT(IsInitialized());
+#endif
     uint16_t u16Ret;
     CS_ENTER();
     u16Ret = m_u16Value;

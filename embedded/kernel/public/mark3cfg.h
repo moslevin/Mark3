@@ -307,7 +307,7 @@ See license.txt for more information
     This is useful for implementing low-level instrumentation based on
     information held in the threads.
 */
-#define KERNEL_USE_THREAD_CALLOUTS (1)
+#define KERNEL_USE_THREAD_CALLOUTS (0)
 
 /*!
     This feature, when enabled, tells the kernel to check whether any
@@ -322,6 +322,14 @@ See license.txt for more information
 #if KERNEL_USE_STACK_GUARD
 #define KERNEL_STACK_GUARD_DEFAULT (32) // words
 #endif
+
+/*!
+    This option provides extra safety checks within the kernel APIs in
+    order to minimize the potential for unsafe operations.  This is
+    especially helpful during development, and can help catch problems
+    at development time, instead of in the field.
+*/
+#define KERNEL_EXTRA_CHECKS         (0)
 
 #include "portcfg.h"    //!< include CPU/Port specific configuration options
 

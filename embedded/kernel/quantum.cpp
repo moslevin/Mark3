@@ -101,6 +101,9 @@ void Quantum::AddThread(Thread* pclThread_)
 
     // If this isn't the only thread in the list.
     if (pclThread_->GetCurrent()->GetHead() != pclThread_->GetCurrent()->GetTail()) {
+#if KERNEL_EXTRA_CHECKS
+        m_clQuantumTimer.Init();
+#endif
         Quantum::SetTimer(pclThread_);
         TimerScheduler::Add(&m_clQuantumTimer);
         m_bActive = 1;

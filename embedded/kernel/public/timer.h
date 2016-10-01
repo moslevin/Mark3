@@ -36,6 +36,10 @@ class Thread;
 #define TIMERLIST_FLAG_EXPIRED (0x08)  //!< Timer is actually expired.
 
 //---------------------------------------------------------------------------
+#define TIMER_INVALID_COOKIE    (0x3C)
+#define TIMER_INIT_COOKIE       (0xC3)
+
+//---------------------------------------------------------------------------
 #define MAX_TIMER_TICKS (0x7FFFFFFF) //!< Maximum value to set
 #define TIMER_TICKS_INVALID (0x80000000)
 //---------------------------------------------------------------------------
@@ -115,20 +119,14 @@ public:
      *  Default Constructor - Do nothing.  Allow the init call to perform
      *  the necessary object initialization prior to use.
      */
-    Timer() { m_u8Flags = 0; }
+    Timer();
+
     /*!
      *  \brief Init
      *
      * Re-initialize the Timer to default values.
      */
-    void Init()
-    {
-        ClearNode();
-        m_u32Interval       = 0;
-        m_u32TimerTolerance = 0;
-        m_u32TimeLeft       = 0;
-        m_u8Flags           = 0;
-    }
+    void Init();
 
     /*!
      *  \brief Start
@@ -266,8 +264,24 @@ public:
      */
     void SetTolerance(uint32_t u32Ticks_);
 
-private:
+private:    
     friend class TimerList;
+
+#if KERNEL_EXTRA_CHECKS
+    /*!
+     * \brief SetInitialized
+     */
+    void SetInitialized()   { m_u8Initialized = TIMER_INIT_COOKIE; }
+
+    /*!
+     * \brief IsInitialized
+     * \return
+     */
+    bool IsInitialized(void) { return (m_u8Initialized == TIMER_INIT_COOKIE); }
+
+    //! Cookie used to determine whether or not the timer is initialized
+    uint8_t m_u8Initialized;
+#endif
 
     //! Flags for the timer, defining if the timer is one-shot or repeated
     uint8_t m_u8Flags;

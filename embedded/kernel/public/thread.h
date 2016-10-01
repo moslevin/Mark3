@@ -63,6 +63,12 @@ public:
     void* operator new(size_t sz, void* pv) { return (Thread*)pv; };
     ~Thread();
 
+#if KERNEL_EXTRA_CHECKS
+    Thread() { m_eState = THREAD_STATE_INVALID; }
+
+    bool IsInitialized() { return (m_eState != THREAD_STATE_INVALID); }
+#endif
+
     /*!
      *  \brief Init
      *
