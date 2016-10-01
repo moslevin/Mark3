@@ -147,6 +147,8 @@ TEST(ut_sanity_timed_sem)
 
     EXPECT_FALSE(clSem.Pend(15));
 
+    clTestThread1.Exit();
+
     Scheduler::GetCurrentThread()->SetPriority(1);
 }
 TEST_END
@@ -248,6 +250,8 @@ TEST(ut_sanity_mutex)
 
     EXPECT_EQUALS(u8TestVal, 0xAC);
 
+    clTestThread1.Exit();
+
     clMutex.Init();
 
     clTestThread1.Init(aucTestStack1, TEST_STACK1_SIZE, 2, (ThreadEntry_t)TestTimedMutexThreadShort, (void*)&clMutex);
@@ -255,12 +259,17 @@ TEST(ut_sanity_mutex)
 
     EXPECT_TRUE(clMutex.Claim(15));
 
+    clTestThread1.Exit();
+
     clMutex.Init();
 
     clTestThread1.Init(aucTestStack1, TEST_STACK1_SIZE, 2, (ThreadEntry_t)TestTimedMutexThreadLong, (void*)&clMutex);
     clTestThread1.Start();
 
     EXPECT_FALSE(clMutex.Claim(15));
+
+    clTestThread1.Exit();
+
 }
 TEST_END
 
@@ -305,6 +314,9 @@ TEST(ut_sanity_timed_msg)
     } else {
         EXPECT_TRUE(1);
     }
+
+    clTestThread1.Exit();
+
 }
 TEST_END
 
@@ -436,6 +448,8 @@ TEST(ut_sanity_msg)
     EXPECT_EQUALS(pclMesg->GetCode(), 0xFF);
 
     GlobalMessagePool::Push(pclMesg);
+
+    clTestThread1.Exit();
 }
 TEST_END
 

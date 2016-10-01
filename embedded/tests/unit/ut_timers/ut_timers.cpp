@@ -54,6 +54,7 @@ TEST(ut_timer_tolerance)
 {
     Profiler::Start();
     clTimerSem.Init(0, 1);
+    clTimer1.Init();
 
     // Test point - 1ms timer should take at least 1ms
     clProfileTimer.Init();
@@ -128,6 +129,7 @@ TEST(ut_timer_longrun)
     // operations (1.2 seconds is about as high as we get, since it's
     // so high resolution).  So, use sleeps and multiple iterations
     // w/averaging in order to verify.
+    clTimer1.Init();
 
     uint32_t u32SleepCount = 0;
     Profiler::Start();
@@ -228,6 +230,10 @@ TEST(ut_timer_multi)
     clProfileTimer.Init();
     clProfileTimer2.Init();
     clProfileTimer3.Init();
+
+    clTimer1.Init();
+    clTimer2.Init();
+    clTimer3.Init();
 
     clProfileTimer.Start();
     clTimer1.Start(false, 100, TimerCallback, 0);

@@ -41,9 +41,10 @@ static void NotifyThread(void* unused_)
 //===========================================================================
 TEST(ut_notify)
 {
+    clNotify.Init();
+
     clThread.Init(awStack, 192, 2, NotifyThread, NULL);
     clThread.Start();
-
     for (int i = 0; i < 10; i++) {
         clNotify.Wait(0);
     }
@@ -57,6 +58,8 @@ TEST_END
 //===========================================================================
 TEST(ut_notify_timeout)
 {
+    clNotify.Init();
+
     clThread.Start();
     u8Count = 0;
     for (int i = 0; i < 10; i++) {
