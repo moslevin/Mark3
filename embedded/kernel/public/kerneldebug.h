@@ -132,7 +132,22 @@ See license.txt for more information
         }                                                                                                              \
     \
 }
-
+#elif KERNEL_USE_DEBUG
+// If running KERNEL_USE_DEBUG without any logging, ensure that we provide
+// at least a basic KERNEL_ASSERT().
+//---------------------------------------------------------------------------
+#define KERNEL_TRACE(x) //!< Null Kernel Trace Macro
+//---------------------------------------------------------------------------
+#define KERNEL_TRACE_1(x, arg1) //!< Null Kernel Trace Macro
+//---------------------------------------------------------------------------
+#define KERNEL_TRACE_2(x, arg1, arg2) //!< Null Kernel Trace Macro
+//---------------------------------------------------------------------------
+#define KERNEL_ASSERT(x) \
+{                                                                                                               \
+    if ((x) == false) {                                                                                            \
+        Kernel::Panic(PANIC_ASSERT_FAILED);                                                                        \
+    }                                                                                                              \
+}
 #else
 //---------------------------------------------------------------------------
 // Note -- when kernel-debugging is disabled, we still have to define the
