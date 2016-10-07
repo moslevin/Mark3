@@ -378,6 +378,32 @@ public:
     void InitIdle();
 #endif
 
+#if KERNEL_USE_EXTENDED_CONTEXT
+    /*!
+     * \brief GetExtendedContext
+     *
+     * Return the Thread object's extended-context data pointer.  Used by code
+     * implementing a user-defined thread-local storage model.  Pointer exists
+     * only for the lifespan of the Thread.
+     *
+     * \return Thread's extended context data pointer.
+     */
+    void* GetExtendedContext()  { return m_pvExtendedContext; }
+
+    /*!
+     * \brief SetExtendedContext
+     *
+     * Assign the Thread object's extended-context data pointer.  Used by code
+     * implementing a user-defined thread-local storage model.
+     *
+     * Object assigned to the context pointer should persist for the duration
+     * of the Thread.
+     *
+     * \param pvData_ Object to assign to the extended data pointer.+
+     */
+    void SetExtendedContext(void* pvData_) { m_pvExtendedContext = pvData_; }
+#endif
+
     /*!
      * \brief GetState Returns the current state of the thread to the
      *        caller.  Can be used to determine whether or not a thread
@@ -427,8 +453,13 @@ private:
     //! Current priority of the thread (priority inheritence)
     PORT_PRIO_TYPE m_uXCurPriority;
 
-    //! Enum indicating the thread's current state
+    //! Enum indicating the thread's current state    
     ThreadState_t m_eState;
+
+#if KERNEL_USE_EXTENDED_CONTEXT
+    //! Pointer provided to a Thread to implement thread-local storage
+    void*   m_pvExtendedContext;
+#endif
 
 #if KERNEL_USE_THREADNAME
     //! Thread name
@@ -467,6 +498,7 @@ private:
     //! Timer used for blocking-object timeouts
     Timer m_clTimer;
 #endif
+
 #if KERNEL_USE_TIMEOUTS
     //! Indicate whether or not a blocking-object timeout has occurred
     bool m_bExpired;
@@ -507,6 +539,11 @@ typedef struct {
 
     //! Enum indicating the thread's current state
     ThreadState_t m_eState;
+
+#if KERNEL_USE_EXTENDED_CONTEXT
+    //! Pointer provided to a Thread to implement thread-local storage
+    void*   m_pvExtendedContext;
+#endif
 
 #if KERNEL_USE_THREADNAME
     //! Thread name

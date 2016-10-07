@@ -315,6 +315,23 @@ void Thread_USleep(uint32_t u32TimeUs_)
 }
 #endif
 
+#if KERNEL_USE_EXTENDED_CONTEXT
+//---------------------------------------------------------------------------
+void* Thread_GetExtendedContext(Thread_t handle)
+{
+    Thread* pclThread = (Thread*)handle;
+    return pclThread->GetExtendedContext();
+}
+
+//---------------------------------------------------------------------------
+void Thread_SetExtendedContext(Thread_t handle, void* pvData_)
+{
+    Thread* pclThread = (Thread*)handle;
+    pclThread->SetExtendedContext(pvData_);
+}
+
+#endif
+
 //---------------------------------------------------------------------------
 void Thread_Yield(void)
 {

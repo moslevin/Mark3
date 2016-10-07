@@ -425,6 +425,24 @@ void Thread_Sleep(uint32_t u32TimeMs_);
  */
 void Thread_USleep(uint32_t u32TimeUs_);
 #endif
+#if KERNEL_USE_EXTENDED_CONTEXT
+/*!
+ * \brief Thread_GetExtendedContext
+ * \sa Thread::GetExtendedContext()
+ * \param handle Handle of the thread
+ * \return Pointer to the Thread's extended context
+ */
+void* Thread_GetExtendedContext(Thread_t handle);
+
+/*!
+ * \brief Thread_SetExtendedContext
+ * \sa Thread::SetExtendedContext(void* pvData_)
+ * \param handle Handle of the Thread
+ * \param pvData_ Pointer to Object to assign to Thread's extended context
+ */
+void Thread_SetExtendedContext(Thread_t handle, void* pvData_);
+
+#endif
 /*!
  * \brief Thread_Yield
  * \sa void Thread::Yield()

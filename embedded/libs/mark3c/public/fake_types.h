@@ -76,6 +76,9 @@ typedef struct {
     PORT_PRIO_TYPE      m_uXPriority;
     PORT_PRIO_TYPE      m_uXCurPriority;
     uint8_t             m_eState;
+#if KERNEL_USE_EXTENDED_CONTEXT
+    void*    m_pvExtendedContext;
+#endif
 #if KERNEL_USE_THREADNAME
     const char* m_szName;
 #endif
