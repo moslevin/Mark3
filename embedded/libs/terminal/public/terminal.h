@@ -13,7 +13,7 @@ See license.txt for more information
 =========================================================================== */
 
 #ifndef __TERMINAL_H__
-#define __TERMIANL_H__
+#define __TERMINAL_H__
 
 #include "mark3cfg.h"
 #include "mark3.h"

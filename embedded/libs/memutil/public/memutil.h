@@ -119,6 +119,7 @@ public:
      *  \return true if strings match, false otherwise.
      */
     static bool CompareStrings(const char* szStr1_, const char* szStr2_);
+    static bool CompareStrings(const char* szStr1_, const char* szStr2_, uint16_t u16Length_);
 
     //-----------------------------------------------------------------------
     /*!

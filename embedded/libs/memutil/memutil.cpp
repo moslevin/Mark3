@@ -246,6 +246,28 @@ bool MemUtil::CompareStrings(const char* szStr1_, const char* szStr2_)
     return false;
 }
 
+
+//---------------------------------------------------------------------------
+bool MemUtil::CompareStrings(const char* szStr1_, const char* szStr2_, uint16_t u16Length_)
+{
+    char* szTmp1 = (char*)szStr1_;
+    char* szTmp2 = (char*)szStr2_;
+
+    while ((*szTmp1 && *szTmp2) && u16Length_) {
+        if (*szTmp1++ != *szTmp2++) {
+            return false;
+        }
+        u16Length_--;
+    }
+
+    // Both terminate at the same length
+    if ((!(*szTmp1) && !(*szTmp2)) || !u16Length_) {
+        return true;
+    }
+
+    return false;
+}
+
 //---------------------------------------------------------------------------
 void MemUtil::CopyMemory(void* pvDst_, const void* pvSrc_, uint16_t u16Len_)
 {

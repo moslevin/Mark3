@@ -8,7 +8,7 @@ IS_LIB=1
 LIBNAME=terminal
 
 #this is the list of the objects required to build the kernel
-CPP_SOURCE=terminal.cpp
+CPP_SOURCE=terminal.cpp terminal_input.cpp
 
 # Include the rest of the script that is actually used for building the 
 # outputs
