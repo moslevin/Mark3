@@ -8,7 +8,13 @@ IS_LIB=1
 LIBNAME=terminal
 
 #this is the list of the objects required to build the kernel
-CPP_SOURCE=terminal.cpp terminal_input.cpp
+CPP_SOURCE= command_dispatch.cpp    \
+            command_handler.cpp     \
+            linebuffer.cpp          \
+            m3shell.cpp             \
+            terminal_in.cpp         \
+            terminal_out.cpp        \
+            terminal_io.cpp
 
 # Include the rest of the script that is actually used for building the 
 # outputs
