@@ -34,7 +34,9 @@ bool CommandDispatcher::Execute(const char* szCommandString_)
     CommandHandler* pclCurr = static_cast<CommandHandler*>(m_clCommandList.GetHead());
     while (pclCurr) {
         const char* szCommandName = pclCurr->Name();
-        if (MemUtil::CompareStrings(szCommandString_, szCommandName, iCommandLength)) {
+
+        if ( (MemUtil::CompareStrings(szCommandString_, szCommandName, iCommandLength)) &&
+             (CommandLength(szCommandName) == CommandLength(szCommandString_)) ) {
             pclCurr->Execute(szArgs);
             return true;
         }

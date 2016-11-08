@@ -110,7 +110,7 @@ void M3Shell::InputLoop()
                     m_clTerminal.CursorLeft(u8LastIndex - u8Cursor + 1);
 
                 } else if (stKey.eKey == TERMINAL_KEY_CARRIAGE_RETURN) {
-                    m_clTerminal.WriteByte('\r');
+                    m_clTerminal.WriteString("\r\n");
                     done = true;
                 } else if (stKey.eKey == TERMINAL_KEY_LINEFEED) {
                     m_clTerminal.WriteByte('\n');
@@ -141,4 +141,5 @@ void M3Shell::InputLoop()
         }
     }
     m_clDispatcher.Execute(m_clLineBuffer.GetBuffer());
+    m_clTerminal.WriteString("\r\n");
 }
