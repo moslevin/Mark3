@@ -8,9 +8,9 @@ IS_APP=1
 APPNAME=terminal_demo
 
 #this is the list of the objects required to build the kernel
-CPP_SOURCE=main.cpp
+CPP_SOURCE=main.cpp nlfs_eeprom.cpp
 
-LIBS=mark3 drvUART terminal memutil
+LIBS=mark3 drvUART terminal memutil nlfs
 
 # Include the rest of the script that is actually used for building the 
 # outputs

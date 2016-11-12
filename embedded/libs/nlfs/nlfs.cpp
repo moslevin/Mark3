@@ -780,7 +780,7 @@ void NLFS::Format(NLFS_Host_t* puHost_, uint32_t u32TotalSize_, uint16_t u16NumF
 }
 
 //---------------------------------------------------------------------------
-void NLFS::Mount(NLFS_Host_t* puHost_)
+bool NLFS::Mount(NLFS_Host_t* puHost_)
 {
     NLFS_Node_t stRootNode;
 
@@ -791,12 +791,18 @@ void NLFS::Mount(NLFS_Host_t* puHost_)
     // Reload the root block into the local cache
     Read_Node(FS_CONFIG_BLOCK, &stRootNode);
 
+    if (stRootNode.eBlockType != NLFS_NODE_ROOT) {
+        return false;
+    }
+
     DEBUG_PRINT("Copying config node\n");
     MemUtil::CopyMemory(&m_stLocalRoot, &(stRootNode.stRootNode), sizeof(m_stLocalRoot));
 
     DEBUG_PRINT("Block Size", m_stLocalRoot.u32BlockSize);
     DEBUG_PRINT("Data Offset", m_stLocalRoot.u32DataOffset);
     DEBUG_PRINT("Block Offset", m_stLocalRoot.u32BlockOffset);
+
+    return true;
 }
 
 //---------------------------------------------------------------------------

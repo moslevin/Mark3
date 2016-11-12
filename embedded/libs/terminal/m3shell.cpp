@@ -113,7 +113,7 @@ void M3Shell::InputLoop()
                     m_clTerminal.WriteString("\r\n");
                     done = true;
                 } else if (stKey.eKey == TERMINAL_KEY_LINEFEED) {
-                    m_clTerminal.WriteByte('\n');
+                    m_clTerminal.WriteByte('\0');
                     done = true;
                 }
             } else {

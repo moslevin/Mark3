@@ -304,8 +304,9 @@ public:
      * \brief Re-mount a previously-cerated filesystem using this FS object.
      *
      * \param [in] puHost_ - Pointer to the filesystem object
+     * \return true on success, false otherwise
      */
-    void Mount(NLFS_Host_t* puHost_);
+    bool Mount(NLFS_Host_t* puHost_);
 
     /*!
      * \brief Create_File creates a new file object at the specified path
