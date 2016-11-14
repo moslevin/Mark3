@@ -12,7 +12,7 @@ Copyright (c) 2012-2016 Funkenstein Software Consulting, all rights reserved.
 See license.txt for more information
 ===========================================================================*/
 #include "mark3.h"
-#include "drvUART.h"
+#include "drvUARTplus.h"
 #include "m3shell.h"
 #include "memutil.h"
 #include "nlfs.h"
@@ -51,7 +51,7 @@ static void IdleMain(void* unused_);
 static uint8_t    aucTxBuffer[UART_SIZE_TX];
 static uint8_t    aucRxBuffer[UART_SIZE_RX];
 
-static ATMegaUART clUART; //!< UART device driver object
+static ATMegaUARTPlus clUART; //!< UART device driver object
 
 static CommandHandler clDefaultHandler;
 static CommandHandler clDirHandler;
@@ -227,13 +227,14 @@ static void NLFS_Prepare(void)
     clFile.Close();
 }
 
+//---------------------------------------------------------------------------
 void AppMain(void* unused_)
 {
     Driver* my_uart = DriverList::FindByPath("/dev/tty");
 
     uint32_t new_baud = 57600;
-    my_uart->Control(CMD_SET_BAUDRATE, &new_baud, 0,0,0);
-    my_uart->Control(CMD_SET_BUFFERS, aucRxBuffer, UART_SIZE_RX, aucTxBuffer, UART_SIZE_TX);
+    my_uart->Control(CMD_UARTPLUS_SET_BAUDRATE, &new_baud, 0,0,0);
+    my_uart->Control(CMD_UARTPLUS_SET_BUFFERS, aucRxBuffer, UART_SIZE_RX, aucTxBuffer, UART_SIZE_TX);
     my_uart->Open();
 
     NLFS_Prepare();

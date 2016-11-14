@@ -281,3 +281,17 @@ void Streamer::Unlock(void)
     m_pu8LockAddr = 0;
     CS_EXIT();
 }
+
+//---------------------------------------------------------------------------
+bool Streamer::IsEmpty(void)
+{
+    bool rc;
+    CS_ENTER();
+    if (m_u16Avail == m_u16Size) {
+        rc = true;
+    } else {
+        rc = false;
+    }
+    CS_EXIT();
+    return rc;
+}

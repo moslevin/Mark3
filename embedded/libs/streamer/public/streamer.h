@@ -144,6 +144,8 @@ public:
      */
     bool CanWrite(void);
 
+    bool IsEmpty(void);
+
 private:
     uint8_t* m_pau8Buffer;  //!< Pointer to the buffer managed in this object
     uint8_t* m_pu8LockAddr; //!< Address of the lock point in the stream
