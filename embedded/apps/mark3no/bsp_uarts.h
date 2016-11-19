@@ -2,10 +2,10 @@
 #define __BSP_UART_H__
 
 #include "mark3.h"
-#include "drvUART.h"
+#include "drvUARTplus.h"
 
-extern ATMegaUART clUART0;
-extern ATMegaUART clUART1;
+extern ATMegaUARTPlus clUART0;
+extern ATMegaUARTPlus clUART1;
 
 void bsp_uarts_init(void);
 

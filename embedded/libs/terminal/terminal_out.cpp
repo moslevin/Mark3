@@ -244,7 +244,7 @@ void TerminalOut::Hidden(void)
 
 //---------------------------------------------------------------------------
 // Foreground coloring
-void TerminalOut::SetForeColor(terminal_color_t eColor_)
+void TerminalOut::SetForeColor(TerminalColor_t eColor_)
 {
     Escape();
     WriteByte('[');
@@ -255,7 +255,7 @@ void TerminalOut::SetForeColor(terminal_color_t eColor_)
 
 //---------------------------------------------------------------------------
 // Background coloring
-void TerminalOut::SetBackColor(terminal_color_t eColor_)
+void TerminalOut::SetBackColor(TerminalColor_t eColor_)
 {
     Escape();
     WriteByte('[');

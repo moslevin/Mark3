@@ -11,6 +11,11 @@
 Copyright (c) 2012-2016 Funkenstein Software Consulting, all rights reserved.
 See license.txt for more information
 =========================================================================== */
+/*!
+    \file m3shell.h
+
+    \brief Implements an interactive command shell using an arbitrary Driver.
+ */
 
 #ifndef __M3SHELL_H__
 #define __M3SHELL_H__
@@ -23,18 +28,66 @@ See license.txt for more information
 #include "linebuffer.h"
 
 //---------------------------------------------------------------------------
+/*!
+ * \brief The M3Shell class
+ */
 class M3Shell {
 public:
+    /*!
+     * \brief AddCommand
+     *
+     * Add a new command that can be executed within this shell.  The object
+     * must persist for the lifespan of the shell object.
+     *
+     * \param pclHandler_ Pointer to the command handler to add to this shell
+     */
     void AddCommand(CommandHandler* pclHandler_);
 
+    /*!
+     * \brief SetDefaultHandler
+     *
+     * Set the command handler to execute when an invalid or unknown command is passed
+     * to the dispatcher.  Command must also have been previously added via the
+     * AddCommand method.
+     *
+     * \param pclHandler_ Pointer ot the command handler to set as the default.
+     */
     void SetDefaultHandler(CommandHandler* pclHandler_);
 
+    /*!
+     * \brief SetPrompt
+     *
+     * Set the string to be used as the terminal prompt at the beginning of each line
+     * of input.
+     *
+     * \param szPrompt_ prompt string
+     */
     void SetPrompt(const char* szPrompt_);
 
+    /*!
+     * \brief Init
+     *
+     * Initialize the shell.  Must be called prior to use.
+     *
+     */
     void Init();
 
+    /*!
+     * \brief InputLoop
+     *
+     * Handle one line of command-input at a time.
+     *
+     */
     void InputLoop();
 
+    /*!
+     * \brief SetDriver
+     *
+     * Set the kernel driver on which the shell gets its command input, and to which the
+     * shell writes its text output.  Typically a UART or terminal-like interface.
+     *
+     * \param pclDriver_ Pointer to the driver to use with this shell.
+     */
     void SetDriver(Driver* pclDriver_);
 private:
 

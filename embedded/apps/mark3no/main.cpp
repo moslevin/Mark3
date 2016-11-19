@@ -22,6 +22,12 @@
 #include "bsp_tracelogger.h"
 #include "bsp_uarts.h"
 
+extern "C" {
+void __cxa_pure_virtual(void)
+{
+}
+}
+
 static Thread  clApp1;
 static uint8_t au8Stack1[320];
 

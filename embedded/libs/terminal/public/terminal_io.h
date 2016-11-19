@@ -11,6 +11,12 @@
 Copyright (c) 2012-2016 Funkenstein Software Consulting, all rights reserved.
 See license.txt for more information
 =========================================================================== */
+/*!
+    \file terminal_io.h
+
+    \brief Complete terminal IO class for implementing interactive console
+           applications.
+ */
 
 #ifndef __TERMINAL_IO_H__
 #define __TERMINAL_IO_H__
@@ -21,15 +27,44 @@ See license.txt for more information
 #include "terminal_out.h"
 
 //---------------------------------------------------------------------------
+/*!
+ * \brief The TerminalIO class
+ *
+ * Class implementing terminal input and output functionality.
+ */
 class TerminalIO : public TerminalIn, public TerminalOut
 {
 public:
     TerminalIO();
 
+    /*!
+     * \brief SetDriver
+     *
+     * Set the Driver object representing the communication channel for the
+     * terminal.  Typically a UART driver of some sort.
+     *
+     * \param pclDriver_ Pointer to the driver on which the terminal operates.
+     */
     void SetDriver(Driver* pclDriver_) { m_pclDriver = pclDriver_; }
 
+    /*!
+     * \brief WriteByte
+     *
+     * Write a raw byte of data to the terminal interface
+     *
+     * \param u8Byte_ Byte of data to write
+     * \return true - data was written, false - data could not be written.
+     */
     bool WriteByte(uint8_t u8Byte_);
 
+    /*!
+     * \brief ReadByte
+     *
+     * Read a byte of data from the terminal interface
+     *
+     * \param u8Byte_ Byte of data read
+     * \return true - data successfully read, false otherwise
+     */
     bool ReadByte(uint8_t *u8Byte_);
 private:
 

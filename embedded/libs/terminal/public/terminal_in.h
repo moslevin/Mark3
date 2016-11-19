@@ -11,6 +11,12 @@
 Copyright (c) 2012-2016 Funkenstein Software Consulting, all rights reserved.
 See license.txt for more information
 =========================================================================== */
+/*!
+    \file terminal_in.h
+
+    \brief Class for parsing terminal input (i.e. keyboard input).  This includes
+           special keys and modifiers (shift, ctrl, alt).
+ */
 
 #ifndef __TERMINAL_IN_H__
 #define __TERMINAL_IN_H__
@@ -18,6 +24,7 @@ See license.txt for more information
 #include <stdint.h>
 
 //---------------------------------------------------------------------------
+// Special keys supported by the TerminalIn class
 typedef enum {
     TERMINAL_KEY_BREAK = 0,
     TERMINAL_KEY_BELL,
@@ -52,57 +59,137 @@ typedef enum {
     TERMINAL_KEY_F10,
     TERMINAL_KEY_F11,
     TERMINAL_KEY_F12
-} terminal_key_t;
+} TerminalKey_t;
 
 //---------------------------------------------------------------------------
+// Special modifiers, or modifier combinations, that can be applied to keys
 typedef enum {
-    terminal_parser_begin = 0,
-    terminal_parser_escape_check,
-    terminal_parser_escape_type,
-    terminal_parser_escape,
-    terminal_parser_escape_modified,
-    terminal_parser_escape_expect_semi,
-    terminal_parser_escape_expect_modifier,
-} terminal_parser_state_t;
+    TERMINAL_KEY_MODIFIER_NONE = 0,
+    TERMINAL_KEY_MODIFIER_SHIFT = 2,
+    TERMINAL_KEY_MODIFIER_ALT = 3,
+    TERMINAL_KEY_MODIFIER_SHIFT_ALT = 4,
+    TERMINAL_KEY_MODIFIER_CTRL = 5,
+    TERMINAL_KEY_MODIFIER_SHIFT_CTRL = 6
+} TerminalKeyModifier_t;
 
 //---------------------------------------------------------------------------
+// States in the TerminalIn state machine
 typedef enum {
-    terminal_key_modifier_none = 0,
-    terminal_key_modifier_shift = 2,
-    terminal_key_modifier_alt = 3,
-    terminal_key_modifier_shift_alt = 4,
-    terminal_key_modifier_ctrl = 5,
-    terminal_key_modifier_shift_ctrl = 6
-} terminal_key_modifier_t;
+    TERMINAL_PARSER_BEGIN = 0,
+    TERMINAL_PARSER_ESCAPE_CHECK,
+    TERMINAL_PARSER_ESCAPE_TYPE,
+    TERMINAL_PARSER_ESCAPE,
+    TERMINAL_PARSER_ESCAPE_MODIFIED,
+    TERMINAL_PARSER_ESCAPE_EXPECT_SEMI,
+    TERMINAL_PARSER_ESCAPE_EXPECT_MODIFIER,
+} TerminalParserState_t;
 
 //---------------------------------------------------------------------------
+// Struct representing a key value
 typedef struct {
     union __attribute__((packed)) {
-        terminal_key_t eKey;
+        TerminalKey_t eKey;
         char cChar;
         uint8_t u8Raw;
     };
-    terminal_key_modifier_t eModifier;
+    TerminalKeyModifier_t eModifier;
     bool bEscaped;
 } KeyVal_t;
 
 //---------------------------------------------------------------------------
+/*!
+ * \brief The TerminalIn class
+ *
+ * Class to interpret ANSI terminal data.
+ *
+ */
 class TerminalIn {
 public:
 
+    /*!
+     * \brief ReadLoop
+     *
+     * Read and interpret a single byte of data of terminal input.
+     *
+     * \return true if a byte of data was successfully read and parsed
+     */
     bool ReadLoop();
-    void GetLastKey(KeyVal_t* pstKeyVal_);
-    void Init() { m_eState = terminal_parser_begin; }
 
+    /*!
+     * \brief GetLastKey
+     *
+     * Copy the contents of the last matched key value into the provided
+     * input struct.
+     *
+     * \param pstKeyVal_ Struct to contain the last matched key value.
+     *
+     */
+    void GetLastKey(KeyVal_t* pstKeyVal_);
+
+    /*!
+     * \brief Init
+     *
+     * Initialize the object's state machine prior to use.
+     */
+    void Init() { m_eState = TERMINAL_PARSER_BEGIN; }
+
+    /*!
+     * \brief ReadByte
+     *
+     * Attempt to read a byte of input from the terminal interface.
+     *
+     * \param pu8Byte_ pointer to the byte of read data.
+     * \return true - byte successfully read, false otherwise.
+     */
     virtual bool ReadByte(uint8_t* pu8Byte_) = 0;
 private:
 
+    /*!
+     * \brief ParseByte
+     *
+     * Pass a byte of data through the terminal input state machine.
+     *
+     * \param u8Input_ Byte to process
+     * \return true - key value was matched with this input byte.  false - further
+     *         data bytes are required to complete the current byte sequence.
+     */
     bool ParseByte(uint8_t u8Input_);
+
+    /*!
+     * \brief RunHandler
+     *
+     * Pass the byte of data through the current state.
+     *
+     * \param u8Input_ Byte to process
+     * \return true - key value was matched with this input byte.  false - further
+     *         data bytes are required to complete the current byte sequence.
+     */
     bool RunHandler(uint8_t u8Input_);
 
+    /*!
+     * \brief AcceptCharacter
+     *
+     * Accept input as a printable ASCII character.
+     *
+     * \param cChar_ character to accept.
+     */
     void AcceptCharacter(char cChar_);
-    void AcceptSpecial(terminal_key_t eKey_);
 
+    /*!
+     * \brief AcceptSpecial
+     *
+     * Accept input as a non-printable character.  This includes things like
+     * tab and linefeed characters, as well as special keys on a typical keyboard
+     * (i.e. function keys, home/end/insert/delete).
+     *
+     * \param eKey_ Struct containing the key value
+     */
+    void AcceptSpecial(TerminalKey_t eKey_);
+
+    /*!
+     * Handler functions for all states implemented within the object's
+     * state machine.
+     */
     bool BeginHandler(char cInput_);
     bool EscapeCheckHandler(char cInput_);
     bool EscapeTypeHandler(char cInput_);
@@ -110,7 +197,7 @@ private:
     bool EscapeModifierHandler(char cInput_);
     bool ExpectSemiHandler(char cInput_);
 
-    terminal_parser_state_t m_eState;
+    TerminalParserState_t m_eState;
 
     bool    m_bEscaped;
     char    m_cEscapeBegin;

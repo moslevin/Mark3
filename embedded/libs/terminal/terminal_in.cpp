@@ -42,32 +42,32 @@ void TerminalIn::GetLastKey(KeyVal_t* pstKeyVal_)
 bool TerminalIn::RunHandler(uint8_t u8Input_)
 {
     switch (m_eState) {
-    case terminal_parser_begin:                     return BeginHandler(u8Input_);
-    case terminal_parser_escape_check:              return EscapeCheckHandler(u8Input_);
-    case terminal_parser_escape_type:               return EscapeTypeHandler(u8Input_);
-    case terminal_parser_escape:                    return EscapeHandler(u8Input_);
-    case terminal_parser_escape_modified:           return EscapeModifierHandler(u8Input_);
-    case terminal_parser_escape_expect_semi:        return ExpectSemiHandler(u8Input_);
+    case TERMINAL_PARSER_BEGIN:                     return BeginHandler(u8Input_);
+    case TERMINAL_PARSER_ESCAPE_CHECK:              return EscapeCheckHandler(u8Input_);
+    case TERMINAL_PARSER_ESCAPE_TYPE:               return EscapeTypeHandler(u8Input_);
+    case TERMINAL_PARSER_ESCAPE:                    return EscapeHandler(u8Input_);
+    case TERMINAL_PARSER_ESCAPE_MODIFIED:           return EscapeModifierHandler(u8Input_);
+    case TERMINAL_PARSER_ESCAPE_EXPECT_SEMI:        return ExpectSemiHandler(u8Input_);
     }
     return false;
 }
 
 //---------------------------------------------------------------------------
-void TerminalIn::AcceptSpecial(terminal_key_t eKey_)
+void TerminalIn::AcceptSpecial(TerminalKey_t eKey_)
 {
     m_uKey.eKey = eKey_;
-    m_uKey.eModifier = (terminal_key_modifier_t)(m_u8Modifier);
+    m_uKey.eModifier = (TerminalKeyModifier_t)(m_u8Modifier);
     m_uKey.bEscaped = true;
-    m_eState = terminal_parser_begin;
+    m_eState = TERMINAL_PARSER_BEGIN;
 }
 
 //---------------------------------------------------------------------------
 void TerminalIn::AcceptCharacter(char cChar_)
 {
     m_uKey.cChar = cChar_;
-    m_uKey.eModifier = (terminal_key_modifier_t)(m_u8Modifier);
+    m_uKey.eModifier = (TerminalKeyModifier_t)(m_u8Modifier);
     m_uKey.bEscaped = false;
-    m_eState = terminal_parser_begin;
+    m_eState = TERMINAL_PARSER_BEGIN;
 }
 
 //---------------------------------------------------------------------------
@@ -101,7 +101,7 @@ bool TerminalIn::BeginHandler(char cInput_)
         AcceptSpecial(TERMINAL_KEY_CARRIAGE_RETURN);
         return true;
     case 0x1B:
-        m_eState = terminal_parser_escape_check;
+        m_eState = TERMINAL_PARSER_ESCAPE_CHECK;
         return false;
     case 0x7F:
         AcceptSpecial(TERMINAL_KEY_BACKSPACE);
@@ -116,12 +116,12 @@ bool TerminalIn::BeginHandler(char cInput_)
 bool TerminalIn::EscapeCheckHandler(char cInput_)
 {
     if ((cInput_ == '^') || (cInput_ == '[') || (cInput_ == 'O')) {
-        m_eState = terminal_parser_escape_type;
+        m_eState = TERMINAL_PARSER_ESCAPE_TYPE;
         m_cEscapeBegin = cInput_;
         return false;
     }
 
-    m_eState = terminal_parser_begin;
+    m_eState = TERMINAL_PARSER_BEGIN;
     return false;
 }
 
@@ -154,7 +154,7 @@ bool TerminalIn::EscapeTypeHandler(char cInput_)
     } else if (m_cEscapeBegin == 'O') {
         switch (cInput_) {
         case '1':
-            m_eState = terminal_parser_escape_modified;
+            m_eState = TERMINAL_PARSER_ESCAPE_MODIFIED;
             return false;
         case 'P':
             AcceptSpecial(TERMINAL_KEY_F1);
@@ -189,7 +189,7 @@ bool TerminalIn::EscapeTypeHandler(char cInput_)
     case '9':
         m_au8EscapeSeq[0] = cInput_;
         m_u8EscapeIdx = 1;
-        m_eState = terminal_parser_escape;
+        m_eState = TERMINAL_PARSER_ESCAPE;
         return false;
     case 'A':
         AcceptSpecial(TERMINAL_KEY_UP);
@@ -208,7 +208,7 @@ bool TerminalIn::EscapeTypeHandler(char cInput_)
         return true;
     }
 
-    m_eState = terminal_parser_begin;
+    m_eState = TERMINAL_PARSER_BEGIN;
     return false;
 }
 
@@ -284,7 +284,7 @@ bool TerminalIn::EscapeHandler(char cInput_)
             break;
         }
 
-        m_eState = terminal_parser_begin;
+        m_eState = TERMINAL_PARSER_BEGIN;
         return false;
     }
 
@@ -299,7 +299,7 @@ bool TerminalIn::EscapeHandler(char cInput_)
     case '8':
     case '9':
         if (m_u8EscapeIdx > 2) {
-            m_eState = terminal_parser_begin;
+            m_eState = TERMINAL_PARSER_BEGIN;
             return false;
         }
         m_au8EscapeSeq[m_u8EscapeIdx++] = cInput_;
@@ -355,7 +355,7 @@ bool TerminalIn::EscapeHandler(char cInput_)
         break;
     }
 
-    m_eState = terminal_parser_begin;
+    m_eState = TERMINAL_PARSER_BEGIN;
     return false;
 }
 
@@ -363,10 +363,10 @@ bool TerminalIn::EscapeHandler(char cInput_)
 bool TerminalIn::EscapeModifierHandler(char cInput_)
 {
     if (cInput_ == ';') {
-        m_eState = terminal_parser_escape_expect_semi;
+        m_eState = TERMINAL_PARSER_ESCAPE_EXPECT_SEMI;
         return false;
     }
-    m_eState = terminal_parser_begin;
+    m_eState = TERMINAL_PARSER_BEGIN;
     return false;
 }
 
@@ -385,10 +385,10 @@ bool TerminalIn::ExpectSemiHandler(char cInput_)
         case '8':
         case '9':
             m_u8Modifier = cInput_ - '0';
-            m_eState = terminal_parser_escape_type;
+            m_eState = TERMINAL_PARSER_ESCAPE_TYPE;
             return false;
     }
 
-    m_eState = terminal_parser_begin;
+    m_eState = TERMINAL_PARSER_BEGIN;
     return false;
 }

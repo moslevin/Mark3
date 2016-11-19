@@ -11,6 +11,11 @@
 Copyright (c) 2012-2016 Funkenstein Software Consulting, all rights reserved.
 See license.txt for more information
 =========================================================================== */
+/*!
+    \file command_handler.h
+
+    \brief Text-based command execution
+ */
 
 #ifndef __COMMAND_HANDLER_H__
 #define __COMMAND_HANDLER_H__
@@ -21,17 +26,57 @@ See license.txt for more information
 typedef void(*command_action)(const char* szArgs_);
 
 //---------------------------------------------------------------------------
+/*!
+ * \brief The CommandHandler class
+ *
+ * Class used to represent an individual command that can be run from a
+ * command-line interface.  Essentially, this is used to map a text command
+ * string to a handler function that it represents.
+ *
+ */
 class CommandHandler : public LinkListNode
 {
 public:
+    /*!
+     * \brief CommandHandler
+     *
+     * Constructor which also allows the user to set the name and
+     * handler function of the object.
+     *
+     * \param szName_     Name of the command
+     * \param pfHandler_  Function representing this command
+     */
     CommandHandler(const char* szName_, command_action pfHandler_);
 
     CommandHandler();
 
+    /*!
+     * \brief Set
+     *
+     * Set the name and handler function associated with the command
+     *
+     * \param szName_     Name of the command
+     * \param pfHandler_  Function representing this command
+     */
     void Set(const char* szName_, command_action pfHandler_);
 
+    /*!
+     * \brief Name
+     *
+     * Return the command's name.
+     *
+     * \return Pointer to the command's name
+     */
     const char* Name();
 
+    /*!
+     * \brief Execute
+     *
+     * Execute the command by calling it's handler function.
+     *
+     * \param szArgs_ Argument string passed to the command via higher-level
+     *        command interface.
+     */
     void Execute(const char* szArgs_);
 
 private:
