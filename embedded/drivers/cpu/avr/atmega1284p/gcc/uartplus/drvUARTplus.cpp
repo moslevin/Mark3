@@ -277,7 +277,7 @@ void ATMegaUARTPlus::RxISR()
     }
     m_clStreamIn.Write(u8Byte);
     if (bStart) {
-        m_clTimerIn.Start(true, 5, StreamTimerCallback, (void*)this);
+        m_clTimerIn.Start(true, 50, StreamTimerCallback, (void*)this);
     }
     if ((u8Byte == 0) || (u8Byte == '\n')) {
         m_clNotifyIn.Signal();

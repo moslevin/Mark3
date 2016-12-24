@@ -66,50 +66,50 @@ bool RTC::GetDateTime(calendar_t* pstCal_)
 }
 
 //---------------------------------------------------------------------------
-bool RTC::SetDateTime(const calendar_t* pstCal_)
+uint8_t RTC::SetDateTime(const calendar_t* pstCal_)
 {
     if (!pstCal_) {
-        return false;
+        return 1;
     }
 
     // Month validation
     if (pstCal_->eMonth >= MONTHS_PER_YEAR) {
-        return false;
+        return 2;
     }
 
     // Leap day validation check
     if ((pstCal_->eMonth == MONTH_FEBRUARY) && (pstCal_->u8Day > 29) && YearContainsLeapDay(pstCal_->u16Year)) {
-        return false;
+        return 3;
     }
     // Day-of-the-month validation check
     else if ((pstCal_->u8Day) == 0 || (pstCal_->u8Day > s_au8DaysPerMonth[pstCal_->eMonth])) {
-        return false;
+        return 4;
     }
 
     // Hour of the day validation
     if (pstCal_->u8Hour >= HOURS_PER_DAY) {
-        return false;
+        return 5;
     }
 
     // Minutes per hour validation
     if (pstCal_->u8Minute >= MINUTES_PER_HOUR) {
-        return false;
+        return 6;
     }
 
     // Seconds per minute validation
     if (pstCal_->u8Second >= SECONDS_PER_MINUTE) {
-        return false;
+        return 7;
     }
 
     // Microsecond validation
     if (pstCal_->u32Ticks >= m_u32TicksPerSecond) {
-        return false;
+        return 8;
     }
 
     // Checks out - copy in new data.
     m_stCalendar = *pstCal_;
     m_stCalendar.u8Day--;
-    return true;
+    return 0;
 }
 
 //---------------------------------------------------------------------------

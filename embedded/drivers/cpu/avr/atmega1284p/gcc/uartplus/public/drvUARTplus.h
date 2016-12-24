@@ -13,13 +13,13 @@ See license.txt for more information
 =========================================================================== */
 /*!
 
-    \file   drvUART.h
+    \file   drvUARTplus.h
 
-    \brief  Atmega328p serial port driver
+    \brief  Atmega serial port driver
 
  */
-#ifndef __DRVUART_H_
-#define __DRVUART_H_
+#ifndef __DRVUARTPLUS_H_
+#define __DRVUARTPLUS_H_
 
 #include "kerneltypes.h"
 #include "driver.h"

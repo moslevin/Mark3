@@ -15,7 +15,7 @@ See license.txt for more information
 
     \file   drvSound.h
 
-    \brief  ATMega328p PWM Sound Driver
+    \brief  ATMega1284p PWM Sound Driver
 
     This module contains an implementation of a simple sound driver, capable of
     generating accurate monophonic sounds via a Timer in PWM mode.
@@ -41,8 +41,8 @@ See license.txt for more information
     Tone timing is controlled using a Mark3 Kernel Timer.
 */
 
-#ifndef __drvSound_H__
-#define __drvSound_H__
+#ifndef __DRV_SOUND_H__
+#define __DRV_SOUND_H__
 
 //---------------------------------------------------------------------------
 #include "mark3cfg.h"
@@ -52,7 +52,7 @@ See license.txt for more information
 
 //---------------------------------------------------------------------------
 // Basic math used for tone generation
-#define BASE_FREQ (16000000) // CPU Frequency in Hz
+#define BASE_FREQ (20000000) // CPU Frequency in Hz
 #define PWM_PRESCALER (1)    // Timer prescaler used to divide-down CPU Clock to a peripheral clock
 #define PWM_DURATION (256)   // Duration of each PWM output
 #define ISR_FREQUENCY ((BASE_FREQ / PWM_PRESCALER) / PWM_DURATION) // Resulting PWM Interrupt frequency

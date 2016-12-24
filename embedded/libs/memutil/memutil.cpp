@@ -178,6 +178,93 @@ void MemUtil::DecimalToString(uint32_t u32Data_, char* szText_)
 }
 
 //---------------------------------------------------------------------------
+bool MemUtil::StringToDecimal8(const char* szText_, uint8_t* pu8Out_)
+{
+    uint8_t u8Tmp = 0;
+    uint8_t u8Len = 0;
+
+    for (uint8_t i = 0; i < 4; i++) {
+        if (szText_[i] == 0) {
+            if (i == 0) {
+                return false;
+            }
+            u8Len = i;
+            break;
+        }
+    }
+
+    for (uint8_t i = 0; i < u8Len; i++) {
+        if ((szText_[i] < '0') || (szText_[i] > '9')) {
+            return false;
+        } else {
+            u8Tmp *= 10;
+            u8Tmp += szText_[i] - '0';
+        }
+    }
+    *pu8Out_ = u8Tmp;
+
+    return true;
+}
+
+//---------------------------------------------------------------------------
+bool MemUtil::StringToDecimal16(const char* szText_, uint16_t* pu16Out_)
+{
+    uint16_t u16Tmp = 0;
+    uint16_t u16Len = 0;
+
+    for (uint8_t i = 0; i < 6; i++) {
+        if (szText_[i] == 0) {
+            if (i == 0) {
+                return false;
+            }
+            u16Len = i;
+            break;
+        }
+    }
+
+    for (uint8_t i = 0; i < u16Len; i++) {
+        if ((szText_[i] < '0') || (szText_[i] > '9')) {
+            return false;
+        } else {
+            u16Tmp *= 10;
+            u16Tmp += szText_[i] - '0';
+        }
+    }
+    *pu16Out_ = u16Tmp;
+
+    return true;
+}
+
+//---------------------------------------------------------------------------
+bool MemUtil::StringToDecimal32(const char* szText_, uint32_t* pu32Out_)
+{
+    uint32_t u32Tmp = 0;
+    uint32_t u32Len = 0;
+
+    for (uint8_t i = 0; i < 11; i++) {
+        if (szText_[i] == 0) {
+            if (i == 0) {
+                return false;
+            }
+            u32Len = i;
+            break;
+        }
+    }
+
+    for (uint8_t i = 0; i < u32Len; i++) {
+        if ((szText_[i] < '0') || (szText_[i] > '9')) {
+            return false;
+        } else {
+            u32Tmp *= 10;
+            u32Tmp += szText_[i] - '0';
+        }
+    }
+    *pu32Out_ = u32Tmp;
+
+    return true;
+}
+
+//---------------------------------------------------------------------------
 // Basic checksum routines
 uint8_t MemUtil::Checksum8(const void* pvSrc_, uint16_t u16Len_)
 {

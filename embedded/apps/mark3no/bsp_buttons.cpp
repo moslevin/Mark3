@@ -36,7 +36,7 @@ static volatile bool bExpectedB[2];
 //---------------------------------------------------------------------------
 static void bsp_button_timer_callback(Thread* pclOwner_, void* pvData_)
 {
-    static bool bLastB[2];
+    static bool bLastB[2] = {true, true};
 
     bool bB[2];
 
@@ -51,10 +51,12 @@ static void bsp_button_timer_callback(Thread* pclOwner_, void* pvData_)
             if (bB[i] != bLastB[i]) {
                 // Confirm the change and run the callback
                 bLastB[i] = bB[i];
-                if (apfButtonDown[i]) {
-                    if (bB[i]) {
+                if (bB[i]) {
+                    if (apfButtonDown[i]) {
                         apfButtonDown[i](&clButtons[i]);
-                    } else {
+                    }
+                } else {
+                    if (apfButtonUp[i]) {
                         apfButtonUp[i](&clButtons[i]);
                     }
                 }
@@ -82,7 +84,7 @@ void bsp_buttons_init(void)
 
     clButtons[0].Init(&BUTTON1_PORTIN, &BUTTON1_DDR, BUTTON1_PIN);
     clButtons[1].Init(&BUTTON2_PORTIN, &BUTTON2_DDR, BUTTON2_PIN);
-
+    clButtonTimer.Init();
     // Enable pinchange interrupts on the button IOs
     PCIFR &= ~(1 << BUTTON_PCIE);
     PCICR |= (1 << BUTTON_PCIE);
@@ -109,8 +111,8 @@ ISR(PCINT2_vect)
     bExpectedB[0] = clButtons[0].ReadState();
     bExpectedB[1] = clButtons[1].ReadState();
 
-    // One-shot timer for debounce.
-    clButtonTimer.Start(false, 100, bsp_button_timer_callback, 0);
+    // One-shot timer for debounce.    
+    clButtonTimer.Start(false, 50, bsp_button_timer_callback, 0);
 
     // disable the pc interrupt for debounce.
     PCICR &= ~(1 << BUTTON_PCIE);

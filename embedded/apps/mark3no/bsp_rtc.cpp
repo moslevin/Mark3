@@ -7,6 +7,7 @@
 static RTC               s_clRTC;
 static OnRTCTick_t     s_pfOnRTCTick;
 static volatile uint32_t s_u32TicksToAdd = 0;
+static volatile uint32_t s_u32Overflows = 0;
 
 void bsp_rtc_set_on_rtc_tick(OnRTCTick_t pfOnTick_)
 {
@@ -30,6 +31,32 @@ static void bsp_rtc_hw_init(void)
     TCCR2B = (1 << CS22) | (1 << CS20);
 }
 
+void bsp_rtc_get_raw_uptime(uint32_t* pu32Seconds_, uint16_t* pu16Ticks32KHz_)
+{
+    uint16_t u16_a = 1, u16_b = 0;
+    bool bOverflow = false;
+
+    CS_ENTER();
+
+    while (u16_a != u16_b) {
+        u16_a = TCNT2;
+        u16_b = TCNT2;
+        if (u16_a == 65535 && u16_b == 0) {
+            bOverflow = true;
+        }
+    }
+
+    if (!bOverflow) {
+        *pu32Seconds_ = s_u32Overflows;
+    } else {
+        *pu32Seconds_ = s_u32Overflows + 1;
+    }
+
+    *pu16Ticks32KHz_ = u16_a;
+
+    CS_EXIT();
+}
+
 void bsp_rtc_init(void)
 {
     bsp_rtc_hw_init();
@@ -46,11 +73,11 @@ void bsp_rtc_init(void)
     s_clRTC.SetDateTime(&cal);
 }
 
-bool bsp_rtc_set_datetime(const calendar_t* cal)
+uint8_t bsp_rtc_set_datetime(const calendar_t* cal_)
 {
-    bool rc = false;
+    uint8_t rc = 0;
     CS_ENTER();
-    rc = s_clRTC.SetDateTime(cal);
+    rc = s_clRTC.SetDateTime(cal_);
     CS_EXIT();
     return rc;
 }
@@ -75,20 +102,12 @@ bool bsp_rtc_get_uptime(uint32_t* pu32Seconds_, uint32_t* pu32Ticks_)
 
 const char* bsp_rtc_get_month_name(void)
 {
-    const char* rc;
-    bool        bState = Scheduler::SetScheduler(false);
-    rc                 = s_clRTC.GetMonthName();
-    Scheduler::SetScheduler(bState);
-    return rc;
+    return s_clRTC.GetMonthName();
 }
 
 const char* bsp_rtc_get_day_of_week(void)
 {
-    const char* rc;
-    bool        bState = Scheduler::SetScheduler(false);
-    rc                 = s_clRTC.GetDayOfWeek();
-    Scheduler::SetScheduler(bState);
-    return rc;
+    return s_clRTC.GetDayOfWeek();
 }
 
 void bsp_rtc_kick(void)
@@ -107,6 +126,7 @@ void bsp_rtc_kick(void)
 ISR(TIMER2_OVF_vect)
 {
     s_u32TicksToAdd += 1; // 1-second resolution...
+    s_u32Overflows++;
     if (s_pfOnRTCTick) {
         s_pfOnRTCTick();
     }

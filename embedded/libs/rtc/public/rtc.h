@@ -75,7 +75,7 @@ class RTC
 {
 public:
     void Init(uint32_t u32TicksPerSecond_);
-    bool SetDateTime(const calendar_t* pstCal_);
+    uint8_t SetDateTime(const calendar_t* pstCal_);
     bool GetDateTime(calendar_t* pstCal_);
     bool GetUptime(uint32_t* pu32Seconds_, uint32_t* pu32Ticks_);
     void AddTime(uint32_t u32Ticks_);

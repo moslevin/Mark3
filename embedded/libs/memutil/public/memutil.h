@@ -74,6 +74,19 @@ public:
 
     //-----------------------------------------------------------------------
     /*!
+     * \brief StringToDecimial8
+     *
+     *
+     * \param szText_
+     * \param u8Out_
+     * \return
+     */
+    static bool StringToDecimal8(const char* szText_, uint8_t* pu8Out_);
+    static bool StringToDecimal16(const char* szText_, uint16_t* pu16Out_);
+    static bool StringToDecimal32(const char* szText_, uint32_t* pu32Out_);
+
+    //-----------------------------------------------------------------------
+    /*!
      *  \brief Checksum8
      *
      *  Compute the 8-bit addative checksum of a memory buffer.

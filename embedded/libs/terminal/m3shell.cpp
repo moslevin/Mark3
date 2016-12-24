@@ -52,8 +52,10 @@ void M3Shell::InputLoop()
     m_clLineBuffer.Clear();
 
     m_clTerminal.SetForeColor(TERMINAL_COLOR_GREEN);
+    m_clTerminal.Bold();
     m_clTerminal.WriteString(m_szPrompt);
     m_clTerminal.SetForeColor(TERMINAL_COLOR_WHITE);
+    m_clTerminal.ResetAttributes();
 
     bool done = false;
     while (!done) {
