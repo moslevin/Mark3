@@ -231,20 +231,12 @@ void Thread::Exit()
 #if KERNEL_EXTRA_CHECKS
     KERNEL_ASSERT(IsInitialized());
 #endif
-
     bool bReschedule = 0;
 
     KERNEL_TRACE_1("Exit Thread %d", m_u8ThreadID);
     if (m_eState == THREAD_STATE_EXIT) {
         return;
     }
-
-#if KERNEL_USE_THREAD_CALLOUTS
-    ThreadExitCallout_t pfCallout = Kernel::GetThreadExitCallout();
-    if (pfCallout) {
-        pfCallout(this);
-    }
-#endif
 
     CS_ENTER();
 
@@ -279,8 +271,14 @@ void Thread::Exit()
     // in the timer-list)
     TimerScheduler::Remove(&m_clTimer);
 #endif
-
     CS_EXIT();
+
+#if KERNEL_USE_THREAD_CALLOUTS
+    ThreadExitCallout_t pfCallout = Kernel::GetThreadExitCallout();
+    if (pfCallout) {
+        pfCallout(this);
+    }
+#endif
 
     if (bReschedule) {
         // Choose a new "next" thread if we must

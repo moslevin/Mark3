@@ -419,8 +419,20 @@ public:
      * \param eState_ New thread state to set.
      */
     void SetState(ThreadState_t eState_) { m_eState = eState_; }
-    friend class ThreadPort;
 
+    /*!
+     * \brief GetStack
+     * \return Pointer to the blob of memory used as the thread's stack
+     */
+    K_WORD* GetStack() { return m_pwStack; }
+
+    /*!
+     * \brief GetStackSize
+     * \return Size of the thread's stack in bytes
+     */
+    uint16_t GetStackSize() { return m_u16StackSize; }
+
+    friend class ThreadPort;
 private:
     /*!
      *  \brief ContextSwitchSWI
