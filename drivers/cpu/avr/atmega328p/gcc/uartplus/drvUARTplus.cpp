@@ -26,6 +26,7 @@ See license.txt for more information
 #include "streamer.h"
 #include "threadport.h"
 #include "kerneltimer.h"
+#include "kernelaware.h"
 
 #include <avr/io.h>
 #include <avr/interrupt.h>
@@ -68,7 +69,7 @@ void ATMegaUARTPlus::Init(void)
     m_clTimerIn.Init();
 
     m_bBlocking = true;
-    m_bStartTx = false;
+    m_bStartTx = true;
 }
 
 //---------------------------------------------------------------------------

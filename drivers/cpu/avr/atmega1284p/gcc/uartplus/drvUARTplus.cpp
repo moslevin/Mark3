@@ -85,7 +85,7 @@ void ATMegaUARTPlus::Init(void)
     m_clTimerIn.Init();
 
     m_bBlocking = true;
-    m_bStartTx = false;
+    m_bStartTx = true;
 }
 
 //---------------------------------------------------------------------------
