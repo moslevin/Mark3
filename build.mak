@@ -217,8 +217,19 @@ endif
 #----------------------------------------------------------------------------
 # Code to create object directories (only for folders with lib/app targets
 #----------------------------------------------------------------------------
-directories : $(OBJ_DIR_FINAL) $(APP_DIR_FINAL) $(LIB_DIR_FINAL) $(DBG_DIR_FINAL)
-$(OBJ_DIR) :
+directories : $(OBJ_DIR_FINAL) $(APP_DIR_FINAL) $(LIB_DIR_FINAL) $(DBG_DIR_FINAL) $(STAGE) $(INC_DIR)
+
+$(STAGE) :
+	@if test ! -d $(STAGE); then \
+		mkdir $(STAGE)	;\
+	fi;
+
+$(INC_DIR) : $(STAGE)
+	@if test ! -d $(INC_DIR); then \
+		mkdir $(INC_DIR)	;\
+	fi;
+
+$(OBJ_DIR) : $(STAGE)
 	@if test ! -d $(OBJ_DIR); then \
 		mkdir $(OBJ_DIR)	;\
 	fi;
@@ -238,7 +249,7 @@ $(OBJ_DIR_FINAL) : $(OBJ_DIR)$(ARCH)/$(VARIANT)
 		mkdir $(OBJ_DIR)$(ARCH)/$(VARIANT)/$(TOOLCHAIN)    ;\
 	fi;
 
-$(APP_DIR) :
+$(APP_DIR) : $(STAGE)
 	@if test ! -d $(APP_DIR); then \
 		mkdir $(APP_DIR)	;\
 	fi;
@@ -258,7 +269,7 @@ $(APP_DIR_FINAL) : $(APP_DIR)$(ARCH)/$(VARIANT)
 		mkdir $(APP_DIR)$(ARCH)/$(VARIANT)/$(TOOLCHAIN)    ;\
 	fi;
 
-$(LIB_DIR) :
+$(LIB_DIR) : $(STAGE)
 	@if test ! -d $(LIB_DIR); then \
 		mkdir $(LIB_DIR)	;\
 	fi;
@@ -279,7 +290,7 @@ $(LIB_DIR_FINAL) : $(LIB_DIR)$(ARCH)/$(VARIANT)
 		mkdir $(LIB_DIR)$(ARCH)/$(VARIANT)/$(TOOLCHAIN)    ;\
 	fi;
 
-$(DBG_DIR) :
+$(DBG_DIR) : $(STAGE)
 	@if test ! -d $(DBG_DIR); then \
 		mkdir $(DBG_DIR)	;\
 	fi;
