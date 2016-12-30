@@ -12,7 +12,7 @@ Copyright (c) 2014 Funkenstein Software Consulting, all rights reserved.
 See license.txt for more information
 ===========================================================================*/
 /*!
-    \file rand_lfsr.h
+    \file rand_lfsr.cpp
     \brief Linear Feedback Shift Register based Pseudo-Random Number Generator
 */
 

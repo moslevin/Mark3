@@ -12,7 +12,7 @@ Copyright (c) 2012-2016 Funkenstein Software Consulting, all rights reserved.
 See license.txt for more information
 =========================================================================== */
 /*!
-    \file streamer.h
+    \file streamer.cpp
 
     \brief Thread/Interrupt-safe byte-based data streaming.
  */
