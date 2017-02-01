@@ -71,6 +71,7 @@ void Notify::Init(void)
     KERNEL_ASSERT(!m_clBlockList.GetHead());
     SetInitialized();
 #endif
+    m_bPending = false;
 }
 
 //---------------------------------------------------------------------------
@@ -84,12 +85,17 @@ void Notify::Signal(void)
 
     CS_ENTER();
     Thread* pclCurrent = (Thread*)m_clBlockList.GetHead();
-    while (pclCurrent != NULL) {
-        UnBlock(pclCurrent);
-        if (!bReschedule && (pclCurrent->GetCurPriority() >= Scheduler::GetCurrentThread()->GetCurPriority())) {
-            bReschedule = true;
+    if (!pclCurrent) {
+        m_bPending = true;
+    } else {
+        while (pclCurrent != NULL) {
+            UnBlock(pclCurrent);
+            if (!bReschedule && (pclCurrent->GetCurPriority() >= Scheduler::GetCurrentThread()->GetCurPriority())) {
+                bReschedule = true;
+            }
+            pclCurrent = (Thread*)m_clBlockList.GetHead();
         }
-        pclCurrent = (Thread*)m_clBlockList.GetHead();
+        m_bPending = false;
     }
     CS_EXIT();
 
@@ -105,12 +111,22 @@ void Notify::Wait(bool* pbFlag_)
     KERNEL_ASSERT(IsInitialized());
 #endif
 
+    bool bEarlyExit = false;
     CS_ENTER();
-    Block(g_pclCurrent);
-    if (pbFlag_) {
-        *pbFlag_ = false;
+    if (!m_bPending) {
+        Block(g_pclCurrent);
+        if (pbFlag_) {
+            *pbFlag_ = false;
+        }
+    } else {
+        m_bPending = false;
+        bEarlyExit = true;
     }
     CS_EXIT();
+
+    if (bEarlyExit) {
+        return;
+    }
 
     Thread::Yield();
     if (pbFlag_) {
@@ -126,23 +142,33 @@ bool Notify::Wait(uint32_t u32WaitTimeMS_, bool* pbFlag_)
     KERNEL_ASSERT(IsInitialized());
 #endif
     bool  bUseTimer = false;
+    bool  bEarlyExit = false;
     Timer clNotifyTimer;
 
     CS_ENTER();
-    if (u32WaitTimeMS_) {
-        bUseTimer = true;
-        g_pclCurrent->SetExpired(false);
+    if (!m_bPending) {
+        if (u32WaitTimeMS_) {
+            bUseTimer = true;
+            g_pclCurrent->SetExpired(false);
 
-        clNotifyTimer.Init();
-        clNotifyTimer.Start(0, u32WaitTimeMS_, TimedNotify_Callback, (void*)this);
-    }
+            clNotifyTimer.Init();
+            clNotifyTimer.Start(0, u32WaitTimeMS_, TimedNotify_Callback, (void*)this);
+        }
 
-    Block(g_pclCurrent);
+        Block(g_pclCurrent);
 
-    if (pbFlag_) {
-        *pbFlag_ = false;
+        if (pbFlag_) {
+            *pbFlag_ = false;
+        }
+    } else {
+        m_bPending = false;
+        bEarlyExit = true;
     }
     CS_EXIT();
+
+    if (bEarlyExit) {
+        return true;
+    }
 
     Thread::Yield();
 

@@ -91,6 +91,10 @@ public:
      * \param pclChosenOne_ Thread to wake up
      */
     void WakeMe(Thread* pclChosenOne_);
+
+private:
+
+    bool m_bPending;
 };
 
 #endif
