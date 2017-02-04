@@ -1,8 +1,8 @@
-find_program(AVR_CC avr-gcc PATHS "c:\\Program Files (x86)\\Atmel\\Studio\\7.0\\toolchain\\avr8\\avr8-gnu-toolchain\\bin")
-find_program(AVR_CXX avr-g++ PATHS "c:\\Program Files (x86)\\Atmel\\Studio\\7.0\\toolchain\\avr8\\avr8-gnu-toolchain\\bin")
-find_program(AVR_OBJCOPY avr-objcopy PATHS "c:\\Program Files (x86)\\Atmel\\Studio\\7.0\\toolchain\\avr8\\avr8-gnu-toolchain\\bin")
-find_program(AVR_SIZE_TOOL avr-size PATHS "c:\\Program Files (x86)\\Atmel\\Studio\\7.0\\toolchain\\avr8\\avr8-gnu-toolchain\\bin")
-find_program(AVR_OBJDUMP avr-objdump PATHS "c:\\Program Files (x86)\\Atmel\\Studio\\7.0\\toolchain\\avr8\\avr8-gnu-toolchain\\bin")
+find_program(AVR_CC avr-gcc)
+find_program(AVR_CXX avr-g++)
+find_program(AVR_OBJCOPY avr-objcopy)
+find_program(AVR_SIZE_TOOL avr-size)
+find_program(AVR_OBJDUMP avr-objdump)
 
 #----------------------------------------------------------------------------
 set(AVR_CC_FLAGS "\    

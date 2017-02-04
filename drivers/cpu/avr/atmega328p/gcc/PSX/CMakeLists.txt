@@ -1,7 +1,7 @@
 project(psx)
 
 set(LIB_SOURCES
-    drvPSXJoy.cpp
+    drvPSXjoy.cpp
 )
 
 set(LIB_HEADERS
