@@ -157,6 +157,7 @@ typedef struct {
 #if KERNEL_EXTRA_CHECKS
     uint8_t         m_u8Initialized;
 #endif
+    bool            m_bPending;
 } Fake_Notify;
 
 //---------------------------------------------------------------------------
