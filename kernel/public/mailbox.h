@@ -23,6 +23,7 @@ See license.txt for more information
 
 #include "mark3cfg.h"
 #include "kerneltypes.h"
+#include "threadport.h"
 #include "ksemaphore.h"
 
 #if KERNEL_USE_MAILBOX
