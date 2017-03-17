@@ -57,10 +57,6 @@ See license.txt for more information
 
 #if KERNEL_USE_MUTEX
 
-#if KERNEL_USE_TIMEOUTS
-#include "timerlist.h"
-#endif
-
 //---------------------------------------------------------------------------
 /*!
  *  Mutual-exclusion locks, based on BlockingObject.

@@ -18,8 +18,12 @@ See license.txt for more information
     \brief  Kernel Timer Implementation for ATMega328p
 */
 
+#include "mark3cfg.h"
 #include "kerneltypes.h"
 #include "kerneltimer.h"
+
+#include "ksemaphore.h"
+#include "thread.h"
 
 #include <avr/io.h>
 #include <avr/interrupt.h>
@@ -29,9 +33,65 @@ See license.txt for more information
 #define TIMER_IFR (1 << OCF1A)
 
 //---------------------------------------------------------------------------
+// Static objects implementing the timer thread and its synchronization objects
+#if KERNEL_TIMERS_THREADED
+static Thread s_clTimerThread;
+static K_WORD s_clTimerThreadStack[PORT_KERNEL_TIMERS_THREAD_STACK];
+static Semaphore s_clTimerSemaphore;
+#endif
+
+//---------------------------------------------------------------------------
+/*!
+ *   \brief ISR(TIMER1_COMPA_vect)
+ *   Timer interrupt ISR - service the timer thread
+ */
+//---------------------------------------------------------------------------
+ISR(TIMER1_COMPA_vect)
+{
+#if KERNEL_TIMERS_THREADED
+    s_clTimerSemaphore.Post();
+    KernelTimer::DI();
+#else
+    #if KERNEL_USE_TIMERS
+        TimerScheduler::Process();
+    #endif
+    #if KERNEL_USE_QUANTUM
+        Quantum::UpdateTimer();
+    #endif
+#endif
+}
+
+//---------------------------------------------------------------------------
+#if KERNEL_TIMERS_THREADED
+static void KernelTimer_Task(void* unused)
+{
+    (void)unused;
+    while(1) {
+        s_clTimerSemaphore.Pend();
+#if KERNEL_USE_TIMERS
+        TimerScheduler::Process();
+#endif
+#if KERNEL_USE_QUANTUM
+        Quantum::UpdateTimer();
+#endif
+        KernelTimer::EI();
+    }
+}
+#endif
+
+//---------------------------------------------------------------------------
 void KernelTimer::Config(void)
 {
     TCCR1B = TCCR1B_INIT;
+#if KERNEL_TIMERS_THREADED
+    s_clTimerSemaphore.Init(0, 1);
+    s_clTimerThread.Init(s_clTimerThreadStack,
+                        sizeof(s_clTimerThreadStack) / sizeof(K_WORD),
+                        KERNEL_TIMERS_THREAD_PRIORITY,
+                        KernelTimer_Task,
+                        0);
+    s_clTimerThread.Start();
+#endif
 }
 
 //---------------------------------------------------------------------------

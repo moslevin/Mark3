@@ -87,6 +87,23 @@ See license.txt for more information
 #endif
 
 /*!
+    When timers are enabled, configure whether or not a dedicated thread is
+    used to service timer maintenance.  If set to 0, timer handlers are 
+    executed from a nested interrupt context.
+*/
+#if KERNEL_USE_TIMERS
+# define KERNEL_TIMERS_THREADED (0)
+#endif
+
+/*!
+    Set the priority of the timer thread, if the kernel is configured to 
+    use a dedicated timer thread.
+*/
+#if KERNEL_TIMERS_THREADED
+# define KERNEL_TIMERS_THREAD_PRIORITY  (KERNEL_NUM_PRIORITIES - 1)
+#endif
+
+/*!
     By default, if you opt to enable kernel timers, you also get timeout-
     enabled versions of the blocking object APIs along with it.  This
     support comes at a small cost to code size, but a slightly larger cost
@@ -217,7 +234,7 @@ See license.txt for more information
     (and corresponding accessor methods) to provide the user with a means
     to implement arbitrary Thread-local storage.
 */
-#define KERNEL_USE_EXTENDED_CONTEXT     (0)
+#define KERNEL_USE_EXTENDED_CONTEXT     (1)
 
 /*!
     Provide extra Thread methods to allow the application to create
@@ -237,7 +254,7 @@ See license.txt for more information
     Provides extra logic for kernel debugging, and instruments the kernel
     with extra asserts, and kernel trace functionality.
 */
-#define KERNEL_USE_DEBUG (1)
+#define KERNEL_USE_DEBUG (0)
 
 #if KERNEL_USE_DEBUG
 /*!
@@ -281,7 +298,7 @@ See license.txt for more information
     diagnostic functionality when Mark3-based applications are run on the
     flavr AVR simulator.
 */
-#define KERNEL_AWARE_SIMULATION (1)
+#define KERNEL_AWARE_SIMULATION (0)
 
 /*!
     Enabling this feature removes the necessity for the user to dedicate
@@ -324,7 +341,7 @@ See license.txt for more information
     and stack overflow in the kernel, at the cost of increased context
     switch latency.
 */
-#define KERNEL_USE_STACK_GUARD (0)
+#define KERNEL_USE_STACK_GUARD (1)
 
 #if KERNEL_USE_STACK_GUARD
 #define KERNEL_STACK_GUARD_DEFAULT (32) // words
@@ -336,7 +353,7 @@ See license.txt for more information
     especially helpful during development, and can help catch problems
     at development time, instead of in the field.
 */
-#define KERNEL_EXTRA_CHECKS (0)
+#define KERNEL_EXTRA_CHECKS (1)
 
 #include "portcfg.h"    //!< include CPU/Port specific configuration options
 

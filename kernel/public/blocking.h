@@ -52,7 +52,6 @@ See license.txt for more information
 
 #include "ll.h"
 #include "threadlist.h"
-#include "thread.h"
 
 #if KERNEL_USE_MUTEX || KERNEL_USE_SEMAPHORE || KERNEL_USE_EVENTFLAG
 
@@ -60,6 +59,8 @@ See license.txt for more information
 // Cookies used to determine whether or not an object has been initialized
 #define BLOCKING_INVALID_COOKIE         (0x3C)
 #define BLOCKING_INIT_COOKIE            (0xC3)
+
+class Thread;
 
 //---------------------------------------------------------------------------
 /*!

@@ -27,8 +27,10 @@ See license.txt for more information
 #include "kerneltypes.h"
 #include "mark3cfg.h"
 
-#include "timer.h"
+#include "mutex.h"
 #if KERNEL_USE_TIMERS
+
+class Timer;
 
 //---------------------------------------------------------------------------
 /*!
@@ -77,6 +79,12 @@ private:
 
     //! Whether or not the timer is active
     bool m_bTimerActive;
+
+#if KERNEL_TIMERS_THREADED
+    //! Guards against concurrent access to the timer list - Only needed when running threaded.
+    Mutex m_clMutex;
+#endif
+
 };
 
 #endif // KERNEL_USE_TIMERS

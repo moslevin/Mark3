@@ -478,12 +478,13 @@ void Thread::ContextSwitchSWI()
     if (Scheduler::IsEnabled() == 1) {
         KERNEL_TRACE_1("Context switch to Thread %d", (uint16_t)((Thread*)g_pclNext)->GetID());
 #if KERNEL_USE_STACK_GUARD
-        uint16_t u16Slack;
 #if KERNEL_USE_IDLE_FUNC
-        if (g_pclCurrent->GetID() != 255) {
+        if (g_pclCurrent && (g_pclCurrent->GetID() != 255)) {
 #endif
             if (g_pclCurrent->GetStackSlack() <= Kernel::GetStackGuardThreshold()) {
+#if KERNEL_AWARE_SIMULATION
                 KernelAware::Trace(DBG_FILE, __LINE__, g_pclCurrent->GetID(), g_pclCurrent->GetStackSlack());
+#endif
                 Kernel::Panic(PANIC_STACK_SLACK_VIOLATED);
             }
 #if KERNEL_USE_IDLE_FUNC

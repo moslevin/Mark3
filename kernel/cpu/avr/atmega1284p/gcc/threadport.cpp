@@ -172,18 +172,3 @@ ISR(INT2_vect)
     ASM("reti");             // Return to the next task
 }
 
-//---------------------------------------------------------------------------
-/*!
- *   \brief ISR(TIMER1_COMPA_vect)
- *   Timer interrupt ISR - causes a tick, which may cause a context switch
- */
-//---------------------------------------------------------------------------
-ISR(TIMER1_COMPA_vect)
-{
-#if KERNEL_USE_TIMERS
-    TimerScheduler::Process();
-#endif
-#if KERNEL_USE_QUANTUM
-    Quantum::UpdateTimer();
-#endif
-}
