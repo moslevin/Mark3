@@ -49,8 +49,8 @@ static Semaphore s_clTimerSemaphore;
 ISR(TIMER1_COMPA_vect)
 {
 #if KERNEL_TIMERS_THREADED
+    KernelTimer::ClearExpiry();
     s_clTimerSemaphore.Post();
-    KernelTimer::DI();
 #else
     #if KERNEL_USE_TIMERS
         TimerScheduler::Process();
@@ -74,7 +74,6 @@ static void KernelTimer_Task(void* unused)
 #if KERNEL_USE_QUANTUM
         Quantum::UpdateTimer();
 #endif
-        KernelTimer::EI();
     }
 }
 #endif
@@ -90,6 +89,7 @@ void KernelTimer::Config(void)
                         KERNEL_TIMERS_THREAD_PRIORITY,
                         KernelTimer_Task,
                         0);
+    Quantum::SetTimerThread(&s_clTimerThread);
     s_clTimerThread.Start();
 #endif
 }

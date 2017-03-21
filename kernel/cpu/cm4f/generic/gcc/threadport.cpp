@@ -40,7 +40,6 @@ static void ThreadPort_StartFirstThread(void) __attribute__((naked));
 extern "C" {
 void SVC_Handler(void) __attribute__((naked));
 void PendSV_Handler(void) __attribute__((naked));
-void SysTick_Handler(void);
 }
 
 //---------------------------------------------------------------------------
@@ -371,17 +370,4 @@ void PendSV_Handler(void)
         // Must be 4-byte aligned.  Also - GNU assembler, I hate you for making me resort to this.
         " NEXT_: .word g_pclNext \n"
         " CURR_: .word g_pclCurrent \n");
-}
-//---------------------------------------------------------------------------
-void SysTick_Handler(void)
-{
-#if KERNEL_USE_TIMERS
-    TimerScheduler::Process();
-#endif
-#if KERNEL_USE_QUANTUM
-    Quantum::UpdateTimer();
-#endif
-
-    // Clear the systick interrupt pending bit.
-    SCB->ICSR = SCB_ICSR_PENDSTCLR_Msk;
 }

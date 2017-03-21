@@ -146,8 +146,10 @@ void TimerList::Process(void)
     Quantum::SetInTimer();
 #endif
 #if KERNEL_TIMERS_TICKLESS
+#if !KERNEL_TIMERS_THREADED
     // Clear the timer and its expiry time - keep it running though
     KernelTimer::ClearExpiry();
+#endif
     do {
 #endif
         pclNode = static_cast<Timer*>(GetHead());

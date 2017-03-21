@@ -153,18 +153,3 @@ void __attribute__((__interrupt__(PORT1_VECTOR), naked)) isr_KernelSWI(void)
     Thread_RestoreContext(); // Pop the context (registers) of the next task
     ASM("reti");             // Return to the next task
 }
-
-//---------------------------------------------------------------------------
-/*!
- * Kernel Timer Interrupt
- */
-//---------------------------------------------------------------------------
-void __attribute__((__interrupt__(TIMERA0_VECTOR))) isr_KernelTIMER(void)
-{
-#if KERNEL_USE_TIMERS
-    TimerScheduler::Process();
-#endif
-#if KERNEL_USE_QUANTUM
-    Quantum::UpdateTimer();
-#endif
-}

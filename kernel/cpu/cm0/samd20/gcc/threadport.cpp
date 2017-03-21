@@ -42,7 +42,6 @@ static void ThreadPort_StartFirstThread(void) __attribute__((naked));
 extern "C" {
 void SVC_Handler(void) __attribute__((naked));
 void PendSV_Handler(void) __attribute__((naked));
-void SVC_Handler(void);
 }
 
 volatile uint32_t g_ulCriticalCount = 0;
@@ -439,31 +438,3 @@ void PendSV_Handler(void)
         " NEXT_: .word g_pclNext \n"
         " CURR_: .word g_pclCurrent \n");
 }
-
-#if KERNEL_TIMERS_TICKLESS
-void TC0_Handler(void)
-{
-#if KERNEL_USE_TIMERS
-    TimerScheduler::Process();
-#endif
-#if KERNEL_USE_QUANTUM
-    Quantum::UpdateTimer();
-#endif
-
-    // Clear the systick interrupt pending bit.
-    TC0->COUNT16.INTFLAG.reg = TC_INTFLAG_OVF;
-}
-#else
-void SysTick_Handler(void)
-{
-#if KERNEL_USE_TIMERS
-    TimerScheduler::Process();
-#endif
-#if KERNEL_USE_QUANTUM
-    Quantum::UpdateTimer();
-#endif
-
-    // Clear the systick interrupt pending bit.
-    SCB->ICSR = SCB_ICSR_PENDSTCLR_Msk;
-}
-#endif

@@ -24,6 +24,54 @@ See license.txt for more information
 
 #include <msp430.h>
 
+#include "ksemaphore.h"
+#include "thread.h"
+
+//---------------------------------------------------------------------------
+// Static objects implementing the timer thread and its synchronization objects
+#if KERNEL_TIMERS_THREADED
+static Thread s_clTimerThread;
+static K_WORD s_clTimerThreadStack[PORT_KERNEL_TIMERS_THREAD_STACK];
+static Semaphore s_clTimerSemaphore;
+#endif
+
+//---------------------------------------------------------------------------
+/*!
+ * Kernel Timer Interrupt
+ */
+//---------------------------------------------------------------------------
+void __attribute__((__interrupt__(TIMERA0_VECTOR))) isr_KernelTIMER(void)
+{
+#if KERNEL_TIMERS_THREADED
+    KernelTimer::ClearExpiry();
+    s_clTimerSemaphore.Post();
+#else
+    #if KERNEL_USE_TIMERS
+        TimerScheduler::Process();
+    #endif
+    #if KERNEL_USE_QUANTUM
+        Quantum::UpdateTimer();
+    #endif
+#endif
+}
+
+//---------------------------------------------------------------------------
+#if KERNEL_TIMERS_THREADED
+static void KernelTimer_Task(void* unused)
+{
+    (void)unused;
+    while(1) {
+        s_clTimerSemaphore.Pend();
+#if KERNEL_USE_TIMERS
+        TimerScheduler::Process();
+#endif
+#if KERNEL_USE_QUANTUM
+        Quantum::UpdateTimer();
+#endif
+    }
+}
+#endif
+
 //---------------------------------------------------------------------------
 void KernelTimer::Config(void)
 {
@@ -37,6 +85,17 @@ void KernelTimer::Config(void)
     TACTL |= ID_3; // Divide-by-8
 #else
     TACCR0 = (uint16_t)PORT_TIMER_FREQ; // Set interrupts to occur at tick freq.
+#endif
+
+#if KERNEL_TIMERS_THREADED
+    s_clTimerSemaphore.Init(0, 1);
+    s_clTimerThread.Init(s_clTimerThreadStack,
+                        sizeof(s_clTimerThreadStack) / sizeof(K_WORD),
+                        KERNEL_TIMERS_THREAD_PRIORITY,
+                        KernelTimer_Task,
+                        0);
+    Quantum::SetTimerThread(&s_clTimerThread);
+    s_clTimerThread.Start();
 #endif
 }
 

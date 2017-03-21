@@ -81,6 +81,13 @@ public:
      *  Clear the flag once the timer callback function has been completed.
      */
     static void ClearInTimer(void) { m_bInTimer = false; }
+
+#if KERNEL_TIMERS_THREADED
+    static void SetTimerThread(Thread* pclTimerThread_);
+
+    static Thread* GetTimerThread();
+#endif
+
 private:
     /*!
      *  \brief SetTimer
@@ -94,6 +101,10 @@ private:
      *  \param pclThread_ Pointer to the thread to set the Quantum timer on
      */
     static void SetTimer(Thread* pclThread_);
+
+#if KERNEL_TIMERS_THREADED
+    static Thread* m_pclTimerThread;
+#endif
 
     static Timer m_clQuantumTimer;
     static bool  m_bActive;

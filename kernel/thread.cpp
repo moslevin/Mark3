@@ -164,8 +164,14 @@ void Thread::Start(void)
     if (Kernel::IsStarted()) {
         if (GetCurPriority() >= Scheduler::GetCurrentThread()->GetCurPriority()) {
             // Deal with the thread Quantum
-            Quantum::RemoveThread();
-            Quantum::AddThread(this);
+#if KERNEL_TIMERS_THREADED
+            if (Quantum::GetTimerThread() != this) {
+#endif
+                Quantum::RemoveThread();
+                Quantum::AddThread(this);
+#if KERNEL_TIMERS_THREADED
+            }
+#endif
         }
     }
 #endif
@@ -389,10 +395,16 @@ void Thread::Yield()
         // Only switch contexts if the new task is different than the old task
         if (Scheduler::GetCurrentThread() != Scheduler::GetNextThread()) {
 #if KERNEL_USE_QUANTUM
-            // new thread scheduled.  Stop current quantum timer (if it exists),
-            // and restart it for the new thread (if required).
-            Quantum::RemoveThread();
-            Quantum::AddThread((Thread*)g_pclNext);
+#if KERNEL_TIMERS_THREADED
+            if (Quantum::GetTimerThread() != g_pclNext) {
+#endif
+                // new thread scheduled.  Stop current quantum timer (if it exists),
+                // and restart it for the new thread (if required).
+                Quantum::RemoveThread();
+                Quantum::AddThread((Thread*)g_pclNext);
+#if KERNEL_TIMERS_THREADED
+            }
+#endif
 #endif
             Thread::ContextSwitchSWI();
         }
@@ -447,10 +459,16 @@ void Thread::SetPriority(PORT_PRIO_TYPE uXPriority_)
             CS_ENTER();
             Scheduler::Schedule();
 #if KERNEL_USE_QUANTUM
-            // new thread scheduled.  Stop current quantum timer (if it exists),
-            // and restart it for the new thread (if required).
-            Quantum::RemoveThread();
-            Quantum::AddThread((Thread*)g_pclNext);
+#if KERNEL_TIMERS_THREADED
+            if (Quantum::GetTimerThread() != g_pclNext) {
+#endif
+                // new thread scheduled.  Stop current quantum timer (if it exists),
+                // and restart it for the new thread (if required).
+                Quantum::RemoveThread();
+                Quantum::AddThread((Thread*)g_pclNext);
+#if KERNEL_TIMERS_THREADED
+            }
+#endif
 #endif
             CS_EXIT();
             Thread::ContextSwitchSWI();

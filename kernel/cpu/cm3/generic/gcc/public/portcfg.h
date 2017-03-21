@@ -77,6 +77,11 @@ extern uint32_t SystemCoreClock;
 #endif
 
 /*!
+    Define the size of the kernel-timer thread stack (if one is configured)
+*/
+#define PORT_KERNEL_TIMERS_THREAD_STACK     ((K_ADDR)256)
+
+/*!
     Define the native type corresponding to the kernel timer hardware's counter register.
 */
 #define PORT_TIMER_COUNT_TYPE       uint32_t    //!< Timer counter type

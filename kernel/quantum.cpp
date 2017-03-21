@@ -45,6 +45,10 @@ See license.txt for more information
 static volatile bool bAddQuantumTimer; // Indicates that a timer add is pending
 
 //---------------------------------------------------------------------------
+#if KERNEL_TIMERS_THREADED
+Thread* Quantum::m_pclTimerThread;
+#endif // KERNEL_TIMERS_THREADED
+
 Timer Quantum::m_clQuantumTimer; // The global timernodelist_t object
 bool  Quantum::m_bActive;
 bool  Quantum::m_bInTimer;
@@ -62,15 +66,12 @@ bool  Quantum::m_bInTimer;
 static void QuantumCallback(Thread* pclThread_, void* pvData_)
 {
     // Validate thread pointer, check that source/destination match (it's
-    // in its real priority list).  Also check that this thread was part of
-    // the highest-running priority level.
-    if (pclThread_->GetPriority() >= Scheduler::GetCurrentThread()->GetPriority()) {
-        if (pclThread_->GetCurrent()->GetHead() != pclThread_->GetCurrent()->GetTail()) {
-            bAddQuantumTimer = true;
-            pclThread_->GetCurrent()->PivotForward();
-        }
+    // in its real priority list).
+    if (pclThread_->GetCurrent()->GetHead() != pclThread_->GetCurrent()->GetTail()) {
+        bAddQuantumTimer = true;
+        pclThread_->GetCurrent()->PivotForward();
     }
-}
+}        
 
 //---------------------------------------------------------------------------
 void Quantum::SetTimer(Thread* pclThread_)
@@ -134,5 +135,19 @@ void Quantum::UpdateTimer(void)
         bAddQuantumTimer = false;
     }
 }
+
+//---------------------------------------------------------------------------
+#if KERNEL_TIMERS_THREADED
+void Quantum::SetTimerThread(Thread* pclThread_)
+{
+    m_pclTimerThread = pclThread_;
+}
+
+Thread* Quantum::GetTimerThread()
+{
+    return m_pclTimerThread;
+}
+
+#endif // KERNEL_TIMERS_THREADED
 
 #endif // KERNEL_USE_QUANTUM
