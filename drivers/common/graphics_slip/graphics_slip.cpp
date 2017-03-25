@@ -187,9 +187,9 @@ uint8_t GraphicsSlip::Strlen(char* szData_)
 void GraphicsSlip::Text(DrawText_t *pstText_)
 {
     SlipDataVector astSlipData[5];
-    
+
     uint8_t u8EventType = DISPLAY_EVENT_TEXT;
-    
+
     astSlipData[0].pu8Data = &u8EventType;
     astSlipData[0].u8Size = 1;
     astSlipData[1].pu8Data = (uint8_t*)pstText_;

@@ -24,102 +24,102 @@ See license.txt for more information
 K_ADDR ProcessObject::ObjectSize(ProcessObjectType_t eType_)
 {
 	switch (eType_) {
-		case POTYPE_THREAD: return sizeof(Thread);		
+		case POTYPE_THREAD: return sizeof(Thread);
 #if KERNEL_USE_SEMAPHORE
 		case POTYPE_SEMAPHORE: return sizeof(Semaphore);
-#endif		
+#endif
 #if KERNEL_USE_MUTEX
 		case POTYPE_MUTEX: return sizeof(Mutex);
-#endif		
+#endif
 #if KERNEL_USE_TIMERS
 		case POTYPE_TIMER: return sizeof(Timer);
-#endif				
+#endif
 #if KERNEL_USE_EVENTFLAG
 		case POTYPE_EVENTFLAG: return sizeof(EventFlag);
-#endif		
+#endif
 #if KERNEL_USE_NOTIFY
 		case POTYPE_NOTIFICATION: return sizeof(Notify);
-#endif				
+#endif
 #if KERNEL_USE_MAILBOX
 		case POTYPE_MAILBOX: return sizeof(Mailbox);
-#endif				
+#endif
 #if KERNEL_USE_MESSAGE
 		case POTYPE_MESSAGE_QUEUE: return sizeof(MessageQueue);
-		case POTYPE_MESSAGE: return sizeof(Message);	
-#endif			
+		case POTYPE_MESSAGE: return sizeof(Message);
+#endif
 #if KERNEL_USE_EXTENDED_CONTEXT
 		case POTYPE_TLS: return sizeof(ProcessTLS);
-#endif				
+#endif
 		default: return 0;
 	}
 }
-	
+
 //---------------------------------------------------------------------------
 void ProcessObject::Init(ProcessObjectType_t eType_, void* pvObjData_)
 {
 	m_eType = eType_;
 	m_pclObjectData = pvObjData_;
 	switch (eType_) {
-		case POTYPE_THREAD: new (pvObjData_) Thread(); break;		
+		case POTYPE_THREAD: new (pvObjData_) Thread(); break;
 #if KERNEL_USE_SEMAPHORE
 		case POTYPE_SEMAPHORE: new (pvObjData_) Semaphore(); break;
-#endif		
+#endif
 #if KERNEL_USE_MUTEX
 		case POTYPE_MUTEX: new (pvObjData_) Mutex(); break;
-#endif				
+#endif
 #if KERNEL_USE_TIMERS
 		case POTYPE_TIMER: new (pvObjData_) Timer(); break;
-#endif				
+#endif
 #if KERNEL_USE_EVENTFLAG
 		case POTYPE_EVENTFLAG: new (pvObjData_) EventFlag(); break;
-#endif				
+#endif
 #if KERNEL_USE_NOTIFY
 		case POTYPE_NOTIFICATION: new (pvObjData_) Notify(); break;
-#endif				
+#endif
 #if KERNEL_USE_MAILBOX
-		case POTYPE_MAILBOX: new (pvObjData_) Mailbox(); break;		
-#endif				
+		case POTYPE_MAILBOX: new (pvObjData_) Mailbox(); break;
+#endif
 #if KERNEL_USE_MESSAGE
 		case POTYPE_MESSAGE_QUEUE: new (pvObjData_) MessageQueue(); break;
-		case POTYPE_MESSAGE: new (pvObjData_) Message(); break;		
-#endif						
+		case POTYPE_MESSAGE: new (pvObjData_) Message(); break;
+#endif
 #if KERNEL_USE_EXTENDED_CONTEXT
 		case POTYPE_TLS: new (pvObjData_) ProcessTLS(); break;
-#endif			
+#endif
 		default: break;
 	}
 }
-	
+
 //---------------------------------------------------------------------------
 void ProcessObject::DeInit()
 {
 	switch (m_eType) {
-		case POTYPE_THREAD: DestroyThread_i(); break;		
+		case POTYPE_THREAD: DestroyThread_i(); break;
 #if KERNEL_USE_SEMAPHORE
 		case POTYPE_SEMAPHORE: DestroySemaphore_i(); break;
-#endif		
+#endif
 #if KERNEL_USE_MUTEX
 		case POTYPE_MUTEX: DestroyMutex_i(); break;
-#endif		
+#endif
 #if KERNEL_USE_TIMERS
 		case POTYPE_TIMER: DestroyTimer_i(); break;
 #endif
 #if KERNEL_USE_EVENTFLAG
 		case POTYPE_EVENTFLAG: DestroyEventFlag_i(); break;
-#endif				
+#endif
 #if KERNEL_USE_NOTIFY
 		case POTYPE_NOTIFICATION: DestroyNotify_i(); break;
-#endif				
+#endif
 #if KERNEL_USE_MAILBOX
-		case POTYPE_MAILBOX: DestroyMailbox_i(); break;		
-#endif				
+		case POTYPE_MAILBOX: DestroyMailbox_i(); break;
+#endif
 #if KERNEL_USE_MESSAGE
 		case POTYPE_MESSAGE_QUEUE: DestroyMessageQueue_i(); break;
 		case POTYPE_MESSAGE: DestroyMessage_i(); break;
-#endif						
+#endif
 #if KERNEL_USE_EXTENDED_CONTEXT
 		case POTYPE_TLS: DestroyProcessTLS_i(); break;
-#endif		
+#endif
 		default: break;
 	}
 }
@@ -138,7 +138,7 @@ void ProcessObject::DestroyThread_i()
 	pclThread->~Thread();
 }
 
-#if KERNEL_USE_SEMAPHORE	
+#if KERNEL_USE_SEMAPHORE
 //---------------------------------------------------------------------------
 void ProcessObject::DestroySemaphore_i()
 {
@@ -240,9 +240,9 @@ Thread* Process::CreateThread()
 void Process::DestroyThread(Thread* pclThread_)
 {
 	ProcessObject* pclBase = reinterpret_cast<ProcessObject*>((K_ADDR)pclThread_ - ProcessObject::GetObjectOffset());
-#if KERNEL_USE_EXTENDED_CONTEXT	
+#if KERNEL_USE_EXTENDED_CONTEXT
 	DestroyProcessTLS(static_cast<ProcessTLS*>(pclThread_->GetExtendedContext()));
-#endif	
+#endif
 	DestroyProcessObject(pclBase, &m_clThreadList);
 }
 
@@ -258,10 +258,10 @@ K_WORD* Process::Allocate(K_ADDR kaSize_)
 		m_pclHeap->Free(pvObj);
 		return 0;
 	}
-	
+
 	ProcessObject *pclNewObj = static_cast<ProcessObject*>(pvObj);
 	pclNewObj->Init(POTYPE_TRACKED_ALLOC, pvObjData);
-	
+
 	m_clProcessObjects.Add(pclNewObj);
 	return static_cast<K_WORD*>(pvObjData);
 }
@@ -278,14 +278,14 @@ K_WORD* Process::CreateStack(K_ADDR kaSize_)
 {
 	return static_cast<K_WORD*>(Allocate(kaSize_));
 }
-	
+
 //---------------------------------------------------------------------------
 void Process::DestroyProcessStack(K_WORD* pwStack_)
 {
 	Free((void*)pwStack_);
 }
-	
-#if KERNEL_USE_SEMAPHORE	
+
+#if KERNEL_USE_SEMAPHORE
 //---------------------------------------------------------------------------
 Semaphore* Process::CreateSemaphore()
 {
@@ -304,7 +304,7 @@ void Process::DestroySemaphore(Semaphore* pclSemaphore_)
 }
 #endif
 
-#if KERNEL_USE_MUTEX	
+#if KERNEL_USE_MUTEX
 //---------------------------------------------------------------------------
 Mutex* Process::CreateMutex()
 {
@@ -322,7 +322,7 @@ void Process::DestroyMutex(Mutex* pclMutex_)
 	DestroyProcessObject(pclBase, &m_clProcessObjects);
 }
 #endif
-	
+
 #if KERNEL_USE_EVENTFLAG
 //---------------------------------------------------------------------------
 EventFlag* Process::CreateEventFlag()
@@ -333,7 +333,7 @@ EventFlag* Process::CreateEventFlag()
 	}
 	return static_cast<EventFlag*>(pclProcessObject->GetObject());
 }
-	
+
 //---------------------------------------------------------------------------
 void Process::DestroyEventFlag(EventFlag* pclEventFlag_)
 {
@@ -341,7 +341,7 @@ void Process::DestroyEventFlag(EventFlag* pclEventFlag_)
 	DestroyProcessObject(pclBase, &m_clProcessObjects);
 }
 #endif
-	
+
 #if KERNEL_USE_TIMERS
 //---------------------------------------------------------------------------
 Timer* Process::CreateTimer()
@@ -361,7 +361,7 @@ void Process::DestroyTimer(Timer* pclTimer_)
 }
 #endif
 
-#if KERNEL_USE_NOTIFY	
+#if KERNEL_USE_NOTIFY
 //---------------------------------------------------------------------------
 Notify* Process::CreateNotify()
 {
@@ -380,7 +380,7 @@ void Process::DestroyNotify(Notify* pclNotify_)
 }
 #endif
 
-#if KERNEL_USE_MAILBOX	
+#if KERNEL_USE_MAILBOX
 //---------------------------------------------------------------------------
 Mailbox* Process::CreateMailbox()
 {
@@ -409,7 +409,7 @@ Message* Process::CreateMessage()
 	}
 	return static_cast<Message*>(pclProcessObject->GetObject());
 }
-	
+
 //---------------------------------------------------------------------------
 MessageQueue* Process::CreateMessageQueue()
 {
@@ -419,7 +419,7 @@ MessageQueue* Process::CreateMessageQueue()
 	}
 	return static_cast<MessageQueue*>(pclProcessObject->GetObject());
 }
-	
+
 //---------------------------------------------------------------------------
 void Process::DestroyMessage(Message* pclMessage_)
 {
@@ -471,17 +471,17 @@ ProcessObject* Process::AllocateProcessObject(ProcessObjectType_t eType_)
 	if (!pvObj) {
 		return 0;
 	}
-		
+
 	void *pvObjData = m_pclHeap->Allocate(ProcessObject::ObjectSize(eType_));
 	if (!pvObjData) {
 		m_pclHeap->Free(pvObj);
 		return 0;
 	}
-		
+
 	ProcessObject* pclNewObj = new (pvObj) ProcessObject();
 	pclNewObj->Init(eType_, pvObjData);
-		
-#if KERNEL_USE_EXTENDED_CONTEXT		
+
+#if KERNEL_USE_EXTENDED_CONTEXT
 	if (eType_ == POTYPE_THREAD) {
 		ProcessTLS* pclNewTLS = CreateProcessTLS();
 		if (!pclNewTLS) {
@@ -494,28 +494,28 @@ ProcessObject* Process::AllocateProcessObject(ProcessObjectType_t eType_)
 		pclNewThread->SetExtendedContext(pclNewTLS);
 	}
 #endif
-		
+
 	if (eType_ == POTYPE_THREAD) {
 		m_clThreadList.Add(static_cast<LinkListNode*>(pclNewObj));
-	} 
-#if KERNEL_USE_TIMERS		
+	}
+#if KERNEL_USE_TIMERS
 	else if (eType_ == POTYPE_TIMER) {
 		m_clTimerList.Add(static_cast<LinkListNode*>(pclNewObj));
-	} 
-#endif	
+	}
+#endif
 	else {
 		m_clProcessObjects.Add(static_cast<LinkListNode*>(pclNewObj));
 	}
 	return pclNewObj;
 }
-	
+
 //---------------------------------------------------------------------------
 void Process::DestroyProcessObject(ProcessObject* pclObject_, DoubleLinkList* pclOwner_)
 {
 	pclOwner_->Remove(pclObject_);
-		
+
 	pclObject_->DeInit();
-		
+
 	m_pclHeap->Free(pclObject_->GetObject());
 	m_pclHeap->Free(pclObject_);
 }
@@ -534,7 +534,7 @@ void Process::Destroy()
 		while (pclNext) {
 			ProcessObject *pclCurr = pclNext;
 			pclNext = static_cast<ProcessObject*>(pclNext->GetNext());
-				
+
 			DestroyProcessObject(pclCurr, pclLists[i]);
 		}
 	}

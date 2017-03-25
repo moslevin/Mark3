@@ -24,27 +24,27 @@ See license.txt for more information
 //---------------------------------------------------------------------------
 void ServerSocket::Init()
 {
-	m_bBlocking = true;	
+	m_bBlocking = true;
 	m_bOpen = false;
-	
+
 	m_clNotifyClientRead.Init();
 	m_clNotifyClientWrite.Init();
 }
-	
+
 //---------------------------------------------------------------------------
 uint8_t ServerSocket::Open()
-{	
+{
 	m_bOpen = true;
-	
+
 	m_pclNotifyServerRead->Init();
 	m_pclNotifyServerWrite->Init();
-	
+
 	return m_bOpen;
 }
 
 //---------------------------------------------------------------------------
 uint8_t ServerSocket::Close()
-{	
+{
 	m_bOpen = false;
 	m_clNotifyClientWrite.Signal();
 	m_clNotifyClientRead.Signal();
@@ -59,16 +59,16 @@ uint16_t ServerSocket::Read(uint16_t u16Bytes_, uint8_t* pu8Data_)
 	if (!m_bOpen) {
         return SOCKET_ERROR;
 	}
-	
+
 	uint16_t u16ToRead = u16Bytes_;
 	uint8_t* pu8Out = pu8Data_;
-	uint16_t u16Read;	
+	uint16_t u16Read;
 	if (m_bBlocking) {
 		while (u16ToRead) {
 			if (m_clInput.CanRead()) {
 				m_clInput.Read(pu8Out);
 				u16ToRead--;
-				pu8Out++;							
+				pu8Out++;
 			} else {
 				m_pclNotifyServerRead->Wait(0);
 				if (!m_bOpen) {
@@ -93,20 +93,20 @@ uint16_t ServerSocket::Read(uint16_t u16Bytes_, uint8_t* pu8Data_)
 
 //---------------------------------------------------------------------------
 uint16_t ServerSocket::Write(uint16_t u16Bytes_, uint8_t* pu8Data_)
-{	
+{
 	if (!m_bOpen) {
         return SOCKET_ERROR;
 	}
-	
+
 	uint16_t u16ToWrite = u16Bytes_;
 	uint8_t* pu8Out = pu8Data_;
 	uint16_t u16Written;
 	if (m_bBlocking) {
 		while (u16ToWrite) {
 			if (m_clOutput.CanWrite()) {
-				m_clOutput.Write(*pu8Out);				
+				m_clOutput.Write(*pu8Out);
 				pu8Out++;
-				u16ToWrite--;				
+				u16ToWrite--;
 			} else {
 				m_pclNotifyServerWrite->Wait(0);
 				if (!m_bOpen) {
@@ -142,15 +142,15 @@ uint16_t ServerSocket::Control(uint16_t u16Event_, void* pvDataIn_, uint16_t u16
 			break;
 		case SOCKET_CONTROL_SET_NONBLOCKING:
 			m_bBlocking = false;
-			break;		
+			break;
 		case SOCKET_CONTROL_SET_NOTIFIERS:
 			m_pclNotifyServerRead = static_cast<Notify*>(pvDataIn_);
 			m_pclNotifyServerWrite = static_cast<Notify*>(pvDataOut_);
 			break;
-		case SOCKET_CONTROL_PRIVATE_CLIENT_READ:		
+		case SOCKET_CONTROL_PRIVATE_CLIENT_READ:
 			return ClientRead(u16SizeOut_, static_cast<uint8_t*>(pvDataOut_), u16SizeIn_ != 0);
 		case SOCKET_CONTROL_PRIVATE_CLIENT_WRITE:
-			return ClientWrite(u16SizeIn_, static_cast<uint8_t*>(pvDataIn_), u16SizeOut_ != 0);			
+			return ClientWrite(u16SizeIn_, static_cast<uint8_t*>(pvDataIn_), u16SizeOut_ != 0);
 		case SOCKET_CONTROL_PRIVATE_CLIENT_BLOCK_READ: {
 			if (!m_bOpen) {
                 return SOCKET_ERROR;
@@ -160,7 +160,7 @@ uint16_t ServerSocket::Control(uint16_t u16Event_, void* pvDataIn_, uint16_t u16
 			if (pvDataIn_) {
 				u32Timeout = *static_cast<uint32_t*>(pvDataIn_);
 			}
-			m_clNotifyClientRead.Wait(u32Timeout, 0);			
+			m_clNotifyClientRead.Wait(u32Timeout, 0);
 #else
 			m_clNotifyClientRead.Wait(0);
 #endif
@@ -188,13 +188,13 @@ uint16_t ServerSocket::Control(uint16_t u16Event_, void* pvDataIn_, uint16_t u16
 			m_clNotifyClientWrite.Signal();
 			break;
 		default:
-			break;		
+			break;
 	}
 
 	if (m_bOpen) {
         return SOCKET_ERROR;
 	}
-	return 0;	
+	return 0;
 }
 
 //---------------------------------------------------------------------------
@@ -212,7 +212,7 @@ uint16_t ServerSocket::ClientRead(uint16_t u16Size_, uint8_t* pu8Data_, bool bBl
 			if (m_clOutput.CanRead()) {
 				m_clOutput.Read(pu8Out);
 				pu8Out++;
-				u16ToRead--;				
+				u16ToRead--;
 			} else {
 				m_clNotifyClientRead.Wait(0);
 				if (!m_bOpen) {
@@ -240,7 +240,7 @@ uint16_t ServerSocket::ClientWrite(uint16_t u16Size_, uint8_t* pu8Data_, bool bB
 	if (!m_bOpen) {
         return SOCKET_ERROR;
 	}
-	
+
 	uint8_t* pu8In = pu8Data_;
 	uint16_t u16ToWrite = u16Size_;
 	uint16_t u16Written;
@@ -249,7 +249,7 @@ uint16_t ServerSocket::ClientWrite(uint16_t u16Size_, uint8_t* pu8Data_, bool bB
 			if (m_clInput.CanWrite()) {
 				m_clInput.Write(*pu8In);
 				pu8In++;
-				u16ToWrite--;				
+				u16ToWrite--;
 			} else {
 				m_clNotifyClientWrite.Wait(0);
 				if (!m_bOpen) {
@@ -309,7 +309,7 @@ bool ServerSocket::WaitOnOutput()
 //---------------------------------------------------------------------------
 bool ServerSocket::WaitOnInput(uint32_t u32WaitTimeMS_)
 {
-	m_pclNotifyServerRead->Wait(u32WaitTimeMS_, 0);	
+	m_pclNotifyServerRead->Wait(u32WaitTimeMS_, 0);
 	return m_bOpen;
 }
 
@@ -329,13 +329,13 @@ void ClientSocket::Init()
 
 //---------------------------------------------------------------------------
 uint8_t ClientSocket::Open()
-{	
+{
 	return m_pclSocket->IsOpen();
 }
 
 //---------------------------------------------------------------------------
 uint8_t ClientSocket::Close()
-{	
+{
 	m_pclSocket->Control(SOCKET_CONTROL_PRIVATE_CLIENT_CLOSED, 0, 0, 0, 0);
 	return 0;
 }
@@ -345,8 +345,8 @@ uint16_t ClientSocket::Read(uint16_t u16Bytes_, uint8_t* pu8Data_)
 {
 	return m_pclSocket->Control(SOCKET_CONTROL_PRIVATE_CLIENT_READ,
 								0,
-								m_bBlocking, 
-								pu8Data_, 
+								m_bBlocking,
+								pu8Data_,
 								u16Bytes_);
 }
 
@@ -354,8 +354,8 @@ uint16_t ClientSocket::Read(uint16_t u16Bytes_, uint8_t* pu8Data_)
 uint16_t ClientSocket::Write(uint16_t u16Bytes_, uint8_t* pu8Data_)
 {
 	return m_pclSocket->Control(SOCKET_CONTROL_PRIVATE_CLIENT_WRITE,
-								pu8Data_, 
-								u16Bytes_, 
+								pu8Data_,
+								u16Bytes_,
 								0,
 								m_bBlocking);
 }
@@ -366,14 +366,14 @@ uint16_t ClientSocket::Control(uint16_t u16Event_, void* pvDataIn_, uint16_t u16
 	if (!m_pclSocket->IsOpen()) {
         return SOCKET_ERROR;
 	}
-	
+
 	switch (u16Event_) {
 		case SOCKET_CONTROL_SET_BLOCKING:
 			m_bBlocking = true;
 			break;
 		case SOCKET_CONTROL_SET_NONBLOCKING:
 			m_bBlocking = false;
-			break;		
+			break;
 		case SOCKET_CONTROL_CONNECT_TO_SERVER:
 			m_pclSocket = static_cast<ServerSocket*>(pvDataIn_);
 		default:
@@ -382,7 +382,7 @@ uint16_t ClientSocket::Control(uint16_t u16Event_, void* pvDataIn_, uint16_t u16
 	if (!m_pclSocket->IsOpen()) {
         return SOCKET_ERROR;
 	}
-	return 0;	
+	return 0;
 }
 
 //---------------------------------------------------------------------------
@@ -393,7 +393,7 @@ void ClientSocket::SetBlocking(bool bBlocking_)
 
 //---------------------------------------------------------------------------
 bool ClientSocket::WaitOnInput()
-{	
+{
 	if (0 == m_pclSocket->Control(SOCKET_CONTROL_PRIVATE_CLIENT_BLOCK_READ, 0, 0, 0, 0)) {
 		return true;
 	}

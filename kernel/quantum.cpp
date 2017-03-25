@@ -71,7 +71,7 @@ static void QuantumCallback(Thread* pclThread_, void* pvData_)
         bAddQuantumTimer = true;
         pclThread_->GetCurrent()->PivotForward();
     }
-}        
+}
 
 //---------------------------------------------------------------------------
 void Quantum::SetTimer(Thread* pclThread_)

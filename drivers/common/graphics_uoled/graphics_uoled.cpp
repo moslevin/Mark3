@@ -73,8 +73,8 @@ void GraphicsUOLED::WriteVector(DataVector_t* pstVector_, uint8_t u8Count_)
             break;                                                           \
         }                                                                    \
     }                                                                        \
-}                                                                            
-                                                                             
+}
+
 //---------------------------------------------------------------------------
 void GraphicsUOLED::ClearScreen()
 {

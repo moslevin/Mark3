@@ -182,7 +182,7 @@ static void ResetEpoch(void)
 
 //---------------------------------------------------------------------------
 static void PrintThreadStatHeader(Driver* pclDriver_)
-{    
+{
     WriteString(pclDriver_, "ID\tPrio\tStack\tCtxSw\tCpu%\r\n");
 }
 

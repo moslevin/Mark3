@@ -28,7 +28,7 @@ void SoftwareI2C::Init(uint32_t u32Freq_)
 //---------------------------------------------------------------------------
 i2c_return_t SoftwareI2C::SendStart(void)
 {
-    if (m_bStarted) {           
+    if (m_bStarted) {
         // Restart condition
         SetSDA(I2C_HIGH);
         BitDelay();
@@ -94,7 +94,7 @@ i2c_return_t SoftwareI2C::WriteAddress(uint8_t u8Address_, bool bRead_, bool* pb
 i2c_return_t SoftwareI2C::WriteByte(uint8_t pu8Byte_, bool* pbAck_)
 {
     uint8_t u8Mask = 0x80;
-    
+
     while (u8Mask) {
         bool bit = false;
         if ((u8Mask & pu8Byte_) == u8Mask) {
@@ -234,5 +234,5 @@ i2c_return_t SoftwareI2C::RecvAck(bool* pbAck_)
     i2c_return_t eReturn = ReadBit(&bBit);
     *pbAck_ = (bBit == false);
     return eReturn;
-}    
+}
 

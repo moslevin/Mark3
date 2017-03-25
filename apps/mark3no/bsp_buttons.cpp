@@ -111,7 +111,7 @@ ISR(PCINT2_vect)
     bExpectedB[0] = clButtons[0].ReadState();
     bExpectedB[1] = clButtons[1].ReadState();
 
-    // One-shot timer for debounce.    
+    // One-shot timer for debounce.
     clButtonTimer.Start(false, 50, bsp_button_timer_callback, 0);
 
     // disable the pc interrupt for debounce.
