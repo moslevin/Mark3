@@ -8,7 +8,7 @@
 
 --[Mark3 Realtime Platform]--------------------------------------------------
 
-Copyright (c) 2013 Funkenstein Software Consulting, all rights reserved.
+Copyright (c) 2013 - 2017 - 2017 Funkenstein Software Consulting, all rights reserved.
 See license.txt for more information
 ===========================================================================*/
 /*!
@@ -220,27 +220,27 @@ void GraphicsST7735::CommandList(const uint8_t* pu8Data_)
 
 #if use_HW_SPI
 //---------------------------------------------------------------------------
-#define TFT_SPI_WRITE(x)                                                                                               \
-    {                                                                                                                  \
-        TFT_SPI_SPDR = (x);                                                                                            \
-        while (!(TFT_SPI_SPSR & (1 << TFT_SPI_SPIF))) {                                                                \
-        }                                                                                                              \
+#define TFT_SPI_WRITE(x)                                                     \
+    {                                                                        \
+        TFT_SPI_SPDR = (x);                                                  \
+        while (!(TFT_SPI_SPSR & (1 << TFT_SPI_SPIF))) {                      \
+        }                                                                    \
     }
 #else
 //---------------------------------------------------------------------------
-#define TFT_SPI_WRITE(x)                                                                                               \
-    {                                                                                                                  \
-        uint8_t u8Mask = 0x80;                                                                                         \
-        while (u8Mask) {                                                                                               \
-            if (u8Mask & x) {                                                                                          \
-                TFT_SPI_MOSI_PORT |= TFT_SPI_MOSI_PIN;                                                                 \
-            } else {                                                                                                   \
-                TFT_SPI_MOSI_PORT &= ~TFT_SPI_MOSI_PIN;                                                                \
-            }                                                                                                          \
-            TFT_SPI_SCLK_OUT |= TFT_SPI_SCLK_PIN;                                                                      \
-            TFT_SPI_SCLK_OUT &= ~TFT_SPI_SCLK_PIN;                                                                     \
-            u8Mask >>= 1;                                                                                              \
-        }                                                                                                              \
+#define TFT_SPI_WRITE(x)                                                     \
+    {                                                                        \
+        uint8_t u8Mask = 0x80;                                               \
+        while (u8Mask) {                                                     \
+            if (u8Mask & x) {                                                \
+                TFT_SPI_MOSI_PORT |= TFT_SPI_MOSI_PIN;                       \
+            } else {                                                         \
+                TFT_SPI_MOSI_PORT &= ~TFT_SPI_MOSI_PIN;                      \
+            }                                                                \
+            TFT_SPI_SCLK_OUT |= TFT_SPI_SCLK_PIN;                            \
+            TFT_SPI_SCLK_OUT &= ~TFT_SPI_SCLK_PIN;                           \
+            u8Mask >>= 1;                                                    \
+        }                                                                    \
     }
 
 #endif

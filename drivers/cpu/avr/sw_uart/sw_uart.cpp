@@ -8,7 +8,7 @@
 
 --[Mark3 Realtime Platform]--------------------------------------------------
 
-Copyright (c) 2012-2016 Funkenstein Software Consulting, all rights reserved.
+Copyright (c) 2012 - 2017 Funkenstein Software Consulting, all rights reserved.
 See license.txt for more information
 ===========================================================================*/
 /*!
@@ -21,6 +21,7 @@ See license.txt for more information
 #include <avr/io.h>
 #include <avr/interrupt.h>
 
+#include "mark3cfg.h"
 #include "sw_uart.h"
 
 //---------------------------------------------------------------------------
@@ -54,21 +55,17 @@ See license.txt for more information
 #define SW_UART_RX_EDGE_BIT (1 << ISC11)
 
 //---------------------------------------------------------------------------
-#define SW_UART_RX_INT_DISABLE()                                                                                       \
-    \
-{                                                                                                               \
-        SW_UART_RX_FLAG |= (1 << SW_UART_RX_FLAG_BIT);                                                                 \
-        SW_UART_RX_MASK &= ~(1 << SW_UART_RX_MASK_BIT);                                                                \
-    \
+#define SW_UART_RX_INT_DISABLE()                                             \
+{                                                                            \
+        SW_UART_RX_FLAG |= (1 << SW_UART_RX_FLAG_BIT);                       \
+        SW_UART_RX_MASK &= ~(1 << SW_UART_RX_MASK_BIT);                      \
 }
 
 //---------------------------------------------------------------------------
-#define SW_UART_RX_INT_ENABLE()                                                                                        \
-    \
-{                                                                                                               \
-        SW_UART_RX_FLAG |= (1 << SW_UART_RX_FLAG_BIT);                                                                 \
-        SW_UART_RX_MASK |= (1 << SW_UART_RX_MASK_BIT);                                                                 \
-    \
+#define SW_UART_RX_INT_ENABLE()                                              \
+{                                                                            \
+        SW_UART_RX_FLAG |= (1 << SW_UART_RX_FLAG_BIT);                       \
+        SW_UART_RX_MASK |= (1 << SW_UART_RX_MASK_BIT);                       \
 }
 
 //---------------------------------------------------------------------------
@@ -91,25 +88,23 @@ See license.txt for more information
 #define SW_UART_TIMER_PS1024 ((1 << CS02) || (1 << CS00))
 
 //---------------------------------------------------------------------------
-#define SW_UART_TIMER_INT_DISABLE()                                                                                    \
-    \
-{                                                                                                               \
-        SW_UART_TIMER_INT |= (1 << SW_UART_TIMER_INT_BIT);                                                             \
-        SW_UART_TIMER_MASK &= ~(1 << SW_UART_TIMER_MASK_BIT);                                                          \
-    \
+#define SW_UART_TIMER_INT_DISABLE()                                          \
+{                                                                            \
+        SW_UART_TIMER_INT |= (1 << SW_UART_TIMER_INT_BIT);                   \
+        SW_UART_TIMER_MASK &= ~(1 << SW_UART_TIMER_MASK_BIT);                \
 }
 
 //---------------------------------------------------------------------------
-#define SW_UART_TIMER_INT_ENABLE()                                                                                     \
-    \
-{                                                                                                               \
-        SW_UART_TIMER_INT |= (1 << SW_UART_TIMER_INT_BIT);                                                             \
-        SW_UART_TIMER_MASK |= (1 << SW_UART_TIMER_MASK_BIT);                                                           \
-    \
+#define SW_UART_TIMER_INT_ENABLE()                                           \
+{                                                                            \
+        SW_UART_TIMER_INT |= (1 << SW_UART_TIMER_INT_BIT);                   \
+        SW_UART_TIMER_MASK |= (1 << SW_UART_TIMER_MASK_BIT);                 \
 }
 
 //---------------------------------------------------------------------------
-#define PORT_SYSTEM_FREQ (16000000)
+#ifndef PORT_SYSTEM_FREQ
+# define PORT_SYSTEM_FREQ (16000000)
+#endif
 
 //---------------------------------------------------------------------------
 #define FRAME_BITS (10) // 8 data bits, 1 start, 1 stop bit.

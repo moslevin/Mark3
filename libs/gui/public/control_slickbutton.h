@@ -9,7 +9,7 @@
 
 --[Mark3 Realtime Platform]--------------------------------------------------
 
-Copyright (c) 2012-2016 Funkenstein Software Consulting, all rights reserved.
+Copyright (c) 2012 - 2017 Funkenstein Software Consulting, all rights reserved.
 See license.txt for more information
 ===========================================================================*/
 /*!

@@ -8,7 +8,7 @@
 
 --[Mark3 Realtime Platform]--------------------------------------------------
 
-Copyright (c) 2012-2016 Funkenstein Software Consulting, all rights reserved.
+Copyright (c) 2012 - 2017 Funkenstein Software Consulting, all rights reserved.
 See license.txt for more information
 =========================================================================== */
 /*!
@@ -69,7 +69,7 @@ ASM("in r0, __SREG__"); \
 ASM("cli"); \
 ASM("push r0"); \
 ASM("lds r0, 0xA2"); \
-ASM("push r0");
+ASM("push r0"); \
 ASM("clr r0"); \
 ASM("sts 0xA2, r0"); \
 ASM("push r1"); \
