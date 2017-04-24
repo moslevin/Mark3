@@ -10,26 +10,26 @@ Directory Layout
 arduino		Scripts and staging directory for exporting Mark3 for Arduino
 bootloader	Source and makefiles for the Mark3 Bootloader
 build		Platform/variant/toolchain specific build configuration files 
-docs			PDF and HTML documentaiton
+docs        Full PDF and HTML documentaiton
 drivers		Device driver libraries
-examples		Application code examples
+examples    Application code examples
 export		Source-code export folder, used by export scripts
 fonts		Fonts converted from TTF to bitmapped, C++ library fonts 
 kernel		Main RTOS kernel code
-libs			Optional support libraries and middleware
+libs        Optional support libraries and middleware
 scripts		Build and test script folder
 stage		Directory where binaries/headers are published at build
 tests		Unit testing framework
-util			Utility programs
+util        Utility programs
 
-Building from source
+Building from source using the make-based build system:
 
 To build from source, the Mark3 build system requires the following:
 
-	avr-gcc toolchain
+	A supported toolchain (i.e. gcc-avr, arm-none-eabi-gcc)
 	make support
 
-On debian-based distributions, such as Ubuntu, the avr toolchain can be installed using:
+For example, on debian-based distributions, such as Ubuntu, the avr toolchain can be installed using:
 
 	apt-get install avr-libc gcc-avr
 
@@ -49,7 +49,33 @@ For example, to build the kernel for a generic ARM Cortex-M0 using a pre-configu
 	. ./scripts/set_target.sh cm0 generic gcc
 	./scripts/build.sh
 
-Supported targets
+Building from source using the CMake-based build-system:
+
+To build via CMake, a user requires a suitable, supported toolchain (i.e. gcc-avr, arm-none-eabi-gcc),
+ CMake 3.4.2 or higher, and a backend supported by CMake (i.e. Ninja build)
+
+The build can be configured by creating an output folder:
+
+    mkdir kbuild
+
+And then initializing the build system withing that folder:
+
+    export ROOT_DIR=$(pwd)
+    cd kbuild
+    cmake .. -DCMAKE_TOOLCHAIN_FILE=../mark3.cmake -Dmark3_arch=<cpu type> -Dmark3_variant=<variant> \ 
+             -Dmark3_toolchain=<toolchain type> -Dmark3_root_dir=<full path to project directory> -GNinja        
+    
+The full build can be run by executing the backend build command:
+
+    ninja 
+    
+To build just the kernel, build the following target
+
+    ninja mark3
+
+Note that not all targets will build in all kernel configurations.
+    
+Supported targets:
 
 Currently, Mark3 supports the following parts:
 
@@ -64,11 +90,11 @@ Currently, Mark3 supports the following parts:
 	ARM Cortex-M3 (generic)
 	ARM Cortex-M4 (generic, floating point)
 	samd20 (cortex M0)
-	
 
 Additional Documentation
 
 Please see the doxygen documentation in the ./docs folder for more information.   A lot of work has gone into documenting the project, and that's the best place to start if you have any questions.  The code examples are fairly comprehensive (as are the unit tests), so these should be referenced as necessary.  And of course, the source is very well-documented, so don't be afraid to browse through it.
+
 Contact
 Email Funkenstein Software for any additional queries or comments:
 	info@mark3os.com
