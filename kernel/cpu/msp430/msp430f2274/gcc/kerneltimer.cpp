@@ -40,7 +40,7 @@ static Semaphore s_clTimerSemaphore;
  * Kernel Timer Interrupt
  */
 //---------------------------------------------------------------------------
-void __attribute__((__interrupt__(TIMERA0_VECTOR))) isr_KernelTIMER(void)
+void __attribute__((interrupt(TIMERA0_VECTOR))) isr_KernelTIMER(void)
 {
 #if KERNEL_TIMERS_THREADED
     KernelTimer::ClearExpiry();

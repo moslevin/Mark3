@@ -190,10 +190,17 @@ thread_context_callout_t Kernel_GetThreadContextSwitchCallout(void)
 
 #if KERNEL_USE_STACK_GUARD
 //---------------------------------------------------------------------------
-static void Kernel_SetStackGuardThreshold(uint16_t u16Threshold_);
+void Kernel_SetStackGuardThreshold(uint16_t u16Threshold_)
+{
+    Kernel::SetStackGuardThreshold(u16Threshold_);
+}
 
 //---------------------------------------------------------------------------
-static uint16_t Kernel_GetStackGuardThreshold(void);
+uint16_t Kernel_GetStackGuardThreshold(void)
+{
+    return Kernel::GetStackGuardThreshold();
+}
+
 #endif
 
 //---------------------------------------------------------------------------

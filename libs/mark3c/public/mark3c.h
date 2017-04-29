@@ -287,14 +287,14 @@ thread_context_callout_t Kernel_GetThreadContextSwitchCallout(void);
  * \param u16Threshold_ Minimum number of guard-words for each thread stack.
  *        Violation results in kernel panic.
  */
-static void Kernel_SetStackGuardThreshold(uint16_t u16Threshold_);
+void Kernel_SetStackGuardThreshold(uint16_t u16Threshold_);
 
 /*!
  * \brief Kernel_GetStackGuardThreshold
  * \sa Kernel:GetStackGuardThreshold
  * \return Current kernel stack-guard threshold
  */
-static uint16_t Kernel_GetStackGuardThreshold(void);
+uint16_t Kernel_GetStackGuardThreshold(void);
 #endif
 //---------------------------------------------------------------------------
 // Scheduler APIs

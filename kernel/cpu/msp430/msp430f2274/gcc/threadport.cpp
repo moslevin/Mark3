@@ -101,6 +101,7 @@ static void Thread_Switch(void)
             // Ensure that we run this block in an interrupt enabled context (but
             // with the rest of the checks being performed in an interrupt disabled
             // context).
+            __nop();
             __eint();
             Kernel::IdleFunc();
             __dint();
@@ -146,7 +147,7 @@ void ThreadPort::StartThreads()
  * Kernel Context-switch SWI
  */
 //---------------------------------------------------------------------------
-void __attribute__((__interrupt__(PORT1_VECTOR), naked)) isr_KernelSWI(void)
+void __attribute__((interrupt(PORT1_VECTOR), naked)) isr_KernelSWI(void)
 {
     Thread_SaveContext();    // Push the context (registers) of the current task
     Thread_Switch();         // Switch to the next task
