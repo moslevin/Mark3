@@ -377,25 +377,7 @@ See license.txt for more information
 /*!
     \page BUILD0 Building Mark3
 
-    Mark3 is distributed with a recursive makefile build system, allowing
-    the entire source tree to be built into a series of libraries with
-    simple make commands. The way the scripts work, every directory with a
-    valid makefile is scanned, as well as all of its subdirectories. The
-    build then generates binary components for all of the components it
-    finds -libraries and executables. All libraries that are generated can
-    then be imported into an application using the linker without having to
-    copy-and-paste files on a module-by-module basis. Applications built
-    during this process can then be loaded onto a device directly, without
-    requiring a GUI-based IDE. As a result, Mark3 integrates well with 3rd
-    party tools for continuous-integration and automated testing.
-
-    This modular framework allows for large volumes of libraries and binaries
-    to be built at once - the default build script leverages this to build all
-    of the examples and unit tests at once,	linking against the pre-built
-    kernel, services, and drivers.  Whatever can be built as a library is
-    built as a library, promoting reuse throughout the platform, and enabling
-    Mark3 to be used as a platform, with an ecosystem of libraries, services,
-    drivers and applications.
+    ToDo!! Rewrite for CMake build
 
     \section BUILDLAYOUT Source Layout
 
@@ -424,34 +406,7 @@ See license.txt for more information
 
     \section BUILDKERNEL Building the kernel
 
-    There are 3 main components of the recursive makefile system used to build
-    Mark3 and its associated middleware libraries and examples.  The components
-    are the files "base.mak", "platform.mak", and "build.mak"
-
-    The base.mak file determines how the kernel, drivers, and libraries are
-    built, for what targets, and with what options.  These options are set as
-    variables that are included in a "platform.mak" file for your target,
-    located under the /builds directory.  "platform.mak" is included for all
-    build steps, and is the place where all chip/board-specific toolchain
-    configuration takes place.
-
-    Build.mak contains the base logic which is used to perform a recursive make
-    in all project directories. Unless you really know what you're doing, it's best
-    to leave this as-is.
-
-    Beyond the essential makefiles, the build system uses a series of environment
-    variables to configure a recursive make-based build system appropriately for
-    a given target part and	toolchain.
-
-    Below is an overview of the main variables used to configure the build.
-
-    \verbatim
-    STAGE 		- Location in the filesystem where the build output is stored
-    ROOT_DIR 	- The location of the root source tree
-    ARCH		- The CPU architecture to build against
-    VARIANT		- The variant of the above CPU to target
-    TOOLCHAIN	- Which toolchain to build with (dependent on ARCH and VARIANT)
-    \endverbatim
+    !!ToDo - update for CMake
 
     You must make sure that all required toolchain paths are set in your system
     environment variables so that they are accessible directly through from the
@@ -464,7 +419,7 @@ See license.txt for more information
     running the included ./scripts/set_target.sh script as follows:
 
     \verbatim
-    . ./scripts/set_target.sh <architecture> <variant> <toolchain>
+    ./scripts/set_target.sh <architecture> <variant> <toolchain>
     \endverbatim
 
     Where:
@@ -474,77 +429,6 @@ See license.txt for more information
      <toolchain>	is the build toolchain (i.e. gcc)
     \endverbatim
 
-    Once configured, you can build the source tree using the various make targets:
-
-    - make headers
-      - copy all headers in each module's /public subdirectory to the location specified by STAGE environment variable's
-   ./inc subdirectory.
-      .
-    - make library
-      - regenerate all objects copy marked as libraries (i.e. the kernel + drivers).  Resulting binaries are copied into
-   STAGE's ./lib subdirectory.
-      .
-    - make binary
-      - build all executable projects in the root directory structure.  In the default distribution, this includes the
-   basic set of demos.
-      .
-    .
-
-    These steps are chained together automatically as part of the build.sh
-    script found under the /scripts subdirectory.  Running ./scripts/build.sh
-    from the root of the embedded source directory will result in all headers
-    being exported, libraries built, and applications built.  This script
-    will also default to building for atmega328p using GCC if none of the
-    required environment variables have previously been configured.
-
-    To add new components to the recursive build system, simply add your
-    code into a new folder beneath the root install location.
-
-    Source files, the module makefile and private header files go directly
-    in the new folder, while public headers are placed in a ./public
-    subdirectory. Create a ./obj directory to hold the output from the
-    builds.
-
-    The contents of the module makefile looks something like this:
-
-    \code
-
-    # Include common prelude make file
-    include $(ROOT_DIR)base.mak
-
-    # If we're building a library, set IS_LIB and LIBNAME
-    # If we're building an app, set IS_APP and APPNAME
-    IS_LIB=1
-    LIBNAME=mylib
-
-    #this is the list of the source modules required to build the kernel
-    CPP_SOURCE = mylib.cpp \
-                 someotherfile.cpp
-
-    # Similarly, C-language source would be under the C_SOURCE variable.
-
-    # Include the rest of the script that is actually used for building the
-    # outputs
-    include $(ROOT_DIR)build.mak
-
-    \endcode
-
-    Once you've placed your code files in the right place, and configured
-    the makefile appropriately, call the following sequence to guarantee
-    that your code will be built.
-
-    \verbatim
-    > make headers
-    > make library
-    > make binary
-    \endverbatim
-
-    Note that library or app-specific environment variables can be set (or modified
-    from the defaults) from within the body of the makefile.  For example,
-    the CFLAGS, CPPFLAGS, and LFLAGS variables can be used to supply additional chip-
-    specific toolchain flags.  The flags can be used to allow a user to reference
-    chip-specific startup code, headers, middleware, or linker scripts that aren't
-    part of the standard Mark3 distribution.
 
     \section WINBUILD Building on Windows
 
@@ -580,49 +464,11 @@ See license.txt for more information
     C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.2.1002\avr8-gnu-toolchain\bin
     \endverbatim
 
-    <b>Step 2 - Install MinGW and MinSys</b>
-
-    MinGW (and MinSys in particular) provide a unix-like environment that
-    runs under windows.  Some of the utilities provided include a version of
-    the bash shell, and GNU standard make - both which are required by
-    the Mark3 recursive build system.
-
-    The MinGW installer can be downloaded from its project page on SourceForge.
-    When installing, be sure to select the "MinSys" component.
-
-    Once installed, add the MinSys binary path to the PATH environment variable,
-    in a similar fashion as with Atmel Studio in Step 1.
-
-    <b>Step 3 - Setup Include Paths in Platform Makefile</b>
-
-    The AVR header file path must be added to the "platform.mak" makefile for
-    each AVR Target you are attempting to build for.  These files can be located
-    under /embedded/build/avr/atmegaXXX/.  The path to the includes directory
-    should be added to the end of the CFLAGS and CPPFLAGS variables, as shown
-    in the following:
-
-    \code
-
-    TEST_INC="/c/Program Files (x86)/Atmel/Atmel Toolchain/AVR8 GCC/Native/3.4.2.1002/avr8-gnu-toolchain/include"
-    CFLAGS += -I$(TEST_INC)
-    CPPFLAGS += -I$(TEST_INC)
-
-    \endcode
-
-    <b>Step 4 - Build Mark3 using Bash</b>
-
-    Launch a terminal to your Mark3 base directory, and cd into the "embedded" folder.
-    You should now be able to build Mark3 by running "bash ./build.sh" from the
-    command-line.
-
-    Alternately, you can run bash itself, building Mark3 by running ./build.sh or the
-    various make targets using the same synatx as documented previously.
-
-    Note - building on Windows is *slow*.  This has a lot to do with how "make" performs
-    under windows.  There are faster substitutes for make (such as cs-make) that
-    are exponentially quicker, and approach the performance of make on Linux.
-    Other mechanisms, such as running make with multiple concurrent jobs (i.e. "make -j4")
-    also helps significantly, especially on systems with multicore CPUs.
+    !!ToDo - Elaborate on...
+    - Installing Cmake
+    - Installing Ninja
+    - Installing Git
+    - Running scripts from git-bash
 
     \section EXPORTSRC Exporting the kernel source
 
@@ -662,7 +508,6 @@ See license.txt for more information
         atxmega256a3
         arduino
         arduino2560
-        samd20
         cortex_m0
         cortex_m3
         cortex_m4f
@@ -4260,6 +4105,17 @@ See license.txt for more information
 */
 /*!
     \page RELEASE Release Notes
+
+    \section RELR6 HEAD
+    - New: Replace recursive-make build system with CMake and Ninja
+    - New: Transitioned version control to Git from Subversion.
+    - New: Cleanup all compiler warnings on atmega328p
+    - New: Process library, allowing for the creation of resource-isolated processes
+    - New: Socket library, implementing named "domain-socket" style IPC
+    - New: Timer loop can now be run within a thread
+    - Removed: Bare-metal support for Atmel SAMD20 (generic port still works)
+    - Various Bugfixes and optimizations
+    .
 
     \section RELR5 R5 Release
     - New: Shell library for creating responsive CLIs for embedded applications (M3Shell)

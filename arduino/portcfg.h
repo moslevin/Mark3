@@ -73,6 +73,11 @@ See license.txt for more information
 #endif
 
 /*!
+    Define the size of the kernel-timer thread stack (if one is configured)
+*/
+#define PORT_KERNEL_TIMERS_THREAD_STACK     ((K_ADDR)256)
+
+/*!
     Define the native type corresponding to the kernel timer hardware's counter register.
 */
 #define PORT_TIMER_COUNT_TYPE       uint16_t    //!< Timer counter type
