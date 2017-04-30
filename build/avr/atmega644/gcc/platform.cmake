@@ -14,7 +14,7 @@ set(AVR_CC_FLAGS "\
     -fshort-enums \
     -Wall \
     -c \
-    -mmcu=atmega328p \
+    -mmcu=atmega644 \
     -DAVR \
     ")
 
@@ -28,7 +28,7 @@ set(AVR_CXX_FLAGS "\
     -fshort-enums  \
     -Wall \
     -c \
-    -mmcu=atmega328p \
+    -mmcu=atmega644 \
     -DAVR \
     ")
 
@@ -37,7 +37,7 @@ set(AVR_LN_FLAGS "\
     -Wl,-lm  \
     -Wl,--end-group \
     -Wl,--gc-sections \
-    -mmcu=atmega328p \
+    -mmcu=atmega644 \
     ")
     
 set(AVR_LN_DBG_FLAGS "\
@@ -45,7 +45,7 @@ set(AVR_LN_DBG_FLAGS "\
     -Wl,-lm  \
     -Wl,--end-group \
     -Wl,--section-start=.logger=0x1000000 \
-    -mmcu=atmega328p \
+    -mmcu=atmega644 \
     ")
     
 set(AVR_OBJCOPY_FLAGS

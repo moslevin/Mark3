@@ -59,13 +59,12 @@ endfunction(mark3_add_executable)
 #----------------------------------------------------------------------------
 function(mark3_add_library TARGET_NAME)
     add_library(${TARGET_NAME} ${ARGN})
-    
     set_target_properties(
         ${TARGET_NAME}
         PROPERTIES
             COMPILE_FLAGS   "${mark3_cxx_flags}"
     )
-    
+
 endfunction(mark3_add_library)
 
 #----------------------------------------------------------------------------

@@ -74,7 +74,7 @@ See license.txt for more information
     particular timer variant desired.
 */
 #if KERNEL_USE_TIMERS
-#define KERNEL_TIMERS_TICKLESS (1)
+#define KERNEL_TIMERS_TICKLESS (0)
 #endif
 
 #if KERNEL_TIMERS_TICKLESS

@@ -67,7 +67,8 @@ void GraphicsUOLED::WriteVector(DataVector_t* pstVector_, uint8_t u8Count_)
 #define COMMAND_HEADER                                                       \
 {                                                                            \
     uint8_t u8Retry = COMMAND_RETRY_COUNT;                                   \
-    while (u8Retry--) {                                                      \
+    while (u8Retry--) {
+
 #define COMMAND_FOOTER                                                       \
         if (ACK_BYTE == WaitAck()) {                                         \
             break;                                                           \
