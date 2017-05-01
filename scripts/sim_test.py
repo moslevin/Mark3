@@ -6,14 +6,14 @@ import pexpect
 platform  = "avr"
 cpu       = "atmega328p"
 toolchain = "gcc"
-stage	= "./stage"
+stage	= "./kbuild"
 # List of unit tests to run
 test_list = ["ut_logic", "ut_thread", "ut_semaphore", "ut_mutex", "ut_eventflag", "ut_heap", "ut_arena", "ut_message", "ut_mailbox", "ut_notify", "ut_timers", "ut_sanity" ]
 
 # Run each test in succession
 for test in test_list:
 	# Build the commandline used to run the tests
-	test_cmd = "flavr --exitreset --silent --elffile %s/app/%s/%s/%s/%s.elf" % (stage, platform, cpu, toolchain, test)
+	test_cmd = "flavr --exitreset --silent --elffile %s/tests/unit/%s/%s.elf" % (stage, test, test)
 	child = pexpect.spawn( test_cmd )
 	print "--[Running Test: %s]--" % test 
 	index = child.expect (["--DONE--","(FAIL)", pexpect.EOF, pexpect.TIMEOUT], timeout=240)
