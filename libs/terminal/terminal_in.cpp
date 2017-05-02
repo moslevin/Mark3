@@ -48,6 +48,7 @@ bool TerminalIn::RunHandler(uint8_t u8Input_)
     case TERMINAL_PARSER_ESCAPE:                    return EscapeHandler(u8Input_);
     case TERMINAL_PARSER_ESCAPE_MODIFIED:           return EscapeModifierHandler(u8Input_);
     case TERMINAL_PARSER_ESCAPE_EXPECT_SEMI:        return ExpectSemiHandler(u8Input_);
+    case TERMINAL_PARSER_ESCAPE_EXPECT_MODIFIER:    return false;
     }
     return false;
 }

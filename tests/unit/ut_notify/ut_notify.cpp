@@ -60,8 +60,8 @@ TEST(ut_notify_timeout)
 {
     clNotify.Init();
 
-    clThread.Start();
     u8Count = 0;
+    clThread.Start();
     for (int i = 0; i < 10; i++) {
         clNotify.Wait(100, 0);
     }

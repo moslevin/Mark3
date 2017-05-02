@@ -1,1 +1,3 @@
 add_subdirectory(joystick)
+add_subdirectory(RAM)
+add_subdirectory(graphics_uoled)

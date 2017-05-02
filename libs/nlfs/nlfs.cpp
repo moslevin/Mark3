@@ -754,7 +754,7 @@ void NLFS::Format(NLFS_Host_t* puHost_, uint32_t u32TotalSize_, uint16_t u16NumF
     // Format nodes
     for (i = 2; i < u16NumFiles_; i++) {
         stFileNode.eBlockType = NLFS_NODE_FREE;
-        if (i != u16NumFiles_ - 1) {
+        if (i != (uint16_t)(u16NumFiles_ - 1)) {
             stFileNode.stFileNode.u16NextPeer = (uint16_t)(i + 1);
         } else {
             stFileNode.stFileNode.u16NextPeer = INVALID_NODE;

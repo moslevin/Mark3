@@ -176,7 +176,7 @@ bool Mailbox::Send_i(const void* pvData_, bool bTail_, uint32_t u32TimeoutMS_)
 bool Mailbox::Send_i(const void* pvData_, bool bTail_)
 #endif
 {
-    const void* pvDst;
+    const void* pvDst = NULL;
 
     bool bRet        = false;
     bool bSchedState = Scheduler::SetScheduler(false);

@@ -24,7 +24,7 @@ See license.txt for more information
 //===========================================================================
 
 static Thread clMBoxThread;
-static K_WORD akMBoxStack[160];
+static K_WORD akMBoxStack[224];
 
 static Mailbox clMbox;
 static uint8_t aucMBoxBuffer[128];
@@ -46,7 +46,7 @@ void mbox_test(void* unused_)
 TEST(mailbox_blocking_receive)
 {
     clMbox.Init((void*)aucMBoxBuffer, 128, 16);
-    clMBoxThread.Init(akMBoxStack, 160, 7, mbox_test, 0);
+    clMBoxThread.Init(akMBoxStack, 224, 7, mbox_test, 0);
     clMBoxThread.Start();
 
     for (int i = 0; i < 100; i++) {
@@ -77,7 +77,7 @@ TEST(mailbox_blocking_timed)
 {
     u16Timeouts = 0;
     clMbox.Init((void*)aucMBoxBuffer, 128, 16);
-    clMBoxThread.Init(akMBoxStack, 160, 7, mbox_timed_test, (void*)&u16Timeouts);
+    clMBoxThread.Init(akMBoxStack, 224, 7, mbox_timed_test, (void*)&u16Timeouts);
     clMBoxThread.Start();
 
     for (int j = 0; j < 16; j++) {
@@ -139,7 +139,7 @@ TEST(mailbox_send_blocking)
 {
     u16Timeouts = 0;
     clMbox.Init((void*)aucMBoxBuffer, 128, 16);
-    clMBoxThread.Init(akMBoxStack, 160, 7, mbox_recv_test, (void*)&u16Timeouts);
+    clMBoxThread.Init(akMBoxStack, 224, 7, mbox_recv_test, (void*)&u16Timeouts);
 
     for (int j = 0; j < 16; j++) {
         aucTxBuf[j] = 'x';
