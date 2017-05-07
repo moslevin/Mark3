@@ -31,8 +31,8 @@ static void NotifyThread(void* unused_)
 {
     while (1) {
         Thread::Sleep(50);
-        clNotify.Signal();
         u8Count++;
+        clNotify.Signal();
     }
 }
 

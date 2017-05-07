@@ -13,8 +13,10 @@ test_list = ["ut_logic", "ut_thread", "ut_semaphore", "ut_mutex", "ut_eventflag"
 # Run each test in succession
 for test in test_list:
 	# Build the commandline used to run the tests
+
 	test_cmd = "flavr --exitreset --silent --elffile %s/tests/unit/%s/%s.elf" % (stage, test, test)
 	child = pexpect.spawn( test_cmd )
+
 	print "--[Running Test: %s]--" % test 
 	index = child.expect (["--DONE--","(FAIL)", pexpect.EOF, pexpect.TIMEOUT], timeout=240)
 	if index == 0:

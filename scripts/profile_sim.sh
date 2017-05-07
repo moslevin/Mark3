@@ -1,11 +1,9 @@
 #!/bin/sh
 
 # Open the terminal, run profiling app for 30 seconds
-echo "--[Running Sanity Tests]--"
-flavr --silent --hexfile ./stage/app/avr/atmega328p/gcc/kernel_profile.hex > ./profile.txt &
-pid=$!
-sleep 60
-kill ${pid}
+echo "--[Running Profiling Tests]--"
+#script -qc
+flavr --silent --exitreset --hexfile ./kbuild/tests/profiling/kernel_profiling/kernel_profile.hex > ./profile.txt
 
 metric="none"
 metric_name="none"
@@ -19,18 +17,10 @@ outfile=./kernel/public/profiling_results.h
 #============================================================================
 compute_profile()
 {
-    profile_count=0
-	profile_sum=0
-	
-	for line in `cat ./profile.txt | grep -a ${metric} | sed -e "s/${metric}//"`;
-	do
-    	profile_count=`expr $profile_count + 1`	
-		profile_sum=`expr $profile_sum + $line`
+    profile_avg=`cat ./profile.txt | grep -a ${metric} | sed -e "s/${metric}//" | tail -n1`
 
-	done;
-	metric_time=`expr $profile_sum / $profile_count`
-	echo "${metric_name}: ${metric_time} cycles (averaged over ${profile_count} iterations)"
-	echo "    - ${metric_name}: ${metric_time} cycles (averaged over ${profile_count} iterations)" >> ${outfile}
+    echo "${metric_name}: ${profile_avg} cycles (averaged over 100 iterations)"
+    echo "    - ${metric_name}: ${profile_avg} cycles (averaged over 100 iterations)" >> ${outfile}
 }
 
 #============================================================================
