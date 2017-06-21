@@ -21,7 +21,7 @@ See license.txt for more information
 //---------------------------------------------------------------------------
 void SoftwareI2C::Init(uint32_t u32Freq_)
 {
-    m_u32BitDelayUS = 1000000 / (u32Freq_ / 2000);
+    m_u32BitDelayUS = 1000000l / (u32Freq_ * 2);
     BusIdle();
 }
 
@@ -86,7 +86,7 @@ i2c_return_t SoftwareI2C::WriteAddress(uint8_t u8Address_, bool bRead_, bool* pb
         u8Byte |= 0x01;
     }
 
-    i2c_return_t rc = WriteByte(u8Address_, pbAck_);
+    i2c_return_t rc = WriteByte(u8Byte, pbAck_);
     return rc;
 }
 
