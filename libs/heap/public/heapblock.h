@@ -220,7 +220,7 @@ private:
      * \param uBlockSize_ Size of the data portion of this allocatable
      *        object (in bytes).
      */
-    void SetDataSize(K_ADDR uBlockSize_);
+    void SetDataSize(K_ADDR uBlockSize);
 
     K_ADDR m_uDataSize;
     K_ADDR m_uCookie;

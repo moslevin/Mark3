@@ -57,7 +57,7 @@ void RTC::Init(uint32_t u32TicksPerSecond_)
 //---------------------------------------------------------------------------
 bool RTC::GetDateTime(calendar_t* pstCal_)
 {
-    if (!pstCal_) {
+    if (pstCal_ == 0) {
         return false;
     }
     *pstCal_ = m_stCalendar;
@@ -68,7 +68,7 @@ bool RTC::GetDateTime(calendar_t* pstCal_)
 //---------------------------------------------------------------------------
 uint8_t RTC::SetDateTime(const calendar_t* pstCal_)
 {
-    if (!pstCal_) {
+    if (pstCal_ == 0) {
         return 1;
     }
 
@@ -82,7 +82,7 @@ uint8_t RTC::SetDateTime(const calendar_t* pstCal_)
         return 3;
     }
     // Day-of-the-month validation check
-    else if ((pstCal_->u8Day) == 0 || (pstCal_->u8Day > s_au8DaysPerMonth[pstCal_->eMonth])) {
+    if ((pstCal_->u8Day) == 0 || (pstCal_->u8Day > s_au8DaysPerMonth[pstCal_->eMonth])) {
         return 4;
     }
 
@@ -177,7 +177,7 @@ const char* RTC::GetDayOfWeek()
 //---------------------------------------------------------------------------
 bool RTC::GetUptime(uint32_t* pu32Seconds_, uint32_t* pu32Ticks_)
 {
-    if (!pu32Seconds_ || !pu32Ticks_) {
+    if ((pu32Seconds_ == 0) || (pu32Ticks_ == 0)) {
         return false;
     }
     *pu32Seconds_ = m_u32Seconds;
@@ -189,14 +189,8 @@ bool RTC::GetUptime(uint32_t* pu32Seconds_, uint32_t* pu32Ticks_)
 bool RTC::YearContainsLeapDay(uint16_t u16Year_)
 {
     if ((u16Year_ % 100) == 0) {
-        if ((u16Year_ % 400) == 0) {
-            return true;
-        }
-        return false;
-    } else if ((u16Year_ & 3) == 0) {
-        return true;
-    }
-    return false;
+        return (u16Year_ % 400) == 0;
+    } return (u16Year_ & 3) == 0;
 }
 
 //---------------------------------------------------------------------------

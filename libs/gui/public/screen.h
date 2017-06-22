@@ -131,7 +131,7 @@ public:
     /*!
      *  Return a pointer to a screen by name
      */
-    Screen* FindScreenByName(const char* m_szName_);
+    Screen* FindScreenByName(const char* szName_);
 
 private:
     ScreenList       m_clScreenList; //!< Screen list object used to manage individual screens

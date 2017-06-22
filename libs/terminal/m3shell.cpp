@@ -88,12 +88,12 @@ void M3Shell::InputLoop()
                     }
                 } else if (stKey.eKey == TERMINAL_KEY_HOME) {
                     uint8_t u8Shift = m_clLineBuffer.CursorHome();
-                    if (u8Shift) {
+                    if (u8Shift != 0u) {
                         m_clTerminal.CursorLeft(u8Shift);
                     }
                 } else if (stKey.eKey == TERMINAL_KEY_END) {
                     uint8_t u8Shift = m_clLineBuffer.CursorEnd();
-                    if (u8Shift) {
+                    if (u8Shift != 0u) {
                         m_clTerminal.CursorRight(u8Shift);
                     }
                 } else if (stKey.eKey == TERMINAL_KEY_DELETE) {

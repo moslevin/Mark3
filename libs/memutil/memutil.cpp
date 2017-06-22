@@ -50,7 +50,7 @@ void MemUtil::DecimalToHex(uint8_t u8Data_, char* szText_)
 
     u8Tmp          = u8Data_;
     szText_[u8Max] = 0;
-    while (u8Max--) {
+    while ((u8Max--) != 0u) {
         if ((u8Tmp & 0x0F) <= 9) {
             szText_[u8Max] = '0' + (u8Tmp & 0x0F);
         } else {
@@ -76,7 +76,7 @@ void MemUtil::DecimalToHex(uint16_t u16Data_, char* szText_)
 
     u16Tmp          = u16Data_;
     szText_[u16Max] = 0;
-    while (u16Max--) {
+    while ((u16Max--) != 0u) {
         if ((u16Tmp & 0x0F) <= 9) {
             szText_[u16Max] = '0' + (u16Tmp & 0x0F);
         } else {
@@ -102,7 +102,7 @@ void MemUtil::DecimalToHex(uint32_t u32Data_, char* szText_)
 
     u32Tmp          = u32Data_;
     szText_[u32Max] = 0;
-    while (u32Max--) {
+    while ((u32Max--) != 0u) {
         if ((u32Tmp & 0x0F) <= 9) {
             szText_[u32Max] = '0' + (u32Tmp & 0x0F);
         } else {
@@ -129,7 +129,7 @@ void MemUtil::DecimalToString(uint8_t u8Data_, char* szText_)
     }
 
     szText_[u8Max] = 0;
-    while (u8Max--) {
+    while ((u8Max--) != 0u) {
         szText_[u8Max] = '0' + (u8Tmp % 10);
         u8Tmp /= 10;
     }
@@ -150,7 +150,7 @@ void MemUtil::DecimalToString(uint16_t u16Data_, char* szText_)
     }
 
     szText_[u16Max] = 0;
-    while (u16Max--) {
+    while ((u16Max--) != 0u) {
         szText_[u16Max] = '0' + (u16Tmp % 10);
         u16Tmp /= 10;
     }
@@ -171,7 +171,7 @@ void MemUtil::DecimalToString(uint32_t u32Data_, char* szText_)
     }
 
     szText_[u32Max] = 0;
-    while (u32Max--) {
+    while ((u32Max--) != 0u) {
         szText_[u32Max] = '0' + (u32Tmp % 10);
         u32Tmp /= 10;
     }
@@ -196,10 +196,10 @@ bool MemUtil::StringToDecimal8(const char* szText_, uint8_t* pu8Out_)
     for (uint8_t i = 0; i < u8Len; i++) {
         if ((szText_[i] < '0') || (szText_[i] > '9')) {
             return false;
-        } else {
+        } 
             u8Tmp *= 10;
             u8Tmp += szText_[i] - '0';
-        }
+        
     }
     *pu8Out_ = u8Tmp;
 
@@ -225,10 +225,10 @@ bool MemUtil::StringToDecimal16(const char* szText_, uint16_t* pu16Out_)
     for (uint8_t i = 0; i < u16Len; i++) {
         if ((szText_[i] < '0') || (szText_[i] > '9')) {
             return false;
-        } else {
+        } 
             u16Tmp *= 10;
             u16Tmp += szText_[i] - '0';
-        }
+        
     }
     *pu16Out_ = u16Tmp;
 
@@ -254,10 +254,10 @@ bool MemUtil::StringToDecimal32(const char* szText_, uint32_t* pu32Out_)
     for (uint8_t i = 0; i < u32Len; i++) {
         if ((szText_[i] < '0') || (szText_[i] > '9')) {
             return false;
-        } else {
+        } 
             u32Tmp *= 10;
             u32Tmp += szText_[i] - '0';
-        }
+        
     }
     *pu32Out_ = u32Tmp;
 
@@ -274,7 +274,7 @@ uint8_t MemUtil::Checksum8(const void* pvSrc_, uint16_t u16Len_)
     KERNEL_ASSERT(pvSrc_);
 
     // 8-bit CRC, computed byte at a time
-    while (u16Len_--) {
+    while ((u16Len_--) != 0u) {
         u8Ret += *pcData++;
     }
     return u8Ret;
@@ -289,7 +289,7 @@ uint16_t MemUtil::Checksum16(const void* pvSrc_, uint16_t u16Len_)
     KERNEL_ASSERT(pvSrc_);
 
     // 16-bit CRC, computed byte at a time
-    while (u16Len_--) {
+    while ((u16Len_--) != 0u) {
         u16Ret += *pcData++;
     }
     return u16Ret;
@@ -304,7 +304,7 @@ uint16_t MemUtil::StringLength(const char* szStr_)
 
     KERNEL_ASSERT(szStr_);
 
-    while (*pcData++) {
+    while (*pcData++ != 0u) {
         u16Len++;
     }
     return u16Len;
@@ -319,18 +319,14 @@ bool MemUtil::CompareStrings(const char* szStr1_, const char* szStr2_)
     KERNEL_ASSERT(szStr1_);
     KERNEL_ASSERT(szStr2_);
 
-    while (*szTmp1 && *szTmp2) {
+    while ((*szTmp1 != 0) && (*szTmp2 != 0)) {
         if (*szTmp1++ != *szTmp2++) {
             return false;
         }
     }
 
     // Both terminate at the same length
-    if (!(*szTmp1) && !(*szTmp2)) {
-        return true;
-    }
-
-    return false;
+    return ((*szTmp1) == 0) && ((*szTmp2) == 0);
 }
 
 
@@ -340,7 +336,7 @@ bool MemUtil::CompareStrings(const char* szStr1_, const char* szStr2_, uint16_t 
     char* szTmp1 = (char*)szStr1_;
     char* szTmp2 = (char*)szStr2_;
 
-    while ((*szTmp1 && *szTmp2) && u16Length_) {
+    while (((*szTmp1 != 0) && (*szTmp2 != 0)) && (u16Length_ != 0u)) {
         if (*szTmp1++ != *szTmp2++) {
             return false;
         }
@@ -348,11 +344,7 @@ bool MemUtil::CompareStrings(const char* szStr1_, const char* szStr2_, uint16_t 
     }
 
     // Both terminate at the same length
-    if ((!(*szTmp1) && !(*szTmp2)) || !u16Length_) {
-        return true;
-    }
-
-    return false;
+    return (((*szTmp1) == 0) && ((*szTmp2) == 0)) || (u16Length_ == 0u);
 }
 
 //---------------------------------------------------------------------------
@@ -366,7 +358,7 @@ void MemUtil::CopyMemory(void* pvDst_, const void* pvSrc_, uint16_t u16Len_)
 
     // Run through the strings verifying that each character matches
     // and the lengths are the same.
-    while (u16Len_--) {
+    while ((u16Len_--) != 0u) {
         *szDst++ = *szSrc++;
     }
 }
@@ -382,7 +374,7 @@ void MemUtil::CopyString(char* szDst_, const char* szSrc_)
 
     // Run through the strings verifying that each character matches
     // and the lengths are the same.
-    while (*szSrc) {
+    while (*szSrc != 0) {
         *szDst++ = *szSrc++;
     }
 }
@@ -397,11 +389,11 @@ int16_t MemUtil::StringSearch(const char* szBuffer_, const char* szPattern_)
     KERNEL_ASSERT(szPattern_);
 
     // Run through the big buffer looking for a match of the pattern
-    while (szBuffer_[i16Idx]) {
+    while (szBuffer_[i16Idx] != 0) {
         // Reload the pattern
         i16Start = i16Idx;
         szTmpPat = (char*)szPattern_;
-        while (*szTmpPat && szBuffer_[i16Idx]) {
+        while ((*szTmpPat != 0) && (szBuffer_[i16Idx] != 0)) {
             if (*szTmpPat != szBuffer_[i16Idx]) {
                 break;
             }
@@ -429,7 +421,7 @@ bool MemUtil::CompareMemory(const void* pvMem1_, const void* pvMem2_, uint16_t u
 
     // Run through the strings verifying that each character matches
     // and the lengths are the same.
-    while (u16Len_--) {
+    while ((u16Len_--) != 0u) {
         if (*szTmp1++ != *szTmp2++) {
             return false;
         }
@@ -444,7 +436,7 @@ void MemUtil::SetMemory(void* pvDst_, uint8_t u8Val_, uint16_t u16Len_)
 
     KERNEL_ASSERT(pvDst_);
 
-    while (u16Len_--) {
+    while ((u16Len_--) != 0u) {
         *szDst++ = u8Val_;
     }
 }
@@ -461,14 +453,10 @@ uint8_t MemUtil::Tokenize(const char* szBuffer_, Token_t* pastTokens_, uint8_t u
     KERNEL_ASSERT(szBuffer_);
     KERNEL_ASSERT(pastTokens_);
 
-    while (szBuffer_[i]) {
+    while (szBuffer_[i] != 0) {
         //-- Handle unescaped quotes
         if (szBuffer_[i] == '\"') {
-            if (bEscape) {
-                bEscape = false;
-            } else {
-                bEscape = true;
-            }
+            bEscape = !bEscape;
             i++;
             continue;
         }
@@ -476,7 +464,7 @@ uint8_t MemUtil::Tokenize(const char* szBuffer_, Token_t* pastTokens_, uint8_t u
         //-- Handle all escaped chars - by ignoring them
         if (szBuffer_[i] == '\\') {
             i++;
-            if (szBuffer_[i]) {
+            if (szBuffer_[i] != 0) {
                 i++;
             }
             continue;
@@ -503,13 +491,13 @@ uint8_t MemUtil::Tokenize(const char* szBuffer_, Token_t* pastTokens_, uint8_t u
         }
 
         i++;
-        while (szBuffer_[i] && szBuffer_[i] == ' ') {
+        while ((szBuffer_[i] != 0) && szBuffer_[i] == ' ') {
             i++;
         }
 
         u8LastArg = i;
     }
-    if (i && !szBuffer_[i] && (i - u8LastArg)) {
+    if ((i != 0u) && (szBuffer_[i] == 0) && ((i - u8LastArg) != 0)) {
         pastTokens_[u8CurrArg].pcToken = &(szBuffer_[u8LastArg]);
         pastTokens_[u8CurrArg].u8Len   = i - u8LastArg;
         u8CurrArg++;

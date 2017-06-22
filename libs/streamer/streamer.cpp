@@ -63,7 +63,7 @@ uint16_t Streamer::Read(uint8_t* pu8Data_, uint16_t u16Len_)
 {
     uint16_t u16ToRead;
 
-    if (m_pu8LockAddr) {
+    if (m_pu8LockAddr != 0) {
         return 0;
     }
 
@@ -91,7 +91,7 @@ uint16_t Streamer::Read(uint8_t* pu8Data_, uint16_t u16Len_)
 
     CS_EXIT();
 
-    if (u16Allocated) {
+    if (u16Allocated != 0u) {
 
         if (u16PreWrap >= u16ToRead) {
             for (uint16_t i = 0; i < u16ToRead; i++) {
@@ -129,7 +129,7 @@ bool Streamer::Write(uint8_t u8Data_)
     bool rc = true;
 
     CS_ENTER();
-    if (!m_u16Avail) {
+    if (m_u16Avail == 0u) {
         rc = false;
     } else {
         if (m_pu8LockAddr == &m_pau8Buffer[m_u16Head]) {
@@ -154,7 +154,7 @@ uint16_t Streamer::Write(uint8_t* pu8Data_, uint16_t u16Len_)
     uint16_t u16ToWrite;
 
     // Bail if the buffer is currently locked.
-    if (m_pu8LockAddr) {
+    if (m_pu8LockAddr != 0) {
         return 0;
     }
 
@@ -189,7 +189,7 @@ uint16_t Streamer::Write(uint8_t* pu8Data_, uint16_t u16Len_)
     CS_EXIT();
 
     // Perform the buffer writes with interrupts enabled, buffers locked.
-    if (u16ToWrite) {
+    if (u16ToWrite != 0u) {
         if (u16PreWrap >= u16ToWrite) {
             for (uint16_t i = 0; i < u16ToWrite; i++) {
                 *pu8Dst++ = *pu8Src++;
@@ -228,7 +228,7 @@ bool Streamer::CanWrite(void)
     bool bRc = false;
 
     CS_ENTER();
-    if (m_u16Avail)
+    if (m_u16Avail != 0u)
     {
         bRc = true;
     }
@@ -244,14 +244,14 @@ bool Streamer::Claim(uint8_t** pu8Addr_)
 
     CS_ENTER();
 
-    if (!m_u16Avail) {
+    if (m_u16Avail == 0u) {
         rc = false;
     } else {
         if (m_pu8LockAddr == &m_pau8Buffer[m_u16Head]) {
             rc = false;
         } else {
             *pu8Addr_ = &m_pau8Buffer[m_u16Head];
-            if (!m_pu8LockAddr) {
+            if (m_pu8LockAddr == 0) {
                 m_pu8LockAddr = &m_pau8Buffer[m_u16Head];
             }
             m_u16Head++;
@@ -287,11 +287,7 @@ bool Streamer::IsEmpty(void)
 {
     bool rc;
     CS_ENTER();
-    if (m_u16Avail == m_u16Size) {
-        rc = true;
-    } else {
-        rc = false;
-    }
+    rc = m_u16Avail == m_u16Size;
     CS_EXIT();
     return rc;
 }

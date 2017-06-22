@@ -52,7 +52,7 @@ void DoubleLinkList::Add(LinkListNode* node_)
     node_->next = NULL;
 
     // If the list is empty, initilize the head
-    if (!m_pstHead) {
+    if (m_pstHead == 0) {
         m_pstHead = node_;
     }
     // Otherwise, adjust the tail's next pointer
@@ -69,7 +69,7 @@ void DoubleLinkList::Remove(LinkListNode* node_)
 {
     KERNEL_ASSERT(node_);
 
-    if (node_->prev) {
+    if (node_->prev != 0) {
 #if SAFE_UNLINK
         if (node_->prev->next != node_) {
             Kernel::Panic(PANIC_LIST_UNLINK_FAILED);
@@ -77,7 +77,7 @@ void DoubleLinkList::Remove(LinkListNode* node_)
 #endif
         node_->prev->next = node_->next;
     }
-    if (node_->next) {
+    if (node_->next != 0) {
 #if SAFE_UNLINK
         if (node_->next->prev != node_) {
             Kernel::Panic(PANIC_LIST_UNLINK_FAILED);
@@ -99,7 +99,7 @@ void CircularLinkList::Add(LinkListNode* node_)
 {
     KERNEL_ASSERT(node_);
 
-    if (!m_pstHead) {
+    if (m_pstHead == 0) {
         // If the list is empty, initilize the nodes
         m_pstHead = node_;
         m_pstTail = node_;
@@ -153,7 +153,7 @@ void CircularLinkList::Remove(LinkListNode* node_)
 //---------------------------------------------------------------------------
 void CircularLinkList::PivotForward()
 {
-    if (m_pstHead) {
+    if (m_pstHead != 0) {
         m_pstHead = m_pstHead->next;
         m_pstTail = m_pstTail->next;
     }
@@ -162,7 +162,7 @@ void CircularLinkList::PivotForward()
 //---------------------------------------------------------------------------
 void CircularLinkList::PivotBackward()
 {
-    if (m_pstHead) {
+    if (m_pstHead != 0) {
         m_pstHead = m_pstHead->prev;
         m_pstTail = m_pstTail->prev;
     }
@@ -176,7 +176,7 @@ void CircularLinkList::InsertNodeBefore(LinkListNode* node_, LinkListNode* inser
     node_->next = insert_;
     node_->prev = insert_->prev;
 
-    if (insert_->prev) {
+    if (insert_->prev != 0) {
         insert_->prev->next = node_;
     }
     insert_->prev = node_;

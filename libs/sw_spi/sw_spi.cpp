@@ -43,7 +43,7 @@ void SoftwareSPI::Init(uint32_t u32Freq_, spi_mode_t eMode_)
     }
 
     // Set initial clock level based on polarity
-    if (m_bPolarity == true) {
+    if (m_bPolarity) {
         SetClock(SPI_LEVEL_HIGH);
     } else {
         SetClock(SPI_LEVEL_LOW);
@@ -61,11 +61,11 @@ void SoftwareSPI::Transfer(uint8_t* pu8Input_, uint8_t* pu8Output_, uint16_t u16
         uint8_t u8In    = 0;
 
         uint8_t u8Mask  = 0x80;
-        while (u8Mask) {
+        while (u8Mask != 0u) {
             // If phase is set to false, we assume that data is clocked in on the
             // first clock edge. Ensure data out is set early in the phase.
-            if (m_bPhase == false) {
-                if (u8Mask & u8Out) { WriteBit(SPI_LEVEL_HIGH); }
+            if (!m_bPhase) {
+                if ((u8Mask & u8Out) != 0) { WriteBit(SPI_LEVEL_HIGH); }
                 else { WriteBit(SPI_LEVEL_LOW); }
 
                 // Delay for half a cycle
@@ -73,13 +73,13 @@ void SoftwareSPI::Transfer(uint8_t* pu8Input_, uint8_t* pu8Output_, uint16_t u16
             }
 
             // Set the first clock edge
-            if (m_bPolarity == false) { SetClock(SPI_LEVEL_HIGH); }
+            if (!m_bPolarity) { SetClock(SPI_LEVEL_HIGH); }
             else { SetClock(SPI_LEVEL_LOW); }
 
             // If the phase is set to true, we assume the data is clocked on the
             // second clock edge.
-            if (m_bPhase == true) {
-                if (u8Mask & u8Out) { WriteBit(SPI_LEVEL_HIGH); }
+            if (m_bPhase) {
+                if ((u8Mask & u8Out) != 0) { WriteBit(SPI_LEVEL_HIGH); }
                 else { WriteBit(SPI_LEVEL_LOW); }
 
                 // Delay for half a cycle
@@ -96,11 +96,11 @@ void SoftwareSPI::Transfer(uint8_t* pu8Input_, uint8_t* pu8Output_, uint16_t u16
             }
 
             // Set the second clock edge
-            if (m_bPolarity == false) { SetClock(SPI_LEVEL_LOW); }
+            if (!m_bPolarity) { SetClock(SPI_LEVEL_LOW); }
             else { SetClock(SPI_LEVEL_HIGH); }
 
             // Phase is true - data can be read after the second clock edge
-            if (m_bPhase == true) {
+            if (m_bPhase) {
                 BitDelay();
                 spi_level_t eLevel;
                 ReadBit(&eLevel);

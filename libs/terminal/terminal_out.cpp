@@ -37,7 +37,7 @@ void TerminalOut::WriteVal(uint8_t u8Val_)
     char tmp[4];
     MemUtil::DecimalToString(u8Val_, tmp);
     char* src = tmp;
-    while (*src) {
+    while (*src != 0) {
         WriteByte(*src);
         src++;
     }
@@ -80,7 +80,7 @@ void TerminalOut::CursorRight(uint8_t u8Columns_)
 }
 
 //---------------------------------------------------------------------------
-void TerminalOut::SetCursorPos(uint8_t u8X_, uint8_t u8Y_)
+void TerminalOut::SetCursorPos(uint8_t u8X_, uint8_t  /*u8Y_*/)
 {
     Escape();
     WriteByte('[');

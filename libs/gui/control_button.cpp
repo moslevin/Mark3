@@ -123,15 +123,15 @@ GuiReturn_t ButtonControl::ProcessEvent(GuiEvent_t* pstEvent_)
     switch (pstEvent_->u8EventType) {
         case EVENT_TYPE_JOYSTICK: {
             // If this is a space bar or an enter key, behave like a mouse click.
-            if (pstEvent_->stJoystick.Current.bButton1 && (!pstEvent_->stJoystick.Previous.bButton1)) {
+            if ((pstEvent_->stJoystick.Current.bButton1 != 0u) && (pstEvent_->stJoystick.Previous.bButton1 == 0u)) {
                 m_bState = true;
-                if (m_pfCallback) {
+                if (m_pfCallback != 0) {
                     m_pfCallback(m_pvCallbackData);
                 }
 
                 SetStale();
             } else {
-                if (m_bState == true) {
+                if (m_bState) {
                     m_bState = false;
                     SetStale();
                 }
@@ -140,11 +140,11 @@ GuiReturn_t ButtonControl::ProcessEvent(GuiEvent_t* pstEvent_)
         case EVENT_TYPE_KEYBOARD: {
             // If this is a space bar or an enter key, behave like a mouse click.
             if ((KEYCODE_SPACE == pstEvent_->stKey.u8KeyCode) || (KEYCODE_RETURN == pstEvent_->stKey.u8KeyCode)) {
-                if (pstEvent_->stKey.bKeyState) {
+                if (pstEvent_->stKey.bKeyState != 0u) {
                     m_bState = true;
                 } else {
                     m_bState = false;
-                    if (m_pfCallback) {
+                    if (m_pfCallback != 0) {
                         m_pfCallback(m_pvCallbackData);
                     }
                 }
@@ -156,7 +156,7 @@ GuiReturn_t ButtonControl::ProcessEvent(GuiEvent_t* pstEvent_)
             if (m_bState) {
                 // Check to see if the movement is out-of-bounds based on the coordinates.
                 // If so, de-activate the control
-                if (pstEvent_->stMouse.bLeftState) {
+                if (pstEvent_->stMouse.bLeftState != 0u) {
                     if ((pstEvent_->stMouse.u16X < GetLeft() + u16XOffset)
                         || (pstEvent_->stMouse.u16X >= GetLeft() + u16XOffset + GetWidth() - 1)
                         || (pstEvent_->stMouse.u16Y < GetTop() + u16YOffset)
@@ -174,7 +174,7 @@ GuiReturn_t ButtonControl::ProcessEvent(GuiEvent_t* pstEvent_)
                         && (pstEvent_->stMouse.u16Y < GetTop() + u16YOffset + GetHeight() - 1)) {
                         m_bState = false;
                         SetStale();
-                        if (m_pfCallback) {
+                        if (m_pfCallback != 0) {
                             m_pfCallback(m_pvCallbackData);
                         }
                     }
@@ -182,7 +182,7 @@ GuiReturn_t ButtonControl::ProcessEvent(GuiEvent_t* pstEvent_)
             } else if (!m_bState) {
                 // If we registered a down-click in the bounding box, set the state of the
                 // control to activated.
-                if (pstEvent_->stMouse.bLeftState) {
+                if (pstEvent_->stMouse.bLeftState != 0u) {
                     if ((pstEvent_->stMouse.u16X >= GetLeft() + u16XOffset)
                         && (pstEvent_->stMouse.u16X < GetLeft() + u16XOffset + GetWidth() - 1)
                         && (pstEvent_->stMouse.u16Y >= GetTop() + u16YOffset)

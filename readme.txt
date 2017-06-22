@@ -18,7 +18,6 @@ fonts           Fonts converted from TTF to bitmapped, C++ library fonts
 kernel		Main RTOS kernel code
 libs            Optional support libraries and middleware
 scripts         Build and test script folder
-stage           Directory where binaries/headers are published at build
 tests           Unit testing framework
 util            Utility programs
 
@@ -53,7 +52,7 @@ Note that not all libraries/tests/examples will build in all kernel configuratio
     
 Supported targets:
 
-Currently, Mark3 supports the following parts:
+Currently, Mark3 supports GCC toolchains for the following parts:
 
 	atmega328p
 	atmega644

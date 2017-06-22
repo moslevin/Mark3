@@ -45,7 +45,7 @@ void ProfileTimer::Init()
     m_u32Cumulative       = 0;
     m_u32CurrentIteration = 0;
     m_u16Iterations       = 0;
-    m_bActive             = 0;
+    m_bActive             = false;
 }
 
 //---------------------------------------------------------------------------
@@ -57,7 +57,7 @@ void ProfileTimer::Start()
         m_u32InitialEpoch     = Profiler::GetEpoch();
         m_u16Initial          = Profiler::Read();
         CS_EXIT();
-        m_bActive = 1;
+        m_bActive = true;
     }
 }
 
@@ -75,14 +75,14 @@ void ProfileTimer::Stop()
         m_u32Cumulative += m_u32CurrentIteration;
         m_u16Iterations++;
         CS_EXIT();
-        m_bActive = 0;
+        m_bActive = false;
     }
 }
 
 //---------------------------------------------------------------------------
 uint32_t ProfileTimer::GetAverage()
 {
-    if (m_u16Iterations) {
+    if (m_u16Iterations != 0u) {
         return m_u32Cumulative / (uint32_t)m_u16Iterations;
     }
     return 0;
@@ -117,7 +117,7 @@ uint32_t ProfileTimer::ComputeCurrentTicks(uint16_t u16Current_, uint32_t u32Epo
                    + (uint32_t)u16Current_;
     }
     // Only one overflow, or one overflow that has yet to be processed
-    else if (u32Overflows || (u16Current_ < m_u16Initial)) {
+    else if ((u32Overflows != 0u) || (u16Current_ < m_u16Initial)) {
         u32Total = (uint32_t)(TICKS_PER_OVERFLOW - m_u16Initial) + (uint32_t)u16Current_;
     }
     // No overflows, none pending.

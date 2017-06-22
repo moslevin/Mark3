@@ -96,8 +96,8 @@ void SlickButtonControl::Draw()
     stRect.u16Right  = stRect.u16Left + GetWidth() - 3;
     stRect.bFill     = true;
 
-    if (m_u8Timeout) {
-        if (m_u8Timeout & 1) {
+    if (m_u8Timeout != 0u) {
+        if ((m_u8Timeout & 1) != 0) {
             stRect.u32ineColor = COLOR_WHITE;
         } else {
             stRect.u32ineColor = COLOR_BLACK;
@@ -118,8 +118,8 @@ void SlickButtonControl::Draw()
     stRect.u16Top    = stRect.u16Bottom + 1;
     stRect.u16Bottom = stRect.u16Top + ((GetHeight() - 1) / 2) - 1;
 
-    if (m_u8Timeout) {
-        if (m_u8Timeout & 1) {
+    if (m_u8Timeout != 0u) {
+        if ((m_u8Timeout & 1) != 0) {
             stRect.u32ineColor = COLOR_WHITE;
         } else {
             stRect.u32ineColor = COLOR_BLACK;
@@ -158,11 +158,11 @@ GuiReturn_t SlickButtonControl::ProcessEvent(GuiEvent_t* pstEvent_)
 
     switch (pstEvent_->u8EventType) {
         case EVENT_TYPE_TIMER: {
-            if (m_u8Timeout) {
+            if (m_u8Timeout != 0u) {
                 SetStale();
                 m_u8Timeout--;
-                if (!m_u8Timeout) {
-                    if (m_pfCallback) {
+                if (m_u8Timeout == 0u) {
+                    if (m_pfCallback != 0) {
                         m_pfCallback(m_pvCallbackData);
                     }
                 }
@@ -171,9 +171,9 @@ GuiReturn_t SlickButtonControl::ProcessEvent(GuiEvent_t* pstEvent_)
             break;
         }
         case EVENT_TYPE_JOYSTICK: {
-            if (!m_u8Timeout) {
+            if (m_u8Timeout == 0u) {
                 // If this is a space bar or an enter key, behave like a mouse click.
-                if (pstEvent_->stJoystick.Current.bButton1 && (!pstEvent_->stJoystick.Previous.bButton1)) {
+                if ((pstEvent_->stJoystick.Current.bButton1 != 0u) && (pstEvent_->stJoystick.Previous.bButton1 == 0u)) {
                     m_bState    = false;
                     m_u8Timeout = 10;
                     // SetAcceptFocus(false);
@@ -185,7 +185,7 @@ GuiReturn_t SlickButtonControl::ProcessEvent(GuiEvent_t* pstEvent_)
         case EVENT_TYPE_KEYBOARD: {
             // If this is a space bar or an enter key, behave like a mouse click.
             if ((KEYCODE_SPACE == pstEvent_->stKey.u8KeyCode) || (KEYCODE_RETURN == pstEvent_->stKey.u8KeyCode)) {
-                if (pstEvent_->stKey.bKeyState) {
+                if (pstEvent_->stKey.bKeyState != 0u) {
                     m_bState = true;
                 } else {
                     m_bState    = false;
@@ -198,14 +198,14 @@ GuiReturn_t SlickButtonControl::ProcessEvent(GuiEvent_t* pstEvent_)
             }
         } break;
         case EVENT_TYPE_MOUSE: {
-            if (m_u8Timeout) {
+            if (m_u8Timeout != 0u) {
                 break;
             }
             // Is this control currently in the "active"/pressed state?
             if (m_bState) {
                 // Check to see if the movement is out-of-bounds based on the coordinates.
                 // If so, de-activate the control
-                if (pstEvent_->stMouse.bLeftState) {
+                if (pstEvent_->stMouse.bLeftState != 0u) {
                     if ((pstEvent_->stMouse.u16X < GetLeft() + u16XOffset)
                         || (pstEvent_->stMouse.u16X >= GetLeft() + u16XOffset + GetWidth() - 1)
                         || (pstEvent_->stMouse.u16Y < GetTop() + u16YOffset)
@@ -231,7 +231,7 @@ GuiReturn_t SlickButtonControl::ProcessEvent(GuiEvent_t* pstEvent_)
             } else if (!m_bState) {
                 // If we registered a down-click in the bounding box, set the state of the
                 // control to activated.
-                if (pstEvent_->stMouse.bLeftState) {
+                if (pstEvent_->stMouse.bLeftState != 0u) {
                     if ((pstEvent_->stMouse.u16X >= GetLeft() + u16XOffset)
                         && (pstEvent_->stMouse.u16X < GetLeft() + u16XOffset + GetWidth() - 1)
                         && (pstEvent_->stMouse.u16Y >= GetTop() + u16YOffset)

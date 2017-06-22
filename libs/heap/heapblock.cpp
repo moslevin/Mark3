@@ -54,7 +54,7 @@ HeapBlock* HeapBlock::Split(K_ADDR usize_)
     pclRightBlock->SetLeftSibling(this);
     pclRightBlock->SetRightSibling(GetRightSibling());
 
-    if (GetRightSibling()) {
+    if (GetRightSibling() != 0) {
         GetRightSibling()->SetLeftSibling(pclRightBlock);
     }
 
@@ -75,7 +75,7 @@ void HeapBlock::Coalesce(void)
 
     // Reconnect sibling pointers between this block and "absorbed" right block
     SetRightSibling(pclTemp->GetRightSibling());
-    if (GetRightSibling()) {
+    if (GetRightSibling() != 0) {
         GetRightSibling()->SetLeftSibling(this);
     }
 }

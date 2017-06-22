@@ -42,9 +42,9 @@ void GuiWindow::RemoveControl(GuiControl* pclControl_)
 {
     GUI_DEBUG_PRINT("GuiWindow::RemoveControl\n");
 
-    if (pclControl_->GetPrev()) {
+    if (pclControl_->GetPrev() != 0) {
         m_pclInFocus = static_cast<GuiControl*>(pclControl_->GetPrev());
-    } else if (pclControl_->GetNext()) {
+    } else if (pclControl_->GetNext() != 0) {
         m_pclInFocus = static_cast<GuiControl*>(pclControl_->GetNext());
     } else {
         m_pclInFocus = NULL;
@@ -64,7 +64,7 @@ uint8_t GuiWindow::GetMaxZOrder()
 
     pclTempNode = m_clControlList.GetHead();
 
-    while (pclTempNode) {
+    while (pclTempNode != 0) {
         u8TempZ = (static_cast<GuiControl*>(pclTempNode))->GetZOrder();
         if (u8TempZ > u8Z) {
             u8Z = u8TempZ;
@@ -90,11 +90,11 @@ void GuiWindow::Redraw(bool bRedrawAll_)
     // the maximum Z-order, just a sanity check.), redraw each object that
     // has its stale flag set, or all controls if the bRedrawAll_ parameter
     // is true.
-    while (u8ControlsLeft && (u8CurrentZ <= u8MaxZ)) {
+    while ((u8ControlsLeft != 0u) && (u8CurrentZ <= u8MaxZ)) {
         LinkListNode* pclTempNode;
 
         pclTempNode = m_clControlList.GetHead();
-        while (pclTempNode) {
+        while (pclTempNode != 0) {
             GuiControl* pclTempControl = static_cast<GuiControl*>(pclTempNode);
             if (pclTempControl->GetZOrder() == u8CurrentZ) {
                 if ((bRedrawAll_) || (pclTempControl->IsStale())) {
@@ -126,7 +126,7 @@ void GuiWindow::InvalidateRegion(uint16_t u16Left_, uint16_t u16Top_, uint16_t u
     u16Top1    = u16Top_;
     u16Bottom1 = u16Top_ + u16Height_ - 1;
 
-    while (pclTempNode) {
+    while (pclTempNode != 0) {
         GuiControl* pclControl = static_cast<GuiControl*>(pclTempNode);
         uint16_t    u16X, u16Y;
 
@@ -164,11 +164,11 @@ void GuiWindow::InvalidateRegion(uint16_t u16Left_, uint16_t u16Top_, uint16_t u
             GuiControl* pclChild = static_cast<GuiControl*>(m_clControlList.GetHead());
 
             // Go through all controls and check for parental ancestry
-            while (pclChild) {
+            while (pclChild != 0) {
                 GuiControl* pclParent = static_cast<GuiControl*>(pclChild->GetParentControl());
 
                 // If this control is a descendant of the current control at some level
-                while (pclParent) {
+                while (pclParent != 0) {
                     if (pclParent == pclControl) {
                         // Set the control as stale
                         pclChild->SetStale();
@@ -198,7 +198,7 @@ void GuiWindow::ProcessEvent(GuiEvent_t* pstEvent_)
         LinkListNode* pclTempNode;
         pclTempNode = m_clControlList.GetHead();
 
-        while (pclTempNode) {
+        while (pclTempNode != 0) {
             GuiReturn_t eRet;
             eRet = (static_cast<GuiControl*>(pclTempNode))->ProcessEvent(pstEvent_);
             if (GUI_EVENT_CONSUMED == eRet) {
@@ -213,7 +213,7 @@ void GuiWindow::ProcessEvent(GuiEvent_t* pstEvent_)
         GuiReturn_t eReturn = GUI_EVENT_OK;
 
         // Try to let the control process the event on its own
-        if (m_pclInFocus) {
+        if (m_pclInFocus != 0) {
             eReturn = m_pclInFocus->ProcessEvent(pstEvent_);
         }
 
@@ -221,17 +221,17 @@ void GuiWindow::ProcessEvent(GuiEvent_t* pstEvent_)
         if (GUI_EVENT_CONSUMED != eReturn) {
             if (EVENT_TYPE_KEYBOARD == pstEvent_->u8EventType) {
                 if (KEYCODE_TAB == pstEvent_->stKey.u8KeyCode) {
-                    if (pstEvent_->stKey.bKeyState) {
+                    if (pstEvent_->stKey.bKeyState != 0u) {
                         CycleFocus(true);
                     }
                 }
             } else if (EVENT_TYPE_JOYSTICK == pstEvent_->u8EventType) {
-                if ((pstEvent_->stJoystick.Current.bUp && !(pstEvent_->stJoystick.Previous.bUp))
-                    || (pstEvent_->stJoystick.Current.bLeft && !(pstEvent_->stJoystick.Previous.bLeft))) {
+                if (((pstEvent_->stJoystick.Current.bUp != 0u) && ((pstEvent_->stJoystick.Previous.bUp) == 0u))
+                    || ((pstEvent_->stJoystick.Current.bLeft != 0u) && ((pstEvent_->stJoystick.Previous.bLeft) == 0u))) {
                     // Cycle focus *backwards*
                     CycleFocus(false);
-                } else if ((pstEvent_->stJoystick.Current.bRight && !(pstEvent_->stJoystick.Previous.bRight))
-                           || (pstEvent_->stJoystick.Current.bDown && !(pstEvent_->stJoystick.Previous.bDown))) {
+                } else if (((pstEvent_->stJoystick.Current.bRight != 0u) && ((pstEvent_->stJoystick.Previous.bRight) == 0u))
+                           || ((pstEvent_->stJoystick.Current.bDown != 0u) && ((pstEvent_->stJoystick.Previous.bDown) == 0u))) {
                     // Cycle focus *forewards*
                     CycleFocus(true);
                 }
@@ -263,7 +263,7 @@ void GuiWindow::ProcessEvent(GuiEvent_t* pstEvent_)
 
                 // Go through every control on the window, checking to see if the
                 // event falls within the bounding box
-                while (pclTempNode) {
+                while (pclTempNode != 0) {
                     GuiControl* pclControl = (static_cast<GuiControl*>(pclTempNode));
 
                     pclControl->GetControlOffset(&u16OffsetX, &u16OffsetY);
@@ -286,10 +286,10 @@ void GuiWindow::ProcessEvent(GuiEvent_t* pstEvent_)
 
                 // If a suitable control was found on the event surface, pass the event off
                 // for processing.
-                if (pclTargetControl) {
+                if (pclTargetControl != 0) {
                     // If the selected control is different from the current in-focus
                     // control, then deactive that control.
-                    if (m_pclInFocus && (m_pclInFocus != pclTargetControl)) {
+                    if ((m_pclInFocus != 0) && (m_pclInFocus != pclTargetControl)) {
                         m_pclInFocus->Activate(false);
                         m_pclInFocus = NULL;
                     }
@@ -320,9 +320,9 @@ void GuiWindow::CycleFocus(bool bForward_)
     if (bForward_) {
         // If there isn't a current focus node, set the focus to the beginning
         // of the list
-        if (!m_pclInFocus) {
+        if (m_pclInFocus == 0) {
             m_pclInFocus = static_cast<GuiControl*>(pclTempNode);
-            if (!m_pclInFocus) {
+            if (m_pclInFocus == 0) {
                 return;
             }
             pclTempNode  = static_cast<GuiControl*>(m_pclInFocus);
@@ -337,7 +337,7 @@ void GuiWindow::CycleFocus(bool bForward_)
 
         // Go through the whole control list and find the next one to accept
         // the focus
-        while (pclTempNode && (pclTempNode != pclStartNode)) {
+        while ((pclTempNode != 0) && (pclTempNode != pclStartNode)) {
             if (static_cast<GuiControl*>(pclTempNode)->AcceptsFocus()) {
                 m_pclInFocus = static_cast<GuiControl*>(pclTempNode);
                 m_pclInFocus->Activate(true);
@@ -351,7 +351,7 @@ void GuiWindow::CycleFocus(bool bForward_)
         // Reached the end of the list.  Start again from the beginning and
         // try again
         pclTempNode = static_cast<GuiControl*>(m_clControlList.GetHead());
-        while (pclTempNode && (pclTempNode != pclStartNode)) {
+        while ((pclTempNode != 0) && (pclTempNode != pclStartNode)) {
             if (static_cast<GuiControl*>(pclTempNode)->AcceptsFocus()) {
                 m_pclInFocus = static_cast<GuiControl*>(pclTempNode);
                 m_pclInFocus->Activate(true);
@@ -367,9 +367,9 @@ void GuiWindow::CycleFocus(bool bForward_)
 
         // If there isn't a current focus node, set the focus to the end
         // of the list
-        if (!m_pclInFocus) {
+        if (m_pclInFocus == 0) {
             m_pclInFocus = static_cast<GuiControl*>(pclTempNode);
-            if (!m_pclInFocus) {
+            if (m_pclInFocus == 0) {
                 return;
             }
             pclTempNode  = static_cast<GuiControl*>(m_pclInFocus);
@@ -384,7 +384,7 @@ void GuiWindow::CycleFocus(bool bForward_)
 
         // Go through the whole control list and find the next one to accept
         // the focus
-        while (pclTempNode && (pclTempNode != pclStartNode)) {
+        while ((pclTempNode != 0) && (pclTempNode != pclStartNode)) {
             if (static_cast<GuiControl*>(pclTempNode)->AcceptsFocus()) {
                 m_pclInFocus = static_cast<GuiControl*>(pclTempNode);
                 m_pclInFocus->Activate(true);
@@ -395,7 +395,7 @@ void GuiWindow::CycleFocus(bool bForward_)
         }
 
         pclTempNode = static_cast<GuiControl*>(m_clControlList.GetTail());
-        while (pclTempNode && (pclTempNode != pclStartNode)) {
+        while ((pclTempNode != 0) && (pclTempNode != pclStartNode)) {
             if (static_cast<GuiControl*>(pclTempNode)->AcceptsFocus()) {
                 m_pclInFocus = static_cast<GuiControl*>(pclTempNode);
                 m_pclInFocus->Activate(true);
@@ -411,7 +411,7 @@ GuiWindow* GuiEventSurface::FindWindowByName(const char* szName_)
 {
     LinkListNode* pclTempNode = static_cast<LinkListNode*>(m_clWindowList.GetHead());
 
-    while (pclTempNode) {
+    while (pclTempNode != 0) {
         if (MemUtil::CompareStrings(szName_, static_cast<GuiWindow*>(pclTempNode)->GetName())) {
             return static_cast<GuiWindow*>(pclTempNode);
         }
@@ -446,7 +446,7 @@ bool GuiEventSurface::SendEvent(GuiEvent_t* pstEvent_)
     Message* pclMessage = m_pclMessagePool->Pop();
 
     // No messages available? Return a failure
-    if (!pclMessage) {
+    if (pclMessage == 0) {
         return false;
     }
 
@@ -454,7 +454,7 @@ bool GuiEventSurface::SendEvent(GuiEvent_t* pstEvent_)
     GuiEvent_t* pstEventCopy = static_cast<GuiEvent_t*>(SystemHeap::Alloc(sizeof(GuiEvent_t)));
 
     // If the allocation fails, push the message back to the global pool and bail
-    if (!pstEventCopy) {
+    if (pstEventCopy == 0) {
         m_pclMessagePool->Push(pclMessage);
         return false;
     }
@@ -482,7 +482,7 @@ bool GuiEventSurface::ProcessEvent()
 
     // If we failed to get something from the queue,
     // bail out
-    if (!pclMessage) {
+    if (pclMessage == 0) {
         return false;
     }
 
@@ -499,7 +499,7 @@ bool GuiEventSurface::ProcessEvent()
         LinkListNode* pclTempNode = m_clWindowList.GetHead();
         uint8_t       u8MaxZ      = 0;
 
-        while (pclTempNode) {
+        while (pclTempNode != 0) {
             if (u8MaxZ < (static_cast<GuiWindow*>(pclTempNode))->GetZOrder()) {
                 u8MaxZ = static_cast<GuiWindow*>(pclTempNode)->GetZOrder();
             }
@@ -509,7 +509,7 @@ bool GuiEventSurface::ProcessEvent()
         // Iterate through all windows again - may have multiple windows
         // at the same z-order.
         pclTempNode = m_clWindowList.GetHead();
-        while (pclTempNode) {
+        while (pclTempNode != 0) {
             if (u8MaxZ == (static_cast<GuiWindow*>(pclTempNode))->GetZOrder()) {
                 (static_cast<GuiWindow*>(pclTempNode))->ProcessEvent(&stLocalEvent);
             }
@@ -520,7 +520,7 @@ bool GuiEventSurface::ProcessEvent()
     // windows figure out what to do with the events.
     else {
         LinkListNode* pclTempNode = m_clWindowList.GetHead();
-        while (pclTempNode) {
+        while (pclTempNode != 0) {
             (static_cast<GuiWindow*>(pclTempNode))->ProcessEvent(&stLocalEvent);
             pclTempNode = pclTempNode->GetNext();
         }
@@ -543,10 +543,10 @@ void GuiEventSurface::CopyEvent(GuiEvent_t* pstDst_, GuiEvent_t* pstSrc_)
 }
 
 //---------------------------------------------------------------------------
-void GuiEventSurface::InvalidateRegion(uint16_t u16Left_, uint16_t u16Top_, uint16_t u16Width_, uint16_t u16Height_)
+void GuiEventSurface::InvalidateRegion(uint16_t u16Left_, uint16_t u16Top_, uint16_t u16Width_, uint16_t  /*u16Height_*/)
 {
     LinkListNode* pclTempNode = m_clWindowList.GetHead();
-    while (pclTempNode) {
+    while (pclTempNode != 0) {
         (static_cast<GuiWindow*>(pclTempNode))->InvalidateRegion(u16Left_, u16Top_, u16Width_, u16Width_);
         pclTempNode = pclTempNode->GetNext();
     }
@@ -559,13 +559,13 @@ void GuiControl::GetControlOffset(uint16_t* pu16X_, uint16_t* pu16Y_)
     GuiControl* pclTempControl = m_pclParentControl;
     *pu16X_                    = 0;
     *pu16Y_                    = 0;
-    while (pclTempControl) {
+    while (pclTempControl != 0) {
         *pu16X_ += pclTempControl->GetLeft();
         *pu16Y_ += pclTempControl->GetTop();
         pclTempControl = pclTempControl->GetParentControl();
     }
 
-    if (m_pclParentWindow) {
+    if (m_pclParentWindow != 0) {
         *pu16X_ += m_pclParentWindow->GetLeft();
         *pu16Y_ += m_pclParentWindow->GetTop();
     }

@@ -27,7 +27,7 @@ char NLFS::Find_Last_Slash(const char* szPath_)
 {
     uint8_t u8LastSlash = 0;
     uint8_t i           = 0;
-    while (szPath_[i]) {
+    while (szPath_[i] != 0) {
         if (szPath_[i] == '/') {
             u8LastSlash = i;
         }
@@ -44,7 +44,7 @@ bool NLFS::File_Names_Match(const char* szPath_, NLFS_Node_t* pstNode_)
 
     u8LastSlash++;
     for (i = 0; i < FILE_NAME_LENGTH; i++) {
-        if (!szPath_[u8LastSlash + i] || !pstNode_->stFileNode.acFileName[i]) {
+        if ((szPath_[u8LastSlash + i] == 0) || (pstNode_->stFileNode.acFileName[i] == 0)) {
             break;
         }
         if (szPath_[u8LastSlash + i] != pstNode_->stFileNode.acFileName[i]) {
@@ -52,10 +52,7 @@ bool NLFS::File_Names_Match(const char* szPath_, NLFS_Node_t* pstNode_)
         }
     }
 
-    if (szPath_[u8LastSlash + i] != pstNode_->stFileNode.acFileName[i]) {
-        return false;
-    }
-    return true;
+    return szPath_[u8LastSlash + i] == pstNode_->stFileNode.acFileName[i];
 }
 
 //---------------------------------------------------------------------------
@@ -299,14 +296,14 @@ uint16_t NLFS::Find_Parent_Dir(const char* szPath_)
     Read_Node(u16TempPeer, &stFileNode);
 
     i = 1;
-    while (szPath_[i] && i < u8LastSlash) {
+    while ((szPath_[i] != 0) && i < u8LastSlash) {
         NLFS_Node_t stTempNode;
         bool        bMatch = false;
 
         j = 0;
         MemUtil::SetMemory(szTempName, 0, FILE_NAME_LENGTH);
 
-        while (szPath_[i] && (szPath_[i] != '/') && j < FILE_NAME_LENGTH) {
+        while ((szPath_[i] != 0) && (szPath_[i] != '/') && j < FILE_NAME_LENGTH) {
             szTempName[j] = szPath_[i];
             i++;
             j++;
@@ -315,7 +312,7 @@ uint16_t NLFS::Find_Parent_Dir(const char* szPath_)
         if (j == FILE_NAME_LENGTH && szPath_[i] != '/') {
             DEBUG_PRINT("Directory name too long, invalid\n");
             return -1;
-        } else if (szPath_[i] != '/') {
+        } if (szPath_[i] != '/') {
             i++;
             continue;
         }
@@ -324,7 +321,7 @@ uint16_t NLFS::Find_Parent_Dir(const char* szPath_)
         while (INVALID_NODE != u16TempPeer) {
             Read_Node(u16TempPeer, &stTempNode);
             if (NLFS_NODE_DIR == stTempNode.eBlockType) {
-                if (true == MemUtil::CompareStrings(stTempNode.stFileNode.acFileName, szTempName)) {
+                if (MemUtil::CompareStrings(stTempNode.stFileNode.acFileName, szTempName)) {
                     bMatch = true;
                     break;
                 }
@@ -394,7 +391,7 @@ uint16_t NLFS::Find_File(const char* szPath_)
     while (INVALID_NODE != u16TempNode) {
         Read_Node(u16TempNode, &stTempNode);
 
-        if (true == File_Names_Match(szPath_, &stTempNode)) {
+        if (File_Names_Match(szPath_, &stTempNode)) {
             DEBUG_PRINT("matched file: %16s, node %d\n", stTempNode.stFileNode.acFileName, u16TempNode);
             return u16TempNode;
         }
@@ -422,7 +419,7 @@ void NLFS::Set_Node_Name(NLFS_Node_t* pstFileNode_, const char* szPath_)
 
     // Search for the last "/", that's where we stop looking.
     i = 0;
-    while (szPath_[i]) {
+    while (szPath_[i] != 0) {
         if (szPath_[i] == '/') {
             u8LastSlash = i;
         }
@@ -432,12 +429,12 @@ void NLFS::Set_Node_Name(NLFS_Node_t* pstFileNode_, const char* szPath_)
     // Parse out filename
     i = u8LastSlash + 1;
     j = 0;
-    while (szPath_[i] && j < FILE_NAME_LENGTH) {
+    while ((szPath_[i] != 0) && j < FILE_NAME_LENGTH) {
         pstFileNode_->stFileNode.acFileName[j] = szPath_[i];
         j++;
         i++;
     }
-    if (!szPath_[i]) // if no extension, we're done.
+    if (szPath_[i] == 0) // if no extension, we're done.
     {
         return;
     }
@@ -462,7 +459,7 @@ uint16_t NLFS::Create_File_i(const char* szPath_, NLFS_Type_t eType_)
     }
 
     u16Node = Pop_Free_Node();
-    if (!u16Node) {
+    if (u16Node == 0u) {
         DEBUG_PRINT("Unable to allocate node.  Failing\n");
         return INVALID_NODE;
     }
@@ -819,7 +816,7 @@ void NLFS::RootSync()
 uint16_t NLFS::GetFirstChild(uint16_t u16Node_)
 {
     NLFS_Node_t stTemp;
-    if (!u16Node_ || INVALID_NODE == u16Node_) {
+    if ((u16Node_ == 0u) || INVALID_NODE == u16Node_) {
         return INVALID_NODE;
     }
     Read_Node(u16Node_, &stTemp);
@@ -835,7 +832,7 @@ uint16_t NLFS::GetFirstChild(uint16_t u16Node_)
 uint16_t NLFS::GetNextPeer(uint16_t u16Node_)
 {
     NLFS_Node_t stTemp;
-    if (!u16Node_ || INVALID_NODE == u16Node_) {
+    if ((u16Node_ == 0u) || INVALID_NODE == u16Node_) {
         return INVALID_NODE;
     }
     Read_Node(u16Node_, &stTemp);
@@ -846,7 +843,7 @@ uint16_t NLFS::GetNextPeer(uint16_t u16Node_)
 bool NLFS::GetStat(uint16_t u16Node_, NLFS_File_Stat_t* pstStat_)
 {
     NLFS_Node_t stTemp;
-    if (!u16Node_ || INVALID_NODE == u16Node_) {
+    if ((u16Node_ == 0u) || INVALID_NODE == u16Node_) {
         return false;
     }
     Read_Node(u16Node_, &stTemp);

@@ -44,7 +44,7 @@ Screen* ScreenManager::FindScreenByName(const char* szName_)
 {
     LinkListNode* pclTempNode = static_cast<LinkListNode*>(m_clScreenList.GetHead());
 
-    while (pclTempNode) {
+    while (pclTempNode != 0) {
         if (MemUtil::CompareStrings(szName_, static_cast<Screen*>(pclTempNode)->GetName())) {
             return static_cast<Screen*>(pclTempNode);
         }

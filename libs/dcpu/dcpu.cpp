@@ -376,80 +376,56 @@ void DCPU::SHL()
 bool DCPU::IFB()
 {
     DBG_PRINT("IFB\n");
-    if ((*b & *a) != 0) {
-        return true;
-    }
-    return false;
+    return (*b & *a) != 0;
 }
 
 //---------------------------------------------------------------------------
 bool DCPU::IFC()
 {
     DBG_PRINT("IFC\n");
-    if ((*b & *a) == 0) {
-        return true;
-    }
-    return false;
+    return (*b & *a) == 0;
 }
 
 //---------------------------------------------------------------------------
 bool DCPU::IFE()
 {
     DBG_PRINT("IFE\n");
-    if (*b == *a) {
-        return true;
-    }
-    return false;
+    return *b == *a;
 }
 
 //---------------------------------------------------------------------------
 bool DCPU::IFN()
 {
     DBG_PRINT("IFN\n");
-    if (*b != *a) {
-        return true;
-    }
-    return false;
+    return *b != *a;
 }
 
 //---------------------------------------------------------------------------
 bool DCPU::IFG()
 {
     DBG_PRINT("IFG\n");
-    if (*b > *a) {
-        return true;
-    }
-    return false;
+    return *b > *a;
 }
 
 //---------------------------------------------------------------------------
 bool DCPU::IFA()
 {
     DBG_PRINT("IFA\n");
-    if (*((int16_t*)b) > *((int16_t*)a)) {
-        return true;
-    }
-    return false;
+    return *((int16_t*)b) > *((int16_t*)a);
 }
 
 //---------------------------------------------------------------------------
 bool DCPU::IFL()
 {
     DBG_PRINT("IFL\n");
-    if (*b < *a) {
-        return true;
-    }
-    return false;
+    return *b < *a;
 }
 
 //---------------------------------------------------------------------------
 bool DCPU::IFU()
 {
     DBG_PRINT("IFU\n");
-    if (*(int16_t*)b < *(int16_t*)a) {
-        return true;
-    }
-    return false;
+    return *(int16_t*)b < *(int16_t*)a;
 }
 
 //---------------------------------------------------------------------------
@@ -519,7 +495,7 @@ void DCPU::INT()
     }
 
     // Either acknowledge the interrupt immediately, or queue it.
-    if (m_bInterruptQueueing == false) {
+    if (!m_bInterruptQueueing) {
         m_pu16RAM[m_stRegisters.SP--] = m_stRegisters.PC;
         m_pu16RAM[m_stRegisters.SP--] = m_stRegisters.A;
 
@@ -537,7 +513,7 @@ void DCPU::ProcessInterruptQueue()
 {
     // If there's an interrupt address specified, queueing is disabled, and
     // the queue isn't empty
-    if (m_stRegisters.IA && !m_bInterruptQueueing && m_u8QueueLevel) {
+    if ((m_stRegisters.IA != 0u) && !m_bInterruptQueueing && (m_u8QueueLevel != 0u)) {
         m_pu16RAM[m_stRegisters.SP--] = m_stRegisters.PC;
         m_pu16RAM[m_stRegisters.SP--] = m_stRegisters.A;
 
@@ -586,7 +562,7 @@ void DCPU::IAQ()
     /*! Add an interrupt to the interrupt queue if non-zero, if a = 0 then
         interrupts will be triggered as normal */
 
-    if (*a) {
+    if (*a != 0u) {
         m_bInterruptQueueing = true; /*! Interrupts queued */
     } else {
         m_bInterruptQueueing = false; /*! Interrups triggered */
@@ -602,7 +578,7 @@ void DCPU::HWN()
     m_u16TempA = 0;
     /*! Returns the number of connected hardware devices to "a" */
     pclNode = m_clPluginList.GetHead();
-    while (pclNode) {
+    while (pclNode != 0) {
         m_u16TempA++;
         pclNode = pclNode->GetNext();
     }
@@ -617,7 +593,7 @@ void DCPU::HWQ()
     DCPUPlugin* pclPlugin;
     pclPlugin = (DCPUPlugin*)m_clPluginList.GetHead();
 
-    while (pclPlugin) {
+    while (pclPlugin != 0) {
         if (pclPlugin->GetDeviceNumber() == *a) {
             pclPlugin->Enumerate(&m_stRegisters);
             break;
@@ -634,7 +610,7 @@ void DCPU::HWI()
     DCPUPlugin* pclPlugin;
     pclPlugin = (DCPUPlugin*)m_clPluginList.GetHead();
 
-    while (pclPlugin) {
+    while (pclPlugin != 0) {
         if (pclPlugin->GetDeviceNumber() == *a) {
             pclPlugin->Interrupt(this);
             break;
@@ -785,7 +761,7 @@ void DCPU::RunOpcode()
     DBG_PRINT("0x%04X: %04X\n", m_stRegisters.PC - 1, u16Word);
 
     // Decode the opcode
-    if (uCop) {
+    if (uCop != 0u) {
         bool bRunNext = true;
 
         a = &m_u16TempA;
@@ -887,7 +863,7 @@ void DCPU::SendInterrupt(uint16_t u16Message_)
     }
 
     // Either acknowledge the interrupt immediately, or queue it.
-    if (m_bInterruptQueueing == false) {
+    if (!m_bInterruptQueueing) {
         m_pu16RAM[m_stRegisters.SP--] = m_stRegisters.PC;
         m_pu16RAM[m_stRegisters.SP--] = m_stRegisters.A;
 

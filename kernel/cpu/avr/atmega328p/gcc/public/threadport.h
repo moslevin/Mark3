@@ -24,6 +24,7 @@ See license.txt for more information
 #include "kerneltypes.h"
 #include "thread.h"
 
+#include <avr/builtins.h>
 #include <avr/io.h>
 #include <avr/interrupt.h>
 

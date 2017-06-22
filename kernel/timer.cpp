@@ -80,7 +80,7 @@ void Timer::Start(bool bRepeat_, uint32_t u32IntervalMs_, TimerCallback_t pfCall
     KERNEL_ASSERT(IsInitialized());
 #endif
 
-    if (m_u8Flags & TIMERLIST_FLAG_ACTIVE) {
+    if ((m_u8Flags & TIMERLIST_FLAG_ACTIVE) != 0) {
         return;
     }
 
@@ -106,7 +106,7 @@ void Timer::Start(
     KERNEL_ASSERT(IsInitialized());
 #endif
 
-    if (m_u8Flags & TIMERLIST_FLAG_ACTIVE) {
+    if ((m_u8Flags & TIMERLIST_FLAG_ACTIVE) != 0) {
         return;
     }
 
@@ -121,7 +121,7 @@ void Timer::Start()
     KERNEL_ASSERT(IsInitialized());
 #endif
 
-    if (m_u8Flags & TIMERLIST_FLAG_ACTIVE) {
+    if ((m_u8Flags & TIMERLIST_FLAG_ACTIVE) != 0) {
         return;
     }
 
@@ -136,7 +136,7 @@ void Timer::Stop()
     KERNEL_ASSERT(IsInitialized());
 #endif
 
-    if (!(m_u8Flags & TIMERLIST_FLAG_ACTIVE)) {
+    if ((m_u8Flags & TIMERLIST_FLAG_ACTIVE) == 0) {
             return;
     }
     TimerScheduler::Remove(this);

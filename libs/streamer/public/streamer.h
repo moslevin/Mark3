@@ -104,7 +104,7 @@ public:
      * \param ppu8Data_  Pointer to a pointer of data in the stream
      * \return           true if successful, false if buffer full or locked.
      */
-    bool Claim(uint8_t** ppu8Data_);
+    bool Claim(uint8_t** pu8Addr_);
 
     /*!
      * \brief Lock

@@ -196,7 +196,7 @@ bool Mailbox::Send_i(const void* pvData_, bool bTail_)
 
         CS_ENTER();
         // Ensure we have a free slot before we attempt to write data
-        if (m_u16Free) {
+        if (m_u16Free != 0u) {
             m_u16Free--;
 
             if (bTail_) {
@@ -212,7 +212,7 @@ bool Mailbox::Send_i(const void* pvData_, bool bTail_)
 #endif
         }
 #if KERNEL_USE_TIMEOUTS
-        else if (u32TimeoutMS_) {
+        else if (u32TimeoutMS_ != 0u) {
             bBlock = true;
         } else {
             bDone = true;

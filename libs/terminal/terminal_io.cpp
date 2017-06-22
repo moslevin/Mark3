@@ -25,7 +25,7 @@ TerminalIO::TerminalIO()
 //---------------------------------------------------------------------------
 bool TerminalIO::WriteByte(uint8_t u8Byte_)
 {
-    while (!m_pclDriver->Write(1, &u8Byte_)) {
+    while (m_pclDriver->Write(1, &u8Byte_) == 0u) {
         Thread::Sleep(5);
     }
     return true;
@@ -34,7 +34,7 @@ bool TerminalIO::WriteByte(uint8_t u8Byte_)
 //---------------------------------------------------------------------------
 bool TerminalIO::ReadByte(uint8_t *u8Byte_)
 {
-    while (!m_pclDriver->Read(1, u8Byte_)) {
+    while (m_pclDriver->Read(1, u8Byte_) == 0u) {
         Thread::Sleep(5);
     }
     return true;

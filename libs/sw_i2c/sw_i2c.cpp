@@ -95,7 +95,7 @@ i2c_return_t SoftwareI2C::WriteByte(uint8_t pu8Byte_, bool* pbAck_)
 {
     uint8_t u8Mask = 0x80;
 
-    while (u8Mask) {
+    while (u8Mask != 0u) {
         bool bit = false;
         if ((u8Mask & pu8Byte_) == u8Mask) {
             bit = true;
@@ -116,7 +116,7 @@ i2c_return_t SoftwareI2C::ReadByte(uint8_t* pu8Byte_, bool bAck_)
     uint8_t u8Mask = 0x80;
 
     *pu8Byte_ = 0;
-    while (u8Mask) {
+    while (u8Mask != 0u) {
         bool bit;
         i2c_return_t rc = ReadBit(&bit);
         if (I2C_OK != rc) {
@@ -142,10 +142,7 @@ bool SoftwareI2C::CheckBus(void)
 {
     i2c_level_t eLevel;
     GetSDA(&eLevel);
-    if (I2C_LOW == eLevel) {
-        return false;
-    }
-    return true;
+    return I2C_LOW != eLevel;
 }
 
 //---------------------------------------------------------------------------
@@ -157,16 +154,13 @@ bool SoftwareI2C::ClockStretch(void)
     GetSCL(&eLevel);
     while (I2C_LOW == eLevel) {
         u8Retries--;
-        if (!u8Retries) {
+        if (u8Retries == 0u) {
             break;
         }
         BitDelay();
     }
 
-    if (!u8Retries) {
-        return false;
-    }
-    return true;
+    return u8Retries != 0;
 }
 
 //---------------------------------------------------------------------------
@@ -211,7 +205,7 @@ i2c_return_t SoftwareI2C::ReadBit(bool* pbBit_)
     i2c_level_t eLevel;
     GetSDA(&eLevel);
 
-    if (eLevel) {
+    if (eLevel != 0) {
         *pbBit_ = true;
     } else {
         *pbBit_ = false;
@@ -224,7 +218,7 @@ i2c_return_t SoftwareI2C::ReadBit(bool* pbBit_)
 //---------------------------------------------------------------------------
 i2c_return_t SoftwareI2C::SendAck(bool bAck_)
 {
-    return WriteBit(bAck_ == false);
+    return WriteBit(!bAck_);
 }
 
 //---------------------------------------------------------------------------
@@ -232,7 +226,7 @@ i2c_return_t SoftwareI2C::RecvAck(bool* pbAck_)
 {
     bool bBit;
     i2c_return_t eReturn = ReadBit(&bBit);
-    *pbAck_ = (bBit == false);
+    *pbAck_ = (!bBit);
     return eReturn;
 }
 

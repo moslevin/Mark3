@@ -87,7 +87,7 @@ private:
      *
      *  \return Length of the string (in bytes)
      */
-    uint16_t StrLen(const char* szString_);
+    uint16_t StrLen(const char* szLine_);
 
     uint8_t m_u8Verbosity; //!< Verbosity level.  Messages with a severity
                            //!< level greater than this Are not displayed.

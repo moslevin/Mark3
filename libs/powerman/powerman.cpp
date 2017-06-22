@@ -42,9 +42,9 @@ bool PowerMan::CountBallots(void)
 
     CS_ENTER();
     for (uint16_t i = 0; i < MAX_BALLOTS / 8; i++) {
-        if (m_au8SleepBallots[i]) {
+        if (m_au8SleepBallots[i] != 0u) {
             bCanSleep = true;
-        } else if (m_au8WakeBallots[i]) {
+        } else if (m_au8WakeBallots[i] != 0u) {
             bMustWake = true;
             break;
         }
@@ -54,10 +54,7 @@ bool PowerMan::CountBallots(void)
     if (bMustWake) {
         return false;
     }
-    if (bCanSleep) {
-        return true;
-    }
-    return false;
+    return bCanSleep;
 }
 
 //---------------------------------------------------------------------------

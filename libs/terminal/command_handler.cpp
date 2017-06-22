@@ -42,7 +42,7 @@ const char* CommandHandler::Name()
 //---------------------------------------------------------------------------
 void CommandHandler::Execute(const char* szArgs_)
 {
-    if (m_pfHandler) {
+    if (m_pfHandler != 0) {
         m_pfHandler(szArgs_);
     }
 }

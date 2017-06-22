@@ -110,7 +110,7 @@ void Kernel::Start(void)
 void Kernel::Panic(uint16_t u16Cause_)
 {
     m_bIsPanic = true;
-    if (m_pfPanic) {
+    if (m_pfPanic != 0) {
         m_pfPanic(u16Cause_);
     } else {
 #if KERNEL_AWARE_SIMULATION
@@ -118,7 +118,8 @@ void Kernel::Panic(uint16_t u16Cause_)
         KernelAware::Trace(0, 0, u16Cause_, g_pclCurrent->GetID());
         KernelAware::ExitSimulator();
 #endif
-        while (1)
+        while (true) {
             ;
+}
     }
 }

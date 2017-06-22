@@ -27,12 +27,12 @@ bool CommandDispatcher::Execute(const char* szCommandString_)
 {
     int iCommandLength = CommandLength(szCommandString_);
     const char* szArgs = (szCommandString_ + iCommandLength);
-    if (!iCommandLength) {
+    if (iCommandLength == 0) {
         return true;
     }
 
     CommandHandler* pclCurr = static_cast<CommandHandler*>(m_clCommandList.GetHead());
-    while (pclCurr) {
+    while (pclCurr != 0) {
         const char* szCommandName = pclCurr->Name();
 
         if ( (MemUtil::CompareStrings(szCommandString_, szCommandName, iCommandLength)) &&
@@ -42,7 +42,7 @@ bool CommandDispatcher::Execute(const char* szCommandString_)
         }
         pclCurr = static_cast<CommandHandler*>(pclCurr->GetNext());
     }
-    if (m_pclDefault) {
+    if (m_pclDefault != 0) {
         m_pclDefault->Execute(szCommandString_);
     }
     return false;

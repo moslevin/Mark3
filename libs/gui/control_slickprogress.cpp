@@ -103,7 +103,7 @@ void SlickProgressControl::SetProgress(uint8_t u8Progress_)
 }
 
 //---------------------------------------------------------------------------
-GuiReturn_t SlickProgressControl::ProcessEvent(GuiEvent_t* pstEvent_)
+GuiReturn_t SlickProgressControl::ProcessEvent(GuiEvent_t*  /*pstEvent_*/)
 {
     return GUI_EVENT_OK;
 }

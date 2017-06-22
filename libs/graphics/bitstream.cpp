@@ -16,7 +16,7 @@ See license.txt for more information
 #include "bitstream.h"
 
 //---------------------------------------------------------------------------
-void BitStreamer::Init(uint8_t* pu8Data_, uint16_t u16Size_)
+void BitStreamer::Init(uint8_t* pu8Data_, uint16_t  /*u16Size_*/)
 {
     m_pu8Data      = pu8Data_;
     m_u8BitIndex   = 0;
@@ -41,7 +41,7 @@ uint8_t BitStreamer::ReadBits(uint8_t u8NumBits_)
     uint8_t u8IterBits;
     uint8_t u8Shift = 0;
 
-    while (u8NumBits_) {
+    while (u8NumBits_ != 0u) {
         // Check to see whether or not the bitstream read will past the end
         // of the current byte's index.
         if (u8NumBits_ < (8 - m_u8BitIndex)) {
@@ -69,7 +69,7 @@ uint8_t BitStreamer::ReadBits(uint8_t u8NumBits_)
         u8NumBits_ -= u8IterBits;
 
         // If there are bits yet to be read
-        if (u8NumBits_) {
+        if (u8NumBits_ != 0u) {
             // Figure out how much to shift the current return value by
             u8Shift += u8IterBits;
 

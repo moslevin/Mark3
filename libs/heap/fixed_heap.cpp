@@ -93,7 +93,7 @@ void* BlockHeap::Alloc()
     LinkListNode* pclNode = m_clList.GetHead();
 
     // Return the first node from the head of the list
-    if (pclNode) {
+    if (pclNode != 0) {
         m_clList.Remove(pclNode);
         m_u16BlocksFree--;
 
@@ -148,7 +148,7 @@ void* FixedHeap::Alloc(uint16_t u16Size_)
         CS_EXIT();
 
         // Return an object if found
-        if (pvRet) {
+        if (pvRet != 0) {
             return pvRet;
         }
         i++;

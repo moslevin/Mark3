@@ -49,10 +49,10 @@ public:
     virtual void     Init() { SetName("/dev/null"); };
     virtual uint8_t  Open() { return 0; }
     virtual uint8_t  Close() { return 0; }
-    virtual uint16_t Read(uint16_t u16Bytes_, uint8_t* pu8Data_) { return 0; }
-    virtual uint16_t Write(uint16_t u16Bytes_, uint8_t* pu8Data_) { return 0; }
+    virtual uint16_t Read(uint16_t  /*u16Bytes_*/, uint8_t*  /*pu8Data_*/) { return 0; }
+    virtual uint16_t Write(uint16_t  /*u16Bytes_*/, uint8_t*  /*pu8Data_*/) { return 0; }
     virtual uint16_t
-    Control(uint16_t u16Event_, void* pvDataIn_, uint16_t u16SizeIn_, void* pvDataOut_, uint16_t u16SizeOut_)
+    Control(uint16_t  /*u16Event_*/, void*  /*pvDataIn_*/, uint16_t  /*u16SizeIn_*/, void*  /*pvDataOut_*/, uint16_t  /*u16SizeOut_*/)
     {
         return 0;
     }
@@ -77,14 +77,14 @@ static uint8_t DrvCmp(const char* szStr1_, const char* szStr2_)
     char* szTmp1 = (char*)szStr1_;
     char* szTmp2 = (char*)szStr2_;
 
-    while (*szTmp1 && *szTmp2) {
+    while ((*szTmp1 != 0) && (*szTmp2 != 0)) {
         if (*szTmp1++ != *szTmp2++) {
             return 0;
         }
     }
 
     // Both terminate at the same length
-    if (!(*szTmp1) && !(*szTmp2)) {
+    if (((*szTmp1) == 0) && ((*szTmp2) == 0)) {
         return 1;
     }
 
@@ -108,8 +108,8 @@ Driver* DriverList::FindByPath(const char* m_pcPath)
 
     // Iterate through the list of drivers until we find a match, or we
     // exhaust our list of installed drivers
-    while (pclTemp) {
-        if (DrvCmp(m_pcPath, pclTemp->GetPath())) {
+    while (pclTemp != 0) {
+        if (DrvCmp(m_pcPath, pclTemp->GetPath()) != 0u) {
             return pclTemp;
         }
         pclTemp = static_cast<Driver*>(pclTemp->GetNext());

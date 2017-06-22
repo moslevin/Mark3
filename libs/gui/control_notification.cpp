@@ -92,10 +92,10 @@ GuiReturn_t NotificationControl::ProcessEvent(GuiEvent_t* pstEvent_)
 {
     switch (pstEvent_->u8EventType) {
         case EVENT_TYPE_TIMER: {
-            if (m_bTrigger && m_u16Timeout) {
+            if (m_bTrigger && (m_u16Timeout != 0u)) {
                 m_u16Timeout--;
 
-                if (!m_u16Timeout) {
+                if (m_u16Timeout == 0u) {
                     m_bVisible = false;
                     m_bTrigger = false;
                     SetStale();

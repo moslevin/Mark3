@@ -227,7 +227,7 @@ public:
      * \brief Free free a block of data previously allocated from the heap
      * \param pvData_ Pointer to a block of data allocated from the system heap
      */
-    static void Free(void* pvData_);
+    static void Free(void* pvBlock_);
 
     /*!
      * \brief GetHeap

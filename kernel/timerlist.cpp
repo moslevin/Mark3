@@ -57,7 +57,7 @@ TimerList TimerScheduler::m_clTimerList;
 //---------------------------------------------------------------------------
 void TimerList::Init(void)
 {
-    m_bTimerActive  = 0;
+    m_bTimerActive  = false;
     m_u32NextWakeup = 0;
 #if KERNEL_TIMERS_THREADED
     m_clMutex.Init();
@@ -68,7 +68,7 @@ void TimerList::Init(void)
 void TimerList::Add(Timer* pclListNode_)
 {
 #if KERNEL_TIMERS_TICKLESS
-    bool    bStart = 0;
+    bool    bStart = false;
     int32_t lDelta;
 #endif
 
@@ -76,7 +76,7 @@ void TimerList::Add(Timer* pclListNode_)
 
 #if KERNEL_TIMERS_TICKLESS
     if (GetHead() == NULL) {
-        bStart = 1;
+        bStart = true;
     }
     if (pclListNode_->m_u32Interval < PORT_MIN_TIMER_TICKS) {
         pclListNode_->m_u32Interval = PORT_MIN_TIMER_TICKS;
@@ -156,14 +156,14 @@ void TimerList::Process(void)
         pclPrev = NULL;
 
 #if KERNEL_TIMERS_TICKLESS
-        bContinue    = 0;
+        bContinue    = false;
         u32NewExpiry = MAX_TIMER_TICKS; // Used to indicate that no timers are pending
 #endif
 
         // Subtract the elapsed time interval from each active timer.
-        while (pclNode) {
+        while (pclNode != 0) {
             // Active timers only...
-            if (pclNode->m_u8Flags & TIMERLIST_FLAG_ACTIVE) {
+            if ((pclNode->m_u8Flags & TIMERLIST_FLAG_ACTIVE) != 0) {
 // Did the timer expire?
 #if KERNEL_TIMERS_TICKLESS
                 if (pclNode->m_u32TimeLeft <= m_u32NextWakeup)
@@ -175,7 +175,7 @@ void TimerList::Process(void)
                     // Yes - set the "callback" flag - we'll execute the callbacks later
                     pclNode->m_u8Flags |= TIMERLIST_FLAG_CALLBACK;
 
-                    if (pclNode->m_u8Flags & TIMERLIST_FLAG_ONE_SHOT) {
+                    if ((pclNode->m_u8Flags & TIMERLIST_FLAG_ONE_SHOT) != 0) {
                         // If this was a one-shot timer, deactivate the timer.
                         pclNode->m_u8Flags |= TIMERLIST_FLAG_EXPIRED;
                         pclNode->m_u8Flags &= ~TIMERLIST_FLAG_ACTIVE;
@@ -211,15 +211,15 @@ void TimerList::Process(void)
 
         // Process the expired timers callbacks.
         pclNode = static_cast<Timer*>(GetHead());
-        while (pclNode) {
+        while (pclNode != 0) {
             pclPrev = pclNode;
             pclNode = static_cast<Timer*>(pclNode->GetNext());
 
             // If the timer expired, run the callbacks now.
-            if (pclPrev->m_u8Flags & TIMERLIST_FLAG_CALLBACK) {
+            if ((pclPrev->m_u8Flags & TIMERLIST_FLAG_CALLBACK) != 0) {
                 bool bRemove = false;
                 // If this was a one-shot timer, tag it for removal
-                if (pclPrev->m_u8Flags & TIMERLIST_FLAG_ONE_SHOT) {
+                if ((pclPrev->m_u8Flags & TIMERLIST_FLAG_ONE_SHOT) != 0) {
                     bRemove = true;
                 }
 
@@ -241,7 +241,7 @@ void TimerList::Process(void)
 
         if (u32Overtime >= u32NewExpiry) {
             m_u32NextWakeup = u32Overtime;
-            bContinue       = 1;
+            bContinue       = true;
         }
 
         // If it's taken longer to go through this loop than would take us to

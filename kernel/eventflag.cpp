@@ -68,7 +68,7 @@ EventFlag::~EventFlag()
 {
     // If there are any threads waiting on this object when it goes out
     // of scope, set a kernel panic.
-    if (m_clBlockList.HighestWaiter()) {
+    if (m_clBlockList.HighestWaiter() != 0) {
         Kernel::Panic(PANIC_ACTIVE_EVENTFLAG_DESCOPED);
     }
 }
@@ -133,7 +133,7 @@ uint16_t EventFlag::Wait_i(uint16_t u16Mask_, EventFlagOperation_t eMode_)
     } else if ((eMode_ == EVENT_FLAG_ANY) || (eMode_ == EVENT_FLAG_ANY_CLEAR)) {
         // Check to see if the existing flags match any of the set flags in
         // the event flag group  with this mask
-        if (m_u16SetMask & u16Mask_) {
+        if ((m_u16SetMask & u16Mask_) != 0) {
             bMatch = true;
             g_pclCurrent->SetEventFlagMask(m_u16SetMask & u16Mask_);
         }
@@ -146,10 +146,10 @@ uint16_t EventFlag::Wait_i(uint16_t u16Mask_, EventFlagOperation_t eMode_)
         g_pclCurrent->SetEventFlagMode(eMode_);
 
 #if KERNEL_USE_TIMEOUTS
-        if (u32TimeMS_) {
+        if (u32TimeMS_ != 0u) {
             g_pclCurrent->SetExpired(false);
             clEventTimer.Init();
-            clEventTimer.Start(0, u32TimeMS_, TimedEventFlag_Callback, (void*)this);
+            clEventTimer.Start(false, u32TimeMS_, TimedEventFlag_Callback, (void*)this);
             bUseTimer = true;
         }
 #endif
@@ -231,7 +231,7 @@ void EventFlag::Set(uint16_t u16Mask_)
     pclCurrent = static_cast<Thread*>(m_clBlockList.GetHead());
 
     // Do nothing when there are no objects blocking.
-    if (pclCurrent) {
+    if (pclCurrent != 0) {
         // First loop - process every thread in the block-list and check to
         // see whether or not the current flags match the event-flag conditions
         // on the thread.
@@ -246,7 +246,7 @@ void EventFlag::Set(uint16_t u16Mask_)
             // For the "any" mode - unblock the blocked threads if one or more bits
             // in the thread's bitmask match the object's bitmask
             if ((EVENT_FLAG_ANY == eThreadMode) || (EVENT_FLAG_ANY_CLEAR == eThreadMode)) {
-                if (u16ThreadMask & m_u16SetMask) {
+                if ((u16ThreadMask & m_u16SetMask) != 0) {
                     pclPrev->SetEventFlagMode(EVENT_FLAG_PENDING_UNBLOCK);
                     pclPrev->SetEventFlagMask(m_u16SetMask & u16ThreadMask);
                     bReschedule = true;

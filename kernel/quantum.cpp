@@ -63,7 +63,7 @@ bool  Quantum::m_bInTimer;
  * \param pclThread_ Pointer to the thread currently executing
  * \param pvData_ Unused in this context.
  */
-static void QuantumCallback(Thread* pclThread_, void* pvData_)
+static void QuantumCallback(Thread* pclThread_, void*  /*pvData_*/)
 {
     // Validate thread pointer, check that source/destination match (it's
     // in its real priority list).
@@ -107,7 +107,7 @@ void Quantum::AddThread(Thread* pclThread_)
 #endif
         Quantum::SetTimer(pclThread_);
         TimerScheduler::Add(&m_clQuantumTimer);
-        m_bActive = 1;
+        m_bActive = true;
     }
 }
 
@@ -120,7 +120,7 @@ void Quantum::RemoveThread(void)
 
     // Cancel the current timer
     TimerScheduler::Remove(&m_clQuantumTimer);
-    m_bActive = 0;
+    m_bActive = false;
 }
 
 //---------------------------------------------------------------------------

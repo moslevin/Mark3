@@ -122,7 +122,7 @@ void GraphicsDriver::Rectangle(DrawRectangle_t* pstRectangle_)
     DrawPoint_t stPoint;
 
     // if drawing a background fill color (optional)
-    if (pstRectangle_->bFill == true) {
+    if (pstRectangle_->bFill) {
         stPoint.uColor = pstRectangle_->uFillColor;
         for (stPoint.u16X = pstRectangle_->u16Left; stPoint.u16X <= pstRectangle_->u16Right; stPoint.u16X++) {
             for (stPoint.u16Y = pstRectangle_->u16Top; stPoint.u16Y <= pstRectangle_->u16Bottom; stPoint.u16Y++) {
@@ -178,7 +178,7 @@ void GraphicsDriver::Circle(DrawCircle_t* pstCircle_)
             u32YSquare *= u32YSquare;
 
             // if filled...
-            if (pstCircle_->bFill == true) {
+            if (pstCircle_->bFill) {
                 stPoint.uColor = pstCircle_->uFillColor;
                 if (u32XSquare + u32YSquare <= u32RadSquare) {
                     // Draw the fill color at the appropriate locations (quadrature...)
@@ -304,7 +304,7 @@ void GraphicsDriver::Stamp(DrawStamp_t* pstStamp_)
         u16Shift = 0x80;
         for (u16Col = pstStamp_->u16X; u16Col < (pstStamp_->u16X + pstStamp_->u16Width); u16Col++) {
             // If the packed bit in the bitmap is a "1", draw the color.
-            if (pstStamp_->pu8Data[u16Index] & u16Shift) {
+            if ((pstStamp_->pu8Data[u16Index] & u16Shift) != 0) {
                 stPoint.u16X   = u16Col;
                 stPoint.u16Y   = u16Row;
                 stPoint.uColor = pstStamp_->uColor;
@@ -426,13 +426,13 @@ void GraphicsDriver::Text(DrawText_t* pstText_)
             u8Bitmask          = 0x80;
 
             for (u16X = u16CharOffsetX + u16StartX; u16X < u16CharOffsetX + u16StartX + (uint16_t)u8Width; u16X++) {
-                if (!u8Bitmask) {
+                if (u8Bitmask == 0u) {
                     u8Bitmask = 0x80;
                     u16Offset++;
                     u8TempChar = Font_ReadByte(u16Offset, pu8Data);
                 }
 
-                if (u8TempChar & u8Bitmask) {
+                if ((u8TempChar & u8Bitmask) != 0) {
                     // Update the location
                     stPoint.u16X = u16X;
                     stPoint.u16Y = u16Y;
@@ -511,13 +511,13 @@ void GraphicsDriver::TextFX(DrawText_t* pstText_, TextFX_t* pstFX_)
             for (u16X = u16CharOffsetX + u16StartX; u16X < u16CharOffsetX + u16StartX + (uint16_t)u8Width; u16X++) {
                 uint16_t u16TempPartialY = 0;
                 u16PartialY              = 0;
-                if (!u8Bitmask) {
+                if (u8Bitmask == 0u) {
                     u8Bitmask = 0x80;
                     u16Offset++;
                     u8TempChar = Font_ReadByte(u16Offset, pu8Data);
                 }
 
-                if ((u8TempChar & u8Bitmask) || (pstFX_->u8Flags & TEXTFX_FLAG_OPAQUE_BG)) {
+                if (((u8TempChar & u8Bitmask) != 0) || ((pstFX_->u8Flags & TEXTFX_FLAG_OPAQUE_BG) != 0)) {
                     // u16X and u16Y represent the untransformed data...
                     // we need u16StartX, u16StartY, u16DeltaX, u16DeltaY to proceed.
                     uint16_t u16DeltaX = (u16X - pstText_->u16Left);
@@ -526,7 +526,7 @@ void GraphicsDriver::TextFX(DrawText_t* pstText_, TextFX_t* pstFX_)
                     // Compute "unadjusted" pixels for normal or scaled
                     uint16_t u16RawX, u16RawY;
 
-                    if (pstFX_->u8Flags & TEXTFX_FLAG_SCALE_X) {
+                    if ((pstFX_->u8Flags & TEXTFX_FLAG_SCALE_X) != 0) {
                         u16RawX         = u16StartX + (((u16DeltaX * pstFX_->u16ScaleX100)) / 100);
                         u16TempPartialX = pstFX_->u16ScaleX100;
                     } else {
@@ -535,7 +535,7 @@ void GraphicsDriver::TextFX(DrawText_t* pstText_, TextFX_t* pstFX_)
                     }
                     u16TempPartialX += u16PartialX;
 
-                    if (pstFX_->u8Flags & TEXTFX_FLAG_SCALE_Y) {
+                    if ((pstFX_->u8Flags & TEXTFX_FLAG_SCALE_Y) != 0) {
                         u16RawY         = u16StartY + (((u16DeltaY * pstFX_->u16ScaleY100)) / 100);
                         u16TempPartialY = pstFX_->u16ScaleY100;
                     } else {
@@ -546,7 +546,7 @@ void GraphicsDriver::TextFX(DrawText_t* pstText_, TextFX_t* pstFX_)
 
                     uint16_t u16BLAH = u16TempPartialX;
 
-                    if (!(u8TempChar & u8Bitmask)) {
+                    if ((u8TempChar & u8Bitmask) == 0) {
                         stPoint.uColor = pstFX_->uBGColor;
                     } else {
                         stPoint.uColor = pstText_->uColor;

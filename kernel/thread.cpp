@@ -124,7 +124,7 @@ void Thread::Init(
 
 #if KERNEL_USE_THREAD_CALLOUTS
     ThreadCreateCallout_t pfCallout = Kernel::GetThreadCreateCallout();
-    if (pfCallout) {
+    if (pfCallout != 0) {
         pfCallout(this);
     }
 #endif
@@ -191,7 +191,7 @@ void Thread::Stop()
     KERNEL_ASSERT(IsInitialized());
 #endif
 
-    bool bReschedule = 0;
+    bool bReschedule = false;
     if (m_eState == THREAD_STATE_STOP) {
         return;
     }
@@ -237,7 +237,7 @@ void Thread::Exit()
 #if KERNEL_EXTRA_CHECKS
     KERNEL_ASSERT(IsInitialized());
 #endif
-    bool bReschedule = 0;
+    bool bReschedule = false;
 
     KERNEL_TRACE_1("Exit Thread %d", m_u8ThreadID);
     if (m_eState == THREAD_STATE_EXIT) {
@@ -249,7 +249,7 @@ void Thread::Exit()
     // If this thread is the actively-running thread, make sure we run the
     // scheduler again.
     if (this == Scheduler::GetCurrentThread()) {
-        bReschedule = 1;
+        bReschedule = true;
     }
 
     // Remove the thread from scheduling
@@ -281,7 +281,7 @@ void Thread::Exit()
 
 #if KERNEL_USE_THREAD_CALLOUTS
     ThreadExitCallout_t pfCallout = Kernel::GetThreadExitCallout();
-    if (pfCallout) {
+    if (pfCallout != 0) {
         pfCallout(this);
     }
 #endif
@@ -296,7 +296,7 @@ void Thread::Exit()
 #if KERNEL_USE_SLEEP
 //---------------------------------------------------------------------------
 //! This callback is used to wake up a thread once the interval has expired
-static void ThreadSleepCallback(Thread* pclOwner_, void* pvData_)
+static void ThreadSleepCallback(Thread*  /*pclOwner_*/, void* pvData_)
 {
     Semaphore* pclSemaphore = static_cast<Semaphore*>(pvData_);
     // Post the semaphore, which will wake the sleeping thread.
@@ -416,7 +416,7 @@ void Thread::Yield()
 }
 
 //---------------------------------------------------------------------------
-void Thread::SetPriorityBase(PORT_PRIO_TYPE uXPriority_)
+void Thread::SetPriorityBase(PORT_PRIO_TYPE  /*uXPriority_*/)
 {
 #if KERNEL_EXTRA_CHECKS
     KERNEL_ASSERT(IsInitialized());
@@ -436,13 +436,13 @@ void Thread::SetPriority(PORT_PRIO_TYPE uXPriority_)
     KERNEL_ASSERT(IsInitialized());
 #endif
 
-    bool bSchedule = 0;
+    bool bSchedule = false;
 
     CS_ENTER();
     // If this is the currently running thread, it's a good idea to reschedule
     // Or, if the new priority is a higher priority than the current thread's.
     if ((g_pclCurrent == this) || (uXPriority_ > g_pclCurrent->GetPriority())) {
-        bSchedule = 1;
+        bSchedule = true;
     }
     Scheduler::Remove(this);
     CS_EXIT();
@@ -493,11 +493,11 @@ void Thread::InheritPriority(PORT_PRIO_TYPE uXPriority_)
 void Thread::ContextSwitchSWI()
 {
     // Call the context switch interrupt if the scheduler is enabled.
-    if (Scheduler::IsEnabled() == 1) {
+    if (static_cast<int>(Scheduler::IsEnabled()) == 1) {
         KERNEL_TRACE_1("Context switch to Thread %d", (uint16_t)((Thread*)g_pclNext)->GetID());
 #if KERNEL_USE_STACK_GUARD
 #if KERNEL_USE_IDLE_FUNC
-        if (g_pclCurrent && (g_pclCurrent->GetID() != 255)) {
+        if ((g_pclCurrent != 0) && (g_pclCurrent->GetID() != 255)) {
 #endif
             if (g_pclCurrent->GetStackSlack() <= Kernel::GetStackGuardThreshold()) {
 #if KERNEL_AWARE_SIMULATION
@@ -512,7 +512,7 @@ void Thread::ContextSwitchSWI()
 
 #if KERNEL_USE_THREAD_CALLOUTS
         ThreadContextCallout_t pfCallout = Kernel::GetThreadContextSwitchCallout();
-        if (pfCallout) {
+        if (pfCallout != 0) {
             pfCallout(g_pclCurrent);
         }
 #endif

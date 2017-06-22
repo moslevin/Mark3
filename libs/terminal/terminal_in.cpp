@@ -232,7 +232,7 @@ bool TerminalIn::EscapeHandler(char cInput_)
         for (uint8_t i = 0; i < m_u8EscapeIdx; i++) {
             cmd = (cmd * 10) + (m_au8EscapeSeq[i] - '0');
         }
-        if (!m_u8Command) {
+        if (m_u8Command == 0u) {
             m_u8Command = cmd;
         } else {
             m_u8Modifier = cmd;

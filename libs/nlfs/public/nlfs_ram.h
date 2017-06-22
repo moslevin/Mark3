@@ -37,7 +37,7 @@ private:
      * \param [in] u16Node_ - File node index
      * \param [out] pstNode_ - Pointer to the file node object to read into
      */
-    virtual void Read_Node(uint16_t u16Node_, NLFS_Node_t* pstNode_);
+    virtual void Read_Node(uint16_t u16Node_, NLFS_Node_t* pstFileNode_);
 
     /*!
      * \brief Write_Node is an implementation-specific method used to write a
@@ -45,7 +45,7 @@ private:
      * \param [in] u16Node_ - File node index
      * \param [in] pstNode_ - Pointer to the file node object to write from
      */
-    virtual void Write_Node(uint16_t u16Node_, NLFS_Node_t* pstNode_);
+    virtual void Write_Node(uint16_t u16Node_, NLFS_Node_t* pstFileNode_);
 
     /*!
      * \brief Read_Block_Header is an implementation-specific method used to read
@@ -53,7 +53,7 @@ private:
      * \param [in] u32Block_ - data block index
      * \param [out] pstBlock_ - block header structure to read into
      */
-    virtual void Read_Block_Header(uint32_t u32Block_, NLFS_Block_t* pstBlock_);
+    virtual void Read_Block_Header(uint32_t u32Block_, NLFS_Block_t* pstFileBlock_);
 
     /*!
      * \brief Write_Block_Header is an implementation-specific method used to write

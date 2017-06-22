@@ -101,14 +101,14 @@ uint16_t Slip::ReadData(uint8_t* pu8Channel_, char* aucBuf_, uint16_t u16Len_)
 
     u16ReadCount = m_pclDriver->Read(u16Len_, (uint8_t*)aucBuf_);
 
-    while (u16ReadCount) {
+    while (u16ReadCount != 0u) {
         uint8_t u8Read;
         u8TempCount = DecodeByte(&u8Read, pu8Src);
 
         *pu8Dst = u8Read;
 
         // Encountered a FRAMING_BYTE - end of message
-        if (!u8TempCount) {
+        if (u8TempCount == 0u) {
             break;
         }
 
@@ -156,10 +156,10 @@ void Slip::WriteData(uint8_t u8Channel_, const char* aucBuf_, uint16_t u16Len_)
     // 3) Data blob
     // 4) CRC16 (16-bit)
     aucTmp[0] = FRAMING_BYTE;
-    while (!m_pclDriver->Write(1, aucTmp)) {
+    while (m_pclDriver->Write(1, aucTmp) == 0u) {
     }
 
-    if (!u16Len_) // Read to end-of-line (\0)
+    if (u16Len_ == 0u) // Read to end-of-line (\0)
     {
         uint8_t* pu8Buf = (uint8_t*)aucBuf_;
         while (*pu8Buf != '\0') {
@@ -177,7 +177,7 @@ void Slip::WriteData(uint8_t u8Channel_, const char* aucBuf_, uint16_t u16Len_)
     WriteByte((uint8_t)(u16Len_ & 0x00FF));
     u16CRC += (u16Len_ & 0x00FF);
 
-    while (u16Len_--) {
+    while ((u16Len_--) != 0u) {
         WriteByte(*aucBuf_);
         u16CRC += (uint16_t)*aucBuf_;
         aucBuf_++;
@@ -187,7 +187,7 @@ void Slip::WriteData(uint8_t u8Channel_, const char* aucBuf_, uint16_t u16Len_)
     WriteByte((uint8_t)(u16CRC & 0x00FF));
 
     aucTmp[0] = FRAMING_BYTE;
-    while (!m_pclDriver->Write(1, aucTmp)) {
+    while (m_pclDriver->Write(1, aucTmp) == 0u) {
     }
 }
 
@@ -218,7 +218,7 @@ void Slip::WriteVector(uint8_t u8Channel_, SlipDataVector* astData_, uint16_t u1
 
     // Send a FRAMING_BYTE to start framing a message
     aucTmp[0] = FRAMING_BYTE;
-    while (!m_pclDriver->Write(1, aucTmp)) {
+    while (m_pclDriver->Write(1, aucTmp) == 0u) {
     }
 
     // Write a the channel
@@ -248,6 +248,6 @@ void Slip::WriteVector(uint8_t u8Channel_, SlipDataVector* astData_, uint16_t u1
 
     // Write the end-of-message
     aucTmp[0] = FRAMING_BYTE;
-    while (!m_pclDriver->Write(1, aucTmp)) {
+    while (m_pclDriver->Write(1, aucTmp) == 0u) {
     }
 }

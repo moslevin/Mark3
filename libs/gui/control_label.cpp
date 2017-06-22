@@ -55,7 +55,7 @@ void LabelControl::Draw()
     stText.pcString = m_pcCaption;
     stText.pstFont  = m_pstFont;
 
-    if (false == m_bTransparent) {
+    if (!m_bTransparent) {
         stRect.u16Left     = GetLeft() + u16X;
         stRect.u16Right    = stRect.u16Left + GetWidth() - 1;
         stRect.u16Top      = GetTop() + u16Y;
@@ -71,7 +71,7 @@ void LabelControl::Draw()
     stWindow.u16Top    = stText.u16Top;
     stWindow.u16Bottom = stText.u16Top + GetHeight() - 1;
 
-    if (!stText.pstFont) {
+    if (stText.pstFont == 0) {
         return;
     }
 

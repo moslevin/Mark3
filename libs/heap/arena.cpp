@@ -157,7 +157,7 @@ void Arena::Free(void* pvBlock_)
 
     pclTemp = pclRight;
     DEBUG_PRINT(" Data Pointer: 0x%X, Object 0x%X, Cookie %08X\n", pvBlock_, pclBlock, pclBlock->GetCookie());
-    while (pclTemp && (pclTemp->GetCookie() == HEAP_COOKIE_FREE)) {
+    while ((pclTemp != 0) && (pclTemp->GetCookie() == HEAP_COOKIE_FREE)) {
         // Remove this free block from its currently allocated arena
         uArenaIndex = pclTemp->GetArenaIndex();
         m_aclBlockList[uArenaIndex].RemoveBlock(pclTemp);
@@ -174,7 +174,7 @@ void Arena::Free(void* pvBlock_)
     // Merge left, absorb into left-node.
     pclTemp  = pclBlock->GetLeftSibling();
     pclRight = pclBlock;
-    while (pclTemp && (pclTemp->GetCookie() == HEAP_COOKIE_FREE)) {
+    while ((pclTemp != 0) && (pclTemp->GetCookie() == HEAP_COOKIE_FREE)) {
         // Remove this free block from its currently allocated arena
         uArenaIndex = pclTemp->GetArenaIndex();
         m_aclBlockList[uArenaIndex].RemoveBlock(pclTemp);
@@ -204,7 +204,7 @@ uint8_t Arena::ListForSize(K_ADDR usize_)
 {
     if (usize_ < m_aclBlockList[0].GetBlockSize()) {
         return ARENA_FULL;
-    } else if (usize_ > m_aclBlockList[m_u8LargestList].GetBlockSize()) {
+    } if (usize_ > m_aclBlockList[m_u8LargestList].GetBlockSize()) {
         return ARENA_EXHAUSTED;
     }
 
@@ -220,7 +220,7 @@ uint8_t Arena::ListForSize(K_ADDR usize_)
 uint8_t Arena::ListToSatisfy(K_ADDR usize_)
 {
     for (uint8_t i = 0; i <= m_u8LargestList; i++) {
-        if ((usize_ <= m_aclBlockList[i].GetBlockSize()) && (m_aclBlockList[i].GetBlockCount())) {
+        if ((usize_ <= m_aclBlockList[i].GetBlockSize()) && ((m_aclBlockList[i].GetBlockCount()) != 0u)) {
             DEBUG_PRINT("  Allocate from List : %d (%d bytes, %d blocks)\n",
                         i,
                         m_aclBlockList[i].GetBlockSize(),

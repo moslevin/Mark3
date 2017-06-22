@@ -55,7 +55,7 @@ void ThreadList::Add(LinkListNode* node_)
     CircularLinkList::PivotForward();
 
     // We've specified a bitmap for this threadlist
-    if (m_pclMap) {
+    if (m_pclMap != 0) {
         // Set the flag for this priority level
         m_pclMap->Set(m_uXPriority);
     }
@@ -65,7 +65,7 @@ void ThreadList::Add(LinkListNode* node_)
 void ThreadList::AddPriority(LinkListNode* node_)
 {
     Thread* pclCurr = static_cast<Thread*>(GetHead());
-    if (!pclCurr) {
+    if (pclCurr == 0) {
         Add(node_);
         return;
     }
@@ -114,7 +114,7 @@ void ThreadList::Remove(LinkListNode* node_)
     CircularLinkList::Remove(node_);
 
     // If the list is empty...
-    if (!m_pstHead && m_pclMap) {
+    if ((m_pstHead == 0) && (m_pclMap != 0)) {
         // Clear the bit in the bitmap at this priority level
         m_pclMap->Clear(m_uXPriority);
     }

@@ -25,6 +25,7 @@ See license.txt for more information
 #include "ksemaphore.h"
 #include "thread.h"
 
+#include <avr/common.h>
 #include <avr/io.h>
 #include <avr/interrupt.h>
 

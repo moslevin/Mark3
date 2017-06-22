@@ -30,7 +30,7 @@ int NLFS_File::Open(NLFS* pclFS_, const char* szPath_, NLFS_File_Mode_t eMode_)
 
     if (INVALID_NODE == u16Node) {
         DEBUG_PRINT("file does not exist in path\n");
-        if (eMode_ & NLFS_FILE_CREATE) {
+        if ((eMode_ & NLFS_FILE_CREATE) != 0) {
             DEBUG_PRINT("Attempt to create\n");
             u16Node = pclFS_->Create_File(szPath_);
             if (INVALID_NODE == u16Node) {
@@ -49,8 +49,8 @@ int NLFS_File::Open(NLFS* pclFS_, const char* szPath_, NLFS_File_Mode_t eMode_)
 
     m_u16File = u16Node;
 
-    if (eMode_ & NLFS_FILE_APPEND) {
-        if (!(eMode_ & NLFS_FILE_WRITE)) {
+    if ((eMode_ & NLFS_FILE_APPEND) != 0) {
+        if ((eMode_ & NLFS_FILE_WRITE) == 0) {
             DEBUG_PRINT("Open file for append in read-only mode?  Why!\n");
             return -1;
         }
@@ -58,8 +58,8 @@ int NLFS_File::Open(NLFS* pclFS_, const char* szPath_, NLFS_File_Mode_t eMode_)
             DEBUG_PRINT("file open failed - error seeking to EOF for append\n");
             return -1;
         }
-    } else if (eMode_ & NLFS_FILE_TRUNCATE) {
-        if (!(eMode_ & NLFS_FILE_WRITE)) {
+    } else if ((eMode_ & NLFS_FILE_TRUNCATE) != 0) {
+        if ((eMode_ & NLFS_FILE_WRITE) == 0) {
             DEBUG_PRINT("Truncate file in read-only mode?  Why!\n");
             return -1;
         }
@@ -116,7 +116,7 @@ int NLFS_File::Seek(uint32_t u32Offset_)
     while (u32Offset_ >= m_pclFileSystem->GetBlockSize()) {
         u32Offset_ -= m_pclFileSystem->GetBlockSize();
         m_u32CurrentBlock = stBlock.u32NextBlock;
-        if ((u32Offset_) && (INVALID_BLOCK == m_u32CurrentBlock)) {
+        if (((u32Offset_) != 0u) && (INVALID_BLOCK == m_u32CurrentBlock)) {
             m_u32CurrentBlock = m_stNode.stFileNode.u32FirstBlock;
             m_u32Offset       = 0;
             return -1;
@@ -143,13 +143,13 @@ int NLFS_File::Read(void* pvBuf_, uint32_t u32Len_)
         return -1;
     }
 
-    if (!(NLFS_FILE_READ & m_u8Flags)) {
+    if ((NLFS_FILE_READ & m_u8Flags) == 0) {
         DEBUG_PRINT("Error - file not open for read\n");
         return -1;
     }
 
     DEBUG_PRINT("Reading: %d bytes from file\n", u32Len_);
-    while (u32Len_ && !bBail) {
+    while ((u32Len_ != 0u) && !bBail) {
         u32Offset    = m_u32Offset & (m_pclFileSystem->GetBlockSize() - 1);
         u32BytesLeft = m_pclFileSystem->GetBlockSize() - u32Offset;
         if (u32BytesLeft > u32Len_) {
@@ -161,7 +161,7 @@ int NLFS_File::Read(void* pvBuf_, uint32_t u32Len_)
         }
 
         DEBUG_PRINT("%d bytes left in block, %d len, %x block\n", u32BytesLeft, u32Len_, m_u32CurrentBlock);
-        if (u32BytesLeft && u32Len_ && (INVALID_BLOCK != m_u32CurrentBlock)) {
+        if ((u32BytesLeft != 0u) && (u32Len_ != 0u) && (INVALID_BLOCK != m_u32CurrentBlock)) {
             m_pclFileSystem->Read_Block(m_u32CurrentBlock, u32Offset, (void*)szCharBuf, u32BytesLeft);
 
             u32Read += u32BytesLeft;
@@ -170,7 +170,7 @@ int NLFS_File::Read(void* pvBuf_, uint32_t u32Len_)
             m_u32Offset += u32BytesLeft;
             DEBUG_PRINT("%d bytes to go\n", u32Len_);
         }
-        if (u32Len_) {
+        if (u32Len_ != 0u) {
             DEBUG_PRINT("reading next node\n");
             NLFS_Block_t stBlock;
             m_pclFileSystem->Read_Block_Header(m_u32CurrentBlock, &stBlock);
@@ -198,19 +198,19 @@ int NLFS_File::Write(void* pvBuf_, uint32_t u32Len_)
         return -1;
     }
 
-    if (!(NLFS_FILE_WRITE & m_u8Flags)) {
+    if ((NLFS_FILE_WRITE & m_u8Flags) == 0) {
         DEBUG_PRINT("Error - file not open for write\n");
         return -1;
     }
 
     DEBUG_PRINT("writing: %d bytes to file\n", u32Len_);
-    while (u32Len_) {
+    while (u32Len_ != 0u) {
         u32Offset    = m_u32Offset & (m_pclFileSystem->GetBlockSize() - 1);
         u32BytesLeft = m_pclFileSystem->GetBlockSize() - u32Offset;
         if (u32BytesLeft > u32Len_) {
             u32BytesLeft = u32Len_;
         }
-        if (u32BytesLeft && u32Len_ && (INVALID_BLOCK != m_u32CurrentBlock)) {
+        if ((u32BytesLeft != 0u) && (u32Len_ != 0u) && (INVALID_BLOCK != m_u32CurrentBlock)) {
             m_pclFileSystem->Write_Block(m_u32CurrentBlock, u32Offset, (void*)szCharBuf, u32BytesLeft);
             u32Written += u32BytesLeft;
             u32Len_ -= u32BytesLeft;
@@ -219,7 +219,7 @@ int NLFS_File::Write(void* pvBuf_, uint32_t u32Len_)
             m_u32Offset += u32BytesLeft;
             DEBUG_PRINT("%d bytes to go\n", u32Len_);
         }
-        if (!u32Len_) {
+        if (u32Len_ == 0u) {
             m_pclFileSystem->Write_Node(m_u16File, &m_stNode);
         } else {
             DEBUG_PRINT("appending\n");

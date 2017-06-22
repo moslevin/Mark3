@@ -44,7 +44,7 @@ Slip          SlipMux::m_clSlip;
 static void SlipMux_CallBack(Driver* pclDriver_)
 {
     Message* pclMsg = GlobalMessagePool::Pop();
-    if (pclMsg) {
+    if (pclMsg != 0) {
         pclDriver_->Control(CMD_SET_RX_DISABLE, 0, 0, 0, 0);
 
         // Send a message to the queue, letting it know that there's a
@@ -76,7 +76,7 @@ void SlipMux::Init(
 //---------------------------------------------------------------------------
 void SlipMux::InstallHandler(uint8_t u8Channel_, Slip_Channel pfHandler_)
 {
-    if (pfHandler_) {
+    if (pfHandler_ != 0) {
         m_apfChannelHandlers[u8Channel_] = pfHandler_;
     }
 }
@@ -88,7 +88,7 @@ void SlipMux::MessageReceive(void)
     uint8_t  u8Channel;
 
     u16Len = m_clSlip.ReadData(&u8Channel, (char*)m_aucData, SLIP_BUFFER_SIZE);
-    if (u16Len && (u8Channel < SLIP_CHANNEL_COUNT) && (m_apfChannelHandlers[u8Channel] != NULL)) {
+    if ((u16Len != 0u) && (u8Channel < SLIP_CHANNEL_COUNT) && (m_apfChannelHandlers[u8Channel] != NULL)) {
         m_apfChannelHandlers[u8Channel](m_pclDriver, u8Channel, &(m_aucData[SLIP_OFFSET_DATA]), u16Len);
     }
 

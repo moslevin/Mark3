@@ -114,14 +114,14 @@ GuiReturn_t CheckBoxControl::ProcessEvent(GuiEvent_t* pstEvent_)
     switch (pstEvent_->u8EventType) {
         case EVENT_TYPE_JOYSTICK: {
             // If this is a space bar or an enter key, behave like a mouse click.
-            if (pstEvent_->stJoystick.Current.bButton1 && (!pstEvent_->stJoystick.Previous.bButton1)) {
-                if (m_bChecked == true) {
+            if ((pstEvent_->stJoystick.Current.bButton1 != 0u) && (pstEvent_->stJoystick.Previous.bButton1 == 0u)) {
+                if (m_bChecked) {
                     m_bChecked = false;
                 } else {
                     m_bChecked = true;
                 }
 
-                if (m_pfCheckCallback) {
+                if (m_pfCheckCallback != 0) {
                     m_pfCheckCallback(m_bChecked);
                 }
                 SetStale();
@@ -130,13 +130,13 @@ GuiReturn_t CheckBoxControl::ProcessEvent(GuiEvent_t* pstEvent_)
         case EVENT_TYPE_KEYBOARD: {
             // If this is a space bar or an enter key, behave like a mouse click.
             if ((KEYCODE_SPACE == pstEvent_->stKey.u8KeyCode) || (KEYCODE_RETURN == pstEvent_->stKey.u8KeyCode)) {
-                if (pstEvent_->stKey.bKeyState) {
+                if (pstEvent_->stKey.bKeyState != 0u) {
                     m_bChecked = true;
                 } else {
                     m_bChecked = false;
                 }
 
-                if (m_pfCheckCallback) {
+                if (m_pfCheckCallback != 0) {
                     m_pfCheckCallback(m_bChecked);
                 }
                 SetStale();
@@ -147,14 +147,14 @@ GuiReturn_t CheckBoxControl::ProcessEvent(GuiEvent_t* pstEvent_)
             if (m_bChecked) {
                 // Check to see if the movement is out-of-bounds based on the coordinates.
                 // If so, de-activate the control
-                if (pstEvent_->stMouse.bLeftState) {
+                if (pstEvent_->stMouse.bLeftState != 0u) {
                     if ((pstEvent_->stMouse.u16X >= GetLeft() + u16XOffset)
                         && (pstEvent_->stMouse.u16X < GetLeft() + u16XOffset + GetWidth() - 1)
                         && (pstEvent_->stMouse.u16Y >= GetTop() + u16YOffset)
                         && (pstEvent_->stMouse.u16Y < GetTop() + u16YOffset + GetHeight() - 1)) {
                         m_bChecked = false;
                         SetStale();
-                        if (m_pfCheckCallback) {
+                        if (m_pfCheckCallback != 0) {
                             m_pfCheckCallback(m_bChecked);
                         }
                     }
@@ -162,14 +162,14 @@ GuiReturn_t CheckBoxControl::ProcessEvent(GuiEvent_t* pstEvent_)
             } else if (!m_bChecked) {
                 // If we registered a down-click in the bounding box, set the state of the
                 // control to activated.
-                if (pstEvent_->stMouse.bLeftState) {
+                if (pstEvent_->stMouse.bLeftState != 0u) {
                     if ((pstEvent_->stMouse.u16X >= GetLeft() + u16XOffset)
                         && (pstEvent_->stMouse.u16X < GetLeft() + u16XOffset + GetWidth() - 1)
                         && (pstEvent_->stMouse.u16Y >= GetTop() + u16YOffset)
                         && (pstEvent_->stMouse.u16Y < GetTop() + u16YOffset + GetHeight() - 1)) {
                         m_bChecked = true;
                         SetStale();
-                        if (m_pfCheckCallback) {
+                        if (m_pfCheckCallback != 0) {
                             m_pfCheckCallback(m_bChecked);
                         }
                     }

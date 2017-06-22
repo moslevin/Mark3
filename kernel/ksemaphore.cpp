@@ -73,7 +73,7 @@ Semaphore::~Semaphore()
 {
     // If there are any threads waiting on this object when it goes out
     // of scope, set a kernel panic.
-    if (m_clBlockList.GetHead()) {
+    if (m_clBlockList.GetHead() != 0) {
         Kernel::Panic(PANIC_ACTIVE_SEMAPHORE_DESCOPED);
     }
 }
@@ -136,7 +136,7 @@ bool Semaphore::Post()
 
     KERNEL_TRACE_1("Posting semaphore, Thread %d", (uint16_t)g_pclCurrent->GetID());
 
-    bool bThreadWake = 0;
+    bool bThreadWake = false;
     bool bBail       = false;
     // Increment the semaphore count - we can mess with threads so ensure this
     // is in a critical section.  We don't just disable the scheudler since
@@ -156,7 +156,7 @@ bool Semaphore::Post()
     } else {
         // Otherwise, there are threads waiting for the semaphore to be
         // posted, so wake the next one (highest priority goes first).
-        bThreadWake = WakeNext();
+        bThreadWake = (WakeNext() != 0u);
     }
 
     CS_EXIT();
@@ -206,10 +206,10 @@ void Semaphore::Pend_i(void)
 // The semaphore count is zero - we need to block the current thread
 // and wait until the semaphore is posted from elsewhere.
 #if KERNEL_USE_TIMEOUTS
-        if (u32WaitTimeMS_) {
+        if (u32WaitTimeMS_ != 0u) {
             g_pclCurrent->SetExpired(false);
             clSemTimer.Init();
-            clSemTimer.Start(0, u32WaitTimeMS_, TimedSemaphore_Callback, (void*)this);
+            clSemTimer.Start(false, u32WaitTimeMS_, TimedSemaphore_Callback, (void*)this);
             bUseTimer = true;
         }
 #endif
@@ -224,7 +224,7 @@ void Semaphore::Pend_i(void)
 #if KERNEL_USE_TIMEOUTS
     if (bUseTimer) {
         clSemTimer.Stop();
-        return (g_pclCurrent->GetExpired() == 0);
+        return (static_cast<int>(g_pclCurrent->GetExpired()) == 0);
     }
     return true;
 #endif

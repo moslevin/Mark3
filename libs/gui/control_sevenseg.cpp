@@ -191,7 +191,7 @@ void SevenSegControl::Draw()
 }
 
 //---------------------------------------------------------------------------
-GuiReturn_t SevenSegControl::ProcessEvent(GuiEvent_t* pstEvent_)
+GuiReturn_t SevenSegControl::ProcessEvent(GuiEvent_t*  /*pstEvent_*/)
 {
     return GUI_EVENT_OK;
 }

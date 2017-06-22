@@ -50,7 +50,7 @@ uint32_t PseudoRandom::Shift(uint32_t* pu32LFSR_, uint32_t u32Mask_)
 
     u32Feedback = *pu32LFSR_ & 1;
     *pu32LFSR_ >>= 1;
-    if (u32Feedback) {
+    if (u32Feedback != 0u) {
         *pu32LFSR_ ^= u32Mask_;
     }
     return *pu32LFSR_;

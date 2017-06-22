@@ -59,7 +59,7 @@ Notify::~Notify()
 {
     // If there are any threads waiting on this object when it goes out
     // of scope, set a kernel panic.
-    if (m_clBlockList.GetHead()) {
+    if (m_clBlockList.GetHead() != 0) {
         Kernel::Panic(PANIC_ACTIVE_NOTIFY_DESCOPED);
     }
 }
@@ -85,7 +85,7 @@ void Notify::Signal(void)
 
     CS_ENTER();
     Thread* pclCurrent = (Thread*)m_clBlockList.GetHead();
-    if (!pclCurrent) {
+    if (pclCurrent == 0) {
         m_bPending = true;
     } else {
         while (pclCurrent != NULL) {
@@ -115,7 +115,7 @@ void Notify::Wait(bool* pbFlag_)
     CS_ENTER();
     if (!m_bPending) {
         Block(g_pclCurrent);
-        if (pbFlag_) {
+        if (pbFlag_ != 0) {
             *pbFlag_ = false;
         }
     } else {
@@ -129,7 +129,7 @@ void Notify::Wait(bool* pbFlag_)
     }
 
     Thread::Yield();
-    if (pbFlag_) {
+    if (pbFlag_ != 0) {
         *pbFlag_ = true;
     }
 }
@@ -147,17 +147,17 @@ bool Notify::Wait(uint32_t u32WaitTimeMS_, bool* pbFlag_)
 
     CS_ENTER();
     if (!m_bPending) {
-        if (u32WaitTimeMS_) {
+        if (u32WaitTimeMS_ != 0u) {
             bUseTimer = true;
             g_pclCurrent->SetExpired(false);
 
             clNotifyTimer.Init();
-            clNotifyTimer.Start(0, u32WaitTimeMS_, TimedNotify_Callback, (void*)this);
+            clNotifyTimer.Start(false, u32WaitTimeMS_, TimedNotify_Callback, (void*)this);
         }
 
         Block(g_pclCurrent);
 
-        if (pbFlag_) {
+        if (pbFlag_ != 0) {
             *pbFlag_ = false;
         }
     } else {
@@ -174,10 +174,10 @@ bool Notify::Wait(uint32_t u32WaitTimeMS_, bool* pbFlag_)
 
     if (bUseTimer) {
         clNotifyTimer.Stop();
-        return (g_pclCurrent->GetExpired() == 0);
+        return (static_cast<int>(g_pclCurrent->GetExpired()) == 0);
     }
 
-    if (pbFlag_) {
+    if (pbFlag_ != 0) {
         *pbFlag_ = true;
     }
 
