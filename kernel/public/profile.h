@@ -123,7 +123,7 @@ private:
      *
      *  \return Current tick count
      */
-    uint32_t ComputeCurrentTicks(uint16_t u16Count_, uint32_t u32Epoch_);
+    uint32_t ComputeCurrentTicks(uint16_t u16Current_, uint32_t u32Epoch_);
 
     uint32_t m_u32Cumulative;       //!< Cumulative tick-count for this timer
     uint32_t m_u32CurrentIteration; //!< Tick-count for the current iteration

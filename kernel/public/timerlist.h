@@ -63,7 +63,7 @@ public:
      *
      *  \param pclListNode_ Pointer to the Timer to remove
      */
-    void Remove(Timer* pclListNode_);
+    void Remove(Timer* pclLinkListNode_);
 
     /*!
      *  \brief Process

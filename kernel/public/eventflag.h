@@ -81,7 +81,7 @@ public:
      *
      * \param pclOwner_ Pointer to the owner thread to unblock.
      */
-    void WakeMe(Thread* pclOwner_);
+    void WakeMe(Thread* pclChosenOne_);
 
 #endif
 

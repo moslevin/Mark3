@@ -308,7 +308,7 @@ private:
      * \param u32WaitTimeMS_ Time to wait before timeout (in ms).
      * \return          true - data successfully written, false - buffer full
      */
-    bool Send_i(const void* pvData_, bool bTail_, uint32_t u32WaitTimeMS_);
+    bool Send_i(const void* pvData_, bool bTail_, uint32_t u32TimeoutMS_);
 #else
     /*!
      * \brief Send_i

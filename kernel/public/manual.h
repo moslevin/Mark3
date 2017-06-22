@@ -54,9 +54,8 @@ See license.txt for more information
     - Native implementation in C++, with C-language bindings.
     - Device driver HAL which provides a meaningful abstraction around device-specific
       peripherals.
-    - Capable recursive-make driven build system which can be used to build all
-      libraries, examples, tests, documentation, and user-projects for any number of
-      targets from the command-line.
+    - Capable build system which can be used to build all libraries, examples, tests,
+      documentation, and user-projects for any number of targets from the command-line.
     - Graphics and UI code designed to simplify the implementation of systems using
       displays, keypads, joysticks, and touchscreens
     - Standards-based custom communications protocol used to simplify the creation
@@ -377,8 +376,6 @@ See license.txt for more information
 /*!
     \page BUILD0 Building Mark3
 
-    ToDo!! Rewrite for CMake build
-
     \section BUILDLAYOUT Source Layout
 
     One key aspect of Mark3 is that system features are organized into
@@ -386,31 +383,53 @@ See license.txt for more information
     together into folders based on the type of features represented:
 
     \verbatim
-    Root         Base folder, contains recursive makefiles for build system
+    Root         Base folder, contains license info and build system configuration
       arduino      Arduino-specific headers and API documentation files
       bootloader   Mark3 Bootloader code for AVR microcontrollers
-      build        Makefiles and device-configuraton data for various platforms
-      docs         Documentation (including this)
+      build        Device-specific toolchain configuraton files for various platforms
+      docs         Documentation (pdf + html)
       drivers      Device driver code for various supported devices
       example      Example applications
       export       Platform specific output folder, used when running export.sh
       fonts        Bitmap fonts converted from TTF, used by Mark3 graphics library
+      kbuild       Build output directory
       kernel       Basic Mark3 Components (the focus of this manual)
-        cpu        CPU-specific porting code
+        cpu        CPU-specific porting code        
       scripts      Scripts used to simplify build, documentation, and profiling
       libs         Utility code and services, extended system features
-      stage        Staging directory, where the build system places artifacts
       tests        Unit tests, written as C/C++ applications
-      util         .net-based font converter, terminal, programmer, config util
+      util         Host utilities - including a ttf font converter and device programmer
     \endverbatim
 
-    \section BUILDKERNEL Building the kernel
+    \section TOOLCHAIN Toolchain Integration
 
-    !!ToDo - update for CMake
+    Mark3 supports a variety of GCC ports out of the box - however, depending on your
+    host OS and target processor, there may be some effort required to tie the
+    toolchain into the build system.
 
-    You must make sure that all required toolchain paths are set in your system
-    environment variables so that they are accessible directly through from the
-    command-line
+    After installing your toolchain of choice, you must make sure that the main
+    toolchain binary paths are set in your systems PATH environment variable, ensuring
+    that they are accessible directly from the command-line.  Without this step,
+    the build configuration step (cmake) will inevitably fail.
+
+    Depending on your toolchain, you may also be required to add toolchain-specific
+    include directories to the build flags.  These flags can be added to the cmake
+    variables defined in /build/<cpu>/<variant>/<toolchain>/platform.cmake for your
+    target architecture.
+
+    \section DEPENDS Installing Dependencies
+
+    The Mark3 build system uses CMake (3.4.2 or above) for configuration management,
+    and Ninja to execute the build steps.  The combination of these two tools results
+    in exceptionally fast builds - so fast that the previous makefile build system
+    was scrapped in its favor.
+
+    These tools are readily available for most common host operating systems.
+
+    CMake can be found here: https://cmake.org
+    Ninja can be found here: https://ninja-build.org
+
+    \section BUILDKERNEL Building Mark3 Kernel and Libraries
 
     Once a sane environment has been created, the kernel, libraries,
     examples and tests can be built by running ./scripts/build.sh from the root
@@ -429,46 +448,22 @@ See license.txt for more information
      <toolchain>	is the build toolchain (i.e. gcc)
     \endverbatim
 
+    This script is a thin wrapper for the cmake configuration commands, and clears
+    the `kbuild` output directory before re-initializing cmake for the selected target.
 
-    \section WINBUILD Building on Windows
-
-    Building Mark3 on Windows is the same as on Linux, but there are a few
-    prerequisites that need to be taken into consideration before the
-    build scripts and makefiles will work as expected.
-
-    Below is an example of setting up the AVR toolchain on Windows:
-
-    <b>Step 1 - Install Latest Atmel Studio IDE</b>
-
-    Atmel Studio contains the AVR8 GCC toolchain, which contains the necessary
-    compilers, assemblers, and platform support required to turn the source
-    modules into libraries and executables.
-
-    To get Atmel Studio, go to the Atmel website (http://www.atmel.com) and
-    register to download the latest version.  This is a free download (and
-    rather large).  The included IDE (if you choose to use it) is very slick,
-    as it's based on Visual Studio, and contains a wonderful cycle-accurate
-    simulator for AVR devices.  In fact, the simulator is so good that most
-    of the kernel and its drivers were developed using this tool.
-
-    Once you have downloaded and installed Atmel Studio, you will need to
-    add the location of the AVR toolcahin to the PATH environment variable.
-
-    To do this, go to Control Panel -> System and Security -> System ->
-    Advanced System Settings, and edit the PATH variable.  Append the location
-    of the toolchain bin folder to the end of the variable.
-
-    On Windows x64, it should look something like this:
+    To build the Mark3 kernel and middleware libraries for a generic ARM Cortex-M0
+    using a pre-configured arm-none-eabi-gcc toolchain, one would run the following commands:
 
     \verbatim
-    C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR8 GCC\Native\3.4.2.1002\avr8-gnu-toolchain\bin
+      ./scripts/set_target.sh cm0 generic gcc
+      ./scripts/build.sh
     \endverbatim
 
-    !!ToDo - Elaborate on...
-    - Installing Cmake
-    - Installing Ninja
-    - Installing Git
-    - Running scripts from git-bash
+    To peform an incremental build, go into the cmake build directory (kbuild) and simply run 'ninja'.
+
+    Note that not all libraries/tests/examples will build in all kernel configurations.
+    The default kernel configuration may need adjustment/tweaking to support a specific
+    part.  See CMakeLists.txt and mark3cfg.h respectively for more information
 
     \section EXPORTSRC Exporting the kernel source
 
@@ -3743,232 +3738,6 @@ See license.txt for more information
     microcontroller targets.
 */
 /*!
-    \page BUILDSYS Build System
-
-    In addition to providing a complete RTOS kernel with a variety of middleware,
-    tests, and example code, Mark3 also provides a robust architecture to
-    efficiently build these components.  The build system – including its design
-    and use, are discussed in the following sections.
-
-    \section BLDINTRO Introduction
-
-    As developers, we spend an awful lot of time talking about how our source
-    code is written, but devote very little energy to what happens to the code
-    after it's been written... aside from producing running executables.  When
-    I refer to “building better software”, I'm not talking about writing code
-    – I'm talking about the technologies and processes that can be applied to
-    manipulate source into a variety of products, including libraries,
-    applications, tests, documentation, and performance data.
-
-    For a lot of developers – embedded or otherwise – a typical build process
-    might look something like this:
-
-    Open the IDE, load a project and click “build”.  Sometime later, check the
-    output window and look to see that there aren't any red exclamation points
-    to indicate build failure.  Browse to your project's output folder to collect
-    your prize:  A brand new .elf file containing your new firmware!  Click on
-    the arrow to give it a quick run on your dev board, test it for a few
-    minutes, and make sure it seems sane.  Pass it off to the manufacturing guys
-    to load it on the line, and move on.  Next!
-
-    Okay, that's a bit of an exaggeration, but not too far-fetched; and not that
-    much different from standard procedure at places I've worked in the past.
-
-    Indeed - I've come across many developers over the years who know about how
-    their software gets built beyond the “black box” that turns their code from
-    text to binaries with the click of the button -- and they like it that way.
-    It's entirely understandable, too.  Developing from an IDE hides all those
-    messy configuration details, command-line options, symbol definitions and
-    environment variables that would otherwise take away from time spent actively
-    churning out code.  We all want to be more productive, of course, and it
-    takes time to learn to make, or anything specific to an embedded toolchain.
-
-    And from a product delivery perspective, binaries are the ultimate work-products
-    from a software team –  these are the pieces that drive the microcontrollers,
-    DSPs and CPUs in an embedded system.  When its crunch time, try convincing
-    management to back off on release date in order to ensure that documentation
-    gets updated to reflect the as-built nature of a project.  Or fix the gaps
-    in test coverage.  Or update wikis containing profiling and performance
-    metrics.  You get the picture.
-
-    But software is a living entity – it's constantly changing as it develops and
-    is refined by individuals and teams.  And source code is a medium that carries
-    different information across multiple channels all at once – while one channel
-    contains information about building an application, another contains
-    information on building libraries.  Another carriers information on testing,
-    and another still provides documentation relevant to consumers of the code.
-    While not as glamorous a role as the “living firmware”, these pieces of
-    critical metadata are absolutely necessary as they ensure that the firmware
-    products maintain a degree of quality, performance, and conformance, and
-    gives a degree of confidence before formal test and release activities take
-    place.
-
-    This is especially necessary when developing for an organizations that is
-    accountable for their development and documentation practices (for example,
-    ISO shops), or to shareholders who expect the companies they support with
-    their wallets to apply engineering rigour to their products.
-
-    But getting the kind of flexibility required to produce these alternative
-    work products form the “example IDE” is not trivial, and can be difficult to
-    apply consistently from project-to-project/IDE-to-IDE.  Automating these test
-    and documentation tasks should be considered mandatory if you care about
-    making the most of your development hours; manually generating and updating
-    documentation, tests, and profiling results wastes time that you could be
-    spending solving the right kinds of problems.
-
-    The good news, though, is that using common tools available on any modern OS,
-    you can create frameworks that make these tasks for any project, on any
-    toolchain providing command-line tools.  With a bit of make, shell-script,
-    and python, you can automate any number of build processes in a way that
-    yields consistent, reliable results that are transferrable from project to
-    project.
-
-    This is the approach taken in the Mark3 project, which integrates build,
-    testing, profiling, documentation and release processes together in order to
-    produce predictable, verifiable, output that can be validated against quality
-    gates prior to formal testing and release.  Only code revisions that pass all
-    quality gate can be released.  In the following sections, we'll explore the
-    phased build approach, and how it's used by the Mark3 project.
-
-    \section BLDOVR Mark3 Build Process Overview
-
-    Building software is by and large a serial process, as outputs from each
-    build step are required in subsequent steps.   We start from our source code,
-    scripts, and makefiles, configure our environment, and use our tools to turn
-    the source code from one form to another, leveraging the outputs from each
-    stage in the generation of further work products – whether it be creating
-    binaries, running tests, or packaging artifacts for release.
-
-    To simplify the design and illustrate the concepts involved, we can break down
-    these serial process into the following distinct phases:
-
-    - Pre-build – Environment configuration, target selection, and header-file staging
-    - Build – Compiling libraries, and building binaries for applications and tests
-    - Test + Profiling -  Running unit tests, integration tests, profiling code
-    - Release – Generation of documentation from source code and test results, packaging of build artifacts and headers
-    .
-
-    Each phase and associated activities are described in detail in the following subsections.
-
-    \subsection BLDPB Pre-Build Phase:
-    <b>Target Selection</b>
-
-    Inputs: CPU Architecture, Variant, Toolchain variables
-    Outputs: Environment, makefile configuration
-
-    In this phase, we select the runtime environment and configure all
-    environment-specific variables.  Specifying environment variables at this
-    phase ensures that when the build scripts are run, the correct makefiles,
-    libraries, binaries, and config files are used when generating outputs.
-    This can also be used to ensure that common build setting are applied to all
-    platform specific binaries, including optimization levels, debug symbols,
-    linker files, and CPU flags.
-
-    <b>Staging Headers</b>
-
-    Inputs:  All files with a .h extension, located in library or binary project /public folders
-    Output:  Headers copied to a common staging directory
-
-    In this step, header files from all platform libraries are copied to a common
-    staging directory referenced by the build system.
-
-    This simplifies makefiles and build scripts, ensuring only a single include
-    directory needs to be specified to gain access to all common platform libraries.
-    This keeps library and application code clean, as relative paths can be
-    completely avoided.  As an added benefit, these headers can later be deployed
-    with the corresponding libraries to customers, giving them access to a set
-    of pre-compiled libraries with APIs, but without providing the source.
-
-    \subsection BLDBLD Build Phase
-    <b>Building Libraries</b>
-
-    Input: Source code for all common libraries, staged headers
-    Output: Static libraries that can be linked against applications
-    Gate: All mandatory libraries must be built successfully
-
-    The project root directory is scanned recursively for directories containing
-    makefiles.  When a makefile is found in the root of a subdirectory and a
-    library tag is encountered (in Mark3, this corresponds to the declaration
-    “IS_LIB=1”), the project is built using the library-specific make commands
-    for the platform.  Libraries can reference other libraries implicitly, and
-    include headers from the common include directory.  Since references are
-    resolved when building executable binary images, the executable projects are
-    responsible for including the dependent libs.
-
-    <b>Building Binaries</b>
-
-    Input: Source code for individual applications, precompiled libraries, staged
-           headers
-    Output: Executable application and test binaries
-    Gate: All mandatory binaries (applications and tests) must be built successfully
-
-    The project root directory is scanned recursively for directories containing
-    makefiles.  When a makefile is found in the root of a subdirectory and a
-    binary tag is encountered (in Mark3, this corresponds to the declaration
-    “IS_APP=1”), the project is built using the executable-specific make commands
-    for the platform.  Applications can reference all platform and toolchain
-    libraries, and include headers from the common include directory.  Care must
-    be taken to ensure that all library depenencies are explicitly specified in
-    the application's makefile's list.
-
-    This step will fail if necessary dependencies are not met (i.e. required
-    libraries failed to build in a prior step).
-
-    <b>Static Analysis:</b>
-
-    Input: Source code for libraries/binaries
-    Output:  Static source analysis output
-    Gate: N/A
-
-    Static analysis tools such as clang, klocwork, and lint can be run on the
-    source to ensure that there are no critical or catastrophic problems (null
-    pointer exceptions, variables used before initialization, incorrect argument
-    usage, etc.) that wouldn't necessarily be caught at compile-time.  Since tool
-    availability and configurability varies, this isn't something that is enforced
-    in the Mark3 builds.  A user may opt to use clang to perform static code
-    analysis on the build, however.  The part-specific makefile contains a CLANG
-    environment variable for this purpose.
-
-    Potential quality gates could be set up such that a failure during static
-    analysis aborts the rest of the build.
-
-    Test + Profiling
-    Sanity Tests
-
-    Input: Executable test binaries, CPU simulator/embedded target system
-    Output: Text output indicating test pass/failure status
-
-    \subsection BLDTESTING Test and Profile
-    <b>Unit Tests</b>
-
-    Input: Executable test binaries, CPU simulator/embedded target system
-    Output: Text output indicating test pass/failure status
-
-    <b>Code Performance Profiling</b>
-
-    Input: Executable test binaries, CPU simulator/embedded target system
-    Output: Text output containing critical code performance metrics
-
-    <b>Code Size Profiling</b>
-
-    Input: Precompiled static libraries and binaries
-    Output: Text output containing critical code size metrics
-
-    \subsection BLDREL Release
-
-    <b>Documentation</b>
-
-    Input: Library source code and headers, commented with Doxygen tags, Profiling
-            results, Test results
-    Output: Doxygen-generated HTML and PDF documentation
-
-    <b>Packaging</b>
-
-    Input: Static libraries and application/test binaries, staged headers, compiled
-           documentation
-    Output: Archive (.zip) containing relevant build outputs
-*/
-/*!
     \page MARK3C Mark3C - C-language API bindings for the Mark3 Kernel.
 
     Mark3 now includes an optional additional library with C language bindings
@@ -4110,16 +3879,17 @@ See license.txt for more information
     - New: Replace recursive-make build system with CMake and Ninja
     - New: Transitioned version control to Git from Subversion.
     - New: Cleanup all compiler warnings on atmega328p
-    - New: Process library, allowing for the creation of resource-isolated processes
     - New: Socket library, implementing named "domain-socket" style IPC
-    - New: Timer loop can now be run within a thread
+    - New: Timer loop can optionally be run within its own thread instead of a nested interrupt
+    - New: Software I2C library completed, with demo app
+    - Experimental: Process library, allowing for the creation of resource-isolated processes
     - Removed: Bare-metal support for Atmel SAMD20 (generic port still works)
     - Various Bugfixes and optimizations
     .
 
     \section RELR5 R5 Release
     - New: Shell library for creating responsive CLIs for embedded applications (M3Shell)
-    - New: Streamer library for creating thread-safe buffered streams (streamer)
+    - New: Stream library for creating thread-safe buffered streams (streamer)
     - New: Blocking UART implementation for AVR (drvUARTplus)
     - New: "Extended context" kernel feature, which is used to implement thread-local storage
     - New: "Extra Checks" kernel feature, which enforces safe API usage under pain of Kernel Panic
