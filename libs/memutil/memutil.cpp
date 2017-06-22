@@ -491,7 +491,7 @@ uint8_t MemUtil::Tokenize(const char* szBuffer_, Token_t* pastTokens_, uint8_t u
         }
 
         i++;
-        while ((szBuffer_[i] != 0) && szBuffer_[i] == ' ') {
+        while (szBuffer_[i] == ' ') {
             i++;
         }
 

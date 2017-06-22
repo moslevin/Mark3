@@ -224,7 +224,7 @@ i2c_return_t SoftwareI2C::SendAck(bool bAck_)
 //---------------------------------------------------------------------------
 i2c_return_t SoftwareI2C::RecvAck(bool* pbAck_)
 {
-    bool bBit;
+    bool bBit = true;
     i2c_return_t eReturn = ReadBit(&bBit);
     *pbAck_ = (!bBit);
     return eReturn;

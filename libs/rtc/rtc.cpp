@@ -151,7 +151,8 @@ void RTC::AddTime(uint32_t u32Ticks_)
         }
 
         m_stCalendar.u8Day  = 0;
-        m_stCalendar.eMonth = (month_t)((int)m_stCalendar.eMonth + 1);
+        int next_month = ((int)m_stCalendar.eMonth + 1);
+        m_stCalendar.eMonth = (month_t)(next_month);
         if (m_stCalendar.eMonth != MONTHS_PER_YEAR) {
             break;
         }
@@ -205,11 +206,11 @@ void RTC::ComputeDayOfWeek()
     }
     u32Days--;
 
-    for (month_t eMonth = MONTH_JANUARY; eMonth < m_stCalendar.eMonth; eMonth = (month_t)((int)eMonth + 1)) {
-        if (YearContainsLeapDay(m_stCalendar.u16Year) && (eMonth == MONTH_FEBRUARY)) {
+    for (int iMonth = (int)MONTH_JANUARY; iMonth < (int)m_stCalendar.eMonth; iMonth++) {
+        if (YearContainsLeapDay(m_stCalendar.u16Year) && (iMonth == (int)MONTH_FEBRUARY)) {
             u32Days += 29;
         } else {
-            u32Days += s_au8DaysPerMonth[eMonth];
+            u32Days += s_au8DaysPerMonth[iMonth];
         }
     }
     u32Days += m_stCalendar.u8Day + 1;

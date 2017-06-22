@@ -147,7 +147,7 @@ void Arena::Free(void* pvBlock_)
     K_ADDR     uBlockAddr = (K_ADDR)pvBlock_ - sizeof(HeapBlock);
     HeapBlock* pclBlock   = (HeapBlock*)uBlockAddr;
     HeapBlock* pclRight   = pclBlock->GetRightSibling();
-    HeapBlock* pclTemp    = pclRight;
+    HeapBlock* pclTemp;
 
     uint8_t uArenaIndex;
 
@@ -173,7 +173,6 @@ void Arena::Free(void* pvBlock_)
     CS_ENTER();
     // Merge left, absorb into left-node.
     pclTemp  = pclBlock->GetLeftSibling();
-    pclRight = pclBlock;
     while ((pclTemp != 0) && (pclTemp->GetCookie() == HEAP_COOKIE_FREE)) {
         // Remove this free block from its currently allocated arena
         uArenaIndex = pclTemp->GetArenaIndex();

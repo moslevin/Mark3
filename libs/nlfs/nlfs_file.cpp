@@ -65,14 +65,13 @@ int NLFS_File::Open(NLFS* pclFS_, const char* szPath_, NLFS_File_Mode_t eMode_)
         }
 
         uint32_t u32Curr = m_stNode.stFileNode.u32FirstBlock;
-        uint32_t u32Prev = u32Curr;
 
         // Go through and clear all blocks allocated to the file
         while (INVALID_BLOCK != u32Curr) {
             NLFS_Block_t stBlock;
             pclFS_->Read_Block_Header(u32Curr, &stBlock);
 
-            u32Prev = u32Curr;
+            uint32_t u32Prev = u32Curr;
             u32Curr = stBlock.u32NextBlock;
 
             pclFS_->Push_Free_Block(u32Prev);
