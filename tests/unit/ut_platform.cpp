@@ -15,7 +15,7 @@ See license.txt for more information
 //---------------------------------------------------------------------------
 
 #include "mark3.h"
-#include "drvUART.h"
+#include "drvATMegaUART.h"
 #include "unit_test.h"
 #include "ut_platform.h"
 #include "memutil.h"
@@ -126,9 +126,8 @@ void PrintString(const char* szStr_)
 void AppEntry(void)
 {
     {
-        Driver* my_uart = DriverList::FindByPath("/dev/tty");
-
-        my_uart->Control(CMD_SET_BUFFERS, aucRxBuffer, UART_SIZE_RX, aucTxBuffer, UART_SIZE_TX);
+        UartDriver* my_uart = static_cast<UartDriver*>(DriverList::FindByPath("/dev/tty"));
+        my_uart->SetBuffers(aucRxBuffer, UART_SIZE_RX, aucTxBuffer, UART_SIZE_TX);
         my_uart->Open();
 
         init_tests();

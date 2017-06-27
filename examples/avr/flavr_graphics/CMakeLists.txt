@@ -12,4 +12,5 @@ target_link_libraries(flavr_graphics.elf
     graphics 
     tahoma_10
     uart
+    atmegauart
 )

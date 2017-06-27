@@ -14,4 +14,5 @@ target_link_libraries(nlfs_test.elf
     memutil
     slip
     heap
+    atmegauart
 )

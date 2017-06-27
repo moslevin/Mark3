@@ -24,9 +24,8 @@ See license.txt for more information
 #include "kerneltypes.h"
 #include "kernel.h"
 #include "thread.h"
-#include "drvUART.h"
+#include "drvATMegaUART.h"
 #include "slip.h"
-#include "slip_mux.h"
 
 #include "font.h"
 #include "arial_10.h"
@@ -172,7 +171,7 @@ void Font_PrintGlyph(Font_t* pstFont_, uint8_t u8Glyph_)
 void AppEntry(void)
 {
     // Initialize the serial mux
-    SlipMux::Init("/dev/tty", UART_SIZE_RX, aucRxBuffer, UART_SIZE_TX, aucTxBuffer);
+    clUART.SetBuffers(aucRxBuffer, UART_SIZE_RX, aucTxBuffer, UART_SIZE_TX);
     clUART.Open();
 
     // Dummy code - just write hello world forever...

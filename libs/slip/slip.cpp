@@ -19,6 +19,7 @@ See license.txt for more information
 #include "kerneltypes.h"
 #include "slip.h"
 #include "driver.h"
+#include "drvUART.h"
 
 //---------------------------------------------------------------------------
 #define FRAMING_BYTE (192)         //!< Byte indicating end-of-frame

@@ -19,7 +19,7 @@ target_include_directories(ut_base
 target_link_libraries(ut_base
     mark3
     memutil
-    uart
+    atmegauart
 )
 
 add_subdirectory(ut_arena)

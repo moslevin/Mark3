@@ -3,7 +3,6 @@
 #include "kernel.h"
 #include "thread.h"
 #include "driver.h"
-#include "drvUART.h"
 #include "profile.h"
 #include "kernelprofile.h"
 #include "ksemaphore.h"

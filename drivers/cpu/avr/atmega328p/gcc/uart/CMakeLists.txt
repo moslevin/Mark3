@@ -1,20 +1,21 @@
-project(uart)
+project(atmegauart)
 
 set(LIB_SOURCES
-    drvUART.cpp
+    drvATMegaUART.cpp
 )
 
 set(LIB_HEADERS
-    public/drvUART.h
+    public/drvATMegaUART.h
 )
 
-mark3_add_library(uart ${LIB_SOURCES} ${LIB_HEADERS})
+mark3_add_library(atmegauart ${LIB_SOURCES} ${LIB_HEADERS})
 
-target_include_directories(uart
+target_include_directories(atmegauart
     PUBLIC
         public        
     )
     
-target_link_libraries(uart
+target_link_libraries(atmegauart
     mark3
+    uart
 )

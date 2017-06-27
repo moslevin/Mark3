@@ -20,6 +20,7 @@ See license.txt for more information
 
 #include "kerneltypes.h"
 #include "drvUARTplus.h"
+#include "drvUART.h"
 #include "driver.h"
 #include "thread.h"
 #include "notify.h"
@@ -98,29 +99,29 @@ uint8_t ATMegaUARTPlus::Close(void)
 uint16_t ATMegaUARTPlus::Control(uint16_t u16CmdId_, void* pvIn_, uint16_t u16SizeIn_, void* pvOut_, uint16_t u16SizeOut_)
 {
     switch ((CMD_UARTPLUS)u16CmdId_) {
-        case CMD_UARTPLUS_SET_BAUDRATE: {
+        case UART_OPCODE_SET_BAUDRATE: {
             uint32_t u32BaudRate = *((uint32_t*)pvIn_);
             SetBaud(u32BaudRate);
         } break;
-        case CMD_UARTPLUS_SET_BUFFERS: {
+        case UART_OPCODE_SET_BUFFERS: {
             uint8_t* pau8In = (uint8_t*)pvIn_;
             uint8_t* pau8Out = (uint8_t*)pvOut_;
             m_clStreamIn.Init(pau8In, u16SizeIn_);
             m_clStreamOut.Init(pau8Out, u16SizeOut_);
         } break;
-        case CMD_UARTPLUS_SET_RX_ENABLE: {
+        case UART_OPCODE_SET_RX_ENABLE: {
             UART_SRB |= (1 << UART_RXEN);
         } break;
-        case CMD_UARTPLUS_SET_RX_DISABLE: {
+        case UART_OPCODE_SET_RX_DISABLE: {
             UART_SRB &= ~(1 << UART_RXEN);
         } break;
-        case CMD_UARTPLUS_SET_IDENTITY: {
+        case UART_OPCODE_SET_IDENTITY: {
             // Stub
         } break;
-        case CMD_UARTPLUS_SET_BLOCKING: {
+        case UART_OPCODE_SET_BLOCKING: {
             m_bBlocking = true;
         } break;
-        case CMD_UARTPLUS_SET_NONBLOCKING: {
+        case UART_OPCODE_SET_NONBLOCKING: {
             m_bBlocking = false;
         } break;
         default: break;

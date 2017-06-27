@@ -230,11 +230,10 @@ static void NLFS_Prepare(void)
 //---------------------------------------------------------------------------
 void AppMain(void* unused_)
 {
-    Driver* my_uart = DriverList::FindByPath("/dev/tty");
+    UartDriver* my_uart = static_cast<UartDriver*>(DriverList::FindByPath("/dev/tty"));
 
-    uint32_t new_baud = 57600;
-    my_uart->Control(CMD_UARTPLUS_SET_BAUDRATE, &new_baud, 0,0,0);
-    my_uart->Control(CMD_UARTPLUS_SET_BUFFERS, aucRxBuffer, UART_SIZE_RX, aucTxBuffer, UART_SIZE_TX);
+    my_uart->SetBaudRate(57600);
+    my_uart->SetBuffers(aucRxBuffer, UART_SIZE_RX, aucTxBuffer, UART_SIZE_TX);
     my_uart->Open();
 
     NLFS_Prepare();

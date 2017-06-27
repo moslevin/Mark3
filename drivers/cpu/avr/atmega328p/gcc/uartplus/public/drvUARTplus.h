@@ -23,6 +23,7 @@ See license.txt for more information
 
 #include "kerneltypes.h"
 #include "driver.h"
+#include "drvUART.h"
 #include "notify.h"
 #include "streamer.h"
 #include "timer.h"
@@ -62,7 +63,7 @@ typedef enum {
 /*!
     Implements a UART driver on the ATMega1284p
  */
-class ATMegaUARTPlus : public Driver
+class ATMegaUARTPlus : public UartDriver
 {
 public:
     virtual void     Init();

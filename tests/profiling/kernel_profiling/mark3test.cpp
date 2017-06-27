@@ -4,7 +4,7 @@
 #include "kernel.h"
 #include "thread.h"
 #include "driver.h"
-#include "drvUART.h"
+#include "drvATMegaUART.h"
 #include "profile.h"
 #include "kernelprofile.h"
 #include "ksemaphore.h"
@@ -406,16 +406,13 @@ void ProfilePrintResults()
 //---------------------------------------------------------------------------
 static void AppMain(void* unused)
 {
-    Driver* pclUART = DriverList::FindByPath("/dev/tty");
+    UartDriver* pclUART = static_cast<UartDriver*>(DriverList::FindByPath("/dev/tty"));
 
     ProfileInit();
 
-    pclUART->Control(CMD_SET_BUFFERS, NULL, 0, aucTxBuf, 32);
-    {
-        uint32_t u32BaudRate = 57600;
-        pclUART->Control(CMD_SET_BAUDRATE, &u32BaudRate, 0, 0, 0);
-        pclUART->Control(CMD_SET_RX_DISABLE, 0, 0, 0, 0);
-    }
+    pclUART->SetBuffers(NULL, 0, aucTxBuf, 32);
+    pclUART->EnableRx(false);
+    pclUART->SetBaudRate(57600);
 
     pclUART->Open();
     pclUART->Write(6, (uint8_t*)"START\n");

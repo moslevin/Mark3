@@ -24,7 +24,7 @@ See license.txt for more information
 #include "kerneltypes.h"
 #include "kernel.h"
 #include "thread.h"
-#include "drvUART.h"
+#include "drvATMegaUART.h"
 #include "graphics.h"
 #include "graphics_flavr.h"
 #include "draw.h"

@@ -11,4 +11,5 @@ target_link_libraries(font_test.elf
     slip 
     uart
     arial_10
+    atmegauart
 )

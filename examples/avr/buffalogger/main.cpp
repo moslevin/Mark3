@@ -13,7 +13,7 @@ See license.txt for more information
 ===========================================================================*/
 #include "mark3.h"
 #include "kerneldebug.h"
-#include "drvUART.h"
+#include "drvATMegaUART.h"
 #include "tracebuffer.h"
 #include "ksemaphore.h"
 

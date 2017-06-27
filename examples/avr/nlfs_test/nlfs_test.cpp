@@ -24,9 +24,8 @@ See license.txt for more information
 #include "kerneltypes.h"
 #include "kernel.h"
 #include "thread.h"
-#include "drvUART.h"
+#include "drvATMegaUART.h"
 #include "slip.h"
-#include "slip_mux.h"
 #include "fixed_heap.h"
 #include "nlfs.h"
 #include "nlfs_file.h"
@@ -161,9 +160,8 @@ void NLFS_Test(void)
 void AppEntry(void)
 {
     {
-        Driver* my_uart = DriverList::FindByPath("/dev/tty");
-
-        my_uart->Control(CMD_SET_BUFFERS, aucRxBuffer, UART_SIZE_RX, aucTxBuffer, UART_SIZE_TX);
+        UartDriver* my_uart = static_cast<UartDriver*>(DriverList::FindByPath("/dev/tty"));
+        my_uart->SetBuffers(aucRxBuffer, UART_SIZE_RX, aucTxBuffer, UART_SIZE_TX);
         my_uart->Open();
     }
 

@@ -1,7 +1,8 @@
 #include <avr/io.h>
 #include "mark3.h"
-#include "drvUART.h"
+#include "driver.h"
 #include "drvSound.h"
+#include "drvUART.h"
 #include "rtc.h"
 #include "memutil.h"
 #include "led.h"
@@ -529,8 +530,8 @@ static CommandHandler clCommandSoundOff;
 //---------------------------------------------------------------------------
 static void ShellTask(void* param)
 {
-    Driver* pclUART = DriverList::FindByPath("/dev/tty0");
-    pclUART->Control(CMD_UARTPLUS_SET_BLOCKING, 0, 0, 0, 0 );
+    UartDriver* my_uart = static_cast<UartDriver*>(DriverList::FindByPath("/dev/tty"));
+    my_uart->SetBlocking(true);
 
     clCommandThreads.Set("threads", ThreadCommand);
     clCommandDefault.Set("default", DefaultCommand);

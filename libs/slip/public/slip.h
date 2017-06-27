@@ -33,6 +33,7 @@ See license.txt for more information
 
 #include "kerneltypes.h"
 #include "driver.h"
+#include "drvUART.h"
 
 #ifndef __SLIP_H__
 #define __SLIP_H__
@@ -80,7 +81,7 @@ public:
      *
      *  \param pclDriver_ Pointer to the driver to attach
      */
-    void SetDriver(Driver* pclDriver_) { m_pclDriver = pclDriver_; }
+    void SetDriver(UartDriver* pclDriver_) { m_pclDriver = pclDriver_; }
     /*!
      *  \brief GetDriver
      *
@@ -88,7 +89,7 @@ public:
      *
      *  \return Pointer to the driver attached
      */
-    Driver* GetDriver() { return m_pclDriver; }
+    UartDriver* GetDriver() { return m_pclDriver; }
     /*!
      *  \brief EncodeByte
      *
@@ -176,7 +177,7 @@ public:
 
 private:
     void WriteByte(uint8_t u8Data_);
-    Driver* m_pclDriver;
+    UartDriver* m_pclDriver;
 };
 
 #endif
