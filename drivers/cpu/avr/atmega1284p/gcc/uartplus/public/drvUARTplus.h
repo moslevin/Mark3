@@ -23,6 +23,7 @@ See license.txt for more information
 
 #include "kerneltypes.h"
 #include "driver.h"
+#include "drvUART.h"
 #include "notify.h"
 #include "streamer.h"
 #include "timer.h"
@@ -63,23 +64,11 @@ See license.txt for more information
 #define UART1_TX_ISR (USART1_TX_vect)
 
 #define UART_DEFAULT_BAUD ((uint32_t)57600)
-
-//---------------------------------------------------------------------------
-typedef enum {
-    CMD_UARTPLUS_SET_BAUDRATE = 0x80,
-    CMD_UARTPLUS_SET_BUFFERS,
-    CMD_UARTPLUS_SET_RX_ENABLE,
-    CMD_UARTPLUS_SET_RX_DISABLE,
-    CMD_UARTPLUS_SET_IDENTITY,
-    CMD_UARTPLUS_SET_BLOCKING,
-    CMD_UARTPLUS_SET_NONBLOCKING,
-} CMD_UARTPLUS;
-
 //---------------------------------------------------------------------------
 /*!
     Implements a UART driver on the ATMega1284p
  */
-class ATMegaUARTPlus : public Driver
+class ATMegaUARTPlus : public UartDriver
 {
 public:
     virtual void     Init();

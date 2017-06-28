@@ -124,16 +124,10 @@ static void MainTask(void* unused)
     // Initialize the UART driver - configure the port, baudrate, and buffers,
     // and ensure UART is running in blocking IO mode.
     s_clUart.Init();
-    s_clUart.Control(CMD_UARTPLUS_SET_BUFFERS, s_u8RxBuffer, 32, s_u8TxBuffer, 32);
-    {
-        uint32_t u32BaudRate = 57600;
-        s_clUart.Control(CMD_UARTPLUS_SET_BAUDRATE, &u32BaudRate, 0,0,0);
-    }
-    {
-        uint8_t u8Identity = 0;
-        s_clUart.Control(CMD_UARTPLUS_SET_IDENTITY, &u8Identity, 0,0,0);
-    }
-    s_clUart.Control(CMD_UARTPLUS_SET_BLOCKING, 0,0,0,0);
+    s_clUart.SetBuffers(s_u8RxBuffer, 32, s_u8TxBuffer, 32);
+    s_clUart.SetBaudRate(57600);
+    s_clUart.SetPortIdentity(0);
+    s_clUart.SetPortBlocking(true);
     s_clUart.Open();
 
     // Initialize the I2C driver - run it slow, allowing it to run in the background

@@ -19,7 +19,7 @@ See license.txt for more information
 */
 
 #include "kerneltypes.h"
-#include "drvUART.h"
+#include "drvATMegaUART.h"
 #include "driver.h"
 #include "thread.h"
 #include "threadport.h"
@@ -63,9 +63,6 @@ void ATMegaUART::Init(void)
     m_u8TxTail    = 0;
     m_u8RxHead    = 0;
     m_u8RxTail    = 0;
-    m_bEcho       = 0;
-    m_u8RxEscape  = '\n';
-    pfCallback    = NULL;
     m_bRxOverflow = 0;
     m_u32BaudRate = UART_DEFAULT_BAUD;
 
@@ -101,31 +98,22 @@ uint8_t ATMegaUART::Close(void)
 //---------------------------------------------------------------------------
 uint16_t ATMegaUART::Control(uint16_t u16CmdId_, void* pvIn_, uint16_t u16SizeIn_, void* pvOut_, uint16_t u16SizeOut_)
 {
-    switch ((CMD_UART)u16CmdId_) {
-        case CMD_SET_BAUDRATE: {
+    switch (static_cast<UartOpcode_t>(u16CmdId_)) {
+        case UART_OPCODE_SET_BAUDRATE: {
             uint32_t u32BaudRate = *((uint32_t*)pvIn_);
             m_u32BaudRate        = u32BaudRate;
             SetBaud();
         } break;
-        case CMD_SET_BUFFERS: {
+        case UART_OPCODE_SET_BUFFERS: {
             m_pu8RxBuffer = (uint8_t*)pvIn_;
             m_pu8TxBuffer = (uint8_t*)pvOut_;
             m_u8RxSize    = u16SizeIn_;
             m_u8TxSize    = u16SizeOut_;
-        } break;
-        case CMD_SET_RX_ESCAPE: {
-            m_u8RxEscape = *((uint8_t*)pvIn_);
-        } break;
-        case CMD_SET_RX_CALLBACK: {
-            pfCallback = (UART_Rx_Callback_t)pvIn_;
-        } break;
-        case CMD_SET_RX_ECHO: {
-            m_bEcho = *((uint8_t*)pvIn_);
-        } break;
-        case CMD_SET_RX_ENABLE: {
+        } break;       
+        case UART_OPCODE_SET_RX_ENABLE: {
             UART_SRB |= (1 << UART_RXEN);
         } break;
-        case CMD_SET_RX_DISABLE: {
+        case UART_OPCODE_SET_RX_DISABLE: {
             UART_SRB &= ~(1 << UART_RXEN);
         } break;
         default: break;
@@ -282,19 +270,6 @@ void ATMegaUART::RxISR()
 
         // Flag an error - the buffer is full
         m_bRxOverflow = 1;
-    }
-
-    // If local-echo is enabled, TX the char
-    if (m_bEcho) {
-        Write(1, &u8Temp);
-    }
-
-    // If we've hit the RX callback character, run the callback
-    // This is used for calling line-end functions, etc..
-    if (u8Temp == m_u8RxEscape) {
-        if (pfCallback) {
-            pfCallback(this);
-        }
     }
 }
 

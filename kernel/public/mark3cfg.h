@@ -73,7 +73,7 @@ See license.txt for more information
     Note that the CPU port (kerneltimer.cpp) must be implemented for the
     particular timer variant desired.
 */
-#if KERNEL_USE_TIMERS
+#if KERNEL_USE_TIMERS && !defined(ARM)
 #define KERNEL_TIMERS_TICKLESS (1)
 #endif
 

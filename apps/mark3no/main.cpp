@@ -2,7 +2,7 @@
 #include "mark3.h"
 #include "driver.h"
 #include "drvSound.h"
-#include "drvUART.h"
+#include "drvATMegaUART.h"
 #include "rtc.h"
 #include "memutil.h"
 #include "led.h"

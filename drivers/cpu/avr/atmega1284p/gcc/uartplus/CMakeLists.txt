@@ -12,10 +12,11 @@ mark3_add_library(uartplus ${LIB_SOURCES} ${LIB_HEADERS})
 
 target_include_directories(uartplus
     PUBLIC
-        public        
+        public
     )
-    
+
 target_link_libraries(uartplus
     mark3
     streamer
+    uart
 )

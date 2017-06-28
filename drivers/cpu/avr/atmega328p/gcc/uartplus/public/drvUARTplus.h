@@ -49,17 +49,6 @@ See license.txt for more information
 #define UART_TX_ISR (USART_TX_vect)
 
 //---------------------------------------------------------------------------
-typedef enum {
-    CMD_UARTPLUS_SET_BAUDRATE = 0x80,
-    CMD_UARTPLUS_SET_BUFFERS,
-    CMD_UARTPLUS_SET_RX_ENABLE,
-    CMD_UARTPLUS_SET_RX_DISABLE,
-    CMD_UARTPLUS_SET_IDENTITY,
-    CMD_UARTPLUS_SET_BLOCKING,
-    CMD_UARTPLUS_SET_NONBLOCKING,
-} CMD_UARTPLUS;
-
-//---------------------------------------------------------------------------
 /*!
     Implements a UART driver on the ATMega1284p
  */

@@ -98,7 +98,7 @@ uint8_t ATMegaUARTPlus::Close(void)
 //---------------------------------------------------------------------------
 uint16_t ATMegaUARTPlus::Control(uint16_t u16CmdId_, void* pvIn_, uint16_t u16SizeIn_, void* pvOut_, uint16_t u16SizeOut_)
 {
-    switch ((CMD_UARTPLUS)u16CmdId_) {
+    switch (static_cast<UartOpcode_t>(u16CmdId_)) {
         case UART_OPCODE_SET_BAUDRATE: {
             uint32_t u32BaudRate = *((uint32_t*)pvIn_);
             SetBaud(u32BaudRate);

@@ -26,6 +26,7 @@ See license.txt for more information
 #include "streamer.h"
 #include "threadport.h"
 #include "kerneltimer.h"
+#include "kernelaware.h"
 
 #include <avr/io.h>
 #include <avr/interrupt.h>
@@ -125,38 +126,38 @@ uint8_t ATMegaUARTPlus::Close(void)
 //---------------------------------------------------------------------------
 uint16_t ATMegaUARTPlus::Control(uint16_t u16CmdId_, void* pvIn_, uint16_t u16SizeIn_, void* pvOut_, uint16_t u16SizeOut_)
 {
-    switch ((CMD_UARTPLUS)u16CmdId_) {
-        case CMD_UARTPLUS_SET_BAUDRATE: {
+    switch (static_cast<UartOpcode_t>(u16CmdId_)) {
+        case UART_OPCODE_SET_BAUDRATE: {
             uint32_t u32BaudRate = *((uint32_t*)pvIn_);
             SetBaud(u32BaudRate);
         } break;
-        case CMD_UARTPLUS_SET_BUFFERS: {
+        case UART_OPCODE_SET_BUFFERS: {
             uint8_t* pau8In = (uint8_t*)pvIn_;
             uint8_t* pau8Out = (uint8_t*)pvOut_;
             m_clStreamIn.Init(pau8In, u16SizeIn_);
             m_clStreamOut.Init(pau8Out, u16SizeOut_);
         } break;
-        case CMD_UARTPLUS_SET_RX_ENABLE: {
+        case UART_OPCODE_SET_RX_ENABLE: {
             if (m_u8Identity == 0) {
                 UART0_SRB |= (1 << UART0_RXEN);
             } else {
                 UART1_SRB |= (1 << UART1_RXEN);
             }
         } break;
-        case CMD_UARTPLUS_SET_RX_DISABLE: {
+        case UART_OPCODE_SET_RX_DISABLE: {
             if (m_u8Identity == 0) {
                 UART0_SRB &= ~(1 << UART0_RXEN);
             } else {
                 UART1_SRB &= ~(1 << UART1_RXEN);
             }
         } break;
-        case CMD_UARTPLUS_SET_IDENTITY: {
+        case UART_OPCODE_SET_IDENTITY: {
             m_u8Identity = *((uint8_t*)pvIn_);
         } break;
-        case CMD_UARTPLUS_SET_BLOCKING: {
+        case UART_OPCODE_SET_BLOCKING: {
             m_bBlocking = true;
         } break;
-        case CMD_UARTPLUS_SET_NONBLOCKING: {
+        case UART_OPCODE_SET_NONBLOCKING: {
             m_bBlocking = false;
         } break;
         default: break;
