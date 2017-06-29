@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 ###
 # Script to print out a nicely-formatted summary of the object sizes associated
 # with the various modules of the kernel
@@ -90,16 +90,6 @@ elif [ "${FORMAT}" = "doxygen" ]; then
     echo    "Results are not necessarily indicative of relative or absolute performance"
     echo    "on other platforms or toolchains."
     echo    "\section SIZEPROFILEINFO Information"
-    IFS=" "
-    SVNROOT=$(svn info | grep -e Root:)
-    SVNREV=$(svn info | grep -e Revision:)
-    SVNURL=$(svn info | grep -e URL:)
-    echo    "Subversion Repository Information:"
-    echo    "    - "${SVNROOT}
-    echo    "    - "${SVNREV}
-    echo    "    - "${SVNURL}
-    echo    "    ."
-    IFS=${IFS_CACHE}
     echo    ""
     echo    "Date Profiled:"
     DATEINFO=$(date)
