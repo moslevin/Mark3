@@ -219,9 +219,8 @@ if [ ${USE_DOXYGEN} -eq 1 ]; then
 fi
 
 ## Create a .zip file tagged against the SVN revision and date
-SVN_REV=`svn info | grep Revision | sed 's/Revision: //'`
 BUILD_DATE=`date +%C%y%m%d`
-ZIPNAME="Mark3_"${TARGET}"_r"${SVN_REV}"_"${BUILD_DATE}".zip"
+ZIPNAME="Mark3_${TARGET}_${BUILD_DATE}.zip"
 cd ${TARGET_DIR}
 echo "[ Creating Source/Doc Archive ]"
 zip -r ${ZIPNAME} Mark3 2> /dev/null >> /dev/null 
