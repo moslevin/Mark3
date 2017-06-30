@@ -1,9 +1,9 @@
 #!/bin/bash
 
 TEST_STAMP=$(date +%Y%m%d_%H%M)
-LOG_FILE=$(pwd)/${TEST_STAMP}_build_log.txt
+LOG_FILE="~/${TEST_STAMP}_build_log.txt"
 
-cd /media/usb/project/github/Mark3 
+echo "===[Git config]==="
 echo "===[Git config]===" >> ${LOG_FILE}
 git stash 2>&1 >>${LOG_FILE}
 git checkout master 2>&1 >>${LOG_FILE}
@@ -29,8 +29,8 @@ echo "===[Doxygen build (doc)]==="
 echo "===[Doxygen build (doc)]===" >> ${LOG_FILE}
 bash -c ". ./scripts/build_docs.sh" 2>&1 >>${LOG_FILE} 
 
+rm -r ./export
 TARGET_LIST="arduino arduino2560"
-
 for TARGET in ${TARGET_LIST}; do
     echo "===[Exporting SDK for ${TARGET}]==="
     echo "===[Exporting SDK for ${TARGET}]===" >>${LOG_FILE} 
