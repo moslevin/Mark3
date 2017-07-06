@@ -24,7 +24,7 @@ echo "===[Runtime profiling (doc)]===" >> ${LOG_FILE}
 bash -c ". ./scripts/profile_sim.sh" 2>&1 >>${LOG_FILE} 
 echo "===[Build size profiling (doc)]==="
 echo "===[Build size profiling (doc)]===" >> ${LOG_FILE}
-bash -c ". ./scripts/size_profile.sh avr atm3ga328p gcc -d" > ./kernel/public/sizeprofile.h
+bash -c ". ./scripts/size_profile.sh avr atmega328p gcc -d" > ./kernel/public/sizeprofile.h
 echo "===[Doxygen build (doc)]==="
 echo "===[Doxygen build (doc)]===" >> ${LOG_FILE}
 bash -c ". ./scripts/build_docs.sh" 2>&1 >>${LOG_FILE} 
