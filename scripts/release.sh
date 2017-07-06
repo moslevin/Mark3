@@ -30,6 +30,7 @@ echo "===[Doxygen build (doc)]===" >> ${LOG_FILE}
 bash -c ". ./scripts/build_docs.sh" 2>&1 >>${LOG_FILE} 
 
 rm -r ./export
+mkdir ./export
 TARGET_LIST="arduino arduino2560"
 for TARGET in ${TARGET_LIST}; do
     echo "===[Exporting SDK for ${TARGET}]==="
@@ -37,3 +38,26 @@ for TARGET in ${TARGET_LIST}; do
     bash -c ". ./scripts/export.sh ${TARGET}" 2>&1 >>${LOG_FILE} 
 done 
 
+echo "===[Exporting Source Distribution]==="
+SRC_EXPORT=./export/distro
+mkdir ${SRC_EXPORT}
+FOLDERS="apps arduino bootloader build drivers examples fonts kernel libs scripts tests"
+for FOLDER in ${FOLDERS}; do
+     cp -R ${FOLDER} ${SRC_EXPORT}
+done
+TXTFILES="readme.txt mark3.cmake license.txt"
+for TXTFILE in ${TXTFILES}; do
+     cp ${TXTFILE} ${SRC_EXPORT}
+done
+
+mkdir ${SRC_EXPORT}/util
+cp ./util/*.exe ${SRC_EXPORT}/util
+
+mkdir ${SRC_EXPORT}/docs
+cp ./docs/refman.pdf ${SRC_EXPORT}/docs
+
+BUILD_DATE=`date +%C%y%m%d`
+ZIPNAME="Mark3_${BUILD_DATE}.zip"
+cd ./export
+zip -r ${ZIPNAME} distro
+cd ..
