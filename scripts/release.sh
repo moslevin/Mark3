@@ -1,7 +1,7 @@
 #!/bin/bash
 
 TEST_STAMP=$(date +%Y%m%d_%H%M)
-LOG_FILE="~/${TEST_STAMP}_build_log.txt"
+LOG_FILE="${TEST_STAMP}_build_log.txt"
 
 echo "===[Git config]==="
 echo "===[Git config]===" >> ${LOG_FILE}
