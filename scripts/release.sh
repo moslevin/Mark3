@@ -39,7 +39,7 @@ for TARGET in ${TARGET_LIST}; do
 done 
 
 echo "===[Exporting Source Distribution]==="
-SRC_EXPORT=./export/distro
+SRC_EXPORT=./export/Mark3
 mkdir ${SRC_EXPORT}
 FOLDERS="apps arduino bootloader build drivers examples fonts kernel libs scripts tests"
 for FOLDER in ${FOLDERS}; do
@@ -59,5 +59,5 @@ cp ./docs/refman.pdf ${SRC_EXPORT}/docs
 BUILD_DATE=`date +%C%y%m%d`
 ZIPNAME="Mark3_${BUILD_DATE}.zip"
 cd ./export
-zip -r ${ZIPNAME} distro
+zip -r ${ZIPNAME} Mark3
 cd ..
