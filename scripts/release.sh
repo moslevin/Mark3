@@ -45,7 +45,7 @@ FOLDERS="apps arduino bootloader build drivers examples fonts kernel libs script
 for FOLDER in ${FOLDERS}; do
      cp -R ${FOLDER} ${SRC_EXPORT}
 done
-TXTFILES="readme.txt mark3.cmake license.txt"
+TXTFILES="readme.txt mark3.cmake license.txt CMakeLists.txt"
 for TXTFILE in ${TXTFILES}; do
      cp ${TXTFILE} ${SRC_EXPORT}
 done
