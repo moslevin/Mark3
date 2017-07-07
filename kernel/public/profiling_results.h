@@ -7,33 +7,32 @@ information for user comparison, as well as to ensure that regressions are not
 being introduced into the system.
 
 \section PROFILEATE Date Performed 
-Sun May  7 14:48:56 EDT 2017
+Fri  7 Jul 01:40:14 UTC 2017
 \section COMPVER Compiler Information 
 The kernel and test code used in these results were built using the following compiler:
 @code
 
 Using built-in specs.
-Reading specs from c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/device-specs/specs-avr2
-COLLECT_GCC=C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe
-COLLECT_LTO_WRAPPER=c:/program\ files\ (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../libexec/gcc/avr/4.9.2/lto-wrapper.exe
+COLLECT_GCC=avr-gcc
+COLLECT_LTO_WRAPPER=/usr/lib/gcc/avr/4.8.1/lto-wrapper
 Target: avr
-Configured with: /home/toolsbuild/workspace/avr8-gnu-toolchain/src/gcc/configure LDFLAGS=-L/home/toolsbuild/workspace/avr8-gnu-toolchain/avr8-gnu-toolchain-win32_x86-hostlibs/lib CPPFLAGS= --target=avr --host=i686-w64-mingw32 --build=x86_64-pc-linux-gnu --prefix=/home/toolsbuild/workspace/avr8-gnu-toolchain/avr8-gnu-toolchain-win32_x86 --libdir=/home/toolsbuild/workspace/avr8-gnu-toolchain/avr8-gnu-toolchain-win32_x86/lib --enable-languages=c,c++ --with-dwarf2 --enable-doc --disable-shared --disable-libada --disable-libssp --disable-nls --with-avrlibc=yes --with-mpfr=/home/toolsbuild/workspace/avr8-gnu-toolchain/avr8-gnu-toolchain-win32_x86-hostlibs --with-gmp=/home/toolsbuild/workspace/avr8-gnu-toolchain/avr8-gnu-toolchain-win32_x86-hostlibs --with-mpc=/home/toolsbuild/workspace/avr8-gnu-toolchain/avr8-gnu-toolchain-win32_x86-hostlibs --enable-win32-registry=avrtoolchain --with-pkgversion=AVR_8_bit_GNU_Toolchain_3.5.4_1709 --with-bugurl=http://www.atmel.com
+Configured with: ../src/configure -v --enable-languages=c,c++ --prefix=/usr/lib --infodir=/usr/share/info --mandir=/usr/share/man --bindir=/usr/bin --libexecdir=/usr/lib --libdir=/usr/lib --enable-shared --with-system-zlib --enable-long-long --enable-nls --without-included-gettext --disable-libssp --build=arm-linux-gnueabihf --host=arm-linux-gnueabihf --target=avr
 Thread model: single
-gcc version 4.9.2 (AVR_8_bit_GNU_Toolchain_3.5.4_1709) 
+gcc version 4.8.1 (GCC) 
 @endcode
 
 \section PROFRES Profiling Results
 @code
-    - Semaphore Initialization:  56 cycles (averaged over 100 iterations)
-    - Semaphore Post (uncontested):  184 cycles (averaged over 100 iterations)
-    - Semaphore Pend (uncontested):  96 cycles (averaged over 100 iterations)
-    - Semaphore Flyback Time (Contested Pend):  2376 cycles (averaged over 100 iterations)
-    - Mutex Init:  32 cycles (averaged over 100 iterations)
-    - Mutex Claim:  200 cycles (averaged over 100 iterations)
-    - Mutex Release:  128 cycles (averaged over 100 iterations)
-    - Thread Initialize:  10808 cycles (averaged over 100 iterations)
-    - Thread Start:  1176 cycles (averaged over 100 iterations)
-    - Context Switch:  176 cycles (averaged over 100 iterations)
-    - Thread Schedule:  72 cycles (averaged over 100 iterations)
+    - Semaphore Initialization:  40 cycles (averaged over 100 iterations)
+    - Semaphore Post (uncontested):  120 cycles (averaged over 100 iterations)
+    - Semaphore Pend (uncontested):  32 cycles (averaged over 100 iterations)
+    - Semaphore Flyback Time (Contested Pend):  2272 cycles (averaged over 100 iterations)
+    - Mutex Init:  000004294967272 cycles (averaged over 100 iterations)
+    - Mutex Claim:  216 cycles (averaged over 100 iterations)
+    - Mutex Release:  120 cycles (averaged over 100 iterations)
+    - Thread Initialize:  8312 cycles (averaged over 100 iterations)
+    - Thread Start:  1096 cycles (averaged over 100 iterations)
+    - Context Switch:  168 cycles (averaged over 100 iterations)
+    - Thread Schedule:  32 cycles (averaged over 100 iterations)
 @endcode
 */
