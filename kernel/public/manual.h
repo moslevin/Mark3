@@ -54,12 +54,13 @@ See license.txt for more information
     - Native implementation in C++, with C-language bindings.
     - Device driver HAL which provides a meaningful abstraction around device-specific
       peripherals.
-    - Capable build system which can be used to build all libraries, examples, tests,
+    - CMake-based build system which can be used to build all libraries, examples, tests,
       documentation, and user-projects for any number of targets from the command-line.
     - Graphics and UI code designed to simplify the implementation of systems using
       displays, keypads, joysticks, and touchscreens
-    - Standards-based custom communications protocol used to simplify the creation
-      of host tools
+    - Robust and deterministic dynamic memory management libraries
+    - A Variety of general-purpose libraries to speed up embedded app development
+    - Emulator-aware debugging via the flAVR AVR emulator
     - A bulletproof, well-documented bootloader for AVR microcontrollers
       Support for kernel-aware simulators, incluing Funkenstein's own flAVR.
     .
@@ -3875,16 +3876,19 @@ See license.txt for more information
 /*!
     \page RELEASE Release Notes
 
-    \section RELR6 HEAD
+    \section RELR6 R6 Release
     - New: Replace recursive-make build system with CMake and Ninja
     - New: Transitioned version control to Git from Subversion.
-    - New: Cleanup all compiler warnings on atmega328p
     - New: Socket library, implementing named "domain-socket" style IPC
-    - New: Timer loop can optionally be run within its own thread instead of a nested interrupt
+    - New: State Machine framework library
     - New: Software I2C library completed, with demo app
+    - New: Kernel Timer loop can optionally be run within its own thread instead of a nested interrupt
+    - New: UART drivers are all now abstracted throught UartDriver base class for portability
     - Experimental: Process library, allowing for the creation of resource-isolated processes
     - Removed: Bare-metal support for Atmel SAMD20 (generic port still works)
+    - Cleanup all compiler warnings on atmega328p
     - Various Bugfixes and optimizations
+    - Various Script changes related to automating the build + release process
     .
 
     \section RELR5 R5 Release
