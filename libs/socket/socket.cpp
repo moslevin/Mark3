@@ -207,12 +207,13 @@ uint16_t ServerSocket::ClientRead(uint16_t u16Size_, uint8_t* pu8Data_, bool bBl
 	uint8_t* pu8Out = pu8Data_;
 	uint16_t u16ToRead = u16Size_;
 	uint16_t u16Read;
+
 	if (bBlocking_) {
 		while (u16ToRead != 0u) {
 			if (m_clOutput.CanRead()) {
-				m_clOutput.Read(pu8Out);
-				pu8Out++;
-				u16ToRead--;
+                uint16_t u16TmpRead = m_clOutput.Read(pu8Out, u16ToRead);
+                pu8Out += u16TmpRead;
+                u16ToRead -= u16TmpRead;
 			} else {
 				m_clNotifyClientRead.Wait(0);
 				if (!m_bOpen) {
@@ -223,13 +224,16 @@ uint16_t ServerSocket::ClientRead(uint16_t u16Size_, uint8_t* pu8Data_, bool bBl
 		u16Read = u16Size_;
 	} else {
 		while (u16ToRead != 0u) {
-			if (!m_clOutput.Read(pu8Out)) {
+            uint16_t u16TmpRead = m_clOutput.Read(pu8Out, u16ToRead);
+            pu8Out += u16TmpRead;
+            u16ToRead -= u16TmpRead;
+            if (!u16TmpRead) {
 				break;
-			}
-			u16ToRead--;
+			}			
 		}
 		u16Read = u16Size_ - u16ToRead;
-	}
+    }
+
 	m_pclNotifyServerWrite->Signal();
 	return u16Read;
 }
@@ -243,13 +247,14 @@ uint16_t ServerSocket::ClientWrite(uint16_t u16Size_, uint8_t* pu8Data_, bool bB
 
 	uint8_t* pu8In = pu8Data_;
 	uint16_t u16ToWrite = u16Size_;
-	uint16_t u16Written;
+    uint16_t u16Written;
+
 	if (bBlocking_) {
 		while (u16ToWrite != 0u) {
 			if (m_clInput.CanWrite()) {
-				m_clInput.Write(*pu8In);
-				pu8In++;
-				u16ToWrite--;
+                uint16_t u16TmpWritten = m_clInput.Write(pu8In, u16ToWrite);
+                pu8In += u16TmpWritten;
+                u16ToWrite -= u16TmpWritten;
 			} else {
 				m_clNotifyClientWrite.Wait(0);
 				if (!m_bOpen) {
@@ -260,14 +265,16 @@ uint16_t ServerSocket::ClientWrite(uint16_t u16Size_, uint8_t* pu8Data_, bool bB
 		u16Written = u16Size_;
 	} else {
 		while (u16ToWrite != 0u) {
-			if (!m_clInput.Write(*pu8In)) {
-				break;
-			}
-			u16ToWrite--;
-			pu8In++;
+            uint16_t u16TmpWritten = m_clInput.Write(pu8In, u16ToWrite);
+            pu8In += u16TmpWritten;
+            u16ToWrite -= u16TmpWritten;
+            if (!u16TmpWritten) {
+                break;
+            }
 		}
 		u16Written = u16Size_ - u16ToWrite;
-	}
+    }
+
 	m_pclNotifyServerRead->Signal();
 	return u16Written;
 }
