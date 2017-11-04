@@ -73,6 +73,11 @@ See license.txt for more information
 #endif
 
 /*!
+    Define the default/minimum size of a thread stack
+*/
+#define PORT_KERNEL_DEFAULT_STACK_SIZE      ((K_ADDR)256)
+
+/*!
     Define the size of the kernel-timer thread stack (if one is configured)
 */
 #define PORT_KERNEL_TIMERS_THREAD_STACK     ((K_ADDR)256)
