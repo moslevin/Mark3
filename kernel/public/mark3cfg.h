@@ -319,7 +319,7 @@ See license.txt for more information
     explicitly allocate them (from stack, heap, or static memory). Note
     that auto-alloc memory cannot be reclaimed.
 */
-#define KERNEL_USE_AUTO_ALLOC (0)
+#define KERNEL_USE_AUTO_ALLOC (1)
 
 #if KERNEL_USE_AUTO_ALLOC
 #define AUTO_ALLOC_SIZE (512)

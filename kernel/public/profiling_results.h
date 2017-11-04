@@ -7,7 +7,7 @@ information for user comparison, as well as to ensure that regressions are not
 being introduced into the system.
 
 \section PROFILEATE Date Performed 
-Sun May  7 14:48:56 EDT 2017
+Wed Jun 28 23:26:13 EDT 2017
 \section COMPVER Compiler Information 
 The kernel and test code used in these results were built using the following compiler:
 @code

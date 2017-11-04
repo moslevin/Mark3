@@ -36,7 +36,7 @@ See license.txt for more information
 class Mailbox
 {
 public:
-    void* operator new(size_t sz, void* pv) { return (Mailbox*)pv; };
+    void* operator new(size_t sz, void* pv) { return (Mailbox*)pv; }
     ~Mailbox();
 
     /*!

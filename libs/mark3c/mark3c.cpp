@@ -22,15 +22,20 @@ See license.txt for more information
 #include "mark3.h"
 
 extern "C" {
-void __cxa_pure_virtual(void){};
+void __cxa_pure_virtual(void){}
 }
 //---------------------------------------------------------------------------
-// Allocate-once Memory managment APIs
+// Kernel Memory managment APIs
 #if KERNEL_USE_AUTO_ALLOC
 //---------------------------------------------------------------------------
-void* AutoAlloc(uint16_t u16Size_)
+void* Alloc_Memory(uint16_t u16Size_)
 {
-    return AutoAlloc::Allocate(u16Size);
+    return AutoAlloc::NewRawData(u16Size_);
+}
+//---------------------------------------------------------------------------
+void Free_Memory(void* pvObject_)
+{
+    AutoAlloc::DestroyRawData(pvObject_);
 }
 
 #if KERNEL_USE_SEMAPHORE
@@ -38,6 +43,12 @@ void* AutoAlloc(uint16_t u16Size_)
 Semaphore_t Alloc_Semaphore(void)
 {
     return (Semaphore_t)AutoAlloc::NewSemaphore();
+}
+
+//---------------------------------------------------------------------------
+void Free_Semaphore(Semaphore_t handle)
+{
+    AutoAlloc::DestroySemaphore((Semaphore*)handle);
 }
 
 #endif
@@ -48,12 +59,24 @@ Mutex_t Alloc_Mutex(void)
     return (Mutex_t)AutoAlloc::NewMutex();
 }
 
+//---------------------------------------------------------------------------
+void Free_Mutex(Mutex_t handle)
+{
+    AutoAlloc::DestroyMutex((Mutex*)handle);
+}
+
 #endif
 #if KERNEL_USE_EVENTFLAG
 //---------------------------------------------------------------------------
 EventFlag_t Alloc_EventFlag(void)
 {
     return (EventFlag_t)AutoAlloc::NewEventFlag();
+}
+
+//---------------------------------------------------------------------------
+void Free_EventFlag(EventFlag_t handle)
+{
+    AutoAlloc::DestroyEventFlag((EventFlag*)handle);
 }
 
 #endif
@@ -65,9 +88,21 @@ Message_t Alloc_Message(void)
 }
 
 //---------------------------------------------------------------------------
+void Free_Message(Message_t handle)
+{
+    AutoAlloc::DestroyMessage((Message*)handle);
+}
+
+//---------------------------------------------------------------------------
 MessageQueue_t Alloc_MessageQueue(void)
 {
     return (MessageQueue_t)AutoAlloc::NewMessageQueue();
+}
+
+//---------------------------------------------------------------------------
+void Free_MessageQueue(MessageQueue_t handle)
+{
+    AutoAlloc::DestroyMessageQueue((MessageQueue*)handle);
 }
 
 #endif
@@ -78,12 +113,23 @@ Notify_t Alloc_Notify(void)
     return (Notify_t)AutoAlloc::NewNotify();
 }
 
+//---------------------------------------------------------------------------
+void Free_Notify(Notify_t handle)
+{
+    AutoAlloc::DestroyNotify((Notify*)handle);
+}
+
 #endif
 #if KERNEL_USE_MAILBOX
 //---------------------------------------------------------------------------
 Mailbox_t Alloc_Mailbox(void)
 {
     return (Mailbox_t)AutoAlloc::NewMailbox();
+}
+//---------------------------------------------------------------------------
+void Free_Mailbox(Mailbox_t handle)
+{
+    AutoAlloc::DestroyMailbox((Mailbox*)handle);
 }
 
 #endif
@@ -92,12 +138,22 @@ Thread_t Alloc_Thread(void)
 {
     return (Thread_t)AutoAlloc::NewThread();
 }
+//---------------------------------------------------------------------------
+void Free_Thread(Thread_t handle)
+{
+    AutoAlloc::DestroyThread((Thread*)handle);
+}
 
 #if KERNEL_USE_TIMERS
 //---------------------------------------------------------------------------
 Timer_t Alloc_Timer(void)
 {
     return (Thread_t)AutoAlloc::NewTimer();
+}
+//---------------------------------------------------------------------------
+void Free_Timer(Timer_t handle)
+{
+    AutoAlloc::DestroyTimer((Timer*)handle);
 }
 
 #endif

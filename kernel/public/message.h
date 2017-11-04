@@ -99,7 +99,7 @@ See license.txt for more information
 class Message : public LinkListNode
 {
 public:
-    void* operator new(size_t sz, void* pv) { return (Message*)pv; };
+    void* operator new(size_t sz, void* pv) { return (Message*)pv; }
     /*!
      *  \brief Init
      *
@@ -269,7 +269,9 @@ private:
 class MessageQueue
 {
 public:
-    void* operator new(size_t sz, void* pv) { return (MessageQueue*)pv; };
+    void* operator new(size_t sz, void* pv) { return (MessageQueue*)pv; }
+    ~MessageQueue() {}
+
     /*!
      *  \brief Init
      *

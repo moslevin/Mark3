@@ -78,8 +78,8 @@ void Mailbox::Init(void* pvBuffer_, uint16_t u16BufferSize_, uint16_t u16Element
 #if KERNEL_USE_AUTO_ALLOC
 Mailbox* Mailbox::Init(uint16_t u16BufferSize_, uint16_t u16ElementSize_)
 {
-    Mailbox* pclNew   = (Mailbox*)AutoAlloc::Allocate(sizeof(Mailbox));
-    void*    pvBuffer = AutoAlloc::Allocate(u16BufferSize_);
+    Mailbox* pclNew   = AutoAlloc::NewMailbox();
+    void*    pvBuffer = AutoAlloc::NewRawData(u16BufferSize_);
     pclNew->Init(pvBuffer, u16BufferSize_, u16ElementSize_);
     return pclNew;
 }

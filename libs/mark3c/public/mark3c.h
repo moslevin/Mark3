@@ -115,12 +115,19 @@ typedef void (*thread_context_callout_t)(Thread_t hThread_);
 // Allocate-once Memory managment APIs
 #if defined KERNEL_USE_AUTO_ALLOC
 /*!
- * \brief AutoAlloc
- * \sa void* AutoAlloc::Allocate(uint16_t u16Size_)
- * \param u16Size_ Size in bytes to allocate from the one-time-allocate heap
+ * \brief Alloc_Memory
+ * \sa void* AutoAlloc::NewRawData(size_t sSize_)
+ * \param eSize_ Size in bytes to allocate from the one-time-allocate heap
  * \return Pointer to an allocated blob of memory, or NULL if heap exhausted
  */
-void* AutoAlloc(uint16_t u16Size_);
+void* Alloc_Memory(size_t eSize_);
+
+/*!
+ * \brief Free_Memory
+ * \param pvObject_ Pointer to previously allocated block of memory
+ */
+void Free_Memory(void* pvObject_);
+
 #if KERNEL_USE_SEMAPHORE
 /*!
  * \brief Alloc_Semaphore
@@ -128,6 +135,8 @@ void* AutoAlloc(uint16_t u16Size_);
  * \return Handle to an allocated object, or NULL if heap exhausted
  */
 Semaphore_t Alloc_Semaphore(void);
+void Free_Semaphore(Semaphore_t handle);
+
 #endif
 #if KERNEL_USE_MUTEX
 /*!
@@ -136,6 +145,8 @@ Semaphore_t Alloc_Semaphore(void);
  * \return Handle to an allocated object, or NULL if heap exhausted
  */
 Mutex_t Alloc_Mutex(void);
+void Free_Mutex(Mutex_t handle);
+
 #endif
 #if KERNEL_USE_EVENTFLAG
 /*!
@@ -144,6 +155,8 @@ Mutex_t Alloc_Mutex(void);
  * \return Handle to an allocated object, or NULL if heap exhausted
  */
 EventFlag_t Alloc_EventFlag(void);
+void Free_EventFlag(EventFlag_t handle);
+
 #endif
 #if KERNEL_USE_MESSAGE
 /*!
@@ -152,12 +165,16 @@ EventFlag_t Alloc_EventFlag(void);
  * \return Handle to an allocated object, or NULL if heap exhausted
  */
 Message_t Alloc_Message(void);
+void Free_Message(Message_t handle);
+
 /*!
  * \brief Alloc_MessageQueue
  * \sa MesageQueue* AutoAlloc::NewMessageQueue()
  * \return Handle to an allocated object, or NULL if heap exhausted
  */
 MessageQueue_t Alloc_MessageQueue(void);
+void Free_MessageQueue(MessageQueue_t handle);
+
 #endif
 #if KERNEL_USE_NOTIFY
 /*!
@@ -166,6 +183,8 @@ MessageQueue_t Alloc_MessageQueue(void);
  * \return Handle to an allocated object, or NULL if heap exhausted
  */
 Notify_t Alloc_Notify(void);
+void Free_Notify(Notify_t handle);
+
 #endif
 #if KERNEL_USE_MAILBOX
 /*!
@@ -174,6 +193,7 @@ Notify_t Alloc_Notify(void);
  * \return Handle to an allocated object, or NULL if heap exhausted
  */
 Mailbox_t Alloc_Mailbox(void);
+void Free_Mailbox(Mailbox_t handle);
 #endif
 /*!
  * \brief Alloc_Thread
@@ -181,6 +201,8 @@ Mailbox_t Alloc_Mailbox(void);
  * \return Handle to an allocated object, or NULL if heap exhausted
  */
 Thread_t Alloc_Thread(void);
+void Free_Thread(Thread_t handle);
+
 #if KERNEL_USE_TIMERS
 /*!
  * \brief Alloc_Timer
@@ -188,6 +210,8 @@ Thread_t Alloc_Thread(void);
  * \return Handle to an allocated object, or NULL if heap exhausted
  */
 Timer_t Alloc_Timer(void);
+void Free_Timer(Timer_t handle);
+
 #endif
 #endif
 
