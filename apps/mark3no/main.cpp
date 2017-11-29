@@ -2,7 +2,7 @@
 #include "mark3.h"
 #include "driver.h"
 #include "drvSound.h"
-#include "drvATMegaUART.h"
+#include "drvUART.h"
 #include "rtc.h"
 #include "memutil.h"
 #include "led.h"
@@ -530,8 +530,8 @@ static CommandHandler clCommandSoundOff;
 //---------------------------------------------------------------------------
 static void ShellTask(void* param)
 {
-    UartDriver* my_uart = static_cast<UartDriver*>(DriverList::FindByPath("/dev/tty"));
-    my_uart->SetBlocking(true);
+    UartDriver* my_uart = static_cast<UartDriver*>(DriverList::FindByPath("/dev/tty0"));
+    my_uart->Control(UART_OPCODE_SET_BLOCKING, 0, 0, 0, 0);
 
     clCommandThreads.Set("threads", ThreadCommand);
     clCommandDefault.Set("default", DefaultCommand);
@@ -554,7 +554,7 @@ static void ShellTask(void* param)
     clShell.AddCommand(&clCommandSoundOff);
 
     clShell.Init();
-    clShell.SetDriver(pclUART);
+    clShell.SetDriver(my_uart);
     clShell.SetPrompt("Mark3 $ ");
     clShell.SetDefaultHandler(&clCommandDefault);
 

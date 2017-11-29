@@ -17,19 +17,19 @@ void bsp_uarts_init(void)
     clUART0.Init();
     clUART0.SetName("/dev/tty0");
     uint8_t u8Identity = 0;
-    clUART0.Control(CMD_UARTPLUS_SET_IDENTITY, &u8Identity, 0, 0, 0);
+    clUART0.Control(UART_OPCODE_SET_IDENTITY, &u8Identity, 0, 0, 0);
     uint32_t u32Baud = 57600;
-    clUART0.Control(CMD_UARTPLUS_SET_BAUDRATE, &u32Baud, 0, 0, 0);
-    clUART0.Control(CMD_UARTPLUS_SET_BUFFERS, au8RX0, 32, au8TX0, 32);
+    clUART0.Control(UART_OPCODE_SET_BAUDRATE, &u32Baud, 0, 0, 0);
+    clUART0.Control(UART_OPCODE_SET_BUFFERS, au8RX0, 32, au8TX0, 32);
     clUART0.Open();
 
     // Initialize UART1
     clUART1.Init();
     clUART1.SetName("/dev/tty1");
     u8Identity = 1;
-    clUART1.Control(CMD_UARTPLUS_SET_IDENTITY, &u8Identity, 0, 0, 0);
-    clUART1.Control(CMD_UARTPLUS_SET_BAUDRATE, &u32Baud, 0, 0, 0);
-    clUART1.Control(CMD_UARTPLUS_SET_BUFFERS, au8RX1, 32, au8TX1, 32);
+    clUART1.Control(UART_OPCODE_SET_IDENTITY, &u8Identity, 0, 0, 0);
+    clUART1.Control(UART_OPCODE_SET_BAUDRATE, &u32Baud, 0, 0, 0);
+    clUART1.Control(UART_OPCODE_SET_BUFFERS, au8RX1, 32, au8TX1, 32);
     clUART1.Open();
 
     DriverList::Add(&clUART0);
