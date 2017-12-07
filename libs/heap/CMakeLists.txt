@@ -2,16 +2,20 @@ project(heap)
 
 set(LIB_SOURCES
     arena.cpp
+    bitmap_allocator.cpp
     fixed_heap.cpp
     heapblock.cpp
+    slab.cpp
     system_heap.cpp
 )
 
 set(LIB_HEADERS
     public/arena.h
     public/arenalist.h
+    public/bitmap_allocator.h
     public/fixed_heap.h
     public/heapblock.h
+    public/slab.h
     public/system_heap.h
     public/system_heap_config.h
 )
