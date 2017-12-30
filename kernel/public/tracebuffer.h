@@ -31,7 +31,7 @@ See license.txt for more information
 
 #define TRACE_BUFFER_SIZE (160)
 
-typedef void (*TraceBufferCallback_t)(uint16_t* pu16Source_, uint16_t u16Len_, bool bPingPong_);
+using TraceBufferCallback_t = void (*)(uint16_t* pu16Source_, uint16_t u16Len_, bool bPingPong_);
 
 /*!
  *  Global tracebuffer class declaration

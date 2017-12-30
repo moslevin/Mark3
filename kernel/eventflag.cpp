@@ -100,7 +100,7 @@ void EventFlag::WakeMe(Thread* pclChosenOne_)
 
 //---------------------------------------------------------------------------
 #if KERNEL_USE_TIMEOUTS
-uint16_t EventFlag::Wait_i(uint16_t u16Mask_, EventFlagOperation_t eMode_, uint32_t u32TimeMS_)
+uint16_t EventFlag::Wait_i(uint16_t u16Mask_, EventFlagOperation eMode_, uint32_t u32TimeMS_)
 #else
 uint16_t EventFlag::Wait_i(uint16_t u16Mask_, EventFlagOperation_t eMode_)
 #endif
@@ -125,14 +125,14 @@ uint16_t EventFlag::Wait_i(uint16_t u16Mask_, EventFlagOperation_t eMode_)
     // desired bits.
     g_pclCurrent->SetEventFlagMask(u16Mask_);
 
-    if ((eMode_ == EVENT_FLAG_ALL) || (eMode_ == EVENT_FLAG_ALL_CLEAR)) {
+    if ((eMode_ == EventFlagOperation::All_Set) || (eMode_ == EventFlagOperation::All_Clear)) {
         // Check to see if the flags in their current state match all of
         // the set flags in the event flag group, with this mask.
         if ((m_u16SetMask & u16Mask_) == u16Mask_) {
             bMatch = true;
             g_pclCurrent->SetEventFlagMask(u16Mask_);
         }
-    } else if ((eMode_ == EVENT_FLAG_ANY) || (eMode_ == EVENT_FLAG_ANY_CLEAR)) {
+    } else if ((eMode_ == EventFlagOperation::Any_Set) || (eMode_ == EventFlagOperation::Any_Clear)) {
         // Check to see if the existing flags match any of the set flags in
         // the event flag group  with this mask
         if ((m_u16SetMask & u16Mask_) != 0) {
@@ -188,7 +188,7 @@ uint16_t EventFlag::Wait_i(uint16_t u16Mask_, EventFlagOperation_t eMode_)
 }
 
 //---------------------------------------------------------------------------
-uint16_t EventFlag::Wait(uint16_t u16Mask_, EventFlagOperation_t eMode_)
+uint16_t EventFlag::Wait(uint16_t u16Mask_, EventFlagOperation eMode_)
 {
 #if KERNEL_USE_TIMEOUTS
     return Wait_i(u16Mask_, eMode_, 0);
@@ -199,7 +199,7 @@ uint16_t EventFlag::Wait(uint16_t u16Mask_, EventFlagOperation_t eMode_)
 
 #if KERNEL_USE_TIMEOUTS
 //---------------------------------------------------------------------------
-uint16_t EventFlag::Wait(uint16_t u16Mask_, EventFlagOperation_t eMode_, uint32_t u32TimeMS_)
+uint16_t EventFlag::Wait(uint16_t u16Mask_, EventFlagOperation eMode_, uint32_t u32TimeMS_)
 {
     return Wait_i(u16Mask_, eMode_, u32TimeMS_);
 }
@@ -247,30 +247,30 @@ void EventFlag::Set(uint16_t u16Mask_)
 
             // For the "any" mode - unblock the blocked threads if one or more bits
             // in the thread's bitmask match the object's bitmask
-            if ((EVENT_FLAG_ANY == eThreadMode) || (EVENT_FLAG_ANY_CLEAR == eThreadMode)) {
+            if ((EventFlagOperation::Any_Set == eThreadMode) || (EventFlagOperation::Any_Clear == eThreadMode)) {
                 if ((u16ThreadMask & m_u16SetMask) != 0) {
-                    pclPrev->SetEventFlagMode(EVENT_FLAG_PENDING_UNBLOCK);
+                    pclPrev->SetEventFlagMode(EventFlagOperation::Pending_Unblock);
                     pclPrev->SetEventFlagMask(m_u16SetMask & u16ThreadMask);
                     bReschedule = true;
 
                     // If the "clear" variant is set, then clear the bits in the mask
                     // that caused the thread to unblock.
-                    if (EVENT_FLAG_ANY_CLEAR == eThreadMode) {
+                    if (EventFlagOperation::Any_Clear == eThreadMode) {
                         u16NewMask &= ~(u16ThreadMask & u16Mask_);
                     }
                 }
             }
             // For the "all" mode, every set bit in the thread's requested bitmask must
             // match the object's flag mask.
-            else if ((EVENT_FLAG_ALL == eThreadMode) || (EVENT_FLAG_ALL_CLEAR == eThreadMode)) {
+            else if ((EventFlagOperation::All_Set == eThreadMode) || (EventFlagOperation::All_Clear == eThreadMode)) {
                 if ((u16ThreadMask & m_u16SetMask) == u16ThreadMask) {
-                    pclPrev->SetEventFlagMode(EVENT_FLAG_PENDING_UNBLOCK);
+                    pclPrev->SetEventFlagMode(EventFlagOperation::Pending_Unblock);
                     pclPrev->SetEventFlagMask(u16ThreadMask);
                     bReschedule = true;
 
                     // If the "clear" variant is set, then clear the bits in the mask
                     // that caused the thread to unblock.
-                    if (EVENT_FLAG_ALL_CLEAR == eThreadMode) {
+                    if (EventFlagOperation::All_Clear == eThreadMode) {
                         u16NewMask &= ~(u16ThreadMask & u16Mask_);
                     }
                 }
@@ -295,7 +295,7 @@ void EventFlag::Set(uint16_t u16Mask_)
 
             // If the first pass indicated that this thread should be
             // unblocked, then unblock the thread
-            if (pclPrev->GetEventFlagMode() == EVENT_FLAG_PENDING_UNBLOCK) {
+            if (pclPrev->GetEventFlagMode() == EventFlagOperation::Pending_Unblock) {
                 UnBlock(pclPrev);
             }
         } while (!bIsTail);

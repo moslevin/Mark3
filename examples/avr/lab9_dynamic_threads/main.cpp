@@ -241,7 +241,7 @@ void App1Main(void* unused_)
 
         // Check that we're sure the worker thread has terminated before we try running the
         // test loop again.
-        while (clMyThread.GetState() != THREAD_STATE_EXIT) {
+        while (clMyThread.GetState() != ThreadState::Exit) {
         }
 
         KernelAware::Print("  Test Done\n");

@@ -88,7 +88,7 @@ TEST(ut_sanity_sem)
 
     clSemaphore.Init(0, 1);
 
-    clTestThread1.Init(aucTestStack1, TEST_STACK1_SIZE, 1, (ThreadEntry_t)TestSemThread, (void*)&clSemaphore);
+    clTestThread1.Init(aucTestStack1, TEST_STACK1_SIZE, 1, (ThreadEntryFunc)TestSemThread, (void*)&clSemaphore);
     clTestThread1.Start();
 
     u8TestVal = 0x12;
@@ -140,7 +140,7 @@ TEST(ut_sanity_timed_sem)
 
     clSem.Init(0, 1);
 
-    clTestThread1.Init(aucTestStack1, TEST_STACK1_SIZE, 2, (ThreadEntry_t)TimedSemaphoreThread_Short, (void*)&clSem);
+    clTestThread1.Init(aucTestStack1, TEST_STACK1_SIZE, 2, (ThreadEntryFunc)TimedSemaphoreThread_Short, (void*)&clSem);
     clTestThread1.Start();
 
     // Test 1 - block on a semaphore, wait on thread that will post before expiry
@@ -150,7 +150,7 @@ TEST(ut_sanity_timed_sem)
     // Test 2 - block on a semaphore, wait on thread that will post after expiry
     clSem.Init(0, 1);
 
-    clTestThread1.Init(aucTestStack1, TEST_STACK1_SIZE, 2, (ThreadEntry_t)TimedSemaphoreThread_Long, (void*)&clSem);
+    clTestThread1.Init(aucTestStack1, TEST_STACK1_SIZE, 2, (ThreadEntryFunc)TimedSemaphoreThread_Long, (void*)&clSem);
     clTestThread1.Start();
 
     EXPECT_FALSE(clSem.Pend(15));
@@ -185,7 +185,7 @@ TEST(ut_sanity_sleep)
 
     // Create a lower-priority thread that sets the test value to a known
     // cookie.
-    clTestThread1.Init(aucTestStack1, TEST_STACK1_SIZE, 2, (ThreadEntry_t)TestSleepThread, NULL);
+    clTestThread1.Init(aucTestStack1, TEST_STACK1_SIZE, 2, (ThreadEntryFunc)TestSleepThread, NULL);
     clTestThread1.Start();
 
     // Sleep, when we wake up check the test value
@@ -249,7 +249,7 @@ TEST(ut_sanity_mutex)
     u8TestVal = 0x10;
     clMutex.Claim();
 
-    clTestThread1.Init(aucTestStack1, TEST_STACK1_SIZE, 2, (ThreadEntry_t)TestMutexThread, (void*)&clMutex);
+    clTestThread1.Init(aucTestStack1, TEST_STACK1_SIZE, 2, (ThreadEntryFunc)TestMutexThread, (void*)&clMutex);
     clTestThread1.Start();
 
     u8TestVal = 0xDC;
@@ -262,7 +262,7 @@ TEST(ut_sanity_mutex)
 
     clMutex.Init();
 
-    clTestThread1.Init(aucTestStack1, TEST_STACK1_SIZE, 2, (ThreadEntry_t)TestTimedMutexThreadShort, (void*)&clMutex);
+    clTestThread1.Init(aucTestStack1, TEST_STACK1_SIZE, 2, (ThreadEntryFunc)TestTimedMutexThreadShort, (void*)&clMutex);
     clTestThread1.Start();
 
     EXPECT_TRUE(clMutex.Claim(15));
@@ -271,7 +271,7 @@ TEST(ut_sanity_mutex)
 
     clMutex.Init();
 
-    clTestThread1.Init(aucTestStack1, TEST_STACK1_SIZE, 2, (ThreadEntry_t)TestTimedMutexThreadLong, (void*)&clMutex);
+    clTestThread1.Init(aucTestStack1, TEST_STACK1_SIZE, 2, (ThreadEntryFunc)TestTimedMutexThreadLong, (void*)&clMutex);
     clTestThread1.Start();
 
     EXPECT_FALSE(clMutex.Claim(15));
@@ -302,7 +302,7 @@ TEST(ut_sanity_timed_msg)
 {
     Message* pclMsg;
 
-    clTestThread1.Init(aucTestStack1, TEST_STACK1_SIZE, 2, (ThreadEntry_t)TimedMessageThread, (void*)&clMsgQ1);
+    clTestThread1.Init(aucTestStack1, TEST_STACK1_SIZE, 2, (ThreadEntryFunc)TimedMessageThread, (void*)&clMsgQ1);
     clTestThread1.Start();
 
     pclMsg = clMsgQ1.Receive(15);
@@ -415,7 +415,7 @@ TEST(ut_sanity_msg)
 
     pclMesg = s_clMessagePool.Pop();
 
-    clTestThread1.Init(aucTestStack1, TEST_STACK1_SIZE, 2, (ThreadEntry_t)TestMessageTest, NULL);
+    clTestThread1.Init(aucTestStack1, TEST_STACK1_SIZE, 2, (ThreadEntryFunc)TestMessageTest, NULL);
     clTestThread1.Start();
     Thread::Yield();
 
@@ -486,9 +486,9 @@ TEST(ut_sanity_rr)
 
     Scheduler::GetInstance()->GetCurrentThread()->SetPriority(3);
 
-    clTestThread1.Init(aucTestStack1, TEST_STACK1_SIZE, 2, (ThreadEntry_t)TestRRThread, (void*)&u32Counter1);
-    clTestThread2.Init(aucTestStack2, TEST_STACK2_SIZE, 2, (ThreadEntry_t)TestRRThread, (void*)&u32Counter2);
-    clTestThread3.Init(aucTestStack3, TEST_STACK3_SIZE, 2, (ThreadEntry_t)TestRRThread, (void*)&u32Counter3);
+    clTestThread1.Init(aucTestStack1, TEST_STACK1_SIZE, 2, (ThreadEntryFunc)TestRRThread, (void*)&u32Counter1);
+    clTestThread2.Init(aucTestStack2, TEST_STACK2_SIZE, 2, (ThreadEntryFunc)TestRRThread, (void*)&u32Counter2);
+    clTestThread3.Init(aucTestStack3, TEST_STACK3_SIZE, 2, (ThreadEntryFunc)TestRRThread, (void*)&u32Counter3);
 
     clTestThread1.Start();
     clTestThread2.Start();
@@ -534,9 +534,9 @@ TEST(ut_sanity_quantum)
 
     Scheduler::GetInstance()->GetCurrentThread()->SetPriority(3);
 
-    clTestThread1.Init(aucTestStack1, TEST_STACK1_SIZE, 2, (ThreadEntry_t)TestRRThread, (void*)&u32Counter1);
-    clTestThread2.Init(aucTestStack2, TEST_STACK2_SIZE, 2, (ThreadEntry_t)TestRRThread, (void*)&u32Counter2);
-    clTestThread3.Init(aucTestStack3, TEST_STACK3_SIZE, 2, (ThreadEntry_t)TestRRThread, (void*)&u32Counter3);
+    clTestThread1.Init(aucTestStack1, TEST_STACK1_SIZE, 2, (ThreadEntryFunc)TestRRThread, (void*)&u32Counter1);
+    clTestThread2.Init(aucTestStack2, TEST_STACK2_SIZE, 2, (ThreadEntryFunc)TestRRThread, (void*)&u32Counter2);
+    clTestThread3.Init(aucTestStack3, TEST_STACK3_SIZE, 2, (ThreadEntryFunc)TestRRThread, (void*)&u32Counter3);
 
     clTestThread1.SetQuantum(10);
     clTestThread2.SetQuantum(20);

@@ -49,9 +49,9 @@ See license.txt for more information
 class Thread;
 
 //---------------------------------------------------------------------------
-typedef void (*ThreadCreateCallout_t)(Thread* pclThread_);
-typedef void (*ThreadExitCallout_t)(Thread* pclThread_);
-typedef void (*ThreadContextCallout_t)(Thread* pclThread_);
+using ThreadCreateCallout_t = void (*)(Thread* pclThread_);
+using ThreadExitCallout_t = void (*)(Thread* pclThread_);
+using ThreadContextCallout_t = void (*)(Thread* pclThread_);
 
 //---------------------------------------------------------------------------
 /*!
@@ -64,9 +64,9 @@ public:
     ~Thread();
 
 #if KERNEL_EXTRA_CHECKS
-    Thread() { m_eState = THREAD_STATE_INVALID; }
+    Thread() { m_eState = ThreadState::Invalid; }
 
-    bool IsInitialized() { return (m_eState != THREAD_STATE_INVALID); }
+    bool IsInitialized() { return (m_eState != ThreadState::Invalid); }
 #endif
 
     /*!
@@ -85,7 +85,7 @@ public:
      *                       entrypoint function.
      */
     void
-    Init(K_WORD* pwStack_, uint16_t u16StackSize_, PORT_PRIO_TYPE uXPriority_, ThreadEntry_t pfEntryPoint_, void* pvArg_);
+    Init(K_WORD* pwStack_, uint16_t u16StackSize_, PORT_PRIO_TYPE uXPriority_, ThreadEntryFunc pfEntryPoint_, void* pvArg_);
 
 #if KERNEL_USE_AUTO_ALLOC
     /*!
@@ -106,7 +106,7 @@ public:
      *
     * \return Pointer to a newly-created thread.
     */
-    static Thread* Init(uint16_t u16StackSize_, uint8_t uXPriority_, ThreadEntry_t pfEntryPoint_, void* pvArg_);
+    static Thread* Init(uint16_t u16StackSize_, uint8_t uXPriority_, ThreadEntryFunc pfEntryPoint_, void* pvArg_);
 #endif
 
     /*!
@@ -335,12 +335,12 @@ public:
      * \param eMode_ Event flag operation mode, defines the logical operator
      *               to apply to the event flag.
      */
-    void SetEventFlagMode(EventFlagOperation_t eMode_) { m_eFlagMode = eMode_; }
+    void SetEventFlagMode(EventFlagOperation eMode_) { m_eFlagMode = eMode_; }
     /*!
      * \brief GetEventFlagMode Returns the thread's event flag's operating mode
      * \return The thread's event flag mode.
      */
-    EventFlagOperation_t GetEventFlagMode() { return m_eFlagMode; }
+    EventFlagOperation GetEventFlagMode() { return m_eFlagMode; }
 #endif
 
 #if KERNEL_USE_TIMEOUTS || KERNEL_USE_SLEEP
@@ -410,7 +410,7 @@ public:
      *        is ready (or running), stopped, or terminated/exit'd.
      * \return ThreadState_t representing the thread's current state
      */
-    ThreadState_t GetState() { return m_eState; }
+    ThreadState GetState() { return m_eState; }
     /*!
      * \brief SetState Set the thread's state to a new value.  This
      *        is only to be used by code within the kernel, and is not
@@ -418,7 +418,7 @@ public:
      *
      * \param eState_ New thread state to set.
      */
-    void SetState(ThreadState_t eState_) { m_eState = eState_; }
+    void SetState(ThreadState eState_) { m_eState = eState_; }
 
     /*!
      * \brief GetStack
@@ -466,7 +466,7 @@ private:
     PORT_PRIO_TYPE m_uXCurPriority;
 
     //! Enum indicating the thread's current state    
-    ThreadState_t m_eState;
+    ThreadState m_eState;
 
 #if KERNEL_USE_EXTENDED_CONTEXT
     //! Pointer provided to a Thread to implement thread-local storage
@@ -488,7 +488,7 @@ private:
     ThreadList* m_pclOwner;
 
     //! The entry-point function called when the thread starts
-    ThreadEntry_t m_pfEntryPoint;
+    ThreadEntryFunc m_pfEntryPoint;
 
     //! Pointer to the argument passed into the thread's entrypoint
     void* m_pvArg;
@@ -503,7 +503,7 @@ private:
     uint16_t m_u16FlagMask;
 
     //! Event-flag mode
-    EventFlagOperation_t m_eFlagMode;
+    EventFlagOperation m_eFlagMode;
 #endif
 
 #if KERNEL_USE_TIMEOUTS || KERNEL_USE_SLEEP
@@ -550,7 +550,7 @@ typedef struct {
     PORT_PRIO_TYPE m_uXCurPriority;
 
     //! Enum indicating the thread's current state
-    ThreadState_t m_eState;
+    ThreadState m_eState;
 
 #if KERNEL_USE_EXTENDED_CONTEXT
     //! Pointer provided to a Thread to implement thread-local storage

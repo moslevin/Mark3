@@ -180,7 +180,7 @@ bool Kernel_IsStarted(void)
 }
 
 //---------------------------------------------------------------------------
-void Kernel_SetPanic(PanicFunc_t pfPanic_)
+void Kernel_SetPanic(PanicFunc pfPanic_)
 {
     Kernel::GetInstance()->SetPanic(pfPanic_);
 }
@@ -199,7 +199,7 @@ void Kernel_Panic(uint16_t u16Cause_)
 
 #if KERNEL_USE_IDLE_FUNC
 //---------------------------------------------------------------------------
-void Kernel_SetIdleFunc(IdleFunc_t pfIdle_)
+void Kernel_SetIdleFunc(IdleFunc pfIdle_)
 {
     Kernel::GetInstance()->SetIdleFunc(pfIdle_);
 }
@@ -286,7 +286,7 @@ void Thread_Init(Thread_t      handle,
                  K_WORD*       pwStack_,
                  uint16_t      u16StackSize_,
                  PORT_PRIO_TYPE     uXPriority_,
-                 ThreadEntry_t pfEntryPoint_,
+                 ThreadEntryFunc pfEntryPoint_,
                  void*         pvArg_)
 {
     Thread* pclThread = new ((void*)handle) Thread();
@@ -419,7 +419,7 @@ uint16_t Thread_GetStackSlack(Thread_t handle)
     return pclThread->GetStackSlack();
 }
 //---------------------------------------------------------------------------
-ThreadState_t Thread_GetState(Thread_t handle)
+ThreadState Thread_GetState(Thread_t handle)
 {
     Thread* pclThread = (Thread*)handle;
     return pclThread->GetState();
@@ -544,7 +544,7 @@ void EventFlag_Init(EventFlag_t handle)
 }
 
 //---------------------------------------------------------------------------
-uint16_t EventFlag_Wait(EventFlag_t handle, uint16_t u16Mask_, EventFlagOperation_t eMode_)
+uint16_t EventFlag_Wait(EventFlag_t handle, uint16_t u16Mask_, EventFlagOperation eMode_)
 {
     EventFlag* pclFlag = (EventFlag*)handle;
     return pclFlag->Wait(u16Mask_, eMode_);
@@ -552,7 +552,7 @@ uint16_t EventFlag_Wait(EventFlag_t handle, uint16_t u16Mask_, EventFlagOperatio
 
 #if KERNEL_USE_TIMEOUTS
 //---------------------------------------------------------------------------
-uint16_t EventFlag_TimedWait(EventFlag_t handle, uint16_t u16Mask_, EventFlagOperation_t eMode_, uint32_t u32TimeMS_)
+uint16_t EventFlag_TimedWait(EventFlag_t handle, uint16_t u16Mask_, EventFlagOperation eMode_, uint32_t u32TimeMS_)
 {
     EventFlag* pclFlag = (EventFlag*)handle;
     return pclFlag->Wait(u16Mask_, eMode_, u32TimeMS_);

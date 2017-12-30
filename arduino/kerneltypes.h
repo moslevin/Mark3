@@ -48,13 +48,13 @@ typedef void (*ThreadEntry_t)(void* pvArg_);
  * event flag blocking object.
  */
 typedef enum {
-    EVENT_FLAG_ALL,            //!< Block until all bits in the specified bitmask are set
-    EVENT_FLAG_ANY,            //!< Block until any bits in the specified bitmask are set
-    EVENT_FLAG_ALL_CLEAR,      //!< Block until all bits in the specified bitmask are cleared
-    EVENT_FLAG_ANY_CLEAR,      //!< Block until any bits in the specified bitmask are cleared
+    EventFlagOperation_t::All_Set,            //!< Block until all bits in the specified bitmask are set
+    EventFlagOperation_t::Any_Set,            //!< Block until any bits in the specified bitmask are set
+    EventFlagOperation_t::All_Clear,      //!< Block until all bits in the specified bitmask are cleared
+    EventFlagOperation_t::Any_Clear,      //!< Block until any bits in the specified bitmask are cleared
                                //---
     EVENT_FLAG_MODES,          //!< Count of event-flag modes.  Not used by user
-    EVENT_FLAG_PENDING_UNBLOCK //!< Special code.  Not used by user
+    EventFlagOperation_t::Pending_Unblock //!< Special code.  Not used by user
 } EventFlagOperation_t;
 
 //---------------------------------------------------------------------------
@@ -62,10 +62,10 @@ typedef enum {
  *   Enumeration representing the different states a thread can exist in
  */
 typedef enum {
-    THREAD_STATE_EXIT = 0,
-    THREAD_STATE_READY,
-    THREAD_STATE_BLOCKED,
-    THREAD_STATE_STOP,
+    ThreadState_t::Exit = 0,
+    ThreadState_t::Ready,
+    ThreadState_t::Blocked,
+    Stop,
     //--
     THREAD_STATES
 } ThreadState_t;

@@ -19,7 +19,7 @@ Lab Example 7: Using Event Flags
 
 Lessons covered in this example include:
 -Using the EventFlag Class to synchronize thread execution
--Explore the behavior of the EVENT_FLAG_ANY and EVENT_FLAG_ALL, and the
+-Explore the behavior of the EventFlagOperation_t::Any_Set and EventFlagOperation_t::All_Set, and the
  event-mask bitfield.
 
 Takeaway:
@@ -87,12 +87,12 @@ void App1Main(void* unused_)
         // priorities to be handled in different threads, while still using
         // the same event-flag object.
 
-        // Also note that EVENT_FLAG_ANY indicates that the thread will be
+        // Also note that EventFlagOperation_t::Any_Set indicates that the thread will be
         // unblocked whenever any of the flags in the mask are selected.  If
         // you wanted to trigger an action that only takes place once multiple
         // bits are set, you could block the thread waiting for a specific
-        // event bitmask with EVENT_FLAG_ALL specified.
-        usFlags = EventFlag_Wait(hFlags, 0xFFFF, EVENT_FLAG_ANY);
+        // event bitmask with EventFlagOperation_t::All_Set specified.
+        usFlags = EventFlag_Wait(hFlags, 0xFFFF, EventFlagOperation_t::Any_Set);
 
         // Print a message indicaating which bit was set this time.
         switch (usFlags) {

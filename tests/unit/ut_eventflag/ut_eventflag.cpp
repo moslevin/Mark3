@@ -40,7 +40,7 @@ volatile uint8_t u8TimeoutCount = 0;
 //---------------------------------------------------------------------------
 void WaitOnFlag1Any(void* unused_)
 {
-    clFlagGroup.Wait(0x0001, EVENT_FLAG_ANY);
+    clFlagGroup.Wait(0x0001, EventFlagOperation::Any_Set);
     u8FlagCount++;
 
     Scheduler::GetInstance()->GetCurrentThread()->Exit();
@@ -49,7 +49,7 @@ void WaitOnFlag1Any(void* unused_)
 //---------------------------------------------------------------------------
 void WaitOnMultiAny(void* unused_)
 {
-    clFlagGroup.Wait(0x5555, EVENT_FLAG_ANY);
+    clFlagGroup.Wait(0x5555, EventFlagOperation::Any_Set);
     u8FlagCount++;
 
     Scheduler::GetInstance()->GetCurrentThread()->Exit();
@@ -58,7 +58,7 @@ void WaitOnMultiAny(void* unused_)
 //---------------------------------------------------------------------------
 void WaitOnMultiAll(void* unused_)
 {
-    clFlagGroup.Wait(0x5555, EVENT_FLAG_ALL);
+    clFlagGroup.Wait(0x5555, EventFlagOperation::All_Set);
     u8FlagCount++;
 
     Scheduler::GetInstance()->GetCurrentThread()->Exit();
@@ -69,7 +69,7 @@ void WaitOnAny(void* mask_)
 {
     uint16_t u16Mask = *((uint16_t*)mask_);
     while (1) {
-        clFlagGroup.Wait(u16Mask, EVENT_FLAG_ANY);
+        clFlagGroup.Wait(u16Mask, EventFlagOperation::Any_Set);
         u8FlagCount++;
         clFlagGroup.Clear(u16Mask);
     }
@@ -80,7 +80,7 @@ void WaitOnAll(void* mask_)
 {
     uint16_t u16Mask = *((uint16_t*)mask_);
     while (1) {
-        clFlagGroup.Wait(u16Mask, EVENT_FLAG_ALL);
+        clFlagGroup.Wait(u16Mask, EventFlagOperation::All_Set);
         u8FlagCount++;
         clFlagGroup.Clear(u16Mask);
     }
@@ -91,7 +91,7 @@ void TimedWait(void* time_)
 {
     uint16_t u16Ret;
     uint16_t u16Time = *((uint16_t*)time_);
-    u16Ret           = clFlagGroup.Wait(0x0001, EVENT_FLAG_ALL, u16Time);
+    u16Ret           = clFlagGroup.Wait(0x0001, EventFlagOperation::All_Set, u16Time);
     if (u16Ret == 0x0001) {
         u8FlagCount++;
     } else if (u16Ret == 0x0000) {
@@ -107,7 +107,7 @@ void TimedWaitAll(void* time_)
     (void)time_;
     uint16_t u16Ret;
     while (1) {
-        u16Ret = clFlagGroup.Wait(0x0001, EVENT_FLAG_ALL, 200);
+        u16Ret = clFlagGroup.Wait(0x0001, EventFlagOperation::All_Set, 200);
         if (u16Ret == 0x0001) {
             u8FlagCount++;
         } else if (u16Ret == 0x0000) {

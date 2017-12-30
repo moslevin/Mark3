@@ -29,26 +29,26 @@ See license.txt for more information
 // Define function pointer types used for interfacing with an external heap.
 
 //---------------------------------------------------------------------------
-typedef enum {
+enum class AutoAllocType : uint8_t {
 //-- Kernel object types
-    AUTO_ALLOC_TYPE_EVENTFLAG,
-    AUTO_ALLOC_TYPE_MAILBOX,
-    AUTO_ALLOC_TYPE_MESSAGE,
-    AUTO_ALLOC_TYPE_MESSAGEQUEUE,
-    AUTO_ALLOC_TYPE_MUTEX,
-    AUTO_ALLOC_TYPE_NOTIFY,
-    AUTO_ALLOC_TYPE_SEMAPHORE,
-    AUTO_ALLOC_TYPE_THREAD,
-    AUTO_ALLOC_TYPE_TIMER,
-//-- Allow for users to define their own object types beginning with AUTO_ALLOC_TYPE_USER
-    AUTO_ALLOC_TYPE_USER,
+    EventFlag,
+    MailBox,
+    Message,
+    MessageQueue,
+    Mutex,
+    Notify,
+    Semaphore,
+    Thread,
+    Timer,
+//-- Allow for users to define their own object types beginning with AutoAllocType_t::User
+    User,
 //--
-    AUTO_ALLOC_TYPE_RAW = 0xFF
-} AutoAllocType_t;
+    Raw = 0xFF
+};
 
 //---------------------------------------------------------------------------
-typedef void* (*AutoAllocAllocator_t)(AutoAllocType_t eType_, size_t sSize_);
-typedef void* (*AutoAllocFree_t)(AutoAllocType_t eType_, void* pvObj_);
+using AutoAllocAllocator_t = void* (*)(AutoAllocType eType_, size_t sSize_);
+using AutoAllocFree_t = void* (*)(AutoAllocType eType_, void* pvObj_);
 
 //---------------------------------------------------------------------------
 // Forward declaration of kernel objects that can be auotomatically allocated.
@@ -276,8 +276,8 @@ public:
 
 private:
 
-    void* Allocate(AutoAllocType_t eType_, size_t sSize_);
-    void Free(AutoAllocType_t eType_, void* pvObj_);
+    void* Allocate(AutoAllocType eType_, size_t sSize_);
+    void Free(AutoAllocType eType_, void* pvObj_);
 
     AutoAllocAllocator_t m_pfAllocator;    //!< Function used to allocate objects
     AutoAllocFree_t      m_pfFree;         //!< Funciton used to free objects

@@ -92,7 +92,7 @@ class Thread;
  * pvData_ is a pointer to some data or object that needs to know about the
  *         timer's expiry from within the timer interrupt context.
   */
-typedef void (*TimerCallback_t)(Thread* pclOwner_, void* pvData_);
+using TimerCallback_t = void (*)(Thread* pclOwner_, void* pvData_);
 
 //---------------------------------------------------------------------------
 class TimerList;

@@ -33,7 +33,7 @@ void AutoAlloc::Init()
 }
 
 //---------------------------------------------------------------------------
-void* AutoAlloc::Allocate(AutoAllocType_t eType_, size_t sSize_)
+void* AutoAlloc::Allocate(AutoAllocType eType_, size_t sSize_)
 {
     if (!m_pfAllocator) {
         return NULL;
@@ -42,7 +42,7 @@ void* AutoAlloc::Allocate(AutoAllocType_t eType_, size_t sSize_)
 }
 
 //---------------------------------------------------------------------------
-void AutoAlloc::Free(AutoAllocType_t eType_, void* pvObj_)
+void AutoAlloc::Free(AutoAllocType eType_, void* pvObj_)
 {
     if (!m_pfFree) {
         return;
@@ -54,7 +54,7 @@ void AutoAlloc::Free(AutoAllocType_t eType_, void* pvObj_)
 //---------------------------------------------------------------------------
 Semaphore* AutoAlloc::NewSemaphore(void)
 {
-    void* pvObj = Allocate(AUTO_ALLOC_TYPE_SEMAPHORE, sizeof(Semaphore));
+    void* pvObj = Allocate(AutoAllocType::Semaphore, sizeof(Semaphore));
     if (pvObj) {
         return new (pvObj) Semaphore();
     }
@@ -64,7 +64,7 @@ Semaphore* AutoAlloc::NewSemaphore(void)
 void AutoAlloc::DestroySemaphore(Semaphore *pclSemaphore_)
 {
     pclSemaphore_->~Semaphore();
-    Free(AUTO_ALLOC_TYPE_SEMAPHORE, pclSemaphore_);
+    Free(AutoAllocType::Semaphore, pclSemaphore_);
 }
 #endif
 
@@ -72,7 +72,7 @@ void AutoAlloc::DestroySemaphore(Semaphore *pclSemaphore_)
 //---------------------------------------------------------------------------
 Mutex* AutoAlloc::NewMutex(void)
 {
-    void* pvObj = Allocate(AUTO_ALLOC_TYPE_MUTEX, sizeof(Mutex));
+    void* pvObj = Allocate(AutoAllocType::Mutex, sizeof(Mutex));
     if (pvObj) {
         return new (pvObj) Mutex();
     }
@@ -82,7 +82,7 @@ Mutex* AutoAlloc::NewMutex(void)
 void AutoAlloc::DestroyMutex(Mutex *pclMutex_)
 {
     pclMutex_->~Mutex();
-    Free(AUTO_ALLOC_TYPE_MUTEX, pclMutex_);
+    Free(AutoAllocType::Mutex, pclMutex_);
 }
 #endif
 
@@ -90,7 +90,7 @@ void AutoAlloc::DestroyMutex(Mutex *pclMutex_)
 //---------------------------------------------------------------------------
 EventFlag* AutoAlloc::NewEventFlag(void)
 {
-    void* pvObj = Allocate(AUTO_ALLOC_TYPE_EVENTFLAG, sizeof(EventFlag));
+    void* pvObj = Allocate(AutoAllocType::EventFlag, sizeof(EventFlag));
     if (pvObj) {
         return new (pvObj) EventFlag();
     }
@@ -100,7 +100,7 @@ EventFlag* AutoAlloc::NewEventFlag(void)
 void AutoAlloc::DestroyEventFlag(EventFlag *pclEventFlag_)
 {
     pclEventFlag_->~EventFlag();
-    Free(AUTO_ALLOC_TYPE_EVENTFLAG, pclEventFlag_);
+    Free(AutoAllocType::EventFlag, pclEventFlag_);
 }
 #endif
 
@@ -108,7 +108,7 @@ void AutoAlloc::DestroyEventFlag(EventFlag *pclEventFlag_)
 //---------------------------------------------------------------------------
 Message* AutoAlloc::NewMessage(void)
 {
-    void* pvObj = Allocate(AUTO_ALLOC_TYPE_MESSAGE, sizeof(Message));
+    void* pvObj = Allocate(AutoAllocType::Message, sizeof(Message));
     if (pvObj) {
         return new (pvObj) Message();
     }
@@ -118,13 +118,13 @@ Message* AutoAlloc::NewMessage(void)
 void AutoAlloc::DestroyMessage(Message *pclMessage_)
 {
     pclMessage_->~Message();
-    Free(AUTO_ALLOC_TYPE_MESSAGE, pclMessage_);
+    Free(AutoAllocType::Message, pclMessage_);
 }
 
 //---------------------------------------------------------------------------
 MessageQueue* AutoAlloc::NewMessageQueue(void)
 {
-    void* pvObj = Allocate(AUTO_ALLOC_TYPE_MESSAGEQUEUE, sizeof(MessageQueue));
+    void* pvObj = Allocate(AutoAllocType::MessageQueue, sizeof(MessageQueue));
     if (pvObj) {
         return new (pvObj) MessageQueue();
     }
@@ -134,7 +134,7 @@ MessageQueue* AutoAlloc::NewMessageQueue(void)
 void AutoAlloc::DestroyMessageQueue(MessageQueue *pclMessageQ_)
 {
     pclMessageQ_->~MessageQueue();
-    Free(AUTO_ALLOC_TYPE_MESSAGEQUEUE, pclMessageQ_);
+    Free(AutoAllocType::MessageQueue, pclMessageQ_);
 }
 
 #endif
@@ -143,7 +143,7 @@ void AutoAlloc::DestroyMessageQueue(MessageQueue *pclMessageQ_)
 //---------------------------------------------------------------------------
 Notify* AutoAlloc::NewNotify(void)
 {
-    void* pvObj = Allocate(AUTO_ALLOC_TYPE_NOTIFY, sizeof(Notify));
+    void* pvObj = Allocate(AutoAllocType::Notify, sizeof(Notify));
     if (pvObj) {
         return new (pvObj) Notify();
     }
@@ -153,7 +153,7 @@ Notify* AutoAlloc::NewNotify(void)
 void AutoAlloc::DestroyNotify(Notify *pclNotify_)
 {
     pclNotify_->~Notify();
-    Free(AUTO_ALLOC_TYPE_NOTIFY, pclNotify_);
+    Free(AutoAllocType::Notify, pclNotify_);
 }
 
 #endif
@@ -162,7 +162,7 @@ void AutoAlloc::DestroyNotify(Notify *pclNotify_)
 //---------------------------------------------------------------------------
 Mailbox* AutoAlloc::NewMailbox(void)
 {
-    void* pvObj = Allocate(AUTO_ALLOC_TYPE_MAILBOX, sizeof(Mailbox));
+    void* pvObj = Allocate(AutoAllocType::MailBox, sizeof(Mailbox));
     if (pvObj) {
         return new (pvObj) Mailbox();
     }
@@ -172,7 +172,7 @@ Mailbox* AutoAlloc::NewMailbox(void)
 void AutoAlloc::DestroyMailbox(Mailbox *pclMailbox_)
 {
     pclMailbox_->~Mailbox();
-    Free(AUTO_ALLOC_TYPE_MAILBOX, pclMailbox_);
+    Free(AutoAllocType::MailBox, pclMailbox_);
 }
 
 #endif
@@ -180,7 +180,7 @@ void AutoAlloc::DestroyMailbox(Mailbox *pclMailbox_)
 //---------------------------------------------------------------------------
 Thread* AutoAlloc::NewThread(void)
 {
-    void* pvObj = Allocate(AUTO_ALLOC_TYPE_THREAD, sizeof(Thread));
+    void* pvObj = Allocate(AutoAllocType::Thread, sizeof(Thread));
     if (pvObj) {
         return new (pvObj) Thread();
     }
@@ -190,14 +190,14 @@ Thread* AutoAlloc::NewThread(void)
 void AutoAlloc::DestroyThread(Thread *pclThread_)
 {
     pclThread_->~Thread();
-    Free(AUTO_ALLOC_TYPE_THREAD, pclThread_);
+    Free(AutoAllocType::Thread, pclThread_);
 }
 
 #if KERNEL_USE_TIMERS
 //---------------------------------------------------------------------------
 Timer* AutoAlloc::NewTimer(void)
 {
-    void* pvObj = Allocate(AUTO_ALLOC_TYPE_TIMER, sizeof(Timer));
+    void* pvObj = Allocate(AutoAllocType::Timer, sizeof(Timer));
     if (pvObj) {
         return new (pvObj) Timer();
     }
@@ -207,29 +207,29 @@ Timer* AutoAlloc::NewTimer(void)
 void AutoAlloc::DestroyTimer(Timer *pclTimer_)
 {
     pclTimer_->~Timer();
-    Free(AUTO_ALLOC_TYPE_TIMER, pclTimer_);
+    Free(AutoAllocType::Timer, pclTimer_);
 }
 #endif
 
 //---------------------------------------------------------------------------
 void* AutoAlloc::NewUserTypeAllocation(uint8_t eType_)
 {
-    return Allocate((AutoAllocType_t)eType_, 0);
+    return Allocate((AutoAllocType)eType_, 0);
 }
 //---------------------------------------------------------------------------
 void AutoAlloc::DestroyUserTypeAllocation(uint8_t eUserType_, void *pvObj_)
 {
-    Free(AUTO_ALLOC_TYPE_USER, pvObj_);
+    Free(AutoAllocType::User, pvObj_);
 }
 //---------------------------------------------------------------------------
 void* AutoAlloc::NewRawData(size_t sSize_)
 {
-    return Allocate(AUTO_ALLOC_TYPE_RAW, sSize_);
+    return Allocate(AutoAllocType::Raw, sSize_);
 }
 //---------------------------------------------------------------------------
 void AutoAlloc::DestroyRawData(void *pvData_)
 {
-    Free(AUTO_ALLOC_TYPE_RAW, pvData_);
+    Free(AutoAllocType::Raw, pvData_);
 }
 
 #endif

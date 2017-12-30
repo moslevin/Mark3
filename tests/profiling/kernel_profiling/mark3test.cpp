@@ -119,9 +119,9 @@ int main(void)
 {
     Kernel::GetInstance()->Init();
 
-    clMainThread.Init(aucMainStack, MAIN_STACK_SIZE, 1, (ThreadEntry_t)AppMain, NULL);
+    clMainThread.Init(aucMainStack, MAIN_STACK_SIZE, 1, (ThreadEntryFunc)AppMain, NULL);
 
-    clIdleThread.Init(awIdleStack, IDLE_STACK_SIZE, 0, (ThreadEntry_t)IdleMain, NULL);
+    clIdleThread.Init(awIdleStack, IDLE_STACK_SIZE, 0, (ThreadEntryFunc)IdleMain, NULL);
 
     clMainThread.Start();
     clIdleThread.Start();
@@ -254,7 +254,7 @@ static void Semaphore_Profiling()
 
     clSem.Init(0, 1);
     for (i = 0; i < 100; i++) {
-        clTestThread1.Init(awTestStack1, TEST_STACK1_SIZE, 2, (ThreadEntry_t)Semaphore_Flyback, (void*)&clSem);
+        clTestThread1.Init(awTestStack1, TEST_STACK1_SIZE, 2, (ThreadEntryFunc)Semaphore_Flyback, (void*)&clSem);
         clTestThread1.Start();
 
         clSem.Post();
@@ -309,7 +309,7 @@ static void Thread_Profiling()
         // test thread, simulating an "average" system thread.  Create the
         // thread at a higher priority than the current thread.
         clThreadInitTimer.Start();
-        clTestThread1.Init(awTestStack1, TEST_STACK1_SIZE, 2, (ThreadEntry_t)Thread_ProfilingThread, NULL);
+        clTestThread1.Init(awTestStack1, TEST_STACK1_SIZE, 2, (ThreadEntryFunc)Thread_ProfilingThread, NULL);
         clThreadInitTimer.Stop();
 
         // Profile the time it takes from calling "start" to the time when the

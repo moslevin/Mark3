@@ -79,13 +79,13 @@ int main(void)
     AppThread.Init(aucAppStack,             //!< Pointer to the stack
                    STACK_SIZE_APP,          //!< Size of the stack
                    1,                       //!< Thread priority
-                   (ThreadEntry_t)AppEntry, //!< Entry function
+                   (ThreadEntryFunc)AppEntry, //!< Entry function
                    (void*)&AppThread);      //!< Entry function argument
 
     IdleThread.Init(aucIdleStack,             //!< Pointer to the stack
                     STACK_SIZE_IDLE,          //!< Size of the stack
                     0,                        //!< Thread priority
-                    (ThreadEntry_t)IdleEntry, //!< Entry function
+                    (ThreadEntryFunc)IdleEntry, //!< Entry function
                     NULL);                    //!< Entry function argument
 
     AppThread.Start(); //!< Schedule the threads

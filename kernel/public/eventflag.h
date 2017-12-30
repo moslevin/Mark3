@@ -57,22 +57,22 @@ public:
     /*!
      * \brief Wait - Block a thread on the specific flags in this event flag group
      * \param u16Mask_ - 16-bit bitmask to block on
-     * \param eMode_ - EVENT_FLAG_ANY:  Thread will block on any of the bits in the mask
-     *               - EVENT_FLAG_ALL:  Thread will block on all of the bits in the mask
+     * \param eMode_ - EventFlagOperation_t::Any_Set:  Thread will block on any of the bits in the mask
+     *               - EventFlagOperation_t::All_Set:  Thread will block on all of the bits in the mask
      * \return Bitmask condition that caused the thread to unblock, or 0 on error or timeout
      */
-    uint16_t Wait(uint16_t u16Mask_, EventFlagOperation_t eMode_);
+    uint16_t Wait(uint16_t u16Mask_, EventFlagOperation eMode_);
 
 #if KERNEL_USE_TIMEOUTS
     /*!
      * \brief Wait - Block a thread on the specific flags in this event flag group
      * \param u16Mask_ - 16-bit bitmask to block on
-     * \param eMode_ - EVENT_FLAG_ANY:  Thread will block on any of the bits in the mask
-     *               - EVENT_FLAG_ALL:  Thread will block on all of the bits in the mask
+     * \param eMode_ - EventFlagOperation_t::Any_Set:  Thread will block on any of the bits in the mask
+     *               - EventFlagOperation_t::All_Set:  Thread will block on all of the bits in the mask
      * \param u32TimeMS_ - Time to block (in ms)
      * \return Bitmask condition that caused the thread to unblock, or 0 on error or timeout
      */
-    uint16_t Wait(uint16_t u16Mask_, EventFlagOperation_t eMode_, uint32_t u32TimeMS_);
+    uint16_t Wait(uint16_t u16Mask_, EventFlagOperation eMode_, uint32_t u32TimeMS_);
 
     /*!
      * \brief WakeMe
@@ -112,21 +112,21 @@ private:
      * Interal abstraction used to manage both timed and untimed wait operations
      *
      * \param u16Mask_ - 16-bit bitmask to block on
-     * \param eMode_ - EVENT_FLAG_ANY:  Thread will block on any of the bits in the mask
-     *               - EVENT_FLAG_ALL:  Thread will block on all of the bits in the mask
+     * \param eMode_ - EventFlagOperation_t::Any_Set:  Thread will block on any of the bits in the mask
+     *               - EventFlagOperation_t::All_Set:  Thread will block on all of the bits in the mask
      * \param u32TimeMS_ - Time to block (in ms)
      *
      * \return Bitmask condition that caused the thread to unblock, or 0 on error or timeout
      */
-    uint16_t Wait_i(uint16_t u16Mask_, EventFlagOperation_t eMode_, uint32_t u32TimeMS_);
+    uint16_t Wait_i(uint16_t u16Mask_, EventFlagOperation eMode_, uint32_t u32TimeMS_);
 #else
     /*!
      * \brief Wait_i
      * Interal abstraction used to manage wait operations
      *
      * \param u16Mask_ - 16-bit bitmask to block on
-     * \param eMode_ - EVENT_FLAG_ANY:  Thread will block on any of the bits in the mask
-     *               - EVENT_FLAG_ALL:  Thread will block on all of the bits in the mask
+     * \param eMode_ - EventFlagOperation_t::Any_Set:  Thread will block on any of the bits in the mask
+     *               - EventFlagOperation_t::All_Set:  Thread will block on all of the bits in the mask
      *
      * \return Bitmask condition that caused the thread to unblock.
      */

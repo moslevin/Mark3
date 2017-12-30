@@ -104,7 +104,7 @@ static void Thread_Switch(void)
             // context).
             __nop();
             __eint();
-            Kernel::GetInstance()->IdleFunc();
+            Kernel::GetInstance()->Idle();
             __dint();
         }
 

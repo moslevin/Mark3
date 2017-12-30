@@ -963,7 +963,7 @@ See license.txt for more information
                 uint16_t u16WakeCondition;
 
                 // Allow this thread to block on multiple flags
-                u16WakeCondition = clEventFlag.Wait(0x00FF, EVENT_FLAG_ANY);
+                u16WakeCondition = clEventFlag.Wait(0x00FF, EventFlagOperation_t::Any_Set);
 
                 // Clear the event condition that caused the thread to wake (in this case,
                 // u16WakeCondtion will equal 0x20 when triggered from the interrupt above)

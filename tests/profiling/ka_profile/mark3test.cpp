@@ -55,9 +55,9 @@ int main(void)
 {
     Kernel::GetInstance()->Init();
 
-    clMainThread.Init(aucMainStack, MAIN_STACK_SIZE, 1, (ThreadEntry_t)AppMain, NULL);
+    clMainThread.Init(aucMainStack, MAIN_STACK_SIZE, 1, (ThreadEntryFunc)AppMain, NULL);
 
-    clIdleThread.Init(aucIdleStack, MAIN_STACK_SIZE, 0, (ThreadEntry_t)IdleMain, NULL);
+    clIdleThread.Init(aucIdleStack, MAIN_STACK_SIZE, 0, (ThreadEntryFunc)IdleMain, NULL);
 
     clMainThread.Start();
     clIdleThread.Start();
@@ -146,7 +146,7 @@ static void Semaphore_Profiling()
     KernelAware::ProfileReport();
     CS_EXIT();
 
-    clTestThread1.Init(aucTestStack1, TEST_STACK1_SIZE, 2, (ThreadEntry_t)Semaphore_Flyback, (void*)&clSem);
+    clTestThread1.Init(aucTestStack1, TEST_STACK1_SIZE, 2, (ThreadEntryFunc)Semaphore_Flyback, (void*)&clSem);
     clTestThread1.Start();
     clSem.Post();
 
@@ -214,7 +214,7 @@ static void Thread_Profiling()
     KernelAware::ProfileInit("ThreadInit");
     CS_ENTER();
     KernelAware::ProfileStart();
-    clTestThread1.Init(aucTestStack1, TEST_STACK1_SIZE, 2, (ThreadEntry_t)Thread_ProfilingThread, NULL);
+    clTestThread1.Init(aucTestStack1, TEST_STACK1_SIZE, 2, (ThreadEntryFunc)Thread_ProfilingThread, NULL);
     KernelAware::ProfileStop();
     CS_EXIT();
     KernelAware::ProfileReport();

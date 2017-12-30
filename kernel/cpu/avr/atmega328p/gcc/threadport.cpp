@@ -110,7 +110,7 @@ static void Thread_Switch(void)
             // with the rest of the checks being performed in an interrupt disabled
             // context).
             ASM("sei");
-            Kernel::GetInstance()->IdleFunc();
+            Kernel::GetInstance()->Idle();
             ASM("cli");
         }
 

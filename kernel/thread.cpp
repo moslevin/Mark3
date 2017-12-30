@@ -51,16 +51,16 @@ Thread::~Thread()
     // If the thread is stopped, move it to the exit state.
     // If not in the exit state, kernel panic -- it's catastrophic to have
     // running threads on stack suddenly disappear.
-    if (m_eState == THREAD_STATE_STOP) {
+    if (m_eState == ThreadState::Stop) {
         CS_ENTER();
         m_pclCurrent->Remove(this);
         m_pclCurrent = 0;
         m_pclOwner   = 0;
-        m_eState     = THREAD_STATE_EXIT;
+        m_eState     = ThreadState::Exit;
         CS_EXIT();
-    } else if (m_eState != THREAD_STATE_EXIT) {
+    } else if (m_eState != ThreadState::Exit) {
 #if KERNEL_AWARE_SIMULATION
-        KernelAware::Trace(0, 0, m_u8ThreadID, m_eState);
+        KernelAware::Trace(0, 0, m_u8ThreadID, static_cast<uint16_t>(m_eState));
 #endif
         Kernel::GetInstance()->Panic(PANIC_RUNNING_THREAD_DESCOPED);
     }
@@ -68,7 +68,7 @@ Thread::~Thread()
 
 //---------------------------------------------------------------------------
 void Thread::Init(
-    K_WORD* pwStack_, uint16_t u16StackSize_, PORT_PRIO_TYPE uXPriority_, ThreadEntry_t pfEntryPoint_, void* pvArg_)
+    K_WORD* pwStack_, K_ADDR u16StackSize_, PORT_PRIO_TYPE uXPriority_, ThreadEntryFunc pfEntryPoint_, void* pvArg_)
 {
     static uint8_t u8ThreadID = 0;
 
@@ -118,7 +118,7 @@ void Thread::Init(
     CS_ENTER();
     m_pclOwner   = Scheduler::GetInstance()->GetThreadList(m_uXPriority);
     m_pclCurrent = Scheduler::GetInstance()->GetStopList();
-    m_eState     = THREAD_STATE_STOP;
+    m_eState     = ThreadState::Stop;
     m_pclCurrent->Add(this);
     CS_EXIT();
 
@@ -128,12 +128,11 @@ void Thread::Init(
         pfCallout(this);
     }
 #endif
-
 }
 
 #if KERNEL_USE_AUTO_ALLOC
 //---------------------------------------------------------------------------
-Thread* Thread::Init(uint16_t u16StackSize_, PORT_PRIO_TYPE uXPriority_, ThreadEntry_t pfEntryPoint_, void* pvArg_)
+Thread* Thread::Init(uint16_t u16StackSize_, PORT_PRIO_TYPE uXPriority_, ThreadEntryFunc pfEntryPoint_, void* pvArg_)
 {
     auto* pclNew  = AutoAlloc::GetInstance()->NewThread();
     auto* pwStack = static_cast<K_WORD*>(AutoAlloc::GetInstance()->NewRawData(u16StackSize_)) ;
@@ -158,7 +157,7 @@ void Thread::Start(void)
     Scheduler::GetInstance()->Add(this);
     m_pclOwner   = Scheduler::GetInstance()->GetThreadList(m_uXPriority);
     m_pclCurrent = m_pclOwner;
-    m_eState     = THREAD_STATE_READY;
+    m_eState     = ThreadState::Ready;
 
 #if KERNEL_USE_QUANTUM
     if (Kernel::GetInstance()->IsStarted()) {
@@ -192,7 +191,7 @@ void Thread::Stop()
 #endif
 
     auto bReschedule = false;
-    if (m_eState == THREAD_STATE_STOP) {
+    if (m_eState == ThreadState::Stop) {
         return;
     }
 
@@ -205,16 +204,16 @@ void Thread::Stop()
 
     // Add this thread to the stop-list (removing it from active scheduling)
     // Remove the thread from scheduling
-    if (m_eState == THREAD_STATE_READY) {
+    if (m_eState == ThreadState::Ready) {
         Scheduler::GetInstance()->Remove(this);
-    } else if (m_eState == THREAD_STATE_BLOCKED) {
+    } else if (m_eState == ThreadState::Blocked) {
         m_pclCurrent->Remove(this);
     }
 
     m_pclOwner   = Scheduler::GetInstance()->GetStopList();
     m_pclCurrent = m_pclOwner;
     m_pclOwner->Add(this);
-    m_eState = THREAD_STATE_STOP;
+    m_eState = ThreadState::Stop;
 
 #if KERNEL_USE_TIMERS
     // Just to be safe - attempt to remove the thread's timer
@@ -240,7 +239,7 @@ void Thread::Exit()
     bool bReschedule = false;
 
     KERNEL_TRACE_1("Exit Thread %d", m_u8ThreadID);
-    if (m_eState == THREAD_STATE_EXIT) {
+    if (m_eState == ThreadState::Exit) {
         return;
     }
 
@@ -253,15 +252,15 @@ void Thread::Exit()
     }
 
     // Remove the thread from scheduling
-    if (m_eState == THREAD_STATE_READY) {
+    if (m_eState == ThreadState::Ready) {
         Scheduler::GetInstance()->Remove(this);
-    } else if ((m_eState == THREAD_STATE_BLOCKED) || (m_eState == THREAD_STATE_STOP)) {
+    } else if ((m_eState == ThreadState::Blocked) || (m_eState == ThreadState::Stop)) {
         m_pclCurrent->Remove(this);
     }
 
     m_pclCurrent = 0;
     m_pclOwner   = 0;
-    m_eState     = THREAD_STATE_EXIT;
+    m_eState     = ThreadState::Exit;
 
     // We've removed the thread from scheduling, but interrupts might
     // trigger checks against this thread's currently priority before
@@ -556,7 +555,7 @@ bool Thread::GetExpired()
 //---------------------------------------------------------------------------
 void Thread::InitIdle(void)
 {
-    m_eState        = THREAD_STATE_READY;
+    m_eState        = ThreadState::Ready;
     ClearNode();
 
     m_uXPriority    = 0;

@@ -50,7 +50,7 @@ void BlockingObject::Block(Thread* pclThread_)
 
     // Set the "current" list location to the blocklist for this thread
     pclThread_->SetCurrent(&m_clBlockList);
-    pclThread_->SetState(THREAD_STATE_BLOCKED);
+    pclThread_->SetState(ThreadState::Blocked);
 }
 
 //---------------------------------------------------------------------------
@@ -66,7 +66,7 @@ void BlockingObject::BlockPriority(Thread* pclThread_)
 
     // Set the "current" list location to the blocklist for this thread
     pclThread_->SetCurrent(&m_clBlockList);
-    pclThread_->SetState(THREAD_STATE_BLOCKED);
+    pclThread_->SetState(ThreadState::Blocked);
 }
 
 //---------------------------------------------------------------------------
@@ -84,7 +84,7 @@ void BlockingObject::UnBlock(Thread* pclThread_)
 
     // Tag the thread's current list location to its owner
     pclThread_->SetCurrent(pclThread_->GetOwner());
-    pclThread_->SetState(THREAD_STATE_READY);
+    pclThread_->SetState(ThreadState::Ready);
 }
 
 #endif
