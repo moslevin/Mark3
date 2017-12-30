@@ -61,7 +61,7 @@ static void App2Main(void* unused_);
 int main(void)
 {
     // See the annotations in lab1.
-    Kernel::GetInstance()->Init();
+    Kernel::Init();
 
     // In this exercise, we create two threads at the same priority level.
     // As a result, the CPU will automatically swap between these threads
@@ -86,7 +86,7 @@ int main(void)
     clApp1Thread.Start();
     clApp2Thread.Start();
 
-    Kernel::GetInstance()->Start();
+    Kernel::Start();
 
     return 0;
 }

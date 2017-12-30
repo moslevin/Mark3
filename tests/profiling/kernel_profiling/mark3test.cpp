@@ -117,7 +117,7 @@ static void IdleMain(void* unused);
 //---------------------------------------------------------------------------
 int main(void)
 {
-    Kernel::GetInstance()->Init();
+    Kernel::Init();
 
     clMainThread.Init(aucMainStack, MAIN_STACK_SIZE, 1, (ThreadEntryFunc)AppMain, NULL);
 
@@ -129,9 +129,9 @@ int main(void)
     clUART.SetName("/dev/tty");
     clUART.Init();
 
-    DriverList::GetInstance()->Add(&clUART);
+    DriverList::Add(&clUART);
 
-    Kernel::GetInstance()->Start();
+    Kernel::Start();
 }
 
 //---------------------------------------------------------------------------
@@ -224,7 +224,7 @@ static void Semaphore_Flyback(Semaphore* pclSem_)
     pclSem_->Pend();
     clSemaphoreFlyback.Stop();
 
-    Scheduler::GetInstance()->GetCurrentThread()->Exit();
+    Scheduler::GetCurrentThread()->Exit();
 }
 
 //---------------------------------------------------------------------------
@@ -296,7 +296,7 @@ static void Thread_ProfilingThread()
     // Start the "thread exit" profiling timer, which will be stopped after
     // returning back to the main app thread
     clThreadExitTimer.Start();
-    Scheduler::GetInstance()->GetCurrentThread()->Exit();
+    Scheduler::GetCurrentThread()->Exit();
 }
 
 //---------------------------------------------------------------------------
@@ -323,7 +323,7 @@ static void Thread_Profiling()
         clThreadExitTimer.Stop();
     }
 
-    Scheduler::GetInstance()->SetScheduler(0);
+    Scheduler::SetScheduler(0);
     for (i = 0; i < 100; i++) {
         // Context switch profiling - this is equivalent to what's actually
         // done within the AVR-implementation.
@@ -335,7 +335,7 @@ static void Thread_Profiling()
         }
         clContextSwitchTimer.Stop();
     }
-    Scheduler::GetInstance()->SetScheduler(1);
+    Scheduler::SetScheduler(1);
 }
 
 //---------------------------------------------------------------------------
@@ -348,7 +348,7 @@ void Scheduler_Profiling()
         // the worst-case scheduling time (not necessarily true of all
         // schedulers, but true of ours).
         clSchedulerTimer.Start();
-        Scheduler::GetInstance()->Schedule();
+        Scheduler::Schedule();
         clSchedulerTimer.Stop();
     }
 }
@@ -369,7 +369,7 @@ static void PrintWait(Driver* pclDriver_, uint16_t u16Size_, const char* data)
 //---------------------------------------------------------------------------
 void ProfilePrint(ProfileTimer* pclProfile, const char* szName_)
 {
-    Driver*  pclUART = DriverList::GetInstance()->FindByPath("/dev/tty");
+    Driver*  pclUART = DriverList::FindByPath("/dev/tty");
     char     szBuf[16];
     uint32_t u32Val = pclProfile->GetAverage() - clProfileOverhead.GetAverage();
     u32Val *= 8;
@@ -406,7 +406,7 @@ void ProfilePrintResults()
 //---------------------------------------------------------------------------
 static void AppMain(void* unused)
 {
-    UartDriver* pclUART = static_cast<UartDriver*>(DriverList::GetInstance()->FindByPath("/dev/tty"));
+    UartDriver* pclUART = static_cast<UartDriver*>(DriverList::FindByPath("/dev/tty"));
 
     ProfileInit();
 

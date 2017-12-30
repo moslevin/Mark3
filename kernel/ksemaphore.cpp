@@ -64,7 +64,7 @@ void TimedSemaphore_Callback(Thread* pclOwner_, void* pvData_)
     // Wake up the thread that was blocked on this semaphore.
     pclSemaphore->WakeMe(pclOwner_);
 
-    if (pclOwner_->GetCurPriority() >= Scheduler::GetInstance()->GetCurrentThread()->GetCurPriority()) {
+    if (pclOwner_->GetCurPriority() >= Scheduler::GetCurrentThread()->GetCurPriority()) {
         Thread::Yield();
     }
 }
@@ -76,7 +76,7 @@ Semaphore::~Semaphore()
     // If there are any threads waiting on this object when it goes out
     // of scope, set a kernel panic.
     if (m_clBlockList.GetHead() != nullptr) {
-        Kernel::GetInstance()->Panic(PANIC_ACTIVE_SEMAPHORE_DESCOPED);
+        Kernel::Panic(PANIC_ACTIVE_SEMAPHORE_DESCOPED);
     }
 }
 
@@ -102,7 +102,7 @@ uint8_t Semaphore::WakeNext()
     UnBlock(pclChosenOne);
 
     // Call a task switch if higher or equal priority thread
-    if (pclChosenOne->GetCurPriority() >= Scheduler::GetInstance()->GetCurrentThread()->GetCurPriority()) {
+    if (pclChosenOne->GetCurPriority() >= Scheduler::GetCurrentThread()->GetCurPriority()) {
         return 1;
     }
     return 0;

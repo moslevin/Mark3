@@ -123,7 +123,7 @@ void LoggerMain(void* unused_)
 //---------------------------------------------------------------------------
 int main(void)
 {
-    Kernel::GetInstance()->Init();
+    Kernel::Init();
 
     // Example assumes use of built-in idle.
     clAppThread.Init(awAppStack, APP_STACK_SIZE, 2, AppMain, 0);
@@ -139,9 +139,9 @@ int main(void)
     clUART.Init();
     clUART.Open();
 
-    DriverList::GetInstance()->Add(&clUART);
+    DriverList::Add(&clUART);
 
-    Kernel::GetInstance()->Start();
+    Kernel::Start();
 
     return 0;
 }
@@ -157,7 +157,7 @@ void AppMain(void* unused_)
 
     clSem.Init(0, 1);
 
-    TraceBuffer::GetInstance()->SetCallback(LoggerCallback);
+    TraceBuffer::SetCallback(LoggerCallback);
     volatile uint16_t u16Iteration = 0;
     while (1) {
         Thread::Sleep(100);

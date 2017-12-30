@@ -147,8 +147,8 @@ void ThreadPort::StartThreads()
 #if KERNEL_USE_PROFILER
     Profiler::Init();
 #endif
-    Scheduler::GetInstance()->SetScheduler(1); // enable the scheduler
-    Scheduler::GetInstance()->Schedule();      // run the scheduler - determine the first thread to run
+    Scheduler::SetScheduler(1); // enable the scheduler
+    Scheduler::Schedule();      // run the scheduler - determine the first thread to run
 
     Thread_Switch(); // Set the next scheduled thread to the current thread
 
@@ -160,8 +160,8 @@ void ThreadPort::StartThreads()
     // the kernel will be invalid.  This fixes a bug where multiple threads
     // started with the highest priority before starting the kernel causes problems
     // until the running thread voluntarily blocks.
-    Quantum::GetInstance()->RemoveThread();
-    Quantum::GetInstance()->AddThread(g_pclCurrent);
+    Quantum::RemoveThread();
+    Quantum::AddThread(g_pclCurrent);
 #endif
 
     ThreadPort_StartFirstThread(); // Jump to the first thread (does not return)

@@ -151,15 +151,15 @@ static void ThreadContextSwitchCallback(Thread* pclThread_)
 int main(void)
 {
     // See the annotations in previous labs for details on init.
-    Kernel::GetInstance()->Init();
+    Kernel::Init();
 
-    Kernel::GetInstance()->SetThreadCreateCallout(ThreadCreateCallout);
-    Kernel::GetInstance()->SetThreadExitCallout(ThreadExitCallout);
-    Kernel::GetInstance()->SetThreadContextSwitchCallout(ThreadContextSwitchCallback);
+    Kernel::SetThreadCreateCallout(ThreadCreateCallout);
+    Kernel::SetThreadExitCallout(ThreadExitCallout);
+    Kernel::SetThreadContextSwitchCallout(ThreadContextSwitchCallback);
 
     clApp1Thread.Init(awApp1Stack, sizeof(awApp1Stack), 1, App1Main, 0);
     clApp1Thread.Start();
-    Kernel::GetInstance()->Start();
+    Kernel::Start();
 
     return 0;
 }
@@ -194,7 +194,7 @@ static void WorkerMain2(void* arg_)
     KernelAware::Print("Worker2 -- Done Work\n");
 
     // A dynamic thread can self-terminate as well:
-    Scheduler::GetInstance()->GetCurrentThread()->Exit();
+    Scheduler::GetCurrentThread()->Exit();
 }
 
 //---------------------------------------------------------------------------

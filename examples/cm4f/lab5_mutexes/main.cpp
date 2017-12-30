@@ -65,7 +65,7 @@ static volatile uint32_t u32Counter = 0;
 int main(void)
 {
     // See the annotations in previous labs for details on init.
-    Kernel::GetInstance()->Init();
+    Kernel::Init();
 
     asm volatile(" cpsid i \n ");
 
@@ -80,7 +80,7 @@ int main(void)
     // Initialize the mutex used in this example.
     clMyMutex.Init();
 
-    Kernel::GetInstance()->Start();
+    Kernel::Start();
 
     return 0;
 }

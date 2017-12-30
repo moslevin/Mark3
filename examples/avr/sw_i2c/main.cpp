@@ -250,7 +250,7 @@ static void IdleTask(void* unused)
 int main(void)
 {
     // Init the kernel
-    Kernel::GetInstance()->Init();
+    Kernel::Init();
 
     // Start the main + idle threads
     s_clMainTask.Init(s_aucMainStack, sizeof(s_aucMainStack), 1, MainTask, 0);
@@ -260,5 +260,5 @@ int main(void)
     s_clIdleTask.Start();
 
     // Start the kernel - never returns
-    Kernel::GetInstance()->Start();
+    Kernel::Start();
 }

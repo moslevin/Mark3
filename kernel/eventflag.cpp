@@ -60,7 +60,7 @@ void TimedEventFlag_Callback(Thread* pclOwner_, void* pvData_)
     pclOwner_->SetExpired(true);
     pclOwner_->SetEventFlagMask(0);
 
-    if (pclOwner_->GetCurPriority() >= Scheduler::GetInstance()->GetCurrentThread()->GetCurPriority()) {
+    if (pclOwner_->GetCurPriority() >= Scheduler::GetCurrentThread()->GetCurPriority()) {
         Thread::Yield();
     }
 }
@@ -71,7 +71,7 @@ EventFlag::~EventFlag()
     // If there are any threads waiting on this object when it goes out
     // of scope, set a kernel panic.
     if (m_clBlockList.HighestWaiter() != nullptr) {
-        Kernel::GetInstance()->Panic(PANIC_ACTIVE_EVENTFLAG_DESCOPED);
+        Kernel::Panic(PANIC_ACTIVE_EVENTFLAG_DESCOPED);
     }
 }
 

@@ -3133,8 +3133,8 @@ See license.txt for more information
     To add and remove device drivers from the global table, we use the following
     methods:
     \code
-        void DriverList::GetInstance()->Add( Driver *pclDriver_ );
-        void DriverList::GetInstance()->Remove( Driver *pclDriver_ );
+        void DriverList::Add( Driver *pclDriver_ );
+        void DriverList::Remove( Driver *pclDriver_ );
     \endcode
 
     DriverList::Add()/Remove() takes a single argument - the pointer to the object
@@ -3157,9 +3157,9 @@ See license.txt for more information
     write a greeting to each using the same simple API functions for all drivers:
 
     \code{.cpp}
-        pclI2C  = DriverList::GetInstance()->FindByName("/dev/i2c");
-        pclUART = DriverList::GetInstance()->FindByName("/dev/tty0");
-        pclSPI  = DriverList::GetInstance()->FindByName("/dev/spi");
+        pclI2C  = DriverList::FindByName("/dev/i2c");
+        pclUART = DriverList::FindByName("/dev/tty0");
+        pclSPI  = DriverList::FindByName("/dev/spi");
 
         pclI2C->Write(12,"Hello World!");
         pclUART->Write(12, "Hello World!");
@@ -3645,7 +3645,7 @@ See license.txt for more information
     void SysTick_Handler(void)
     {
     #if KERNEL_USE_TIMERS
-        TimerScheduler::GetInstance()->Process();
+        TimerScheduler::Process();
     #endif
     #if KERNEL_USE_QUANTUM
         Quantum::UpdateTimer();

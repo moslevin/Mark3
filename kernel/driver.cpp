@@ -91,6 +91,8 @@ static uint8_t DrvCmp(const char* szStr1_, const char* szStr2_)
 }
 } // anonymous namespace
 
+DoubleLinkList DriverList::m_clDriverList;
+
 //---------------------------------------------------------------------------
 void DriverList::Init()
 {

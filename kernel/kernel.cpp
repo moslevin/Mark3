@@ -51,28 +51,46 @@ extern "C" {
  void atexit(void) {}
 }
 
+bool Kernel::m_bIsStarted; //!< true if kernel is running, false otherwise
+bool Kernel::m_bIsPanic;   //!< true if kernel is in panic state, false otherwise
+PanicFunc Kernel::m_pfPanic;    //!< set panic function
+#if KERNEL_USE_IDLE_FUNC
+IdleFunc Kernel::m_pfIdle; //!< set idle function
+FakeThread_t Kernel::m_clIdle; //!< Idle thread object (note: not a real thread)
+#endif
+
+#if KERNEL_USE_THREAD_CALLOUTS
+ThreadCreateCallout_t  Kernel::m_pfThreadCreateCallout;  //!< Function to call on thread creation
+ThreadExitCallout_t    Kernel::m_pfThreadExitCallout;    //!< Function to call on thread exit
+ThreadContextCallout_t Kernel::m_pfThreadContextCallout; //!< Function to call on context switch
+#endif
+
+#if KERNEL_USE_STACK_GUARD
+uint16_t Kernel::m_u16GuardThreshold;
+#endif
+
 //---------------------------------------------------------------------------
 void Kernel::Init(void)
 {
 #if KERNEL_USE_AUTO_ALLOC
-    AutoAlloc::GetInstance()->Init();
+    AutoAlloc::Init();
 #endif
 #if KERNEL_USE_IDLE_FUNC
     (reinterpret_cast<Thread*>(&m_clIdle))->InitIdle();
 #endif
 #if KERNEL_USE_DEBUG && !KERNEL_AWARE_SIMULATION
-    TraceBuffer::GetInstance()->Init();
+    TraceBuffer::Init();
 #endif
     KERNEL_TRACE("Initializing Mark3 Kernel");
 
     // Initialize the global kernel data - scheduler, timer-scheduler, and
     // the global message pool.
-    Scheduler::GetInstance()->Init();
+    Scheduler::Init();
 #if KERNEL_USE_DRIVER
-    DriverList::GetInstance()->Init();
+    DriverList::Init();
 #endif
 #if KERNEL_USE_TIMERS
-    TimerScheduler::GetInstance()->Init();
+    TimerScheduler::Init();
 #endif
 #if KERNEL_USE_STACK_GUARD
     m_u16GuardThreshold = KERNEL_STACK_GUARD_DEFAULT;

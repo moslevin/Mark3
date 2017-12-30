@@ -238,13 +238,7 @@ public:
      *  Initialize the list of drivers.  Must be called prior to using the
      *  device driver library.
      */
-
-    static DriverList* GetInstance() {
-        static DriverList s_clInstance;
-        return &s_clInstance;
-    }
-
-    void Init();
+    static void Init();
 
     /*!
      *  \brief Add
@@ -254,7 +248,7 @@ public:
      *  \param pclDriver_ pointer to the driver object to add to the global
      *         driver list.
      */
-    void Add(Driver* pclDriver_) { m_clDriverList.Add(pclDriver_); }
+    static void Add(Driver* pclDriver_) { m_clDriverList.Add(pclDriver_); }
     /*!
      *  \brief Remove
      *
@@ -263,7 +257,7 @@ public:
      *  \param pclDriver_ Pointer to the driver object to remove from the
      *         global table
      */
-    void Remove(Driver* pclDriver_) { m_clDriverList.Remove(pclDriver_); }
+    static void Remove(Driver* pclDriver_) { m_clDriverList.Remove(pclDriver_); }
     /*!
      *  \brief FindByPath
      *
@@ -272,11 +266,11 @@ public:
      *  default "/dev/null" object is returned.  In this way, unimplemented drivers
      *  are automatically stubbed out.
      */
-    Driver* FindByPath(const char* m_pcPath);
+    static Driver* FindByPath(const char* m_pcPath);
 
 private:
     //! LinkedList object used to implementing the driver object management
-    DoubleLinkList m_clDriverList;
+    static DoubleLinkList m_clDriverList;
 };
 
 #endif // KERNEL_USE_DRIVER

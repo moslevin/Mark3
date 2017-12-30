@@ -61,7 +61,7 @@ void TimedMutex_Callback(Thread* pclOwner_, void* pvData_)
     // Wake up the thread that was blocked on this semaphore.
     pclMutex->WakeMe(pclOwner_);
 
-    if (pclOwner_->GetCurPriority() >= Scheduler::GetInstance()->GetCurrentThread()->GetCurPriority()) {
+    if (pclOwner_->GetCurPriority() >= Scheduler::GetCurrentThread()->GetCurPriority()) {
         Thread::Yield();
     }
 }
@@ -73,7 +73,7 @@ Mutex::~Mutex()
     // If there are any threads waiting on this object when it goes out
     // of scope, set a kernel panic.
     if (m_clBlockList.GetHead() != nullptr) {
-        Kernel::GetInstance()->Panic(PANIC_ACTIVE_MUTEX_DESCOPED);
+        Kernel::Panic(PANIC_ACTIVE_MUTEX_DESCOPED);
     }
 }
 
@@ -99,7 +99,7 @@ uint8_t Mutex::WakeNext()
     m_pclOwner = pclChosenOne;
 
     // Signal a context switch if it's a greater than or equal to the current priority
-    if (pclChosenOne->GetCurPriority() >= Scheduler::GetInstance()->GetCurrentThread()->GetCurPriority()) {
+    if (pclChosenOne->GetCurPriority() >= Scheduler::GetCurrentThread()->GetCurPriority()) {
         return 1;
     }
     return 0;
@@ -145,7 +145,7 @@ void Mutex::Claim_i(void)
     // Disable the scheduler while claiming the mutex - we're dealing with all
     // sorts of private thread data, can't have a thread switch while messing
     // with internal data structures.
-    Scheduler::GetInstance()->SetScheduler(false);
+    Scheduler::SetScheduler(false);
 
     // Check to see if the mutex is claimed or not
     if (static_cast<int>(m_bReady) != 0) {
@@ -155,7 +155,7 @@ void Mutex::Claim_i(void)
         m_u8MaxPri  = g_pclCurrent->GetPriority();
         m_pclOwner  = g_pclCurrent;
 
-        Scheduler::GetInstance()->SetScheduler(true);
+        Scheduler::SetScheduler(true);
 
 #if KERNEL_USE_TIMEOUTS
         return true;
@@ -172,7 +172,7 @@ void Mutex::Claim_i(void)
         m_u8Recurse++;
 
         // Increment the lock count and bail
-        Scheduler::GetInstance()->SetScheduler(true);
+        Scheduler::SetScheduler(true);
 #if KERNEL_USE_TIMEOUTS
         return true;
 #else
@@ -210,7 +210,7 @@ void Mutex::Claim_i(void)
     }
 
     // Done with thread data -reenable the scheduler
-    Scheduler::GetInstance()->SetScheduler(true);
+    Scheduler::SetScheduler(true);
 
     // Switch threads if this thread acquired the mutex
     Thread::Yield();
@@ -254,7 +254,7 @@ void Mutex::Release()
     auto bSchedule = false;
 
     // Disable the scheduler while we deal with internal data structures.
-    Scheduler::GetInstance()->SetScheduler(false);
+    Scheduler::SetScheduler(false);
 
     // This thread had better be the one that owns the mutex currently...
     KERNEL_ASSERT((g_pclCurrent == m_pclOwner));
@@ -263,7 +263,7 @@ void Mutex::Release()
     // count and return immediately.
     if (m_u8Recurse != 0u) {
         m_u8Recurse--;
-        Scheduler::GetInstance()->SetScheduler(true);
+        Scheduler::SetScheduler(true);
         return;
     }
 
@@ -290,7 +290,7 @@ void Mutex::Release()
     }
 
     // Must enable the scheduler again in order to switch threads.
-    Scheduler::GetInstance()->SetScheduler(true);
+    Scheduler::SetScheduler(true);
     if (bSchedule) {
         // Switch threads if a higher-priority thread was woken
         Thread::Yield();

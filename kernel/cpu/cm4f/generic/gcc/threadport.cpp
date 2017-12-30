@@ -149,8 +149,8 @@ void ThreadPort::StartThreads()
 #if KERNEL_USE_PROFILER
     Profiler::Init();
 #endif
-    Scheduler::GetInstance()->SetScheduler(1); // enable the scheduler
-    Scheduler::GetInstance()->Schedule();      // run the scheduler - determine the first thread to run
+    Scheduler::SetScheduler(1); // enable the scheduler
+    Scheduler::Schedule();      // run the scheduler - determine the first thread to run
 
     Thread_Switch(); // Set the next scheduled thread to the current thread
 
@@ -158,8 +158,8 @@ void ThreadPort::StartThreads()
     KernelSWI::Start();   // enable the task switch SWI
 
 #if KERNEL_USE_QUANTUM
-    Quantum::GetInstance()->RemoveThread();
-    Quantum::GetInstance()->AddThread(g_pclCurrent);
+    Quantum::RemoveThread();
+    Quantum::AddThread(g_pclCurrent);
 #endif
 
     SCB->CPACR |= 0x00F00000; // Enable floating-point

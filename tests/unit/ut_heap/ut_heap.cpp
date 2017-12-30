@@ -236,12 +236,12 @@ TEST(ut_sysheap_multithread)
     clTestThread1.Init(aucTestStack1, TEST_STACK_SIZE, 1, HeapScriptTest, (void*)0);
     clTestThread2.Init(aucTestStack2, TEST_STACK_SIZE, 1, HeapScriptTest, (void*)1);
 
-    Scheduler::GetInstance()->GetCurrentThread()->SetPriority(7);
+    Scheduler::GetCurrentThread()->SetPriority(7);
 
     clTestThread1.SetQuantum(7);
     clTestThread2.SetQuantum(13);
 
-    Scheduler::GetInstance()->GetCurrentThread()->SetPriority(7);
+    Scheduler::GetCurrentThread()->SetPriority(7);
 
     clTestThread1.Start();
     clTestThread2.Start();
@@ -252,7 +252,7 @@ TEST(ut_sysheap_multithread)
         // 1 point for each 500ms of testing
         EXPECT_TRUE(1);
     }
-    Scheduler::GetInstance()->GetCurrentThread()->SetPriority(1);
+    Scheduler::GetCurrentThread()->SetPriority(1);
 
     clTestThread1.Exit();
     clTestThread2.Exit();

@@ -25,6 +25,9 @@ See license.txt for more information
 
 #if KERNEL_USE_AUTO_ALLOC
 
+AutoAllocAllocator_t AutoAlloc::m_pfAllocator;    //!< Function used to allocate objects
+AutoAllocFree_t      AutoAlloc::m_pfFree;         //!< Funciton used to free objects
+
 //---------------------------------------------------------------------------
 void AutoAlloc::Init()
 {

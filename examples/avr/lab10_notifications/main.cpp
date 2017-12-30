@@ -54,7 +54,7 @@ static Notify clNotify;
 int main(void)
 {
     // See the annotations in previous labs for details on init.
-    Kernel::GetInstance()->Init();
+    Kernel::Init();
 
     // Initialize notifer and notify-ee threads
     clApp1Thread.Init(awApp1Stack, sizeof(awApp1Stack), 1, App1Main, 0);
@@ -66,7 +66,7 @@ int main(void)
     // Initialize the Notify objects
     clNotify.Init();
 
-    Kernel::GetInstance()->Start();
+    Kernel::Start();
 
     return 0;
 }

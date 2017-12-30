@@ -126,7 +126,7 @@ void PrintString(const char* szStr_)
 void AppEntry(void)
 {
     {
-        UartDriver* my_uart = static_cast<UartDriver*>(DriverList::GetInstance()->FindByPath("/dev/tty"));
+        UartDriver* my_uart = static_cast<UartDriver*>(DriverList::FindByPath("/dev/tty"));
         my_uart->SetBuffers(aucRxBuffer, UART_SIZE_RX, aucTxBuffer, UART_SIZE_TX);
         my_uart->Open();
 
@@ -164,7 +164,7 @@ void IdleEntry(void)
 //---------------------------------------------------------------------------
 int main(void)
 {
-    Kernel::GetInstance()->Init(); //!< MUST be before other kernel ops
+    Kernel::Init(); //!< MUST be before other kernel ops
 
     AppThread.Init(aucAppStack,             //!< Pointer to the stack
                    STACK_SIZE_APP,          //!< Size of the stack
@@ -175,7 +175,7 @@ int main(void)
     AppThread.Start(); //!< Schedule the threads
 
 #if KERNEL_USE_IDLE_FUNC
-    Kernel::GetInstance()->SetIdleFunc(IdleEntry);
+    Kernel::SetIdleFunc(IdleEntry);
 #else
     IdleThread.Init(aucIdleStack,             //!< Pointer to the stack
                     STACK_SIZE_IDLE,          //!< Size of the stack
@@ -189,7 +189,7 @@ int main(void)
     clUART.SetName("/dev/tty"); //!< Add the serial driver
     clUART.Init();
 
-    DriverList::GetInstance()->Add(&clUART);
+    DriverList::Add(&clUART);
 
-    Kernel::GetInstance()->Start(); //!< Start the kernel!
+    Kernel::Start(); //!< Start the kernel!
 }

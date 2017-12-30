@@ -117,17 +117,17 @@ TEST_END
 //---------------------------------------------------------------------------
 void TimedSemaphoreThread_Short(Semaphore* pstSem_)
 {
-    Scheduler::GetInstance()->GetCurrentThread()->Sleep(10);
+    Scheduler::GetCurrentThread()->Sleep(10);
     pstSem_->Post();
-    Scheduler::GetInstance()->GetCurrentThread()->Exit();
+    Scheduler::GetCurrentThread()->Exit();
 }
 
 //---------------------------------------------------------------------------
 void TimedSemaphoreThread_Long(Semaphore* pstSem_)
 {
-    Scheduler::GetInstance()->GetCurrentThread()->Sleep(20);
+    Scheduler::GetCurrentThread()->Sleep(20);
     pstSem_->Post();
-    Scheduler::GetInstance()->GetCurrentThread()->Exit();
+    Scheduler::GetCurrentThread()->Exit();
 }
 
 //---------------------------------------------------------------------------
@@ -136,7 +136,7 @@ TEST(ut_sanity_timed_sem)
 {
     Semaphore clSem;
 
-    Scheduler::GetInstance()->GetCurrentThread()->SetPriority(3);
+    Scheduler::GetCurrentThread()->SetPriority(3);
 
     clSem.Init(0, 1);
 
@@ -157,7 +157,7 @@ TEST(ut_sanity_timed_sem)
 
     clTestThread1.Exit();
 
-    Scheduler::GetInstance()->GetCurrentThread()->SetPriority(1);
+    Scheduler::GetCurrentThread()->SetPriority(1);
 }
 TEST_END
 
@@ -179,7 +179,7 @@ void TestSleepThread(void* pvArg_)
 // void UT_SleepTest(void)
 TEST(ut_sanity_sleep)
 {
-    Scheduler::GetInstance()->GetCurrentThread()->SetPriority(3);
+    Scheduler::GetCurrentThread()->SetPriority(3);
 
     u8TestVal = 0x00;
 
@@ -195,7 +195,7 @@ TEST(ut_sanity_sleep)
 
     clTestThread1.Exit();
 
-    Scheduler::GetInstance()->GetCurrentThread()->SetPriority(1);
+    Scheduler::GetCurrentThread()->SetPriority(1);
 }
 TEST_END
 
@@ -211,27 +211,27 @@ void TestMutexThread(Mutex* pclMutex_)
     }
     pclMutex_->Release();
 
-    Scheduler::GetInstance()->GetCurrentThread()->Exit();
+    Scheduler::GetCurrentThread()->Exit();
 }
 
 //---------------------------------------------------------------------------
 void TestTimedMutexThreadShort(Mutex* pclMutex_)
 {
     pclMutex_->Claim();
-    Scheduler::GetInstance()->GetCurrentThread()->Sleep(10);
+    Scheduler::GetCurrentThread()->Sleep(10);
     pclMutex_->Release();
 
-    Scheduler::GetInstance()->GetCurrentThread()->Exit();
+    Scheduler::GetCurrentThread()->Exit();
 }
 
 //---------------------------------------------------------------------------
 void TestTimedMutexThreadLong(Mutex* pclMutex_)
 {
     pclMutex_->Claim();
-    Scheduler::GetInstance()->GetCurrentThread()->Sleep(20);
+    Scheduler::GetCurrentThread()->Sleep(20);
     pclMutex_->Release();
 
-    Scheduler::GetInstance()->GetCurrentThread()->Exit();
+    Scheduler::GetCurrentThread()->Exit();
 }
 
 //---------------------------------------------------------------------------
@@ -289,11 +289,11 @@ void TimedMessageThread(MessageQueue* pclMsgQ_)
     pclMsg->SetData(0);
     pclMsg->SetCode(0);
 
-    Scheduler::GetInstance()->GetCurrentThread()->Sleep(10);
+    Scheduler::GetCurrentThread()->Sleep(10);
 
     pclMsgQ_->Send(pclMsg);
 
-    Scheduler::GetInstance()->GetCurrentThread()->Exit();
+    Scheduler::GetCurrentThread()->Exit();
 }
 
 //---------------------------------------------------------------------------
@@ -396,7 +396,7 @@ void TestMessageTest(void* pvArg)
     }
     clMsgQ1.Send(pclMesg);
 
-    Scheduler::GetInstance()->GetCurrentThread()->Exit();
+    Scheduler::GetCurrentThread()->Exit();
 }
 
 //---------------------------------------------------------------------------
@@ -484,7 +484,7 @@ TEST(ut_sanity_rr)
     volatile uint32_t u32Counter3 = 0;
     uint32_t          u32Delta;
 
-    Scheduler::GetInstance()->GetCurrentThread()->SetPriority(3);
+    Scheduler::GetCurrentThread()->SetPriority(3);
 
     clTestThread1.Init(aucTestStack1, TEST_STACK1_SIZE, 2, (ThreadEntryFunc)TestRRThread, (void*)&u32Counter1);
     clTestThread2.Init(aucTestStack2, TEST_STACK2_SIZE, 2, (ThreadEntryFunc)TestRRThread, (void*)&u32Counter2);
@@ -519,7 +519,7 @@ TEST(ut_sanity_rr)
     clTestThread2.Exit();
     clTestThread3.Exit();
 
-    Scheduler::GetInstance()->GetCurrentThread()->SetPriority(1);
+    Scheduler::GetCurrentThread()->SetPriority(1);
 }
 TEST_END
 
@@ -532,7 +532,7 @@ TEST(ut_sanity_quantum)
     volatile uint32_t u32Counter3 = 0;
     uint32_t          u32Delta;
 
-    Scheduler::GetInstance()->GetCurrentThread()->SetPriority(3);
+    Scheduler::GetCurrentThread()->SetPriority(3);
 
     clTestThread1.Init(aucTestStack1, TEST_STACK1_SIZE, 2, (ThreadEntryFunc)TestRRThread, (void*)&u32Counter1);
     clTestThread2.Init(aucTestStack2, TEST_STACK2_SIZE, 2, (ThreadEntryFunc)TestRRThread, (void*)&u32Counter2);
@@ -575,7 +575,7 @@ TEST(ut_sanity_quantum)
     clTestThread2.Exit();
     clTestThread3.Exit();
 
-    Scheduler::GetInstance()->GetCurrentThread()->SetPriority(1);
+    Scheduler::GetCurrentThread()->SetPriority(1);
 }
 TEST_END
 

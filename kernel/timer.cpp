@@ -44,6 +44,8 @@ See license.txt for more information
 
 #if KERNEL_USE_TIMERS
 
+TimerList TimerScheduler::m_clTimerList;
+
 //---------------------------------------------------------------------------
 Timer::Timer()
 {
@@ -125,8 +127,8 @@ void Timer::Start()
         return;
     }
 
-    m_pclOwner = Scheduler::GetInstance()->GetCurrentThread();
-    TimerScheduler::GetInstance()->Add(this);
+    m_pclOwner = Scheduler::GetCurrentThread();
+    TimerScheduler::Add(this);
 }
 
 //---------------------------------------------------------------------------
@@ -139,7 +141,7 @@ void Timer::Stop()
     if ((m_u8Flags & TIMERLIST_FLAG_ACTIVE) == 0) {
             return;
     }
-    TimerScheduler::GetInstance()->Remove(this);
+    TimerScheduler::Remove(this);
 }
 
 //---------------------------------------------------------------------------

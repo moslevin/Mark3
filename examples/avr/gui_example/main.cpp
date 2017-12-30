@@ -80,12 +80,12 @@ void __cxa_pure_virtual(void)
 //---------------------------------------------------------------------------
 int main(void)
 {
-    Kernel::GetInstance()->Init();
+    Kernel::Init();
 
     clAppThread.Init(awAppStack, APP_STACK_SIZE, 1, AppMain, 0);
     clAppThread.Start();
 
-    Kernel::GetInstance()->Start();
+    Kernel::Start();
 }
 
 //---------------------------------------------------------------------------

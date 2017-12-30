@@ -39,6 +39,12 @@ See license.txt for more information
 volatile Thread* g_pclNext;
 Thread*          g_pclCurrent;
 
+bool Scheduler::m_bEnabled;
+bool Scheduler::m_bQueuedSchedule;
+ThreadList Scheduler::m_clStopList;
+ThreadList Scheduler::m_aclPriorities[KERNEL_NUM_PRIORITIES];
+PriorityMap Scheduler::m_clPrioMap;
+
 #include "kerneldebug.h"
 //---------------------------------------------------------------------------
 void Scheduler::Init()
@@ -59,12 +65,12 @@ void Scheduler::Schedule()
 #if KERNEL_USE_IDLE_FUNC
     if (uXPrio == 0) {
         // There aren't any active threads at all - set g_pclNext to IDLE
-        g_pclNext = Kernel::GetInstance()->GetIdleThread();
+        g_pclNext = Kernel::GetIdleThread();
     } else
 #endif
     {
         if (uXPrio == 0) {
-            Kernel::GetInstance()->Panic(PANIC_NO_READY_THREADS);
+            Kernel::Panic(PANIC_NO_READY_THREADS);
         }
         // Priorities are one-indexed
         uXPrio--;

@@ -141,7 +141,7 @@ void TimerList::Process(void)
     TIMERLIST_LOCK();
 
 #if KERNEL_USE_QUANTUM
-    Quantum::GetInstance()->SetInTimer();
+    Quantum::SetInTimer();
 #endif
 #if KERNEL_TIMERS_TICKLESS
 #if !KERNEL_TIMERS_THREADED
@@ -259,7 +259,7 @@ void TimerList::Process(void)
     }
 #endif
 #if KERNEL_USE_QUANTUM
-    Quantum::GetInstance()->ClearInTimer();
+    Quantum::ClearInTimer();
 #endif
 
     TIMERLIST_UNLOCK();

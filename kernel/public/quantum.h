@@ -41,12 +41,6 @@ class Timer;
 class Quantum
 {
 public:
-
-    static Quantum* GetInstance() {
-        static Quantum s_clInstance;
-        return &s_clInstance;
-    }
-
     /*!
      *  \brief UpdateTimer
      *
@@ -55,7 +49,7 @@ public:
      *  being re-loaded or started.  The timer is never stopped, but if may
      *  be ignored on expiry.
      */
-    void UpdateTimer();
+    static void UpdateTimer();
 
     /*!
      *  \brief AddThread
@@ -63,14 +57,14 @@ public:
      *  Add the thread to the quantum timer.  Only one thread can own the quantum,
      *  since only one thread can be running on a core at a time.
      */
-    void AddThread(Thread* pclThread_);
+    static void AddThread(Thread* pclThread_);
 
     /*!
      *  \brief RemoveThread
      *
      *  Remove the thread from the quantum timer.  This will cancel the timer.
      */
-    void RemoveThread();
+    static void RemoveThread();
 
     /*!
      *  \brief SetInTimer
@@ -80,13 +74,13 @@ public:
      *  updated in the middle of a callback cycle, potentially resulting in
      *  the kernel timer becoming disabled.
      */
-    void SetInTimer(void) { m_bInTimer = true; }
+    static void SetInTimer(void) { m_bInTimer = true; }
     /*!
      * \brief ClearInTimer
      *
      *  Clear the flag once the timer callback function has been completed.
      */
-    void ClearInTimer(void) { m_bInTimer = false; }
+    static void ClearInTimer(void) { m_bInTimer = false; }
 
 #if KERNEL_TIMERS_THREADED
     void SetTimerThread(Thread* pclTimerThread_);
@@ -106,15 +100,15 @@ private:
      *
      *  \param pclThread_ Pointer to the thread to set the Quantum timer on
      */
-    void SetTimer(Thread* pclThread_);
+    static void SetTimer(Thread* pclThread_);
 
 #if KERNEL_TIMERS_THREADED
     static Thread* m_pclTimerThread;
 #endif
 
-    Timer m_clQuantumTimer;
-    bool  m_bActive;
-    bool  m_bInTimer;
+    static Timer m_clQuantumTimer;
+    static bool  m_bActive;
+    static bool  m_bInTimer;
 };
 
 #endif // KERNEL_USE_QUANTUM

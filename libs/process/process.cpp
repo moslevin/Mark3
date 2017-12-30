@@ -456,7 +456,7 @@ void Process::DestroyProcessTLS(ProcessTLS* pclProcessTLS_)
 //---------------------------------------------------------------------------
 Process* Process::CurrentProcess()
 {
-	ProcessTLS* pclCurrent = static_cast<ProcessTLS*>(Scheduler::GetInstance()->GetCurrentThread()->GetExtendedContext());
+	ProcessTLS* pclCurrent = static_cast<ProcessTLS*>(Scheduler::GetCurrentThread()->GetExtendedContext());
     if (pclCurrent == 0) {
         return 0;
     }

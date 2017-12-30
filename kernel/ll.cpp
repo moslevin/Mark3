@@ -72,7 +72,7 @@ void DoubleLinkList::Remove(LinkListNode* node_)
     if (node_->prev != nullptr) {
 #if SAFE_UNLINK
         if (node_->prev->next != node_) {
-            Kernel::GetInstance()->Panic(PANIC_LIST_UNLINK_FAILED);
+            Kernel::Panic(PANIC_LIST_UNLINK_FAILED);
         }
 #endif
         node_->prev->next = node_->next;
@@ -80,7 +80,7 @@ void DoubleLinkList::Remove(LinkListNode* node_)
     if (node_->next != nullptr) {
 #if SAFE_UNLINK
         if (node_->next->prev != node_) {
-            Kernel::GetInstance()->Panic(PANIC_LIST_UNLINK_FAILED);
+            Kernel::Panic(PANIC_LIST_UNLINK_FAILED);
         }
 #endif
         node_->next->prev = node_->prev;
@@ -132,7 +132,7 @@ void CircularLinkList::Remove(LinkListNode* node_)
 #if SAFE_UNLINK
     // Verify that all nodes are properly connected
     if ((node_->prev->next != node_) || (node_->next->prev != node_)) {
-        Kernel::GetInstance()->Panic(PANIC_LIST_UNLINK_FAILED);
+        Kernel::Panic(PANIC_LIST_UNLINK_FAILED);
     }
 #endif
 

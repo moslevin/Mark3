@@ -94,26 +94,26 @@ static void Thread_Switch(void)
 {
 #if KERNEL_USE_IDLE_FUNC
     // If there's no next-thread-to-run...
-    if (g_pclNext == Kernel::GetInstance()->GetIdleThread()) {
-        g_pclCurrent = Kernel::GetInstance()->GetIdleThread();
+    if (g_pclNext == Kernel::GetIdleThread()) {
+        g_pclCurrent = Kernel::GetIdleThread();
 
         // Disable the SWI, and re-enable interrupts -- enter nested interrupt
         // mode.
         KernelSWI::DI();
 
-        g_pclCurrent = Kernel::GetInstance()->GetIdleThread();
+        g_pclCurrent = Kernel::GetIdleThread();
 
         uint8_t u8SR = _SFR_IO8(SR_);
 
         // So long as there's no "next-to-run" thread, keep executing the Idle
         // function to conclusion...
 
-        while (g_pclNext == Kernel::GetInstance()->GetIdleThread()) {
+        while (g_pclNext == Kernel::GetIdleThread()) {
             // Ensure that we run this block in an interrupt enabled context (but
             // with the rest of the checks being performed in an interrupt disabled
             // context).
             ASM("sei");
-            Kernel::GetInstance()->Idle();
+            Kernel::Idle();
             ASM("cli");
         }
 
@@ -138,8 +138,8 @@ void ThreadPort::StartThreads()
 #if KERNEL_USE_PROFILER
     Profiler::Init();
 #endif
-    Scheduler::GetInstance()->SetScheduler(1); // enable the scheduler
-    Scheduler::GetInstance()->Schedule();      // run the scheduler - determine the first thread to run
+    Scheduler::SetScheduler(1); // enable the scheduler
+    Scheduler::Schedule();      // run the scheduler - determine the first thread to run
 
     Thread_Switch(); // Set the next scheduled thread to the current thread
 
@@ -151,8 +151,8 @@ void ThreadPort::StartThreads()
     // the kernel will be invalid.  This fixes a bug where multiple threads
     // started with the highest priority before starting the kernel causes problems
     // until the running thread voluntarily blocks.
-    Quantum::GetInstance()->RemoveThread();
-    Quantum::GetInstance()->AddThread(g_pclCurrent);
+    Quantum::RemoveThread();
+    Quantum::AddThread(g_pclCurrent);
 #endif
 
     // Restore the context...

@@ -50,7 +50,7 @@ void TimedNotify_Callback(Thread* pclOwner_, void* pvData_)
     // Wake up the thread that was blocked on this semaphore.
     pclNotify->WakeMe(pclOwner_);
 
-    if (pclOwner_->GetCurPriority() >= Scheduler::GetInstance()->GetCurrentThread()->GetCurPriority()) {
+    if (pclOwner_->GetCurPriority() >= Scheduler::GetCurrentThread()->GetCurPriority()) {
         Thread::Yield();
     }
 }
@@ -62,7 +62,7 @@ Notify::~Notify()
     // If there are any threads waiting on this object when it goes out
     // of scope, set a kernel panic.
     if (m_clBlockList.GetHead() != nullptr) {
-        Kernel::GetInstance()->Panic(PANIC_ACTIVE_NOTIFY_DESCOPED);
+        Kernel::Panic(PANIC_ACTIVE_NOTIFY_DESCOPED);
     }
 }
 
@@ -92,7 +92,7 @@ void Notify::Signal(void)
     } else {
         while (pclCurrent != NULL) {
             UnBlock(pclCurrent);
-            if (!bReschedule && (pclCurrent->GetCurPriority() >= Scheduler::GetInstance()->GetCurrentThread()->GetCurPriority())) {
+            if (!bReschedule && (pclCurrent->GetCurPriority() >= Scheduler::GetCurrentThread()->GetCurPriority())) {
                 bReschedule = true;
             }
             pclCurrent = (Thread*)m_clBlockList.GetHead();

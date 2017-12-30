@@ -43,7 +43,7 @@ void WaitOnFlag1Any(void* unused_)
     clFlagGroup.Wait(0x0001, EventFlagOperation::Any_Set);
     u8FlagCount++;
 
-    Scheduler::GetInstance()->GetCurrentThread()->Exit();
+    Scheduler::GetCurrentThread()->Exit();
 }
 
 //---------------------------------------------------------------------------
@@ -52,7 +52,7 @@ void WaitOnMultiAny(void* unused_)
     clFlagGroup.Wait(0x5555, EventFlagOperation::Any_Set);
     u8FlagCount++;
 
-    Scheduler::GetInstance()->GetCurrentThread()->Exit();
+    Scheduler::GetCurrentThread()->Exit();
 }
 
 //---------------------------------------------------------------------------
@@ -61,7 +61,7 @@ void WaitOnMultiAll(void* unused_)
     clFlagGroup.Wait(0x5555, EventFlagOperation::All_Set);
     u8FlagCount++;
 
-    Scheduler::GetInstance()->GetCurrentThread()->Exit();
+    Scheduler::GetCurrentThread()->Exit();
 }
 
 //---------------------------------------------------------------------------
@@ -98,7 +98,7 @@ void TimedWait(void* time_)
         u8TimeoutCount++;
     }
     clFlagGroup.Clear(0x0001);
-    Scheduler::GetInstance()->GetCurrentThread()->Exit();
+    Scheduler::GetCurrentThread()->Exit();
 }
 
 //---------------------------------------------------------------------------
@@ -111,13 +111,13 @@ void TimedWaitAll(void* time_)
         if (u16Ret == 0x0001) {
             u8FlagCount++;
         } else if (u16Ret == 0x0000) {
-            Scheduler::GetInstance()->GetCurrentThread()->SetExpired(false);
+            Scheduler::GetCurrentThread()->SetExpired(false);
             u8TimeoutCount++;
         }
         clFlagGroup.Clear(0x0001);
     }
 
-    Scheduler::GetInstance()->GetCurrentThread()->Exit();
+    Scheduler::GetCurrentThread()->Exit();
 }
 
 //===========================================================================

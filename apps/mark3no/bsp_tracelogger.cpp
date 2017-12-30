@@ -26,7 +26,7 @@ static void LoggerCallback(uint16_t* pu16Data_, uint16_t u16Len_, bool bPingPong
 //---------------------------------------------------------------------------
 static void LoggerMain(void* unused_)
 {
-    Driver* pclUART = DriverList::GetInstance()->FindByPath("/dev/tty0");
+    Driver* pclUART = DriverList::FindByPath("/dev/tty0");
 
     while (1) {
         uint8_t* src;
@@ -54,5 +54,5 @@ void bsp_tracelogger_init(void)
     clLoggerThread.Start();
 
     clLoggerSem.Init(0, 1);
-    TraceBuffer::GetInstance()->SetCallback(LoggerCallback);
+    TraceBuffer::SetCallback(LoggerCallback);
 }

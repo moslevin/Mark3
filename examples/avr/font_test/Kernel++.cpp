@@ -78,7 +78,7 @@ void MemSet(void* pvData_, uint8_t u8Value_, uint16_t u16Count_)
 //---------------------------------------------------------------------------
 int main(void)
 {
-    Kernel::GetInstance()->Init(); //!< MUST be before other kernel ops
+    Kernel::Init(); //!< MUST be before other kernel ops
 
     AppThread.Init(aucAppStack,             //!< Pointer to the stack
                    STACK_SIZE_APP,          //!< Size of the stack
@@ -98,9 +98,9 @@ int main(void)
     clUART.SetName("/dev/tty"); //!< Add the serial driver
     clUART.Init();
 
-    DriverList::GetInstance()->Add(&clUART);
+    DriverList::Add(&clUART);
 
-    Kernel::GetInstance()->Start(); //!< Start the kernel!
+    Kernel::Start(); //!< Start the kernel!
 }
 
 void Font_PrintGlyph(Font_t* pstFont_, uint8_t u8Glyph_)

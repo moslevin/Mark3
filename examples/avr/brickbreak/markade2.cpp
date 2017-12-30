@@ -76,7 +76,7 @@ static void IdleEntry(void);
 //---------------------------------------------------------------------------
 int main(void)
 {
-    Kernel::GetInstance()->Init(); //!< MUST be before other kernel ops
+    Kernel::Init(); //!< MUST be before other kernel ops
 
     AppThread.Init(aucAppStack,             //!< Pointer to the stack
                    STACK_SIZE_APP,          //!< Size of the stack
@@ -87,7 +87,7 @@ int main(void)
     AppThread.Start(); //!< Schedule the threads
 
 #if KERNEL_USE_IDLE_FUNC
-    Kernel::GetInstance()->SetIdleFunc(IdleEntry);
+    Kernel::SetIdleFunc(IdleEntry);
 #else
     IdleThread.Init(aucIdleStack,             //!< Pointer to the stack
                     STACK_SIZE_IDLE,          //!< Size of the stack
@@ -98,7 +98,7 @@ int main(void)
     IdleThread.Start();
 #endif
 
-    Kernel::GetInstance()->Start(); //!< Start the kernel!
+    Kernel::Start(); //!< Start the kernel!
 }
 
 //---------------------------------------------------------------------------

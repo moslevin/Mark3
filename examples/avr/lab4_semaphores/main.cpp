@@ -70,7 +70,7 @@ static Semaphore clMySem;
 int main(void)
 {
     // See the annotations in previous labs for details on init.
-    Kernel::GetInstance()->Init();
+    Kernel::Init();
 
     // In this example we create two threads to illustrate the use of a
     // binary semaphore as a synchronization method between two threads.
@@ -93,7 +93,7 @@ int main(void)
     // zero).
     clMySem.Init(0, 1);
 
-    Kernel::GetInstance()->Start();
+    Kernel::Start();
 
     return 0;
 }

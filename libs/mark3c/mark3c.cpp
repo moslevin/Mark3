@@ -30,25 +30,25 @@ void __cxa_pure_virtual(void){}
 //---------------------------------------------------------------------------
 void* Alloc_Memory(uint16_t u16Size_)
 {
-    return AutoAlloc::GetInstance()->NewRawData(u16Size_);
+    return AutoAlloc::NewRawData(u16Size_);
 }
 //---------------------------------------------------------------------------
 void Free_Memory(void* pvObject_)
 {
-    AutoAlloc::GetInstance()->DestroyRawData(pvObject_);
+    AutoAlloc::DestroyRawData(pvObject_);
 }
 
 #if KERNEL_USE_SEMAPHORE
 //---------------------------------------------------------------------------
 Semaphore_t Alloc_Semaphore(void)
 {
-    return (Semaphore_t)AutoAlloc::GetInstance()->NewSemaphore();
+    return (Semaphore_t)AutoAlloc::NewSemaphore();
 }
 
 //---------------------------------------------------------------------------
 void Free_Semaphore(Semaphore_t handle)
 {
-    AutoAlloc::GetInstance()->DestroySemaphore((Semaphore*)handle);
+    AutoAlloc::DestroySemaphore((Semaphore*)handle);
 }
 
 #endif
@@ -56,13 +56,13 @@ void Free_Semaphore(Semaphore_t handle)
 //---------------------------------------------------------------------------
 Mutex_t Alloc_Mutex(void)
 {
-    return (Mutex_t)AutoAlloc::GetInstance()->NewMutex();
+    return (Mutex_t)AutoAlloc::NewMutex();
 }
 
 //---------------------------------------------------------------------------
 void Free_Mutex(Mutex_t handle)
 {
-    AutoAlloc::GetInstance()->DestroyMutex((Mutex*)handle);
+    AutoAlloc::DestroyMutex((Mutex*)handle);
 }
 
 #endif
@@ -70,13 +70,13 @@ void Free_Mutex(Mutex_t handle)
 //---------------------------------------------------------------------------
 EventFlag_t Alloc_EventFlag(void)
 {
-    return (EventFlag_t)AutoAlloc::GetInstance()->NewEventFlag();
+    return (EventFlag_t)AutoAlloc::NewEventFlag();
 }
 
 //---------------------------------------------------------------------------
 void Free_EventFlag(EventFlag_t handle)
 {
-    AutoAlloc::GetInstance()->DestroyEventFlag((EventFlag*)handle);
+    AutoAlloc::DestroyEventFlag((EventFlag*)handle);
 }
 
 #endif
@@ -84,25 +84,25 @@ void Free_EventFlag(EventFlag_t handle)
 //---------------------------------------------------------------------------
 Message_t Alloc_Message(void)
 {
-    return (Message_t)AutoAlloc::GetInstance()->NewMessage();
+    return (Message_t)AutoAlloc::NewMessage();
 }
 
 //---------------------------------------------------------------------------
 void Free_Message(Message_t handle)
 {
-    AutoAlloc::GetInstance()->DestroyMessage((Message*)handle);
+    AutoAlloc::DestroyMessage((Message*)handle);
 }
 
 //---------------------------------------------------------------------------
 MessageQueue_t Alloc_MessageQueue(void)
 {
-    return (MessageQueue_t)AutoAlloc::GetInstance()->NewMessageQueue();
+    return (MessageQueue_t)AutoAlloc::NewMessageQueue();
 }
 
 //---------------------------------------------------------------------------
 void Free_MessageQueue(MessageQueue_t handle)
 {
-    AutoAlloc::GetInstance()->DestroyMessageQueue((MessageQueue*)handle);
+    AutoAlloc::DestroyMessageQueue((MessageQueue*)handle);
 }
 
 #endif
@@ -110,13 +110,13 @@ void Free_MessageQueue(MessageQueue_t handle)
 //---------------------------------------------------------------------------
 Notify_t Alloc_Notify(void)
 {
-    return (Notify_t)AutoAlloc::GetInstance()->NewNotify();
+    return (Notify_t)AutoAlloc::NewNotify();
 }
 
 //---------------------------------------------------------------------------
 void Free_Notify(Notify_t handle)
 {
-    AutoAlloc::GetInstance()->DestroyNotify((Notify*)handle);
+    AutoAlloc::DestroyNotify((Notify*)handle);
 }
 
 #endif
@@ -124,36 +124,36 @@ void Free_Notify(Notify_t handle)
 //---------------------------------------------------------------------------
 Mailbox_t Alloc_Mailbox(void)
 {
-    return (Mailbox_t)AutoAlloc::GetInstance()->NewMailbox();
+    return (Mailbox_t)AutoAlloc::NewMailbox();
 }
 //---------------------------------------------------------------------------
 void Free_Mailbox(Mailbox_t handle)
 {
-    AutoAlloc::GetInstance()->DestroyMailbox((Mailbox*)handle);
+    AutoAlloc::DestroyMailbox((Mailbox*)handle);
 }
 
 #endif
 //---------------------------------------------------------------------------
 Thread_t Alloc_Thread(void)
 {
-    return (Thread_t)AutoAlloc::GetInstance()->NewThread();
+    return (Thread_t)AutoAlloc::NewThread();
 }
 //---------------------------------------------------------------------------
 void Free_Thread(Thread_t handle)
 {
-    AutoAlloc::GetInstance()->DestroyThread((Thread*)handle);
+    AutoAlloc::DestroyThread((Thread*)handle);
 }
 
 #if KERNEL_USE_TIMERS
 //---------------------------------------------------------------------------
 Timer_t Alloc_Timer(void)
 {
-    return (Thread_t)AutoAlloc::GetInstance()->NewTimer();
+    return (Thread_t)AutoAlloc::NewTimer();
 }
 //---------------------------------------------------------------------------
 void Free_Timer(Timer_t handle)
 {
-    AutoAlloc::GetInstance()->DestroyTimer((Timer*)handle);
+    AutoAlloc::DestroyTimer((Timer*)handle);
 }
 
 #endif
@@ -164,44 +164,44 @@ void Free_Timer(Timer_t handle)
 //---------------------------------------------------------------------------
 void Kernel_Init(void)
 {
-    Kernel::GetInstance()->Init();
+    Kernel::Init();
 }
 
 //---------------------------------------------------------------------------
 void Kernel_Start(void)
 {
-    Kernel::GetInstance()->Start();
+    Kernel::Start();
 }
 
 //---------------------------------------------------------------------------
 bool Kernel_IsStarted(void)
 {
-    return Kernel::GetInstance()->IsStarted();
+    return Kernel::IsStarted();
 }
 
 //---------------------------------------------------------------------------
 void Kernel_SetPanic(PanicFunc pfPanic_)
 {
-    Kernel::GetInstance()->SetPanic(pfPanic_);
+    Kernel::SetPanic(pfPanic_);
 }
 
 //---------------------------------------------------------------------------
 bool Kernel_IsPanic(void)
 {
-    return Kernel::GetInstance()->IsPanic();
+    return Kernel::IsPanic();
 }
 
 //---------------------------------------------------------------------------
 void Kernel_Panic(uint16_t u16Cause_)
 {
-    Kernel::GetInstance()->Panic(u16Cause_);
+    Kernel::Panic(u16Cause_);
 }
 
 #if KERNEL_USE_IDLE_FUNC
 //---------------------------------------------------------------------------
 void Kernel_SetIdleFunc(IdleFunc pfIdle_)
 {
-    Kernel::GetInstance()->SetIdleFunc(pfIdle_);
+    Kernel::SetIdleFunc(pfIdle_);
 }
 #endif
 
@@ -209,37 +209,37 @@ void Kernel_SetIdleFunc(IdleFunc pfIdle_)
 //---------------------------------------------------------------------------
 void Kernel_SetThreadCreateCallout(thread_create_callout_t pfCreate_)
 {
-    Kernel::GetInstance()->SetThreadCreateCallout((ThreadCreateCallout_t)pfCreate_);
+    Kernel::SetThreadCreateCallout((ThreadCreateCallout_t)pfCreate_);
 }
 
 //---------------------------------------------------------------------------
 void Kernel_SetThreadExitCallout(thread_exit_callout_t pfExit_)
 {
-    Kernel::GetInstance()->SetThreadExitCallout((ThreadExitCallout_t)pfExit_);
+    Kernel::SetThreadExitCallout((ThreadExitCallout_t)pfExit_);
 }
 
 //---------------------------------------------------------------------------
 void Kernel_SetThreadContextSwitchCallout(thread_context_callout_t pfContext_)
 {
-    Kernel::GetInstance()->SetThreadContextSwitchCallout((ThreadContextCallout_t)pfContext_);
+    Kernel::SetThreadContextSwitchCallout((ThreadContextCallout_t)pfContext_);
 }
 
 //---------------------------------------------------------------------------
 thread_create_callout_t Kernel_GetThreadCreateCallout(void)
 {
-    return (thread_create_callout_t)Kernel::GetInstance()->GetThreadCreateCallout();
+    return (thread_create_callout_t)Kernel::GetThreadCreateCallout();
 }
 
 //---------------------------------------------------------------------------
 thread_exit_callout_t Kernel_GetThreadExitCallout(void)
 {
-    return (thread_exit_callout_t)Kernel::GetInstance()->GetThreadExitCallout();
+    return (thread_exit_callout_t)Kernel::GetThreadExitCallout();
 }
 
 //---------------------------------------------------------------------------
 thread_context_callout_t Kernel_GetThreadContextSwitchCallout(void)
 {
-    return (thread_context_callout_t)Kernel::GetInstance()->GetThreadContextSwitchCallout();
+    return (thread_context_callout_t)Kernel::GetThreadContextSwitchCallout();
 }
 
 #endif
@@ -248,13 +248,13 @@ thread_context_callout_t Kernel_GetThreadContextSwitchCallout(void)
 //---------------------------------------------------------------------------
 void Kernel_SetStackGuardThreshold(uint16_t u16Threshold_)
 {
-    Kernel::GetInstance()->SetStackGuardThreshold(u16Threshold_);
+    Kernel::SetStackGuardThreshold(u16Threshold_);
 }
 
 //---------------------------------------------------------------------------
 uint16_t Kernel_GetStackGuardThreshold(void)
 {
-    return Kernel::GetInstance()->GetStackGuardThreshold();
+    return Kernel::GetStackGuardThreshold();
 }
 
 #endif
@@ -263,19 +263,19 @@ uint16_t Kernel_GetStackGuardThreshold(void)
 // Scheduler APIs
 void Scheduler_Enable(bool bEnable_)
 {
-    Scheduler::GetInstance()->SetScheduler(bEnable_);
+    Scheduler::SetScheduler(bEnable_);
 }
 
 //---------------------------------------------------------------------------
 bool Scheduler_IsEnabled(void)
 {
-    return Scheduler::GetInstance()->IsEnabled();
+    return Scheduler::IsEnabled();
 }
 
 //---------------------------------------------------------------------------
 Thread_t Scheduler_GetCurrentThread(void)
 {
-    return (Thread_t)Scheduler::GetInstance()->GetCurrentThread();
+    return (Thread_t)Scheduler::GetCurrentThread();
 }
 
 //---------------------------------------------------------------------------

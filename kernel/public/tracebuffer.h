@@ -39,23 +39,18 @@ using TraceBufferCallback_t = void (*)(uint16_t* pu16Source_, uint16_t u16Len_, 
 class TraceBuffer
 {
 public:
-    static TraceBuffer* GetInstance() {
-        static TraceBuffer s_clInstance;
-        return &s_clInstance;
-    }
-
     /*!
      *  \brief Init
      *
      *  Initialize the tracebuffer before use.
      */
-    void Init();
+    static void Init();
 
     /*!
      *  \brief Increment
      *
      */
-    uint16_t Increment(void) { return m_u16SyncNumber++; }
+    static uint16_t Increment(void) { return m_u16SyncNumber++; }
     /*!
      *  \brief Write
      *
@@ -64,7 +59,7 @@ public:
      *  \param pu16Data_ Pointer to the source data buffer to copy to the trace buffer
      *  \param u16Size_ Size of the source data buffer in 16-bit words.
      */
-    void Write(uint16_t* pu16Data_, uint16_t u16Size_);
+    static void Write(uint16_t* pu16Data_, uint16_t u16Size_);
 
     /*!
      *  \brief SetCallback
@@ -74,12 +69,12 @@ public:
      *
      *  \param pfCallback_ Callback to assign
      */
-    void SetCallback(TraceBufferCallback_t pfCallback_) { m_pfCallback = pfCallback_; }
+    static void SetCallback(TraceBufferCallback_t pfCallback_) { m_pfCallback = pfCallback_; }
 private:
-    TraceBufferCallback_t m_pfCallback;
-    uint16_t              m_u16SyncNumber; //!< Current packet synchronization number
-    uint16_t              m_u16Index;      //!< Current buffer index
-    uint16_t              m_au16Buffer[(TRACE_BUFFER_SIZE / sizeof(uint16_t))]; //!< Data buffer
+    static TraceBufferCallback_t m_pfCallback;
+    static uint16_t              m_u16SyncNumber; //!< Current packet synchronization number
+    static uint16_t              m_u16Index;      //!< Current buffer index
+    static uint16_t              m_au16Buffer[(TRACE_BUFFER_SIZE / sizeof(uint16_t))]; //!< Data buffer
 };
 
 #endif // KERNEL_USE_DEBUG
