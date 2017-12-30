@@ -22,6 +22,7 @@ set(AVR_CXX_FLAGS "\
     -funsigned-char \
     -funsigned-bitfields \
     -Os \
+    -std=c++11 \
     -g3 \
     -fpack-struct \
     -ffunction-sections \

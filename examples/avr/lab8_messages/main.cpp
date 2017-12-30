@@ -66,11 +66,14 @@ static void App2Main(void* unused_);
 //---------------------------------------------------------------------------
 static MessageQueue clMsgQ;
 
+#define MESSAGE_POOL_SIZE (3)
+static MessagePool s_clMessagePool;
+static Message s_clMessages[MESSAGE_POOL_SIZE];
 //---------------------------------------------------------------------------
 int main(void)
 {
     // See the annotations in previous labs for details on init.
-    Kernel::Init();
+    Kernel::GetInstance()->Init();
 
     clApp1Thread.Init(awApp1Stack, sizeof(awApp1Stack), 1, App1Main, 0);
     clApp2Thread.Init(awApp2Stack, sizeof(awApp2Stack), 1, App2Main, 0);
@@ -80,7 +83,13 @@ int main(void)
 
     clMsgQ.Init();
 
-    Kernel::Start();
+    s_clMessagePool.Init();
+    for (int i = 0; i < MESSAGE_POOL_SIZE; i++) {
+        s_clMessages[i].Init();
+        s_clMessagePool.Push(&s_clMessages[i]);
+    }
+
+    Kernel::GetInstance()->Start();
 
     return 0;
 }
@@ -96,7 +105,7 @@ void App1Main(void* unused_)
         // for a message to arrive in the queue.
 
         // Get the message object
-        Message* pclMsg = GlobalMessagePool::Pop();
+        Message* pclMsg = s_clMessagePool.Pop();
 
         // Set the message object's data (contrived in this example)
         pclMsg->SetCode(0x1337);
@@ -134,6 +143,6 @@ void App2Main(void* unused_)
         KernelAware::Trace(0, __LINE__, pclMsg->GetCode(), *((uint16_t*)pclMsg->GetData()));
 
         // Done with the message, return it back to the global message queue.
-        GlobalMessagePool::Push(pclMsg);
+        s_clMessagePool.Push(pclMsg);
     }
 }

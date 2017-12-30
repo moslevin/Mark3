@@ -59,7 +59,7 @@ typedef struct {
 int main(void)
 {
     // See the annotations in previous labs for details on init.
-    Kernel::Init();
+    Kernel::GetInstance()->Init();
 
     // Initialize the threads used in this example
     clApp1Thread.Init(awApp1Stack, sizeof(awApp1Stack), 1, App1Main, 0);
@@ -71,7 +71,7 @@ int main(void)
     // Initialize the mailbox used in this example
     clMailbox.Init(au8MBData, 100, sizeof(MBType_t));
 
-    Kernel::Start();
+    Kernel::GetInstance()->Start();
 
     return 0;
 }

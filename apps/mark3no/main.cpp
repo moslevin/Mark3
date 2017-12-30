@@ -238,7 +238,7 @@ static void PrintThreadStats(Thread* pclThread_, Driver* pclDriver_)
 //---------------------------------------------------------------------------
 static void ThreadCommand(const char* szArgs_)
 {
-    Driver* pclDriver = DriverList::FindByPath("/dev/tty0");
+    Driver* pclDriver = DriverList::GetInstance()->FindByPath("/dev/tty0");
     PrintThreadStatHeader(pclDriver);
 
     for (uint8_t i = 0; i < MAX_TRACKED_THREADS; i++) {
@@ -250,7 +250,7 @@ static void ThreadCommand(const char* szArgs_)
 //---------------------------------------------------------------------------
 static void DefaultCommand(const char* szArgs_)
 {
-    Driver* pclDriver = DriverList::FindByPath("/dev/tty0");
+    Driver* pclDriver = DriverList::GetInstance()->FindByPath("/dev/tty0");
     WriteString(pclDriver, " Invalid command: ");
     WriteString(pclDriver, szArgs_);
     WriteString(pclDriver, "\n\n");
@@ -265,16 +265,16 @@ static void ResetStats(const char* szArgs_)
 //---------------------------------------------------------------------------
 static void GetTime(const char* szArgs_)
 {
-    Driver* pclUART = DriverList::FindByPath("/dev/tty0");
+    Driver* pclUART = DriverList::GetInstance()->FindByPath("/dev/tty0");
 
     calendar_t myTime = {0};
 
-    bool state = Scheduler::SetScheduler(false);
+    bool state = Scheduler::GetInstance()->SetScheduler(false);
     bsp_rtc_get_datetime(&myTime);
 
     const char* szDayOfWeek = bsp_rtc_get_day_of_week();
     const char* szMonth = bsp_rtc_get_month_name();
-    Scheduler::SetScheduler(state);
+    Scheduler::GetInstance()->SetScheduler(state);
 
     WriteString(pclUART, "Time: ");
 
@@ -317,7 +317,7 @@ static void GetTime(const char* szArgs_)
 //---------------------------------------------------------------------------
 static void Uptime(const char* szArgs_)
 {
-    Driver* pclUART = DriverList::FindByPath("/dev/tty0");
+    Driver* pclUART = DriverList::GetInstance()->FindByPath("/dev/tty0");
 
     uint32_t u32Seconds;
     uint32_t u32Ticks;
@@ -335,7 +335,7 @@ static void SetTime(const char* szArgs_)
     calendar_t myCalendar = {0};
     char szBuf[6];
     uint8_t u8Len;
-    Driver* pclUART = DriverList::FindByPath("/dev/tty0");
+    Driver* pclUART = DriverList::GetInstance()->FindByPath("/dev/tty0");
     char* szSrc = (char*)szArgs_;
     while (*szSrc == ' ') {
         szSrc++;
@@ -453,7 +453,7 @@ static void HexPrint(const uint8_t* pu8Src_, uint8_t u8Len_, K_ADDR kaOffset_, D
 //---------------------------------------------------------------------------
 static void ReadRam(const char* szArgs)
 {
-    Driver* pclUART = DriverList::FindByPath("/dev/tty0");
+    Driver* pclUART = DriverList::GetInstance()->FindByPath("/dev/tty0");
 
     Token_t  astTokens[3];
     uint8_t u8Tokens = MemUtil::Tokenize(szArgs, astTokens, 3);
@@ -530,7 +530,7 @@ static CommandHandler clCommandSoundOff;
 //---------------------------------------------------------------------------
 static void ShellTask(void* param)
 {
-    UartDriver* my_uart = static_cast<UartDriver*>(DriverList::FindByPath("/dev/tty0"));
+    UartDriver* my_uart = static_cast<UartDriver*>(DriverList::GetInstance()->FindByPath("/dev/tty0"));
     my_uart->Control(UART_OPCODE_SET_BLOCKING, 0, 0, 0, 0);
 
     clCommandThreads.Set("threads", ThreadCommand);
@@ -599,11 +599,11 @@ static void Button2Up(Button* pclButton_)
 //---------------------------------------------------------------------------
 int main(void)
 {
-    Kernel::Init();
+    Kernel::GetInstance()->Init();
 
-    Kernel::SetThreadContextSwitchCallout(OnContextSwitch);
-    Kernel::SetThreadCreateCallout(OnThreadCreate);
-    Kernel::SetThreadExitCallout(OnThreadRemove);
+    Kernel::GetInstance()->SetThreadContextSwitchCallout(OnContextSwitch);
+    Kernel::GetInstance()->SetThreadCreateCallout(OnThreadCreate);
+    Kernel::GetInstance()->SetThreadExitCallout(OnThreadRemove);
 
     u16ThreadBits = 0;
     for (int i = 0; i < MAX_TRACKED_THREADS; i++) {
@@ -633,5 +633,5 @@ int main(void)
     bsp_buttons_set_callbacks(&clButtons[0], Button1Down, Button1Up);
     bsp_buttons_set_callbacks(&clButtons[1], Button2Down, Button2Up);
 
-    Kernel::Start();
+    Kernel::GetInstance()->Start();
 }

@@ -90,7 +90,7 @@ const void WriteBytes(const char* szStr_, uint16_t u16Len_)
 //---------------------------------------------------------------------------
 int main(void)
 {
-    Kernel::Init();
+    Kernel::GetInstance()->Init();
 
     clAppThread.Init(awAppStack, sizeof(awAppStack), 1, AppMain, 0);
     clIdleThread.Init(awIdleStack, sizeof(awIdleStack), 0, IdleMain, 0);
@@ -100,9 +100,9 @@ int main(void)
 
     clUART.SetName("/dev/tty"); //!< Add the serial driver
     clUART.Init();
-    DriverList::Add(&clUART);
+    DriverList::GetInstance()->Add(&clUART);
 
-    Kernel::Start();
+    Kernel::GetInstance()->Start();
 
     return 0;
 }
@@ -230,7 +230,7 @@ static void NLFS_Prepare(void)
 //---------------------------------------------------------------------------
 void AppMain(void* unused_)
 {
-    UartDriver* my_uart = static_cast<UartDriver*>(DriverList::FindByPath("/dev/tty"));
+    UartDriver* my_uart = static_cast<UartDriver*>(DriverList::GetInstance()->FindByPath("/dev/tty"));
 
     my_uart->SetBaudRate(57600);
     my_uart->SetBuffers(aucRxBuffer, UART_SIZE_RX, aucTxBuffer, UART_SIZE_TX);

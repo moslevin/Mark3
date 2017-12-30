@@ -74,7 +74,7 @@ static void IdleEntry(void);
 //---------------------------------------------------------------------------
 int main(void)
 {
-    Kernel::Init(); //!< MUST be before other kernel ops
+    Kernel::GetInstance()->Init(); //!< MUST be before other kernel ops
 
     AppThread.Init(aucAppStack,             //!< Pointer to the stack
                    STACK_SIZE_APP,          //!< Size of the stack
@@ -94,9 +94,9 @@ int main(void)
     clUART.SetName("/dev/tty"); //!< Add the serial driver
     clUART.Init();
 
-    DriverList::Add(&clUART);
+    DriverList::GetInstance()->Add(&clUART);
 
-    Kernel::Start(); //!< Start the kernel!
+    Kernel::GetInstance()->Start(); //!< Start the kernel!
 }
 
 void PrintString(const char* szStr_)
@@ -160,7 +160,7 @@ void NLFS_Test(void)
 void AppEntry(void)
 {
     {
-        UartDriver* my_uart = static_cast<UartDriver*>(DriverList::FindByPath("/dev/tty"));
+        UartDriver* my_uart = static_cast<UartDriver*>(DriverList::GetInstance()->FindByPath("/dev/tty"));
         my_uart->SetBuffers(aucRxBuffer, UART_SIZE_RX, aucTxBuffer, UART_SIZE_TX);
         my_uart->Open();
     }

@@ -128,7 +128,7 @@ static void ThreadSleepEntryPoint(void* unused_)
     clSem2.Post();
 
     // Exit this thread.
-    Scheduler::GetCurrentThread()->Exit();
+    Scheduler::GetInstance()->GetCurrentThread()->Exit();
 }
 
 //===========================================================================
@@ -207,7 +207,7 @@ TEST(ut_roundrobin)
 
     // Adjust thread priority before starting test threads to ensure
     // they all start at the same time (when we hit the 1 second sleep)
-    Scheduler::GetCurrentThread()->SetPriority(2);
+    Scheduler::GetInstance()->GetCurrentThread()->SetPriority(2);
     clThread1.Start();
     clThread2.Start();
     clThread3.Start();
@@ -219,7 +219,7 @@ TEST(ut_roundrobin)
     clThread1.Stop();
     clThread2.Stop();
     clThread3.Stop();
-    Scheduler::GetCurrentThread()->SetPriority(1);
+    Scheduler::GetInstance()->GetCurrentThread()->SetPriority(1);
 
     // Compare the three counters - they should be nearly identical
     if (u32RR1 > u32RR2) {
@@ -273,7 +273,7 @@ TEST(ut_quanta)
 
     // Adjust thread priority before starting test threads to ensure
     // they all start at the same time (when we hit the 1 second sleep)
-    Scheduler::GetCurrentThread()->SetPriority(2);
+    Scheduler::GetInstance()->GetCurrentThread()->SetPriority(2);
 
     // Set a different execution quanta for each thread
     clThread1.SetQuantum(3);
@@ -291,7 +291,7 @@ TEST(ut_quanta)
     clThread1.Stop();
     clThread2.Stop();
     clThread3.Stop();
-    Scheduler::GetCurrentThread()->SetPriority(1);
+    Scheduler::GetInstance()->GetCurrentThread()->SetPriority(1);
 
     // Test point - make sure that Q3 > Q2 > Q1
     EXPECT_GT(u32RR2, u32RR1);

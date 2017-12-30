@@ -35,11 +35,10 @@ See license.txt for more information
 
 #include "kerneldebug.h"
 
-//---------------------------------------------------------------------------
 #if KERNEL_USE_DRIVER
+namespace {
 
-DoubleLinkList DriverList::m_clDriverList;
-
+//---------------------------------------------------------------------------
 /*!
     This class implements the "default" driver (/dev/null)
 */
@@ -59,7 +58,7 @@ public:
 };
 
 //---------------------------------------------------------------------------
-static DevNull clDevNull; //!< Default driver included to allow for run-time "stubbing"
+DevNull clDevNull; //!< Default driver included to allow for run-time "stubbing"
 
 //---------------------------------------------------------------------------
 /*!
@@ -74,8 +73,8 @@ static DevNull clDevNull; //!< Default driver included to allow for run-time "st
  */
 static uint8_t DrvCmp(const char* szStr1_, const char* szStr2_)
 {
-    char* szTmp1 = (char*)szStr1_;
-    char* szTmp2 = (char*)szStr2_;
+    auto* szTmp1 = szStr1_;
+    auto* szTmp2 = szStr2_;
 
     while ((*szTmp1 != 0) && (*szTmp2 != 0)) {
         if (*szTmp1++ != *szTmp2++) {
@@ -90,6 +89,7 @@ static uint8_t DrvCmp(const char* szStr1_, const char* szStr2_)
 
     return 0;
 }
+} // anonymous namespace
 
 //---------------------------------------------------------------------------
 void DriverList::Init()
@@ -104,11 +104,11 @@ void DriverList::Init()
 Driver* DriverList::FindByPath(const char* m_pcPath)
 {
     KERNEL_ASSERT(m_pcPath);
-    Driver* pclTemp = static_cast<Driver*>(m_clDriverList.GetHead());
+    auto* pclTemp = static_cast<Driver*>(m_clDriverList.GetHead());
 
     // Iterate through the list of drivers until we find a match, or we
     // exhaust our list of installed drivers
-    while (pclTemp != 0) {
+    while (pclTemp != nullptr) {
         if (DrvCmp(m_pcPath, pclTemp->GetPath()) != 0u) {
             return pclTemp;
         }

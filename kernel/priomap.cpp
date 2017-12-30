@@ -24,7 +24,8 @@ See license.txt for more information
 #include <stdbool.h>
 
 //---------------------------------------------------------------------------
-static inline uint8_t priority_from_bitmap(PORT_PRIO_TYPE uXPrio_)
+namespace {
+inline uint8_t priority_from_bitmap(PORT_PRIO_TYPE uXPrio_)
 {
 #if HW_CLZ
     // Support hardware-accelerated Count-leading-zeros instruction
@@ -46,6 +47,7 @@ static inline uint8_t priority_from_bitmap(PORT_PRIO_TYPE uXPrio_)
     return 0;
 #endif
 }
+} // anonymous namespace
 
 //---------------------------------------------------------------------------
 PriorityMap::PriorityMap()

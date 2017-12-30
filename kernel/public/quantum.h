@@ -41,6 +41,12 @@ class Timer;
 class Quantum
 {
 public:
+
+    static Quantum* GetInstance() {
+        static Quantum s_clInstance;
+        return &s_clInstance;
+    }
+
     /*!
      *  \brief UpdateTimer
      *
@@ -49,7 +55,7 @@ public:
      *  being re-loaded or started.  The timer is never stopped, but if may
      *  be ignored on expiry.
      */
-    static void UpdateTimer();
+    void UpdateTimer();
 
     /*!
      *  \brief AddThread
@@ -57,14 +63,14 @@ public:
      *  Add the thread to the quantum timer.  Only one thread can own the quantum,
      *  since only one thread can be running on a core at a time.
      */
-    static void AddThread(Thread* pclThread_);
+    void AddThread(Thread* pclThread_);
 
     /*!
      *  \brief RemoveThread
      *
      *  Remove the thread from the quantum timer.  This will cancel the timer.
      */
-    static void RemoveThread();
+    void RemoveThread();
 
     /*!
      *  \brief SetInTimer
@@ -74,18 +80,18 @@ public:
      *  updated in the middle of a callback cycle, potentially resulting in
      *  the kernel timer becoming disabled.
      */
-    static void SetInTimer(void) { m_bInTimer = true; }
+    void SetInTimer(void) { m_bInTimer = true; }
     /*!
      * \brief ClearInTimer
      *
      *  Clear the flag once the timer callback function has been completed.
      */
-    static void ClearInTimer(void) { m_bInTimer = false; }
+    void ClearInTimer(void) { m_bInTimer = false; }
 
 #if KERNEL_TIMERS_THREADED
-    static void SetTimerThread(Thread* pclTimerThread_);
+    void SetTimerThread(Thread* pclTimerThread_);
 
-    static Thread* GetTimerThread();
+    Thread* GetTimerThread();
 #endif
 
 private:
@@ -100,15 +106,15 @@ private:
      *
      *  \param pclThread_ Pointer to the thread to set the Quantum timer on
      */
-    static void SetTimer(Thread* pclThread_);
+    void SetTimer(Thread* pclThread_);
 
 #if KERNEL_TIMERS_THREADED
     static Thread* m_pclTimerThread;
 #endif
 
-    static Timer m_clQuantumTimer;
-    static bool  m_bActive;
-    static bool  m_bInTimer;
+    Timer m_clQuantumTimer;
+    bool  m_bActive;
+    bool  m_bInTimer;
 };
 
 #endif // KERNEL_USE_QUANTUM

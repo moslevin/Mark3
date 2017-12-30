@@ -49,13 +49,13 @@ static void OneShotCallback(Thread* owner, void* pvData_);
 int main(void)
 {
     // See the annotations in previous labs for details on init.
-    Kernel::Init();
+    Kernel::GetInstance()->Init();
 
     clApp1Thread.Init(awApp1Stack, sizeof(awApp1Stack), 1, App1Main, 0);
 
     clApp1Thread.Start();
 
-    Kernel::Start();
+    Kernel::GetInstance()->Start();
 
     return 0;
 }

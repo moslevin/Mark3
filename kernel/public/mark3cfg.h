@@ -254,7 +254,7 @@ See license.txt for more information
     Provides extra logic for kernel debugging, and instruments the kernel
     with extra asserts, and kernel trace functionality.
 */
-#define KERNEL_USE_DEBUG (0)
+#define KERNEL_USE_DEBUG (1)
 
 #if KERNEL_USE_DEBUG
 /*!
@@ -282,7 +282,7 @@ See license.txt for more information
     Provides support for atomic operations, including addition, subtraction,
     set, and test-and-set.  Add/Sub/Set contain 8, 16, and 32-bit variants.
 */
-#define KERNEL_USE_ATOMIC (0)
+#define KERNEL_USE_ATOMIC (1)
 
 /*!
     "Safe unlinking" performs extra checks on data to make sure that there

@@ -109,8 +109,8 @@ public:
 class LinkList
 {
 protected:
-    LinkListNode* m_pstHead; //!< Pointer to the head node in the list
-    LinkListNode* m_pstTail; //!< Pointer to the tail node in the list
+    LinkListNode* m_pclHead; //!< Pointer to the head node in the list
+    LinkListNode* m_pclTail; //!< Pointer to the tail node in the list
 
 public:
     /*!
@@ -120,8 +120,8 @@ public:
      */
     void Init()
     {
-        m_pstHead = NULL;
-        m_pstTail = NULL;
+        m_pclHead = NULL;
+        m_pclTail = NULL;
     }
 
     /*!
@@ -131,7 +131,7 @@ public:
      *
      *  \return Pointer to the head node in the list
      */
-    LinkListNode* GetHead() { return m_pstHead; }
+    LinkListNode* GetHead() { return m_pclHead; }
     /*!
      *  \brief GetTail
      *
@@ -139,7 +139,7 @@ public:
      *
      *  \return Pointer to the tail node in the list
      */
-    LinkListNode* GetTail() { return m_pstTail; }
+    LinkListNode* GetTail() { return m_pclTail; }
 };
 
 //---------------------------------------------------------------------------
@@ -157,8 +157,8 @@ public:
      */
     DoubleLinkList()
     {
-        m_pstHead = NULL;
-        m_pstTail = NULL;
+        m_pclHead = NULL;
+        m_pclTail = NULL;
     }
 
     /*!
@@ -190,8 +190,8 @@ public:
     void* operator new(size_t sz, void* pv) { return (CircularLinkList*)pv; };
     CircularLinkList()
     {
-        m_pstHead = NULL;
-        m_pstTail = NULL;
+        m_pclHead = NULL;
+        m_pclTail = NULL;
     }
 
     /*!

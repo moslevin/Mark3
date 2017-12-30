@@ -23,6 +23,7 @@ See license.txt for more information
 #include "mark3cfg.h"
 #include "thread.h"
 #include "threadport.h"
+#include "kernelprofile.h"
 #include "kernelswi.h"
 #include "kerneltimer.h"
 #include "timerlist.h"
@@ -145,9 +146,11 @@ void ThreadPort::StartThreads()
 {
     KernelSWI::Config();   // configure the task switch SWI
     KernelTimer::Config(); // configure the kernel timer
-
-    Scheduler::SetScheduler(1); // enable the scheduler
-    Scheduler::Schedule();      // run the scheduler - determine the first thread to run
+#if KERNEL_USE_PROFILER
+    Profiler::Init();
+#endif
+    Scheduler::GetInstance()->SetScheduler(1); // enable the scheduler
+    Scheduler::GetInstance()->Schedule();      // run the scheduler - determine the first thread to run
 
     Thread_Switch(); // Set the next scheduled thread to the current thread
 
@@ -155,8 +158,8 @@ void ThreadPort::StartThreads()
     KernelSWI::Start();   // enable the task switch SWI
 
 #if KERNEL_USE_QUANTUM
-    Quantum::RemoveThread();
-    Quantum::AddThread(g_pclCurrent);
+    Quantum::GetInstance()->RemoveThread();
+    Quantum::GetInstance()->AddThread(g_pclCurrent);
 #endif
 
     SCB->CPACR |= 0x00F00000; // Enable floating-point

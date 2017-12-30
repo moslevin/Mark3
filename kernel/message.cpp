@@ -43,9 +43,6 @@ See license.txt for more information
 #include "timerlist.h"
 #endif
 
-Message     GlobalMessagePool::m_aclMessagePool[GLOBAL_MESSAGE_POOL_SIZE];
-MessagePool GlobalMessagePool::m_clPool;
-
 //---------------------------------------------------------------------------
 void MessagePool::Init()
 {
@@ -83,41 +80,6 @@ Message* MessagePool::Pop()
 Message* MessagePool::GetHead()
 {
     return static_cast<Message*>(m_clList.GetHead());
-}
-
-//---------------------------------------------------------------------------
-void GlobalMessagePool::Init()
-{
-    uint8_t i;
-    GlobalMessagePool::m_clPool.Init();
-    for (i = 0; i < GLOBAL_MESSAGE_POOL_SIZE; i++) {
-        GlobalMessagePool::m_aclMessagePool[i].Init();
-        GlobalMessagePool::m_clPool.Push(&(GlobalMessagePool::m_aclMessagePool[i]));
-    }
-}
-
-//---------------------------------------------------------------------------
-void GlobalMessagePool::Push(Message* pclMessage_)
-{
-    m_clPool.Push(pclMessage_);
-}
-
-//---------------------------------------------------------------------------
-Message* GlobalMessagePool::Pop()
-{
-    return m_clPool.Pop();
-}
-
-//------------------------------------------------------------------------
-Message* GlobalMessagePool::GetHead()
-{
-    return m_clPool.GetHead();
-}
-
-//---------------------------------------------------------------------------
-MessagePool* GlobalMessagePool::GetPool()
-{
-    return &m_clPool;
 }
 
 //---------------------------------------------------------------------------

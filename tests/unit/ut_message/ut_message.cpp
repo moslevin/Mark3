@@ -28,6 +28,9 @@ static K_WORD aucMsgStack[MSG_STACK_SIZE];
 static MessageQueue     clMsgQ;
 static volatile uint8_t u8PassCount = 0;
 
+#define MESSAGE_POOL_SIZE (3)
+static MessagePool s_clMessagePool;
+static Message s_clMessages[MESSAGE_POOL_SIZE];
 //===========================================================================
 // Local Defines
 //===========================================================================
@@ -77,7 +80,7 @@ void MsgConsumer(void* unused_)
 
             default: break;
         }
-        GlobalMessagePool::Push(pclMsg);
+        s_clMessagePool.Push(pclMsg);
     }
 }
 
@@ -91,8 +94,13 @@ TEST(ut_message_tx_rx)
     // message queue.  This test also relies on priority scheduling working
     // as expected.
 
-    Message* pclMsg;
+    s_clMessagePool.Init();
+    for (int i = 0; i < MESSAGE_POOL_SIZE; i++) {
+        s_clMessages[i].Init();
+        s_clMessagePool.Push(&s_clMessages[i]);
+    }
 
+    Message* pclMsg;
     clMsgThread.Init(aucMsgStack, MSG_STACK_SIZE, 7, MsgConsumer, 0);
 
     clMsgQ.Init();
@@ -100,7 +108,7 @@ TEST(ut_message_tx_rx)
     clMsgThread.Start();
 
     // Get a message from the pool
-    pclMsg = GlobalMessagePool::Pop();
+    pclMsg = s_clMessagePool.Pop();
     EXPECT_FAIL_FALSE(pclMsg);
 
     // Send the message to the consumer thread
@@ -111,7 +119,7 @@ TEST(ut_message_tx_rx)
 
     EXPECT_EQUALS(u8PassCount, 3);
 
-    pclMsg = GlobalMessagePool::Pop();
+    pclMsg = s_clMessagePool.Pop();
     EXPECT_FAIL_FALSE(pclMsg);
 
     // Send the message to the consumer thread
@@ -122,7 +130,7 @@ TEST(ut_message_tx_rx)
 
     EXPECT_EQUALS(u8PassCount, 3);
 
-    pclMsg = GlobalMessagePool::Pop();
+    pclMsg = s_clMessagePool.Pop();
     EXPECT_FAIL_FALSE(pclMsg);
 
     // Send the message to the consumer thread
@@ -139,17 +147,27 @@ TEST_END
 
 //===========================================================================
 TEST(ut_message_exhaust)
-{
+{    
+    s_clMessagePool.Init();
+    for (int i = 0; i < MESSAGE_POOL_SIZE; i++) {
+        s_clMessages[i].Init();
+        s_clMessagePool.Push(&s_clMessages[i]);
+    }
+
     // Test - exhaust the global message pool and ensure that we eventually
     // get "NULL" returned when the pool is depleted, and not some other
     // unexpected condition/system failure.
-    for (int i = 0; i < GLOBAL_MESSAGE_POOL_SIZE; i++) {
-        EXPECT_FAIL_FALSE(GlobalMessagePool::Pop());
+    for (int i = 0; i < MESSAGE_POOL_SIZE; i++) {
+        EXPECT_FAIL_FALSE(s_clMessagePool.Pop());
     }
-    EXPECT_FALSE(GlobalMessagePool::Pop());
+    EXPECT_FALSE(s_clMessagePool.Pop());
 
     // Test is over - re-init the pool..
-    GlobalMessagePool::Init();
+    s_clMessagePool.Init();
+    for (int i = 0; i < MESSAGE_POOL_SIZE; i++) {
+        s_clMessages[i].Init();
+        s_clMessagePool.Push(&s_clMessages[i]);
+    }
 }
 TEST_END
 
@@ -163,28 +181,34 @@ void MsgTimed(void* unused)
     if (0 == pclRet) {
         u8PassCount++;
     } else {
-        GlobalMessagePool::Push(pclRet);
+        s_clMessagePool.Push(pclRet);
     }
 
     pclRet = clMsgQ.Receive(1000);
     if (0 != pclRet) {
         u8PassCount++;
     } else {
-        GlobalMessagePool::Push(pclRet);
+        s_clMessagePool.Push(pclRet);
     }
 
     while (1) {
         pclRet = clMsgQ.Receive();
-        GlobalMessagePool::Push(pclRet);
+        s_clMessagePool.Push(pclRet);
     }
 }
 
 //===========================================================================
 TEST(ut_message_timed_rx)
 {
+    s_clMessagePool.Init();
+    for (int i = 0; i < MESSAGE_POOL_SIZE; i++) {
+        s_clMessages[i].Init();
+        s_clMessagePool.Push(&s_clMessages[i]);
+    }
+
     Message* pclMsg;
 
-    pclMsg = GlobalMessagePool::Pop();
+    pclMsg = s_clMessagePool.Pop();
     EXPECT_FAIL_FALSE(pclMsg);
 
     // Send the message to the consumer thread
@@ -214,4 +238,7 @@ TEST_END
 // Test Whitelist Goes Here
 //===========================================================================
 TEST_CASE_START
-TEST_CASE(ut_message_tx_rx), TEST_CASE(ut_message_exhaust), TEST_CASE(ut_message_timed_rx), TEST_CASE_END
+TEST_CASE(ut_message_tx_rx),
+TEST_CASE(ut_message_exhaust),
+TEST_CASE(ut_message_timed_rx),
+TEST_CASE_END

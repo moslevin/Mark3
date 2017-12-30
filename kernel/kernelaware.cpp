@@ -79,6 +79,19 @@ volatile uint8_t  g_u8KACommand;    //!< Kernel-aware simulator command to execu
 KernelAwareData_t g_stKAData;       //!< Data structure used to communicate with host.
 
 //---------------------------------------------------------------------------
+static void Trace_i(
+    uint16_t u16File_, uint16_t u16Line_, uint16_t u16Arg1_, uint16_t u16Arg2_, KernelAwareCommand_t eCmd_)
+{
+    CS_ENTER();
+    g_stKAData.Trace.u16File = u16File_;
+    g_stKAData.Trace.u16Line = u16Line_;
+    g_stKAData.Trace.u16Arg1 = u16Arg1_;
+    g_stKAData.Trace.u16Arg2 = u16Arg2_;
+    g_u8KACommand            = eCmd_;
+    CS_EXIT();
+}
+
+//---------------------------------------------------------------------------
 void KernelAware::ProfileInit(const char* szStr_)
 {
     CS_ENTER();
@@ -126,19 +139,6 @@ void KernelAware::Trace(uint16_t u16File_, uint16_t u16Line_, uint16_t u16Arg1_)
 void KernelAware::Trace(uint16_t u16File_, uint16_t u16Line_, uint16_t u16Arg1_, uint16_t u16Arg2_)
 {
     Trace_i(u16File_, u16Line_, u16Arg1_, u16Arg2_, KA_COMMAND_TRACE_2);
-}
-
-//---------------------------------------------------------------------------
-void KernelAware::Trace_i(
-    uint16_t u16File_, uint16_t u16Line_, uint16_t u16Arg1_, uint16_t u16Arg2_, KernelAwareCommand_t eCmd_)
-{
-    CS_ENTER();
-    g_stKAData.Trace.u16File = u16File_;
-    g_stKAData.Trace.u16Line = u16Line_;
-    g_stKAData.Trace.u16Arg1 = u16Arg1_;
-    g_stKAData.Trace.u16Arg2 = u16Arg2_;
-    g_u8KACommand            = eCmd_;
-    CS_EXIT();
 }
 
 //---------------------------------------------------------------------------

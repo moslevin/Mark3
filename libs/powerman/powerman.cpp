@@ -78,7 +78,7 @@ void PowerMan::ChangeVote(uint8_t u8Index_, power_vote_t eVote_)
 uint8_t PowerMan::GetNextID()
 {
     if (m_u8ID >= MAX_BALLOTS) {
-        Kernel::Panic(PANIC_POWERMAN_EXHAUSTED);
+        Kernel::GetInstance()->Panic(PANIC_POWERMAN_EXHAUSTED);
     }
     return m_u8ID++;
 }

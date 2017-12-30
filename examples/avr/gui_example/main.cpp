@@ -64,6 +64,10 @@ static void CheckBox2Callback(bool bChecked_);
 Thread clAppThread;
 K_WORD awAppStack[APP_STACK_SIZE];
 
+#define MESSAGE_POOL_SIZE (3)
+static MessagePool s_clMessagePool;
+static Message s_clMessages[MESSAGE_POOL_SIZE];
+
 //---------------------------------------------------------------------------
 static void AppMain(void* unused_);
 
@@ -76,12 +80,12 @@ void __cxa_pure_virtual(void)
 //---------------------------------------------------------------------------
 int main(void)
 {
-    Kernel::Init();
+    Kernel::GetInstance()->Init();
 
     clAppThread.Init(awAppStack, APP_STACK_SIZE, 1, AppMain, 0);
     clAppThread.Start();
 
-    Kernel::Start();
+    Kernel::GetInstance()->Start();
 }
 
 //---------------------------------------------------------------------------
@@ -322,7 +326,13 @@ void AppMain(void* unused_)
     // Use the global system heap and message pool for dynamic allocations
     // on this event surface.
     clEventSurface.SetHeap(SystemHeap::GetHeap());
-    clEventSurface.SetMessagePool(GlobalMessagePool::GetPool());
+
+    s_clMessagePool.Init();
+    for (int i = 0; i < 3; i++) {
+        s_clMessages[i].Init();
+        s_clMessagePool.Push(&s_clMessages[i]);
+    }
+    clEventSurface.SetMessagePool(&s_clMessagePool);
 
     clEventSurface.AddWindow(&clWindow);
 

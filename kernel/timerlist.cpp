@@ -44,8 +44,6 @@ See license.txt for more information
 
 #if KERNEL_USE_TIMERS
 //---------------------------------------------------------------------------
-TimerList TimerScheduler::m_clTimerList;
-
 #if KERNEL_TIMERS_THREADED
 # define TIMERLIST_LOCK()   (m_clMutex.Claim())
 # define TIMERLIST_UNLOCK() (m_clMutex.Release())
@@ -143,7 +141,7 @@ void TimerList::Process(void)
     TIMERLIST_LOCK();
 
 #if KERNEL_USE_QUANTUM
-    Quantum::SetInTimer();
+    Quantum::GetInstance()->SetInTimer();
 #endif
 #if KERNEL_TIMERS_TICKLESS
 #if !KERNEL_TIMERS_THREADED
@@ -261,7 +259,7 @@ void TimerList::Process(void)
     }
 #endif
 #if KERNEL_USE_QUANTUM
-    Quantum::ClearInTimer();
+    Quantum::GetInstance()->ClearInTimer();
 #endif
 
     TIMERLIST_UNLOCK();

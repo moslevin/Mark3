@@ -38,13 +38,18 @@ See license.txt for more information
 class TimerScheduler
 {
 public:
+    static TimerScheduler* GetInstance() {
+        static TimerScheduler s_clInstance;
+        return &s_clInstance;
+    }
+
     /*!
      *  \brief Init
      *
      *  Initialize the timer scheduler.  Must be called before any timer, or
      *  timer-derived functions are used.
      */
-    static void Init() { m_clTimerList.Init(); }
+    void Init() { m_clTimerList.Init(); }
     /*!
      *  \brief Add
      *
@@ -53,7 +58,7 @@ public:
      *
      *  \param pclListNode_ Pointer to the timer list node to add
      */
-    static void Add(Timer* pclListNode_) { m_clTimerList.Add(pclListNode_); }
+    void Add(Timer* pclListNode_) { m_clTimerList.Add(pclListNode_); }
     /*!
      *  \brief Remove
      *
@@ -62,7 +67,7 @@ public:
      *
      *  \param pclListNode_ Pointer to the timer list node to remove
      */
-    static void Remove(Timer* pclListNode_) { m_clTimerList.Remove(pclListNode_); }
+    void Remove(Timer* pclListNode_) { m_clTimerList.Remove(pclListNode_); }
     /*!
      *  \brief Process
      *
@@ -71,10 +76,10 @@ public:
      *  the epoch that just elapsed.  The next timer epoch is set based on the
      *  next Timer object to expire.
      */
-    static void Process() { m_clTimerList.Process(); }
+    void Process() { m_clTimerList.Process(); }
 private:
     //! TimerList object manipu32ated by the Timer Scheduler
-    static TimerList m_clTimerList;
+    TimerList m_clTimerList;
 };
 
 #endif // KERNEL_USE_TIMERS

@@ -68,7 +68,7 @@ static void IdleMain(void);
 int main(void)
 {
     // See the annotations in lab1.
-    Kernel::Init();
+    Kernel::GetInstance()->Init();
 
     // Initialize the main application thread, as in lab1.  Note that even
     // though we're using an Idle function and not a dedicated thread, priority
@@ -82,9 +82,9 @@ int main(void)
     // whenever there are no ready threads in the system.  Note that if no
     // Idle function is specified, a default will be used.  Note that this default
     // function is essentially a null operation.
-    Kernel::SetIdleFunc(IdleMain);
+    Kernel::GetInstance()->SetIdleFunc(IdleMain);
 
-    Kernel::Start();
+    Kernel::GetInstance()->Start();
 
     return 0;
 }

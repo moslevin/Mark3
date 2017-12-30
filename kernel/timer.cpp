@@ -125,8 +125,8 @@ void Timer::Start()
         return;
     }
 
-    m_pclOwner = Scheduler::GetCurrentThread();
-    TimerScheduler::Add(this);
+    m_pclOwner = Scheduler::GetInstance()->GetCurrentThread();
+    TimerScheduler::GetInstance()->Add(this);
 }
 
 //---------------------------------------------------------------------------
@@ -139,7 +139,7 @@ void Timer::Stop()
     if ((m_u8Flags & TIMERLIST_FLAG_ACTIVE) == 0) {
             return;
     }
-    TimerScheduler::Remove(this);
+    TimerScheduler::GetInstance()->Remove(this);
 }
 
 //---------------------------------------------------------------------------

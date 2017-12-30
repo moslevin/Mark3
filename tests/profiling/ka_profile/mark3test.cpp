@@ -53,7 +53,7 @@ static void IdleMain(void* unused);
 //---------------------------------------------------------------------------
 int main(void)
 {
-    Kernel::Init();
+    Kernel::GetInstance()->Init();
 
     clMainThread.Init(aucMainStack, MAIN_STACK_SIZE, 1, (ThreadEntry_t)AppMain, NULL);
 
@@ -62,7 +62,7 @@ int main(void)
     clMainThread.Start();
     clIdleThread.Start();
 
-    Kernel::Start();
+    Kernel::GetInstance()->Start();
 }
 
 //---------------------------------------------------------------------------
@@ -108,7 +108,7 @@ static void Semaphore_Flyback(Semaphore* pclSem_)
     KernelAware::ProfileStop();
     KernelAware::ProfileReport();
 
-    Scheduler::GetCurrentThread()->Exit();
+    Scheduler::GetInstance()->GetCurrentThread()->Exit();
 }
 
 //---------------------------------------------------------------------------
@@ -202,7 +202,7 @@ static void Thread_ProfilingThread()
 
     KernelAware::ProfileInit("ThreadExit");
     KernelAware::ProfileStart();
-    Scheduler::GetCurrentThread()->Exit();
+    Scheduler::GetInstance()->GetCurrentThread()->Exit();
 }
 
 //---------------------------------------------------------------------------
@@ -235,7 +235,7 @@ static void Thread_Profiling()
     KernelAware::ProfileReport();
     CS_EXIT();
 
-    Scheduler::SetScheduler(0);
+    Scheduler::GetInstance()->SetScheduler(0);
     // Context switch profiling - this is equivalent to what's actually
     // done within the AVR-implementation.
     CS_ENTER();
@@ -250,7 +250,7 @@ static void Thread_Profiling()
     KernelAware::ProfileReport();
     CS_EXIT();
 
-    Scheduler::SetScheduler(1);
+    Scheduler::GetInstance()->SetScheduler(1);
 }
 
 //---------------------------------------------------------------------------
@@ -262,7 +262,7 @@ void Scheduler_Profiling()
     CS_ENTER();
     KernelAware::ProfileInit("Scheduler");
     KernelAware::ProfileStart();
-    Scheduler::Schedule();
+    Scheduler::GetInstance()->Schedule();
     KernelAware::ProfileStop();
     CS_EXIT();
     KernelAware::ProfileReport();

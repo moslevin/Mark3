@@ -40,46 +40,24 @@ See license.txt for more information
 #include "kerneldebug.h"
 
 #if KERNEL_USE_QUANTUM
-
-//---------------------------------------------------------------------------
-static volatile bool bAddQuantumTimer; // Indicates that a timer add is pending
-
-//---------------------------------------------------------------------------
-#if KERNEL_TIMERS_THREADED
-Thread* Quantum::m_pclTimerThread;
-#endif // KERNEL_TIMERS_THREADED
-
-Timer Quantum::m_clQuantumTimer; // The global timernodelist_t object
-bool  Quantum::m_bActive;
-bool  Quantum::m_bInTimer;
-//---------------------------------------------------------------------------
-/*!
- * \brief QuantumCallback
- *
- * This is the timer callback that is invoked whenever a thread has exhausted
- * its current execution quantum and a new thread must be chosen from within
- * the same priority level.
- *
- * \param pclThread_ Pointer to the thread currently executing
- * \param pvData_ Unused in this context.
- */
-static void QuantumCallback(Thread* pclThread_, void*  /*pvData_*/)
-{
-    // Validate thread pointer, check that source/destination match (it's
-    // in its real priority list).
-    if (pclThread_->GetCurrent()->GetHead() != pclThread_->GetCurrent()->GetTail()) {
-        bAddQuantumTimer = true;
-        pclThread_->GetCurrent()->PivotForward();
-    }
-}
+namespace {
+volatile bool bAddQuantumTimer; // Indicates that a timer add is pending
+} // anonymous namespace
 
 //---------------------------------------------------------------------------
 void Quantum::SetTimer(Thread* pclThread_)
 {
+    auto lQuantumCallback = [](Thread* pclThread_, void*  /*pvData_*/) {
+        if (pclThread_->GetCurrent()->GetHead() != pclThread_->GetCurrent()->GetTail()) {
+            bAddQuantumTimer = true;
+            pclThread_->GetCurrent()->PivotForward();
+        }
+    };
+
     m_clQuantumTimer.SetIntervalMSeconds(pclThread_->GetQuantum());
     m_clQuantumTimer.SetFlags(TIMERLIST_FLAG_ONE_SHOT);
     m_clQuantumTimer.SetData(NULL);
-    m_clQuantumTimer.SetCallback((TimerCallback_t)QuantumCallback);
+    m_clQuantumTimer.SetCallback(lQuantumCallback);
     m_clQuantumTimer.SetOwner(pclThread_);
 }
 
@@ -88,7 +66,7 @@ void Quantum::AddThread(Thread* pclThread_)
 {
     if (m_bActive
 #if KERNEL_USE_IDLE_FUNC
-        || (pclThread_ == Kernel::GetIdleThread())
+        || (pclThread_ == Kernel::GetInstance()->GetIdleThread())
 #endif
             ) {
         return;
@@ -106,7 +84,7 @@ void Quantum::AddThread(Thread* pclThread_)
         m_clQuantumTimer.Init();
 #endif
         Quantum::SetTimer(pclThread_);
-        TimerScheduler::Add(&m_clQuantumTimer);
+        TimerScheduler::GetInstance()->Add(&m_clQuantumTimer);
         m_bActive = true;
     }
 }
@@ -119,7 +97,7 @@ void Quantum::RemoveThread(void)
     }
 
     // Cancel the current timer
-    TimerScheduler::Remove(&m_clQuantumTimer);
+    TimerScheduler::GetInstance()->Remove(&m_clQuantumTimer);
     m_bActive = false;
 }
 

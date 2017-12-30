@@ -40,8 +40,8 @@ See license.txt for more information
         au16Msg__[0] = 0xACDC;                                                                                         \
         au16Msg__[1] = DBG_FILE;                                                                                       \
         au16Msg__[2] = __LINE__;                                                                                       \
-        au16Msg__[3] = TraceBuffer::Increment();                                                                       \
-        TraceBuffer::Write(au16Msg__, 4);                                                                              \
+        au16Msg__[3] = TraceBuffer::GetInstance()->Increment();                                                                       \
+        TraceBuffer::GetInstance()->Write(au16Msg__, 4);                                                                              \
     \
 };
 
@@ -54,9 +54,9 @@ See license.txt for more information
         au16Msg__[0] = 0xACDC;                                                                                         \
         au16Msg__[1] = DBG_FILE;                                                                                       \
         au16Msg__[2] = __LINE__;                                                                                       \
-        au16Msg__[3] = TraceBuffer::Increment();                                                                       \
+        au16Msg__[3] = TraceBuffer::GetInstance()->Increment();                                                                       \
         au16Msg__[4] = arg1;                                                                                           \
-        TraceBuffer::Write(au16Msg__, 5);                                                                              \
+        TraceBuffer::GetInstance()->Write(au16Msg__, 5);                                                                              \
     \
 }
 
@@ -69,10 +69,10 @@ See license.txt for more information
         au16Msg__[0] = 0xACDC;                                                                                         \
         au16Msg__[1] = DBG_FILE;                                                                                       \
         au16Msg__[2] = __LINE__;                                                                                       \
-        au16Msg__[3] = TraceBuffer::Increment();                                                                       \
+        au16Msg__[3] = TraceBuffer::GetInstance()->Increment();                                                                       \
         au16Msg__[4] = arg1;                                                                                           \
         au16Msg__[5] = arg2;                                                                                           \
-        TraceBuffer::Write(au16Msg__, 6);                                                                              \
+        TraceBuffer::GetInstance()->Write(au16Msg__, 6);                                                                              \
     \
 }
 
@@ -86,9 +86,9 @@ See license.txt for more information
             au16Msg__[0] = 0xACDC;                                                                                     \
             au16Msg__[1] = DBG_FILE;                                                                                   \
             au16Msg__[2] = __LINE__;                                                                                   \
-            au16Msg__[3] = TraceBuffer::Increment();                                                                   \
-            TraceBuffer::Write(au16Msg__, 4);                                                                          \
-            Kernel::Panic(PANIC_ASSERT_FAILED);                                                                        \
+            au16Msg__[3] = TraceBuffer::GetInstance()->Increment();                                                                   \
+            TraceBuffer::GetInstance()->Write(au16Msg__, 4);                                                                          \
+            Kernel::GetInstance()->Panic(PANIC_ASSERT_FAILED);                                                                        \
         }                                                                                                              \
     \
 }
@@ -128,7 +128,7 @@ See license.txt for more information
         if ((x) == false) {                                                                                            \
             EMIT_DBG_STRING("ASSERT FAILED");                                                                          \
             KernelAware::Trace(DBG_FILE, __LINE__);                                                                    \
-            Kernel::Panic(PANIC_ASSERT_FAILED);                                                                        \
+            Kernel::GetInstance()->Panic(PANIC_ASSERT_FAILED);                                                                        \
         }                                                                                                              \
     \
 }
@@ -145,7 +145,7 @@ See license.txt for more information
 #define KERNEL_ASSERT(x) \
 {                                                                                                               \
     if ((x) == false) {                                                                                            \
-        Kernel::Panic(PANIC_ASSERT_FAILED);                                                                        \
+        Kernel::GetInstance()->Panic(PANIC_ASSERT_FAILED);                                                                        \
     }                                                                                                              \
 }
 #else
@@ -176,8 +176,8 @@ See license.txt for more information
         au16Msg__[0] = 0xACDC;                                                                                         \
         au16Msg__[1] = DBG_FILE;                                                                                       \
         au16Msg__[2] = __LINE__;                                                                                       \
-        au16Msg__[3] = TraceBuffer::Increment();                                                                       \
-        TraceBuffer::Write(au16Msg__, 4);                                                                              \
+        au16Msg__[3] = TraceBuffer::GetInstance()->Increment();                                                                       \
+        TraceBuffer::GetInstance()->Write(au16Msg__, 4);                                                                              \
     \
 };
 
@@ -190,9 +190,9 @@ See license.txt for more information
         au16Msg__[0] = 0xACDC;                                                                                         \
         au16Msg__[1] = DBG_FILE;                                                                                       \
         au16Msg__[2] = __LINE__;                                                                                       \
-        au16Msg__[3] = TraceBuffer::Increment();                                                                       \
+        au16Msg__[3] = TraceBuffer::GetInstance()->Increment();                                                                       \
         au16Msg__[4] = arg1;                                                                                           \
-        TraceBuffer::Write(au16Msg__, 5);                                                                              \
+        TraceBuffer::GetInstance()->Write(au16Msg__, 5);                                                                              \
     \
 }
 
@@ -205,10 +205,10 @@ See license.txt for more information
         au16Msg__[0] = 0xACDC;                                                                                         \
         au16Msg__[1] = DBG_FILE;                                                                                       \
         au16Msg__[2] = __LINE__;                                                                                       \
-        au16Msg__[3] = TraceBuffer::Increment();                                                                       \
+        au16Msg__[3] = TraceBuffer::GetInstance()->Increment();                                                                       \
         au16Msg__[4] = arg1;                                                                                           \
         au16Msg__[5] = arg2;                                                                                           \
-        TraceBuffer::Write(au16Msg__, 6);                                                                              \
+        TraceBuffer::GetInstance()->Write(au16Msg__, 6);                                                                              \
     \
 }
 
@@ -222,9 +222,9 @@ See license.txt for more information
             au16Msg__[0] = 0xACDC;                                                                                     \
             au16Msg__[1] = DBG_FILE;                                                                                   \
             au16Msg__[2] = __LINE__;                                                                                   \
-            au16Msg__[3] = TraceBuffer::Increment();                                                                   \
-            TraceBuffer::Write(au16Msg__, 4);                                                                          \
-            Kernel::Panic(PANIC_ASSERT_FAILED);                                                                        \
+            au16Msg__[3] = TraceBuffer::GetInstance()->Increment();                                                                   \
+            TraceBuffer::GetInstance()->Write(au16Msg__, 4);                                                                          \
+            Kernel::GetInstance()->Panic(PANIC_ASSERT_FAILED);                                                                        \
         }                                                                                                              \
     \
 }
@@ -264,7 +264,7 @@ See license.txt for more information
         if ((x) == false) {                                                                                            \
             EMIT_DBG_STRING("ASSERT FAILED");                                                                          \
             KernelAware::Trace(DBG_FILE, __LINE__);                                                                    \
-            Kernel::Panic(PANIC_ASSERT_FAILED);                                                                        \
+            Kernel::GetInstance()->Panic(PANIC_ASSERT_FAILED);                                                                        \
         }                                                                                                              \
     \
 }

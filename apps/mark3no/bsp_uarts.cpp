@@ -32,6 +32,6 @@ void bsp_uarts_init(void)
     clUART1.Control(UART_OPCODE_SET_BUFFERS, au8RX1, 32, au8TX1, 32);
     clUART1.Open();
 
-    DriverList::Add(&clUART0);
-    DriverList::Add(&clUART1);
+    DriverList::GetInstance()->Add(&clUART0);
+    DriverList::GetInstance()->Add(&clUART1);
 }

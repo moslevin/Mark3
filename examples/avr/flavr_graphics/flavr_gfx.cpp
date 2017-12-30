@@ -63,7 +63,7 @@ static void IdleEntry(void);
 //---------------------------------------------------------------------------
 int main(void)
 {
-    Kernel::Init(); //!< MUST be before other kernel ops
+    Kernel::GetInstance()->Init(); //!< MUST be before other kernel ops
 
     AppThread.Init(aucAppStack,             //!< Pointer to the stack
                    STACK_SIZE_APP,          //!< Size of the stack
@@ -83,15 +83,15 @@ int main(void)
     clflAVR.SetName("/dev/display"); //!< Add the display driver
     clflAVR.Init();
 
-    DriverList::Add(&clflAVR);
+    DriverList::GetInstance()->Add(&clflAVR);
 
-    Kernel::Start(); //!< Start the kernel!
+    Kernel::GetInstance()->Start(); //!< Start the kernel!
 }
 
 //---------------------------------------------------------------------------
 void AppEntry(void)
 {
-    GraphicsFlavr* my_gfx = (GraphicsFlavr*)(DriverList::FindByPath("/dev/display"));
+    GraphicsFlavr* my_gfx = (GraphicsFlavr*)(DriverList::GetInstance()->FindByPath("/dev/display"));
 
     my_gfx->Open();
     // Dummy code - just write hello world forever...

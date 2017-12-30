@@ -203,66 +203,6 @@ private:
 
 //---------------------------------------------------------------------------
 /*!
- *  Implements a list of message objects shared between all threads.
- */
-class GlobalMessagePool
-{
-public:
-    /*!
-     *  \brief Init
-     *
-     *  Initialize the message queue prior to use
-     */
-    static void Init();
-
-    /*!
-     *  \brief Push
-     *
-     *  Return a previously-claimed message object back to the global queue.
-     *  used once the message has been processed by a receiver.
-     *
-     *  \param pclMessage_ Pointer to the Message object to return back to
-     *         the global queue
-     */
-    static void Push(Message* pclMessage_);
-
-    /*!
-     *  \brief Pop
-     *
-     *  Pop a message from the global queue, returning it to the user to be
-     *  popu32ated before sending by a transmitter.
-     *
-     *  \return Pointer to a Message object
-     */
-    static Message* Pop();
-
-    /*!
-     * \brief GetHead
-     *
-     * Return a pointer to the first element in the message list
-     *
-     * \return Pointer to head message element, or NULL if empty
-     */
-    static Message* GetHead();
-
-    /*!
-     * \brief GetPool
-     *
-     * Get the pointer to the underlying message pool object
-     *
-     * \return Pointer to message pool.
-     */
-    static MessagePool* GetPool();
-
-private:
-    //! Array of message objects that make up the message pool
-    static Message m_aclMessagePool[GLOBAL_MESSAGE_POOL_SIZE];
-
-    static MessagePool m_clPool;
-};
-
-//---------------------------------------------------------------------------
-/*!
  *  List of messages, used as the channel for sending and receiving messages
  *  between threads.
  */

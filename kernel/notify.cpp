@@ -38,10 +38,11 @@ See license.txt for more information
 #if KERNEL_USE_NOTIFY
 
 #if KERNEL_USE_TIMEOUTS
+namespace {
 //---------------------------------------------------------------------------
 void TimedNotify_Callback(Thread* pclOwner_, void* pvData_)
 {
-    Notify* pclNotify = static_cast<Notify*>(pvData_);
+    auto* pclNotify = static_cast<Notify*>(pvData_);
 
     // Indicate that the semaphore has expired on the thread
     pclOwner_->SetExpired(true);
@@ -49,18 +50,19 @@ void TimedNotify_Callback(Thread* pclOwner_, void* pvData_)
     // Wake up the thread that was blocked on this semaphore.
     pclNotify->WakeMe(pclOwner_);
 
-    if (pclOwner_->GetCurPriority() >= Scheduler::GetCurrentThread()->GetCurPriority()) {
+    if (pclOwner_->GetCurPriority() >= Scheduler::GetInstance()->GetCurrentThread()->GetCurPriority()) {
         Thread::Yield();
     }
 }
+} // anonymous namespace
 #endif
 //---------------------------------------------------------------------------
 Notify::~Notify()
 {
     // If there are any threads waiting on this object when it goes out
     // of scope, set a kernel panic.
-    if (m_clBlockList.GetHead() != 0) {
-        Kernel::Panic(PANIC_ACTIVE_NOTIFY_DESCOPED);
+    if (m_clBlockList.GetHead() != nullptr) {
+        Kernel::GetInstance()->Panic(PANIC_ACTIVE_NOTIFY_DESCOPED);
     }
 }
 
@@ -81,16 +83,16 @@ void Notify::Signal(void)
     KERNEL_ASSERT(IsInitialized());
 #endif
 
-    bool bReschedule = false;
+    auto bReschedule = false;
 
     CS_ENTER();
-    Thread* pclCurrent = (Thread*)m_clBlockList.GetHead();
-    if (pclCurrent == 0) {
+    auto* pclCurrent = static_cast<Thread*>(m_clBlockList.GetHead());
+    if (pclCurrent == nullptr) {
         m_bPending = true;
     } else {
         while (pclCurrent != NULL) {
             UnBlock(pclCurrent);
-            if (!bReschedule && (pclCurrent->GetCurPriority() >= Scheduler::GetCurrentThread()->GetCurPriority())) {
+            if (!bReschedule && (pclCurrent->GetCurPriority() >= Scheduler::GetInstance()->GetCurrentThread()->GetCurPriority())) {
                 bReschedule = true;
             }
             pclCurrent = (Thread*)m_clBlockList.GetHead();
@@ -111,11 +113,11 @@ void Notify::Wait(bool* pbFlag_)
     KERNEL_ASSERT(IsInitialized());
 #endif
 
-    bool bEarlyExit = false;
+    auto bEarlyExit = false;
     CS_ENTER();
     if (!m_bPending) {
         Block(g_pclCurrent);
-        if (pbFlag_ != 0) {
+        if (pbFlag_ != nullptr) {
             *pbFlag_ = false;
         }
     } else {
@@ -129,7 +131,7 @@ void Notify::Wait(bool* pbFlag_)
     }
 
     Thread::Yield();
-    if (pbFlag_ != 0) {
+    if (pbFlag_ != nullptr) {
         *pbFlag_ = true;
     }
 }
@@ -141,8 +143,8 @@ bool Notify::Wait(uint32_t u32WaitTimeMS_, bool* pbFlag_)
 #if KERNEL_EXTRA_CHECKS
     KERNEL_ASSERT(IsInitialized());
 #endif
-    bool  bUseTimer = false;
-    bool  bEarlyExit = false;
+    auto  bUseTimer = false;
+    auto  bEarlyExit = false;
     Timer clNotifyTimer;
 
     CS_ENTER();
@@ -157,7 +159,7 @@ bool Notify::Wait(uint32_t u32WaitTimeMS_, bool* pbFlag_)
 
         Block(g_pclCurrent);
 
-        if (pbFlag_ != 0) {
+        if (pbFlag_ != nullptr) {
             *pbFlag_ = false;
         }
     } else {
@@ -177,7 +179,7 @@ bool Notify::Wait(uint32_t u32WaitTimeMS_, bool* pbFlag_)
         return (static_cast<int>(g_pclCurrent->GetExpired()) == 0);
     }
 
-    if (pbFlag_ != 0) {
+    if (pbFlag_ != nullptr) {
         *pbFlag_ = true;
     }
 

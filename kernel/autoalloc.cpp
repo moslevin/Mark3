@@ -26,10 +26,6 @@ See license.txt for more information
 #if KERNEL_USE_AUTO_ALLOC
 
 //---------------------------------------------------------------------------
-AutoAllocAllocator_t AutoAlloc::m_pfAllocator;
-AutoAllocFree_t      AutoAlloc::m_pfFree;
-
-//---------------------------------------------------------------------------
 void AutoAlloc::Init()
 {
     m_pfAllocator = NULL;

@@ -117,7 +117,7 @@ void TimeSemFunction(void* param_)
 
     pclSem->Post();
 
-    Scheduler::GetCurrentThread()->Exit();
+    Scheduler::GetInstance()->GetCurrentThread()->Exit();
 }
 
 //===========================================================================

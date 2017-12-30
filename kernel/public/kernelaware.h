@@ -61,9 +61,8 @@ typedef enum {
  * the commands generally have no effect (except for the exit-on-reset command,
  * which will result in a jump-to-0 reset).
  */
-class KernelAware
+namespace KernelAware
 {
-public:
     //---------------------------------------------------------------------------
     /*!
      * \brief ProfileInit
@@ -75,7 +74,7 @@ public:
      *
      * \param szStr_ String to use as a tag for the profilng session.
      */
-    static void ProfileInit(const char* szStr_);
+    void ProfileInit(const char* szStr_);
 
     //---------------------------------------------------------------------------
     /*!
@@ -85,7 +84,7 @@ public:
      * current profiling counter.
      *
      */
-    static void ProfileStart(void);
+    void ProfileStart(void);
 
     //---------------------------------------------------------------------------
     /*!
@@ -94,7 +93,7 @@ public:
      * Instruct the kernel-aware simulator to end counting cycles relative to the
      * current profiling counter's iteration.
      */
-    static void ProfileStop(void);
+    void ProfileStop(void);
 
     //---------------------------------------------------------------------------
     /*!
@@ -104,7 +103,7 @@ public:
      * profiling data.
      *
      */
-    static void ProfileReport(void);
+    void ProfileReport(void);
 
     //---------------------------------------------------------------------------
     /*!
@@ -114,7 +113,7 @@ public:
      * CPU).
      *
      */
-    static void ExitSimulator(void);
+    void ExitSimulator(void);
 
     //---------------------------------------------------------------------------
     /*!
@@ -124,7 +123,7 @@ public:
      *
      * \param szStr_
      */
-    static void Print(const char* szStr_);
+    void Print(const char* szStr_);
 
     //---------------------------------------------------------------------------
     /*!
@@ -136,7 +135,7 @@ public:
      * \param u16File_   16-bit code representing the file
      * \param u16Line_   16-bit code representing the line in the file
      */
-    static void Trace(uint16_t u16File_, uint16_t u16Line_);
+    void Trace(uint16_t u16File_, uint16_t u16Line_);
 
     //---------------------------------------------------------------------------
     /*!
@@ -149,7 +148,7 @@ public:
      * \param u16Line_   16-bit code representing the line in the file
      * \param u16Arg1_   16-bit argument to the format string.
      */
-    static void Trace(uint16_t u16File_, uint16_t u16Line_, uint16_t u16Arg1_);
+    void Trace(uint16_t u16File_, uint16_t u16Line_, uint16_t u16Arg1_);
 
     //---------------------------------------------------------------------------
     /*!
@@ -163,7 +162,7 @@ public:
      * \param u16Arg1_   16-bit argument to the format string.
      * \param u16Arg2_   16-bit argument to the format string.
      */
-    static void Trace(uint16_t u16File_, uint16_t u16Line_, uint16_t u16Arg1_, uint16_t u16Arg2_);
+    void Trace(uint16_t u16File_, uint16_t u16Line_, uint16_t u16Arg1_, uint16_t u16Arg2_);
 
     //---------------------------------------------------------------------------
     /*!
@@ -175,25 +174,8 @@ public:
      * \return true - the application is being run in a kernel-aware simulator.
      *         false - otherwise.
      */
-    static bool IsSimulatorAware(void);
-
-private:
-    //---------------------------------------------------------------------------
-    /*!
-     * \brief Trace_i
-     *
-     * Private function by which the class's Trace() methods are reflected, which
-     * allows u16 to realize a modest code saving.
-     *
-     * \param u16File_   16-bit code representing the file
-     * \param u16Line_   16-bit code representing the line in the file
-     * \param u16Arg1_   16-bit argument to the format string.
-     * \param u16Arg2_   16-bit argument to the format string.
-     * \param eCmd_     Code indicating the number of arguments to emit.
-     */
-    static void
-    Trace_i(uint16_t u16File_, uint16_t u16Line_, uint16_t u16Arg1_, uint16_t u16Arg2_, KernelAwareCommand_t eCmd_);
-};
+    bool IsSimulatorAware(void);
+} // namespace KernelAware
 
 #endif
 

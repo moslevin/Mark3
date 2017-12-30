@@ -35,6 +35,10 @@ static ProfileTimer clProfiler2;
 static ProfileTimer clProfiler3;
 static MessageQueue clMsgQ; //!< Message Queue for timers
 
+#define MESSAGE_POOL_SIZE (3)
+static MessagePool  s_clMessagePool;
+static Message s_clMessages[MESSAGE_POOL_SIZE];
+
 //---------------------------------------------------------------------------
 
 void MemSet(void* pvData_, unsigned char u8Value_, unsigned short u16Count_)
@@ -61,7 +65,7 @@ void TCallback(Thread* pclOwner_, void* data_)
 static void TCallbackMulti1(Thread* pclOwner_, void* data_)
 {
     // Send a message to a queue
-    Message* pclMsg = GlobalMessagePool::Pop();
+    Message* pclMsg = s_clMessagePool.Pop();
     pclMsg->SetCode(0);
     clMsgQ.Send(pclMsg);
 }
@@ -69,7 +73,7 @@ static void TCallbackMulti1(Thread* pclOwner_, void* data_)
 static void TCallbackMulti2(Thread* pclOwner_, void* data_)
 {
     // Send a message to a queue
-    Message* pclMsg = GlobalMessagePool::Pop();
+    Message* pclMsg = s_clMessagePool.Pop();
     pclMsg->SetCode(1);
     clMsgQ.Send(pclMsg);
 }
@@ -77,7 +81,7 @@ static void TCallbackMulti2(Thread* pclOwner_, void* data_)
 static void TCallbackMulti3(Thread* pclOwner_, void* data_)
 {
     // Send a message to a queue
-    Message* pclMsg = GlobalMessagePool::Pop();
+    Message* pclMsg = s_clMessagePool.Pop();
     pclMsg->SetCode(2);
     clMsgQ.Send(pclMsg);
 }
@@ -86,6 +90,12 @@ volatile uint32_t aulDelta[3];
 //---------------------------------------------------------------------------
 TEST(ut_timer_sanity_multi)
 {
+    s_clMessagePool.Init();
+    for (int i = 0; i < MESSAGE_POOL_SIZE; i++) {
+        s_clMessages[i].Init();
+        s_clMessagePool.Push(&s_clMessages[i]);
+    }
+
     uint32_t i;
     clProfiler1m.Init();
     clProfiler10m.Init();
@@ -143,7 +153,7 @@ TEST(ut_timer_sanity_multi)
                 break;
             default: break;
         }
-        GlobalMessagePool::Push(pclMsg);
+        s_clMessagePool.Push(pclMsg);
         if (bDone) {
             break;
         }
@@ -165,7 +175,13 @@ TEST_END
 volatile uint32_t u32Delta = 0;
 
 TEST(ut_timer_sanity_precision)
-{
+{    
+    s_clMessagePool.Init();
+    for (int i = 0; i < MESSAGE_POOL_SIZE; i++) {
+        s_clMessages[i].Init();
+        s_clMessagePool.Push(&s_clMessages[i]);
+    }
+
     clProfiler1m.Init();
     clProfiler10m.Init();
     clProfiler100m.Init();

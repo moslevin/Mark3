@@ -55,7 +55,7 @@ void ThreadList::Add(LinkListNode* node_)
     CircularLinkList::PivotForward();
 
     // We've specified a bitmap for this threadlist
-    if (m_pclMap != 0) {
+    if (m_pclMap != nullptr) {
         // Set the flag for this priority level
         m_pclMap->Set(m_uXPriority);
     }
@@ -64,19 +64,19 @@ void ThreadList::Add(LinkListNode* node_)
 //---------------------------------------------------------------------------
 void ThreadList::AddPriority(LinkListNode* node_)
 {
-    Thread* pclCurr = static_cast<Thread*>(GetHead());
-    if (pclCurr == 0) {
+    auto* pclCurr = static_cast<Thread*>(GetHead());
+    if (pclCurr == nullptr) {
         Add(node_);
         return;
     }
-    PORT_PRIO_TYPE uXHeadPri = pclCurr->GetCurPriority();
+    auto uXHeadPri = pclCurr->GetCurPriority();
 
-    Thread* pclTail = static_cast<Thread*>(GetTail());
-    Thread* pclNode = static_cast<Thread*>(node_);
+    auto* pclTail = static_cast<Thread*>(GetTail());
+    auto* pclNode = static_cast<Thread*>(node_);
 
     // Set the threadlist's priority level, flag pointer, and then add the
     // thread to the threadlist
-    PORT_PRIO_TYPE uXPriority = pclNode->GetCurPriority();
+    auto uXPriority = pclNode->GetCurPriority();
     do {
         if (uXPriority > pclCurr->GetCurPriority()) {
             break;
@@ -90,10 +90,10 @@ void ThreadList::AddPriority(LinkListNode* node_)
     // If the priority is greater than current head, reset
     // the head pointer.
     if (uXPriority > uXHeadPri) {
-        m_pstHead = pclNode;
-        m_pstTail = m_pstHead->prev;
-    } else if (pclNode->GetNext() == m_pstHead) {
-        m_pstTail = pclNode;
+        m_pclHead = pclNode;
+        m_pclTail = m_pclHead->prev;
+    } else if (pclNode->GetNext() == m_pclHead) {
+        m_pclTail = pclNode;
     }
 }
 
@@ -114,7 +114,7 @@ void ThreadList::Remove(LinkListNode* node_)
     CircularLinkList::Remove(node_);
 
     // If the list is empty...
-    if ((m_pstHead == 0) && (m_pclMap != 0)) {
+    if ((m_pclHead == nullptr) && (m_pclMap != nullptr)) {
         // Clear the bit in the bitmap at this priority level
         m_pclMap->Clear(m_uXPriority);
     }

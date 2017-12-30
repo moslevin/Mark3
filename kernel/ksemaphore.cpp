@@ -42,6 +42,7 @@ See license.txt for more information
 #if KERNEL_USE_TIMEOUTS
 #include "timerlist.h"
 
+namespace {
 //---------------------------------------------------------------------------
 /*!
  * \brief TimedSemaphore_Callback
@@ -55,7 +56,7 @@ See license.txt for more information
  */
 void TimedSemaphore_Callback(Thread* pclOwner_, void* pvData_)
 {
-    Semaphore* pclSemaphore = static_cast<Semaphore*>(pvData_);
+    auto* pclSemaphore = static_cast<Semaphore*>(pvData_);
 
     // Indicate that the semaphore has expired on the thread
     pclOwner_->SetExpired(true);
@@ -63,18 +64,19 @@ void TimedSemaphore_Callback(Thread* pclOwner_, void* pvData_)
     // Wake up the thread that was blocked on this semaphore.
     pclSemaphore->WakeMe(pclOwner_);
 
-    if (pclOwner_->GetCurPriority() >= Scheduler::GetCurrentThread()->GetCurPriority()) {
+    if (pclOwner_->GetCurPriority() >= Scheduler::GetInstance()->GetCurrentThread()->GetCurPriority()) {
         Thread::Yield();
     }
 }
+} //anonymous namespace
 
 //---------------------------------------------------------------------------
 Semaphore::~Semaphore()
 {
     // If there are any threads waiting on this object when it goes out
     // of scope, set a kernel panic.
-    if (m_clBlockList.GetHead() != 0) {
-        Kernel::Panic(PANIC_ACTIVE_SEMAPHORE_DESCOPED);
+    if (m_clBlockList.GetHead() != nullptr) {
+        Kernel::GetInstance()->Panic(PANIC_ACTIVE_SEMAPHORE_DESCOPED);
     }
 }
 
@@ -94,15 +96,13 @@ void Semaphore::WakeMe(Thread* pclChosenOne_)
 //---------------------------------------------------------------------------
 uint8_t Semaphore::WakeNext()
 {
-    Thread* pclChosenOne;
-
-    pclChosenOne = m_clBlockList.HighestWaiter();
+    auto* pclChosenOne = m_clBlockList.HighestWaiter();
 
     // Remove from the semaphore waitlist and back to its ready list.
     UnBlock(pclChosenOne);
 
     // Call a task switch if higher or equal priority thread
-    if (pclChosenOne->GetCurPriority() >= Scheduler::GetCurrentThread()->GetCurPriority()) {
+    if (pclChosenOne->GetCurPriority() >= Scheduler::GetInstance()->GetCurrentThread()->GetCurPriority()) {
         return 1;
     }
     return 0;
@@ -136,8 +136,8 @@ bool Semaphore::Post()
 
     KERNEL_TRACE_1("Posting semaphore, Thread %d", (uint16_t)g_pclCurrent->GetID());
 
-    bool bThreadWake = false;
-    bool bBail       = false;
+    auto bThreadWake = false;
+    auto bBail       = false;
     // Increment the semaphore count - we can mess with threads so ensure this
     // is in a critical section.  We don't just disable the scheudler since
     // we want to be able to do this from within an interrupt context as well.
@@ -190,7 +190,7 @@ void Semaphore::Pend_i(void)
 
 #if KERNEL_USE_TIMEOUTS
     Timer clSemTimer;
-    bool  bUseTimer = false;
+    auto  bUseTimer = false;
 #endif
 
     // Once again, messing with thread data - ensure

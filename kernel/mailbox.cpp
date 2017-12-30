@@ -43,7 +43,7 @@ Mailbox::~Mailbox()
 {
     // If the mailbox isn't empty on destruction, kernel panic.
     if (m_u16Free != m_u16Count) {
-        Kernel::Panic(PANIC_ACTIVE_MAILBOX_DESCOPED);
+        Kernel::GetInstance()->Panic(PANIC_ACTIVE_MAILBOX_DESCOPED);
     }
 }
 
@@ -78,8 +78,8 @@ void Mailbox::Init(void* pvBuffer_, uint16_t u16BufferSize_, uint16_t u16Element
 #if KERNEL_USE_AUTO_ALLOC
 Mailbox* Mailbox::Init(uint16_t u16BufferSize_, uint16_t u16ElementSize_)
 {
-    Mailbox* pclNew   = AutoAlloc::NewMailbox();
-    void*    pvBuffer = AutoAlloc::NewRawData(u16BufferSize_);
+    auto* pclNew   = AutoAlloc::GetInstance()->NewMailbox();
+    auto* pvBuffer = AutoAlloc::GetInstance()->NewRawData(u16BufferSize_);
     pclNew->Init(pvBuffer, u16BufferSize_, u16ElementSize_);
     return pclNew;
 }
@@ -178,19 +178,19 @@ bool Mailbox::Send_i(const void* pvData_, bool bTail_)
 {
     const void* pvDst = NULL;
 
-    bool bRet        = false;
-    bool bSchedState = Scheduler::SetScheduler(false);
+    auto bRet        = false;
+    auto bSchedState = Scheduler::GetInstance()->SetScheduler(false);
 
 #if KERNEL_USE_TIMEOUTS
-    bool bBlock = false;
-    bool bDone  = false;
+    auto bBlock = false;
+    auto bDone  = false;
     while (!bDone) {
         // Try to claim a slot first before resorting to blocking.
         if (bBlock) {
             bDone = true;
-            Scheduler::SetScheduler(bSchedState);
+            Scheduler::GetInstance()->SetScheduler(bSchedState);
             m_clSendSem.Pend(u32TimeoutMS_);
-            Scheduler::SetScheduler(false);
+            Scheduler::GetInstance()->SetScheduler(false);
         }
 #endif
 
@@ -230,7 +230,7 @@ bool Mailbox::Send_i(const void* pvData_, bool bTail_)
         CopyData(pvData_, pvDst, m_u16ElementSize);
     }
 
-    Scheduler::SetScheduler(bSchedState);
+    Scheduler::GetInstance()->SetScheduler(bSchedState);
 
     if (bRet) {
         m_clRecvSem.Post();
@@ -261,7 +261,7 @@ void Mailbox::Receive_i(const void* pvData_, bool bTail_)
     // Disable the scheduler while we do this -- this ensures we don't have
     // multiple concurrent readers off the same queue, which could be problematic
     // if multiple writes occur during reads, etc.
-    bool bSchedState = Scheduler::SetScheduler(false);
+    auto bSchedState = Scheduler::GetInstance()->SetScheduler(false);
 
     // Update the head/tail indexes, and get the associated data pointer for
     // the read operation.
@@ -280,7 +280,7 @@ void Mailbox::Receive_i(const void* pvData_, bool bTail_)
 
     CopyData(pvSrc, pvData_, m_u16ElementSize);
 
-    Scheduler::SetScheduler(bSchedState);
+    Scheduler::GetInstance()->SetScheduler(bSchedState);
 
 #if KERNEL_USE_TIMEOUTS
     // Unblock a thread waiting for a free slot to send to

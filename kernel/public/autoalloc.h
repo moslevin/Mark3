@@ -86,13 +86,19 @@ class Timer;
 class AutoAlloc
 {
 public:
+
+    static AutoAlloc* GetInstance() {
+        static AutoAlloc s_clInstance;
+        return &s_clInstance;
+    }
+
     /*!
      * \brief Init
      *
      * Initialize the AutoAllocator before use.  Called by Kernel::Init().
      *
      */
-    static void Init(void);
+    void Init(void);
 
     /*!
      * \brief SetAllocatorFunctions
@@ -100,7 +106,7 @@ public:
      * \param pfAllocator_ Function to allocate an object based on its type and/or size
      * \param pfFree_ Function to free a previously-allocated object
      */
-    static void SetAllocatorFunctions(AutoAllocAllocator_t pfAllocator_, AutoAllocFree_t pfFree_)
+    void SetAllocatorFunctions(AutoAllocAllocator_t pfAllocator_, AutoAllocFree_t pfFree_)
         {m_pfAllocator = pfAllocator_; m_pfFree = pfFree_;}
 
 #if KERNEL_USE_SEMAPHORE
@@ -109,14 +115,14 @@ public:
      * Allocate and create a new Mutex object for use within the system.
      * \return Pointer to newly created object, or 0 on allocation failure.
      */
-    static Semaphore* NewSemaphore();
+    Semaphore* NewSemaphore();
 
     /*!
      * \brief DestroySemaphore
      * Destroy and deallocate a previously-allocated Semaphore object from within the system.
      * \param pclSemaphore_ Pointer to the object to destroy.
      */
-    static void DestroySemaphore(Semaphore* pclSemaphore_);
+    void DestroySemaphore(Semaphore* pclSemaphore_);
 #endif
 #if KERNEL_USE_MUTEX
     /*!
@@ -124,14 +130,14 @@ public:
      * Allocate and create a new Mutex object for use within the system.
      * \return Pointer to newly created object, or 0 on allocation failure.
      */
-    static Mutex* NewMutex();
+    Mutex* NewMutex();
 
     /*!
      * \brief DestroyMutex
      * Destroy and deallocate a previously-allocated Mutex object from within the system.
      * \param pclMutex_ Pointer to the object to destroy.
      */
-    static void DestroyMutex(Mutex* pclMutex_);
+    void DestroyMutex(Mutex* pclMutex_);
 #endif
 #if KERNEL_USE_EVENTFLAG
     /*!
@@ -139,14 +145,14 @@ public:
      * Allocate and create a new EventFlag object for use within the system.
      * \return Pointer to newly created object, or 0 on allocation failure.
      */
-    static EventFlag* NewEventFlag();
+    EventFlag* NewEventFlag();
 
     /*!
      * \brief DestroyEventFlag
      * Destroy and deallocate a previously-allocated EventFlag object from within the system.
      * \param pclEventFlag_ Pointer to the object to destroy.
      */
-    static void DestroyEventFlag(EventFlag* pclEventFlag_);
+    void DestroyEventFlag(EventFlag* pclEventFlag_);
 #endif
 #if KERNEL_USE_TIMERS
     /*!
@@ -154,14 +160,14 @@ public:
      * Allocate and create a new Timer object for use within the system.
      * \return Pointer to newly created object, or 0 on allocation failure.
      */
-    static Timer* NewTimer();
+    Timer* NewTimer();
 
     /*!
      * \brief DestroyTimer
      * Destroy and deallocate a previously-allocated Timer object from within the system.
      * \param pclTimer_ Pointer to the object to destroy.
      */
-    static void DestroyTimer(Timer* pclTimer_);
+    void DestroyTimer(Timer* pclTimer_);
 #endif
 #if KERNEL_USE_NOTIFY
     /*!
@@ -169,14 +175,14 @@ public:
      * Allocate and construct a new Thread object for use within the system.
      * \return Pointer to newly created object, or 0 on allocation failure.
      */
-    static Notify* NewNotify();
+    Notify* NewNotify();
 
     /*!
      * \brief DestroyNotify
      * Destroy and deallocate a previously-allocated Notify object from within the system.
      * \param pclNotify_ Pointer to the object to destroy.
      */
-    static void DestroyNotify(Notify* pclNotify_);
+    void DestroyNotify(Notify* pclNotify_);
 #endif
 #if KERNEL_USE_MAILBOX
     /*!
@@ -184,14 +190,14 @@ public:
      * Allocate and construct a new Mailbox object for use within the system.
      * \return Pointer to newly created object, or 0 on allocation failure.
      */
-    static Mailbox* NewMailbox();
+    Mailbox* NewMailbox();
 
     /*!
      * \brief DestroyMailbox
      * Destroy and deallocate a previously-allocated Mailbox object from within the system.
      * \param pclMailbox_ Pointer to the object to destroy.
      */
-    static void DestroyMailbox(Mailbox* pclMailbox_);
+    void DestroyMailbox(Mailbox* pclMailbox_);
 #endif
 #if KERNEL_USE_MESSAGE
     /*!
@@ -199,28 +205,28 @@ public:
      * Allocate and construct a new Message object for use within the system.
      * \return Pointer to newly created object, or 0 on allocation failure.
      */
-    static Message* NewMessage();
+    Message* NewMessage();
 
     /*!
      * \brief NewMessageQueue
      * Allocate and construct a new MessageQueue object for use within the system.
      * \return Pointer to newly created object, or 0 on allocation failure.
      */
-    static MessageQueue* NewMessageQueue();
+    MessageQueue* NewMessageQueue();
 
     /*!
      * \brief DestroyMessage
      * Destroy and deallocate a previously-allocated Message object from within the system.
      * \param pclMessage_ Pointer to the object to destroy.
      */
-    static void DestroyMessage(Message* pclMessage_);
+    void DestroyMessage(Message* pclMessage_);
 
     /*!
      * \brief DestroyMessageQueue
      * Destroy and deallocate a previously-allocated MessageQueue object from within the system.
      * \param pclMessageQ_ Pointer to the object to destroy.
      */
-    static void DestroyMessageQueue(MessageQueue* pclMessageQ_);
+    void DestroyMessageQueue(MessageQueue* pclMessageQ_);
 #endif
 
     /*!
@@ -228,14 +234,14 @@ public:
      * Allocate and construct a new Thread object for use within the system
      * \return Pointer to newly created object, or 0 on allocation failure.
      */
-    static Thread* NewThread();
+    Thread* NewThread();
 
     /*!
      * \brief DestroyThread
      * Destroy and deallocate a Thread from within the process.
      * \param pclThread_ Pointer to the object to destroy.
      */
-    static void DestroyThread(Thread* pclThread_);
+    void DestroyThread(Thread* pclThread_);
 
     /*!
      * \brief NewUserTypeAllocation
@@ -243,7 +249,7 @@ public:
      * \param eUserType_ User defined object type, interpreted by the allocator function
      * \return pointer to a newly-created object, or NULL on error.
      */
-    static void* NewUserTypeAllocation(uint8_t eUserType_);
+    void* NewUserTypeAllocation(uint8_t eUserType_);
 
     /*!
      * \brief DestroyUserTypeAllocation
@@ -251,7 +257,7 @@ public:
      * \param pvObj_ Pointer to previously-allocated object, allocated through NewUserTypeAllocation  ()
      * \param eUserType_ User defined object type, interpreted by the allocator function
      */
-    static void DestroyUserTypeAllocation(uint8_t eUserType_, void* pvObj_);
+    void DestroyUserTypeAllocation(uint8_t eUserType_, void* pvObj_);
 
     /*!
      * \brief NewRawData
@@ -259,22 +265,22 @@ public:
      * \param sSize_ Size of the data blob (in bytes)
      * \return pointer to newly-allocated blob of data, or NULL on error.
      */
-    static void* NewRawData(size_t sSize_);
+    void* NewRawData(size_t sSize_);
 
     /*!
      * \brief DestroyRawData
      * Free a previously allocated blob of data allocated via NewRawData()
      * \param pvData_ pointer to previously-created data object
      */
-    static void DestroyRawData(void* pvData_);
+    void DestroyRawData(void* pvData_);
 
 private:
 
-    static void* Allocate(AutoAllocType_t eType_, size_t sSize_);
-    static void Free(AutoAllocType_t eType_, void* pvObj_);
+    void* Allocate(AutoAllocType_t eType_, size_t sSize_);
+    void Free(AutoAllocType_t eType_, void* pvObj_);
 
-    static AutoAllocAllocator_t m_pfAllocator;    //!< Function used to allocate objects
-    static AutoAllocFree_t      m_pfFree;         //!< Funciton used to free objects
+    AutoAllocAllocator_t m_pfAllocator;    //!< Function used to allocate objects
+    AutoAllocFree_t      m_pfFree;         //!< Funciton used to free objects
 };
 
 #endif

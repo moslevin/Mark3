@@ -116,7 +116,7 @@ typedef void (*thread_context_callout_t)(Thread_t hThread_);
 #if defined KERNEL_USE_AUTO_ALLOC
 /*!
  * \brief Alloc_Memory
- * \sa void* AutoAlloc::NewRawData(size_t sSize_)
+ * \sa void* AutoAlloc::GetInstance()->NewRawData(size_t sSize_)
  * \param eSize_ Size in bytes to allocate from the one-time-allocate heap
  * \return Pointer to an allocated blob of memory, or NULL if heap exhausted
  */
@@ -131,7 +131,7 @@ void Free_Memory(void* pvObject_);
 #if KERNEL_USE_SEMAPHORE
 /*!
  * \brief Alloc_Semaphore
- * \sa Semaphore* AutoAlloc::NewSemaphore()
+ * \sa Semaphore* AutoAlloc::GetInstance()->NewSemaphore()
  * \return Handle to an allocated object, or NULL if heap exhausted
  */
 Semaphore_t Alloc_Semaphore(void);
@@ -141,7 +141,7 @@ void Free_Semaphore(Semaphore_t handle);
 #if KERNEL_USE_MUTEX
 /*!
  * \brief Alloc_Mutex
- * \sa Mutex* AutoAlloc::NewMutex()
+ * \sa Mutex* AutoAlloc::GetInstance()->NewMutex()
  * \return Handle to an allocated object, or NULL if heap exhausted
  */
 Mutex_t Alloc_Mutex(void);
@@ -151,7 +151,7 @@ void Free_Mutex(Mutex_t handle);
 #if KERNEL_USE_EVENTFLAG
 /*!
  * \brief Alloc_EventFlag
- * \sa EventFlag* AutoAlloc::NewEventFlag()
+ * \sa EventFlag* AutoAlloc::GetInstance()->NewEventFlag()
  * \return Handle to an allocated object, or NULL if heap exhausted
  */
 EventFlag_t Alloc_EventFlag(void);
@@ -161,7 +161,7 @@ void Free_EventFlag(EventFlag_t handle);
 #if KERNEL_USE_MESSAGE
 /*!
  * \brief Alloc_Message
- * \sa AutoAlloc::NewMessage()
+ * \sa AutoAlloc::GetInstance()->NewMessage()
  * \return Handle to an allocated object, or NULL if heap exhausted
  */
 Message_t Alloc_Message(void);
@@ -169,7 +169,7 @@ void Free_Message(Message_t handle);
 
 /*!
  * \brief Alloc_MessageQueue
- * \sa MesageQueue* AutoAlloc::NewMessageQueue()
+ * \sa MesageQueue* AutoAlloc::GetInstance()->NewMessageQueue()
  * \return Handle to an allocated object, or NULL if heap exhausted
  */
 MessageQueue_t Alloc_MessageQueue(void);
@@ -179,7 +179,7 @@ void Free_MessageQueue(MessageQueue_t handle);
 #if KERNEL_USE_NOTIFY
 /*!
  * \brief Alloc_Notify
- * \sa Notify* AutoAlloc::NewNotify()
+ * \sa Notify* AutoAlloc::GetInstance()->NewNotify()
  * \return Handle to an allocated object, or NULL if heap exhausted
  */
 Notify_t Alloc_Notify(void);
@@ -189,7 +189,7 @@ void Free_Notify(Notify_t handle);
 #if KERNEL_USE_MAILBOX
 /*!
  * \brief Alloc_Mailbox
- * \sa Mailbox* AutoAlloc::NewMailbox()
+ * \sa Mailbox* AutoAlloc::GetInstance()->NewMailbox()
  * \return Handle to an allocated object, or NULL if heap exhausted
  */
 Mailbox_t Alloc_Mailbox(void);
@@ -197,7 +197,7 @@ void Free_Mailbox(Mailbox_t handle);
 #endif
 /*!
  * \brief Alloc_Thread
- * \sa Thread* AutoAlloc::NewThread()
+ * \sa Thread* AutoAlloc::GetInstance()->NewThread()
  * \return Handle to an allocated object, or NULL if heap exhausted
  */
 Thread_t Alloc_Thread(void);
@@ -206,7 +206,7 @@ void Free_Thread(Thread_t handle);
 #if KERNEL_USE_TIMERS
 /*!
  * \brief Alloc_Timer
- * \sa Timer* AutoAlloc::NewTimer()
+ * \sa Timer* AutoAlloc::GetInstance()->NewTimer()
  * \return Handle to an allocated object, or NULL if heap exhausted
  */
 Timer_t Alloc_Timer(void);
@@ -823,18 +823,6 @@ void Message_SetCode(Message_t handle, uint16_t u16Code_);
  * \return user code set in the object
  */
 uint16_t Message_GetCode(Message_t handle);
-/*!
- * \brief GlobalMessagePool_Push
- * \sa void GlobalMessagePool::Push()
- * \param handle Handle of the message object
- */
-void GlobalMessagePool_Push(Message_t handle);
-/*!
- * \brief GlobalMessagePool_Pop
- * \sa Message_t GlobalMessagePool::Pop()
- * \return Pointer to a Message object
- */
-Message_t GlobalMessagePool_Pop(void);
 /*!
  * \brief MessageQueue_Init
  * \sa void MessageQueue::Init()

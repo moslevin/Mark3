@@ -36,12 +36,6 @@ See license.txt for more information
 
 #if KERNEL_USE_DEBUG && !KERNEL_AWARE_SIMULATION
 //---------------------------------------------------------------------------
-TraceBufferCallback_t TraceBuffer::m_pfCallback;
-uint16_t              TraceBuffer::m_u16Index;
-uint16_t              TraceBuffer::m_u16SyncNumber;
-uint16_t              TraceBuffer::m_au16Buffer[(TRACE_BUFFER_SIZE / sizeof(uint16_t))];
-
-//---------------------------------------------------------------------------
 void TraceBuffer::Init()
 {
 }

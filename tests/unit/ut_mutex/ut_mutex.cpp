@@ -44,7 +44,7 @@ void TypicalMutexTest(void* mutex_)
     pclMutex->Release();
 
     // Exit the thread when we're done this operation.
-    Scheduler::GetCurrentThread()->Exit();
+    Scheduler::GetInstance()->GetCurrentThread()->Exit();
 }
 
 TEST(ut_typical_mutex)
@@ -91,7 +91,7 @@ void TimedMutexTest(void* mutex_)
     Thread::Sleep(20);
     pclMutex->Release();
 
-    Scheduler::GetCurrentThread()->Exit();
+    Scheduler::GetInstance()->GetCurrentThread()->Exit();
 }
 
 //===========================================================================
@@ -158,7 +158,7 @@ TEST(ut_priority_mutex)
     Mutex clMutex;
     clMutex.Init();
 
-    Scheduler::GetCurrentThread()->SetPriority(3);
+    Scheduler::GetInstance()->GetCurrentThread()->SetPriority(3);
 
     clMutexThread.Init(aucTestStack, MUTEX_STACK_SIZE, 2, LowPriThread, (void*)&clMutex);
     clTestThread2.Init(aucTestStack2, MUTEX_STACK_SIZE, 4, HighPriThread, (void*)&clMutex);

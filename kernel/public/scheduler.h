@@ -62,12 +62,17 @@ extern Thread*          g_pclCurrent;
 class Scheduler
 {
 public:
+    static Scheduler* GetInstance() {
+        static Scheduler s_clInstance;
+        return &s_clInstance;
+    }
+
     /*!
      *  \brief Init
      *
      *  Intiailize the scheduler, must be called before use.
      */
-    static void Init();
+    void Init();
 
     /*!
      *  \brief Schedule
@@ -76,7 +81,7 @@ public:
      *  current state of the threads.  Note that the next-thread chosen
      *  from this function is only valid while in a critical section.
      */
-    static void Schedule();
+    void Schedule();
 
     /*!
      *  \brief Add
@@ -85,7 +90,7 @@ public:
      *
      *  \param pclThread_ Pointer to the thread to add to the scheduler
      */
-    static void Add(Thread* pclThread_);
+    void Add(Thread* pclThread_);
 
     /*!
      *  \brief Remove
@@ -95,7 +100,7 @@ public:
      *  \param pclThread_ Pointer to the thread to be removed from the
      *         scheduler
      */
-    static void Remove(Thread* pclThread_);
+    void Remove(Thread* pclThread_);
 
     /*!
      *  \brief SetScheduler
@@ -109,7 +114,7 @@ public:
      *
      *  \param bEnable_ true to enable, false to disable the scheduler
      */
-    static bool SetScheduler(bool bEnable_);
+    bool SetScheduler(bool bEnable_);
 
     /*!
      *  \brief GetCurrentThread
@@ -118,7 +123,7 @@ public:
      *
      *  \return Pointer to the currently-running thread
      */
-    static Thread* GetCurrentThread() { return g_pclCurrent; }
+    Thread* GetCurrentThread() { return g_pclCurrent; }
     /*!
      *  \brief GetNextThread
      *
@@ -127,7 +132,7 @@ public:
      *
      *  \return Pointer to the next-running thread
      */
-    static volatile Thread* GetNextThread() { return g_pclNext; }
+    volatile Thread* GetNextThread() { return g_pclNext; }
     /*!
      *  \brief GetThreadList
      *
@@ -138,7 +143,7 @@ public:
      *
      *  \return Pointer to the ThreadList for the given priority level
      */
-    static ThreadList* GetThreadList(PORT_PRIO_TYPE uXPriority_) { return &m_aclPriorities[uXPriority_]; }
+    ThreadList* GetThreadList(PORT_PRIO_TYPE uXPriority_) { return &m_aclPriorities[uXPriority_]; }
     /*!
      *  \brief GetStopList
      *
@@ -147,7 +152,7 @@ public:
      *
      *  \return Pointer to the ThreadList containing the stopped threads
      */
-    static ThreadList* GetStopList() { return &m_clStopList; }
+    ThreadList* GetStopList() { return &m_clStopList; }
     /*!
      *  \brief IsEnabled
      *
@@ -156,28 +161,28 @@ public:
      *
      *  \return true - scheduler enabled, false - disabled
      */
-    static bool IsEnabled() { return m_bEnabled; }
+    bool IsEnabled() { return m_bEnabled; }
     /*!
      *  \brief QueueScheduler
      *
      *  Tell the kernel to perform a scheduling operation as soon as the
      *  scheduler is re-enabled.
      */
-    static void QueueScheduler() { m_bQueuedSchedule = true; }
+    void QueueScheduler() { m_bQueuedSchedule = true; }
 private:
     //! Scheduler's state - enabled or disabled
-    static bool m_bEnabled;
+    bool m_bEnabled;
 
     //! Variable representing whether or not there's a queued scheduler operation
-    static bool m_bQueuedSchedule;
+    bool m_bQueuedSchedule;
 
     //! ThreadList for all stopped threads
-    static ThreadList m_clStopList;
+    ThreadList m_clStopList;
 
     //! ThreadLists for all threads at all priorities
-    static ThreadList m_aclPriorities[KERNEL_NUM_PRIORITIES];
+    ThreadList m_aclPriorities[KERNEL_NUM_PRIORITIES];
 
     //! Priority bitmap lookup structure, 1-bit per thread priority.
-    static PriorityMap m_clPrioMap;
+    PriorityMap m_clPrioMap;
 };
 #endif

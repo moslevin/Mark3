@@ -52,10 +52,10 @@ ISR(TIMER1_COMPA_vect)
     s_clTimerSemaphore.Post();
 #else
     #if KERNEL_USE_TIMERS
-        TimerScheduler::Process();
+        TimerScheduler::GetInstance()->Process();
     #endif
     #if KERNEL_USE_QUANTUM
-        Quantum::UpdateTimer();
+        Quantum::GetInstance()->UpdateTimer();
     #endif
 #endif
 }
@@ -68,10 +68,10 @@ static void KernelTimer_Task(void* unused)
     while(1) {
         s_clTimerSemaphore.Pend();
 #if KERNEL_USE_TIMERS
-        TimerScheduler::Process();
+        TimerScheduler::GetInstance()->Process();
 #endif
 #if KERNEL_USE_QUANTUM
-        Quantum::UpdateTimer();
+        Quantum::GetInstance()->UpdateTimer();
 #endif
     }
 }
@@ -88,7 +88,7 @@ void KernelTimer::Config(void)
                         KERNEL_TIMERS_THREAD_PRIORITY,
                         KernelTimer_Task,
                         0);
-    Quantum::SetTimerThread(&s_clTimerThread);
+    Quantum::GetInstance()->SetTimerThread(&s_clTimerThread);
     s_clTimerThread.Start();
 #endif
 }

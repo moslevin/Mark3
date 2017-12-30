@@ -40,6 +40,9 @@ static K_WORD aucTestStack1[TEST_STACK1_SIZE];
 static K_WORD aucTestStack2[TEST_STACK2_SIZE];
 static K_WORD aucTestStack3[TEST_STACK3_SIZE];
 
+#define MESSAGE_POOL_SIZE (3)
+static MessagePool s_clMessagePool;
+static Message s_clMessages[MESSAGE_POOL_SIZE];
 //---------------------------------------------------------------------------
 void TestSemThread(Semaphore* pstSem_)
 {
@@ -75,6 +78,12 @@ void TestSemThread(Semaphore* pstSem_)
 // void UT_SemaphoreTest(void)
 TEST(ut_sanity_sem)
 {
+    s_clMessagePool.Init();
+    for (int i = 0; i < MESSAGE_POOL_SIZE; i++) {
+        s_clMessages[i].Init();
+        s_clMessagePool.Push(&s_clMessages[i]);
+    }
+
     Semaphore clSemaphore;
 
     clSemaphore.Init(0, 1);
@@ -108,17 +117,17 @@ TEST_END
 //---------------------------------------------------------------------------
 void TimedSemaphoreThread_Short(Semaphore* pstSem_)
 {
-    Scheduler::GetCurrentThread()->Sleep(10);
+    Scheduler::GetInstance()->GetCurrentThread()->Sleep(10);
     pstSem_->Post();
-    Scheduler::GetCurrentThread()->Exit();
+    Scheduler::GetInstance()->GetCurrentThread()->Exit();
 }
 
 //---------------------------------------------------------------------------
 void TimedSemaphoreThread_Long(Semaphore* pstSem_)
 {
-    Scheduler::GetCurrentThread()->Sleep(20);
+    Scheduler::GetInstance()->GetCurrentThread()->Sleep(20);
     pstSem_->Post();
-    Scheduler::GetCurrentThread()->Exit();
+    Scheduler::GetInstance()->GetCurrentThread()->Exit();
 }
 
 //---------------------------------------------------------------------------
@@ -127,7 +136,7 @@ TEST(ut_sanity_timed_sem)
 {
     Semaphore clSem;
 
-    Scheduler::GetCurrentThread()->SetPriority(3);
+    Scheduler::GetInstance()->GetCurrentThread()->SetPriority(3);
 
     clSem.Init(0, 1);
 
@@ -148,7 +157,7 @@ TEST(ut_sanity_timed_sem)
 
     clTestThread1.Exit();
 
-    Scheduler::GetCurrentThread()->SetPriority(1);
+    Scheduler::GetInstance()->GetCurrentThread()->SetPriority(1);
 }
 TEST_END
 
@@ -170,7 +179,7 @@ void TestSleepThread(void* pvArg_)
 // void UT_SleepTest(void)
 TEST(ut_sanity_sleep)
 {
-    Scheduler::GetCurrentThread()->SetPriority(3);
+    Scheduler::GetInstance()->GetCurrentThread()->SetPriority(3);
 
     u8TestVal = 0x00;
 
@@ -186,7 +195,7 @@ TEST(ut_sanity_sleep)
 
     clTestThread1.Exit();
 
-    Scheduler::GetCurrentThread()->SetPriority(1);
+    Scheduler::GetInstance()->GetCurrentThread()->SetPriority(1);
 }
 TEST_END
 
@@ -202,27 +211,27 @@ void TestMutexThread(Mutex* pclMutex_)
     }
     pclMutex_->Release();
 
-    Scheduler::GetCurrentThread()->Exit();
+    Scheduler::GetInstance()->GetCurrentThread()->Exit();
 }
 
 //---------------------------------------------------------------------------
 void TestTimedMutexThreadShort(Mutex* pclMutex_)
 {
     pclMutex_->Claim();
-    Scheduler::GetCurrentThread()->Sleep(10);
+    Scheduler::GetInstance()->GetCurrentThread()->Sleep(10);
     pclMutex_->Release();
 
-    Scheduler::GetCurrentThread()->Exit();
+    Scheduler::GetInstance()->GetCurrentThread()->Exit();
 }
 
 //---------------------------------------------------------------------------
 void TestTimedMutexThreadLong(Mutex* pclMutex_)
 {
     pclMutex_->Claim();
-    Scheduler::GetCurrentThread()->Sleep(20);
+    Scheduler::GetInstance()->GetCurrentThread()->Sleep(20);
     pclMutex_->Release();
 
-    Scheduler::GetCurrentThread()->Exit();
+    Scheduler::GetInstance()->GetCurrentThread()->Exit();
 }
 
 //---------------------------------------------------------------------------
@@ -275,16 +284,16 @@ TEST_END
 //---------------------------------------------------------------------------
 void TimedMessageThread(MessageQueue* pclMsgQ_)
 {
-    Message* pclMsg = GlobalMessagePool::Pop();
+    Message* pclMsg = s_clMessagePool.Pop();
 
     pclMsg->SetData(0);
     pclMsg->SetCode(0);
 
-    Scheduler::GetCurrentThread()->Sleep(10);
+    Scheduler::GetInstance()->GetCurrentThread()->Sleep(10);
 
     pclMsgQ_->Send(pclMsg);
 
-    Scheduler::GetCurrentThread()->Exit();
+    Scheduler::GetInstance()->GetCurrentThread()->Exit();
 }
 
 //---------------------------------------------------------------------------
@@ -302,14 +311,14 @@ TEST(ut_sanity_timed_msg)
         EXPECT_TRUE(0);
     } else {
         EXPECT_TRUE(1);
-        GlobalMessagePool::Push(pclMsg);
+        s_clMessagePool.Push(pclMsg);
     }
 
     pclMsg = clMsgQ1.Receive(10);
 
     if (pclMsg) {
         EXPECT_TRUE(0);
-        GlobalMessagePool::Push(pclMsg);
+        s_clMessagePool.Push(pclMsg);
     } else {
         EXPECT_TRUE(1);
     }
@@ -331,9 +340,9 @@ void TestMessageTest(void* pvArg)
         bPass = false;
     }
 
-    GlobalMessagePool::Push(pclMesg);
+    s_clMessagePool.Push(pclMesg);
 
-    pclMesg = GlobalMessagePool::Pop();
+    pclMesg = s_clMessagePool.Pop();
 
     pclMesg->SetCode(0x22);
 
@@ -345,7 +354,7 @@ void TestMessageTest(void* pvArg)
         bPass = false;
     }
 
-    GlobalMessagePool::Push(pclMesg);
+    s_clMessagePool.Push(pclMesg);
 
     pclMesg = clMsgQ2.Receive();
 
@@ -353,7 +362,7 @@ void TestMessageTest(void* pvArg)
         bPass = false;
     }
 
-    GlobalMessagePool::Push(pclMesg);
+    s_clMessagePool.Push(pclMesg);
 
     pclMesg = clMsgQ2.Receive();
 
@@ -361,9 +370,9 @@ void TestMessageTest(void* pvArg)
         bPass = false;
     }
 
-    GlobalMessagePool::Push(pclMesg);
+    s_clMessagePool.Push(pclMesg);
 
-    pclMesg = GlobalMessagePool::Pop();
+    pclMesg = s_clMessagePool.Pop();
     if (bPass) {
         pclMesg->SetCode(0xDD);
     } else {
@@ -371,7 +380,7 @@ void TestMessageTest(void* pvArg)
     }
     clMsgQ1.Send(pclMesg);
 
-    pclMesg = GlobalMessagePool::Pop();
+    pclMesg = s_clMessagePool.Pop();
     if (bPass) {
         pclMesg->SetCode(0xEE);
     } else {
@@ -379,7 +388,7 @@ void TestMessageTest(void* pvArg)
     }
     clMsgQ1.Send(pclMesg);
 
-    pclMesg = GlobalMessagePool::Pop();
+    pclMesg = s_clMessagePool.Pop();
     if (bPass) {
         pclMesg->SetCode(0xFF);
     } else {
@@ -387,7 +396,7 @@ void TestMessageTest(void* pvArg)
     }
     clMsgQ1.Send(pclMesg);
 
-    Scheduler::GetCurrentThread()->Exit();
+    Scheduler::GetInstance()->GetCurrentThread()->Exit();
 }
 
 //---------------------------------------------------------------------------
@@ -404,7 +413,7 @@ TEST(ut_sanity_msg)
 
     Message* pclMesg;
 
-    pclMesg = GlobalMessagePool::Pop();
+    pclMesg = s_clMessagePool.Pop();
 
     clTestThread1.Init(aucTestStack1, TEST_STACK1_SIZE, 2, (ThreadEntry_t)TestMessageTest, NULL);
     clTestThread1.Start();
@@ -419,34 +428,34 @@ TEST(ut_sanity_msg)
 
     EXPECT_EQUALS(pclMesg->GetCode(), 0x22);
 
-    GlobalMessagePool::Push(pclMesg);
+    s_clMessagePool.Push(pclMesg);
 
-    pclMesg = GlobalMessagePool::Pop();
+    pclMesg = s_clMessagePool.Pop();
     pclMesg->SetCode(0xAA);
     clMsgQ2.Send(pclMesg);
 
-    pclMesg = GlobalMessagePool::Pop();
+    pclMesg = s_clMessagePool.Pop();
     pclMesg->SetCode(0xBB);
     clMsgQ2.Send(pclMesg);
 
-    pclMesg = GlobalMessagePool::Pop();
+    pclMesg = s_clMessagePool.Pop();
     pclMesg->SetCode(0xCC);
     clMsgQ2.Send(pclMesg);
 
     pclMesg = clMsgQ1.Receive();
     EXPECT_EQUALS(pclMesg->GetCode(), 0xDD);
 
-    GlobalMessagePool::Push(pclMesg);
+    s_clMessagePool.Push(pclMesg);
 
     pclMesg = clMsgQ1.Receive();
     EXPECT_EQUALS(pclMesg->GetCode(), 0xEE);
 
-    GlobalMessagePool::Push(pclMesg);
+    s_clMessagePool.Push(pclMesg);
 
     pclMesg = clMsgQ1.Receive();
     EXPECT_EQUALS(pclMesg->GetCode(), 0xFF);
 
-    GlobalMessagePool::Push(pclMesg);
+    s_clMessagePool.Push(pclMesg);
 
     clTestThread1.Exit();
 }
@@ -475,7 +484,7 @@ TEST(ut_sanity_rr)
     volatile uint32_t u32Counter3 = 0;
     uint32_t          u32Delta;
 
-    Scheduler::GetCurrentThread()->SetPriority(3);
+    Scheduler::GetInstance()->GetCurrentThread()->SetPriority(3);
 
     clTestThread1.Init(aucTestStack1, TEST_STACK1_SIZE, 2, (ThreadEntry_t)TestRRThread, (void*)&u32Counter1);
     clTestThread2.Init(aucTestStack2, TEST_STACK2_SIZE, 2, (ThreadEntry_t)TestRRThread, (void*)&u32Counter2);
@@ -510,7 +519,7 @@ TEST(ut_sanity_rr)
     clTestThread2.Exit();
     clTestThread3.Exit();
 
-    Scheduler::GetCurrentThread()->SetPriority(1);
+    Scheduler::GetInstance()->GetCurrentThread()->SetPriority(1);
 }
 TEST_END
 
@@ -523,7 +532,7 @@ TEST(ut_sanity_quantum)
     volatile uint32_t u32Counter3 = 0;
     uint32_t          u32Delta;
 
-    Scheduler::GetCurrentThread()->SetPriority(3);
+    Scheduler::GetInstance()->GetCurrentThread()->SetPriority(3);
 
     clTestThread1.Init(aucTestStack1, TEST_STACK1_SIZE, 2, (ThreadEntry_t)TestRRThread, (void*)&u32Counter1);
     clTestThread2.Init(aucTestStack2, TEST_STACK2_SIZE, 2, (ThreadEntry_t)TestRRThread, (void*)&u32Counter2);
@@ -566,7 +575,7 @@ TEST(ut_sanity_quantum)
     clTestThread2.Exit();
     clTestThread3.Exit();
 
-    Scheduler::GetCurrentThread()->SetPriority(1);
+    Scheduler::GetInstance()->GetCurrentThread()->SetPriority(1);
 }
 TEST_END
 

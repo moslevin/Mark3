@@ -65,7 +65,7 @@ static volatile uint32_t u32Counter = 0;
 int main(void)
 {
     // See the annotations in previous labs for details on init.
-    Kernel::Init();
+    Kernel::GetInstance()->Init();
 
     clApp1Thread.Init(awApp1Stack, sizeof(awApp1Stack), 1, App1Main, 0);
     clApp2Thread.Init(awApp2Stack, sizeof(awApp2Stack), 1, App2Main, 0);
@@ -76,7 +76,7 @@ int main(void)
     // Initialize the mutex used in this example.
     clMyMutex.Init();
 
-    Kernel::Start();
+    Kernel::GetInstance()->Start();
 
     return 0;
 }

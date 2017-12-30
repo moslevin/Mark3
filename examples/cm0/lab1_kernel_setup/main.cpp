@@ -78,7 +78,7 @@ int main(void)
     // before Kernel::Init, so long as it does not enable interrupts, or
     // rely on hardware peripherals (timer, software interrupt, etc.) used by the
     // kernel.
-    Kernel::Init();
+    Kernel::GetInstance()->Init();
 
     // Once the kernel initialization has been complete, the user can add their
     // application thread(s) and idle thread.  Threads added before the kerel
@@ -114,7 +114,7 @@ int main(void)
     // point, execution will transition to the highest-priority ready thread.
     // This function will not return.
 
-    Kernel::Start();
+    Kernel::GetInstance()->Start();
 
     // As Kernel::Start() results in the operating system being executed, control
     // will not be relinquished back to main().  The "return 0" is simply to
