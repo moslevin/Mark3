@@ -18,15 +18,15 @@ See license.txt for more information
     \brief  Timer object declarations
  */
 
-#ifndef __TIMER_H__
-#define __TIMER_H__
-
+#pragma once
 #include "kerneltypes.h"
 #include "mark3cfg.h"
 
 #include "ll.h"
 
 #if KERNEL_USE_TIMERS
+namespace Mark3
+{
 class Thread;
 
 //---------------------------------------------------------------------------
@@ -80,7 +80,6 @@ class Thread;
 //---------------------------------------------------------------------------
 
 #endif // KERNEL_TIMERS_TICKLESS
-
 //---------------------------------------------------------------------------
 /*!
  * This type defines the callback function type for timer events.  Since these
@@ -92,7 +91,7 @@ class Thread;
  * pvData_ is a pointer to some data or object that needs to know about the
  *         timer's expiry from within the timer interrupt context.
   */
-using TimerCallback_t = void (*)(Thread* pclOwner_, void* pvData_);
+using TimerCallback = void (*)(Thread* pclOwner_, void* pvData_);
 
 //---------------------------------------------------------------------------
 class TimerList;
@@ -141,7 +140,7 @@ public:
      *  \param pfCallback_ - Function to call on timer expiry
      *  \param pvData_ - Data to pass into the callback function
      */
-    void Start(bool bRepeat_, uint32_t u32IntervalMs_, TimerCallback_t pfCallback_, void* pvData_);
+    void Start(bool bRepeat_, uint32_t u32IntervalMs_, TimerCallback pfCallback_, void* pvData_);
 
     /*!
      *  \brief Start
@@ -157,7 +156,7 @@ public:
      *  \param pvData_ - Data to pass into the callback function
      */
     void
-    Start(bool bRepeat_, uint32_t u32IntervalMs_, uint32_t u32ToleranceMs_, TimerCallback_t pfCallback_, void* pvData_);
+    Start(bool bRepeat_, uint32_t u32IntervalMs_, uint32_t u32ToleranceMs_, TimerCallback pfCallback_, void* pvData_);
 
     /*!
      * \brief Start
@@ -194,7 +193,7 @@ public:
      *
      *  \param pfCallback_ Pointer to the callback function to call
      */
-    void SetCallback(TimerCallback_t pfCallback_) { m_pfCallback = pfCallback_; }
+    void SetCallback(TimerCallback pfCallback_) { m_pfCallback = pfCallback_; }
     /*!
      *  \brief SetData
      *
@@ -289,7 +288,7 @@ private:
     uint8_t m_u8Flags;
 
     //! Pointer to the callback function
-    TimerCallback_t m_pfCallback;
+    TimerCallback m_pfCallback;
 
     //! Interval of the timer in timer ticks
     uint32_t m_u32Interval;
@@ -306,7 +305,6 @@ private:
     //! Pointer to the callback data
     void* m_pvData;
 };
-
+} //namespace Mark3
 #endif // KERNEL_USE_TIMERS
 
-#endif

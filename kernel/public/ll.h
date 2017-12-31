@@ -39,16 +39,11 @@ See license.txt for more information
     behavior in our code.
 
  */
-
-#ifndef __LL_H__
-#define __LL_H__
-
+#pragma once
 #include "kerneltypes.h"
 
-//---------------------------------------------------------------------------
-#ifndef NULL
-#define NULL (0)
-#endif
+namespace Mark3
+{
 
 //---------------------------------------------------------------------------
 /*!
@@ -239,5 +234,4 @@ public:
      */
     void InsertNodeBefore(LinkListNode* node_, LinkListNode* insert_);
 };
-
-#endif
+} //namespace Mark3

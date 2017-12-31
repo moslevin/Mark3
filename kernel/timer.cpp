@@ -43,7 +43,8 @@ See license.txt for more information
 #include "kerneldebug.h"
 
 #if KERNEL_USE_TIMERS
-
+namespace Mark3
+{
 TimerList TimerScheduler::m_clTimerList;
 
 //---------------------------------------------------------------------------
@@ -76,7 +77,7 @@ void Timer::Init()
 }
 
 //---------------------------------------------------------------------------
-void Timer::Start(bool bRepeat_, uint32_t u32IntervalMs_, TimerCallback_t pfCallback_, void* pvData_)
+void Timer::Start(bool bRepeat_, uint32_t u32IntervalMs_, TimerCallback pfCallback_, void* pvData_)
 {
 #if KERNEL_EXTRA_CHECKS
     KERNEL_ASSERT(IsInitialized());
@@ -102,7 +103,7 @@ void Timer::Start(bool bRepeat_, uint32_t u32IntervalMs_, TimerCallback_t pfCall
 
 //---------------------------------------------------------------------------
 void Timer::Start(
-    bool bRepeat_, uint32_t u32IntervalMs_, uint32_t u32ToleranceMs_, TimerCallback_t pfCallback_, void* pvData_)
+    bool bRepeat_, uint32_t u32IntervalMs_, uint32_t u32ToleranceMs_, TimerCallback pfCallback_, void* pvData_)
 {
 #if KERNEL_EXTRA_CHECKS
     KERNEL_ASSERT(IsInitialized());
@@ -200,5 +201,5 @@ void Timer::SetTolerance(uint32_t u32Ticks_)
 #endif
     m_u32TimerTolerance = u32Ticks_;
 }
-
+} //namespace Mark3
 #endif

@@ -25,9 +25,7 @@ See license.txt for more information
     written in an "interactive" way, in order to minimize confusion about
     what each option provides, and to make dependencies obvious.
 */
-
-#ifndef __MARK3CFG_H__
-#define __MARK3CFG_H__
+#pragma once
 
 /*!
     Define the number of thread priorities that the kernel's scheduler will
@@ -356,5 +354,3 @@ See license.txt for more information
 #define KERNEL_EXTRA_CHECKS (1)
 
 #include "portcfg.h"    //!< include CPU/Port specific configuration options
-
-#endif

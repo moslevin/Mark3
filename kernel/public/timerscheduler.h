@@ -18,8 +18,7 @@ See license.txt for more information
     \brief  Timer scheduler declarations
  */
 
-#ifndef __TIMERSCHEDULER_H__
-#define __TIMERSCHEDULER_H__
+#pragma once
 
 #include "kerneltypes.h"
 #include "mark3cfg.h"
@@ -29,7 +28,8 @@ See license.txt for more information
 #include "timerlist.h"
 
 #if KERNEL_USE_TIMERS
-
+namespace Mark3
+{
 //---------------------------------------------------------------------------
 /*!
  *  "Static" Class used to interface a global TimerList with the rest of the
@@ -76,7 +76,6 @@ private:
     //! TimerList object manipu32ated by the Timer Scheduler
     static TimerList m_clTimerList;
 };
-
+} //namespace Mark3
 #endif // KERNEL_USE_TIMERS
 
-#endif //__TIMERSCHEDULER_H__

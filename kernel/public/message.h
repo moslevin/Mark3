@@ -76,9 +76,7 @@ See license.txt for more information
         }
     \endcode
  */
-
-#ifndef __MESSAGE_H__
-#define __MESSAGE_H__
+#pragma once
 
 #include "kerneltypes.h"
 #include "mark3cfg.h"
@@ -91,7 +89,8 @@ See license.txt for more information
 #if KERNEL_USE_TIMEOUTS
 #include "timerlist.h"
 #endif
-
+namespace Mark3
+{
 //---------------------------------------------------------------------------
 /*!
  *  Class to provide message-based IPC services in the kernel.
@@ -159,6 +158,8 @@ private:
 class MessagePool
 {
 public:
+    void* operator new(size_t sz, void* pv) { return (MessagePool*)pv; }
+    ~MessagePool(){}
     /*!
      *  \brief Init
      *
@@ -295,7 +296,5 @@ private:
     //! List object used to store messages
     DoubleLinkList m_clLinkList;
 };
-
+} //namespace Mark3
 #endif // KERNEL_USE_MESSAGE
-
-#endif

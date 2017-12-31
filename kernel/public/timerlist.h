@@ -21,15 +21,15 @@ See license.txt for more information
     global kernel timer scheduler.
  */
 
-#ifndef __TIMERLIST_H__
-#define __TIMERLIST_H__
+#pragma once
 
 #include "kerneltypes.h"
 #include "mark3cfg.h"
 
 #include "mutex.h"
 #if KERNEL_USE_TIMERS
-
+namespace Mark3
+{
 class Timer;
 
 //---------------------------------------------------------------------------
@@ -86,7 +86,5 @@ private:
 #endif
 
 };
-
+} //namespace Mark3
 #endif // KERNEL_USE_TIMERS
-
-#endif

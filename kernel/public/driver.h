@@ -101,17 +101,17 @@ See license.txt for more information
     \endcode
 
  */
+#pragma once
 
 #include "kerneltypes.h"
 #include "mark3cfg.h"
 
 #include "ll.h"
 
-#ifndef __DRIVER_H__
-#define __DRIVER_H__
 
 #if KERNEL_USE_DRIVER
-
+namespace Mark3
+{
 class DriverList;
 //---------------------------------------------------------------------------
 /*!
@@ -272,7 +272,5 @@ private:
     //! LinkedList object used to implementing the driver object management
     static DoubleLinkList m_clDriverList;
 };
-
+} //namespace Mark3
 #endif // KERNEL_USE_DRIVER
-
-#endif

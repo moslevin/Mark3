@@ -24,7 +24,8 @@ See license.txt for more information
 #include "kernel.h"
 
 #if KERNEL_USE_AUTO_ALLOC
-
+namespace Mark3
+{
 AutoAllocAllocator_t AutoAlloc::m_pfAllocator;    //!< Function used to allocate objects
 AutoAllocFree_t      AutoAlloc::m_pfFree;         //!< Funciton used to free objects
 
@@ -123,6 +124,21 @@ void AutoAlloc::DestroyMessage(Message *pclMessage_)
     pclMessage_->~Message();
     Free(AutoAllocType::Message, pclMessage_);
 }
+//---------------------------------------------------------------------------
+MessagePool* AutoAlloc::NewMessagePool(void)
+{
+    void* pvObj = Allocate(AutoAllocType::MessagePool, sizeof(MessagePool));
+    if (pvObj) {
+        return new (pvObj) MessagePool();
+    }
+    return 0;
+}
+//---------------------------------------------------------------------------
+void AutoAlloc::DestroyMessagePool(MessagePool *pclMessagePool_)
+{
+    pclMessagePool_->~MessagePool();
+    Free(AutoAllocType::MessagePool, pclMessagePool_);
+}
 
 //---------------------------------------------------------------------------
 MessageQueue* AutoAlloc::NewMessageQueue(void)
@@ -217,7 +233,7 @@ void AutoAlloc::DestroyTimer(Timer *pclTimer_)
 //---------------------------------------------------------------------------
 void* AutoAlloc::NewUserTypeAllocation(uint8_t eType_)
 {
-    return Allocate((AutoAllocType)eType_, 0);
+    return Allocate(static_cast<AutoAllocType>(eType_), 0);
 }
 //---------------------------------------------------------------------------
 void AutoAlloc::DestroyUserTypeAllocation(uint8_t eUserType_, void *pvObj_)
@@ -234,5 +250,5 @@ void AutoAlloc::DestroyRawData(void *pvData_)
 {
     Free(AutoAllocType::Raw, pvData_);
 }
-
+} //namespace Mark3
 #endif

@@ -20,9 +20,9 @@ See license.txt for more information
 #include <stdbool.h>
 #include <stddef.h>
 
-#ifndef __KERNELTYPES_H__
-#define __KERNELTYPES_H__
-
+#pragma once
+namespace Mark3
+{
 //---------------------------------------------------------------------------
 /*!
  * Function pointer type used to implement kernel-panic handlers.
@@ -48,8 +48,8 @@ using ThreadEntryFunc = void (*)(void* pvArg_);
  * event flag blocking object.
  */
 enum class EventFlagOperation : uint8_t {
-    All_Set,            //!< Block until all bits in the specified bitmask are set
-    Any_Set,            //!< Block until any bits in the specified bitmask are set
+    All_Set = 0,    //!< Block until all bits in the specified bitmask are set
+    Any_Set,        //!< Block until any bits in the specified bitmask are set
     All_Clear,      //!< Block until all bits in the specified bitmask are cleared
     Any_Clear,      //!< Block until any bits in the specified bitmask are cleared
     Pending_Unblock //!< Special code.  Not used by user
@@ -67,4 +67,4 @@ enum class ThreadState : uint8_t {
     Invalid
 };
 
-#endif
+} //namespace Mark3

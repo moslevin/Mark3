@@ -22,7 +22,8 @@ See license.txt for more information
 
 #include <stdint.h>
 #include <stdbool.h>
-
+namespace Mark3
+{
 //---------------------------------------------------------------------------
 namespace {
 inline uint8_t priority_from_bitmap(PORT_PRIO_TYPE uXPrio_)
@@ -108,3 +109,4 @@ PORT_PRIO_TYPE PriorityMap::HighestPriority(void)
 #endif
     return uXPrio;
 }
+} //namespace Mark3

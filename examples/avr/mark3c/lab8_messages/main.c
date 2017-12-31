@@ -56,6 +56,12 @@ static void App2Main(void* unused_);
 
 //---------------------------------------------------------------------------
 DECLARE_MESSAGEQUEUE(hMsgQ);
+DECLARE_MESSAGEPOOL(hMsgPool);
+DECLARE_MESSAGE(hMsg0);
+DECLARE_MESSAGE(hMsg1);
+DECLARE_MESSAGE(hMsg2);
+DECLARE_MESSAGE(hMsg3);
+DECLARE_MESSAGE(hMsg4);
 
 //---------------------------------------------------------------------------
 int main(void)
@@ -70,6 +76,20 @@ int main(void)
     Thread_Start(hApp2Thread);
 
     MessageQueue_Init(hMsgQ);
+
+    MessagePool_Init(hMsgPool);
+
+    Message_Init(hMsg0);
+    Message_Init(hMsg1);
+    Message_Init(hMsg2);
+    Message_Init(hMsg3);
+    Message_Init(hMsg4);
+
+    MessagePool_Push(hMsgPool, hMsg0);
+    MessagePool_Push(hMsgPool, hMsg1);
+    MessagePool_Push(hMsgPool, hMsg2);
+    MessagePool_Push(hMsgPool, hMsg3);
+    MessagePool_Push(hMsgPool, hMsg4);
 
     Kernel_Start();
 
@@ -87,7 +107,7 @@ void App1Main(void* unused_)
         // for a message to arrive in the queue.
 
         // Get the message object
-        Message_t hMsg = GlobalMessagePool_Pop();
+        Message_t hMsg = MessagePool_Pop(hMsgPool);
 
         // Set the message object's data (contrived in this example)
         Message_SetCode(hMsg, 0x1337);
@@ -125,6 +145,6 @@ void App2Main(void* unused_)
         KernelAware_Trace2(0, __LINE__, Message_GetCode(hMsg), *((uint16_t*)Message_GetData(hMsg)));
 
         // Done with the message, return it back to the global message queue.
-        GlobalMessagePool_Push(hMsg);
+        MessagePool_Push(hMsgPool, hMsg);
     }
 }

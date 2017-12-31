@@ -21,14 +21,15 @@ See license.txt for more information
     can be extracted and analyzed to provide information about runtime
     performance, thread-scheduling, and other nifty things in real-time.
  */
-#ifndef __TRACEBUFFER_H__
-#define __TRACEBUFFER_H__
+
+#pragma once
 
 #include "kerneltypes.h"
 #include "mark3cfg.h"
 
 #if KERNEL_USE_DEBUG && !KERNEL_AWARE_SIMULATION
-
+namespace Mark3
+{
 #define TRACE_BUFFER_SIZE (160)
 
 using TraceBufferCallback_t = void (*)(uint16_t* pu16Source_, uint16_t u16Len_, bool bPingPong_);
@@ -77,6 +78,5 @@ private:
     static uint16_t              m_au16Buffer[(TRACE_BUFFER_SIZE / sizeof(uint16_t))]; //!< Data buffer
 };
 
+} //namespace Mark3
 #endif // KERNEL_USE_DEBUG
-
-#endif

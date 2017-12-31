@@ -94,7 +94,7 @@ static void PrintCPUUsage(void)
     }
 }
 
-static void ThreadCreateCallout(Thread* pclThread_)
+static void ThreadCreate(Thread* pclThread_)
 {
     KernelAware::Print("TC\n");
     CS_ENTER();
@@ -110,7 +110,7 @@ static void ThreadCreateCallout(Thread* pclThread_)
     PrintCPUUsage();
 }
 
-static void ThreadExitCallout(Thread* pclThread_)
+static void ThreadExit(Thread* pclThread_)
 {
     KernelAware::Print("TX\n");
     CS_ENTER();
@@ -127,7 +127,7 @@ static void ThreadExitCallout(Thread* pclThread_)
     PrintCPUUsage();
 }
 
-static void ThreadContextSwitchCallback(Thread* pclThread_)
+static void ThreadContextSwitch(Thread* pclThread_)
 {
     KernelAware::Print("CS\n");
     static uint16_t u16LastTick = 0;
@@ -153,9 +153,9 @@ int main(void)
     // See the annotations in previous labs for details on init.
     Kernel::Init();
 
-    Kernel::SetThreadCreateCallout(ThreadCreateCallout);
-    Kernel::SetThreadExitCallout(ThreadExitCallout);
-    Kernel::SetThreadContextSwitchCallout(ThreadContextSwitchCallback);
+    Kernel::SetThreadCreateCallout(ThreadCreate);
+    Kernel::SetThreadExitCallout(ThreadExit);
+    Kernel::SetThreadContextSwitchCallout(ThreadContextSwitch);
 
     clApp1Thread.Init(awApp1Stack, sizeof(awApp1Stack), 1, App1Main, 0);
     clApp1Thread.Start();

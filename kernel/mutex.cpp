@@ -39,7 +39,10 @@ See license.txt for more information
 #if KERNEL_USE_MUTEX
 
 #if KERNEL_USE_TIMEOUTS
-namespace {
+namespace Mark3
+{
+namespace
+{
 //---------------------------------------------------------------------------
 /*!
  * \brief TimedMutex_Calback
@@ -186,7 +189,7 @@ void Mutex::Claim_i(void)
     if (u32WaitTimeMS_ != 0u) {
         g_pclCurrent->SetExpired(false);
         clTimer.Init();
-        clTimer.Start(false, u32WaitTimeMS_, (TimerCallback_t)TimedMutex_Callback, (void*)this);
+        clTimer.Start(false, u32WaitTimeMS_, (TimerCallback)TimedMutex_Callback, (void*)this);
         bUseTimer = true;
     }
 #endif
@@ -296,5 +299,5 @@ void Mutex::Release()
         Thread::Yield();
     }
 }
-
+} //namespace Mark3
 #endif // KERNEL_USE_MUTEX

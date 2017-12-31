@@ -37,7 +37,8 @@ See license.txt for more information
 #include "kerneldebug.h"
 
 #if KERNEL_USE_MAILBOX
-
+namespace Mark3
+{
 //---------------------------------------------------------------------------
 Mailbox::~Mailbox()
 {
@@ -289,5 +290,5 @@ void Mailbox::Receive_i(const void* pvData_, bool bTail_)
     return true;
 #endif
 }
-
+} //namespace Mark3
 #endif

@@ -18,15 +18,15 @@ See license.txt for more information
     \brief  Basic Atomic Operations
 */
 
-#ifndef __ATOMIC_H__
-#define __ATOMIC_H__
+#pragma once
 
 #include "kerneltypes.h"
 #include "mark3cfg.h"
 #include "threadport.h"
 
 #if KERNEL_USE_ATOMIC
-
+namespace Mark3
+{
 /*!
  * \brief The Atomic class
  *
@@ -84,7 +84,5 @@ namespace Atomic
      */
     bool TestAndSet(bool* pbLock);
 } // namespace Atomic
-
+} //namespace Mark3
 #endif // KERNEL_USE_ATOMIC
-
-#endif //__ATOMIC_H__

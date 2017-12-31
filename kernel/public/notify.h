@@ -18,14 +18,14 @@ See license.txt for more information
 
 */
 
-#ifndef __NOTIFY_H__
-#define __NOTIFY_H__
+#pragma once
 
 #include "mark3cfg.h"
 #include "blocking.h"
 
 #if KERNEL_USE_NOTIFY
-
+namespace Mark3
+{
 /*!
  * \brief The Notify class is a blocking object type, that allows one or more
  * threads to wait for an event to occur before resuming operation.
@@ -96,7 +96,6 @@ private:
 
     bool m_bPending;
 };
-
+} //namespace Mark3
 #endif
 
-#endif

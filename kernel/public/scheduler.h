@@ -43,13 +43,15 @@ See license.txt for more information
 
  */
 
-#ifndef __SCHEDULER_H__
-#define __SCHEDULER_H__
+#pragma once
 
 #include "kerneltypes.h"
 #include "thread.h"
 #include "threadport.h"
 #include "priomap.h"
+
+namespace Mark3
+{
 
 extern volatile Thread* g_pclNext;
 extern Thread*          g_pclCurrent;
@@ -181,4 +183,4 @@ private:
     //! Priority bitmap lookup structure, 1-bit per thread priority.
     static PriorityMap m_clPrioMap;
 };
-#endif
+} //namespace Mark3

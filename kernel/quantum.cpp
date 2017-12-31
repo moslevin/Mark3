@@ -40,7 +40,10 @@ See license.txt for more information
 #include "kerneldebug.h"
 
 #if KERNEL_USE_QUANTUM
-namespace {
+namespace Mark3
+{
+namespace
+{
 volatile bool bAddQuantumTimer; // Indicates that a timer add is pending
 } // anonymous namespace
 
@@ -135,5 +138,5 @@ Thread* Quantum::GetTimerThread()
 }
 
 #endif // KERNEL_TIMERS_THREADED
-
+} //namespace Mark3
 #endif // KERNEL_USE_QUANTUM

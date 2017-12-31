@@ -17,8 +17,7 @@ See license.txt for more information
     \brief Defines the reason codes thrown when a kernel panic occurs
 */
 
-#ifndef __PANIC_CODES_H
-#define __PANIC_CODES_H
+#pragma once
 
 #define PANIC_ASSERT_FAILED (1)
 #define PANIC_LIST_UNLINK_FAILED (2)
@@ -33,5 +32,3 @@ See license.txt for more information
 #define PANIC_ACTIVE_NOTIFY_DESCOPED (11)
 #define PANIC_ACTIVE_MAILBOX_DESCOPED (12)
 #define PANIC_ACTIVE_TIMER_DESCOPED (13)
-
-#endif // __PANIC_CODES_H

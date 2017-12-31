@@ -42,7 +42,8 @@ See license.txt for more information
 #if KERNEL_USE_TIMEOUTS
 #include "timerlist.h"
 #endif
-
+namespace Mark3
+{
 //---------------------------------------------------------------------------
 void MessagePool::Init()
 {
@@ -156,4 +157,5 @@ uint16_t MessageQueue::GetCount()
 {
     return m_clSemaphore.GetCount();
 }
+} //namespace Mark3
 #endif // KERNEL_USE_MESSAGE

@@ -19,8 +19,7 @@ See license.txt for more information
 
  */
 
-#ifndef __KQUANTUM_H__
-#define __KQUANTUM_H__
+#pragma once
 
 #include "kerneltypes.h"
 #include "mark3cfg.h"
@@ -31,6 +30,8 @@ See license.txt for more information
 #include "timerscheduler.h"
 
 #if KERNEL_USE_QUANTUM
+namespace Mark3
+{
 class Timer;
 
 /*!
@@ -110,7 +111,5 @@ private:
     static bool  m_bActive;
     static bool  m_bInTimer;
 };
-
+} //namespace Mark3
 #endif // KERNEL_USE_QUANTUM
-
-#endif

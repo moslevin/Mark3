@@ -36,6 +36,8 @@ See license.txt for more information
 
 #include "kerneldebug.h"
 
+namespace Mark3
+{
 //---------------------------------------------------------------------------
 void LinkListNode::ClearNode()
 {
@@ -181,3 +183,4 @@ void CircularLinkList::InsertNodeBefore(LinkListNode* node_, LinkListNode* inser
     }
     insert_->prev = node_;
 }
+} //namespace Mark3

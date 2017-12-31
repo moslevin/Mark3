@@ -41,8 +41,10 @@ See license.txt for more information
 
 #if KERNEL_USE_TIMEOUTS
 #include "timerlist.h"
-
-namespace {
+namespace Mark3
+{
+namespace
+{
 //---------------------------------------------------------------------------
 /*!
  * \brief TimedSemaphore_Callback
@@ -261,5 +263,5 @@ uint16_t Semaphore::GetCount()
     CS_EXIT();
     return u16Ret;
 }
-
+} //namespace Mark3
 #endif

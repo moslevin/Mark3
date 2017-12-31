@@ -38,7 +38,8 @@ See license.txt for more information
 #include "kerneldebug.h"
 
 #if KERNEL_USE_PROFILER
-
+namespace Mark3
+{
 //---------------------------------------------------------------------------
 void ProfileTimer::Init()
 {
@@ -127,5 +128,5 @@ uint32_t ProfileTimer::ComputeCurrentTicks(uint16_t u16Current_, uint32_t u32Epo
 
     return u32Total;
 }
-
+} //namespace Mark3
 #endif

@@ -17,9 +17,7 @@ See license.txt for more information
 
     \brief  Mailbox + Envelope IPC Mechanism
 */
-
-#ifndef __MAILBOX_H__
-#define __MAILBOX_H__
+#pragma once
 
 #include "mark3cfg.h"
 #include "kerneltypes.h"
@@ -27,7 +25,8 @@ See license.txt for more information
 #include "ksemaphore.h"
 
 #if KERNEL_USE_MAILBOX
-
+namespace Mark3
+{
 /*!
  * \brief The Mailbox class implements an IPC mechnism based on envelopes
  * containing data of a fixed size (configured at initialization) that reside
@@ -361,7 +360,5 @@ private:
     Semaphore m_clSendSem; //!< Binary semaphore for send-blocked threads.
 #endif
 };
-
-#endif
-
+} //namespace Mark3
 #endif

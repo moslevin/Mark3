@@ -29,6 +29,9 @@ See license.txt for more information
 #include <avr/io.h>
 #include <avr/interrupt.h>
 
+namespace Mark3
+{
+
 #define TCCR1B_INIT ((1 << WGM12) | (1 << CS12))
 #define TIMER_IMSK (1 << OCIE1A)
 #define TIMER_IFR (1 << OCF1A)
@@ -230,3 +233,4 @@ void KernelTimer::RI(bool bEnable_)
     }
 #endif
 }
+} //namespace Mark3

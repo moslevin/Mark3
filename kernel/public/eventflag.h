@@ -15,9 +15,7 @@ See license.txt for more information
     \file eventflag.h
     \brief Event Flag Blocking Object/IPC-Object definition.
 */
-
-#ifndef __EVENTFLAG_H__
-#define __EVENTFLAG_H__
+#pragma once
 
 #include "mark3cfg.h"
 #include "kernel.h"
@@ -26,7 +24,8 @@ See license.txt for more information
 #include "thread.h"
 
 #if KERNEL_USE_EVENTFLAG
-
+namespace Mark3
+{
 //---------------------------------------------------------------------------
 /*!
  * \brief The EventFlag class is a blocking object, similar to a semaphore or
@@ -57,8 +56,8 @@ public:
     /*!
      * \brief Wait - Block a thread on the specific flags in this event flag group
      * \param u16Mask_ - 16-bit bitmask to block on
-     * \param eMode_ - EventFlagOperation_t::Any_Set:  Thread will block on any of the bits in the mask
-     *               - EventFlagOperation_t::All_Set:  Thread will block on all of the bits in the mask
+     * \param eMode_ - EventFlagOperation::Any_Set:  Thread will block on any of the bits in the mask
+     *               - EventFlagOperation::All_Set:  Thread will block on all of the bits in the mask
      * \return Bitmask condition that caused the thread to unblock, or 0 on error or timeout
      */
     uint16_t Wait(uint16_t u16Mask_, EventFlagOperation eMode_);
@@ -67,8 +66,8 @@ public:
     /*!
      * \brief Wait - Block a thread on the specific flags in this event flag group
      * \param u16Mask_ - 16-bit bitmask to block on
-     * \param eMode_ - EventFlagOperation_t::Any_Set:  Thread will block on any of the bits in the mask
-     *               - EventFlagOperation_t::All_Set:  Thread will block on all of the bits in the mask
+     * \param eMode_ - EventFlagOperation::Any_Set:  Thread will block on any of the bits in the mask
+     *               - EventFlagOperation::All_Set:  Thread will block on all of the bits in the mask
      * \param u32TimeMS_ - Time to block (in ms)
      * \return Bitmask condition that caused the thread to unblock, or 0 on error or timeout
      */
@@ -112,8 +111,8 @@ private:
      * Interal abstraction used to manage both timed and untimed wait operations
      *
      * \param u16Mask_ - 16-bit bitmask to block on
-     * \param eMode_ - EventFlagOperation_t::Any_Set:  Thread will block on any of the bits in the mask
-     *               - EventFlagOperation_t::All_Set:  Thread will block on all of the bits in the mask
+     * \param eMode_ - EventFlagOperation::Any_Set:  Thread will block on any of the bits in the mask
+     *               - EventFlagOperation::All_Set:  Thread will block on all of the bits in the mask
      * \param u32TimeMS_ - Time to block (in ms)
      *
      * \return Bitmask condition that caused the thread to unblock, or 0 on error or timeout
@@ -125,16 +124,15 @@ private:
      * Interal abstraction used to manage wait operations
      *
      * \param u16Mask_ - 16-bit bitmask to block on
-     * \param eMode_ - EventFlagOperation_t::Any_Set:  Thread will block on any of the bits in the mask
-     *               - EventFlagOperation_t::All_Set:  Thread will block on all of the bits in the mask
+     * \param eMode_ - EventFlagOperation::Any_Set:  Thread will block on any of the bits in the mask
+     *               - EventFlagOperation::All_Set:  Thread will block on all of the bits in the mask
      *
      * \return Bitmask condition that caused the thread to unblock.
      */
-    uint16_t Wait_i(uint16_t u16Mask_, EventFlagOperation_t eMode_);
+    uint16_t Wait_i(uint16_t u16Mask_, EventFlagOperation eMode_);
 #endif
 
     uint16_t m_u16SetMask; //!< Event flags currently set in this object
 };
-
+} //namespace Mark3
 #endif // KERNEL_USE_EVENTFLAG
-#endif //__EVENTFLAG_H__

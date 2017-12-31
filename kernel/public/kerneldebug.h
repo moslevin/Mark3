@@ -16,9 +16,7 @@ See license.txt for more information
 
     \brief Macros and functions used for assertions, kernel traces, etc.
 */
-
-#ifndef __KERNEL_DEBUG_H__
-#define __KERNEL_DEBUG_H__
+#pragma once
 
 #include "mark3cfg.h"
 #include "tracebuffer.h"
@@ -29,8 +27,9 @@ See license.txt for more information
 #include "dbg_file_list.h"
 
 //---------------------------------------------------------------------------
+namespace Mark3
+{
 #if (KERNEL_USE_DEBUG && !KERNEL_AWARE_SIMULATION && KERNEL_ENABLE_LOGGING)
-
 //---------------------------------------------------------------------------
 #define KERNEL_TRACE(x)                                                                                                \
     \
@@ -284,5 +283,5 @@ See license.txt for more information
 #define USER_ASSERT(x) //!< Null Kernel Assert Macro
 
 #endif // KERNEL_USE_DEBUG
+} //namespace Mark3
 
-#endif

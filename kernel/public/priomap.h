@@ -16,8 +16,7 @@ See license.txt for more information
     \brief Priority map data structure
 */
 
-#ifndef __PRIOMAP_H__
-#define __PRIOMAP_H__
+#pragma once
 
 #include "kerneltypes.h"
 #include "mark3cfg.h"
@@ -62,7 +61,8 @@ See license.txt for more information
 // efficiently track which priority levels are active.
 #define PRIO_MAP_MULTI_LEVEL (1)
 #endif
-
+namespace Mark3
+{
 //---------------------------------------------------------------------------
 /*!
  * \brief The PriorityMap class
@@ -109,5 +109,4 @@ private:
     PRIO_MAP_WORD_TYPE m_uXPriorityMap;
 #endif
 };
-
-#endif
+} //namespace Mark3

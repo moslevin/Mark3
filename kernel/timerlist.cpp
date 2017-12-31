@@ -43,6 +43,8 @@ See license.txt for more information
 #include "kerneldebug.h"
 
 #if KERNEL_USE_TIMERS
+namespace Mark3
+{
 //---------------------------------------------------------------------------
 #if KERNEL_TIMERS_THREADED
 # define TIMERLIST_LOCK()   (m_clMutex.Claim())
@@ -264,5 +266,5 @@ void TimerList::Process(void)
 
     TIMERLIST_UNLOCK();
 }
-
+} //namespace Mark3
 #endif // KERNEL_USE_TIMERS

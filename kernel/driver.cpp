@@ -36,7 +36,10 @@ See license.txt for more information
 #include "kerneldebug.h"
 
 #if KERNEL_USE_DRIVER
-namespace {
+namespace Mark3
+{
+namespace
+{
 
 //---------------------------------------------------------------------------
 /*!
@@ -119,5 +122,5 @@ Driver* DriverList::FindByPath(const char* m_pcPath)
     // No matching driver found - return a pointer to our /dev/null driver
     return &clDevNull;
 }
-
+} //namespace Mark3
 #endif

@@ -49,15 +49,15 @@ See license.txt for more information
     \endcode
  */
 
-#ifndef __PROFILE_H__
-#define __PROFILE_H__
+#pragma once
 
 #include "kerneltypes.h"
 #include "mark3cfg.h"
 #include "ll.h"
 
 #if KERNEL_USE_PROFILER
-
+namespace Mark3
+{
 /*!
  *  \brief
  *  Profiling timer.
@@ -132,7 +132,5 @@ private:
     uint16_t m_u16Iterations;       //!< Number of iterations executed for this profiling timer
     bool     m_bActive;             //!< Wheter or not the timer is active or stopped
 };
-
+} //namespace Mark3
 #endif // KERNEL_USE_PROFILE
-
-#endif

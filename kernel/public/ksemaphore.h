@@ -18,9 +18,7 @@ See license.txt for more information
     \brief  Semaphore Blocking Object class declarations
 
  */
-
-#ifndef __KSEMAPHORE_H__
-#define __KSEMAPHORE_H__
+#pragma once
 
 #include "kerneltypes.h"
 #include "mark3cfg.h"
@@ -29,7 +27,8 @@ See license.txt for more information
 #include "threadlist.h"
 
 #if KERNEL_USE_SEMAPHORE
-
+namespace Mark3
+{
 //---------------------------------------------------------------------------
 /*!
  *  Binary & Counting semaphores, based on BlockingObject base class.
@@ -159,7 +158,5 @@ private:
     uint16_t m_u16Value;    //!< Current count held by the semaphore
     uint16_t m_u16MaxValue; //!< Maximum count that can be held by this semaphore
 };
-
+} //namespace Mark3
 #endif // KERNEL_USE_SEMAPHORE
-
-#endif

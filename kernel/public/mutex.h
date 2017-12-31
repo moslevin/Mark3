@@ -47,8 +47,7 @@ See license.txt for more information
     \endcode
 
  */
-#ifndef __MUTEX_H_
-#define __MUTEX_H_
+#pragma once
 
 #include "kerneltypes.h"
 #include "mark3cfg.h"
@@ -56,7 +55,8 @@ See license.txt for more information
 #include "blocking.h"
 
 #if KERNEL_USE_MUTEX
-
+namespace Mark3
+{
 //---------------------------------------------------------------------------
 /*!
  *  Mutual-exclusion locks, based on BlockingObject.
@@ -179,7 +179,5 @@ private:
     uint8_t m_u8MaxPri;  //!< Maximum priority of thread in queue, used for priority inheritence
     Thread* m_pclOwner;  //!< Pointer to the thread that owns the mutex (when claimed)
 };
-
+} //namespace Mark3
 #endif // KERNEL_USE_MUTEX
-
-#endif //__MUTEX_H_

@@ -18,12 +18,13 @@ See license.txt for more information
     \brief  Kernel Timer Class declaration
  */
 
+#pragma once
+
 #include "kerneltypes.h"
 #include "mark3cfg.h"
 
-#ifndef __KERNELTIMER_H_
-#define __KERNELTIMER_H_
-
+namespace Mark3
+{
 //---------------------------------------------------------------------------
 /*!
     Hardware timer interface, used by all scheduling/timer subsystems.
@@ -133,5 +134,4 @@ public:
      */
     static PORT_TIMER_COUNT_TYPE Read(void);
 };
-
-#endif //__KERNELTIMER_H_
+} //namespace Mark3

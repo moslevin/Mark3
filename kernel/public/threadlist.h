@@ -19,13 +19,14 @@ See license.txt for more information
 
  */
 
-#ifndef __THREADLIST_H__
-#define __THREADLIST_H__
+#pragma once
 
 #include "kerneltypes.h"
 #include "priomap.h"
 #include "ll.h"
 
+namespace Mark3
+{
 class Thread;
 
 /*!
@@ -121,5 +122,4 @@ private:
     //! Pointer to the bitmap/flag to set when used for scheduling.
     PriorityMap* m_pclMap;
 };
-
-#endif
+} //namespace Mark3

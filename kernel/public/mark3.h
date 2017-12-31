@@ -17,9 +17,7 @@ See license.txt for more information
     \brief Single include file given to users of the Mark3 Kernel API
 
 */
-
-#ifndef __MARK3_H__
-#define __MARK3_H__
+#pragma once
 
 #include "mark3cfg.h"
 #include "kerneltypes.h"
@@ -48,5 +46,3 @@ See license.txt for more information
 #include "profile.h"
 #include "autoalloc.h"
 #include "priomap.h"
-
-#endif

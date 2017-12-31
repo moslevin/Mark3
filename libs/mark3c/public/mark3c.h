@@ -19,7 +19,6 @@ See license.txt for more information
 */
 
 #include "mark3cfg.h"
-#include "kerneltypes.h"
 #include "fake_types.h"
 #include "driver3c.h"
 
@@ -39,6 +38,7 @@ extern "C" {
 typedef void* EventFlag_t;    //!< EventFlag opaque handle data type
 typedef void* Mailbox_t;      //!< Mailbox opaque handle data type
 typedef void* Message_t;      //!< Message opaque handle data type
+typedef void* MessagePool_t;  //!< MessagePool opaque handle data type
 typedef void* MessageQueue_t; //!< MessageQueue opaque handle data type
 typedef void* Mutex_t;        //!< Mutex opaque handle data type
 typedef void* Notify_t;       //!< Notification object opaque handle data type
@@ -64,7 +64,25 @@ typedef void (*thread_context_callout_t)(Thread_t hThread_);
 #define MAILBOX_SIZE (sizeof(Fake_Mailbox))
 #define NOTIFY_SIZE (sizeof(Fake_Notify))
 #define EVENTFLAG_SIZE (sizeof(Fake_EventFlag))
+#define MESSAGEPOOL_SIZE (sizeof(Fake_MessagePool))
 
+//---------------------------------------------------------------------------
+typedef enum {
+    EVENT_FLAG_ALL_SET,        //!< Block until all bits in the specified bitmask are set
+    EVENT_FLAG_ANY_SET,        //!< Block until any bits in the specified bitmask are set
+    EVENT_FLAG_ALL_CLEAR,      //!< Block until all bits in the specified bitmask are cleared
+    EVENT_FlAG_ANY_CLEAR,      //!< Block until any bits in the specified bitmask are cleared
+    EVENT_FLAG_PENDING_UNBLOCK //!< Special code.  Not used by user
+} event_flag_operation_t;
+
+//---------------------------------------------------------------------------
+typedef enum {
+    THREAD_STATE_EXIT = 0,
+    THREAD_STATE_READY,
+    THREAD_STATE_BLOCKED,
+    THREAD_STATE_STOP,
+    THREAD_STATE_INVALID
+} thread_state_t;
 //---------------------------------------------------------------------------
 // Macros for declaring opaque buffers of an appropriate size for the given
 // kernel objects
@@ -94,6 +112,10 @@ typedef void (*thread_context_callout_t)(Thread_t hThread_);
 #define DECLARE_MESSAGE(name)                                                                                          \
     K_WORD    TOKEN_2(__message_, name)[WORD_ROUND(MESSAGE_SIZE)];                                                     \
     Message_t name = (Message_t)TOKEN_2(__message_, name);
+
+#define DECLARE_MESSAGEPOOL(name)                                                                                     \
+    K_WORD         TOKEN_2(__messagepool_, name)[WORD_ROUND(MESSAGEPOOL_SIZE)];                                      \
+    MessagePool_t name = (MessagePool_t)TOKEN_2(__messagepool_, name);
 
 #define DECLARE_MESSAGEQUEUE(name)                                                                                     \
     K_WORD         TOKEN_2(__messagequeue_, name)[WORD_ROUND(MESSAGEQUEUE_SIZE)];                                      \
@@ -175,6 +197,10 @@ void Free_Message(Message_t handle);
 MessageQueue_t Alloc_MessageQueue(void);
 void Free_MessageQueue(MessageQueue_t handle);
 
+MessagePool_t Alloc_MessagePool(void);
+void Free_MessagePool(MessagePool_t handle);
+
+
 #endif
 #if KERNEL_USE_NOTIFY
 /*!
@@ -234,12 +260,14 @@ void Kernel_Start(void);
  *         not started
  */
 bool Kernel_IsStarted(void);
+
+typedef void (*panic_func_t)(uint16_t u16PanicCode_);
 /*!
  * \brief Kernel_SetPanic
  * \sa void Kernel::SetPanic(PanicFunc_t pfPanic_)
  * \param pfPanic_ Panic function pointer
  */
-void Kernel_SetPanic(PanicFunc_t pfPanic_);
+void Kernel_SetPanic(panic_func_t pfPanic_);
 /*!
  * \brief Kernel_IsPanic
  * \sa bool Kernel::IsPanic()
@@ -253,12 +281,14 @@ bool Kernel_IsPanic(void);
  */
 void Kernel_Panic(uint16_t u16Cause_);
 #if KERNEL_USE_IDLE_FUNC
+typedef void (*idle_func_t)(void);
+
 /*!
  * \brief Kernel_SetIdleFunc
  * \sa void Kernel::SetIdleFunc(IdleFunc_t pfIdle_)
  * \param pfIdle_ Pointer to the idle function
  */
-void Kernel_SetIdleFunc(IdleFunc_t pfIdle_);
+void Kernel_SetIdleFunc(idle_func_t pfIdle_);
 #endif
 
 #if KERNEL_USE_THREAD_CALLOUTS
@@ -341,6 +371,7 @@ bool Scheduler_IsEnabled(void);
  */
 Thread_t Scheduler_GetCurrentThread(void);
 
+typedef void (*thread_entry_func_t)(void* pvArg_);
 //---------------------------------------------------------------------------
 // Thread APIs
 /*!
@@ -360,7 +391,7 @@ void Thread_Init(Thread_t      handle,
                  K_WORD*       pwStack_,
                  uint16_t      u16StackSize_,
                  PORT_PRIO_TYPE     uXPriority_,
-                 ThreadEntry_t pfEntryPoint_,
+                 thread_entry_func_t pfEntryPoint_,
                  void*         pvArg_);
 /*!
  * \brief Thread_Start
@@ -495,16 +526,16 @@ uint8_t Thread_GetID(Thread_t handle);
 uint16_t Thread_GetStackSlack(Thread_t handle);
 /*!
  * \brief Thread_GetState
- * \sa ThreadState_t Thread::GetState()
+ * \sa ThreadState Thread::GetState()
  * \param handle Handle of the thread
  * \return The thread's current execution state
  */
-ThreadState_t Thread_GetState(Thread_t handle);
+thread_state_t Thread_GetState(Thread_t handle);
 
 //---------------------------------------------------------------------------
 // Timer APIs
 #if KERNEL_USE_TIMERS
-typedef void (*TimerCallbackC_t)(Thread_t hOwner_, void* pvData_);
+typedef void (*timer_callback_t)(Thread_t hOwner_, void* pvData_);
 /*!
  * \brief Timer_Init
  * \sa void Timer::Init()
@@ -526,7 +557,7 @@ void Timer_Start(Timer_t          handle,
                  bool             bRepeat_,
                  uint32_t         u32IntervalMs_,
                  uint32_t         u32ToleranceMs_,
-                 TimerCallbackC_t pfCallback_,
+                 timer_callback_t pfCallback_,
                  void*            pvData_);
 
 /*!
@@ -623,24 +654,24 @@ bool Mutex_TimedClaim(Mutex_t handle, uint32_t u32WaitTimeMS_);
 void EventFlag_Init(EventFlag_t handle);
 /*!
  * \brief EventFlag_Wait
- * \sa uint16_t EventFlag::Wait(uint16_t u16Mask_, EventFlagOperation_t eMode_)
+ * \sa uint16_t EventFlag::Wait(uint16_t u16Mask_, event_flag_operation_t eMode_)
  * \param handle Handle of the event flag object
  * \param u16Mask_ condition flags to wait for
  * \param eMode_   Specify conditions under which the thread will be unblocked
  * \return bitfield contained in the eventflag on unblock
  */
-uint16_t EventFlag_Wait(EventFlag_t handle, uint16_t u16Mask_, EventFlagOperation_t eMode_);
+uint16_t EventFlag_Wait(EventFlag_t handle, uint16_t u16Mask_, event_flag_operation_t eMode_);
 #if KERNEL_USE_TIMEOUTS
 /*!
  * \brief EventFlag_TimedWait
- * \sa uint16_t EventFlag::Wait(uint16_t u16Mask_, EventFlagOperation_t eMode_, uint32_t u32TimeMS_)
+ * \sa uint16_t EventFlag::Wait(uint16_t u16Mask_, event_flag_operation_t eMode_, uint32_t u32TimeMS_)
  * \param handle Handle of the event flag object
  * \param u16Mask_  condition flags to wait for
  * \param eMode_    Specify conditions under which the thread will be unblocked
  * \param u32TimeMS_ Time in ms to wait before aborting the operation
  * \return bitfield contained in the eventflag on unblock, or 0 on expiry.
  */
-uint16_t EventFlag_TimedWait(EventFlag_t handle, uint16_t u16Mask_, EventFlagOperation_t eMode_, uint32_t u32TimeMS_);
+uint16_t EventFlag_TimedWait(EventFlag_t handle, uint16_t u16Mask_, event_flag_operation_t eMode_, uint32_t u32TimeMS_);
 #endif
 /*!
  * \brief EventFlag_Set
@@ -864,6 +895,27 @@ void MessageQueue_Send(MessageQueue_t handle, Message_t hMessage_);
  * \return Count of pending messages in the queue.
  */
 uint16_t MessageQueue_GetCount(void);
+
+/*!
+ * \brief MessagePool_Init
+ * \param handle
+ */
+void MessagePool_Init(MessagePool_t handle);
+
+/*!
+ * \brief MessagePool_Push
+ * \param handle
+ * \param msg
+ */
+void MessagePool_Push(MessagePool_t handle, Message_t msg);
+
+/*!
+ * \brief MessagePool_Pop
+ * \param handle
+ * \return
+ */
+Message_t MessagePool_Pop(MessagePool_t handle);
+
 #endif
 
 //---------------------------------------------------------------------------

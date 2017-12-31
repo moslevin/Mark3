@@ -39,6 +39,7 @@ See license.txt for more information
 
 #if KERNEL_USE_TIMEOUTS
 #include "timerlist.h"
+namespace Mark3 {
 namespace {
 //---------------------------------------------------------------------------
 /*!
@@ -102,7 +103,7 @@ void EventFlag::WakeMe(Thread* pclChosenOne_)
 #if KERNEL_USE_TIMEOUTS
 uint16_t EventFlag::Wait_i(uint16_t u16Mask_, EventFlagOperation eMode_, uint32_t u32TimeMS_)
 #else
-uint16_t EventFlag::Wait_i(uint16_t u16Mask_, EventFlagOperation_t eMode_)
+uint16_t EventFlag::Wait_i(uint16_t u16Mask_, EventFlagOperation eMode_)
 #endif
 {
 #if KERNEL_EXTRA_CHECKS
@@ -343,5 +344,5 @@ uint16_t EventFlag::GetMask()
     CS_EXIT();
     return u16Return;
 }
-
+} // namespace Mark3
 #endif // KERNEL_USE_EVENTFLAG

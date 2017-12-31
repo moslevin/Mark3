@@ -38,7 +38,10 @@ See license.txt for more information
 #if KERNEL_USE_NOTIFY
 
 #if KERNEL_USE_TIMEOUTS
-namespace {
+namespace Mark3
+{
+namespace
+{
 //---------------------------------------------------------------------------
 void TimedNotify_Callback(Thread* pclOwner_, void* pvData_)
 {
@@ -194,5 +197,5 @@ void Notify::WakeMe(Thread* pclChosenOne_)
 #endif
     UnBlock(pclChosenOne_);
 }
-
+} //namespace Mark3
 #endif

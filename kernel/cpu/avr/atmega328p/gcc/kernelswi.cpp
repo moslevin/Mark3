@@ -25,6 +25,8 @@ See license.txt for more information
 #include <avr/io.h>
 #include <avr/interrupt.h>
 
+namespace Mark3
+{
 //---------------------------------------------------------------------------
 void KernelSWI::Config(void)
 {
@@ -79,3 +81,4 @@ void KernelSWI::Trigger(void)
         PORTD |= 0x04;
     }
 }
+} //namespace Mark3

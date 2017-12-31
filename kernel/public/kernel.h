@@ -29,14 +29,15 @@ See license.txt for more information
     the "main()" context to the threads in the scheduler.
 */
 
-#ifndef __KERNEL_H__
-#define __KERNEL_H__
+#pragma once
 
 #include "mark3cfg.h"
 #include "kerneltypes.h"
 #include "paniccodes.h"
 #include "thread.h"
 
+namespace Mark3
+{
 //---------------------------------------------------------------------------
 /*!
  *    Class that encapsulates all of the kernel startup functions.
@@ -134,7 +135,7 @@ public:
      *
      * \param pfCreate_ Pointer to a function to call on thread creation
      */
-    static void SetThreadCreateCallout(ThreadCreateCallout_t pfCreate_) { m_pfThreadCreateCallout = pfCreate_; }
+    static void SetThreadCreateCallout(ThreadCreateCallout pfCreate_) { m_pfThreadCreateCallout = pfCreate_; }
     /*!
      * \brief SetThreadExitCallout
      *
@@ -146,7 +147,7 @@ public:
      *
      * \param pfCreate_ Pointer to a function to call on thread exit
      */
-    static void SetThreadExitCallout(ThreadExitCallout_t pfExit_) { m_pfThreadExitCallout = pfExit_; }
+    static void SetThreadExitCallout(ThreadExitCallout pfExit_) { m_pfThreadExitCallout = pfExit_; }
     /*!
      * \brief SetThreadContextSwitchCallout
      *
@@ -157,7 +158,7 @@ public:
      *
      * \param pfContext_ Pointer to a function to call on context switch
      */
-    static void SetThreadContextSwitchCallout(ThreadContextCallout_t pfContext_)
+    static void SetThreadContextSwitchCallout(ThreadContextCallout pfContext_)
     {
         m_pfThreadContextCallout = pfContext_;
     }
@@ -170,7 +171,7 @@ public:
      * \return Pointer to the currently-installed callout function,
      *         or NULL if not set.
      */
-    static ThreadCreateCallout_t GetThreadCreateCallout(void) { return m_pfThreadCreateCallout; }
+    static ThreadCreateCallout GetThreadCreateCallout(void) { return m_pfThreadCreateCallout; }
     /*!
      * \brief GetThreadExitCallout
      *
@@ -179,7 +180,7 @@ public:
      * \return Pointer to the currently-installed callout function,
      *         or NULL if not set.
      */
-    static ThreadExitCallout_t GetThreadExitCallout(void) { return m_pfThreadExitCallout; }
+    static ThreadExitCallout GetThreadExitCallout(void) { return m_pfThreadExitCallout; }
     /*!
      * \brief GetThreadContextSwitchCallout
      *
@@ -188,7 +189,7 @@ public:
      * \return Pointer to the currently-installed callout function,
      *         or NULL if not set.
      */
-    static ThreadContextCallout_t GetThreadContextSwitchCallout(void) { return m_pfThreadContextCallout; }
+    static ThreadContextCallout GetThreadContextSwitchCallout(void) { return m_pfThreadContextCallout; }
 #endif
 
 #if KERNEL_USE_STACK_GUARD
@@ -206,9 +207,9 @@ private:
 #endif
 
 #if KERNEL_USE_THREAD_CALLOUTS
-    static ThreadCreateCallout_t  m_pfThreadCreateCallout;  //!< Function to call on thread creation
-    static ThreadExitCallout_t    m_pfThreadExitCallout;    //!< Function to call on thread exit
-    static ThreadContextCallout_t m_pfThreadContextCallout; //!< Function to call on context switch
+    static ThreadCreateCallout  m_pfThreadCreateCallout;  //!< Function to call on thread creation
+    static ThreadExitCallout    m_pfThreadExitCallout;    //!< Function to call on thread exit
+    static ThreadContextCallout m_pfThreadContextCallout; //!< Function to call on context switch
 #endif
 
 #if KERNEL_USE_STACK_GUARD
@@ -216,4 +217,4 @@ private:
 #endif
 };
 
-#endif
+} //namespace Mark3

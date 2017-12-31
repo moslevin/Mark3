@@ -43,9 +43,7 @@ See license.txt for more information
     like timers and interrupts could result in non-deterministic and often
     catastrophic behavior.
  */
-
-#ifndef __BLOCKING_H__
-#define __BLOCKING_H__
+#pragma once
 
 #include "kerneltypes.h"
 #include "mark3cfg.h"
@@ -53,8 +51,8 @@ See license.txt for more information
 #include "ll.h"
 #include "threadlist.h"
 
-#if KERNEL_USE_MUTEX || KERNEL_USE_SEMAPHORE || KERNEL_USE_EVENTFLAG
-
+namespace Mark3
+{
 //---------------------------------------------------------------------------
 // Cookies used to determine whether or not an object has been initialized
 #define BLOCKING_INVALID_COOKIE         (0x3C)
@@ -147,9 +145,5 @@ protected:
     bool IsInitialized(void) { return (m_u8Initialized == BLOCKING_INIT_COOKIE); }
 
 #endif
-
 };
-
-#endif
-
-#endif
+} //namespace Mark3

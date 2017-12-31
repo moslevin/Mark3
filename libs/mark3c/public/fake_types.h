@@ -23,7 +23,9 @@ See license.txt for more information
     then become instantiated as C++ kernel objects via the bindings provided.
 */
 
-#include "kerneltypes.h"
+#include <stdint.h>
+#include <stddef.h>
+#include <stdbool.h>
 #include "mark3cfg.h"
 
 #ifndef __FAKE_TYPES_H__
@@ -136,6 +138,11 @@ typedef struct {
     Fake_Semaphore  m_clSemaphore;
     Fake_LinkedList m_clLinkList;
 } Fake_MessageQueue;
+
+//---------------------------------------------------------------------------
+typedef struct {
+    Fake_LinkedList m_clList;
+} Fake_MessagePool;
 
 //---------------------------------------------------------------------------
 typedef struct {

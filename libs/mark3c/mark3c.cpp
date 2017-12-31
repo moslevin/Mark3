@@ -105,6 +105,18 @@ void Free_MessageQueue(MessageQueue_t handle)
     AutoAlloc::DestroyMessageQueue((MessageQueue*)handle);
 }
 
+//---------------------------------------------------------------------------
+MessagePool_t Alloc_MessagePool(void)
+{
+    return (MessagePool_t)AutoAlloc::NewMessagePool();
+}
+
+//---------------------------------------------------------------------------
+void Free_MessagePool(MessagePool_t handle)
+{
+    AutoAlloc::DestroyMessagePool((MessagePool*)handle);
+}
+
 #endif
 #if KERNEL_USE_NOTIFY
 //---------------------------------------------------------------------------
@@ -209,19 +221,19 @@ void Kernel_SetIdleFunc(IdleFunc pfIdle_)
 //---------------------------------------------------------------------------
 void Kernel_SetThreadCreateCallout(thread_create_callout_t pfCreate_)
 {
-    Kernel::SetThreadCreateCallout((ThreadCreateCallout_t)pfCreate_);
+    Kernel::SetThreadCreateCallout((ThreadCreateCallout)pfCreate_);
 }
 
 //---------------------------------------------------------------------------
 void Kernel_SetThreadExitCallout(thread_exit_callout_t pfExit_)
 {
-    Kernel::SetThreadExitCallout((ThreadExitCallout_t)pfExit_);
+    Kernel::SetThreadExitCallout((ThreadExitCallout)pfExit_);
 }
 
 //---------------------------------------------------------------------------
 void Kernel_SetThreadContextSwitchCallout(thread_context_callout_t pfContext_)
 {
-    Kernel::SetThreadContextSwitchCallout((ThreadContextCallout_t)pfContext_);
+    Kernel::SetThreadContextSwitchCallout((ThreadContextCallout)pfContext_);
 }
 
 //---------------------------------------------------------------------------
@@ -419,10 +431,10 @@ uint16_t Thread_GetStackSlack(Thread_t handle)
     return pclThread->GetStackSlack();
 }
 //---------------------------------------------------------------------------
-ThreadState Thread_GetState(Thread_t handle)
+thread_state_t Thread_GetState(Thread_t handle)
 {
     Thread* pclThread = (Thread*)handle;
-    return pclThread->GetState();
+    return (thread_state_t)pclThread->GetState();
 }
 //---------------------------------------------------------------------------
 // Timer APIs
@@ -441,11 +453,11 @@ void Timer_Start(Timer_t          handle,
                  bool             bRepeat_,
                  uint32_t         u32IntervalMs_,
                  uint32_t         u32ToleranceMs_,
-                 TimerCallbackC_t pfCallback_,
+                 timer_callback_t pfCallback_,
                  void*            pvData_)
 {
     Timer* pclTimer = (Timer*)handle;
-    pclTimer->Start(bRepeat_, u32IntervalMs_, u32ToleranceMs_, (TimerCallback_t)pfCallback_, pvData_);
+    pclTimer->Start(bRepeat_, u32IntervalMs_, u32ToleranceMs_, (TimerCallback)pfCallback_, pvData_);
 }
 
 //---------------------------------------------------------------------------
@@ -544,20 +556,19 @@ void EventFlag_Init(EventFlag_t handle)
 }
 
 //---------------------------------------------------------------------------
-uint16_t EventFlag_Wait(EventFlag_t handle, uint16_t u16Mask_, EventFlagOperation eMode_)
+uint16_t EventFlag_Wait(EventFlag_t handle, uint16_t u16Mask_, event_flag_operation_t eMode_)
 {
     EventFlag* pclFlag = (EventFlag*)handle;
-    return pclFlag->Wait(u16Mask_, eMode_);
+    return pclFlag->Wait(u16Mask_, (EventFlagOperation)eMode_);
 }
 
 #if KERNEL_USE_TIMEOUTS
 //---------------------------------------------------------------------------
-uint16_t EventFlag_TimedWait(EventFlag_t handle, uint16_t u16Mask_, EventFlagOperation eMode_, uint32_t u32TimeMS_)
+uint16_t EventFlag_TimedWait(EventFlag_t handle, uint16_t u16Mask_, event_flag_operation_t eMode_, uint32_t u32TimeMS_)
 {
     EventFlag* pclFlag = (EventFlag*)handle;
-    return pclFlag->Wait(u16Mask_, eMode_, u32TimeMS_);
+    return pclFlag->Wait(u16Mask_, (EventFlagOperation)eMode_, u32TimeMS_);
 }
-
 #endif
 
 //---------------------------------------------------------------------------
@@ -735,6 +746,26 @@ Message_t MessageQueue_Receive(MessageQueue_t handle)
     return pclMsgQ->Receive();
 }
 
+//---------------------------------------------------------------------------
+void MessagePool_Init(MessagePool_t handle)
+{
+    MessagePool* pclMsgPool = (MessagePool*)handle;
+    pclMsgPool->Init();
+}
+
+//---------------------------------------------------------------------------
+void MessagePool_Push(MessagePool_t handle, Message_t msg)
+{
+    MessagePool* pclMsgPool = (MessagePool*)handle;
+    pclMsgPool->Push((Message*)msg);
+}
+
+//---------------------------------------------------------------------------
+Message_t MessagePool_Pop(MessagePool_t handle)
+{
+    MessagePool* pclMsgPool = (MessagePool*)handle;
+    return (Message_t)pclMsgPool->Pop();
+}
 #if KERNEL_USE_TIMEOUTS
 //---------------------------------------------------------------------------
 Message_t MessageQueue_TimedReceive(MessageQueue_t handle, uint32_t u32TimeWaitMS_)

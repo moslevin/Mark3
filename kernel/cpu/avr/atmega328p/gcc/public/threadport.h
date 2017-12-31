@@ -17,9 +17,7 @@ See license.txt for more information
 
     \brief  ATMega328p Multithreading support.
  */
-
-#ifndef __THREADPORT_H_
-#define __THREADPORT_H_
+#pragma once
 
 #include "kerneltypes.h"
 #include "thread.h"
@@ -46,6 +44,8 @@ See license.txt for more information
     x--;
 #define STACK_GROWS_DOWN (1)
 
+namespace Mark3
+{
 //---------------------------------------------------------------------------
 //! Lookup table based count-leading zeros implementation, used by scheduler
 //! by way of PriorityMap
@@ -204,5 +204,4 @@ private:
      */
     static void InitStack(Thread* pstThread_);
 };
-
-#endif //__ThreadPORT_H_
+} //namespace Mark3

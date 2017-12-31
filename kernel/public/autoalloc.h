@@ -17,14 +17,16 @@ See license.txt for more information
     \brief  Automatic memory allocation for kernel objects.
 */
 
-#ifndef __AUTO_ALLOC_H__
-#define __AUTO_ALLOC_H__
+#pragma once
 
 #include <stdint.h>
 #include <stdbool.h>
 #include "mark3cfg.h"
 
 #if KERNEL_USE_AUTO_ALLOC
+namespace Mark3
+{
+
 //---------------------------------------------------------------------------
 // Define function pointer types used for interfacing with an external heap.
 
@@ -34,6 +36,7 @@ enum class AutoAllocType : uint8_t {
     EventFlag,
     MailBox,
     Message,
+    MessagePool,
     MessageQueue,
     Mutex,
     Notify,
@@ -62,6 +65,7 @@ class Mailbox;
 
 #if KERNEL_USE_MESSAGE
 class Message;
+class MessagePool;
 class MessageQueue;
 #endif
 
@@ -203,6 +207,13 @@ public:
     static Message* NewMessage();
 
     /*!
+     * \brief NewMessagePool
+     * Allocate and construct a new Messagepool object for use within the system
+     * \return Pointer to newly created object, or nullptr on allocation failure.
+     */
+    static MessagePool* NewMessagePool();
+
+    /*!
      * \brief NewMessageQueue
      * Allocate and construct a new MessageQueue object for use within the system.
      * \return Pointer to newly created object, or 0 on allocation failure.
@@ -215,6 +226,13 @@ public:
      * \param pclMessage_ Pointer to the object to destroy.
      */
     static void DestroyMessage(Message* pclMessage_);
+
+    /*!
+     * \brief DestroyMessagePool
+     * Destroy and deallocate a previously-allocated MessagePool object from within the system.
+     * \param pclMessagePool_ Pointer to message pool to be deallocated
+     */
+    static void DestroyMessagePool(MessagePool *pclMessagePool_);
 
     /*!
      * \brief DestroyMessageQueue
@@ -277,7 +295,5 @@ private:
     static AutoAllocAllocator_t m_pfAllocator;    //!< Function used to allocate objects
     static AutoAllocFree_t      m_pfFree;         //!< Funciton used to free objects
 };
-
-#endif
-
+} //namespace Mark3
 #endif

@@ -32,8 +32,7 @@ See license.txt for more information
 
  */
 
-#ifndef __THREAD_H__
-#define __THREAD_H__
+#pragma once
 
 #include "kerneltypes.h"
 #include "mark3cfg.h"
@@ -46,12 +45,15 @@ See license.txt for more information
 #include "autoalloc.h"
 #include "priomap.h"
 
+namespace Mark3
+{
+
 class Thread;
 
 //---------------------------------------------------------------------------
-using ThreadCreateCallout_t = void (*)(Thread* pclThread_);
-using ThreadExitCallout_t = void (*)(Thread* pclThread_);
-using ThreadContextCallout_t = void (*)(Thread* pclThread_);
+using ThreadCreateCallout = void (*)(Thread* pclThread_);
+using ThreadExitCallout = void (*)(Thread* pclThread_);
+using ThreadContextCallout = void (*)(Thread* pclThread_);
 
 //---------------------------------------------------------------------------
 /*!
@@ -563,6 +565,5 @@ typedef struct {
 #endif
 
 } FakeThread_t;
-#endif
-
-#endif
+#endif //KERNEL_USE_IDLE_FUNC
+} //namespace Mark3

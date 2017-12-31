@@ -17,32 +17,14 @@ See license.txt for more information
 
     \brief  Kernel aware simulation support
 */
-
-#ifndef __KERNEL_AWARE_H__
-#define __KERNEL_AWARE_H__
+#pragma once
 
 #include "kerneltypes.h"
 #include "mark3cfg.h"
 
 #if KERNEL_AWARE_SIMULATION
-//---------------------------------------------------------------------------
-/*!
- *  This enumeration contains a list of supported commands that can be
- *  executed to invoke a response from a kernel aware host.
- */
-typedef enum {
-    KA_COMMAND_IDLE = 0,       //!< Null command, does nothing.
-    KA_COMMAND_PROFILE_INIT,   //!< Initialize a new profiling session
-    KA_COMMAND_PROFILE_START,  //!< Begin a profiling sample
-    KA_COMMAND_PROFILE_STOP,   //!< End a profiling sample
-    KA_COMMAND_PROFILE_REPORT, //!< Report current profiling session
-    KA_COMMAND_EXIT_SIMULATOR, //!< Terminate the host simulator
-    KA_COMMAND_TRACE_0,        //!< 0-argument kernel trace
-    KA_COMMAND_TRACE_1,        //!< 1-argument kernel trace
-    KA_COMMAND_TRACE_2,        //!< 2-argument kernel trace
-    KA_COMMAND_PRINT           //!< Print an arbitrary string of data
-} KernelAwareCommand_t;
-
+namespace Mark3
+{
 //---------------------------------------------------------------------------
 /*!
  * \brief The KernelAware class
@@ -176,7 +158,5 @@ namespace KernelAware
      */
     bool IsSimulatorAware(void);
 } // namespace KernelAware
-
-#endif
-
+} //namespace Mark3
 #endif
