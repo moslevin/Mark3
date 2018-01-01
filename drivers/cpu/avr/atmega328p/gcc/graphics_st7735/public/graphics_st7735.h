@@ -36,6 +36,7 @@ See license.txt for more information
   Written by Limor Fried/Ladyada for Adafruit Industries.
   MIT license, all text above must be included in any redistribution
  ****************************************************/
+#pragma once
 
 #include "driver.h"
 #include "draw.h"
@@ -44,9 +45,6 @@ See license.txt for more information
 
 #include <avr/pgmspace.h>
 #include <avr/io.h>
-
-#ifndef __GRAPHICS_ST7735_H__
-#define __GRAPHICS_ST7735_H__
 
 //---------------------------------------------------------
 #define INITR_GREENTAB 0x0
@@ -157,6 +155,9 @@ See license.txt for more information
 //--[ Hardware/Software config ]---------------------------
 #define use_HW_SPI (1)
 
+namespace Mark3
+{
+
 //---------------------------------------------------------
 class GraphicsST7735 : public GraphicsDriver
 {
@@ -213,4 +214,4 @@ private:
     uint8_t m_u8RowStart;
 };
 
-#endif // __GRAPHICS_ST7735_H__
+} //namespace Mark3

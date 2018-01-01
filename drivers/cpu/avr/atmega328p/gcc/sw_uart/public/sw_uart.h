@@ -17,9 +17,10 @@ See license.txt for more information
 
     \brief  Software UART Implementation
 */
+#pragma once
 
-#ifndef __SW_UART_H__
-#define __SW_UART_H__
+namespace Mark3
+{
 
 //---------------------------------------------------------------------------
 class SoftwareUART
@@ -43,5 +44,4 @@ private:
     uint16_t m_u16Prescale;
     uint8_t  m_u8TimerPeriod;
 };
-
-#endif
+} //namespace Mark3

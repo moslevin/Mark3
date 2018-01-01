@@ -17,14 +17,16 @@ See license.txt for more information
     \brief Graphics driver implementation on 4D systems uOLED displays
 
 */
+#pragma once
 
 #include "driver.h"
 #include "draw.h"
 #include "graphics.h"
 #include "driver.h"
 
-#ifndef __GRAPHICS_UOLED_H__
-#define __GRAPHICS_UOLED_H__
+
+namespace Mark3
+{
 
 //---------------------------------------------------------------------------
 typedef struct {
@@ -98,5 +100,4 @@ private:
 
     COLOR m_uTextColor;
 };
-
-#endif
+} //namespace Mark3

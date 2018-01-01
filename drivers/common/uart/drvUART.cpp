@@ -16,6 +16,9 @@ See license.txt for more information
 */
 #include "drvUART.h"
 
+
+namespace Mark3
+{
 //---------------------------------------------------------------------------
 bool UartDriver::SetBaudRate(uint32_t u32BaudRate_)
 {
@@ -52,3 +55,4 @@ bool UartDriver::SetPortBlocking(bool bBlocking_)
     }
     return 0 == Control(UART_OPCODE_SET_NONBLOCKING, 0, 0, 0, 0);
 }
+} //namespace Mark3

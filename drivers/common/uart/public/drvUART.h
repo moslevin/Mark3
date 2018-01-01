@@ -14,11 +14,13 @@ See license.txt for more information
 /*!
     @brief UART abstraction interface
 */
-#ifndef __UARTDRIVER_H__
-#define __UARTDRIVER_H__
+#pragma once
 
 #include "driver.h"
 #include "mark3.h"
+
+namespace Mark3
+{
 
 //---------------------------------------------------------------------------
 typedef enum {
@@ -93,7 +95,4 @@ public:
 private:
 };
 
-
-#endif // __UARTDRIVER_H__
-
-
+} //namespace Mark3

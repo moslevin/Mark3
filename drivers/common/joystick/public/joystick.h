@@ -40,12 +40,14 @@ See license.txt for more information
     ReadCurrent() and ReadPrevious().  In this way, it is possible to implement
     more complex, application-specific input state machines.
  */
+#pragma once
 
 #include "kerneltypes.h"
 #include "driver.h"
 
-#ifndef __JOYSTICK_H__
-#define __JOYSTICK_H__
+
+namespace Mark3
+{
 
 //---------------------------------------------------------------------------
 /*!
@@ -141,5 +143,4 @@ protected:
 };
 
 //---------------------------------------------------------------------------
-
-#endif //__JOYSTICK_H__
+} //namespace Mark3

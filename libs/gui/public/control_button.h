@@ -18,9 +18,7 @@ See license.txt for more information
 
     Basic pushbutton control with an up/down state.
 */
-
-#ifndef __CONTROL_BUTTON_H__
-#define __CONTROL_BUTTON_H__
+#pragma once
 
 #include "gui.h"
 #include "kerneltypes.h"
@@ -28,6 +26,9 @@ See license.txt for more information
 #include "font.h"
 
 typedef void (*ButtonCallback)(void* pvData_);
+
+namespace Mark3
+{
 
 class ButtonControl : public GuiControl
 {
@@ -64,4 +65,4 @@ private:
     ButtonCallback m_pfCallback;
 };
 
-#endif
+} //namespace Mark3

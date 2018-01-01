@@ -28,8 +28,7 @@ See license.txt for more information
 #include <stdbool.h>
 #include "mark3cfg.h"
 
-#ifndef __FAKE_TYPES_H__
-#define __FAKE_TYPES_H__
+#pragma once
 
 #if defined(__cplusplus)
 extern "C" {
@@ -179,5 +178,3 @@ typedef struct {
 #if defined(__cplusplus)
 }
 #endif
-
-#endif // __FAKE_TYPES_H__

@@ -18,14 +18,15 @@ See license.txt for more information
     A simple progress bar control using lines and rectangles to display
     the status of an operation from initialization to completion
 */
-
-#ifndef __CONTROL_SEVENSEG_H__
-#define __CONTROL_SEVENSEG_H__
+#pragma once
 
 #include "gui.h"
 #include "kerneltypes.h"
 #include "draw.h"
 #include "font.h"
+
+namespace Mark3
+{
 
 class SevenSegControl : public GuiControl
 {
@@ -50,5 +51,4 @@ private:
     uint16_t m_u16Value;
     bool     m_bColon;
 };
-
-#endif
+} //namespace Mark3

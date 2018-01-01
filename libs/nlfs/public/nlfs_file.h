@@ -16,12 +16,14 @@ See license.txt for more information
     \brief NLFS file access class
 */
 
-#ifndef __NLFS_FILE_H
-#define __NLFS_FILE_H
+#pragma once
 
 #include "kerneltypes.h"
 #include "nlfs.h"
 #include "nlfs_config.h"
+
+namespace Mark3
+{
 
 //----------------------------------------------------------------------------
 typedef enum {
@@ -92,4 +94,4 @@ private:
     NLFS_Node_t      m_stNode;          //!< Local copy of the file node
 };
 
-#endif // __NLFS_FILE_H
+} //namespace Mark3

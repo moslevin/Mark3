@@ -24,6 +24,8 @@ See license.txt for more information
 
 #include <avr/io.h>
 
+namespace Mark3
+{
 //---------------------------------------------------------------------------
 void BasicJoystick::Init()
 {
@@ -94,3 +96,4 @@ void BasicJoystick::ScanInternal()
         m_stCurrentReport.bButton1 = true;
     }
 }
+} //namespace Mark3

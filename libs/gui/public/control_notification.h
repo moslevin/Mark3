@@ -18,13 +18,14 @@ See license.txt for more information
     A pop-up control that can be used to present the user with information
     about system state changes, events, etc.
 */
-
-#ifndef __CONTROL_NOTIFICATION_H__
-#define __CONTROL_NOTIFICATION_H__
+#pragma once
 
 #include "gui.h"
 #include "kerneltypes.h"
 #include "draw.h"
+
+namespace Mark3
+{
 
 class NotificationControl : public GuiControl
 {
@@ -58,5 +59,4 @@ private:
     bool        m_bTrigger;
     bool        m_bVisible;
 };
-
-#endif
+} //namespace Mark3

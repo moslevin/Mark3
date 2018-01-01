@@ -38,6 +38,7 @@ IPC even more flexibility.
 #if !KERNEL_USE_IDLE_FUNC
 #error "This demo requires KERNEL_USE_IDLE_FUNC"
 #endif
+using namespace Mark3;
 
 extern "C" {
 void __cxa_pure_virtual(void)

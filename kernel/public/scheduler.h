@@ -50,12 +50,11 @@ See license.txt for more information
 #include "threadport.h"
 #include "priomap.h"
 
+extern volatile Mark3::Thread* g_pclNext;
+extern Mark3::Thread*          g_pclCurrent;
+
 namespace Mark3
 {
-
-extern volatile Thread* g_pclNext;
-extern Thread*          g_pclCurrent;
-
 //---------------------------------------------------------------------------
 /*!
  *  Priority-based round-robin Thread scheduling, using ThreadLists for

@@ -4,6 +4,7 @@
 #include "tiles.h"
 
 #include "brball.h"
+using namespace Mark3;
 
 //---------------------------------------------------------------------------
 static COLOR auBallPalette[4] = { COLOR_BLACK, COLOR_GREY50, COLOR_GREY75, COLOR_WHITE };

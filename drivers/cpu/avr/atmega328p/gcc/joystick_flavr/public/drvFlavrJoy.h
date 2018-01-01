@@ -18,12 +18,14 @@ See license.txt for more information
 
 */
 
-#ifndef __DRV_FLAVRJOY_H_
-#define __DRV_FLAVRJOY_H_
+#pragma once
 
 #include "kerneltypes.h"
 #include "driver.h"
 #include "joystick.h"
+
+namespace Mark3
+{
 
 //---------------------------------------------------------------------------
 // Module configuration
@@ -53,4 +55,4 @@ private:
     void ScanInternal();
 };
 
-#endif
+} //namespace Mark3

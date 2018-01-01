@@ -17,7 +17,7 @@ See license.txt for more information
 #include <stdint.h>
 
 #include "memutil.h"
-
+namespace Mark3 {
 //---------------------------------------------------------------------------
 void LineBuffer::Clear()
 {
@@ -130,3 +130,4 @@ uint8_t LineBuffer::CursorEnd()
     m_u8CursorIndex = m_u8LastByteIndex;
     return u8Diff;
 }
+} //namespace Mark3

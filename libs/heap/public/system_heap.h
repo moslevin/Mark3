@@ -18,8 +18,7 @@ See license.txt for more information
            allocation scheme.
 */
 
-#ifndef __SYSTEM_HEAP_H__
-#define __SYSTEM_HEAP_H__
+#pragma once
 
 #include "system_heap_config.h"
 #include "fixed_heap.h"
@@ -202,6 +201,9 @@ HEAP_RAW_SIZE_20                                                                
         + \
 HEAP_RAW_SIZE_21
 
+namespace Mark3
+{
+
 //---------------------------------------------------------------------------
 /*!
  * \brief The SystemHeap class implements a heap which is accessible from
@@ -244,7 +246,6 @@ private:
     static FixedHeap  m_clSystemHeap;                            //!< Heap management object
     static bool       m_bInit;                                   //!< True if initialized, false if uninitialized
 };
+} //namespace Mark3
 
 #endif // USE_SYSTEM_HEAP
-
-#endif // __SYSTEM_HEAP_H__

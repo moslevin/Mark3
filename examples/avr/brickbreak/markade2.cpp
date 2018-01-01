@@ -36,6 +36,7 @@ See license.txt for more information
 
 #include <avr/io.h>
 #include <avr/sleep.h>
+using namespace Mark3;
 
 //---------------------------------------------------------------------------
 // Need to have this to handle pure-virtual functions

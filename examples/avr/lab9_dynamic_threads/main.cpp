@@ -39,6 +39,7 @@ of the application.
 #if !KERNEL_TIMERS_TICKLESS
 #error "This demo requires KERNEL_TIMERS_TICKLESS"
 #endif
+using namespace Mark3;
 
 extern "C" {
 void __cxa_pure_virtual(void)

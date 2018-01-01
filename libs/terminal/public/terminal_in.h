@@ -18,10 +18,12 @@ See license.txt for more information
            special keys and modifiers (shift, ctrl, alt).
  */
 
-#ifndef __TERMINAL_IN_H__
-#define __TERMINAL_IN_H__
+#pragma once
 
 #include <stdint.h>
+
+namespace Mark3
+{
 
 //---------------------------------------------------------------------------
 // Special keys supported by the TerminalIn class
@@ -209,5 +211,4 @@ private:
 
     KeyVal_t m_uKey;
 };
-
-#endif // __TERMINALINPUT_H__
+} //namespace Mark3

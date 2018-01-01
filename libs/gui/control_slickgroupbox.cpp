@@ -21,6 +21,7 @@ See license.txt for more information
 #include "draw.h"
 #include "graphics.h"
 #include "control_slickgroupbox.h"
+namespace Mark3 {
 
 #define TEXT_X_OFFSET (8)
 #define TEXT_Y_OFFSET (0)
@@ -114,3 +115,4 @@ void SlickGroupBoxControl::Draw()
         pclDriver->Text(&stText);
     }
 }
+} //namespace Mark3

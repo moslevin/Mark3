@@ -19,6 +19,8 @@ See license.txt for more information
 #include "kerneltypes.h"
 #include "unit_test.h"
 
+namespace Mark3
+{
 //---------------------------------------------------------------------------
 UnitTest::UnitTest()
 {
@@ -56,3 +58,4 @@ void UnitTest::Fail()
         m_bStatus = false;
     }
 }
+} //namespace Mark3

@@ -4,6 +4,8 @@
 
 #include "font.h"
 
+using namespace Mark3;
+
 const FONT_STORAGE_TYPE Tahoma_12_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 
     //-- Glyph for ASCII Character code: 0

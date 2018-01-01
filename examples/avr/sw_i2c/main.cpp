@@ -25,6 +25,7 @@ See license.txt for more information
 
 #include <avr/io.h>
 #include <avr/interrupt.h>
+using namespace Mark3;
 
 //---------------------------------------------------------------------------
 // Software i2c driver port configuration

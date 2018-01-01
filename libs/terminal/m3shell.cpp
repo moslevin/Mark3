@@ -15,7 +15,7 @@ See license.txt for more information
 #include "m3shell.h"
 
 #include <stdint.h>
-
+namespace Mark3 {
 //---------------------------------------------------------------------------
 void M3Shell::AddCommand(CommandHandler* pclHandler_)
 {
@@ -145,3 +145,4 @@ void M3Shell::InputLoop()
     m_clDispatcher.Execute(m_clLineBuffer.GetBuffer());
     m_clTerminal.WriteString("\r\n");
 }
+} //namespace Mark3

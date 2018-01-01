@@ -20,7 +20,7 @@ See license.txt for more information
 #include "slip.h"
 #include "driver.h"
 #include "drvUART.h"
-
+namespace Mark3 {
 //---------------------------------------------------------------------------
 #define FRAMING_BYTE (192)         //!< Byte indicating end-of-frame
 #define FRAMING_ENC_BYTE (219)     //!< Byte used to indicate substitution
@@ -252,3 +252,4 @@ void Slip::WriteVector(uint8_t u8Channel_, SlipDataVector* astData_, uint16_t u1
     while (m_pclDriver->Write(1, aucTmp) == 0u) {
     }
 }
+} //namespace Mark3

@@ -24,7 +24,7 @@ See license.txt for more information
 #include "kernelaware.h"
 #include "../unit_test.h"
 #include "../ut_platform.h"
-
+namespace Mark3 {
 //---------------------------------------------------------------------------
 // Global objects
 static ProfileTimer clProfiler100m; //!< Profiling timer
@@ -256,3 +256,4 @@ TEST_END
 //===========================================================================
 TEST_CASE_START
 TEST_CASE(ut_timer_sanity_precision), TEST_CASE(ut_timer_sanity_multi), TEST_CASE_END
+} //namespace Mark3

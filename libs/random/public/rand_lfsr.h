@@ -16,10 +16,12 @@ See license.txt for more information
     \brief Linear Feedback Shift Register based Pseudo-Random Number Generator
 */
 
-#ifndef __RAND_LFSR_H__
-#define __RAND_LFSR_H_
+#pragma once
 
 #include "kerneltypes.h"
+
+namespace Mark3
+{
 
 //---------------------------------------------------------------------------
 /*!
@@ -79,5 +81,4 @@ private:
     uint32_t m_u32LFSR1;
     uint32_t m_u32LFSR2;
 };
-
-#endif
+} //namespace Mark3

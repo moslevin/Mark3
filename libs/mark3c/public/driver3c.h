@@ -21,8 +21,7 @@ See license.txt for more information
 #include "mark3cfg.h"
 #include <stdint.h>
 
-#ifndef __DRIVER3C_H__
-#define __DRIVER3C_H__
+#pragma once
 
 #if KERNEL_USE_DRIVER
 
@@ -206,5 +205,3 @@ void DriverList_Add(Driver_t* pstDriver_);
 #endif
 
 #endif // KERNEL_USE_DRIVER
-
-#endif

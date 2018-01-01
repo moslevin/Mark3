@@ -17,12 +17,14 @@ See license.txt for more information
     \brief Command-line input buffer class
  */
 
-#ifndef __LINEBUFFER_H__
-#define __LINEBUFFER_H__
+#pragma once
 
 #include <stdint.h>
 
 #define LINEBUFFER_LENGTH           (80)    // Bytes of text to store in the object
+
+namespace Mark3
+{
 
 //---------------------------------------------------------------------------
 /*!
@@ -139,5 +141,4 @@ private:
     uint8_t m_u8LastByteIndex;
     uint8_t m_u8CursorIndex;
 };
-
-#endif //__LINEBUFFER_H__
+} //namespace Mark3

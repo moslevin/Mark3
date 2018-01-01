@@ -14,8 +14,10 @@ See license.txt for more information
 #include "mark3cfg.h"
 #include "kerneltypes.h"
 
-#ifndef __BITSTREAM_H__
-#define __BITSTREAM_H__
+#pragma once
+
+namespace Mark3
+{
 
 //---------------------------------------------------------------------------
 class BitStreamer
@@ -58,4 +60,4 @@ private:
     uint16_t m_u16Size;      //!< Length of data (in bytes)
 };
 
-#endif // __BITSTREAM_H__
+} //namespace Mark3

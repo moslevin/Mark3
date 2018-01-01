@@ -16,10 +16,13 @@ See license.txt for more information
     \brief Software (bit-bang) i2c master driver
  */
 
-#ifndef __SW_I2C_H__
-#define __SW_I2C_H__
+#pragma once
 
 #include <stdint.h>
+
+namespace Mark3
+{
+
 //---------------------------------------------------------------------------
 typedef enum {
     I2C_LOW  = 0, //!< Logic low, zero, GND, etc, etc.
@@ -246,5 +249,4 @@ private:
     uint32_t m_u32BitDelayUS; //!< Half-bit delay in microseconds
     bool     m_bStarted;      //!< Transaction state -- true = started, false = idle
 };
-
-#endif //__SW_I2C_H__
+} //namespace Mark3

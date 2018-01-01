@@ -23,7 +23,7 @@ See license.txt for more information
 #include "fixed_heap.h"
 #include "memutil.h"
 #include "kernelaware.h"
-
+namespace Mark3 {
 //---------------------------------------------------------------------------
 void GuiWindow::AddControl(GuiControl* pclControl_, GuiControl* pclParent_)
 {
@@ -570,3 +570,4 @@ void GuiControl::GetControlOffset(uint16_t* pu16X_, uint16_t* pu16Y_)
         *pu16Y_ += m_pclParentWindow->GetTop();
     }
 }
+} //namespace Mark3

@@ -17,10 +17,11 @@ See license.txt for more information
 */
 
 #include "rand_lfsr.h"
-
+namespace Mark3 {
 //---------------------------------------------------------------------------
 #define POLY_MASK_32 0xB4BCD35C
 #define POLY_MASK_31 0x7A5BC2E3
+using namespace Mark3;
 
 //---------------------------------------------------------------------------
 PseudoRandom::PseudoRandom()
@@ -55,3 +56,4 @@ uint32_t PseudoRandom::Shift(uint32_t* pu32LFSR_, uint32_t u32Mask_)
     }
     return *pu32LFSR_;
 }
+} //namespace Mark3

@@ -12,13 +12,15 @@ Copyright (c) 2012 - 2017 Funkenstein Software Consulting, all rights reserved.
 See license.txt for more information
 ===========================================================================*/
 
-#ifndef __UT_PLATFORM_H__
-#define __UT_PLATFORM_H__
+#pragma once
 
 #include "mark3.h"
 #include "kerneltypes.h"
 #include "kernel.h"
 #include "unit_test.h"
+
+namespace Mark3
+{
 
 //---------------------------------------------------------------------------
 #if KERNEL_USE_IDLE_FUNC
@@ -127,9 +129,9 @@ typedef struct {
 
 //---------------------------------------------------------------------------
 extern MyTestCase astTestCases[];
-extern void       run_tests();
+void       run_tests();
 
 //---------------------------------------------------------------------------
 void PrintString(const char* szStr_);
 
-#endif //__UT_PLATFORM_H__
+} //namespace Mark3

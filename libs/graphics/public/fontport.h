@@ -1,5 +1,4 @@
-#ifndef __FONT_PORT_H__
-#define __FONT_PORT_H__
+#pragma once
 
 #if defined AVR
 #include <avr/pgmspace.h>
@@ -14,7 +13,5 @@
 #define FONT_ATTRIBUTE_TYPE
 
 #define Font_ReadByte(x, y) (y[x])
-
-#endif
 
 #endif

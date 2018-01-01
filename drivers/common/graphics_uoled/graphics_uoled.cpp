@@ -3,6 +3,8 @@
 #include "uoled_defines.h"
 #include "thread.h"
 
+namespace Mark3
+{
 //---------------------------------------------------------------------------
 void GraphicsUOLED::WriteByte(uint8_t u8Byte_)
 {
@@ -357,5 +359,4 @@ void GraphicsUOLED::SetTextOpacity(bool bOpaque_)
     WriteWord((uint16_t)bOpaque_);
     COMMAND_FOOTER
 }
-
-//---------------------------------------------------------------------------
+} //namespace Mark3

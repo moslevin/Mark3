@@ -20,7 +20,7 @@ See license.txt for more information
 #include "mark3.h"
 #include "driver.h"
 #include "socket.h"
-
+namespace Mark3 {
 //---------------------------------------------------------------------------
 void ServerSocket::Init()
 {
@@ -426,3 +426,4 @@ bool ClientSocket::WaitOnOutput(uint32_t u32WaitTimeMS_)
 }
 
 #endif
+} //namespace Mark3

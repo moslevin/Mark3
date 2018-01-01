@@ -11,6 +11,7 @@
 #include "mutex.h"
 #include "message.h"
 #include "timerlist.h"
+using namespace Mark3;
 
 extern "C" void __cxa_pure_virtual()
 {

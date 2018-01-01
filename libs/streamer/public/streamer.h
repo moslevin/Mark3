@@ -20,8 +20,10 @@ See license.txt for more information
 #include "kerneltypes.h"
 #include "mark3.h"
 
-#ifndef __STREAMER_H__
-#define __STREAMER_H__
+#pragma once
+
+namespace Mark3
+{
 
 //---------------------------------------------------------------------------
 /*!
@@ -155,5 +157,4 @@ private:
     uint16_t m_u16Head;  //!< Current head index (write to) of the stream
     uint16_t m_u16Tail;  //!< Current tail index (read from) of the stream
 };
-
-#endif
+} //namespace Mark3

@@ -6,6 +6,7 @@
 #include "draw.h"
 #include "tiles.h"
 #include "breakout.h"
+using namespace Mark3;
 
 //---------------------------------------------------------------------------
 Breakout::Breakout()

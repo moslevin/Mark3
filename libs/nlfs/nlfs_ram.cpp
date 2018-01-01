@@ -20,7 +20,7 @@ See license.txt for more information
 #include "nlfs_ram.h"
 #include "memutil.h"
 #include "nlfs_config.h"
-
+namespace Mark3 {
 //---------------------------------------------------------------------------
 void NLFS_RAM::Read_Node(uint16_t u16Node_, NLFS_Node_t* pstFileNode_)
 {
@@ -70,3 +70,4 @@ void NLFS_RAM::Write_Block(uint32_t u32Block_, uint32_t u32Offset_, void* pvData
                            + (u32Block_ * m_stLocalRoot.u32BlockSize));
     MemUtil::CopyMemory(pvDst_, pvData_, (uint16_t)u32Len_);
 }
+} //namespace Mark3

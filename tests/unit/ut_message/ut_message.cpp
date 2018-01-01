@@ -19,6 +19,7 @@ See license.txt for more information
 #include "../ut_platform.h"
 #include "message.h"
 #include "thread.h"
+namespace Mark3 {
 
 static Thread clMsgThread;
 
@@ -242,3 +243,4 @@ TEST_CASE(ut_message_tx_rx),
 TEST_CASE(ut_message_exhaust),
 TEST_CASE(ut_message_timed_rx),
 TEST_CASE_END
+} //namespace Mark3

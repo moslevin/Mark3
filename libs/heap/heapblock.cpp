@@ -19,7 +19,7 @@ See license.txt for more information
 */
 
 #include "heapblock.h"
-
+namespace Mark3 {
 //---------------------------------------------------------------------------
 void HeapBlock::RootInit(K_ADDR usize_)
 {
@@ -117,3 +117,4 @@ void HeapBlock::SetDataSize(K_ADDR uBlockSize)
 {
     m_uDataSize = uBlockSize;
 }
+} //namespace Mark3

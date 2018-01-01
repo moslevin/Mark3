@@ -17,13 +17,15 @@ See license.txt for more information
     \brief Text-based command execution
  */
 
-#ifndef __COMMAND_HANDLER_H__
-#define __COMMAND_HANDLER_H__
+#pragma once
 
 #include "ll.h"
 
 //---------------------------------------------------------------------------
 typedef void(*command_action)(const char* szArgs_);
+
+namespace Mark3
+{
 
 //---------------------------------------------------------------------------
 /*!
@@ -83,5 +85,4 @@ private:
     const char*         m_szCommandName;
     command_action      m_pfHandler;
 };
-
-#endif // __COMMAND_HANDLER_H__
+} //namespace Mark3

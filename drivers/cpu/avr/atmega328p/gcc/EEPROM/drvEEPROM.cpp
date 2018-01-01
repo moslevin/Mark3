@@ -26,6 +26,8 @@ See license.txt for more information
 #include <avr/io.h>
 #include <avr/eeprom.h>
 
+namespace Mark3
+{
 //---------------------------------------------------------------------------
 
 #define EEPROM_SIZE (4096)
@@ -99,3 +101,4 @@ uint16_t ATMegaEEPROM::Control(uint16_t u16Event_, void* pvIn_, uint16_t u16Size
     }
     return 0;
 }
+} //namespace Mark3

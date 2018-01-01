@@ -12,6 +12,7 @@
 #include "message.h"
 #include "timerlist.h"
 #include "kernelaware.h"
+using namespace Mark3;
 
 extern "C" void __cxa_pure_virtual()
 {

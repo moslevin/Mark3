@@ -18,11 +18,13 @@ See license.txt for more information
     \brief  Utility class containing memory, string, and conversion routines.
  */
 
-#ifndef __MEMUTIL_H__
-#define __MEMUTIL_H__
+#pragma once
 
 #include "kerneltypes.h"
 #include "mark3cfg.h"
+
+namespace Mark3
+{
 
 //---------------------------------------------------------------------------
 /*!
@@ -207,5 +209,4 @@ public:
      */
     static uint8_t Tokenize(const char* szBuffer_, Token_t* pastTokens_, uint8_t u8MaxTokens_);
 };
-
-#endif //__MEMUTIL_H__
+} //namespace Mark3

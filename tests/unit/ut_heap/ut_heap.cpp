@@ -22,7 +22,7 @@ See license.txt for more information
 #include "../ut_platform.h"
 #include "system_heap.h"
 #include "system_heap_config.h"
-
+namespace Mark3 {
 //===========================================================================
 // Local Defines
 //===========================================================================
@@ -264,3 +264,4 @@ TEST_END
 //===========================================================================
 TEST_CASE_START
 TEST_CASE(ut_sysheap_calibrate), TEST_CASE(ut_sysheap_alloc_free), TEST_CASE(ut_sysheap_multithread), TEST_CASE_END
+} //namespace Mark3

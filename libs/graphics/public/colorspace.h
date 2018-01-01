@@ -11,9 +11,7 @@
 Copyright (c) 2012 - 2017 Funkenstein Software Consulting, all rights reserved.
 See license.txt for more information
 ===========================================================================*/
-
-#ifndef __COLORSPACE_H_
-#define __COLORSPACE_H_
+#pragma once
 
 #include "kerneltypes.h"
 #include "colordepth.h"
@@ -138,5 +136,3 @@ See license.txt for more information
 #define COLOR_GREY50 RGB_COLOR(MAX_RED / 2, MAX_GREEN / 2, MAX_BLUE / 2)
 #define COLOR_GREY37 RGB_COLOR(MAX_RED * 3 / 8, MAX_GREEN * 3 / 8, MAX_BLUE * 3 / 8)
 #define COLOR_GREY25 RGB_COLOR(MAX_RED / 4, MAX_GREEN / 4, MAX_BLUE / 4)
-
-#endif

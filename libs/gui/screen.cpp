@@ -20,7 +20,7 @@ See license.txt for more information
 #include "screen.h"
 #include "gui.h"
 #include "memutil.h"
-
+namespace Mark3 {
 //---------------------------------------------------------------------------
 void Screen::SetManager(ScreenManager* pclScreenManager_)
 {
@@ -53,3 +53,4 @@ Screen* ScreenManager::FindScreenByName(const char* szName_)
 
     return NULL;
 }
+} //namespace Mark3

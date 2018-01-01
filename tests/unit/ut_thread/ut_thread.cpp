@@ -24,6 +24,7 @@ See license.txt for more information
 #include "kerneltimer.h"
 #include "driver.h"
 #include "memutil.h"
+namespace Mark3 {
 //===========================================================================
 // Local Defines
 //===========================================================================
@@ -346,3 +347,4 @@ TEST_CASE_START
 TEST_CASE(ut_threadcreate)
 , TEST_CASE(ut_threadstop), TEST_CASE(ut_threadexit), TEST_CASE(ut_threadsleep), TEST_CASE(ut_roundrobin),
     TEST_CASE(ut_quanta), TEST_CASE_END
+} //namespace Mark3

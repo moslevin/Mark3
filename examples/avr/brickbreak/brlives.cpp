@@ -3,6 +3,7 @@
 #include "draw.h"
 #include "tiles.h"
 #include "brlives.h"
+using namespace Mark3;
 
 //---------------------------------------------------------------------------
 void BrLives::Reset(void)

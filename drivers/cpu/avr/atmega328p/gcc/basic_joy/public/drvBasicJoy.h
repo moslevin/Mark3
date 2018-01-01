@@ -21,9 +21,7 @@ See license.txt for more information
     allow for other joystick drivers to be swapped out without impacting the
     user code.
  */
-
-#ifndef __DRV_BASICJOY_H_
-#define __DRV_BASICJOY_H_
+#pragma once
 
 #include "kerneltypes.h"
 #include "driver.h"
@@ -44,6 +42,9 @@ See license.txt for more information
 #define JOY_RIGHT (0x04)
 #define JOY_UP (0x10)
 #define JOY_FIRE (0x08)
+
+namespace Mark3
+{
 
 /*!
  *  Class implementing a playstation joystick driver, using the Mark3 Joystick
@@ -70,4 +71,4 @@ private:
     void ScanInternal();
 };
 
-#endif
+} //namespace Mark3

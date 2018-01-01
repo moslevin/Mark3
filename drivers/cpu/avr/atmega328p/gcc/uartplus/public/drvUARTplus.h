@@ -18,8 +18,7 @@ See license.txt for more information
     \brief  Atmega serial port driver
 
  */
-#ifndef __DRVUARTPLUS_H_
-#define __DRVUARTPLUS_H_
+#pragma once
 
 #include "kerneltypes.h"
 #include "driver.h"
@@ -47,6 +46,9 @@ See license.txt for more information
 
 #define UART_RX_ISR (USART_RX_vect)
 #define UART_TX_ISR (USART_TX_vect)
+
+namespace Mark3
+{
 
 //---------------------------------------------------------------------------
 /*!
@@ -113,4 +115,4 @@ private:
     bool    m_bStartTx;
 };
 
-#endif
+} //namespace Mark3

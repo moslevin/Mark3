@@ -15,7 +15,7 @@ See license.txt for more information
 #include "mark3.h"
 
 #include "terminal_io.h"
-
+namespace Mark3 {
 //---------------------------------------------------------------------------
 TerminalIO::TerminalIO()
 {
@@ -39,3 +39,4 @@ bool TerminalIO::ReadByte(uint8_t *u8Byte_)
     }
     return true;
 }
+} //namespace Mark3

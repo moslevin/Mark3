@@ -17,9 +17,7 @@ See license.txt for more information
 
     \brief  Traditional heap memory allocator.
 */
-
-#ifndef __ARENA_H__
-#define __ARENA_H__
+#pragma once
 
 #include <stdint.h>
 #include "arenalist.h"
@@ -28,6 +26,9 @@ See license.txt for more information
 //---------------------------------------------------------------------------
 #define ARENA_EXHAUSTED (255)
 #define ARENA_FULL (254)
+
+namespace Mark3
+{
 
 //---------------------------------------------------------------------------
 /*!
@@ -109,5 +110,4 @@ private:
     ArenaList* m_aclBlockList;  //!< Arena linked-list data
     void*      m_pvData;        //!< Pointer to the raw memory blob managed by this object as a heap.
 };
-
-#endif
+} //namespace Mark3

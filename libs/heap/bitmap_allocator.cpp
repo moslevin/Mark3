@@ -18,7 +18,7 @@ See license.txt for more information
 */
 
 #include "bitmap_allocator.h"
-
+namespace Mark3 {
 //---------------------------------------------------------------------------
 void BitmapAllocator::Init(void* pvMemBlock_, uint32_t u32BlockSize_, uint32_t u32ElementSize)
 {        
@@ -162,4 +162,4 @@ bool BitmapAllocator::IsAllocated(uint32_t u32Index_)
     }
     return false;
 }
-
+} //namespace Mark3

@@ -16,7 +16,7 @@ See license.txt for more information
     @brief Implements a generic and extensible state-machine framework
 */
 #include "state_machine.h"
-
+namespace Mark3 {
 //---------------------------------------------------------------------------
 void StateMachine::SetStates(const State_t* pstStates_, uint16_t u16StateCount_)
 {
@@ -183,3 +183,4 @@ void StateMachine::HandleEvent(const void* pvEvent_)
         }       
     }    
 }
+} //namespace Mark3

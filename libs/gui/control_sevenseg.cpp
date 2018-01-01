@@ -25,6 +25,7 @@ See license.txt for more information
 #include "control_sevenseg.h"
 #include "kernelaware.h"
 #include "gui_palette.h"
+namespace Mark3 {
 //---------------------------------------------------------------------------
 /*
 
@@ -195,3 +196,4 @@ GuiReturn_t SevenSegControl::ProcessEvent(GuiEvent_t*  /*pstEvent_*/)
 {
     return GUI_EVENT_OK;
 }
+} //namespace Mark3

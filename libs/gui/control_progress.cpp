@@ -23,7 +23,7 @@ See license.txt for more information
 #include "draw.h"
 #include "control_progress.h"
 #include "gui_palette.h"
-
+namespace Mark3 {
 //---------------------------------------------------------------------------
 void ProgressControl::Init()
 {
@@ -102,3 +102,4 @@ GuiReturn_t ProgressControl::ProcessEvent(GuiEvent_t*  /*pstEvent_*/)
 {
     return GUI_EVENT_OK;
 }
+} //namespace Mark3

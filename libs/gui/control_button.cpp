@@ -21,7 +21,7 @@ See license.txt for more information
 #include "control_button.h"
 #include "gui.h"
 #include "gui_palette.h"
-
+namespace Mark3 {
 void ButtonControl::Init()
 {
     m_szCaption      = "Button";
@@ -212,3 +212,4 @@ void ButtonControl::Activate(bool bActivate_)
     }
     SetStale();
 }
+} //namespace Mark3

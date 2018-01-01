@@ -18,7 +18,7 @@ See license.txt for more information
 
 #include "slab.h"
 #include "mark3.h"
-
+namespace Mark3 {
 //---------------------------------------------------------------------------
 void SlabPage::InitPage(uint32_t u32PageSize_, uint32_t u32ObjSize_)
 {
@@ -131,4 +131,4 @@ void Slab::MoveToFree(SlabPage* pclPage_)
     m_clFullList.Remove(pclPage_);
     m_clFreeList.Add(pclPage_);
 }
-
+} //namespace Mark3

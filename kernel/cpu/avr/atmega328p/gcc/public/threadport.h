@@ -26,6 +26,8 @@ See license.txt for more information
 #include <avr/io.h>
 #include <avr/interrupt.h>
 
+namespace Mark3 {
+
 //---------------------------------------------------------------------------
 //! ASM Macro - simplify the use of ASM directive in C
 #define ASM(x) asm volatile(x);
@@ -44,8 +46,6 @@ See license.txt for more information
     x--;
 #define STACK_GROWS_DOWN (1)
 
-namespace Mark3
-{
 //---------------------------------------------------------------------------
 //! Lookup table based count-leading zeros implementation, used by scheduler
 //! by way of PriorityMap

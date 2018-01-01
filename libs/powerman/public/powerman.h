@@ -15,8 +15,7 @@ See license.txt for more information
     \file powerman.h
     \brief Power management helper classes (power-state voting mechanisms)
 */
-#ifndef __POWERMAN_H__
-#define __POWERMAN_H__
+#pragma once
 
 #include <stdint.h>
 #include <stdbool.h>
@@ -24,6 +23,9 @@ See license.txt for more information
 #include "mark3.h"
 
 #define MAX_BALLOTS (48)
+
+namespace Mark3
+{
 
 //---------------------------------------------------------------------------
 typedef enum {
@@ -107,5 +109,4 @@ private:
     uint8_t m_au8WakeBallots[MAX_BALLOTS / 8];  //!< Bitmap indication "wake" votes
     uint8_t m_u8ID;                             //!< Auto-incrementing ID, used to identify ballots
 };
-
-#endif //__POWERMAN_H__
+} //namespace Mark3

@@ -23,7 +23,7 @@ See license.txt for more information
 #include "kernelaware.h"
 #include <stdio.h>
 #include <stdlib.h>
-
+namespace Mark3 {
 /* Control looks somthing like this:
 
    ----------------------------
@@ -261,3 +261,4 @@ void SlickButtonControl::Activate(bool bActivate_)
     }
     SetStale();
 }
+} //namespace Mark3

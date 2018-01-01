@@ -16,8 +16,7 @@ See license.txt for more information
     \brief Real-time clock class for general time-keeping and system uptime.
 */
 
-#ifndef __RTC_H__
-#define __RTC_H__
+#pragma once
 
 #include <stdint.h>
 
@@ -26,6 +25,9 @@ See license.txt for more information
 #define MINUTES_PER_HOUR (60)
 #define HOURS_PER_DAY (24)
 #define YEAR_CALENDAR_STARTS (2012)
+
+namespace Mark3
+{
 
 //---------------------------------------------------------------------------
 typedef enum {
@@ -91,4 +93,4 @@ private:
     uint32_t   m_u32Seconds;
 };
 
-#endif //__RTC_H__
+} //namespace Mark3

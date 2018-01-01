@@ -15,9 +15,7 @@ See license.txt for more information
     \file gui_palette.h
     \brief Default colors used by the control set.
 */
-
-#ifndef __GUI_PALETTE_H__
-#define __GUI_PALETTE_H__
+#pragma once
 
 #include "colorspace.h"
 
@@ -56,5 +54,3 @@ See license.txt for more information
 #define COMPLEMENT_0 WEB_COLOR_TO_RGB_COLOR(0x040007)
 
 //---------------------------------------------------------------------------
-
-#endif

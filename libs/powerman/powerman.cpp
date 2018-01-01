@@ -20,7 +20,7 @@ See license.txt for more information
 
 #include "mark3.h"
 #include "powerman.h"
-
+namespace Mark3 {
 //---------------------------------------------------------------------------
 void PowerBallot::Register(PowerMan* pclManager_)
 {
@@ -82,3 +82,4 @@ uint8_t PowerMan::GetNextID()
     }
     return m_u8ID++;
 }
+} //namespace Mark3

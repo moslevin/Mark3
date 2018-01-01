@@ -15,6 +15,7 @@ See license.txt for more information
 #include "kerneltypes.h"
 #include "bitstream.h"
 
+namespace Mark3 {
 //---------------------------------------------------------------------------
 void BitStreamer::Init(uint8_t* pu8Data_, uint16_t  /*u16Size_*/)
 {
@@ -79,3 +80,4 @@ uint8_t BitStreamer::ReadBits(uint8_t u8NumBits_)
     }
     return u8Ret;
 }
+} //namespace Mark3

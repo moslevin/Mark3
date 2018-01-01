@@ -15,7 +15,7 @@ See license.txt for more information
 #include "terminal_in.h"
 
 #include <stdint.h>
-
+namespace Mark3 {
 //---------------------------------------------------------------------------
 bool TerminalIn::ReadLoop(void)
 {
@@ -393,3 +393,4 @@ bool TerminalIn::ExpectSemiHandler(char cInput_)
     m_eState = TERMINAL_PARSER_BEGIN;
     return false;
 }
+} //namespace Mark3

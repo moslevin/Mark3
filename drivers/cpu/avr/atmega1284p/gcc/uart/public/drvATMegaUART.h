@@ -18,8 +18,7 @@ See license.txt for more information
     \brief  Atmega328p serial port driver
 
  */
-#ifndef __DRVUART_H_
-#define __DRVUART_H_
+#pragma once
 
 #include "kerneltypes.h"
 #include "driver.h"
@@ -64,6 +63,9 @@ See license.txt for more information
 #define UART_DEFAULT_BAUD ((uint32_t)57600)
 
 //---------------------------------------------------------------------------
+
+namespace Mark3
+{
 
 class ATMegaUART;
 //---------------------------------------------------------------------------
@@ -132,4 +134,4 @@ private:
     uint8_t m_u8Identity; //!< port number
 };
 
-#endif
+} //namespace Mark3

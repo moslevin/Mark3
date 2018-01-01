@@ -15,11 +15,12 @@ See license.txt for more information
     \file   nlfs_ram.h
     \brief  RAM-based Nice Little Filesystem (NLFS) driver
 */
-
-#ifndef __NLFS_RAM_H
-#define __NLFS_RAM_H
+#pragma once
 
 #include "nlfs.h"
+
+namespace Mark3
+{
 
 /*!
  * \brief The NLFS_RAM class
@@ -87,4 +88,4 @@ private:
     void Write_Block(uint32_t u32Block_, uint32_t u32Offset_, void* pvData_, uint32_t u32Len_);
 };
 
-#endif // NLFS_RAM_H
+} //namespace Mark3

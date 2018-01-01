@@ -15,9 +15,7 @@ See license.txt for more information
     \file gui.h
     \brief Graphical user Interface classes and data structure declarations.
  */
-
-#ifndef __GUI_H__
-#define __GUI_H__
+#pragma once
 
 #include "kerneltypes.h"
 #include "ll.h"
@@ -56,6 +54,9 @@ See license.txt for more information
 #define TARGET_ID_BROADCAST (253)   //!< Send event to all controls in all windows
 #define TARGET_ID_FOCUS (254)       //!< Send event to the in-focus control
 #define TARGET_ID_HIGH_Z (255)      //!< Send event to the highest Z-order control
+
+namespace Mark3
+{
 
 //---------------------------------------------------------------------------
 /*!
@@ -887,4 +888,4 @@ public:
     virtual void Activate(bool bActivate_) {}
 };
 
-#endif
+} //namespace Mark3

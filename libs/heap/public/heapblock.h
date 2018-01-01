@@ -18,8 +18,7 @@ See license.txt for more information
     \brief  Metadata object used to manage a heap allocation
 */
 
-#ifndef __HEAPBLOCK_H__
-#define __HEAPBLOCK_H__
+#pragma once
 
 #include <stdlib.h>
 #include "mark3cfg.h"
@@ -52,6 +51,9 @@ See license.txt for more information
 #define ROUND_DOWN(x) (((K_ADDR)x) & ~(PTR_SIZE - 1))
 
 #define BLOCK_DATA_SIZE(x) (ROUND_DOWN(x) - sizeof(HeapBlock))
+
+namespace Mark3
+{
 
 //---------------------------------------------------------------------------
 /*!
@@ -230,5 +232,4 @@ private:
     HeapBlock* m_pclRight;
     HeapBlock* m_pclLeft;
 };
-
-#endif
+} //namespace Mark3

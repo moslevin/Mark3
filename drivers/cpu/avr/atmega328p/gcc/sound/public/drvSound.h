@@ -40,9 +40,7 @@ See license.txt for more information
 
     Tone timing is controlled using a Mark3 Kernel Timer.
 */
-
-#ifndef __drvSound_H__
-#define __drvSound_H__
+#pragma once
 
 //---------------------------------------------------------------------------
 #include "mark3cfg.h"
@@ -115,6 +113,9 @@ See license.txt for more information
 #define NOTE_DOTTED_HALF (24)
 #define NOTE_WHOLE (32)
 
+namespace Mark3
+{
+
 //---------------------------------------------------------------------------
 typedef struct {
     uint16_t u16Freq;       //!< Frequency of the square wave (in Hz)
@@ -165,4 +166,4 @@ private:
     void StartSweep(Sweep_t* pstSweep_);
 };
 
-#endif
+} //namespace Mark3

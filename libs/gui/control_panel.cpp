@@ -21,7 +21,7 @@ See license.txt for more information
 #include "draw.h"
 #include "graphics.h"
 #include "control_panel.h"
-
+namespace Mark3 {
 //---------------------------------------------------------------------------
 void PanelControl::Draw()
 {
@@ -42,3 +42,4 @@ void PanelControl::Draw()
 
     pclDriver->Rectangle(&stRectangle);
 }
+} //namespace Mark3

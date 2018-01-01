@@ -16,8 +16,7 @@ See license.txt for more information
     \brief NLFS configuration parameters
 */
 
-#ifndef __NLFS_CONFIG_H
-#define __NLFS_CONFIG_H
+#pragma once
 
 #define DEBUG 0
 
@@ -28,5 +27,3 @@ See license.txt for more information
 #else
 #define DEBUG_PRINT(...)
 #endif
-
-#endif // NLFS_CONFIG_H

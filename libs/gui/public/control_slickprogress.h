@@ -18,14 +18,15 @@ See license.txt for more information
     A simple progress bar control using lines and rectangles to display
     the status of an operation from initialization to completion
 */
-
-#ifndef __CONTROL_SLICKPROGRESS_H__
-#define __CONTROL_SLICKPROGRESS_H__
+#pragma once
 
 #include "gui.h"
 #include "kerneltypes.h"
 #include "draw.h"
 #include "font.h"
+
+namespace Mark3
+{
 
 class SlickProgressControl : public GuiControl
 {
@@ -39,5 +40,4 @@ public:
 private:
     uint8_t m_u8Progress;
 };
-
-#endif
+} //namespace Mark3

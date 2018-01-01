@@ -22,13 +22,14 @@ See license.txt for more information
     A panel is essentially a flat rectangle, specified by a control's typical
     top/left/height/width parameters, and a color value.
 */
-
-#ifndef __CONTROL_PANEL_H__
-#define __CONTROL_PANEL_H__
+#pragma once
 
 #include "gui.h"
 #include "kerneltypes.h"
 #include "draw.h"
+
+namespace Mark3
+{
 
 class PanelControl : public GuiControl
 {
@@ -45,5 +46,4 @@ public:
 private:
     COLOR m_uColor;
 };
-
-#endif
+} //namespace Mark3

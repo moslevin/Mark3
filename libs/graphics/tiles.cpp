@@ -19,7 +19,7 @@ See license.txt for more information
 #include "colorspace.h"
 #include "graphics.h"
 #include "draw.h"
-
+namespace Mark3 {
 //---------------------------------------------------------------------------
 void Tile_8x8::LoadTile(TileDef_t* pstTileDef_)
 {
@@ -62,3 +62,4 @@ void Tile_8x8::Render(GraphicsDriver* pclDriver_, uint16_t u16X_, uint16_t u16Y_
     // use the supplied driver to render the tile as a bitmap
     pclDriver_->Bitmap(&stBitmap);
 }
+} //namespace Mark3

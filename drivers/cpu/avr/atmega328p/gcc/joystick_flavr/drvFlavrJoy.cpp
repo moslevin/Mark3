@@ -25,6 +25,9 @@ See license.txt for more information
 
 volatile uint8_t g_u8FlavrJoy   = 0;
 volatile uint8_t g_u8FlavrJoyUp = 0;
+
+namespace Mark3
+{
 //---------------------------------------------------------------------------
 #define FLAVR_JOY_UP 0x01
 #define FLAVR_JOY_DOWN 0x02
@@ -95,3 +98,4 @@ void FlavrJoystick::ScanInternal()
         m_stCurrentReport.bButton1 = false;
     }
 }
+} //namespace Mark3

@@ -27,20 +27,20 @@ See license.txt for more information
 /*!
  * Function pointer type used to implement kernel-panic handlers.
  */
-typedef void (*PanicFunc_t)(uint16_t u16PanicCode_);
+typedef void (*panic_func_t)(uint16_t u16PanicCode_);
 
 //---------------------------------------------------------------------------
 /*!
  * Function pointer type used to implement the idle function, where support
  * for an idle function (as opposed to an idle thread) exists.
  */
-typedef void (*IdleFunc_t)(void);
+typedef void (*idle_func_t)(void);
 
 //---------------------------------------------------------------------------
 /*!
  *  Function pointer type used for thread entrypoint functions
  */
-typedef void (*ThreadEntry_t)(void* pvArg_);
+typedef void (*thread_entry_func_t)(void* pvArg_);
 
 //---------------------------------------------------------------------------
 /*!
@@ -48,14 +48,14 @@ typedef void (*ThreadEntry_t)(void* pvArg_);
  * event flag blocking object.
  */
 typedef enum {
-    EventFlagOperation_t::All_Set,            //!< Block until all bits in the specified bitmask are set
-    EventFlagOperation_t::Any_Set,            //!< Block until any bits in the specified bitmask are set
-    EventFlagOperation_t::All_Clear,      //!< Block until all bits in the specified bitmask are cleared
-    EventFlagOperation_t::Any_Clear,      //!< Block until any bits in the specified bitmask are cleared
+    EventFlagOperation::All_Set,            //!< Block until all bits in the specified bitmask are set
+    EventFlagOperation::Any_Set,            //!< Block until any bits in the specified bitmask are set
+    EventFlagOperation::All_Clear,      //!< Block until all bits in the specified bitmask are cleared
+    EventFlagOperation::Any_Clear,      //!< Block until any bits in the specified bitmask are cleared
                                //---
     EVENT_FLAG_MODES,          //!< Count of event-flag modes.  Not used by user
-    EventFlagOperation_t::Pending_Unblock //!< Special code.  Not used by user
-} EventFlagOperation_t;
+    EventFlagOperation::Pending_Unblock //!< Special code.  Not used by user
+} EventFlagOperation;
 
 //---------------------------------------------------------------------------
 /*!

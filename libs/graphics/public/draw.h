@@ -19,13 +19,14 @@ See license.txt for more information
         layer which requires a backend for rendering.
  */
 //---------------------------------------------------------------------------
-
-#ifndef __DRAW_H_
-#define __DRAW_H_
+#pragma once
 
 #include "kerneltypes.h"
 #include "font.h"
 #include "colorspace.h"
+
+namespace Mark3
+{
 
 //---------------------------------------------------------------------------
 // Event definitions for 2D hardware accelerated graphics functions
@@ -206,4 +207,4 @@ typedef struct {
     DrawVector_t* pstVector;    //!< Vector points making the polygon
 } DrawPoly_t;
 
-#endif //__DRAW_H_
+} //namespace Mark3

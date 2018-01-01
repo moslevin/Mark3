@@ -21,7 +21,7 @@ See license.txt for more information
 #include "thread.h"
 #include "../ut_platform.h"
 #include "arena.h"
-
+namespace Mark3 {
 //===========================================================================
 // Local Defines
 //===========================================================================
@@ -226,3 +226,4 @@ TEST_END
 //===========================================================================
 TEST_CASE_START
 TEST_CASE(ut_arena_alloc_free), TEST_CASE(ut_arena_multithread), TEST_CASE_END
+} //namespace Mark3

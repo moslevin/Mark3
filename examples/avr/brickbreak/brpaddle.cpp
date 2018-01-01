@@ -4,6 +4,7 @@
 #include "tiles.h"
 
 #include "brpaddle.h"
+using namespace Mark3;
 
 //---------------------------------------------------------------------------
 static uint8_t aucPaddleTileL[] = {

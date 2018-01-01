@@ -17,7 +17,7 @@ See license.txt for more information
 */
 
 #include "rtc.h"
-
+namespace Mark3 {
 //---------------------------------------------------------------------------
 static const uint8_t s_au8DaysPerMonth[] = { 31, // jan
                                              28, // feb
@@ -218,3 +218,4 @@ void RTC::ComputeDayOfWeek()
 
     m_stCalendar.eDayOfWeek = (day_t)(u32Days);
 }
+} //namespace Mark3

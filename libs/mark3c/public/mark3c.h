@@ -25,8 +25,7 @@ See license.txt for more information
 #include <stdint.h>
 #include <stdbool.h>
 
-#ifndef __MARK3C_H__
-#define __MARK3C_H__
+#pragma once
 
 #if defined(__cplusplus)
 extern "C" {
@@ -1120,5 +1119,3 @@ bool KernelAware_IsSimulatorAware(void);
 #if defined(__cplusplus)
 }
 #endif
-
-#endif // __MARK3C_H__

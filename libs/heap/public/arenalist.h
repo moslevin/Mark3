@@ -17,14 +17,15 @@ See license.txt for more information
 
     \brief  Data structure used to manage list of available heap blocks.
 */
-
-#ifndef __ARENALIST_H__
-#define __ARENALIST_H__
+#pragma once
 
 #include <stdint.h>
 #include "heapblock.h"
 #include "ll.h"
 #include <stdlib.h>
+
+namespace Mark3
+{
 
 //---------------------------------------------------------------------------
 /*!
@@ -122,5 +123,4 @@ private:
     K_ADDR   m_uBlockSize; //!< The minimum data-size for blocks held in this arena
     uint16_t m_u16Count;   //!< Current number of available blocks in this list
 };
-
-#endif
+} //namespace Mark3

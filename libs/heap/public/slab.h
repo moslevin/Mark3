@@ -16,11 +16,13 @@ See license.txt for more information
     \brief Slab allocator class implementation
 */
 
-#ifndef __SLAB_H__
-#define __SLAB_H__
+#pragma once
 
 #include "bitmap_allocator.h"
 #include "mark3.h"
+
+namespace Mark3
+{
 
 //---------------------------------------------------------------------------
 // Page allocation functions
@@ -179,5 +181,4 @@ private:
     slab_alloc_page_function_t m_pfSlabAlloc;
     slab_free_page_function_t m_pfSlabFree;
 };
-
-#endif //__SLAB_H__
+} //namespace Mark3

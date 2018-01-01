@@ -26,7 +26,7 @@ See license.txt for more information
 #include "kernelaware.h"
 
 #include <stdio.h>
-
+namespace Mark3 {
 //---------------------------------------------------------------------------
 void GraphicsDriver::ClearScreen()
 {
@@ -939,3 +939,4 @@ void GraphicsDriver::ClearWindow()
     m_u16Right  = m_u16Res16X - 1;
     m_u16Bottom = m_u16Res16Y - 1;
 }
+} //namespace Mark3

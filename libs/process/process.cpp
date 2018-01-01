@@ -19,6 +19,7 @@ See license.txt for more information
 */
 #include "mark3.h"
 #include "process.h"
+namespace Mark3 {
 
 //---------------------------------------------------------------------------
 K_ADDR ProcessObject::ObjectSize(ProcessObjectType_t eType_)
@@ -539,3 +540,4 @@ void Process::Destroy()
 		}
 	}
 }
+} //namespace Mark3

@@ -16,10 +16,12 @@ See license.txt for more information
     @brief Implements a generic and extensible state-machine framework
 */
 
-#ifndef __STATEMACHINE_H__
-#define __STATEMACHINE_H__
+#pragma once
 
 #include <stdint.h>
+
+namespace Mark3
+{
 
 //---------------------------------------------------------------------------
 // Possible state handler return codes
@@ -194,5 +196,4 @@ private:
     uint16_t    m_u16StackDepth;      //!< Current stack level in the state machine
     uint16_t    m_au16StateStack[MAX_STATE_STACK_DEPTH];    //!< State stack
 };
-
-#endif // __STATEMACHINE_H__
+} //namespace Mark3

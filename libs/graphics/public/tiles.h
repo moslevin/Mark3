@@ -11,6 +11,8 @@
 Copyright (c) 2014 Funkenstein Software Consulting, all rights reserved.
 See license.txt for more information
 ===========================================================================*/
+#pragma once
+
 #include "mark3cfg.h"
 #include "kerneltypes.h"
 #include "colordepth.h"
@@ -18,8 +20,8 @@ See license.txt for more information
 #include "graphics.h"
 #include "draw.h"
 
-#ifndef __TILES_H__
-#define __TILES_H__
+namespace Mark3
+{
 
 //---------------------------------------------------------------------------
 /*!
@@ -104,4 +106,4 @@ private:
     uint8_t m_u8Height;
 };
 
-#endif // __TILES_H__
+} //namespace Mark3

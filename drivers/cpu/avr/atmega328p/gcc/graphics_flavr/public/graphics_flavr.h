@@ -22,8 +22,10 @@ See license.txt for more information
 #include "graphics.h"
 #include "driver.h"
 
-#ifndef __GRAPHICS_FLAVR_H__
-#define __GRAPHICS_FLAVR_H__
+#pragma once
+
+namespace Mark3
+{
 
 //---------------------------------------------------------
 class GraphicsFlavr : public GraphicsDriver
@@ -73,5 +75,5 @@ public:
     //    virtual uint16_t TextWidth(DrawText_t *pstText_);
     void Flip(void);
 };
+} //namespace Mark3
 
-#endif // __GRAPHICS_FLAVR_H__

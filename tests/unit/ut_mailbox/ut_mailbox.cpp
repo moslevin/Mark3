@@ -19,6 +19,7 @@ See license.txt for more information
 #include "../ut_platform.h"
 #include "mark3.h"
 #include "memutil.h"
+namespace Mark3 {
 //===========================================================================
 // Local Defines
 //===========================================================================
@@ -170,3 +171,4 @@ TEST_CASE_START
 TEST_CASE(mailbox_send_recv)
 , TEST_CASE(mailbox_blocking_receive), TEST_CASE(mailbox_blocking_timed), TEST_CASE(mailbox_send_blocking),
     TEST_CASE_END
+} //namespace Mark3

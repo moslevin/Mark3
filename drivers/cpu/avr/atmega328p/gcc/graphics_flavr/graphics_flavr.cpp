@@ -23,9 +23,12 @@ See license.txt for more information
 #include "colorspace.h"
 #include "draw.h"
 
+//!! These need to be in the global namespace for flAVR to pick the names up.
 volatile uint8_t      g_u8GfxCommand = 0;
-volatile DrawPoint_t* g_pclPoint     = 0;
+volatile Mark3::DrawPoint_t* g_pclPoint     = 0;
 
+namespace Mark3
+{
 //---------------------------------------------------------------------------
 void GraphicsFlavr::DrawPixel(DrawPoint_t* pstPoint_)
 {
@@ -38,3 +41,4 @@ void GraphicsFlavr::Flip(void)
 {
     g_u8GfxCommand = 2;
 }
+} //namespace Mark3

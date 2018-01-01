@@ -23,7 +23,7 @@ See license.txt for more information
 #include "system_heap.h"
 
 #if USE_SYSTEM_HEAP
-
+namespace Mark3 {
 //---------------------------------------------------------------------------
 uint8_t    SystemHeap::m_pu8RawHeap[HEAP_RAW_SIZE];
 HeapConfig SystemHeap::m_pclSystemHeapConfig[HEAP_NUM_SIZES + 1];
@@ -143,5 +143,5 @@ void SystemHeap::Free(void* pvBlock_)
     }
     m_clSystemHeap.Free(pvBlock_);
 }
-
+} //namespace Mark3
 #endif // USE_SYSTEM_HEAP

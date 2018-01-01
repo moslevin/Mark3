@@ -17,8 +17,8 @@ See license.txt for more information
     \brief Implements an interactive command shell using an arbitrary Driver.
  */
 
-#ifndef __M3SHELL_H__
-#define __M3SHELL_H__
+
+#pragma once
 
 #include "mark3.h"
 
@@ -26,6 +26,9 @@ See license.txt for more information
 #include "command_handler.h"
 #include "terminal_io.h"
 #include "linebuffer.h"
+
+namespace Mark3
+{
 
 //---------------------------------------------------------------------------
 /*!
@@ -97,5 +100,4 @@ private:
     TerminalIO        m_clTerminal;
     LineBuffer        m_clLineBuffer;
 };
-
-#endif // __M3SHELL_H__
+} //namespace Mark3

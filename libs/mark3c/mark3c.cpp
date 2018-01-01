@@ -21,6 +21,8 @@ See license.txt for more information
 #include "mark3c.h"
 #include "mark3.h"
 
+using namespace Mark3;
+
 extern "C" {
 void __cxa_pure_virtual(void){}
 }

@@ -15,8 +15,7 @@ See license.txt for more information
     \file dcpu.h
     \brief DCPU-16 emulator
  */
-#ifndef __DCPU_H__
-#define __DCPU_H__
+#pragma once
 
 #include "kerneltypes.h"
 #include "ll.h"
@@ -58,6 +57,9 @@ See license.txt for more information
 #define DCPU_BUILD_NORMAL(x, y, z) (((uint16_t)(x)&0x001F) | ((uint16_t)(y)&0x001F) << 5 | ((uint16_t)(z)&0x003F) << 10)
 
 #define DCPU_BUILD_EXTENDED(x, y) (((uint16_t)(x & 0x001F) << 5) | ((uint16_t)(y & 0x003F) << 10))
+
+namespace Mark3
+{
 
 //---------------------------------------------------------------------------
 /*!
@@ -462,5 +464,4 @@ private:
 
     DoubleLinkList m_clPluginList; //!< Linked-list of plug-ins.
 };
-
-#endif
+} //namespace Mark3

@@ -15,6 +15,7 @@ See license.txt for more information
 #include "memutil.h"
 
 #include <stdint.h>
+namespace Mark3 {
 
 //---------------------------------------------------------------------------
 void TerminalOut::Escape(void)
@@ -263,3 +264,4 @@ void TerminalOut::SetBackColor(TerminalColor_t eColor_)
     WriteByte('0' + eColor_);
     WriteByte('m');
 }
+} //namespace Mark3

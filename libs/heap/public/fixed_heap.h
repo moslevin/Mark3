@@ -16,11 +16,13 @@ See license.txt for more information
 
     \brief Fixed-block-size heaps
  */
-#ifndef __FIXED_HEAP_H__
-#define __FIXED_HEAP_H__
+#pragma once
 
 #include "kerneltypes.h"
 #include "ll.h"
+
+namespace Mark3
+{
 
 //---------------------------------------------------------------------------
 /*!
@@ -148,5 +150,4 @@ public:
 private:
     HeapConfig* m_paclHeaps; //!< Pointer to the configuration data used by the heap
 };
-
-#endif
+} //namespace Mark3

@@ -15,13 +15,14 @@ See license.txt for more information
     \file control_brushpanel.h
     \brief GUI Panel Control With a Brushed-Metal Finish
 */
-
-#ifndef __CONTROL_BRUSHPANEL_H__
-#define __CONTROL_BRUSHPANEL_H__
+#pragma once
 
 #include "gui.h"
 #include "kerneltypes.h"
 #include "draw.h"
+
+namespace Mark3
+{
 
 class BrushPanelControl : public GuiControl
 {
@@ -32,5 +33,4 @@ public:
     virtual void Activate(bool bActivate_) {}
 private:
 };
-
-#endif
+} //namespace Mark3

@@ -18,8 +18,7 @@ See license.txt for more information
     \brief  Synchronous/Asynchronous buffered sockets
 */
 
-#ifndef __SOCKET_H__
-#define __SOCKET_H__
+#pragma once
 
 #include "mark3.h"
 #include "driver.h"
@@ -27,6 +26,9 @@ See license.txt for more information
 
 //---------------------------------------------------------------------------
 #define SOCKET_ERROR			(0xFFFF)
+
+namespace Mark3
+{
 
 //---------------------------------------------------------------------------
 // Socket control event IDs
@@ -269,6 +271,4 @@ private:
     ServerSocket* m_pclSocket;  //!< Pointer to the server-side socket object
     bool		  m_bBlocking;  //!< Whether or not the socket is blocking or non-blocking
 };
-
-
-#endif //__SOCKET_H__
+} //namespace Mark3

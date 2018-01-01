@@ -24,6 +24,8 @@ See license.txt for more information
 #include "mark3cfg.h"
 #include "sw_uart.h"
 
+namespace Mark3
+{
 //---------------------------------------------------------------------------
 // The TX-bit can be moved to *any* GPIO.
 //---------------------------------------------------------------------------
@@ -354,3 +356,4 @@ ISR(TIMER0_COMPA_vect)
         u8Count--;
     }
 }
+} //namespace Mark3

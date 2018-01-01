@@ -42,6 +42,7 @@ extern "C" void __cxa_pure_virtual()
 {
 }
 
+using namespace Mark3;
 //---------------------------------------------------------------------------
 // Global objects
 static Thread AppThread;  //!< Main "application" thread

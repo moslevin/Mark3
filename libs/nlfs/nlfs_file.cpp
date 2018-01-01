@@ -21,7 +21,7 @@ See license.txt for more information
 #include "nlfs_file.h"
 #include "nlfs.h"
 #include "nlfs_config.h"
-
+namespace Mark3 {
 //----------------------------------------------------------------------------
 int NLFS_File::Open(NLFS* pclFS_, const char* szPath_, NLFS_File_Mode_t eMode_)
 {
@@ -240,3 +240,4 @@ int NLFS_File::Close(void)
     m_u8Flags         = 0;
     return 0;
 }
+} //namespace Mark3

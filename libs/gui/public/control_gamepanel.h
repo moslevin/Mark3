@@ -21,13 +21,14 @@ See license.txt for more information
     The control also responds to joystick events, which can then be
     used to control the game.
 */
-
-#ifndef __CONTROL_GAMEPANEL_H__
-#define __CONTROL_GAMEPANEL_H__
+#pragma once
 
 #include "gui.h"
 #include "kerneltypes.h"
 #include "draw.h"
+
+namespace Mark3
+{
 
 class GamePanelControl : public GuiControl
 {
@@ -44,5 +45,4 @@ public:
 private:
     JoystickEvent_t m_stJoy;
 };
-
-#endif
+} //namespace Mark3

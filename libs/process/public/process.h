@@ -18,11 +18,13 @@ See license.txt for more information
     \brief  Processes using Mark3 Kernel + Arena Heaps
 */
 
-#ifndef __PROCESS_H__
-#define __PROCESS_H__
+#pragma once
 
 #include "mark3.h"
 #include "arena.h"
+
+namespace Mark3
+{
 
 //---------------------------------------------------------------------------
 // Enumeration of all kernel objects and types that can be tracked within a
@@ -432,4 +434,4 @@ private:
 #endif	
     DoubleLinkList m_clProcessObjects;      //!< List of all tracked allocations for the process
 };
-#endif // __PROCESS_H__
+} //namespace Mark3

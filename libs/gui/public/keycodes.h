@@ -16,11 +16,12 @@ See license.txt for more information
 
     \brief Standard ASCII keyboard codes
 */
-
-#ifndef __KEYCODES_H_
-#define __KEYCODES_H_
+#pragma once
 
 #include "kerneltypes.h"
+
+namespace Mark3
+{
 
 typedef enum {
     KEYCODE_LBUTTON = 0x01,
@@ -138,5 +139,4 @@ typedef enum {
     KEYCODE_PLAY = 0xFA,
     KEYCODE_ZOOM
 } KEYCODE;
-
-#endif //__KEYCODES_H_
+} //namespace Mark3

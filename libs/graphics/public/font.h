@@ -15,12 +15,13 @@ See license.txt for more information
     \file font.h
     \brief Font structure definitions
 */
-
-#ifndef __FONT_H__
-#define __FONT_H__
+#pragma once
 
 #include "kerneltypes.h"
 #include "fontport.h"
+
+namespace Mark3
+{
 
 //---------------------------------------------------------------------------
 typedef struct {
@@ -46,5 +47,4 @@ typedef struct {
     const char*              szName;
     const FONT_STORAGE_TYPE* pu8FontData;
 } Font_t;
-
-#endif
+} //namespace Mark3

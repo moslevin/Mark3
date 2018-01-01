@@ -1,6 +1,4 @@
-#ifndef __UOLED_DEFINES_H__
-#define __UOLED_DEFINES_H__
-
+#pragma once
 //---------------------------------------------------------------------------
 /*!
  *   Text commands defines
@@ -93,5 +91,3 @@
  */
 #define SERIAL_TIMEOUT_MAX (1000) // millisecond
 #define COMMAND_RETRY_COUNT (5)   // attempts
-
-#endif

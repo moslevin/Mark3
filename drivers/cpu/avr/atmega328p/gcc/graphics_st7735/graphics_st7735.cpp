@@ -45,6 +45,8 @@ See license.txt for more information
 #include <avr/pgmspace.h>
 #include <avr/io.h>
 
+namespace Mark3
+{
 // SPI Defines
 #define SPI_CLK_DIV_4 (0x00)
 #define SPI_CLK_MASK (0x03)
@@ -591,3 +593,4 @@ void GraphicsST7735::Bitmap(DrawBitmap_t* pstBitmap_)
 
     TFT_CS_OUT |= TFT_CS_PIN;
 }
+} //namespace Mark3

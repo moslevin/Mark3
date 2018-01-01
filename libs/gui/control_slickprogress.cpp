@@ -22,7 +22,7 @@ See license.txt for more information
 #include "kerneltypes.h"
 #include "draw.h"
 #include "control_slickprogress.h"
-
+namespace Mark3 {
 //---------------------------------------------------------------------------
 void SlickProgressControl::Init()
 {
@@ -107,3 +107,4 @@ GuiReturn_t SlickProgressControl::ProcessEvent(GuiEvent_t*  /*pstEvent_*/)
 {
     return GUI_EVENT_OK;
 }
+} //namespace Mark3

@@ -21,7 +21,7 @@ See license.txt for more information
 #include "nlfs_file.h"
 #include "memutil.h"
 #include "nlfs_config.h"
-
+namespace Mark3 {
 //---------------------------------------------------------------------------
 char NLFS::Find_Last_Slash(const char* szPath_)
 {
@@ -855,3 +855,4 @@ bool NLFS::GetStat(uint16_t u16Node_, NLFS_File_Stat_t* pstStat_)
     MemUtil::CopyMemory(pstStat_->acFileName, stTemp.stFileNode.acFileName, 16);
     return true;
 }
+} //namespace Mark3

@@ -17,14 +17,15 @@ See license.txt for more information
     \brief Complete terminal IO class for implementing interactive console
            applications.
  */
-
-#ifndef __TERMINAL_IO_H__
-#define __TERMINAL_IO_H__
+#pragma once
 
 #include "mark3.h"
 
 #include "terminal_in.h"
 #include "terminal_out.h"
+
+namespace Mark3
+{
 
 //---------------------------------------------------------------------------
 /*!
@@ -70,5 +71,4 @@ private:
 
     Driver* m_pclDriver;
 };
-
-#endif // __TERMINAL_IO_H__
+} //namespace Mark3

@@ -22,7 +22,7 @@ See license.txt for more information
 #include "graphics.h"
 #include "control_label.h"
 #include "gui_palette.h"
-
+namespace Mark3 {
 //---------------------------------------------------------------------------
 void LabelControl::Init()
 {
@@ -79,3 +79,4 @@ void LabelControl::Draw()
     pclDriver->Text(&stText);
     pclDriver->ClearWindow();
 }
+} //namespace Mark3

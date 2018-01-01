@@ -18,14 +18,15 @@ See license.txt for more information
 
     Basic pushbutton control with an up/down state, and Mark3 visual style
 */
-
-#ifndef __CONTROL_SLICKBUTTON_H__
-#define __CONTROL_SLICKBUTTON_H__
+#pragma once
 
 #include "gui.h"
 #include "kerneltypes.h"
 #include "draw.h"
 #include "font.h"
+
+namespace Mark3
+{
 
 typedef void (*ButtonCallback)(void* pvData_);
 
@@ -54,5 +55,4 @@ private:
     void*          m_pvCallbackData;
     ButtonCallback m_pfCallback;
 };
-
-#endif
+} //namespace Mark3

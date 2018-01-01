@@ -3,6 +3,7 @@
 */
 
 #include "font.h"
+using namespace Mark3;
 
 const FONT_STORAGE_TYPE Print_Char_21_6_False_False_False_[] FONT_ATTRIBUTE_TYPE = {
 

@@ -18,8 +18,7 @@ See license.txt for more information
     \brief  Atmega328p serial port driver
 
  */
-#ifndef __DRVUART_H_
-#define __DRVUART_H_
+#pragma once
 
 #include "kerneltypes.h"
 #include "driver.h"
@@ -45,6 +44,9 @@ See license.txt for more information
 
 #define UART_RX_ISR (USART0_RX_vect)
 #define UART_TX_ISR (USART0_TX_vect)
+
+namespace Mark3
+{
 
 class ATMegaUART;
 //---------------------------------------------------------------------------
@@ -113,4 +115,4 @@ private:
     uint32_t m_u32BaudRate; //!< Baud rate
 };
 
-#endif
+} //namespace Mark3

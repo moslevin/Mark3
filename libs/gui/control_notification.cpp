@@ -21,7 +21,7 @@ See license.txt for more information
 
 #include "control_notification.h"
 #include "kerneltypes.h"
-
+namespace Mark3 {
 //---------------------------------------------------------------------------
 void NotificationControl::Draw()
 {
@@ -113,3 +113,4 @@ GuiReturn_t NotificationControl::ProcessEvent(GuiEvent_t* pstEvent_)
     }
     return GUI_EVENT_OK;
 }
+} //namespace Mark3

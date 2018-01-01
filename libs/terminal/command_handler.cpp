@@ -13,7 +13,7 @@ See license.txt for more information
 =========================================================================== */
 
 #include "command_handler.h"
-
+namespace Mark3 {
 //---------------------------------------------------------------------------
 CommandHandler::CommandHandler(const char* szName_, command_action pfHandler_)
 {
@@ -46,3 +46,4 @@ void CommandHandler::Execute(const char* szArgs_)
         m_pfHandler(szArgs_);
     }
 }
+} //namespace Mark3

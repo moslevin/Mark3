@@ -4,6 +4,7 @@
 #include "draw.h"
 #include "tiles.h"
 #include "brscore.h"
+using namespace Mark3;
 
 //---------------------------------------------------------------------------
 void BrScore::Reset(void)

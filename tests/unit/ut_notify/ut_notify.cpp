@@ -18,6 +18,7 @@ See license.txt for more information
 #include "kernel.h"
 #include "../ut_platform.h"
 #include "mark3.h"
+namespace Mark3 {
 
 //===========================================================================
 // Local Defines
@@ -83,3 +84,4 @@ TEST_END
 //===========================================================================
 TEST_CASE_START
 TEST_CASE(ut_notify), TEST_CASE(ut_notify_timeout), TEST_CASE_END
+} //namespace Mark3

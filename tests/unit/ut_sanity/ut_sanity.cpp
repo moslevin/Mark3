@@ -17,6 +17,7 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <avr/sleep.h>
+namespace Mark3 {
 
 //---------------------------------------------------------------------------
 static volatile uint8_t u8TestVal;
@@ -621,3 +622,4 @@ TEST_CASE(ut_sanity_sem)
 , TEST_CASE(ut_sanity_timed_sem), TEST_CASE(ut_sanity_sleep), TEST_CASE(ut_sanity_mutex), TEST_CASE(ut_sanity_msg),
     TEST_CASE(ut_sanity_timed_msg), TEST_CASE(ut_sanity_rr), TEST_CASE(ut_sanity_quantum), TEST_CASE(ut_sanity_timer),
     TEST_CASE_END
+} //namespace Mark3

@@ -22,6 +22,8 @@ See license.txt for more information
 #include "memutil.h"
 #include "driver.h"
 #include "kernelaware.h"
+namespace Mark3 {
+
 //===========================================================================
 // Local Defines
 //===========================================================================
@@ -152,3 +154,4 @@ TEST_END
 //===========================================================================
 TEST_CASE_START
 TEST_CASE(ut_semaphore_count), TEST_CASE(ut_semaphore_post_pend), TEST_CASE(ut_semaphore_timed), TEST_CASE_END
+} //namespace Mark3

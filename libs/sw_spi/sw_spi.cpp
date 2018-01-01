@@ -17,7 +17,7 @@ See license.txt for more information
  */
 
 #include "sw_spi.h"
-
+namespace Mark3 {
 //---------------------------------------------------------------------------
 void SoftwareSPI::Init(uint32_t u32Freq_, spi_mode_t eMode_)
 {
@@ -114,4 +114,4 @@ void SoftwareSPI::Transfer(uint8_t* pu8Input_, uint8_t* pu8Output_, uint16_t u16
         *pu8Dst++ = u8In;
     }
 }
-
+} //namespace Mark3

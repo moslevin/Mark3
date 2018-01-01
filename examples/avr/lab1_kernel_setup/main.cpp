@@ -45,6 +45,8 @@ Kernel and Thread APIs to initialize and start the kernel with any number
 of static threads.
 
 ===========================================================================*/
+using namespace Mark3;
+
 extern "C" {
 void __cxa_pure_virtual(void)
 {

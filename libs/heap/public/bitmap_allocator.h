@@ -16,8 +16,7 @@ See license.txt for more information
     \brief Fixed block allocator using a 2-level bitmap structure to track
            allocations.
 */
-#ifndef __BITMAP_ALLOCATOR_H__
-#define __BITMAP_ALLOCATOR_H__
+#pragma once
 
 #include "mark3.h"
 
@@ -25,6 +24,9 @@ See license.txt for more information
 #define UINT32_SHIFT            (5)
 #define UINT32_BITS             (32)
 #define UINT32_ROUND_UP(bits)   (((uint32_t)(bits) + (UINT32_BITS - 1)) >> UINT32_SHIFT)
+
+namespace Mark3
+{
 
 //---------------------------------------------------------------------------
 /**
@@ -146,5 +148,4 @@ typedef struct __attribute__((packed)) {
     uint32_t u32Index;
     K_WORD data[1];
 } bitmap_alloc_t;
-
-#endif //__BITMAP_ALLOCATOR_H__
+} //namespace Mark3

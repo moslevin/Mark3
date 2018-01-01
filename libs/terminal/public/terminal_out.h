@@ -17,11 +17,12 @@ See license.txt for more information
     \brief Class for manipulating terminal output - text, cursor position,
            colors.
  */
-
-#ifndef __TERMINAL_OUT_H__
-#define __TERMINAL_OUT_H__
+#pragma once
 
 #include <stdint.h>
+
+namespace Mark3
+{
 
 //---------------------------------------------------------------------------
 typedef enum {
@@ -291,5 +292,4 @@ private:
      */
     void WriteVal(uint8_t u8Val_);
 };
-
-#endif //__TERMINAL_H__
+} //namespace Mark3

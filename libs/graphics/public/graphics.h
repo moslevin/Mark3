@@ -15,12 +15,13 @@ See license.txt for more information
     \file graphics.h
     \brief Graphics driver class declaration
  */
-
-#ifndef __GRAPHICSX_H__
-#define __GRAPHICSX_H__
+#pragma once
 
 #include "driver.h"
 #include "draw.h"
+
+namespace Mark3
+{
 
 //---------------------------------------------------------------------------
 /*!
@@ -232,5 +233,4 @@ protected:
 
     uint8_t m_u8BPP;
 };
-
-#endif
+} //namespace Mark3

@@ -15,7 +15,7 @@ See license.txt for more information
 #include "command_dispatch.h"
 #include "command_handler.h"
 #include "memutil.h"
-
+namespace Mark3 {
 //---------------------------------------------------------------------------
 void CommandDispatcher::AddCommand(CommandHandler* pclHandler_)
 {
@@ -58,3 +58,4 @@ int CommandDispatcher::CommandLength(const char* szCommandString_)
     }
     return iRc;
 }
+} //namespace Mark3

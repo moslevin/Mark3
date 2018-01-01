@@ -18,11 +18,13 @@ See license.txt for more information
     \brief  Generic RAM-buffer driver
 
 */
-#ifndef __DRVEEPROM_H_
-#define __DRVEEPROM_H_
+#pragma once
 
 #include "kerneltypes.h"
 #include "driver.h"
+
+namespace Mark3
+{
 
 typedef enum {
     EEPROM_CMD_SEEK = 0x80, //!< Set the current EEPROM address, used for read/write
@@ -48,5 +50,4 @@ private:
     uint16_t m_u16Size;
     uint8_t* m_pcData;
 };
-
-#endif
+} //namespace Mark3

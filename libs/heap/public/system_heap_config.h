@@ -17,8 +17,7 @@ See license.txt for more information
     \brief System heap configuration - defines the block sizes and counts
            used to fulfill system/service allocations.
 */
-#ifndef __SYSTEM_HEAP_CONFIG_H__
-#define __SYSTEM_HEAP_CONFIG_H__
+#pragma once
 
 #include "kerneltypes.h"
 
@@ -67,5 +66,3 @@ See license.txt for more information
 #define HEAP_BLOCK_COUNT_8 ((uint16_t)1)
 #define HEAP_BLOCK_COUNT_9 ((uint16_t)1)
 #define HEAP_BLOCK_COUNT_10 ((uint16_t)1)
-
-#endif

@@ -23,6 +23,8 @@ See license.txt for more information
 #include "drvRAM.h"
 #include "driver.h"
 
+namespace Mark3
+{
 //---------------------------------------------------------------------------
 void RAMDriver::Init()
 {
@@ -108,3 +110,4 @@ uint16_t RAMDriver::Control(uint16_t u16Event_, void* pvIn_, uint16_t u16SizeIn_
     }
     return 0;
 }
+} //namespace Mark3

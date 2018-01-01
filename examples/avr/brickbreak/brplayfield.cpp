@@ -6,6 +6,7 @@
 
 // Levels are 12x10
 #define NUM_LEVELS (32)
+using namespace Mark3;
 
 //---------------------------------------------------------------------------
 #if defined(__AVR__)

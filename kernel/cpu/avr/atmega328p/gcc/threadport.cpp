@@ -33,12 +33,9 @@ See license.txt for more information
 #include <avr/io.h>
 #include <avr/interrupt.h>
 
+//---------------------------------------------------------------------------
 namespace Mark3
 {
-//---------------------------------------------------------------------------
-Thread* g_pclCurrentThread;
-
-//---------------------------------------------------------------------------
 void ThreadPort::InitStack(Thread* pclThread_)
 {
     // Initialize the stack for a Thread

@@ -128,7 +128,7 @@ See license.txt for more information
 #else
 #define DBG_PRINT(...)
 #endif
-
+namespace Mark3 {
 //---------------------------------------------------------------------------
 /*!
     Define the number of cycles that each "basic" opcode takes to execute.
@@ -881,3 +881,4 @@ void DCPU::AddPlugin(DCPUPlugin* pclPlugin_)
 {
     m_clPluginList.Add((LinkListNode*)pclPlugin_);
 }
+} //namespace Mark3

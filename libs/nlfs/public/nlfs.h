@@ -105,14 +105,12 @@ See license.txt for more information
     NLFS_RAM class located within nlfs_ram.cpp.
 */
 
-#ifndef __NLFS_H__
-#define __NLFS_H__
+#pragma once
 
 #include "kerneltypes.h"
 #include "mark3cfg.h"
 #include <stdint.h>
 
-class NLFS_File;
 
 //---------------------------------------------------------------------------
 /*!
@@ -143,6 +141,9 @@ class NLFS_File;
 #define FS_CONFIG_BLOCK (0)
 #define FS_ROOT_BLOCK (1)
 
+namespace Mark3
+{
+class NLFS_File;
 //---------------------------------------------------------------------------
 /*!
     Enumeration describing the various types of filesystem nodes
@@ -578,5 +579,4 @@ protected:
     NLFS_Host_t*     m_puHost;      //!< Local, cached copy of host FS pointer
     NLFS_Root_Node_t m_stLocalRoot; //!< Local, cached copy of root
 };
-
-#endif
+} //namespace Mark3

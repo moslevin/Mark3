@@ -5,6 +5,7 @@
 #include "tiles.h"
 
 #include "brlevel.h"
+using namespace Mark3;
 //---------------------------------------------------------------------------
 void BrLevel::Reset(void)
 {

@@ -19,7 +19,7 @@ See license.txt for more information
 #include "../ut_platform.h"
 #include "thread.h"
 #include "mutex.h"
-
+namespace Mark3 {
 //===========================================================================
 // Local Defines
 //===========================================================================
@@ -197,3 +197,4 @@ TEST_END
 //===========================================================================
 TEST_CASE_START
 TEST_CASE(ut_typical_mutex), TEST_CASE(ut_timed_mutex), TEST_CASE(ut_priority_mutex), TEST_CASE_END
+} //namespace Mark3

@@ -6,6 +6,7 @@
 #define __Print_Char_21_6_False_False_False__H__
 
 #include "font.h"
+using namespace Mark3;
 
 //--[ Public Symbol Exports ]--
 extern const FONT_STORAGE_TYPE Print_Char_21_6_False_False_False_[];

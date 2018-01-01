@@ -15,10 +15,12 @@ See license.txt for more information
  *  \file unit_test.h
  *  \brief Unit test class declarations
  */
-#ifndef __UNIT_TEST_H__
-#define __UNIT_TEST_H__
+#pragma once
 
 #include "kerneltypes.h"
+
+namespace Mark3
+{
 
 //---------------------------------------------------------------------------
 /*!
@@ -144,4 +146,4 @@ private:
     uint16_t    m_u16Passed;     //!< Number of iterations that have passed
 };
 
-#endif
+} //namespace Mark3

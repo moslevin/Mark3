@@ -19,6 +19,8 @@ See license.txt for more information
 #include "kerneltypes.h"
 #include "joystick.h"
 
+namespace Mark3
+{
 //---------------------------------------------------------------------------
 void JoystickDriver::Scan()
 {
@@ -49,3 +51,4 @@ void JoystickDriver::ReadPrevious(JoystickReport* pstReport_)
     pstReport_->u16AnalogX2 = m_stLastReport.u16AnalogX2;
     pstReport_->u16AnalogY2 = m_stLastReport.u16AnalogY2;
 }
+} //namespace Mark3

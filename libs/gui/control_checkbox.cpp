@@ -24,7 +24,7 @@ See license.txt for more information
 #include "font.h"
 #include "control_checkbox.h"
 #include "gui_palette.h"
-
+namespace Mark3 {
 //---------------------------------------------------------------------------
 #define TEXT_X_OFFSET (13)
 
@@ -185,3 +185,4 @@ GuiReturn_t CheckBoxControl::ProcessEvent(GuiEvent_t* pstEvent_)
 
     return GUI_EVENT_OK;
 }
+} //namespace Mark3

@@ -23,7 +23,7 @@ See license.txt for more information
 
 #include <avr/io.h>
 #include <avr/eeprom.h>
-
+namespace Mark3 {
 //---------------------------------------------------------------------------
 void NLFS_EEPROM::Read_Node(uint16_t u16Node_, NLFS_Node_t* pstFileNode_)
 {
@@ -75,3 +75,4 @@ void NLFS_EEPROM::Write_Block(uint32_t u32Block_, uint32_t u32Offset_, void* pvD
 
     eeprom_write_block(pvData_, pvAddr, (size_t)u32Len_);
 }
+} //namespace Mark3

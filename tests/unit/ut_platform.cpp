@@ -31,57 +31,40 @@ void __cxa_pure_virtual(void)
 }
 }
 
-//---------------------------------------------------------------------------
-// Global objects
-static Thread AppThread; //!< Main "application" thread
-static K_WORD aucAppStack[STACK_SIZE_APP];
+namespace Mark3
+{
+Thread AppThread; //!< Main "application" thread
+K_WORD aucAppStack[STACK_SIZE_APP];
 
-static ATMegaUART clUART; //!< UART device driver object
+ATMegaUART clUART; //!< UART device driver object
 
 //---------------------------------------------------------------------------
 #if !KERNEL_USE_IDLE_FUNC
-static Thread  IdleThread; //!< Idle thread - runs when app can't
-static uint8_t aucIdleStack[STACK_SIZE_IDLE];
+Thread  IdleThread; //!< Idle thread - runs when app can't
+uint8_t aucIdleStack[STACK_SIZE_IDLE];
 #endif
+//---------------------------------------------------------------------------
+uint8_t aucTxBuffer[UART_SIZE_TX];
+uint8_t aucRxBuffer[UART_SIZE_RX];
 
 //---------------------------------------------------------------------------
-static uint8_t aucTxBuffer[UART_SIZE_TX];
-static uint8_t aucRxBuffer[UART_SIZE_RX];
-
-//---------------------------------------------------------------------------
-static void AppEntry(void);
-static void IdleEntry(void);
-
-//---------------------------------------------------------------------------
-void MyUnitTest::PrintTestResult()
-{
-    char acTemp[6];
-    int  iLen;
-
-    PrintString("Test ");
-    PrintString(GetName());
-    PrintString(": ");
-    iLen = MemUtil::StringLength(GetName());
-    if (iLen >= 32) {
-        iLen = 32;
-    }
-    for (int i = 0; i < 32 - iLen; i++) {
-        PrintString(".");
-    }
-    if (GetPassed() == GetTotal()) {
-        PrintString("(PASS)[");
-    } else {
-        PrintString("(FAIL)[");
-    }
-    MemUtil::DecimalToString(GetPassed(), (char*)acTemp);
-    PrintString((const char*)acTemp);
-    PrintString("/");
-    MemUtil::DecimalToString(GetTotal(), (char*)acTemp);
-    PrintString((const char*)acTemp);
-    PrintString("]\n");
-}
+void AppEntry(void);
+void IdleEntry(void);
 
 typedef void (*FuncPtr)(void);
+
+//---------------------------------------------------------------------------
+void init_tests()
+{
+    MyTestCase* pstTestCase;
+    pstTestCase = astTestCases;
+
+    while (pstTestCase->pclTestCase) {
+        pstTestCase->pclTestCase->SetName(pstTestCase->szName);
+        pstTestCase++;
+    }
+}
+
 //---------------------------------------------------------------------------
 void run_tests()
 {
@@ -97,29 +80,6 @@ void run_tests()
 
     FuncPtr pfReset = 0;
     pfReset();
-}
-
-//---------------------------------------------------------------------------
-void init_tests()
-{
-    MyTestCase* pstTestCase;
-    pstTestCase = astTestCases;
-
-    while (pstTestCase->pclTestCase) {
-        pstTestCase->pclTestCase->SetName(pstTestCase->szName);
-        pstTestCase++;
-    }
-}
-
-//---------------------------------------------------------------------------
-void PrintString(const char* szStr_)
-{
-    char* szTemp = (char*)szStr_;
-    while (*szTemp) {
-        while (1 != clUART.Write(1, (uint8_t*)szTemp)) { /* Do nothing */
-        }
-        szTemp++;
-    }
 }
 
 //---------------------------------------------------------------------------
@@ -162,6 +122,47 @@ void IdleEntry(void)
 }
 
 //---------------------------------------------------------------------------
+void PrintString(const char* szStr_)
+{
+    char* szTemp = (char*)szStr_;
+    while (*szTemp) {
+        while (1 != clUART.Write(1, (uint8_t*)szTemp)) { /* Do nothing */
+        }
+        szTemp++;
+    }
+}
+//---------------------------------------------------------------------------
+void MyUnitTest::PrintTestResult()
+{
+    char acTemp[6];
+    int  iLen;
+
+    PrintString("Test ");
+    PrintString(GetName());
+    PrintString(": ");
+    iLen = MemUtil::StringLength(GetName());
+    if (iLen >= 32) {
+        iLen = 32;
+    }
+    for (int i = 0; i < 32 - iLen; i++) {
+        PrintString(".");
+    }
+    if (GetPassed() == GetTotal()) {
+        PrintString("(PASS)[");
+    } else {
+        PrintString("(FAIL)[");
+    }
+    MemUtil::DecimalToString(GetPassed(), (char*)acTemp);
+    PrintString((const char*)acTemp);
+    PrintString("/");
+    MemUtil::DecimalToString(GetTotal(), (char*)acTemp);
+    PrintString((const char*)acTemp);
+    PrintString("]\n");
+}
+} //namespace Mark3
+
+using namespace Mark3;
+//---------------------------------------------------------------------------
 int main(void)
 {
     Kernel::Init(); //!< MUST be before other kernel ops
@@ -192,4 +193,5 @@ int main(void)
     DriverList::Add(&clUART);
 
     Kernel::Start(); //!< Start the kernel!
+    return 0;
 }

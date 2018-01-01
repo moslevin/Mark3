@@ -18,13 +18,14 @@ See license.txt for more information
     A groupbox control is essentially a panel with a text caption, and a
     lined border.
 */
-
-#ifndef __CONTROL_SLICKGROUPBOX_H__
-#define __CONTROL_SLICKGROUPBOX_H__
+#pragma once
 
 #include "gui.h"
 #include "kerneltypes.h"
 #include "draw.h"
+
+namespace Mark3
+{
 
 class SlickGroupBoxControl : public GuiControl
 {
@@ -45,5 +46,4 @@ private:
     const char* m_pcCaption;
     COLOR       m_uBGColor;
 };
-
-#endif
+} //namespace Mark3

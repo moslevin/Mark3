@@ -17,14 +17,15 @@ See license.txt for more information
 
     A binary On/Off switch control
 */
-
-#ifndef __CONTROL_CHECKBOX_H__
-#define __CONTROL_CHECKBOX_H__
+#pragma once
 
 #include "gui.h"
 #include "kerneltypes.h"
 #include "draw.h"
 #include "font.h"
+
+namespace Mark3
+{
 
 typedef void (*CheckCallback)(bool bChecked_);
 
@@ -52,5 +53,4 @@ private:
     bool          m_bChecked;
     CheckCallback m_pfCheckCallback;
 };
-
-#endif
+} //namespace Mark3

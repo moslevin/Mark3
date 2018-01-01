@@ -35,8 +35,10 @@ See license.txt for more information
 #include "driver.h"
 #include "drvUART.h"
 
-#ifndef __SLIP_H__
-#define __SLIP_H__
+#pragma once
+
+namespace Mark3
+{
 
 //---------------------------------------------------------------------------
 typedef enum {
@@ -180,4 +182,4 @@ private:
     UartDriver* m_pclDriver;
 };
 
-#endif
+} //namespace Mark3

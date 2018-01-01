@@ -18,13 +18,14 @@ See license.txt for more information
     A groupbox control is essentially a panel with a text caption, and a
     lined border.
 */
-
-#ifndef __CONTROL_GROUPBOX_H__
-#define __CONTROL_GROUPBOX_H__
+#pragma once
 
 #include "gui.h"
 #include "kerneltypes.h"
 #include "draw.h"
+
+namespace Mark3
+{
 
 class GroupBoxControl : public GuiControl
 {
@@ -45,5 +46,4 @@ private:
     Font_t*     m_pstFont;
     const char* m_pcCaption;
 };
-
-#endif
+} //namespace Mark3

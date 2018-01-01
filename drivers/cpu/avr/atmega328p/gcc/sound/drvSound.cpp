@@ -27,6 +27,8 @@ See license.txt for more information
 #include <avr/io.h>
 #include <avr/interrupt.h>
 
+namespace Mark3
+{
 //---------------------------------------------------------------------------
 static volatile uint16_t u16BeatTimer  = 0;
 static volatile uint16_t u16NoteIndex  = 0;
@@ -226,3 +228,4 @@ SoundDriver::Control(uint16_t u16Event_, void* pvDataIn_, uint16_t u16SizeIn_, v
     }
     return 0;
 }
+} //namespace Mark3

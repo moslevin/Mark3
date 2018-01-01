@@ -19,11 +19,13 @@ See license.txt for more information
            incorrect input.
  */
 
-#ifndef __COMMAND_DISPATCH_H__
-#define __COMMAND_DISPATCH_H__
+#pragma once
 
 #include "ll.h"
 #include "command_handler.h"
+
+namespace Mark3
+{
 
 //---------------------------------------------------------------------------
 /*!
@@ -91,5 +93,4 @@ private:
     DoubleLinkList  m_clCommandList;
     CommandHandler*  m_pclDefault;
 };
-
-#endif //__CMMAND_HANDLER_H__
+} //namespace Mark3

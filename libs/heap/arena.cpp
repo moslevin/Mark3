@@ -31,7 +31,7 @@ See license.txt for more information
 #else
 #define DEBUG_PRINT(...)
 #endif
-
+namespace Mark3 {
 //---------------------------------------------------------------------------
 void Arena::Init(void* pvBuffer_, K_ADDR u32Size_, K_ADDR* au32Sizes_, uint8_t u8NumSizes_)
 {
@@ -245,3 +245,4 @@ void Arena::Print(void)
     }
 #endif
 }
+} //namespace Mark3

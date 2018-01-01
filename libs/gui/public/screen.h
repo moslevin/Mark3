@@ -15,13 +15,14 @@ See license.txt for more information
     \file screen.h
     \brief Higher level window management framework
  */
-
-#ifndef __SCREEN_H__
-#define __SCREEN_H__
+#pragma once
 
 #include "kerneltypes.h"
 #include "gui.h"
 #include "ll.h"
+
+namespace Mark3
+{
 
 //---------------------------------------------------------------------------
 class ScreenList;
@@ -137,5 +138,4 @@ private:
     ScreenList       m_clScreenList; //!< Screen list object used to manage individual screens
     GuiEventSurface* m_pclSurface;   //!< Pointer to the GUI Event Surface on which the screens are displayed
 };
-
-#endif
+} //namespace Mark3

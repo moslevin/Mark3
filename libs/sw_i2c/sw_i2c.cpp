@@ -17,7 +17,7 @@ See license.txt for more information
  */
 
 #include "sw_i2c.h"
-
+namespace Mark3 {
 //---------------------------------------------------------------------------
 void SoftwareI2C::Init(uint32_t u32Freq_)
 {
@@ -229,4 +229,4 @@ i2c_return_t SoftwareI2C::RecvAck(bool* pbAck_)
     *pbAck_ = (!bBit);
     return eReturn;
 }
-
+} //namespace Mark3

@@ -18,14 +18,15 @@ See license.txt for more information
     A label control is a static text eliment, specified by a font, a color,
     and a string to overlay at a given location.
 */
-
-#ifndef __CONTROL_LABEL_H__
-#define __CONTROL_LABEL_H__
+#pragma once
 
 #include "gui.h"
 #include "kerneltypes.h"
 #include "draw.h"
 #include "font.h"
+
+namespace Mark3
+{
 
 class LabelControl : public GuiControl
 {
@@ -47,4 +48,4 @@ private:
     bool        m_bTransparent;
 };
 
-#endif
+} //namespace Mark3

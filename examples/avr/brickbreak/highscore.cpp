@@ -6,6 +6,7 @@
 #include "kernelaware.h"
 
 //!! flAVR doesn't support EEPROM writes currently, so use RAM-based scores.
+using namespace Mark3;
 
 //---------------------------------------------------------------------------
 #ifdef __AVR__

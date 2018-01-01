@@ -16,10 +16,12 @@ See license.txt for more information
     \brief Software (bit-bang) spi master driver
  */
 
-#ifndef __SW_SPI_H__
-#define __SW_SPI_H__
+#pragma once
 
 #include <stdint.h>
+
+namespace Mark3
+{
 
 //---------------------------------------------------------------------------
 typedef enum { SPI_LEVEL_LOW = 0, SPI_LEVEL_HIGH = 1 } spi_level_t;
@@ -53,5 +55,4 @@ private:
     bool     m_bPolarity;
     bool     m_bPhase;
 };
-
-#endif // __SW_SPI_H__
+} //namespace Mark3

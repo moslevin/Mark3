@@ -43,7 +43,7 @@ See license.txt for more information
 #include "kerneltypes.h"
 #include "fixed_heap.h"
 #include "threadport.h"
-
+namespace Mark3 {
 //---------------------------------------------------------------------------
 class BlockHeapNode : public LinkListNode
 {
@@ -168,3 +168,4 @@ void FixedHeap::Free(void* pvNode_)
     pclNode->m_clHeap->Free(pvNode_);
     CS_EXIT();
 }
+} //namespace Mark3
