@@ -45,32 +45,63 @@ Kernel and Thread APIs to initialize and start the kernel with any number
 of static threads.
 
 ===========================================================================*/
-using namespace Mark3;
-
 extern "C" {
 void __cxa_pure_virtual(void)
 {
 }
 }
 
+namespace {
+using namespace Mark3;
 //---------------------------------------------------------------------------
 // This block declares the thread data for the main application thread.  It
 // defines a thread object, stack (in word-array form), and the entry-point
 // function used by the application thread.
 #define APP_STACK_SIZE (320 / sizeof(K_WORD))
-static Thread clAppThread;
-static K_WORD awAppStack[APP_STACK_SIZE];
-static void AppMain(void* unused_);
+Thread clAppThread;
+K_WORD awAppStack[APP_STACK_SIZE];
+void AppMain(void* unused_);
 
 //---------------------------------------------------------------------------
 // This block declares the thread data for the idle thread.  It defines a
 // thread object, stack (in word-array form), and the entry-point function
 // used by the idle thread.
 #define IDLE_STACK_SIZE (320 / sizeof(K_WORD))
-static Thread clIdleThread;
-static K_WORD awIdleStack[IDLE_STACK_SIZE];
-static void IdleMain(void* unused_);
+Thread clIdleThread;
+K_WORD awIdleStack[IDLE_STACK_SIZE];
+void IdleMain(void* unused_);
 
+//---------------------------------------------------------------------------
+void AppMain(void* unused_)
+{
+    // This function is run from within the application thread.  Here, we
+    // simply print a friendly greeting and allow the thread to sleep for a
+    // while before repeating the message.  Note that while the thread is
+    // sleeping, CPU execution will transition to the Idle thread.
+
+    while (1) {
+        KernelAware::Print("Hello World!\n");
+        Thread::Sleep(1000);
+    }
+}
+
+//---------------------------------------------------------------------------
+void IdleMain(void* unused_)
+{
+    while (1) {
+        // Low priority task + power management routines go here.
+        // The actions taken in this context must *not* cause the thread
+        // to block, as the kernel requires that at least one thread is
+        // schedulable at all times when not using an idle thread.
+
+        // Note that if you have no special power-management code or idle
+        // tasks, an empty while(1){} loop is sufficient to guarantee that
+        // condition.
+    }
+}
+} // anonymous namespace
+
+using namespace Mark3;
 //---------------------------------------------------------------------------
 int main(void)
 {
@@ -122,33 +153,4 @@ int main(void)
     // avoid warnings.
 
     return 0;
-}
-
-//---------------------------------------------------------------------------
-void AppMain(void* unused_)
-{
-    // This function is run from within the application thread.  Here, we
-    // simply print a friendly greeting and allow the thread to sleep for a
-    // while before repeating the message.  Note that while the thread is
-    // sleeping, CPU execution will transition to the Idle thread.
-
-    while (1) {
-        KernelAware::Print("Hello World!\n");
-        Thread::Sleep(1000);
-    }
-}
-
-//---------------------------------------------------------------------------
-void IdleMain(void* unused_)
-{
-    while (1) {
-        // Low priority task + power management routines go here.
-        // The actions taken in this context must *not* cause the thread
-        // to block, as the kernel requires that at least one thread is
-        // schedulable at all times when not using an idle thread.
-
-        // Note that if you have no special power-management code or idle
-        // tasks, an empty while(1){} loop is sufficient to guarantee that
-        // condition.
-    }
 }

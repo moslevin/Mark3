@@ -28,49 +28,28 @@ Takeaway:
 #if !KERNEL_USE_IDLE_FUNC
 #error "This demo requires KERNEL_USE_IDLE_FUNC"
 #endif
-using namespace Mark3;
-
 extern "C" {
 void __cxa_pure_virtual(void)
 {
 }
 }
 
+namespace {
+using namespace Mark3;
 //---------------------------------------------------------------------------
 #define APP_STACK_SIZE (256 / sizeof(K_WORD))
-static Thread clApp1Thread;
-static K_WORD awApp1Stack[APP_STACK_SIZE];
-static void App1Main(void* unused_);
+Thread clApp1Thread;
+K_WORD awApp1Stack[APP_STACK_SIZE];
+void App1Main(void* unused_);
 
 //---------------------------------------------------------------------------
-static Thread clApp2Thread;
-static K_WORD awApp2Stack[APP_STACK_SIZE];
-static void App2Main(void* unused_);
+Thread clApp2Thread;
+K_WORD awApp2Stack[APP_STACK_SIZE];
+void App2Main(void* unused_);
 
 //---------------------------------------------------------------------------
 // Notification object used in the example.
-static Notify clNotify;
-
-//---------------------------------------------------------------------------
-int main(void)
-{
-    // See the annotations in previous labs for details on init.
-    Kernel::Init();
-
-    // Initialize notifer and notify-ee threads
-    clApp1Thread.Init(awApp1Stack, sizeof(awApp1Stack), 1, App1Main, 0);
-    clApp1Thread.Start();
-
-    clApp2Thread.Init(awApp2Stack, sizeof(awApp2Stack), 1, App2Main, 0);
-    clApp2Thread.Start();
-
-    // Initialize the Notify objects
-    clNotify.Init();
-
-    Kernel::Start();
-
-    return 0;
-}
+Notify clNotify;
 
 //---------------------------------------------------------------------------
 void App1Main(void* unused_)
@@ -97,4 +76,27 @@ void App2Main(void* unused_)
         KernelAware::Print("T2: Notify\n");
         clNotify.Signal();
     }
+}
+} // anonymous namespace
+
+using namespace Mark3;
+//---------------------------------------------------------------------------
+int main(void)
+{
+    // See the annotations in previous labs for details on init.
+    Kernel::Init();
+
+    // Initialize notifer and notify-ee threads
+    clApp1Thread.Init(awApp1Stack, sizeof(awApp1Stack), 1, App1Main, 0);
+    clApp1Thread.Start();
+
+    clApp2Thread.Init(awApp2Stack, sizeof(awApp2Stack), 1, App2Main, 0);
+    clApp2Thread.Start();
+
+    // Initialize the Notify objects
+    clNotify.Init();
+
+    Kernel::Start();
+
+    return 0;
 }

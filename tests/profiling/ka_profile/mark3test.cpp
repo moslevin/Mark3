@@ -12,18 +12,21 @@
 #include "message.h"
 #include "timerlist.h"
 #include "kernelaware.h"
+
+#include <avr/io.h>
+#include <avr/interrupt.h>
+#include <avr/sleep.h>
+
 using namespace Mark3;
 
 extern "C" void __cxa_pure_virtual()
 {
 }
 //---------------------------------------------------------------------------
-#include <avr/io.h>
-#include <avr/interrupt.h>
-#include <avr/sleep.h>
 
+namespace {
 //---------------------------------------------------------------------------
-static volatile uint8_t u8TestVal;
+volatile uint8_t u8TestVal;
 
 //---------------------------------------------------------------------------
 #define TEST_STACK1_SIZE (384)
@@ -33,41 +36,22 @@ static volatile uint8_t u8TestVal;
 #define IDLE_STACK_SIZE (384)
 
 //---------------------------------------------------------------------------
-static Semaphore clSemaphore;
-static Mutex     clMutex;
+Semaphore clSemaphore;
+Mutex     clMutex;
 
 //---------------------------------------------------------------------------
-static Thread clMainThread;
-static Thread clIdleThread;
+Thread clMainThread;
+Thread clIdleThread;
 
-static Thread clTestThread1;
-
-//---------------------------------------------------------------------------
-static uint8_t aucMainStack[MAIN_STACK_SIZE];
-static uint8_t aucIdleStack[IDLE_STACK_SIZE];
-static uint8_t aucTestStack1[TEST_STACK1_SIZE];
+Thread clTestThread1;
 
 //---------------------------------------------------------------------------
-static void AppMain(void* unused);
-static void IdleMain(void* unused);
+uint8_t aucMainStack[MAIN_STACK_SIZE];
+uint8_t aucIdleStack[IDLE_STACK_SIZE];
+uint8_t aucTestStack1[TEST_STACK1_SIZE];
 
 //---------------------------------------------------------------------------
-int main(void)
-{
-    Kernel::Init();
-
-    clMainThread.Init(aucMainStack, MAIN_STACK_SIZE, 1, (ThreadEntryFunc)AppMain, NULL);
-
-    clIdleThread.Init(aucIdleStack, MAIN_STACK_SIZE, 0, (ThreadEntryFunc)IdleMain, NULL);
-
-    clMainThread.Start();
-    clIdleThread.Start();
-
-    Kernel::Start();
-}
-
-//---------------------------------------------------------------------------
-static void IdleMain(void* unused)
+void IdleMain(void* unused)
 {
     while (1) {
 #if 1
@@ -83,12 +67,12 @@ static void IdleMain(void* unused)
     }
 }
 //---------------------------------------------------------------------------
-static void ProfileInit()
+void ProfileInit()
 {
 }
 
 //---------------------------------------------------------------------------
-static void ProfileOverhead()
+void ProfileOverhead()
 {
     CS_ENTER();
     KernelAware::ProfileInit("Overhead");
@@ -99,7 +83,7 @@ static void ProfileOverhead()
 }
 
 //---------------------------------------------------------------------------
-static void Semaphore_Flyback(Semaphore* pclSem_)
+void Semaphore_Flyback(Semaphore* pclSem_)
 {
     KernelAware::ProfileInit("SemFlyback");
     KernelAware::ProfileStart();
@@ -113,7 +97,7 @@ static void Semaphore_Flyback(Semaphore* pclSem_)
 }
 
 //---------------------------------------------------------------------------
-static void Semaphore_Profiling()
+void Semaphore_Profiling()
 {
     Semaphore clSem;
 
@@ -155,7 +139,7 @@ static void Semaphore_Profiling()
 }
 
 //---------------------------------------------------------------------------
-static void Mutex_Profiling()
+void Mutex_Profiling()
 {
     Mutex    clMutex;
 
@@ -191,7 +175,7 @@ static void Mutex_Profiling()
 }
 
 //---------------------------------------------------------------------------
-static void Thread_ProfilingThread()
+void Thread_ProfilingThread()
 {
     // Stop the "thread start" profiling timer, which was started from the
     // main app thread
@@ -207,7 +191,7 @@ static void Thread_ProfilingThread()
 }
 
 //---------------------------------------------------------------------------
-static void Thread_Profiling()
+void Thread_Profiling()
 {
     // Profile the amount of time it takes to initialize a representative
     // test thread, simulating an "average" system thread.  Create the
@@ -270,7 +254,7 @@ void Scheduler_Profiling()
 }
 
 //---------------------------------------------------------------------------
-static void AppMain(void* unused)
+void AppMain(void* unused)
 {
     ProfileInit();
 
@@ -283,4 +267,20 @@ static void AppMain(void* unused)
         Scheduler_Profiling();
         KernelAware::ExitSimulator();
     }
+}
+} // anonymous namespace
+
+//---------------------------------------------------------------------------
+int main(void)
+{
+    Kernel::Init();
+
+    clMainThread.Init(aucMainStack, MAIN_STACK_SIZE, 1, AppMain, NULL);
+
+    clIdleThread.Init(aucIdleStack, MAIN_STACK_SIZE, 0, IdleMain, NULL);
+
+    clMainThread.Start();
+    clIdleThread.Start();
+
+    Kernel::Start();
 }

@@ -13,41 +13,41 @@ See license.txt for more information
 ===========================================================================*/
 
 //---------------------------------------------------------------------------
-
 #include "kerneltypes.h"
 #include "kernel.h"
 #include "../ut_platform.h"
 #include "mark3.h"
 #include "memutil.h"
-namespace Mark3 {
+
+namespace {
+using namespace Mark3;
 //===========================================================================
 // Local Defines
 //===========================================================================
+Thread clMBoxThread;
+K_WORD akMBoxStack[224];
 
-static Thread clMBoxThread;
-static K_WORD akMBoxStack[224];
+Mailbox clMbox;
+uint8_t aucMBoxBuffer[128];
 
-static Mailbox clMbox;
-static uint8_t aucMBoxBuffer[128];
+volatile uint8_t aucTxBuf[17] = "abcdefghijklmnop"; // allocate a byte of slack for null-termination
+volatile uint8_t aucRxBuf[16];
+volatile bool    exit_flag;
+} // anonymous namespace
 
-static volatile uint8_t aucTxBuf[17] = "abcdefghijklmnop"; // allocate a byte of slack for null-termination
-static volatile uint8_t aucRxBuf[16];
-static volatile bool    exit_flag;
 //===========================================================================
 // Define Test Cases Here
 //===========================================================================
-
-void mbox_test(void* unused_)
-{
-    while (1) {
-        clMbox.Receive((void*)aucRxBuf);
-    }
-}
-
+namespace Mark3 {
 TEST(mailbox_blocking_receive)
 {
+    auto lMboxText = [](void* /*unused_*/) {
+        while (1) {
+            clMbox.Receive((void*)aucRxBuf);
+        }
+    };
     clMbox.Init((void*)aucMBoxBuffer, 128, 16);
-    clMBoxThread.Init(akMBoxStack, 224, 7, mbox_test, 0);
+    clMBoxThread.Init(akMBoxStack, 224, 7, lMboxText, 0);
     clMBoxThread.Start();
 
     for (int i = 0; i < 100; i++) {

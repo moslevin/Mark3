@@ -27,6 +27,9 @@ void __cxa_pure_virtual(void)
 }
 }
 
+namespace {
+using namespace Mark3;
+
 #define UART_SIZE_TX 32
 #define UART_SIZE_RX 32
 
@@ -35,36 +38,35 @@ void __cxa_pure_virtual(void)
 // defines a thread object, stack (in word-array form), and the entry-point
 // function used by the application thread.
 #define APP_STACK_SIZE (512 / sizeof(K_WORD))
-static Thread clAppThread;
-static K_WORD awAppStack[APP_STACK_SIZE];
-static void AppMain(void* unused_);
+Thread clAppThread;
+K_WORD awAppStack[APP_STACK_SIZE];
+void AppMain(void* unused_);
 
 //---------------------------------------------------------------------------
 // This block declares the thread data for the idle thread.  It defines a
 // thread object, stack (in word-array form), and the entry-point function
 // used by the idle thread.
 #define IDLE_STACK_SIZE (512 / sizeof(K_WORD))
-static Thread clIdleThread;
-static K_WORD awIdleStack[IDLE_STACK_SIZE];
-static void IdleMain(void* unused_);
+Thread clIdleThread;
+K_WORD awIdleStack[IDLE_STACK_SIZE];
+void IdleMain(void* unused_);
 
-//---------------------------------------------------------------------------
-static uint8_t    aucTxBuffer[UART_SIZE_TX];
-static uint8_t    aucRxBuffer[UART_SIZE_RX];
+uint8_t    aucTxBuffer[UART_SIZE_TX];
+uint8_t    aucRxBuffer[UART_SIZE_RX];
 
-static ATMegaUARTPlus clUART; //!< UART device driver object
+ATMegaUARTPlus clUART; //!< UART device driver object
 
-static CommandHandler clDefaultHandler;
-static CommandHandler clDirHandler;
-static CommandHandler clCatHandler;
-static CommandHandler clHelpHandler;
+CommandHandler clDefaultHandler;
+CommandHandler clDirHandler;
+CommandHandler clCatHandler;
+CommandHandler clHelpHandler;
 
-static M3Shell clShell;
+M3Shell clShell;
 
-static NLFS_EEPROM clNLFS;
-static NLFS_Host_t clHost;
+NLFS_EEPROM clNLFS;
+NLFS_Host_t clHost;
 
-const void StringWrite(const char* szStr_)
+void StringWrite(const char* szStr_)
 {
     uint8_t*    src       = (uint8_t*)szStr_;
     uint16_t    u16Remain = MemUtil::StringLength(szStr_);
@@ -76,7 +78,7 @@ const void StringWrite(const char* szStr_)
     }
 }
 
-const void WriteBytes(const char* szStr_, uint16_t u16Len_)
+void WriteBytes(const char* szStr_, uint16_t u16Len_)
 {
     uint8_t*    src       = (uint8_t*)szStr_;
     uint16_t    u16Remain = u16Len_;
@@ -88,33 +90,13 @@ const void WriteBytes(const char* szStr_, uint16_t u16Len_)
     }
 }
 
-//---------------------------------------------------------------------------
-int main(void)
-{
-    Kernel::Init();
-
-    clAppThread.Init(awAppStack, sizeof(awAppStack), 1, AppMain, 0);
-    clIdleThread.Init(awIdleStack, sizeof(awIdleStack), 0, IdleMain, 0);
-
-    clAppThread.Start();
-    clIdleThread.Start();
-
-    clUART.SetName("/dev/tty"); //!< Add the serial driver
-    clUART.Init();
-    DriverList::Add(&clUART);
-
-    Kernel::Start();
-
-    return 0;
-}
-
-static void DefaultHandler(const char* args)
+void DefaultHandler(const char* args)
 {
     StringWrite(" Unknown command: ");
     StringWrite(args);
 }
 
-static void HelpHandler(const char* args)
+void HelpHandler(const char* args)
 {
     StringWrite("Available commands:\r\n");
     StringWrite("\tcat\r\n"
@@ -122,7 +104,7 @@ static void HelpHandler(const char* args)
                 "\thelp\r\n");
 }
 
-static void DirHandler(const char* args)
+void DirHandler(const char* args)
 {
     uint16_t u16Root;
 
@@ -166,7 +148,7 @@ static void DirHandler(const char* args)
 
 //---------------------------------------------------------------------------
 // Print the contents of a file (as ascii) to the terminal
-static void CatHandler(const char* args)
+void CatHandler(const char* args)
 {
     char      acBuf[16];
     int       iBytesRead;
@@ -191,7 +173,7 @@ static void CatHandler(const char* args)
 
 //---------------------------------------------------------------------------
 // Prepare an NLFS filesystem
-static void NLFS_Prepare(void)
+void NLFS_Prepare(void)
 {
     NLFS_File clFile;
 
@@ -229,7 +211,7 @@ static void NLFS_Prepare(void)
 }
 
 //---------------------------------------------------------------------------
-void AppMain(void* unused_)
+void AppMain(void* /*unused_*/)
 {
     UartDriver* my_uart = static_cast<UartDriver*>(DriverList::FindByPath("/dev/tty"));
 
@@ -259,7 +241,7 @@ void AppMain(void* unused_)
 }
 
 //---------------------------------------------------------------------------
-void IdleMain(void* unused_)
+void IdleMain(void* /*unused_*/)
 {
     while (1) {
         // Low priority task + power management routines go here.
@@ -271,4 +253,25 @@ void IdleMain(void* unused_)
         // tasks, an empty while(1){} loop is sufficient to guarantee that
         // condition.
     }
+}
+} // anonymous namespace
+
+//---------------------------------------------------------------------------
+int main(void)
+{
+    Kernel::Init();
+
+    clAppThread.Init(awAppStack, sizeof(awAppStack), 1, AppMain, 0);
+    clIdleThread.Init(awIdleStack, sizeof(awIdleStack), 0, IdleMain, 0);
+
+    clAppThread.Start();
+    clIdleThread.Start();
+
+    clUART.SetName("/dev/tty"); //!< Add the serial driver
+    clUART.Init();
+    DriverList::Add(&clUART);
+
+    Kernel::Start();
+
+    return 0;
 }

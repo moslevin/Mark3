@@ -36,7 +36,6 @@ allows threads to work cooperatively to achieve a goal in the system.
 #if !KERNEL_USE_IDLE_FUNC
 #error "This demo requires KERNEL_USE_IDLE_FUNC"
 #endif
-using namespace Mark3;
 
 extern "C" {
 void __cxa_pure_virtual(void)
@@ -44,60 +43,30 @@ void __cxa_pure_virtual(void)
 }
 }
 
+namespace {
+using namespace Mark3;
 //---------------------------------------------------------------------------
 // This block declares the thread data for one main application thread.  It
 // defines a thread object, stack (in word-array form), and the entry-point
 // function used by the application thread.
 #define APP1_STACK_SIZE (320 / sizeof(K_WORD))
-static Thread clApp1Thread;
-static K_WORD awApp1Stack[APP1_STACK_SIZE];
-static void App1Main(void* unused_);
+Thread clApp1Thread;
+K_WORD awApp1Stack[APP1_STACK_SIZE];
+void App1Main(void* unused_);
 
 //---------------------------------------------------------------------------
 // This block declares the thread data for one main application thread.  It
 // defines a thread object, stack (in word-array form), and the entry-point
 // function used by the application thread.
 #define APP2_STACK_SIZE (320 / sizeof(K_WORD))
-static Thread clApp2Thread;
-static K_WORD awApp2Stack[APP2_STACK_SIZE];
-static void App2Main(void* unused_);
+Thread clApp2Thread;
+K_WORD awApp2Stack[APP2_STACK_SIZE];
+void App2Main(void* unused_);
 
 //---------------------------------------------------------------------------
 // This is the semaphore that we'll use to synchronize two threads in this
 // demo application
-static Semaphore clMySem;
-
-//---------------------------------------------------------------------------
-int main(void)
-{
-    // See the annotations in previous labs for details on init.
-    Kernel::Init();
-
-    // In this example we create two threads to illustrate the use of a
-    // binary semaphore as a synchronization method between two threads.
-
-    // Thread 1 is a "consumer" thread -- It waits, blocked on the semaphore
-    // until thread 2 is done doing some work.  Once the semaphore is posted,
-    // the thread is unblocked, and does some work.
-
-    // Thread 2 is thus the "producer" thread -- It does work, and once that
-    // work is done, the semaphore is posted to indicate that the other thread
-    // can use the producer's work product.
-
-    clApp1Thread.Init(awApp1Stack, APP1_STACK_SIZE, 1, App1Main, 0);
-    clApp2Thread.Init(awApp2Stack, APP2_STACK_SIZE, 1, App2Main, 0);
-
-    clApp1Thread.Start();
-    clApp2Thread.Start();
-
-    // Initialize a binary semaphore (maximum value of one, initial value of
-    // zero).
-    clMySem.Init(0, 1);
-
-    Kernel::Start();
-
-    return 0;
-}
+Semaphore clMySem;
 
 //---------------------------------------------------------------------------
 void App1Main(void* unused_)
@@ -132,4 +101,38 @@ void App2Main(void* unused_)
             clMySem.Post();
         }
     }
+}
+} // anonymous namespace
+
+using namespace Mark3;
+//---------------------------------------------------------------------------
+int main(void)
+{
+    // See the annotations in previous labs for details on init.
+    Kernel::Init();
+
+    // In this example we create two threads to illustrate the use of a
+    // binary semaphore as a synchronization method between two threads.
+
+    // Thread 1 is a "consumer" thread -- It waits, blocked on the semaphore
+    // until thread 2 is done doing some work.  Once the semaphore is posted,
+    // the thread is unblocked, and does some work.
+
+    // Thread 2 is thus the "producer" thread -- It does work, and once that
+    // work is done, the semaphore is posted to indicate that the other thread
+    // can use the producer's work product.
+
+    clApp1Thread.Init(awApp1Stack, APP1_STACK_SIZE, 1, App1Main, 0);
+    clApp2Thread.Init(awApp2Stack, APP2_STACK_SIZE, 1, App2Main, 0);
+
+    clApp1Thread.Start();
+    clApp2Thread.Start();
+
+    // Initialize a binary semaphore (maximum value of one, initial value of
+    // zero).
+    clMySem.Init(0, 1);
+
+    Kernel::Start();
+
+    return 0;
 }

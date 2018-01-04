@@ -32,11 +32,13 @@ See license.txt for more information
 #include <avr/io.h>
 #include <avr/interrupt.h>
 
+namespace {
+using namespace Mark3;
+ATMegaUARTPlus* pclActive; // Pointer to the active object
+} // anonymous namespace
+
 namespace Mark3
 {
-//---------------------------------------------------------------------------
-static ATMegaUARTPlus* pclActive; // Pointer to the active object
-
 //---------------------------------------------------------------------------
 void ATMegaUARTPlus::SetBaud(uint32_t u32Baud_)
 {

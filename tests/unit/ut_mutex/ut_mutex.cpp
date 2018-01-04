@@ -19,36 +19,37 @@ See license.txt for more information
 #include "../ut_platform.h"
 #include "thread.h"
 #include "mutex.h"
+
+namespace {
+using namespace Mark3;
+#define MUTEX_STACK_SIZE (256)
+K_WORD aucTestStack[MUTEX_STACK_SIZE];
+Thread clMutexThread;
+
+K_WORD           aucTestStack2[MUTEX_STACK_SIZE];
+Thread           clTestThread2;
+volatile uint8_t u8Token;
+} // anonymous namespace
+
 namespace Mark3 {
 //===========================================================================
 // Local Defines
 //===========================================================================
-#define MUTEX_STACK_SIZE (256)
-static K_WORD aucTestStack[MUTEX_STACK_SIZE];
-static Thread clMutexThread;
-
-static K_WORD           aucTestStack2[MUTEX_STACK_SIZE];
-static Thread           clTestThread2;
-static volatile uint8_t u8Token;
 
 //===========================================================================
 // Define Test Cases Here
 //===========================================================================
-
-void TypicalMutexTest(void* mutex_)
-{
-    Mutex* pclMutex = (Mutex*)mutex_;
-
-    pclMutex->Claim();
-    u8Token = 0x69;
-    pclMutex->Release();
-
-    // Exit the thread when we're done this operation.
-    Scheduler::GetCurrentThread()->Exit();
-}
-
 TEST(ut_typical_mutex)
 {
+    auto lMutexTest = [](void* mutex_) {
+        auto* pclMutex = static_cast<Mutex*>(mutex_);
+        pclMutex->Claim();
+        u8Token = 0x69;
+        pclMutex->Release();
+        // Exit the thread when we're done this operation.
+        Scheduler::GetCurrentThread()->Exit();
+    };
+
     // Test - Typical mutex usage, ensure that two threads can synchronize
     // access to a single resource
     Mutex clMutex;
@@ -58,7 +59,7 @@ TEST(ut_typical_mutex)
     // Create a higher-priority thread that will immediately pre-empt u16.
     // Verify that while we have the mutex held, that the high-priority thread
     // is blocked waiting for u16 to relinquish access.
-    clMutexThread.Init(aucTestStack, MUTEX_STACK_SIZE, 7, TypicalMutexTest, (void*)&clMutex);
+    clMutexThread.Init(aucTestStack, MUTEX_STACK_SIZE, 7, lMutexTest, (void*)&clMutex);
 
     clMutex.Claim();
 
@@ -83,34 +84,29 @@ TEST(ut_typical_mutex)
 TEST_END
 
 //===========================================================================
-void TimedMutexTest(void* mutex_)
-{
-    Mutex* pclMutex = (Mutex*)mutex_;
-
-    pclMutex->Claim();
-    Thread::Sleep(20);
-    pclMutex->Release();
-
-    Scheduler::GetCurrentThread()->Exit();
-}
-
-//===========================================================================
 TEST(ut_timed_mutex)
 {
     // Test - Enusre that when a thread fails to obtain a resource in a
     // timeout scenario, that the timeout is reported correctly
+    auto lTimedTest = [](void* mutex_) {
+        auto* pclMutex = static_cast<Mutex*>(mutex_);
+        pclMutex->Claim();
+        Thread::Sleep(20);
+        pclMutex->Release();
+        Scheduler::GetCurrentThread()->Exit();
+    };
 
     Mutex clMutex;
     clMutex.Init();
 
-    clMutexThread.Init(aucTestStack, MUTEX_STACK_SIZE, 7, TimedMutexTest, (void*)&clMutex);
+    clMutexThread.Init(aucTestStack, MUTEX_STACK_SIZE, 7, lTimedTest, (void*)&clMutex);
     clMutexThread.Start();
 
     EXPECT_FALSE(clMutex.Claim(10));
 
     Thread::Sleep(20);
 
-    clMutexThread.Init(aucTestStack, MUTEX_STACK_SIZE, 7, TimedMutexTest, (void*)&clMutex);
+    clMutexThread.Init(aucTestStack, MUTEX_STACK_SIZE, 7, lTimedTest, (void*)&clMutex);
     clMutexThread.Start();
 
     EXPECT_TRUE(clMutex.Claim(30));
@@ -118,40 +114,18 @@ TEST(ut_timed_mutex)
 TEST_END
 
 //===========================================================================
-void LowPriThread(void* mutex_)
-{
-    Mutex* pclMutex = (Mutex*)mutex_;
-
-    pclMutex->Claim();
-
-    Thread::Sleep(100);
-
-    pclMutex->Release();
-
-    while (1) {
-        Thread::Sleep(1000);
-    }
-}
-
-//===========================================================================
-void HighPriThread(void* mutex_)
-{
-    Mutex* pclMutex = (Mutex*)mutex_;
-
-    pclMutex->Claim();
-
-    Thread::Sleep(100);
-
-    pclMutex->Release();
-
-    while (1) {
-        Thread::Sleep(1000);
-    }
-}
-
-//===========================================================================
 TEST(ut_priority_mutex)
 {
+    auto lMutexThread = [](void* mutex_) {
+        auto* pclMutex = static_cast<Mutex*>(mutex_);
+        pclMutex->Claim();
+        Thread::Sleep(100);
+        pclMutex->Release();
+        while (1) {
+            Thread::Sleep(1000);
+        }
+    };
+
     // Test - Priority inheritence protocol.  Ensure that the priority
     // inversion problem is correctly avoided by our semaphore implementation
     // In the low/med/high scenario, we play the "med" priority thread
@@ -160,8 +134,8 @@ TEST(ut_priority_mutex)
 
     Scheduler::GetCurrentThread()->SetPriority(3);
 
-    clMutexThread.Init(aucTestStack, MUTEX_STACK_SIZE, 2, LowPriThread, (void*)&clMutex);
-    clTestThread2.Init(aucTestStack2, MUTEX_STACK_SIZE, 4, HighPriThread, (void*)&clMutex);
+    clMutexThread.Init(aucTestStack, MUTEX_STACK_SIZE, 2, lMutexThread, (void*)&clMutex);
+    clTestThread2.Init(aucTestStack2, MUTEX_STACK_SIZE, 4, lMutexThread, (void*)&clMutex);
 
     // Start the low-priority thread and give it the mutex
     clMutexThread.Start();

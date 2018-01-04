@@ -25,7 +25,6 @@ Takeaway:
 #if !KERNEL_USE_IDLE_FUNC
 #error "This demo requires KERNEL_USE_IDLE_FUNC"
 #endif
-using namespace Mark3;
 
 extern "C" {
 void __cxa_pure_virtual(void)
@@ -33,33 +32,16 @@ void __cxa_pure_virtual(void)
 }
 }
 
+namespace {
+using namespace Mark3;
 //---------------------------------------------------------------------------
 // This block declares the thread data for one main application thread.  It
 // defines a thread object, stack (in word-array form), and the entry-point
 // function used by the application thread.
 #define APP1_STACK_SIZE (320 / sizeof(K_WORD))
-static Thread clApp1Thread;
-static K_WORD awApp1Stack[APP1_STACK_SIZE];
-static void App1Main(void* unused_);
-
-//---------------------------------------------------------------------------
-static void PeriodicCallback(Thread* owner, void* pvData_);
-static void OneShotCallback(Thread* owner, void* pvData_);
-
-//---------------------------------------------------------------------------
-int main(void)
-{
-    // See the annotations in previous labs for details on init.
-    Kernel::Init();
-
-    clApp1Thread.Init(awApp1Stack, sizeof(awApp1Stack), 1, App1Main, 0);
-
-    clApp1Thread.Start();
-
-    Kernel::Start();
-
-    return 0;
-}
+Thread clApp1Thread;
+K_WORD awApp1Stack[APP1_STACK_SIZE];
+void App1Main(void* unused_);
 
 //---------------------------------------------------------------------------
 void PeriodicCallback(Thread* owner, void* pvData_)
@@ -111,3 +93,22 @@ void App1Main(void* unused_)
         KernelAware::Print("Thread Triggered.\n");
     }
 }
+} // anonymous namespace
+
+using namespace Mark3;
+
+//---------------------------------------------------------------------------
+int main(void)
+{
+    // See the annotations in previous labs for details on init.
+    Kernel::Init();
+
+    clApp1Thread.Init(awApp1Stack, sizeof(awApp1Stack), 1, App1Main, 0);
+
+    clApp1Thread.Start();
+
+    Kernel::Start();
+
+    return 0;
+}
+

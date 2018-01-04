@@ -1,4 +1,3 @@
-
 #include "kerneltypes.h"
 #include "mark3cfg.h"
 #include "kernel.h"
@@ -11,15 +10,17 @@
 #include "mutex.h"
 #include "message.h"
 #include "timerlist.h"
-using namespace Mark3;
+
+#include <avr/io.h>
+#include <avr/interrupt.h>
+#include <avr/sleep.h>
 
 extern "C" void __cxa_pure_virtual()
 {
 }
-//---------------------------------------------------------------------------
-#include <avr/io.h>
-#include <avr/interrupt.h>
-#include <avr/sleep.h>
+
+namespace {
+using namespace Mark3;
 
 class UnitTest
 {
@@ -64,11 +65,11 @@ private:
 };
 
 //---------------------------------------------------------------------------
-static volatile uint8_t u8TestVal;
+volatile uint8_t u8TestVal;
 
 //---------------------------------------------------------------------------
-static ATMegaUART clUART;
-static uint8_t    aucTxBuf[32];
+ATMegaUART clUART;
+uint8_t    aucTxBuf[32];
 
 //---------------------------------------------------------------------------
 #define TEST_STACK1_SIZE (384)
@@ -78,65 +79,41 @@ static uint8_t    aucTxBuf[32];
 #define IDLE_STACK_SIZE (384)
 
 //---------------------------------------------------------------------------
-static ProfileTimer clProfileOverhead;
+ProfileTimer clProfileOverhead;
 
-static ProfileTimer clSemInitTimer;
-static ProfileTimer clSemPostTimer;
-static ProfileTimer clSemPendTimer;
+ProfileTimer clSemInitTimer;
+ProfileTimer clSemPostTimer;
+ProfileTimer clSemPendTimer;
 
-static ProfileTimer clMutexInitTimer;
-static ProfileTimer clMutexClaimTimer;
-static ProfileTimer clMutexReleaseTimer;
+ProfileTimer clMutexInitTimer;
+ProfileTimer clMutexClaimTimer;
+ProfileTimer clMutexReleaseTimer;
 
-static ProfileTimer clThreadInitTimer;
-static ProfileTimer clThreadStartTimer;
-static ProfileTimer clThreadExitTimer;
-static ProfileTimer clContextSwitchTimer;
+ProfileTimer clThreadInitTimer;
+ProfileTimer clThreadStartTimer;
+ProfileTimer clThreadExitTimer;
+ProfileTimer clContextSwitchTimer;
 
-static ProfileTimer clSemaphoreFlyback;
-static ProfileTimer clSchedulerTimer;
-
-//---------------------------------------------------------------------------
-static Semaphore clSemaphore;
-static Mutex     clMutex;
+ProfileTimer clSemaphoreFlyback;
+ProfileTimer clSchedulerTimer;
 
 //---------------------------------------------------------------------------
-static Thread clMainThread;
-static Thread clIdleThread;
-
-static Thread clTestThread1;
+Semaphore clSemaphore;
+Mutex     clMutex;
 
 //---------------------------------------------------------------------------
-static uint8_t aucMainStack[MAIN_STACK_SIZE];
-static uint8_t awIdleStack[IDLE_STACK_SIZE];
-static uint8_t awTestStack1[TEST_STACK1_SIZE];
+Thread clMainThread;
+Thread clIdleThread;
+
+Thread clTestThread1;
 
 //---------------------------------------------------------------------------
-static void AppMain(void* unused);
-static void IdleMain(void* unused);
+uint8_t aucMainStack[MAIN_STACK_SIZE];
+uint8_t awIdleStack[IDLE_STACK_SIZE];
+uint8_t awTestStack1[TEST_STACK1_SIZE];
 
 //---------------------------------------------------------------------------
-int main(void)
-{
-    Kernel::Init();
-
-    clMainThread.Init(aucMainStack, MAIN_STACK_SIZE, 1, (ThreadEntryFunc)AppMain, NULL);
-
-    clIdleThread.Init(awIdleStack, IDLE_STACK_SIZE, 0, (ThreadEntryFunc)IdleMain, NULL);
-
-    clMainThread.Start();
-    clIdleThread.Start();
-
-    clUART.SetName("/dev/tty");
-    clUART.Init();
-
-    DriverList::Add(&clUART);
-
-    Kernel::Start();
-}
-
-//---------------------------------------------------------------------------
-static void IdleMain(void* unused)
+void IdleMain(void* unused)
 {
     while (1) {
 #if 1
@@ -187,7 +164,7 @@ void KUtil_Ultoa(uint32_t u8Data_, char* szText_)
 }
 
 //---------------------------------------------------------------------------
-static void ProfileInit()
+void ProfileInit()
 {
     clProfileOverhead.Init();
 
@@ -209,7 +186,7 @@ static void ProfileInit()
 }
 
 //---------------------------------------------------------------------------
-static void ProfileOverhead()
+void ProfileOverhead()
 {
     uint16_t i;
     for (i = 0; i < 100; i++) {
@@ -219,7 +196,7 @@ static void ProfileOverhead()
 }
 
 //---------------------------------------------------------------------------
-static void Semaphore_Flyback(Semaphore* pclSem_)
+void Semaphore_Flyback(Semaphore* pclSem_)
 {
     clSemaphoreFlyback.Start();
     pclSem_->Pend();
@@ -229,7 +206,7 @@ static void Semaphore_Flyback(Semaphore* pclSem_)
 }
 
 //---------------------------------------------------------------------------
-static void Semaphore_Profiling()
+void Semaphore_Profiling()
 {
     Semaphore clSem;
 
@@ -265,7 +242,7 @@ static void Semaphore_Profiling()
 }
 
 //---------------------------------------------------------------------------
-static void Mutex_Profiling()
+void Mutex_Profiling()
 {
     uint16_t i;
     Mutex    clMutex;
@@ -288,7 +265,7 @@ static void Mutex_Profiling()
 }
 
 //---------------------------------------------------------------------------
-static void Thread_ProfilingThread()
+void Thread_ProfilingThread()
 {
     // Stop the "thread start" profiling timer, which was started from the
     // main app thread
@@ -301,7 +278,7 @@ static void Thread_ProfilingThread()
 }
 
 //---------------------------------------------------------------------------
-static void Thread_Profiling()
+void Thread_Profiling()
 {
     uint16_t i;
 
@@ -355,7 +332,7 @@ void Scheduler_Profiling()
 }
 
 //---------------------------------------------------------------------------
-static void PrintWait(Driver* pclDriver_, uint16_t u16Size_, const char* data)
+void PrintWait(Driver* pclDriver_, uint16_t u16Size_, const char* data)
 {
     uint16_t u16Written = 0;
 
@@ -403,9 +380,8 @@ void ProfilePrintResults()
     ProfilePrint(&clSchedulerTimer, "SC");
 }
 
-
 //---------------------------------------------------------------------------
-static void AppMain(void* unused)
+void AppMain(void* unused)
 {
     UartDriver* pclUART = static_cast<UartDriver*>(DriverList::FindByPath("/dev/tty"));
 
@@ -440,4 +416,27 @@ static void AppMain(void* unused)
     typedef void (*myFunc)(void);
     myFunc reboot = 0;
     reboot();
+}
+} // anonymous namespace
+
+using namespace Mark3;
+
+//---------------------------------------------------------------------------
+int main(void)
+{
+    Kernel::Init();
+
+    clMainThread.Init(aucMainStack, MAIN_STACK_SIZE, 1, AppMain, NULL);
+
+    clIdleThread.Init(awIdleStack, IDLE_STACK_SIZE, 0, IdleMain, NULL);
+
+    clMainThread.Start();
+    clIdleThread.Start();
+
+    clUART.SetName("/dev/tty");
+    clUART.Init();
+
+    DriverList::Add(&clUART);
+
+    Kernel::Start();
 }

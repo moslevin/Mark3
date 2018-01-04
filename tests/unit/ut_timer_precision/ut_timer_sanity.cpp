@@ -24,37 +24,33 @@ See license.txt for more information
 #include "kernelaware.h"
 #include "../unit_test.h"
 #include "../ut_platform.h"
-namespace Mark3 {
+
+namespace {
+using namespace Mark3;
 //---------------------------------------------------------------------------
 // Global objects
-static ProfileTimer clProfiler100m; //!< Profiling timer
-static ProfileTimer clProfiler10m;  //!< Profiling timer
-static ProfileTimer clProfiler1m;   //!< Profiling timer
-static ProfileTimer clProfiler1;
-static ProfileTimer clProfiler2;
-static ProfileTimer clProfiler3;
-static MessageQueue clMsgQ; //!< Message Queue for timers
+ProfileTimer clProfiler100m; //!< Profiling timer
+ProfileTimer clProfiler10m;  //!< Profiling timer
+ProfileTimer clProfiler1m;   //!< Profiling timer
+ProfileTimer clProfiler1;
+ProfileTimer clProfiler2;
+ProfileTimer clProfiler3;
+MessageQueue clMsgQ; //!< Message Queue for timers
 
 #define MESSAGE_POOL_SIZE (3)
-static MessagePool  s_clMessagePool;
-static Message s_clMessages[MESSAGE_POOL_SIZE];
+MessagePool  s_clMessagePool;
+Message s_clMessages[MESSAGE_POOL_SIZE];
 
-//---------------------------------------------------------------------------
+Timer     clTimer;
+Timer     clTimer1;
+Timer     clTimer2;
+Timer     clTimer3;
 
-void MemSet(void* pvData_, unsigned char u8Value_, unsigned short u16Count_)
-{
-    unsigned char* pu8Data = (unsigned char*)pvData_;
-    unsigned short i;
-    for (i = 0; i < u16Count_; i++) {
-        pu8Data[i] = u8Value_;
-    }
-}
+Semaphore clTimerSem;
+} // anonymous namespace
 
-static Timer     clTimer;
-static Timer     clTimer1;
-static Timer     clTimer2;
-static Timer     clTimer3;
-static Semaphore clTimerSem;
+namespace Mark3 {
+
 //---------------------------------------------------------------------------
 void TCallback(Thread* pclOwner_, void* data_)
 {

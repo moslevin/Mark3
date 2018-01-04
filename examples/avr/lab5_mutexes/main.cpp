@@ -26,61 +26,42 @@ Takeaway:
 #if !KERNEL_USE_IDLE_FUNC
 #error "This demo requires KERNEL_USE_IDLE_FUNC"
 #endif
-using namespace Mark3;
 
 extern "C" {
 void __cxa_pure_virtual(void)
 {
 }
 }
+namespace {
+using namespace Mark3;
 
 //---------------------------------------------------------------------------
 // This block declares the thread data for one main application thread.  It
 // defines a thread object, stack (in word-array form), and the entry-point
 // function used by the application thread.
 #define APP1_STACK_SIZE (320 / sizeof(K_WORD))
-static Thread clApp1Thread;
-static K_WORD awApp1Stack[APP1_STACK_SIZE];
-static void App1Main(void* unused_);
+Thread clApp1Thread;
+K_WORD awApp1Stack[APP1_STACK_SIZE];
+void App1Main(void* unused_);
 
 //---------------------------------------------------------------------------
 // This block declares the thread data for one main application thread.  It
 // defines a thread object, stack (in word-array form), and the entry-point
 // function used by the application thread.
 #define APP2_STACK_SIZE (320 / sizeof(K_WORD))
-static Thread clApp2Thread;
-static K_WORD awApp2Stack[APP2_STACK_SIZE];
-static void App2Main(void* unused_);
+Thread clApp2Thread;
+K_WORD awApp2Stack[APP2_STACK_SIZE];
+void App2Main(void* unused_);
 
 //---------------------------------------------------------------------------
 // This is the mutex that we'll use to synchronize two threads in this
 // demo application.
-static Mutex clMyMutex;
+Mutex clMyMutex;
 
 // This counter variable is the "shared resource" in the example, protected
 // by the mutex.  Only one thread should be given access to the counter at
 // any time.
-static volatile uint32_t u32Counter = 0;
-
-//---------------------------------------------------------------------------
-int main(void)
-{
-    // See the annotations in previous labs for details on init.
-    Kernel::Init();
-
-    clApp1Thread.Init(awApp1Stack, sizeof(awApp1Stack), 1, App1Main, 0);
-    clApp2Thread.Init(awApp2Stack, sizeof(awApp2Stack), 1, App2Main, 0);
-
-    clApp1Thread.Start();
-    clApp2Thread.Start();
-
-    // Initialize the mutex used in this example.
-    clMyMutex.Init();
-
-    Kernel::Start();
-
-    return 0;
-}
+volatile uint32_t u32Counter = 0;
 
 //---------------------------------------------------------------------------
 void App1Main(void* unused_)
@@ -136,4 +117,27 @@ void App2Main(void* unused_)
         // Release the lock, allowing the other thread to do its thing.
         clMyMutex.Release();
     }
+}
+} // anonymous namespace
+
+using namespace Mark3;
+
+//---------------------------------------------------------------------------
+int main(void)
+{
+    // See the annotations in previous labs for details on init.
+    Kernel::Init();
+
+    clApp1Thread.Init(awApp1Stack, sizeof(awApp1Stack), 1, App1Main, 0);
+    clApp2Thread.Init(awApp2Stack, sizeof(awApp2Stack), 1, App2Main, 0);
+
+    clApp1Thread.Start();
+    clApp2Thread.Start();
+
+    // Initialize the mutex used in this example.
+    clMyMutex.Init();
+
+    Kernel::Start();
+
+    return 0;
 }

@@ -4,19 +4,21 @@
 #include "tiles.h"
 
 #include "brball.h"
+namespace {
 using namespace Mark3;
+//---------------------------------------------------------------------------
+COLOR auBallPalette[4] = { COLOR_BLACK, COLOR_GREY50, COLOR_GREY75, COLOR_WHITE };
 
 //---------------------------------------------------------------------------
-static COLOR auBallPalette[4] = { COLOR_BLACK, COLOR_GREY50, COLOR_GREY75, COLOR_WHITE };
-
-//---------------------------------------------------------------------------
-static uint8_t aucBallTile[] = {
+uint8_t aucBallTile[] = {
     0x14, // 0110 = 00 01 01 00 = 0x14
     0x79, // 1321 = 01 11 10 01 = 0x79
     0x69, // 1221 = 01 10 10 01 = 0x69
     0x14  // 0110 = 00 01 01 00 = 0x14
 };
+} // anonymous namespace
 
+using namespace Mark3;
 //---------------------------------------------------------------------------
 void BrBall::SetPosition(uint16_t u16X_, uint16_t u16Y_)
 {

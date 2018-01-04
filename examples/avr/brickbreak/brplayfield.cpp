@@ -20,6 +20,7 @@ using namespace Mark3;
 #define READ_LEVEL_MEM(x) (*x)
 #endif
 
+namespace {
 //---------------------------------------------------------------------------
 const uint16_t au16LevelData[][LEVEL_NUM_ROWS] LEVEL_MEM
     = { { 0xFFF, 0xFFF, 0x666, 0x666, 0x666, 0x666, 0x666, 0x666, 0xFFF, 0xFFF },
@@ -57,7 +58,7 @@ const uint16_t au16LevelData[][LEVEL_NUM_ROWS] LEVEL_MEM
         { 0x0FFF, 0x0FFF, 0x0000, 0x0FFF, 0x0FFF, 0x0FFF, 0x0000, 0x0FFF, 0x0FFF },
         { 0x0FFF, 0x0FFF, 0x0F0F, 0x0F0F, 0x03FC, 0x03FC, 0x0F0F, 0x0FFF, 0x0FFF } };
 
-static BrLevelType_t aeLevelTypes[NUM_LEVELS]
+BrLevelType_t aeLevelTypes[NUM_LEVELS]
     = { BR_LEVEL_NORMAL,   BR_LEVEL_NORMAL,   BR_LEVEL_BREAKTHROUGH, BR_LEVEL_ROULETTE,
         BR_LEVEL_NORMAL,   BR_LEVEL_NORMAL,   BR_LEVEL_BREAKTHROUGH, BR_LEVEL_NORMAL,
         BR_LEVEL_ROULETTE, BR_LEVEL_NORMAL,   BR_LEVEL_BREAKTHROUGH, BR_LEVEL_NORMAL,
@@ -66,7 +67,9 @@ static BrLevelType_t aeLevelTypes[NUM_LEVELS]
         BR_LEVEL_NORMAL,   BR_LEVEL_NORMAL,   BR_LEVEL_BREAKTHROUGH, BR_LEVEL_NORMAL,
         BR_LEVEL_ROULETTE, BR_LEVEL_NORMAL,   BR_LEVEL_BREAKTHROUGH, BR_LEVEL_NORMAL,
         BR_LEVEL_NORMAL,   BR_LEVEL_ROULETTE, BR_LEVEL_BREAKTHROUGH, BR_LEVEL_NORMAL };
+} // anonymous namespace
 
+using namespace Mark3;
 //---------------------------------------------------------------------------
 void BrPlayField::LoadLevel(uint16_t u16Level_)
 {

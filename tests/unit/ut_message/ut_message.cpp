@@ -19,24 +19,49 @@ See license.txt for more information
 #include "../ut_platform.h"
 #include "message.h"
 #include "thread.h"
-namespace Mark3 {
 
-static Thread clMsgThread;
-
-#define MSG_STACK_SIZE (192)
-static K_WORD aucMsgStack[MSG_STACK_SIZE];
-
-static MessageQueue     clMsgQ;
-static volatile uint8_t u8PassCount = 0;
-
-#define MESSAGE_POOL_SIZE (3)
-static MessagePool s_clMessagePool;
-static Message s_clMessages[MESSAGE_POOL_SIZE];
+namespace {
 //===========================================================================
 // Local Defines
 //===========================================================================
 
-void MsgConsumer(void* unused_)
+using namespace Mark3;
+Thread clMsgThread;
+#define MSG_STACK_SIZE (192)
+K_WORD aucMsgStack[MSG_STACK_SIZE];
+MessageQueue     clMsgQ;
+volatile uint8_t u8PassCount = 0;
+#define MESSAGE_POOL_SIZE (3)
+MessagePool s_clMessagePool;
+Message s_clMessages[MESSAGE_POOL_SIZE];
+volatile bool bTimedOut = false;
+
+//===========================================================================
+void MsgTimed(void* /*unused*/)
+{
+    Message* pclRet;
+    u8PassCount = 0;
+    pclRet      = clMsgQ.Receive(10);
+    if (0 == pclRet) {
+        u8PassCount++;
+    } else {
+        s_clMessagePool.Push(pclRet);
+    }
+
+    pclRet = clMsgQ.Receive(1000);
+    if (0 != pclRet) {
+        u8PassCount++;
+    } else {
+        s_clMessagePool.Push(pclRet);
+    }
+
+    while (1) {
+        pclRet = clMsgQ.Receive();
+        s_clMessagePool.Push(pclRet);
+    }
+}
+
+void MsgConsumer(void* /*unused_*/)
 {
     Message* pclMsg;
     uint8_t  i;
@@ -85,6 +110,9 @@ void MsgConsumer(void* unused_)
     }
 }
 
+} // anonymous namespace
+
+namespace Mark3 {
 //===========================================================================
 // Define Test Cases Here
 //===========================================================================
@@ -171,32 +199,6 @@ TEST(ut_message_exhaust)
     }
 }
 TEST_END
-
-static volatile bool bTimedOut = false;
-//===========================================================================
-void MsgTimed(void* unused)
-{
-    Message* pclRet;
-    u8PassCount = 0;
-    pclRet      = clMsgQ.Receive(10);
-    if (0 == pclRet) {
-        u8PassCount++;
-    } else {
-        s_clMessagePool.Push(pclRet);
-    }
-
-    pclRet = clMsgQ.Receive(1000);
-    if (0 != pclRet) {
-        u8PassCount++;
-    } else {
-        s_clMessagePool.Push(pclRet);
-    }
-
-    while (1) {
-        pclRet = clMsgQ.Receive();
-        s_clMessagePool.Push(pclRet);
-    }
-}
 
 //===========================================================================
 TEST(ut_message_timed_rx)

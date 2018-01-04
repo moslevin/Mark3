@@ -22,12 +22,22 @@ See license.txt for more information
 #include "memutil.h"
 #include "driver.h"
 #include "kernelaware.h"
-namespace Mark3 {
 
 //===========================================================================
 // Local Defines
 //===========================================================================
+namespace {
+using namespace Mark3;
 
+Thread clThread;
+#define SEM_STACK_SIZE (256)
+K_WORD           aucStack[SEM_STACK_SIZE];
+Semaphore        clSem1;
+Semaphore        clSem2;
+volatile uint8_t u8Counter = 0;
+} // anonymous namespace
+
+namespace Mark3 {
 //===========================================================================
 // Define Test Cases Here
 //===========================================================================
@@ -51,33 +61,23 @@ TEST(ut_semaphore_count)
 TEST_END
 
 //===========================================================================
-static Thread clThread;
-#define SEM_STACK_SIZE (256)
-static K_WORD           aucStack[SEM_STACK_SIZE];
-static Semaphore        clSem1;
-static Semaphore        clSem2;
-static volatile uint8_t u8Counter = 0;
-
-//===========================================================================
-void PostPendFunction(void* param_)
-{
-    Semaphore* pclSem = (Semaphore*)param_;
-    while (1) {
-        pclSem->Pend();
-        u8Counter++;
-    }
-}
-
-//===========================================================================
 TEST(ut_semaphore_post_pend)
 {
+    auto lPostPend = [](void* param_) {
+        auto* pclSem = static_cast<Semaphore*>(param_);
+        while (1) {
+            pclSem->Pend();
+            u8Counter++;
+        }
+    };
+
     // Test - Make sure that pending on a semaphore causes a higher-priority
     // waiting thread to block, and that posting that semaphore from a running
     // lower-priority thread awakens the higher-priority thread
 
     clSem1.Init(0, 1);
 
-    clThread.Init(aucStack, SEM_STACK_SIZE, 7, PostPendFunction, (void*)&clSem1);
+    clThread.Init(aucStack, SEM_STACK_SIZE, 7, lPostPend, (void*)&clSem1);
     clThread.Start();
     KernelAware::ProfileInit("seminit");
     for (int i = 0; i < 10; i++) {
@@ -99,7 +99,7 @@ TEST(ut_semaphore_post_pend)
 
     // Restart the test thread.
     u8Counter = 0;
-    clThread.Init(aucStack, SEM_STACK_SIZE, 7, PostPendFunction, (void*)&clSem2);
+    clThread.Init(aucStack, SEM_STACK_SIZE, 7, lPostPend, (void*)&clSem2);
     clThread.Start();
 
     // We'll kill the thread as soon as it blocks.
@@ -111,26 +111,21 @@ TEST(ut_semaphore_post_pend)
 TEST_END
 
 //===========================================================================
-void TimeSemFunction(void* param_)
-{
-    Semaphore* pclSem = (Semaphore*)param_;
-
-    Thread::Sleep(20);
-
-    pclSem->Post();
-
-    Scheduler::GetCurrentThread()->Exit();
-}
-
-//===========================================================================
 TEST(ut_semaphore_timed)
 {
+    auto lTimedSem = [](void* param_) {
+        auto* pclSem = static_cast<Semaphore*>(param_);
+        Thread::Sleep(20);
+        pclSem->Post();
+        Scheduler::GetCurrentThread()->Exit();
+    };
+
     Semaphore clTestSem;
     Semaphore clTestSem2;
 
     clTestSem.Init(0, 1);
 
-    clThread.Init(aucStack, SEM_STACK_SIZE, 7, TimeSemFunction, (void*)&clTestSem);
+    clThread.Init(aucStack, SEM_STACK_SIZE, 7, lTimedSem, (void*)&clTestSem);
     clThread.Start();
 
     EXPECT_FALSE(clTestSem.Pend(10));
@@ -141,7 +136,7 @@ TEST(ut_semaphore_timed)
     // production
     clTestSem2.Init(0, 1);
 
-    clThread.Init(aucStack, SEM_STACK_SIZE, 7, TimeSemFunction, (void*)&clTestSem2);
+    clThread.Init(aucStack, SEM_STACK_SIZE, 7, lTimedSem, (void*)&clTestSem2);
     clThread.Start();
 
     EXPECT_TRUE(clTestSem2.Pend(30));

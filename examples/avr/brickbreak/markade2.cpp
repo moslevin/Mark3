@@ -44,71 +44,31 @@ extern "C" void __cxa_pure_virtual()
 {
 }
 
+namespace {
 //---------------------------------------------------------------------------
 // Global objects
-static Thread AppThread;  //!< Main "application" thread
-static Thread IdleThread; //!< Idle thread - runs when app can't
+Thread AppThread;  //!< Main "application" thread
+Thread IdleThread; //!< Idle thread - runs when app can't
 
-static GraphicsFlavr clTFT_Sim; //!< TFT Display driver
+GraphicsFlavr clTFT_Sim; //!< TFT Display driver
 // static GraphicsST7735 clTFT;
-GraphicsDriver* pclDisplay = &clTFT_Sim;
 
-static FlavrJoystick clJoy_Sim;
+FlavrJoystick clJoy_Sim;
 // static BasicJoystick clJoy;
 
-JoystickDriver* pclJoystick = &clJoy_Sim;
+SoundDriver clSound;
 
-static SoundDriver clSound;
-SoundDriver*       pclSound = &clSound;
-
-static Semaphore clSem;
-static Timer     clTimer;
+Semaphore clSem;
+Timer     clTimer;
 
 //---------------------------------------------------------------------------
 #define STACK_SIZE_APP (320)  //!< Size of the main app's stack
 
 //---------------------------------------------------------------------------
-static uint8_t aucAppStack[STACK_SIZE_APP];
+uint8_t aucAppStack[STACK_SIZE_APP];
 
 //---------------------------------------------------------------------------
-static void AppEntry(void);
-static void IdleEntry(void);
-
-//---------------------------------------------------------------------------
-int main(void)
-{
-    Kernel::Init(); //!< MUST be before other kernel ops
-
-    AppThread.Init(aucAppStack,             //!< Pointer to the stack
-                   STACK_SIZE_APP,          //!< Size of the stack
-                   1,                       //!< Thread priority
-                   (ThreadEntryFunc)AppEntry, //!< Entry function
-                   (void*)&AppThread);      //!< Entry function argument
-
-    AppThread.Start(); //!< Schedule the threads
-
-#if KERNEL_USE_IDLE_FUNC
-    Kernel::SetIdleFunc(IdleEntry);
-#else
-    IdleThread.Init(aucIdleStack,             //!< Pointer to the stack
-                    STACK_SIZE_IDLE,          //!< Size of the stack
-                    0,                        //!< Thread priority
-                    (ThreadEntry_t)IdleEntry, //!< Entry function
-                    NULL);                    //!< Entry function argument
-
-    IdleThread.Start();
-#endif
-
-    Kernel::Start(); //!< Start the kernel!
-}
-
-//---------------------------------------------------------------------------
-void Timer_Callback(Thread* pclOwner_, void* unused_)
-{
-    clSem.Post();
-}
-
-static Breakout clBreakout;
+Breakout clBreakout;
 
 //---------------------------------------------------------------------------
 void AppEntry(void)
@@ -135,7 +95,11 @@ void AppEntry(void)
     clSound.Init();
     clSound.Open();
 
-    clTimer.Start(true, 33, 0, Timer_Callback, 0);
+    auto lTimerCallback = [](Thread* /*pclOwner_*/, void* /*unused_*/) {
+        clSem.Post();
+    };
+
+    clTimer.Start(true, 33, 0, lTimerCallback, 0);
 
     // Clear the screen
     pclDisplay->ClearScreen();
@@ -171,4 +135,36 @@ void IdleEntry(void)
 #if !KERNEL_USE_IDLE_FUNC
     }
 #endif
+}
+} // anonymous namespace
+
+JoystickDriver* pclJoystick = &clJoy_Sim;
+GraphicsDriver* pclDisplay = &clTFT_Sim;
+SoundDriver*    pclSound = &clSound;
+//---------------------------------------------------------------------------
+int main(void)
+{
+    Kernel::Init(); //!< MUST be before other kernel ops
+
+    AppThread.Init(aucAppStack,             //!< Pointer to the stack
+                   STACK_SIZE_APP,          //!< Size of the stack
+                   1,                       //!< Thread priority
+                   (ThreadEntryFunc)AppEntry, //!< Entry function
+                   (void*)&AppThread);      //!< Entry function argument
+
+    AppThread.Start(); //!< Schedule the threads
+
+#if KERNEL_USE_IDLE_FUNC
+    Kernel::SetIdleFunc(IdleEntry);
+#else
+    IdleThread.Init(aucIdleStack,             //!< Pointer to the stack
+                    STACK_SIZE_IDLE,          //!< Size of the stack
+                    0,                        //!< Thread priority
+                    (ThreadEntry_t)IdleEntry, //!< Entry function
+                    NULL);                    //!< Entry function argument
+
+    IdleThread.Start();
+#endif
+
+    Kernel::Start(); //!< Start the kernel!
 }

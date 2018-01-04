@@ -98,7 +98,6 @@ volatile bool     g_bIsKernelAware; //!< Will be set to true by a kernel-aware h
 volatile uint8_t  g_u8KACommand;    //!< Kernel-aware simulator command to execute
 KernelAwareData_t g_stKAData;       //!< Data structure used to communicate with host.
 
-
 namespace Mark3
 {
 //---------------------------------------------------------------------------

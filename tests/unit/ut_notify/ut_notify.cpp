@@ -18,25 +18,19 @@ See license.txt for more information
 #include "kernel.h"
 #include "../ut_platform.h"
 #include "mark3.h"
-namespace Mark3 {
 
+namespace {
+using namespace Mark3;
 //===========================================================================
 // Local Defines
 //===========================================================================
-static Notify           clNotify;
-static Thread           clThread;
-static K_WORD           awStack[192];
-static volatile uint8_t u8Count = 0;
-
-static void NotifyThread(void* unused_)
-{
-    while (1) {
-        Thread::Sleep(50);
-        u8Count++;
-        clNotify.Signal();
-    }
+Notify           clNotify;
+Thread           clThread;
+K_WORD           awStack[192];
+volatile uint8_t u8Count = 0;
 }
 
+namespace Mark3 {
 //===========================================================================
 // Define Test Cases Here
 //===========================================================================
@@ -44,7 +38,15 @@ TEST(ut_notify)
 {
     clNotify.Init();
 
-    clThread.Init(awStack, 192, 2, NotifyThread, NULL);
+    auto lNotifyFunc = [](void* param_) {
+        while (1) {
+            Thread::Sleep(50);
+            u8Count++;
+            clNotify.Signal();
+        }
+    };
+
+    clThread.Init(awStack, 192, 2, lNotifyFunc, NULL);
     clThread.Start();
     for (int i = 0; i < 10; i++) {
         clNotify.Wait(0);

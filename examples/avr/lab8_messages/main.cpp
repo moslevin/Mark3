@@ -38,7 +38,6 @@ IPC even more flexibility.
 #if !KERNEL_USE_IDLE_FUNC
 #error "This demo requires KERNEL_USE_IDLE_FUNC"
 #endif
-using namespace Mark3;
 
 extern "C" {
 void __cxa_pure_virtual(void)
@@ -46,54 +45,32 @@ void __cxa_pure_virtual(void)
 }
 }
 
+namespace {
+using namespace Mark3;
 //---------------------------------------------------------------------------
 // This block declares the thread data for one main application thread.  It
 // defines a thread object, stack (in word-array form), and the entry-point
 // function used by the application thread.
 #define APP1_STACK_SIZE (320 / sizeof(K_WORD))
-static Thread clApp1Thread;
-static K_WORD awApp1Stack[APP1_STACK_SIZE];
-static void App1Main(void* unused_);
+Thread clApp1Thread;
+K_WORD awApp1Stack[APP1_STACK_SIZE];
+void App1Main(void* unused_);
 
 //---------------------------------------------------------------------------
 // This block declares the thread data for one main application thread.  It
 // defines a thread object, stack (in word-array form), and the entry-point
 // function used by the application thread.
 #define APP2_STACK_SIZE (320 / sizeof(K_WORD))
-static Thread clApp2Thread;
-static K_WORD awApp2Stack[APP2_STACK_SIZE];
-static void App2Main(void* unused_);
+Thread clApp2Thread;
+K_WORD awApp2Stack[APP2_STACK_SIZE];
+void App2Main(void* unused_);
 
 //---------------------------------------------------------------------------
-static MessageQueue clMsgQ;
+MessageQueue clMsgQ;
 
 #define MESSAGE_POOL_SIZE (3)
-static MessagePool s_clMessagePool;
-static Message s_clMessages[MESSAGE_POOL_SIZE];
-//---------------------------------------------------------------------------
-int main(void)
-{
-    // See the annotations in previous labs for details on init.
-    Kernel::Init();
-
-    clApp1Thread.Init(awApp1Stack, sizeof(awApp1Stack), 1, App1Main, 0);
-    clApp2Thread.Init(awApp2Stack, sizeof(awApp2Stack), 1, App2Main, 0);
-
-    clApp1Thread.Start();
-    clApp2Thread.Start();
-
-    clMsgQ.Init();
-
-    s_clMessagePool.Init();
-    for (int i = 0; i < MESSAGE_POOL_SIZE; i++) {
-        s_clMessages[i].Init();
-        s_clMessagePool.Push(&s_clMessages[i]);
-    }
-
-    Kernel::Start();
-
-    return 0;
-}
+MessagePool s_clMessagePool;
+Message s_clMessages[MESSAGE_POOL_SIZE];
 
 //---------------------------------------------------------------------------
 void App1Main(void* unused_)
@@ -146,4 +123,31 @@ void App2Main(void* unused_)
         // Done with the message, return it back to the global message queue.
         s_clMessagePool.Push(pclMsg);
     }
+}
+} // anonymous namespace
+
+using namespace Mark3;
+//---------------------------------------------------------------------------
+int main(void)
+{
+    // See the annotations in previous labs for details on init.
+    Kernel::Init();
+
+    clApp1Thread.Init(awApp1Stack, sizeof(awApp1Stack), 1, App1Main, 0);
+    clApp2Thread.Init(awApp2Stack, sizeof(awApp2Stack), 1, App2Main, 0);
+
+    clApp1Thread.Start();
+    clApp2Thread.Start();
+
+    clMsgQ.Init();
+
+    s_clMessagePool.Init();
+    for (int i = 0; i < MESSAGE_POOL_SIZE; i++) {
+        s_clMessages[i].Init();
+        s_clMessagePool.Push(&s_clMessages[i]);
+    }
+
+    Kernel::Start();
+
+    return 0;
 }

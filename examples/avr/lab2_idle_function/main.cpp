@@ -42,29 +42,54 @@ a thread object and stack for Idle functionality.
 #if !KERNEL_USE_IDLE_FUNC
 #error "This demo requires KERNEL_USE_IDLE_FUNC"
 #endif
-using namespace Mark3;
-
 extern "C" {
 void __cxa_pure_virtual(void)
 {
 }
 }
 
+namespace {
+using namespace Mark3;
 //---------------------------------------------------------------------------
 // This block declares the thread data for the main application thread.  It
 // defines a thread object, stack (in word-array form), and the entry-point
 // function used by the application thread.
 #define APP_STACK_SIZE (320 / sizeof(K_WORD))
-static Thread clAppThread;
-static K_WORD awAppStack[APP_STACK_SIZE];
-static void AppMain(void* unused_);
+Thread clAppThread;
+K_WORD awAppStack[APP_STACK_SIZE];
+void AppMain(void* unused_);
 
 //---------------------------------------------------------------------------
 // This block declares the special function called from with the special
 // Kernel-Idle context.  We use the Kernel::SetIdleFunc() API to ensure that
 // this function is called to provide our idle context.
-static void IdleMain(void);
+void IdleMain(void);
 
+//---------------------------------------------------------------------------
+void AppMain(void* unused_)
+{
+    // Same as in lab1.
+    while (1) {
+        KernelAware::Print("Hello World!\n");
+        Thread::Sleep(1000);
+    }
+}
+
+//---------------------------------------------------------------------------
+void IdleMain(void)
+{
+    // Low priority task + power management routines go here.
+    // The actions taken in this context must *not* cause a blocking call,
+    // similar to the requirements for an idle thread.
+
+    // Note that unlike an idle thread, the idle function must run to
+    // completion.  As this is also called from a nested interrupt context,
+    // it's worthwhile keeping this function brief, limited to absolutely
+    // necessary functionality, and with minimal stack use.
+}
+} // anonymous namespace
+
+using namespace Mark3;
 //---------------------------------------------------------------------------
 int main(void)
 {
@@ -88,27 +113,4 @@ int main(void)
     Kernel::Start();
 
     return 0;
-}
-
-//---------------------------------------------------------------------------
-void AppMain(void* unused_)
-{
-    // Same as in lab1.
-    while (1) {
-        KernelAware::Print("Hello World!\n");
-        Thread::Sleep(1000);
-    }
-}
-
-//---------------------------------------------------------------------------
-void IdleMain(void)
-{
-    // Low priority task + power management routines go here.
-    // The actions taken in this context must *not* cause a blocking call,
-    // similar to the requirements for an idle thread.
-
-    // Note that unlike an idle thread, the idle function must run to
-    // completion.  As this is also called from a nested interrupt context,
-    // it's worthwhile keeping this function brief, limited to absolutely
-    // necessary functionality, and with minimal stack use.
 }

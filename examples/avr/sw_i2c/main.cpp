@@ -25,6 +25,8 @@ See license.txt for more information
 
 #include <avr/io.h>
 #include <avr/interrupt.h>
+
+namespace {
 using namespace Mark3;
 
 //---------------------------------------------------------------------------
@@ -41,6 +43,7 @@ using namespace Mark3;
 #define SDA_OUT     PORTC
 #define SDA_BIT     0x02
 #define SDA_PIN     PINC
+
 
 //---------------------------------------------------------------------------
 // I2C class extending the basic protocol driver for use with the configured
@@ -101,24 +104,24 @@ private:
 
 //---------------------------------------------------------------------------
 // I2C driver instance
-static TestI2C s_clI2C;
+TestI2C s_clI2C;
 
 //---------------------------------------------------------------------------
 // UART object + buffer data
-static ATMegaUARTPlus s_clUart;
-static uint8_t s_u8RxBuffer[32];
-static uint8_t s_u8TxBuffer[32];
+ATMegaUARTPlus s_clUart;
+uint8_t s_u8RxBuffer[32];
+uint8_t s_u8TxBuffer[32];
 
 //---------------------------------------------------------------------------
 // Threads + Stacks
-static Thread s_clMainTask;
-static Thread s_clIdleTask;
-static K_WORD s_aucMainStack[512];
-static K_WORD s_aucIdleStack[512];
+Thread s_clMainTask;
+Thread s_clIdleTask;
+K_WORD s_aucMainStack[512];
+K_WORD s_aucIdleStack[512];
 
 //---------------------------------------------------------------------------
 // Task using the EEPROM driver
-static void MainTask(void* unused)
+void MainTask(void* unused)
 {
     (void)unused;
 
@@ -247,7 +250,9 @@ static void IdleTask(void* unused)
         // Do nothing at idle..
     }
 }
+} // anonymous namespace
 
+using namespace Mark3;
 int main(void)
 {
     // Init the kernel

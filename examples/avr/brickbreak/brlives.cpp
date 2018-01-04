@@ -13,7 +13,6 @@ void BrLives::Reset(void)
 }
 
 //---------------------------------------------------------------------------
-
 bool BrLives::Decrement(void)
 {
     m_bUpdate = true;

@@ -42,15 +42,15 @@ extern "C" void __cxa_pure_virtual()
 {
 }
 
+namespace {
 using namespace Mark3;
 //---------------------------------------------------------------------------
 // Global objects
-static Thread AppThread;  //!< Main "application" thread
-static Thread IdleThread; //!< Idle thread - runs when app can't
+Thread AppThread;  //!< Main "application" thread
+Thread IdleThread; //!< Idle thread - runs when app can't
 
-static ATMegaUART clUART; //!< UART device driver object
-// static uint8_t aucFS[512];          //!< Filesystem array
-static NLFS_EEPROM clNLFS; //!< Filesystem object
+ATMegaUART clUART; //!< UART device driver object
+NLFS_EEPROM clNLFS; //!< Filesystem object
 
 //---------------------------------------------------------------------------
 #define STACK_SIZE_APP (384)  //!< Size of the main app's stack
@@ -61,44 +61,15 @@ static NLFS_EEPROM clNLFS; //!< Filesystem object
 #define UART_SIZE_TX (32) //!< UART TX Buffer size
 
 //---------------------------------------------------------------------------
-static uint8_t aucAppStack[STACK_SIZE_APP];
-static uint8_t aucIdleStack[STACK_SIZE_IDLE];
+uint8_t aucAppStack[STACK_SIZE_APP];
+uint8_t aucIdleStack[STACK_SIZE_IDLE];
 
 //---------------------------------------------------------------------------
-static uint8_t aucTxBuffer[UART_SIZE_TX];
-static uint8_t aucRxBuffer[UART_SIZE_RX];
+uint8_t aucTxBuffer[UART_SIZE_TX];
+uint8_t aucRxBuffer[UART_SIZE_RX];
 
-//---------------------------------------------------------------------------
-static void AppEntry(void);
-static void IdleEntry(void);
-
-//---------------------------------------------------------------------------
-int main(void)
-{
-    Kernel::Init(); //!< MUST be before other kernel ops
-
-    AppThread.Init(aucAppStack,             //!< Pointer to the stack
-                   STACK_SIZE_APP,          //!< Size of the stack
-                   1,                       //!< Thread priority
-                   (ThreadEntryFunc)AppEntry, //!< Entry function
-                   (void*)&AppThread);      //!< Entry function argument
-
-    IdleThread.Init(aucIdleStack,             //!< Pointer to the stack
-                    STACK_SIZE_IDLE,          //!< Size of the stack
-                    0,                        //!< Thread priority
-                    (ThreadEntryFunc)IdleEntry, //!< Entry function
-                    NULL);                    //!< Entry function argument
-
-    AppThread.Start(); //!< Schedule the threads
-    IdleThread.Start();
-
-    clUART.SetName("/dev/tty"); //!< Add the serial driver
-    clUART.Init();
-
-    DriverList::Add(&clUART);
-
-    Kernel::Start(); //!< Start the kernel!
-}
+NLFS_Host_t clHost;
+NLFS_File   clFile;
 
 void PrintString(const char* szStr_)
 {
@@ -109,9 +80,6 @@ void PrintString(const char* szStr_)
         szTemp++;
     }
 }
-
-NLFS_Host_t clHost;
-NLFS_File   clFile;
 
 //---------------------------------------------------------------------------
 void NLFS_Test(void)
@@ -184,4 +152,35 @@ void IdleEntry(void)
         sleep_disable();
         sei();
     }
+}
+} // anonymous namespace
+
+using namespace Mark3;
+
+//---------------------------------------------------------------------------
+int main(void)
+{
+    Kernel::Init(); //!< MUST be before other kernel ops
+
+    AppThread.Init(aucAppStack,             //!< Pointer to the stack
+                   STACK_SIZE_APP,          //!< Size of the stack
+                   1,                       //!< Thread priority
+                   (ThreadEntryFunc)AppEntry, //!< Entry function
+                   (void*)&AppThread);      //!< Entry function argument
+
+    IdleThread.Init(aucIdleStack,             //!< Pointer to the stack
+                    STACK_SIZE_IDLE,          //!< Size of the stack
+                    0,                        //!< Thread priority
+                    (ThreadEntryFunc)IdleEntry, //!< Entry function
+                    NULL);                    //!< Entry function argument
+
+    AppThread.Start(); //!< Schedule the threads
+    IdleThread.Start();
+
+    clUART.SetName("/dev/tty"); //!< Add the serial driver
+    clUART.Init();
+
+    DriverList::Add(&clUART);
+
+    Kernel::Start(); //!< Start the kernel!
 }

@@ -18,45 +18,55 @@
 #include "drvFlavrJoy.h"
 #include "rand_lfsr.h"
 #include "gui_palette.h"
+
+extern "C" {
+void __cxa_pure_virtual(void)
+{
+}
+}
+
+namespace
+{
+using namespace Mark3;
 //---------------------------------------------------------------------------
 // Graphics driver used in our application
-static GraphicsFlavr clGfx;
+GraphicsFlavr clGfx;
 
 //---------------------------------------------------------------------------
 // Window management objects and GUI components.
-static GuiEventSurface   clEventSurface;
-static GuiWindow         clWindow;
-static LabelControl      clLabel;
-static BrushPanelControl clPanel;
-static CheckBoxControl   clCheckBox1;
-static CheckBoxControl   clCheckBox2;
-static ButtonControl     clSlickButton;
-static SevenSegControl   clSevenSeg;
-static GroupBoxControl   clGroupBox;
-static ProgressControl   clProgress;
+GuiEventSurface   clEventSurface;
+GuiWindow         clWindow;
+LabelControl      clLabel;
+BrushPanelControl clPanel;
+CheckBoxControl   clCheckBox1;
+CheckBoxControl   clCheckBox2;
+ButtonControl     clSlickButton;
+SevenSegControl   clSevenSeg;
+GroupBoxControl   clGroupBox;
+ProgressControl   clProgress;
 //---------------------------------------------------------------------------
 // Joystick driver and associated timer object, used to poll the joystick at
 // a fixed frequency
-static FlavrJoystick clJoystick;
-static Timer         clJoyTimer;
+FlavrJoystick clJoystick;
+Timer         clJoyTimer;
 
 //---------------------------------------------------------------------------
 // Callback function used to poll the joystick and pass the event back to the
 // GUI thread.
-static void JoyTimerCallback(Thread* pclOwner_, void* pvData_);
+void JoyTimerCallback(Thread* pclOwner_, void* pvData_);
 
 //---------------------------------------------------------------------------
 // Tick timer, used to drive animated display elements
-static Timer         clTickTimer;
-static volatile bool bFlip = false;
+Timer         clTickTimer;
+volatile bool bFlip = false;
 //---------------------------------------------------------------------------
-static void TickTimerCallback(Thread* pclOwner_, void* pvData_);
+void TickTimerCallback(Thread* pclOwner_, void* pvData_);
 
 //---------------------------------------------------------------------------
 // Checkbox callback declarations
-static uint8_t u8Progress16Val = 50;
-static void CheckBox1Callback(bool bChecked_);
-static void CheckBox2Callback(bool bChecked_);
+uint8_t u8Progress16Val = 50;
+void CheckBox1Callback(bool bChecked_);
+void CheckBox2Callback(bool bChecked_);
 
 //---------------------------------------------------------------------------
 // GUI Application thread + thread stack
@@ -65,28 +75,11 @@ Thread clAppThread;
 K_WORD awAppStack[APP_STACK_SIZE];
 
 #define MESSAGE_POOL_SIZE (3)
-static MessagePool s_clMessagePool;
-static Message s_clMessages[MESSAGE_POOL_SIZE];
+MessagePool s_clMessagePool;
+Message s_clMessages[MESSAGE_POOL_SIZE];
 
 //---------------------------------------------------------------------------
-static void AppMain(void* unused_);
-
-extern "C" {
-void __cxa_pure_virtual(void)
-{
-}
-}
-
-//---------------------------------------------------------------------------
-int main(void)
-{
-    Kernel::Init();
-
-    clAppThread.Init(awAppStack, APP_STACK_SIZE, 1, AppMain, 0);
-    clAppThread.Start();
-
-    Kernel::Start();
-}
+void AppMain(void* unused_);
 
 //---------------------------------------------------------------------------
 void JoyTimerCallback(Thread* pclOwner_, void* pvData_)
@@ -109,7 +102,7 @@ void JoyTimerCallback(Thread* pclOwner_, void* pvData_)
     clEventSurface.SendEvent(&stEvent);
 }
 
-static volatile bool bTimerRunning = false;
+volatile bool bTimerRunning = false;
 
 //---------------------------------------------------------------------------
 void TickTimerCallback(Thread* pclOwner_, void* pvData_)
@@ -134,7 +127,7 @@ void TickTimerCallback(Thread* pclOwner_, void* pvData_)
 }
 
 //---------------------------------------------------------------------------
-static void MyButtonCallback(void* pvData_)
+void MyButtonCallback(void* pvData_)
 {
     // Toggle the stopwatch timer on/off.
     if (!bTimerRunning) {
@@ -147,7 +140,7 @@ static void MyButtonCallback(void* pvData_)
 }
 
 //---------------------------------------------------------------------------
-static void CheckBox1Callback(bool bChecked_)
+void CheckBox1Callback(bool bChecked_)
 {
     if (bChecked_) {
         KernelAware::Print("CB1_Chk\n");
@@ -160,7 +153,7 @@ static void CheckBox1Callback(bool bChecked_)
 }
 
 //---------------------------------------------------------------------------
-static void CheckBox2Callback(bool bChecked_)
+void CheckBox2Callback(bool bChecked_)
 {
     if (bChecked_) {
         KernelAware::Print("CB2_Chk\n");
@@ -352,4 +345,17 @@ void AppMain(void* unused_)
             bFlip = false;
         }
     }
+}
+} // anonymous namespace
+
+using namespace Mark3;
+//---------------------------------------------------------------------------
+int main(void)
+{
+    Kernel::Init();
+
+    clAppThread.Init(awAppStack, APP_STACK_SIZE, 1, AppMain, 0);
+    clAppThread.Start();
+
+    Kernel::Start();
 }

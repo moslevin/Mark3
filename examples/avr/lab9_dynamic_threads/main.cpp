@@ -39,7 +39,6 @@ of the application.
 #if !KERNEL_TIMERS_TICKLESS
 #error "This demo requires KERNEL_TIMERS_TICKLESS"
 #endif
-using namespace Mark3;
 
 extern "C" {
 void __cxa_pure_virtual(void)
@@ -47,27 +46,30 @@ void __cxa_pure_virtual(void)
 }
 }
 
+namespace {
+using namespace Mark3;
+
 //---------------------------------------------------------------------------
 // This block declares the thread data for one main application thread.  It
 // defines a thread object, stack (in word-array form), and the entry-poi   nt
 // function used by the application thread.
 #define APP1_STACK_SIZE (400 / sizeof(K_WORD))
-static Thread clApp1Thread;
-static K_WORD awApp1Stack[APP1_STACK_SIZE];
-static void App1Main(void* unused_);
+Thread clApp1Thread;
+K_WORD awApp1Stack[APP1_STACK_SIZE];
+void App1Main(void* unused_);
 
 //---------------------------------------------------------------------------
 // This block declares the thread stack data for a thread that we'll create
 // dynamically.
 #define APP2_STACK_SIZE (400 / sizeof(K_WORD))
-static K_WORD awApp2Stack[APP2_STACK_SIZE];
+K_WORD awApp2Stack[APP2_STACK_SIZE];
 
 #if KERNEL_USE_THREAD_CALLOUTS
 #define MAX_THREADS (10)
-static Thread*  apclActiveThreads[10];
-static uint32_t au16ActiveTime[10];
+Thread*  apclActiveThreads[10];
+uint32_t au16ActiveTime[10];
 
-static void PrintThreadSlack(void)
+void PrintThreadSlack(void)
 {
     KernelAware::Print("Stack Slack");
     for (uint8_t i = 0; i < MAX_THREADS; i++) {
@@ -85,7 +87,7 @@ static void PrintThreadSlack(void)
     }
 }
 
-static void PrintCPUUsage(void)
+void PrintCPUUsage(void)
 {
     KernelAware::Print("Cpu usage\n");
     for (int i = 0; i < MAX_THREADS; i++) {
@@ -95,7 +97,7 @@ static void PrintCPUUsage(void)
     }
 }
 
-static void ThreadCreate(Thread* pclThread_)
+void ThreadCreate(Thread* pclThread_)
 {
     KernelAware::Print("TC\n");
     CS_ENTER();
@@ -111,7 +113,7 @@ static void ThreadCreate(Thread* pclThread_)
     PrintCPUUsage();
 }
 
-static void ThreadExit(Thread* pclThread_)
+void ThreadExit(Thread* pclThread_)
 {
     KernelAware::Print("TX\n");
     CS_ENTER();
@@ -128,7 +130,7 @@ static void ThreadExit(Thread* pclThread_)
     PrintCPUUsage();
 }
 
-static void ThreadContextSwitch(Thread* pclThread_)
+void ThreadContextSwitch(Thread* pclThread_)
 {
     KernelAware::Print("CS\n");
     static uint16_t u16LastTick = 0;
@@ -149,24 +151,7 @@ static void ThreadContextSwitch(Thread* pclThread_)
 #endif
 
 //---------------------------------------------------------------------------
-int main(void)
-{
-    // See the annotations in previous labs for details on init.
-    Kernel::Init();
-
-    Kernel::SetThreadCreateCallout(ThreadCreate);
-    Kernel::SetThreadExitCallout(ThreadExit);
-    Kernel::SetThreadContextSwitchCallout(ThreadContextSwitch);
-
-    clApp1Thread.Init(awApp1Stack, sizeof(awApp1Stack), 1, App1Main, 0);
-    clApp1Thread.Start();
-    Kernel::Start();
-
-    return 0;
-}
-
-//---------------------------------------------------------------------------
-static void WorkerMain1(void* arg_)
+void WorkerMain1(void* arg_)
 {
     Semaphore* pclSem   = (Semaphore*)arg_;
     uint32_t   u32Count = 0;
@@ -185,7 +170,7 @@ static void WorkerMain1(void* arg_)
     }
 }
 //---------------------------------------------------------------------------
-static void WorkerMain2(void* arg_)
+void WorkerMain2(void* arg_)
 {
     uint32_t u32Count = 0;
     while (u32Count < 1000000) {
@@ -249,4 +234,23 @@ void App1Main(void* unused_)
         Thread::Sleep(1000);
         PrintThreadSlack();
     }
+}
+} // anonymous namespace
+
+using namespace Mark3;
+//---------------------------------------------------------------------------
+int main(void)
+{
+    // See the annotations in previous labs for details on init.
+    Kernel::Init();
+
+    Kernel::SetThreadCreateCallout(ThreadCreate);
+    Kernel::SetThreadExitCallout(ThreadExit);
+    Kernel::SetThreadContextSwitchCallout(ThreadContextSwitch);
+
+    clApp1Thread.Init(awApp1Stack, sizeof(awApp1Stack), 1, App1Main, 0);
+    clApp1Thread.Start();
+    Kernel::Start();
+
+    return 0;
 }

@@ -39,12 +39,14 @@ extern "C" void __cxa_pure_virtual()
 {
 }
 
+namespace {
+using namespace Mark3;
 //---------------------------------------------------------------------------
 // Global objects
-static Thread AppThread;  //!< Main "application" thread
-static Thread IdleThread; //!< Idle thread - runs when app can't
+Thread AppThread;  //!< Main "application" thread
+Thread IdleThread; //!< Idle thread - runs when app can't
 
-static ATMegaUART clUART; //!< UART device driver object
+ATMegaUART clUART; //!< UART device driver object
 
 //---------------------------------------------------------------------------
 #define STACK_SIZE_APP (256)  //!< Size of the main app's stack
@@ -55,53 +57,12 @@ static ATMegaUART clUART; //!< UART device driver object
 #define UART_SIZE_TX (64) //!< UART TX Buffer size
 
 //---------------------------------------------------------------------------
-static uint8_t aucAppStack[STACK_SIZE_APP];
-static uint8_t aucIdleStack[STACK_SIZE_IDLE];
+uint8_t aucAppStack[STACK_SIZE_APP];
+uint8_t aucIdleStack[STACK_SIZE_IDLE];
 
 //---------------------------------------------------------------------------
-static uint8_t aucTxBuffer[UART_SIZE_TX];
-static uint8_t aucRxBuffer[UART_SIZE_RX];
-
-//---------------------------------------------------------------------------
-static void AppEntry(void);
-static void IdleEntry(void);
-
-void MemSet(void* pvData_, uint8_t u8Value_, uint16_t u16Count_)
-{
-    uint8_t* pu8Data = (uint8_t*)pvData_;
-    uint16_t i;
-    for (i = 0; i < u16Count_; i++) {
-        pu8Data[i] = u8Value_;
-    }
-}
-
-//---------------------------------------------------------------------------
-int main(void)
-{
-    Kernel::Init(); //!< MUST be before other kernel ops
-
-    AppThread.Init(aucAppStack,             //!< Pointer to the stack
-                   STACK_SIZE_APP,          //!< Size of the stack
-                   1,                       //!< Thread priority
-                   (ThreadEntryFunc)AppEntry, //!< Entry function
-                   (void*)&AppThread);      //!< Entry function argument
-
-    IdleThread.Init(aucIdleStack,             //!< Pointer to the stack
-                    STACK_SIZE_IDLE,          //!< Size of the stack
-                    0,                        //!< Thread priority
-                    (ThreadEntryFunc)IdleEntry, //!< Entry function
-                    NULL);                    //!< Entry function argument
-
-    AppThread.Start(); //!< Schedule the threads
-    IdleThread.Start();
-
-    clUART.SetName("/dev/tty"); //!< Add the serial driver
-    clUART.Init();
-
-    DriverList::Add(&clUART);
-
-    Kernel::Start(); //!< Start the kernel!
-}
+uint8_t aucTxBuffer[UART_SIZE_TX];
+uint8_t aucRxBuffer[UART_SIZE_RX];
 
 void Font_PrintGlyph(Font_t* pstFont_, uint8_t u8Glyph_)
 {
@@ -198,4 +159,34 @@ void IdleEntry(void)
         sleep_disable();
         sei();
     }
+}
+} // anonymous namespace
+
+using namespace Mark3;
+//---------------------------------------------------------------------------
+int main(void)
+{
+    Kernel::Init(); //!< MUST be before other kernel ops
+
+    AppThread.Init(aucAppStack,             //!< Pointer to the stack
+                   STACK_SIZE_APP,          //!< Size of the stack
+                   1,                       //!< Thread priority
+                   (ThreadEntryFunc)AppEntry, //!< Entry function
+                   (void*)&AppThread);      //!< Entry function argument
+
+    IdleThread.Init(aucIdleStack,             //!< Pointer to the stack
+                    STACK_SIZE_IDLE,          //!< Size of the stack
+                    0,                        //!< Thread priority
+                    (ThreadEntryFunc)IdleEntry, //!< Entry function
+                    NULL);                    //!< Entry function argument
+
+    AppThread.Start(); //!< Schedule the threads
+    IdleThread.Start();
+
+    clUART.SetName("/dev/tty"); //!< Add the serial driver
+    clUART.Init();
+
+    DriverList::Add(&clUART);
+
+    Kernel::Start(); //!< Start the kernel!
 }

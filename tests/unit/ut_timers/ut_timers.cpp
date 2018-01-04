@@ -26,28 +26,31 @@ See license.txt for more information
 #include "kerneltimer.h"
 #include "driver.h"
 #include "memutil.h"
-namespace Mark3 {
 
+namespace {
+using namespace Mark3;
 //===========================================================================
 // Local Defines
 //===========================================================================
-static Timer             clTimer1;
-static Timer             clTimer2;
-static Timer             clTimer3;
-static Semaphore         clTimerSem;
-static ProfileTimer      clProfileTimer;
-static ProfileTimer      clProfileTimer2;
-static ProfileTimer      clProfileTimer3;
-static uint32_t          u32TimeVal;
-static uint32_t          u32TempTime;
-static volatile uint32_t u32CallbackCount = 0;
+Timer             clTimer1;
+Timer             clTimer2;
+Timer             clTimer3;
+Semaphore         clTimerSem;
+ProfileTimer      clProfileTimer;
+ProfileTimer      clProfileTimer2;
+ProfileTimer      clProfileTimer3;
+uint32_t          u32TimeVal;
+uint32_t          u32TempTime;
+volatile uint32_t u32CallbackCount = 0;
 
-static void TimerExpired(Thread* pclOwner_, void* pvVal_)
+void TimerExpired(Thread* pclOwner_, void* pvVal_)
 {
     clTimerSem.Post();
     u32CallbackCount++;
 }
+} // anonymous namespace
 
+namespace Mark3 {
 //===========================================================================
 // Define Test Cases Here
 //===========================================================================

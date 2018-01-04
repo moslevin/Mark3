@@ -32,7 +32,6 @@ Takeaway:
 #if !KERNEL_USE_IDLE_FUNC
 #error "This demo requires KERNEL_USE_IDLE_FUNC"
 #endif
-using namespace Mark3;
 
 extern "C" {
 void __cxa_pure_virtual(void)
@@ -40,24 +39,59 @@ void __cxa_pure_virtual(void)
 }
 }
 
+namespace {
+using namespace Mark3;
 //---------------------------------------------------------------------------
 // This block declares the thread data for one main application thread.  It
 // defines a thread object, stack (in word-array form), and the entry-point
 // function used by the application thread.
 #define APP1_STACK_SIZE (320 / sizeof(K_WORD))
-static Thread clApp1Thread;
-static K_WORD awApp1Stack[APP1_STACK_SIZE];
-static void App1Main(void* unused_);
+Thread clApp1Thread;
+K_WORD awApp1Stack[APP1_STACK_SIZE];
+void App1Main(void* unused_);
 
 //---------------------------------------------------------------------------
 // This block declares the thread data for one main application thread.  It
 // defines a thread object, stack (in word-array form), and the entry-point
 // function used by the application thread.
 #define APP2_STACK_SIZE (320 / sizeof(K_WORD))
-static Thread clApp2Thread;
-static K_WORD awApp2Stack[APP2_STACK_SIZE];
-static void App2Main(void* unused_);
+Thread clApp2Thread;
+K_WORD awApp2Stack[APP2_STACK_SIZE];
+void App2Main(void* unused_);
 
+//---------------------------------------------------------------------------
+void App1Main(void* unused_)
+{
+    // Simple loop that increments a volatile counter to 1000000 then resets
+    // it while printing a message.
+    volatile uint32_t u32Counter = 0;
+    while (1) {
+        u32Counter++;
+        if (u32Counter == 1000000) {
+            u32Counter = 0;
+            KernelAware::Print("Thread 1 - Did some work\n");
+        }
+    }
+}
+
+//---------------------------------------------------------------------------
+void App2Main(void* unused_)
+{
+    // Same as App1Main.  However, as this thread gets twice as much CPU time
+    // as Thread 1, you should see its message printed twice as often as the
+    // above function.
+    volatile uint32_t u32Counter = 0;
+    while (1) {
+        u32Counter++;
+        if (u32Counter == 1000000) {
+            u32Counter = 0;
+            KernelAware::Print("Thread 2 - Did some work\n");
+        }
+    }
+}
+} // anonymous namespace
+
+using namespace Mark3;
 //---------------------------------------------------------------------------
 int main(void)
 {
@@ -90,35 +124,4 @@ int main(void)
     Kernel::Start();
 
     return 0;
-}
-
-//---------------------------------------------------------------------------
-void App1Main(void* unused_)
-{
-    // Simple loop that increments a volatile counter to 1000000 then resets
-    // it while printing a message.
-    volatile uint32_t u32Counter = 0;
-    while (1) {
-        u32Counter++;
-        if (u32Counter == 1000000) {
-            u32Counter = 0;
-            KernelAware::Print("Thread 1 - Did some work\n");
-        }
-    }
-}
-
-//---------------------------------------------------------------------------
-void App2Main(void* unused_)
-{
-    // Same as App1Main.  However, as this thread gets twice as much CPU time
-    // as Thread 1, you should see its message printed twice as often as the
-    // above function.
-    volatile uint32_t u32Counter = 0;
-    while (1) {
-        u32Counter++;
-        if (u32Counter == 1000000) {
-            u32Counter = 0;
-            KernelAware::Print("Thread 2 - Did some work\n");
-        }
-    }
 }

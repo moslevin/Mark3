@@ -4,10 +4,14 @@
 #include "tiles.h"
 
 #include "brpaddle.h"
+
+#include <stdio.h>
+
+namespace {
 using namespace Mark3;
 
 //---------------------------------------------------------------------------
-static uint8_t aucPaddleTileL[] = {
+uint8_t aucPaddleTileL[] = {
     0x15, // 0111 = 00 01 01 01 = 0x15
     0x6A, // 1222 = 01 10 10 10 = 0x6A
     0x6F, // 1233 = 01 10 11 11 = 0x6F
@@ -17,11 +21,11 @@ static uint8_t aucPaddleTileL[] = {
 };
 
 //---------------------------------------------------------------------------
-static COLOR auPaddlePalette[4]
+COLOR auPaddlePalette[4]
     = { COLOR_BLACK, RGB_COLOR(MAX_RED / 2, 0, 0), RGB_COLOR(3 * MAX_RED / 4, 0, 0), RGB_COLOR(MAX_RED, 0, 0) };
 
 //---------------------------------------------------------------------------
-static uint8_t aucPaddleTileR[] = {
+uint8_t aucPaddleTileR[] = {
     0x54, // 1110 = 01 01 01 00 = 0x54
     0xA9, // 2221 = 10 10 10 01 = 0xA9
     0xF9, // 3321
@@ -29,8 +33,9 @@ static uint8_t aucPaddleTileR[] = {
     0xA9, // 2221
     0x54  // 1110
 };
+} // anonymous namespace
+using namespace Mark3;
 
-#include <stdio.h>
 //---------------------------------------------------------------------------
 void BrPaddle::Init(uint8_t u8Mode_)
 {

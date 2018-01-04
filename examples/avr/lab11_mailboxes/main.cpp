@@ -29,7 +29,6 @@ Takeaway:
 #if !KERNEL_USE_IDLE_FUNC
 #error "This demo requires KERNEL_USE_IDLE_FUNC"
 #endif
-using namespace Mark3;
 
 extern "C" {
 void __cxa_pure_virtual(void)
@@ -37,45 +36,26 @@ void __cxa_pure_virtual(void)
 }
 }
 
+namespace {
+using namespace Mark3;
 //---------------------------------------------------------------------------
 #define APP_STACK_SIZE (256 / sizeof(K_WORD))
-static Thread clApp1Thread;
-static K_WORD awApp1Stack[APP_STACK_SIZE];
-static void App1Main(void* unused_);
+Thread clApp1Thread;
+K_WORD awApp1Stack[APP_STACK_SIZE];
+void App1Main(void* unused_);
 
 //---------------------------------------------------------------------------
-static Thread clApp2Thread;
-static K_WORD awApp2Stack[APP_STACK_SIZE];
-static void App2Main(void* unused_);
+Thread clApp2Thread;
+K_WORD awApp2Stack[APP_STACK_SIZE];
+void App2Main(void* unused_);
 
 //---------------------------------------------------------------------------
-static Mailbox clMailbox;
-static uint8_t au8MBData[100];
+Mailbox clMailbox;
+uint8_t au8MBData[100];
 
 typedef struct {
     uint8_t au8Buffer[10];
 } MBType_t;
-
-//---------------------------------------------------------------------------
-int main(void)
-{
-    // See the annotations in previous labs for details on init.
-    Kernel::Init();
-
-    // Initialize the threads used in this example
-    clApp1Thread.Init(awApp1Stack, sizeof(awApp1Stack), 1, App1Main, 0);
-    clApp1Thread.Start();
-
-    clApp2Thread.Init(awApp2Stack, sizeof(awApp2Stack), 2, App2Main, 0);
-    clApp2Thread.Start();
-
-    // Initialize the mailbox used in this example
-    clMailbox.Init(au8MBData, 100, sizeof(MBType_t));
-
-    Kernel::Start();
-
-    return 0;
-}
 
 //---------------------------------------------------------------------------
 void App1Main(void* unused_)
@@ -114,4 +94,27 @@ void App2Main(void* unused_)
         KernelAware::Print("Messages End\n");
         Thread::Sleep(2000);
     }
+}
+} // anonymous namespace
+
+using namespace Mark3;
+//---------------------------------------------------------------------------
+int main(void)
+{
+    // See the annotations in previous labs for details on init.
+    Kernel::Init();
+
+    // Initialize the threads used in this example
+    clApp1Thread.Init(awApp1Stack, sizeof(awApp1Stack), 1, App1Main, 0);
+    clApp1Thread.Start();
+
+    clApp2Thread.Init(awApp2Stack, sizeof(awApp2Stack), 2, App2Main, 0);
+    clApp2Thread.Start();
+
+    // Initialize the mailbox used in this example
+    clMailbox.Init(au8MBData, 100, sizeof(MBType_t));
+
+    Kernel::Start();
+
+    return 0;
 }

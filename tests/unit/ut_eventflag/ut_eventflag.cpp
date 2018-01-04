@@ -21,7 +21,9 @@ See license.txt for more information
 #include "thread.h"
 #include "memutil.h"
 #include "driver.h"
-namespace Mark3 {
+
+namespace {
+using namespace Mark3;
 //===========================================================================
 // Local Defines
 //===========================================================================
@@ -119,7 +121,9 @@ void TimedWaitAll(void* time_)
 
     Scheduler::GetCurrentThread()->Exit();
 }
+} // anonymous namespace
 
+namespace Mark3 {
 //===========================================================================
 // Define Test Cases Here
 //===========================================================================

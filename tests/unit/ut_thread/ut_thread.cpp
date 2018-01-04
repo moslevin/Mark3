@@ -24,48 +24,50 @@ See license.txt for more information
 #include "kerneltimer.h"
 #include "driver.h"
 #include "memutil.h"
-namespace Mark3 {
+
+namespace {
+using namespace Mark3;
 //===========================================================================
 // Local Defines
 //===========================================================================
 #define TEST_STACK_SIZE (224)
-static K_WORD aucStack1[TEST_STACK_SIZE];
-static K_WORD aucStack2[TEST_STACK_SIZE];
-static K_WORD aucStack3[TEST_STACK_SIZE];
+K_WORD aucStack1[TEST_STACK_SIZE];
+K_WORD aucStack2[TEST_STACK_SIZE];
+K_WORD aucStack3[TEST_STACK_SIZE];
 
-static Thread clThread1;
-static Thread clThread2;
-static Thread clThread3;
+Thread clThread1;
+Thread clThread2;
+Thread clThread3;
 
-static Semaphore clSem1;
-static Semaphore clSem2;
+Semaphore clSem1;
+Semaphore clSem2;
 
-static volatile uint32_t u32RR1;
-static volatile uint32_t u32RR2;
-static volatile uint32_t u32RR3;
+volatile uint32_t u32RR1;
+volatile uint32_t u32RR2;
+volatile uint32_t u32RR3;
 
-//===========================================================================
-static void ThreadEntryPoint1(void* unused_)
-{
-    while (1) {
-        clSem2.Pend(); // block until the test thread kicks u16
-        clSem1.Post();
-    }
+ProfileTimer clProfiler1;
+} // anonymous namespace
 
-    unused_ = unused_;
-}
-
+namespace Mark3 {
 //===========================================================================
 // Define Test Cases Here
 //===========================================================================
 TEST(ut_threadcreate)
 {
+    auto lThreadEntry = [](void* /*unused_*/) {
+        while (1) {
+            clSem2.Pend(); // block until the test thread kicks u16
+            clSem1.Post();
+        }
+    };
+
     // Test point - Create a thread, verify that the thread actually starts.
     clSem1.Init(0, 1);
     clSem2.Init(0, 1);
 
     // Initialize our thread
-    clThread1.Init(aucStack1, TEST_STACK_SIZE, 7, ThreadEntryPoint1, NULL);
+    clThread1.Init(aucStack1, TEST_STACK_SIZE, 7, lThreadEntry, NULL);
 
     // Start the thread (threads are created in the stopped state)
     clThread1.Start();
@@ -109,32 +111,27 @@ TEST(ut_threadexit)
 TEST_END
 
 //===========================================================================
-static ProfileTimer clProfiler1;
-static void ThreadSleepEntryPoint(void* unused_)
-{
-    unused_ = unused_;
-
-    // Thread will sleep for various intervals, synchronized
-    // to semaphore-based IPC.
-    clSem1.Pend();
-    Thread::Sleep(5);
-    clSem2.Post();
-
-    clSem1.Pend();
-    Thread::Sleep(50);
-    clSem2.Post();
-
-    clSem1.Pend();
-    Thread::Sleep(200);
-    clSem2.Post();
-
-    // Exit this thread.
-    Scheduler::GetCurrentThread()->Exit();
-}
-
-//===========================================================================
 TEST(ut_threadsleep)
 {
+    auto lThreadSleepEntryPoint = [](void* /*unused_*/) {
+        // Thread will sleep for various intervals, synchronized
+        // to semaphore-based IPC.
+        clSem1.Pend();
+        Thread::Sleep(5);
+        clSem2.Post();
+
+        clSem1.Pend();
+        Thread::Sleep(50);
+        clSem2.Post();
+
+        clSem1.Pend();
+        Thread::Sleep(200);
+        clSem2.Post();
+
+        // Exit this thread.
+        Scheduler::GetCurrentThread()->Exit();
+    };
+
     Profiler::Init();
     Profiler::Start();
 
@@ -143,7 +140,7 @@ TEST(ut_threadsleep)
     clSem2.Init(0, 1);
 
     // Initialize our thread
-    clThread1.Init(aucStack1, TEST_STACK_SIZE, 7, ThreadSleepEntryPoint, NULL);
+    clThread1.Init(aucStack1, TEST_STACK_SIZE, 7, lThreadSleepEntryPoint, NULL);
 
     // Start the thread (threads are created in the stopped state)
     clThread1.Start();
@@ -179,17 +176,15 @@ TEST(ut_threadsleep)
 TEST_END
 
 //===========================================================================
-void RR_EntryPoint(void* value_)
-{
-    volatile uint32_t* pu32Value = (uint32_t*)value_;
-    while (1) {
-        (*pu32Value)++;
-    }
-}
-
-//===========================================================================
 TEST(ut_roundrobin)
 {
+    auto lRREntryPoint = [](void* value_) {
+        volatile uint32_t* pu32Value = (uint32_t*)value_;
+        while (1) {
+            (*pu32Value)++;
+        }
+    };
+
     uint32_t u32Avg;
     uint32_t u32Max;
     uint32_t u32Min;
@@ -198,9 +193,9 @@ TEST(ut_roundrobin)
     // Create three threads that only increment counters, and keep them at
     // the same priority in order to test the roundrobin functionality of
     // the scheduler
-    clThread1.Init(aucStack1, TEST_STACK_SIZE, 1, RR_EntryPoint, (void*)&u32RR1);
-    clThread2.Init(aucStack2, TEST_STACK_SIZE, 1, RR_EntryPoint, (void*)&u32RR2);
-    clThread3.Init(aucStack3, TEST_STACK_SIZE, 1, RR_EntryPoint, (void*)&u32RR3);
+    clThread1.Init(aucStack1, TEST_STACK_SIZE, 1, lRREntryPoint, (void*)&u32RR1);
+    clThread2.Init(aucStack2, TEST_STACK_SIZE, 1, lRREntryPoint, (void*)&u32RR2);
+    clThread3.Init(aucStack3, TEST_STACK_SIZE, 1, lRREntryPoint, (void*)&u32RR3);
 
     u32RR1 = 0;
     u32RR2 = 0;
@@ -256,6 +251,13 @@ TEST_END
 //===========================================================================
 TEST(ut_quanta)
 {
+    auto lRREntryPoint = [](void* value_) {
+        volatile uint32_t* pu32Value = (uint32_t*)value_;
+        while (1) {
+            (*pu32Value)++;
+        }
+    };
+
     uint32_t u32Avg;
     uint32_t u32Max;
     uint32_t u32Min;
@@ -264,9 +266,9 @@ TEST(ut_quanta)
     // Create three threads that only increment counters - similar to the
     // previous test.  However, modify the thread quanta such that each thread
     // will get a different proportion of the CPU cycles.
-    clThread1.Init(aucStack1, TEST_STACK_SIZE, 1, RR_EntryPoint, (void*)&u32RR1);
-    clThread2.Init(aucStack2, TEST_STACK_SIZE, 1, RR_EntryPoint, (void*)&u32RR2);
-    clThread3.Init(aucStack3, TEST_STACK_SIZE, 1, RR_EntryPoint, (void*)&u32RR3);
+    clThread1.Init(aucStack1, TEST_STACK_SIZE, 1, lRREntryPoint, (void*)&u32RR1);
+    clThread2.Init(aucStack2, TEST_STACK_SIZE, 1, lRREntryPoint, (void*)&u32RR2);
+    clThread3.Init(aucStack3, TEST_STACK_SIZE, 1, lRREntryPoint, (void*)&u32RR3);
 
     u32RR1 = 0;
     u32RR2 = 0;

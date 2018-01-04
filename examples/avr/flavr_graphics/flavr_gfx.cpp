@@ -41,52 +41,22 @@ extern "C" void __cxa_pure_virtual()
 {
 }
 
+namespace {
+using namespace Mark3;
 //---------------------------------------------------------------------------
 // Global objects
-static Thread AppThread;  //!< Main "application" thread
-static Thread IdleThread; //!< Idle thread - runs when app can't
+Thread AppThread;  //!< Main "application" thread
+Thread IdleThread; //!< Idle thread - runs when app can't
 
-static GraphicsFlavr clflAVR; //! flAVR simulated graphics driver object
+GraphicsFlavr clflAVR; //! flAVR simulated graphics driver object
 
 //---------------------------------------------------------------------------
 #define STACK_SIZE_APP (192)  //!< Size of the main app's stack
 #define STACK_SIZE_IDLE (192) //!< Size of the idle thread stack
 
 //---------------------------------------------------------------------------
-static uint8_t aucAppStack[STACK_SIZE_APP];
-static uint8_t aucIdleStack[STACK_SIZE_IDLE];
-
-//---------------------------------------------------------------------------
-static void AppEntry(void);
-static void IdleEntry(void);
-
-//---------------------------------------------------------------------------
-int main(void)
-{
-    Kernel::Init(); //!< MUST be before other kernel ops
-
-    AppThread.Init(aucAppStack,             //!< Pointer to the stack
-                   STACK_SIZE_APP,          //!< Size of the stack
-                   1,                       //!< Thread priority
-                   (ThreadEntryFunc)AppEntry, //!< Entry function
-                   (void*)&AppThread);      //!< Entry function argument
-
-    IdleThread.Init(aucIdleStack,             //!< Pointer to the stack
-                    STACK_SIZE_IDLE,          //!< Size of the stack
-                    0,                        //!< Thread priority
-                    (ThreadEntryFunc)IdleEntry, //!< Entry function
-                    NULL);                    //!< Entry function argument
-
-    AppThread.Start(); //!< Schedule the threads
-    IdleThread.Start();
-
-    clflAVR.SetName("/dev/display"); //!< Add the display driver
-    clflAVR.Init();
-
-    DriverList::Add(&clflAVR);
-
-    Kernel::Start(); //!< Start the kernel!
-}
+uint8_t aucAppStack[STACK_SIZE_APP];
+uint8_t aucIdleStack[STACK_SIZE_IDLE];
 
 //---------------------------------------------------------------------------
 void AppEntry(void)
@@ -146,4 +116,34 @@ void IdleEntry(void)
         sei();
 #endif
     }
+}
+} // anonymous namespace
+
+using namespace Mark3;
+//---------------------------------------------------------------------------
+int main(void)
+{
+    Kernel::Init(); //!< MUST be before other kernel ops
+
+    AppThread.Init(aucAppStack,             //!< Pointer to the stack
+                   STACK_SIZE_APP,          //!< Size of the stack
+                   1,                       //!< Thread priority
+                   (ThreadEntryFunc)AppEntry, //!< Entry function
+                   (void*)&AppThread);      //!< Entry function argument
+
+    IdleThread.Init(aucIdleStack,             //!< Pointer to the stack
+                    STACK_SIZE_IDLE,          //!< Size of the stack
+                    0,                        //!< Thread priority
+                    (ThreadEntryFunc)IdleEntry, //!< Entry function
+                    NULL);                    //!< Entry function argument
+
+    AppThread.Start(); //!< Schedule the threads
+    IdleThread.Start();
+
+    clflAVR.SetName("/dev/display"); //!< Add the display driver
+    clflAVR.Init();
+
+    DriverList::Add(&clflAVR);
+
+    Kernel::Start(); //!< Start the kernel!
 }

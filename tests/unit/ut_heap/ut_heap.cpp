@@ -22,17 +22,82 @@ See license.txt for more information
 #include "../ut_platform.h"
 #include "system_heap.h"
 #include "system_heap_config.h"
-namespace Mark3 {
+
+namespace {
+using namespace Mark3;
+
 //===========================================================================
 // Local Defines
 //===========================================================================
 #define MAX_ALLOCS (32)
 #define TEST_STACK_SIZE (224)
-static uint16_t u16MaxAllocs;
-static uint16_t u16MaxAllocSize;
+uint16_t u16MaxAllocs;
+uint16_t u16MaxAllocSize;
 
-static volatile void* apvAllocs[MAX_ALLOCS]; // assuming we have < 128 system heap allocs...
+volatile void* apvAllocs[MAX_ALLOCS]; // assuming we have < 128 system heap allocs...
 
+Thread clTestThread1;
+Thread clTestThread2;
+
+K_WORD aucTestStack1[TEST_STACK_SIZE];
+K_WORD aucTestStack2[TEST_STACK_SIZE];
+
+//===========================================================================
+void HeapScriptTest(void* pvParam_)
+{
+    uint16_t u16Index = ((uint16_t)pvParam_);
+    uint16_t i;
+
+    void* pvData;
+
+    while (1) {
+        for (i = u16Index; i < u16MaxAllocs; i += 2) {
+            apvAllocs[i] = SystemHeap::Alloc(1);
+        }
+        for (i = u16Index; i < u16MaxAllocs; i += 2) {
+            SystemHeap::Free((void*)apvAllocs[i]);
+            apvAllocs[i] = 0;
+        }
+        for (i = u16Index; i < u16MaxAllocs; i += 2) {
+            apvAllocs[i] = SystemHeap::Alloc(1);
+            SystemHeap::Free((void*)apvAllocs[i]);
+            apvAllocs[i] = 0;
+        }
+        for (i = 0; i < 200; i++) {
+            switch (i & 7) {
+                case 0:
+                case 2:
+                case 6:
+                    pvData = SystemHeap::Alloc(u16MaxAllocSize);
+                    if (pvData) {
+                        MemUtil::SetMemory(pvData, 0xFF, u16MaxAllocSize);
+                        SystemHeap::Free(pvData);
+                    }
+                    break;
+                case 1:
+                case 3:
+                case 5:
+                    pvData = SystemHeap::Alloc(HEAP_BLOCK_SIZE_1);
+                    if (pvData) {
+                        MemUtil::SetMemory(pvData, 0xFF, HEAP_BLOCK_SIZE_1);
+                        SystemHeap::Free(pvData);
+                    }
+                    break;
+                case 7:
+                    pvData = SystemHeap::Alloc(HEAP_BLOCK_SIZE_2);
+                    if (pvData) {
+                        MemUtil::SetMemory(pvData, 0xFF, HEAP_BLOCK_SIZE_2);
+                        SystemHeap::Free(pvData);
+                    }
+                    break;
+                default: break;
+            }
+        }
+    }
+}
+} // anonymous namespace
+
+namespace Mark3 {
 //===========================================================================
 // Define Test Cases Here
 
@@ -161,67 +226,6 @@ TEST(ut_sysheap_alloc_free)
     }
 }
 TEST_END
-
-//===========================================================================
-void HeapScriptTest(void* pvParam_)
-{
-    uint16_t u16Index = ((uint16_t)pvParam_);
-    uint16_t i;
-
-    void* pvData;
-
-    while (1) {
-        for (i = u16Index; i < u16MaxAllocs; i += 2) {
-            apvAllocs[i] = SystemHeap::Alloc(1);
-        }
-        for (i = u16Index; i < u16MaxAllocs; i += 2) {
-            SystemHeap::Free((void*)apvAllocs[i]);
-            apvAllocs[i] = 0;
-        }
-        for (i = u16Index; i < u16MaxAllocs; i += 2) {
-            apvAllocs[i] = SystemHeap::Alloc(1);
-            SystemHeap::Free((void*)apvAllocs[i]);
-            apvAllocs[i] = 0;
-        }
-        for (i = 0; i < 200; i++) {
-            switch (i & 7) {
-                case 0:
-                case 2:
-                case 6:
-                    pvData = SystemHeap::Alloc(u16MaxAllocSize);
-                    if (pvData) {
-                        MemUtil::SetMemory(pvData, 0xFF, u16MaxAllocSize);
-                        SystemHeap::Free(pvData);
-                    }
-                    break;
-                case 1:
-                case 3:
-                case 5:
-                    pvData = SystemHeap::Alloc(HEAP_BLOCK_SIZE_1);
-                    if (pvData) {
-                        MemUtil::SetMemory(pvData, 0xFF, HEAP_BLOCK_SIZE_1);
-                        SystemHeap::Free(pvData);
-                    }
-                    break;
-                case 7:
-                    pvData = SystemHeap::Alloc(HEAP_BLOCK_SIZE_2);
-                    if (pvData) {
-                        MemUtil::SetMemory(pvData, 0xFF, HEAP_BLOCK_SIZE_2);
-                        SystemHeap::Free(pvData);
-                    }
-                    break;
-                default: break;
-            }
-        }
-    }
-}
-
-//===========================================================================
-Thread clTestThread1;
-Thread clTestThread2;
-
-K_WORD aucTestStack1[TEST_STACK_SIZE];
-K_WORD aucTestStack2[TEST_STACK_SIZE];
 
 //===========================================================================
 // Test out how the heap handles constant, multi-threaded access.
