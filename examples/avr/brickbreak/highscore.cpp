@@ -5,9 +5,6 @@
 #include "highscore.h"
 #include "kernelaware.h"
 
-//!! flAVR doesn't support EEPROM writes currently, so use RAM-based scores.
-using namespace Mark3;
-
 //---------------------------------------------------------------------------
 #ifdef __AVR__
 #include <avr/eeprom.h>
@@ -26,6 +23,7 @@ uint8_t aucEEData[64];
 #define WRITE_EE_BLOCK(x, y, z) MemUtil::CopyMemory((void*)&aucEEData[(K_ADDR)y], x, z)
 #endif
 
+using namespace Mark3;
 //---------------------------------------------------------------------------
 void HighScore::CheckInit(void)
 {
