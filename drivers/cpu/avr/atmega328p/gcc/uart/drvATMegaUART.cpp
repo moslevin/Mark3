@@ -28,12 +28,14 @@ See license.txt for more information
 #include <avr/io.h>
 #include <avr/interrupt.h>
 
+namespace {
+using namespace Mark3;
+//---------------------------------------------------------------------------
+static ATMegaUART* pclActive; // Pointer to the active object
+} // anonymous namespace
 
 namespace Mark3
 {
-//---------------------------------------------------------------------------
-static ATMegaUART* pclActive; // Pointer to the active object
-
 //---------------------------------------------------------------------------
 void ATMegaUART::SetBaud(void)
 {

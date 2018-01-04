@@ -27,21 +27,25 @@ See license.txt for more information
 #include <avr/io.h>
 #include <avr/interrupt.h>
 
+//---------------------------------------------------------------------------
+namespace {
+using namespace Mark3;
+
+volatile uint16_t u16BeatTimer  = 0;
+volatile uint16_t u16NoteIndex  = 0;
+volatile uint16_t u16SweepIdx   = 0;
+volatile uint16_t u16SweepSteps = 0;
+
+volatile uint16_t target = 0;
+volatile uint16_t count  = 0;
+volatile uint8_t  level  = 0;
+
+Timer clTimer;
+} // anonymous namespace
+
+//---------------------------------------------------------------------------
 namespace Mark3
 {
-//---------------------------------------------------------------------------
-static volatile uint16_t u16BeatTimer  = 0;
-static volatile uint16_t u16NoteIndex  = 0;
-static volatile uint16_t u16SweepIdx   = 0;
-static volatile uint16_t u16SweepSteps = 0;
-
-static volatile uint16_t target = 0;
-static volatile uint16_t count  = 0;
-static volatile uint8_t  level  = 0;
-
-static Timer clTimer;
-
-//---------------------------------------------------------------------------
 ISR(TIMER2_COMPB_vect)
 {
     if (++count >= target) {

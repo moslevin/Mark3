@@ -45,13 +45,13 @@ See license.txt for more information
 #include <avr/pgmspace.h>
 #include <avr/io.h>
 
-namespace Mark3
-{
 // SPI Defines
 #define SPI_CLK_DIV_4 (0x00)
 #define SPI_CLK_MASK (0x03)
 #define SPI_CLK_MASK_2 (0x01)
 
+//---------------------------------------------------------------------------
+namespace {
 // Rather than a bazillion writecommand() and writedata() calls, screen
 // initialization commands and arguments are organized in these tables
 // stored in PROGMEM.  The table may look bulky, but that's mostly the
@@ -188,8 +188,11 @@ static const uint8_t PROGMEM
       10,                     //     10 ms delay
     ST7735_DISPON ,    DELAY, //  4: Main screen turn on, no args w/delay
       100 };                  //     100 ms delay
+} // anonymous namespace
 
 //---------------------------------------------------------------------------
+namespace Mark3
+{
 // Companion code to the above tables.  Reads and issues
 // a series of LCD commands stored in PROGMEM byte array.
 void GraphicsST7735::CommandList(const uint8_t* pu8Data_)

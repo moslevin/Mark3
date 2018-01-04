@@ -27,8 +27,7 @@ namespace {
 
 using namespace Mark3;
 Thread clMsgThread;
-#define MSG_STACK_SIZE (192)
-K_WORD aucMsgStack[MSG_STACK_SIZE];
+K_WORD aucMsgStack[PORT_KERNEL_DEFAULT_STACK_SIZE];
 MessageQueue     clMsgQ;
 volatile uint8_t u8PassCount = 0;
 #define MESSAGE_POOL_SIZE (3)
@@ -130,7 +129,7 @@ TEST(ut_message_tx_rx)
     }
 
     Message* pclMsg;
-    clMsgThread.Init(aucMsgStack, MSG_STACK_SIZE, 7, MsgConsumer, 0);
+    clMsgThread.Init(aucMsgStack, sizeof(aucMsgStack), 7, MsgConsumer, 0);
 
     clMsgQ.Init();
 
@@ -219,7 +218,7 @@ TEST(ut_message_timed_rx)
     pclMsg->SetCode(0);
 
     // Test - Verify that the timed blocking in the message queues works
-    clMsgThread.Init(aucMsgStack, MSG_STACK_SIZE, 7, MsgTimed, 0);
+    clMsgThread.Init(aucMsgStack, sizeof(aucMsgStack), 7, MsgTimed, 0);
     clMsgThread.Start();
 
     // Just let the timeout expire

@@ -62,10 +62,7 @@ Semaphore clSem;
 Timer     clTimer;
 
 //---------------------------------------------------------------------------
-#define STACK_SIZE_APP (320)  //!< Size of the main app's stack
-
-//---------------------------------------------------------------------------
-uint8_t aucAppStack[STACK_SIZE_APP];
+uint8_t aucAppStack[PORT_KERNEL_DEFAULT_STACK_SIZE * 2];
 
 //---------------------------------------------------------------------------
 Breakout clBreakout;
@@ -147,7 +144,7 @@ int main(void)
     Kernel::Init(); //!< MUST be before other kernel ops
 
     AppThread.Init(aucAppStack,             //!< Pointer to the stack
-                   STACK_SIZE_APP,          //!< Size of the stack
+                   sizeof(aucAppStack),          //!< Size of the stack
                    1,                       //!< Thread priority
                    (ThreadEntryFunc)AppEntry, //!< Entry function
                    (void*)&AppThread);      //!< Entry function argument
@@ -158,7 +155,7 @@ int main(void)
     Kernel::SetIdleFunc(IdleEntry);
 #else
     IdleThread.Init(aucIdleStack,             //!< Pointer to the stack
-                    STACK_SIZE_IDLE,          //!< Size of the stack
+                    sizeof(aucIdleStack),          //!< Size of the stack
                     0,                        //!< Thread priority
                     (ThreadEntry_t)IdleEntry, //!< Entry function
                     NULL);                    //!< Entry function argument

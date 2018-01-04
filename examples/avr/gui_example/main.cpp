@@ -70,9 +70,8 @@ void CheckBox2Callback(bool bChecked_);
 
 //---------------------------------------------------------------------------
 // GUI Application thread + thread stack
-#define APP_STACK_SIZE (320)
 Thread clAppThread;
-K_WORD awAppStack[APP_STACK_SIZE];
+K_WORD awAppStack[PORT_KERNEL_DEFAULT_STACK_SIZE];
 
 #define MESSAGE_POOL_SIZE (3)
 MessagePool s_clMessagePool;
@@ -354,7 +353,7 @@ int main(void)
 {
     Kernel::Init();
 
-    clAppThread.Init(awAppStack, APP_STACK_SIZE, 1, AppMain, 0);
+    clAppThread.Init(awAppStack, sizeof(awAppStack), 1, AppMain, 0);
     clAppThread.Start();
 
     Kernel::Start();

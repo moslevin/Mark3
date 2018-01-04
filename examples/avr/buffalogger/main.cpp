@@ -47,19 +47,16 @@ using namespace Mark3;
 // This block declares the thread data for the main application thread.  It
 // defines a thread object, stack (in word-array form), and the entry-point
 // function used by the application thread.
-#define APP_STACK_SIZE (192 / sizeof(K_WORD))
 Thread clAppThread;
-K_WORD awAppStack[APP_STACK_SIZE];
+K_WORD awAppStack[PORT_KERNEL_DEFAULT_STACK_SIZE];
 void AppMain(void* unused_);
 
-#define IDLE_STACK_SIZE (192 / sizeof(K_WORD))
 Thread clIdleThread;
-K_WORD awIdleStack[APP_STACK_SIZE];
+K_WORD awIdleStack[PORT_KERNEL_DEFAULT_STACK_SIZE];
 void IdleMain(void* unused_);
 
-#define LOGGER_STACK_SIZE (192 / sizeof(K_WORD))
 Thread clLoggerThread;
-K_WORD awLoggerStack[APP_STACK_SIZE];
+K_WORD awLoggerStack[PORT_KERNEL_DEFAULT_STACK_SIZE];
 void LoggerMain(void* unused_);
 volatile bool bPingPong;
 Semaphore     clSem;
@@ -156,13 +153,13 @@ int main(void)
     Kernel::Init();
 
     // Example assumes use of built-in idle.
-    clAppThread.Init(awAppStack, APP_STACK_SIZE, 2, AppMain, 0);
+    clAppThread.Init(awAppStack, sizeof(awAppStack), 2, AppMain, 0);
     clAppThread.Start();
 
-    clLoggerThread.Init(awLoggerStack, LOGGER_STACK_SIZE, 1, LoggerMain, 0);
+    clLoggerThread.Init(awLoggerStack, sizeof(awLoggerStack), 1, LoggerMain, 0);
     clLoggerThread.Start();
 
-    clIdleThread.Init(awIdleStack, IDLE_STACK_SIZE, 0, IdleMain, 0);
+    clIdleThread.Init(awIdleStack, sizeof(awIdleStack), 0, IdleMain, 0);
     clIdleThread.Start();
 
     clUART.SetName("/dev/tty"); //!< Add the serial driver

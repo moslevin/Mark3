@@ -34,22 +34,18 @@ void __cxa_pure_virtual(void)
 namespace Mark3
 {
 Thread AppThread; //!< Main "application" thread
-K_WORD aucAppStack[STACK_SIZE_APP];
+K_WORD aucAppStack[(PORT_KERNEL_DEFAULT_STACK_SIZE * 3) / 2];
 
 ATMegaUART clUART; //!< UART device driver object
 
 //---------------------------------------------------------------------------
 #if !KERNEL_USE_IDLE_FUNC
 Thread  IdleThread; //!< Idle thread - runs when app can't
-uint8_t aucIdleStack[STACK_SIZE_IDLE];
+uint8_t aucIdleStack[PORT_KERNEL_DEFAULT_STACK_SIZE];
 #endif
 //---------------------------------------------------------------------------
 uint8_t aucTxBuffer[UART_SIZE_TX];
 uint8_t aucRxBuffer[UART_SIZE_RX];
-
-//---------------------------------------------------------------------------
-void AppEntry(void);
-void IdleEntry(void);
 
 typedef void (*FuncPtr)(void);
 
@@ -83,7 +79,7 @@ void run_tests()
 }
 
 //---------------------------------------------------------------------------
-void AppEntry(void)
+void AppEntry(void* /*unused*/)
 {
     {
         UartDriver* my_uart = static_cast<UartDriver*>(DriverList::FindByPath("/dev/tty"));
@@ -168,9 +164,9 @@ int main(void)
     Kernel::Init(); //!< MUST be before other kernel ops
 
     AppThread.Init(aucAppStack,             //!< Pointer to the stack
-                   STACK_SIZE_APP,          //!< Size of the stack
+                   sizeof(aucAppStack),          //!< Size of the stack
                    1,                       //!< Thread priority
-                   (ThreadEntryFunc)AppEntry, //!< Entry function
+                   AppEntry, //!< Entry function
                    (void*)&AppThread);      //!< Entry function argument
 
     AppThread.Start(); //!< Schedule the threads
@@ -179,7 +175,7 @@ int main(void)
     Kernel::SetIdleFunc(IdleEntry);
 #else
     IdleThread.Init(aucIdleStack,             //!< Pointer to the stack
-                    STACK_SIZE_IDLE,          //!< Size of the stack
+                    sizeof(aucIdleStack),          //!< Size of the stack
                     0,                        //!< Thread priority
                     (ThreadEntry_t)IdleEntry, //!< Entry function
                     NULL);                    //!< Entry function argument

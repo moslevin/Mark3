@@ -30,8 +30,7 @@ namespace {
 using namespace Mark3;
 
 Thread clThread;
-#define SEM_STACK_SIZE (256)
-K_WORD           aucStack[SEM_STACK_SIZE];
+K_WORD           aucStack[PORT_KERNEL_DEFAULT_STACK_SIZE];
 Semaphore        clSem1;
 Semaphore        clSem2;
 volatile uint8_t u8Counter = 0;
@@ -77,7 +76,7 @@ TEST(ut_semaphore_post_pend)
 
     clSem1.Init(0, 1);
 
-    clThread.Init(aucStack, SEM_STACK_SIZE, 7, lPostPend, (void*)&clSem1);
+    clThread.Init(aucStack, sizeof(aucStack), 7, lPostPend, (void*)&clSem1);
     clThread.Start();
     KernelAware::ProfileInit("seminit");
     for (int i = 0; i < 10; i++) {
@@ -99,7 +98,7 @@ TEST(ut_semaphore_post_pend)
 
     // Restart the test thread.
     u8Counter = 0;
-    clThread.Init(aucStack, SEM_STACK_SIZE, 7, lPostPend, (void*)&clSem2);
+    clThread.Init(aucStack, sizeof(aucStack), 7, lPostPend, (void*)&clSem2);
     clThread.Start();
 
     // We'll kill the thread as soon as it blocks.
@@ -125,7 +124,7 @@ TEST(ut_semaphore_timed)
 
     clTestSem.Init(0, 1);
 
-    clThread.Init(aucStack, SEM_STACK_SIZE, 7, lTimedSem, (void*)&clTestSem);
+    clThread.Init(aucStack, sizeof(aucStack), 7, lTimedSem, (void*)&clTestSem);
     clThread.Start();
 
     EXPECT_FALSE(clTestSem.Pend(10));
@@ -136,7 +135,7 @@ TEST(ut_semaphore_timed)
     // production
     clTestSem2.Init(0, 1);
 
-    clThread.Init(aucStack, SEM_STACK_SIZE, 7, lTimedSem, (void*)&clTestSem2);
+    clThread.Init(aucStack, sizeof(aucStack), 7, lTimedSem, (void*)&clTestSem2);
     clThread.Start();
 
     EXPECT_TRUE(clTestSem2.Pend(30));

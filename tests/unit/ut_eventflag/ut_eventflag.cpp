@@ -30,10 +30,8 @@ using namespace Mark3;
 Thread clThread1;
 Thread clThread2;
 
-#define THREAD1_STACK_SIZE (256)
-K_WORD aucThreadStack1[THREAD1_STACK_SIZE];
-#define THREAD2_STACK_SIZE (160)
-K_WORD aucThreadStack2[THREAD2_STACK_SIZE];
+K_WORD aucThreadStack1[PORT_KERNEL_DEFAULT_STACK_SIZE];
+K_WORD aucThreadStack2[PORT_KERNEL_DEFAULT_STACK_SIZE];
 
 EventFlag        clFlagGroup;
 volatile uint8_t u8FlagCount    = 0;
@@ -137,7 +135,7 @@ TEST(ut_waitany)
     clFlagGroup.Init();
     u8FlagCount = 0;
 
-    clThread1.Init(aucThreadStack1, THREAD1_STACK_SIZE, 7, WaitOnAny, (void*)(&u16Mask));
+    clThread1.Init(aucThreadStack1, sizeof(aucThreadStack1), 7, WaitOnAny, (void*)(&u16Mask));
     clThread1.Start();
 
     Thread::Sleep(100);
@@ -166,7 +164,7 @@ TEST(ut_waitany)
     u8FlagCount = 0;
     u16Mask     = 0xAAAA;
 
-    clThread1.Init(aucThreadStack1, THREAD1_STACK_SIZE, 7, WaitOnAny, (void*)(&u16Mask));
+    clThread1.Init(aucThreadStack1, sizeof(aucThreadStack1), 7, WaitOnAny, (void*)(&u16Mask));
     clThread1.Start();
 
     Thread::Sleep(100);
@@ -203,7 +201,7 @@ TEST(ut_waitall)
     clFlagGroup.Init();
     u8FlagCount = 0;
 
-    clThread1.Init(aucThreadStack1, THREAD1_STACK_SIZE, 7, WaitOnAll, (void*)(&u16Mask));
+    clThread1.Init(aucThreadStack1, sizeof(aucThreadStack1), 7, WaitOnAll, (void*)(&u16Mask));
     clThread1.Start();
 
     Thread::Sleep(100);
@@ -232,7 +230,7 @@ TEST(ut_waitall)
     u8FlagCount = 0;
     u16Mask     = 0xAAAA;
 
-    clThread1.Init(aucThreadStack1, THREAD1_STACK_SIZE, 7, WaitOnAll, (void*)(&u16Mask));
+    clThread1.Init(aucThreadStack1, sizeof(aucThreadStack1), 7, WaitOnAll, (void*)(&u16Mask));
     clThread1.Start();
 
     Thread::Sleep(100);
@@ -272,8 +270,8 @@ TEST(ut_flag_multiwait)
     u8FlagCount = 0;
     clFlagGroup.Clear(0xFFFF);
 
-    clThread1.Init(aucThreadStack1, THREAD1_STACK_SIZE, 7, WaitOnFlag1Any, 0);
-    clThread2.Init(aucThreadStack2, THREAD2_STACK_SIZE, 7, WaitOnFlag1Any, 0);
+    clThread1.Init(aucThreadStack1, sizeof(aucThreadStack1), 7, WaitOnFlag1Any, 0);
+    clThread2.Init(aucThreadStack2, sizeof(aucThreadStack2), 7, WaitOnFlag1Any, 0);
 
     clThread1.Start();
     clThread2.Start();
@@ -294,8 +292,8 @@ TEST(ut_flag_multiwait)
     // Test point - 2 threads blocking on an event flag, bits 0x5555.  Block
     // on these threads, and verify that only bits in the pattern will cause
     // the threads to awaken
-    clThread1.Init(aucThreadStack1, THREAD1_STACK_SIZE, 7, WaitOnMultiAny, 0);
-    clThread2.Init(aucThreadStack2, THREAD2_STACK_SIZE, 7, WaitOnMultiAny, 0);
+    clThread1.Init(aucThreadStack1, sizeof(aucThreadStack1), 7, WaitOnMultiAny, 0);
+    clThread2.Init(aucThreadStack2, sizeof(aucThreadStack2), 7, WaitOnMultiAny, 0);
 
     clThread1.Start();
     clThread2.Start();
@@ -317,8 +315,8 @@ TEST(ut_flag_multiwait)
     u8FlagCount = 0;
     clFlagGroup.Clear(0xFFFF);
 
-    clThread1.Init(aucThreadStack1, THREAD1_STACK_SIZE, 7, WaitOnMultiAny, 0);
-    clThread2.Init(aucThreadStack2, THREAD2_STACK_SIZE, 7, WaitOnMultiAny, 0);
+    clThread1.Init(aucThreadStack1, sizeof(aucThreadStack1), 7, WaitOnMultiAny, 0);
+    clThread2.Init(aucThreadStack2, sizeof(aucThreadStack2), 7, WaitOnMultiAny, 0);
 
     clThread1.Start();
     clThread2.Start();
@@ -341,8 +339,8 @@ TEST(ut_flag_multiwait)
     u8FlagCount = 0;
     clFlagGroup.Clear(0xFFFF);
 
-    clThread1.Init(aucThreadStack1, THREAD1_STACK_SIZE, 7, WaitOnMultiAll, 0);
-    clThread2.Init(aucThreadStack2, THREAD2_STACK_SIZE, 7, WaitOnMultiAll, 0);
+    clThread1.Init(aucThreadStack1, sizeof(aucThreadStack1), 7, WaitOnMultiAll, 0);
+    clThread2.Init(aucThreadStack2, sizeof(aucThreadStack2), 7, WaitOnMultiAll, 0);
 
     clThread1.Start();
     clThread2.Start();
@@ -366,8 +364,8 @@ TEST(ut_flag_multiwait)
 
     // "All" mode - each flag must be set in order to ensure that the threads
     // unblock.
-    clThread1.Init(aucThreadStack1, THREAD1_STACK_SIZE, 7, WaitOnMultiAll, 0);
-    clThread2.Init(aucThreadStack2, THREAD2_STACK_SIZE, 7, WaitOnMultiAll, 0);
+    clThread1.Init(aucThreadStack1, sizeof(aucThreadStack1), 7, WaitOnMultiAll, 0);
+    clThread2.Init(aucThreadStack2, sizeof(aucThreadStack2), 7, WaitOnMultiAll, 0);
 
     clThread1.Start();
     clThread2.Start();
@@ -406,7 +404,7 @@ TEST(ut_timedwait)
 
     clFlagGroup.Init();
 
-    clThread1.Init(aucThreadStack1, THREAD1_STACK_SIZE, 7, TimedWait, (void*)&u16Interval);
+    clThread1.Init(aucThreadStack1, sizeof(aucThreadStack1), 7, TimedWait, (void*)&u16Interval);
     clThread1.Start();
 
     Thread::Sleep(100);
@@ -428,7 +426,7 @@ TEST(ut_timedwait)
     clFlagGroup.Init();
     clFlagGroup.Clear(0xFFFF);
 
-    clThread1.Init(aucThreadStack1, THREAD1_STACK_SIZE, 7, TimedWait, (void*)&u16Interval);
+    clThread1.Init(aucThreadStack1, sizeof(aucThreadStack1), 7, TimedWait, (void*)&u16Interval);
     clThread1.Start();
 
     Thread::Sleep(100);
@@ -450,7 +448,7 @@ TEST(ut_timedwait)
     clFlagGroup.Init();
     clFlagGroup.Clear(0xFFFF);
 
-    clThread1.Init(aucThreadStack1, THREAD1_STACK_SIZE, 7, TimedWaitAll, (void*)&u16Interval);
+    clThread1.Init(aucThreadStack1, sizeof(aucThreadStack1), 7, TimedWaitAll, (void*)&u16Interval);
     clThread1.Start();
 
     Thread::Sleep(210);

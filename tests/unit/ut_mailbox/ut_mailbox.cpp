@@ -25,10 +25,11 @@ using namespace Mark3;
 // Local Defines
 //===========================================================================
 Thread clMBoxThread;
-K_WORD akMBoxStack[224];
+K_WORD akMBoxStack[PORT_KERNEL_DEFAULT_STACK_SIZE];
 
+#define MBOX_BUFFER_SIZE (128)
 Mailbox clMbox;
-uint8_t aucMBoxBuffer[128];
+uint8_t aucMBoxBuffer[MBOX_BUFFER_SIZE];
 
 volatile uint8_t aucTxBuf[17] = "abcdefghijklmnop"; // allocate a byte of slack for null-termination
 volatile uint8_t aucRxBuf[16];
@@ -46,8 +47,8 @@ TEST(mailbox_blocking_receive)
             clMbox.Receive((void*)aucRxBuf);
         }
     };
-    clMbox.Init((void*)aucMBoxBuffer, 128, 16);
-    clMBoxThread.Init(akMBoxStack, 224, 7, lMboxText, 0);
+    clMbox.Init((void*)aucMBoxBuffer, sizeof(aucMBoxBuffer), 16);
+    clMBoxThread.Init(akMBoxStack, sizeof(akMBoxStack), 7, lMboxText, 0);
     clMBoxThread.Start();
 
     for (int i = 0; i < 100; i++) {
@@ -77,8 +78,8 @@ void mbox_timed_test(void* param)
 TEST(mailbox_blocking_timed)
 {
     u16Timeouts = 0;
-    clMbox.Init((void*)aucMBoxBuffer, 128, 16);
-    clMBoxThread.Init(akMBoxStack, 224, 7, mbox_timed_test, (void*)&u16Timeouts);
+    clMbox.Init((void*)aucMBoxBuffer, MBOX_BUFFER_SIZE, 16);
+    clMBoxThread.Init(akMBoxStack, sizeof(akMBoxStack), 7, mbox_timed_test, (void*)&u16Timeouts);
     clMBoxThread.Start();
 
     for (int j = 0; j < 16; j++) {
@@ -106,7 +107,7 @@ TEST_END
 
 TEST(mailbox_send_recv)
 {
-    clMbox.Init((void*)aucMBoxBuffer, 128, 16);
+    clMbox.Init((void*)aucMBoxBuffer, MBOX_BUFFER_SIZE, 16);
 
     for (int i = 0; i < 8; i++) {
         EXPECT_TRUE(clMbox.Send((void*)aucTxBuf));
@@ -139,8 +140,8 @@ void mbox_recv_test(void* unused)
 TEST(mailbox_send_blocking)
 {
     u16Timeouts = 0;
-    clMbox.Init((void*)aucMBoxBuffer, 128, 16);
-    clMBoxThread.Init(akMBoxStack, 224, 7, mbox_recv_test, (void*)&u16Timeouts);
+    clMbox.Init((void*)aucMBoxBuffer, MBOX_BUFFER_SIZE, 16);
+    clMBoxThread.Init(akMBoxStack, sizeof(akMBoxStack), 7, mbox_recv_test, (void*)&u16Timeouts);
 
     for (int j = 0; j < 16; j++) {
         aucTxBuf[j] = 'x';

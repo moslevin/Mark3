@@ -49,16 +49,12 @@ Thread IdleThread; //!< Idle thread - runs when app can't
 ATMegaUART clUART; //!< UART device driver object
 
 //---------------------------------------------------------------------------
-#define STACK_SIZE_APP (256)  //!< Size of the main app's stack
-#define STACK_SIZE_IDLE (256) //!< Size of the idle thread stack
-
-//---------------------------------------------------------------------------
 #define UART_SIZE_RX (32) //!< UART RX Buffer size
 #define UART_SIZE_TX (64) //!< UART TX Buffer size
 
 //---------------------------------------------------------------------------
-uint8_t aucAppStack[STACK_SIZE_APP];
-uint8_t aucIdleStack[STACK_SIZE_IDLE];
+uint8_t aucAppStack[PORT_KERNEL_DEFAULT_STACK_SIZE];
+uint8_t aucIdleStack[PORT_KERNEL_DEFAULT_STACK_SIZE];
 
 //---------------------------------------------------------------------------
 uint8_t aucTxBuffer[UART_SIZE_TX];
@@ -169,13 +165,13 @@ int main(void)
     Kernel::Init(); //!< MUST be before other kernel ops
 
     AppThread.Init(aucAppStack,             //!< Pointer to the stack
-                   STACK_SIZE_APP,          //!< Size of the stack
+                   sizeof(aucAppStack),          //!< Size of the stack
                    1,                       //!< Thread priority
                    (ThreadEntryFunc)AppEntry, //!< Entry function
                    (void*)&AppThread);      //!< Entry function argument
 
     IdleThread.Init(aucIdleStack,             //!< Pointer to the stack
-                    STACK_SIZE_IDLE,          //!< Size of the stack
+                    sizeof(aucIdleStack),          //!< Size of the stack
                     0,                        //!< Thread priority
                     (ThreadEntryFunc)IdleEntry, //!< Entry function
                     NULL);                    //!< Entry function argument

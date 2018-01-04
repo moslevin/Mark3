@@ -30,10 +30,9 @@ using namespace Mark3;
 //===========================================================================
 // Local Defines
 //===========================================================================
-#define TEST_STACK_SIZE (224)
-K_WORD aucStack1[TEST_STACK_SIZE];
-K_WORD aucStack2[TEST_STACK_SIZE];
-K_WORD aucStack3[TEST_STACK_SIZE];
+K_WORD aucStack1[PORT_KERNEL_DEFAULT_STACK_SIZE];
+K_WORD aucStack2[PORT_KERNEL_DEFAULT_STACK_SIZE];
+K_WORD aucStack3[PORT_KERNEL_DEFAULT_STACK_SIZE];
 
 Thread clThread1;
 Thread clThread2;
@@ -67,7 +66,7 @@ TEST(ut_threadcreate)
     clSem2.Init(0, 1);
 
     // Initialize our thread
-    clThread1.Init(aucStack1, TEST_STACK_SIZE, 7, lThreadEntry, NULL);
+    clThread1.Init(aucStack1, sizeof(aucStack1), 7, lThreadEntry, NULL);
 
     // Start the thread (threads are created in the stopped state)
     clThread1.Start();
@@ -140,7 +139,7 @@ TEST(ut_threadsleep)
     clSem2.Init(0, 1);
 
     // Initialize our thread
-    clThread1.Init(aucStack1, TEST_STACK_SIZE, 7, lThreadSleepEntryPoint, NULL);
+    clThread1.Init(aucStack1, sizeof(aucStack1), 7, lThreadSleepEntryPoint, NULL);
 
     // Start the thread (threads are created in the stopped state)
     clThread1.Start();
@@ -193,9 +192,9 @@ TEST(ut_roundrobin)
     // Create three threads that only increment counters, and keep them at
     // the same priority in order to test the roundrobin functionality of
     // the scheduler
-    clThread1.Init(aucStack1, TEST_STACK_SIZE, 1, lRREntryPoint, (void*)&u32RR1);
-    clThread2.Init(aucStack2, TEST_STACK_SIZE, 1, lRREntryPoint, (void*)&u32RR2);
-    clThread3.Init(aucStack3, TEST_STACK_SIZE, 1, lRREntryPoint, (void*)&u32RR3);
+    clThread1.Init(aucStack1, sizeof(aucStack1), 1, lRREntryPoint, (void*)&u32RR1);
+    clThread2.Init(aucStack2, sizeof(aucStack2), 1, lRREntryPoint, (void*)&u32RR2);
+    clThread3.Init(aucStack3, sizeof(aucStack3), 1, lRREntryPoint, (void*)&u32RR3);
 
     u32RR1 = 0;
     u32RR2 = 0;
@@ -266,9 +265,9 @@ TEST(ut_quanta)
     // Create three threads that only increment counters - similar to the
     // previous test.  However, modify the thread quanta such that each thread
     // will get a different proportion of the CPU cycles.
-    clThread1.Init(aucStack1, TEST_STACK_SIZE, 1, lRREntryPoint, (void*)&u32RR1);
-    clThread2.Init(aucStack2, TEST_STACK_SIZE, 1, lRREntryPoint, (void*)&u32RR2);
-    clThread3.Init(aucStack3, TEST_STACK_SIZE, 1, lRREntryPoint, (void*)&u32RR3);
+    clThread1.Init(aucStack1, sizeof(aucStack1), 1, lRREntryPoint, (void*)&u32RR1);
+    clThread2.Init(aucStack2, sizeof(aucStack2), 1, lRREntryPoint, (void*)&u32RR2);
+    clThread3.Init(aucStack3, sizeof(aucStack3), 1, lRREntryPoint, (void*)&u32RR3);
 
     u32RR1 = 0;
     u32RR2 = 0;

@@ -45,18 +45,16 @@ using namespace Mark3;
 // This block declares the thread data for one main application thread.  It
 // defines a thread object, stack (in word-array form), and the entry-point
 // function used by the application thread.
-#define APP1_STACK_SIZE (320 / sizeof(K_WORD))
 Thread clApp1Thread;
-K_WORD awApp1Stack[APP1_STACK_SIZE];
+K_WORD awApp1Stack[PORT_KERNEL_DEFAULT_STACK_SIZE];
 void App1Main(void* unused_);
 
 //---------------------------------------------------------------------------
 // This block declares the thread data for one main application thread.  It
 // defines a thread object, stack (in word-array form), and the entry-point
 // function used by the application thread.
-#define APP2_STACK_SIZE (320 / sizeof(K_WORD))
 Thread clApp2Thread;
-K_WORD awApp2Stack[APP2_STACK_SIZE];
+K_WORD awApp2Stack[PORT_KERNEL_DEFAULT_STACK_SIZE];
 void App2Main(void* unused_);
 
 //---------------------------------------------------------------------------

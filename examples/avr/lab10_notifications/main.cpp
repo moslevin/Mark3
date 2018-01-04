@@ -37,14 +37,13 @@ void __cxa_pure_virtual(void)
 namespace {
 using namespace Mark3;
 //---------------------------------------------------------------------------
-#define APP_STACK_SIZE (256 / sizeof(K_WORD))
 Thread clApp1Thread;
-K_WORD awApp1Stack[APP_STACK_SIZE];
+K_WORD awApp1Stack[PORT_KERNEL_DEFAULT_STACK_SIZE];
 void App1Main(void* unused_);
 
 //---------------------------------------------------------------------------
 Thread clApp2Thread;
-K_WORD awApp2Stack[APP_STACK_SIZE];
+K_WORD awApp2Stack[PORT_KERNEL_DEFAULT_STACK_SIZE];
 void App2Main(void* unused_);
 
 //---------------------------------------------------------------------------

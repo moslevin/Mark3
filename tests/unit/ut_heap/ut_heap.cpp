@@ -30,7 +30,6 @@ using namespace Mark3;
 // Local Defines
 //===========================================================================
 #define MAX_ALLOCS (32)
-#define TEST_STACK_SIZE (224)
 uint16_t u16MaxAllocs;
 uint16_t u16MaxAllocSize;
 
@@ -39,8 +38,8 @@ volatile void* apvAllocs[MAX_ALLOCS]; // assuming we have < 128 system heap allo
 Thread clTestThread1;
 Thread clTestThread2;
 
-K_WORD aucTestStack1[TEST_STACK_SIZE];
-K_WORD aucTestStack2[TEST_STACK_SIZE];
+K_WORD aucTestStack1[PORT_KERNEL_DEFAULT_STACK_SIZE];
+K_WORD aucTestStack2[PORT_KERNEL_DEFAULT_STACK_SIZE];
 
 //===========================================================================
 void HeapScriptTest(void* pvParam_)
@@ -237,8 +236,8 @@ TEST(ut_sysheap_multithread)
     // Note that there's no interaction between objects alloc'd in one thread
     // and free'd in another
 
-    clTestThread1.Init(aucTestStack1, TEST_STACK_SIZE, 1, HeapScriptTest, (void*)0);
-    clTestThread2.Init(aucTestStack2, TEST_STACK_SIZE, 1, HeapScriptTest, (void*)1);
+    clTestThread1.Init(aucTestStack1, sizeof(aucTestStack1), 1, HeapScriptTest, (void*)0);
+    clTestThread2.Init(aucTestStack2, sizeof(aucTestStack2), 1, HeapScriptTest, (void*)1);
 
     Scheduler::GetCurrentThread()->SetPriority(7);
 

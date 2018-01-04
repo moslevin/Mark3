@@ -23,15 +23,6 @@ namespace Mark3
 {
 
 //---------------------------------------------------------------------------
-#if KERNEL_USE_IDLE_FUNC
-#define STACK_SIZE_APP (300) //!< Size of the main app's stack
-#else
-#define STACK_SIZE_APP (140)
-#endif
-
-#define STACK_SIZE_IDLE (140) //!< Size of the idle thread stack
-
-//---------------------------------------------------------------------------
 #define UART_SIZE_RX (12) //!< UART RX Buffer size
 #define UART_SIZE_TX (12) //!< UART TX Buffer size
 

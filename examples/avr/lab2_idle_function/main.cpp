@@ -54,9 +54,8 @@ using namespace Mark3;
 // This block declares the thread data for the main application thread.  It
 // defines a thread object, stack (in word-array form), and the entry-point
 // function used by the application thread.
-#define APP_STACK_SIZE (320 / sizeof(K_WORD))
 Thread clAppThread;
-K_WORD awAppStack[APP_STACK_SIZE];
+K_WORD awAppStack[PORT_KERNEL_DEFAULT_STACK_SIZE];
 void AppMain(void* unused_);
 
 //---------------------------------------------------------------------------

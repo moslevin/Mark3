@@ -45,7 +45,6 @@ See license.txt for more information
 #include "kerneltypes.h"
 #include "driver.h"
 
-
 namespace Mark3
 {
 

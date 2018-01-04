@@ -24,8 +24,6 @@ See license.txt for more information
 #include "mark3cfg.h"
 #include "sw_uart.h"
 
-namespace Mark3
-{
 //---------------------------------------------------------------------------
 // The TX-bit can be moved to *any* GPIO.
 //---------------------------------------------------------------------------
@@ -114,6 +112,8 @@ namespace Mark3
 //---------------------------------------------------------------------------
 #define UART_SET_OUTPUT(x)                                                                                             \
     (((x)&1) ? (SW_UART_TX_OUT |= (1 << SW_UART_TX_BIT)) : (SW_UART_TX_OUT &= ~(1 << SW_UART_TX_BIT)))
+
+namespace {
 //---------------------------------------------------------------------------
 typedef enum {
     UART_STATE_IDLE = 0, // No data currently being sent
@@ -122,12 +122,15 @@ typedef enum {
 } UARTState_t;
 
 //---------------------------------------------------------------------------
-static volatile uint8_t     u8TX;       // Current transmit byte register
-static volatile uint8_t     u8RX;       // Current received-byte register
-static volatile uint8_t     u8Count;    // Number of bits left to shift out
-static volatile bool        bPendingRX; // Whether or not there is a pending RX byte
-static volatile UARTState_t eState;     // Current transmit state-machine state.
+volatile uint8_t     u8TX;       // Current transmit byte register
+volatile uint8_t     u8RX;       // Current received-byte register
+volatile uint8_t     u8Count;    // Number of bits left to shift out
+volatile bool        bPendingRX; // Whether or not there is a pending RX byte
+volatile UARTState_t eState;     // Current transmit state-machine state.
+} // anonymouse namespace
 
+namespace Mark3
+{
 //---------------------------------------------------------------------------
 void SoftwareUART::Init(uint32_t u32Baud_)
 {
