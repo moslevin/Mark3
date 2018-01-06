@@ -60,8 +60,8 @@ uint16_t ServerSocket::Read(uint16_t u16Bytes_, uint8_t* pu8Data_)
         return SOCKET_ERROR;
 	}
 
-	uint16_t u16ToRead = u16Bytes_;
-	uint8_t* pu8Out = pu8Data_;
+    auto u16ToRead = u16Bytes_;
+    auto* pu8Out = pu8Data_;
 	uint16_t u16Read;
 	if (m_bBlocking) {
 		while (u16ToRead != 0u) {
@@ -98,8 +98,8 @@ uint16_t ServerSocket::Write(uint16_t u16Bytes_, uint8_t* pu8Data_)
         return SOCKET_ERROR;
 	}
 
-	uint16_t u16ToWrite = u16Bytes_;
-	uint8_t* pu8Out = pu8Data_;
+    auto u16ToWrite = u16Bytes_;
+    auto* pu8Out = pu8Data_;
 	uint16_t u16Written;
 	if (m_bBlocking) {
 		while (u16ToWrite != 0u) {
@@ -204,14 +204,14 @@ uint16_t ServerSocket::ClientRead(uint16_t u16Size_, uint8_t* pu8Data_, bool bBl
         return SOCKET_ERROR;
 	}
 
-	uint8_t* pu8Out = pu8Data_;
-	uint16_t u16ToRead = u16Size_;
+    auto* pu8Out = pu8Data_;
+    auto u16ToRead = u16Size_;
 	uint16_t u16Read;
 
 	if (bBlocking_) {
 		while (u16ToRead != 0u) {
 			if (m_clOutput.CanRead()) {
-                uint16_t u16TmpRead = m_clOutput.Read(pu8Out, u16ToRead);
+                auto u16TmpRead = m_clOutput.Read(pu8Out, u16ToRead);
                 pu8Out += u16TmpRead;
                 u16ToRead -= u16TmpRead;
 			} else {
@@ -224,7 +224,7 @@ uint16_t ServerSocket::ClientRead(uint16_t u16Size_, uint8_t* pu8Data_, bool bBl
 		u16Read = u16Size_;
 	} else {
 		while (u16ToRead != 0u) {
-            uint16_t u16TmpRead = m_clOutput.Read(pu8Out, u16ToRead);
+            auto u16TmpRead = m_clOutput.Read(pu8Out, u16ToRead);
             pu8Out += u16TmpRead;
             u16ToRead -= u16TmpRead;
             if (!u16TmpRead) {
@@ -245,14 +245,14 @@ uint16_t ServerSocket::ClientWrite(uint16_t u16Size_, uint8_t* pu8Data_, bool bB
         return SOCKET_ERROR;
 	}
 
-	uint8_t* pu8In = pu8Data_;
-	uint16_t u16ToWrite = u16Size_;
+    auto* pu8In = pu8Data_;
+    auto u16ToWrite = u16Size_;
     uint16_t u16Written;
 
 	if (bBlocking_) {
 		while (u16ToWrite != 0u) {
 			if (m_clInput.CanWrite()) {
-                uint16_t u16TmpWritten = m_clInput.Write(pu8In, u16ToWrite);
+                auto u16TmpWritten = m_clInput.Write(pu8In, u16ToWrite);
                 pu8In += u16TmpWritten;
                 u16ToWrite -= u16TmpWritten;
 			} else {
@@ -265,7 +265,7 @@ uint16_t ServerSocket::ClientWrite(uint16_t u16Size_, uint8_t* pu8Data_, bool bB
 		u16Written = u16Size_;
 	} else {
 		while (u16ToWrite != 0u) {
-            uint16_t u16TmpWritten = m_clInput.Write(pu8In, u16ToWrite);
+            auto u16TmpWritten = m_clInput.Write(pu8In, u16ToWrite);
             pu8In += u16TmpWritten;
             u16ToWrite -= u16TmpWritten;
             if (!u16TmpWritten) {
@@ -414,14 +414,14 @@ bool ClientSocket::WaitOnOutput()
 //---------------------------------------------------------------------------
 bool ClientSocket::WaitOnInput(uint32_t u32WaitTimeMS_)
 {
-	uint32_t u32Time = u32WaitTimeMS_;
+    auto u32Time = u32WaitTimeMS_;
 	return 0 == m_pclSocket->Control(SOCKET_CONTROL_PRIVATE_CLIENT_BLOCK_READ, &u32Time, 0, 0, 0);
 }
 
 //---------------------------------------------------------------------------
 bool ClientSocket::WaitOnOutput(uint32_t u32WaitTimeMS_)
 {
-	uint32_t u32Time = u32WaitTimeMS_;
+    auto u32Time = u32WaitTimeMS_;
 	return 0 == m_pclSocket->Control(SOCKET_CONTROL_PRIVATE_CLIENT_BLOCK_WRITE, &u32Time, 0, 0, 0);
 }
 

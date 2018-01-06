@@ -27,74 +27,74 @@ namespace Mark3
 
 //---------------------------------------------------------------------------
 // Special keys supported by the TerminalIn class
-typedef enum {
-    TERMINAL_KEY_BREAK = 0,
-    TERMINAL_KEY_BELL,
-    TERMINAL_KEY_BACKSPACE,
-    TERMINAL_KEY_TAB,
-    TERMINAL_KEY_VTAB,
-    TERMINAL_KEY_LINEFEED,
-    TERMINAL_KEY_CARRIAGE_RETURN,
-    TERMINAL_KEY_FORMFEED,
-    TERMINAL_KEY_F1,
-    TERMINAL_KEY_F2,
-    TERMINAL_KEY_F3,
-    TERMINAL_KEY_F4,
-    TERMINAL_KEY_HOME_ROW,
-    TERMINAL_KEY_END_ROW,
-    TERMINAL_KEY_UP,
-    TERMINAL_KEY_DOWN,
-    TERMINAL_KEY_RIGHT,
-    TERMINAL_KEY_LEFT,
-    TERMINAL_KEY_CENTER,
-    TERMINAL_KEY_HOME,
-    TERMINAL_KEY_INSERT,
-    TERMINAL_KEY_DELETE,
-    TERMINAL_KEY_END,
-    TERMINAL_KEY_PAGE_UP,
-    TERMINAL_KEY_PAGE_DOWN,
-    TERMINAL_KEY_F5,
-    TERMINAL_KEY_F6,
-    TERMINAL_KEY_F7,
-    TERMINAL_KEY_F8,
-    TERMINAL_KEY_F9,
-    TERMINAL_KEY_F10,
-    TERMINAL_KEY_F11,
-    TERMINAL_KEY_F12
-} TerminalKey_t;
+enum class TerminalKey : uint8_t {
+    Break = 0,
+    Bell,
+    Backspace,
+    Tab,
+    Vtab,
+    Linefeed,
+    Carriage_Return,
+    Formfeed,
+    F1,
+    F2,
+    F3,
+    F4,
+    Home_Row,
+    End_Row,
+    Up,
+    Down,
+    Right,
+    Left,
+    Center,
+    Home,
+    Insert,
+    Delete,
+    End,
+    Page_Up,
+    Page_Down,
+    F5,
+    F6,
+    F7,
+    F8,
+    F9,
+    F10,
+    F11,
+    F12
+};
 
 //---------------------------------------------------------------------------
 // Special modifiers, or modifier combinations, that can be applied to keys
-typedef enum {
-    TERMINAL_KEY_MODIFIER_NONE = 0,
-    TERMINAL_KEY_MODIFIER_SHIFT = 2,
-    TERMINAL_KEY_MODIFIER_ALT = 3,
-    TERMINAL_KEY_MODIFIER_SHIFT_ALT = 4,
-    TERMINAL_KEY_MODIFIER_CTRL = 5,
-    TERMINAL_KEY_MODIFIER_SHIFT_CTRL = 6
-} TerminalKeyModifier_t;
+enum class TerminalKeyModifier : uint8_t {
+    None = 0,
+    Shift = 2,
+    Alt = 3,
+    Shift_Alt = 4,
+    Ctrl = 5,
+    Shift_Ctrl = 6
+};
 
 //---------------------------------------------------------------------------
 // States in the TerminalIn state machine
-typedef enum {
-    TERMINAL_PARSER_BEGIN = 0,
-    TERMINAL_PARSER_ESCAPE_CHECK,
-    TERMINAL_PARSER_ESCAPE_TYPE,
-    TERMINAL_PARSER_ESCAPE,
-    TERMINAL_PARSER_ESCAPE_MODIFIED,
-    TERMINAL_PARSER_ESCAPE_EXPECT_SEMI,
-    TERMINAL_PARSER_ESCAPE_EXPECT_MODIFIER,
-} TerminalParserState_t;
+enum class TerminalParser : uint8_t {
+    Begin = 0,
+    Check,
+    Type,
+    Escape,
+    Escape_Modified,
+    Escape_Expect_Semi,
+    Escape_Expect_Modifier,
+};
 
 //---------------------------------------------------------------------------
 // Struct representing a key value
 typedef struct {
     union __attribute__((packed)) {
-        TerminalKey_t eKey;
+        TerminalKey eKey;
         char cChar;
         uint8_t u8Raw;
     };
-    TerminalKeyModifier_t eModifier;
+    TerminalKeyModifier eModifier;
     bool bEscaped;
 } KeyVal_t;
 
@@ -133,7 +133,7 @@ public:
      *
      * Initialize the object's state machine prior to use.
      */
-    void Init() { m_eState = TERMINAL_PARSER_BEGIN; }
+    void Init() { m_eState = TerminalParser::Begin; }
 
     /*!
      * \brief ReadByte
@@ -186,7 +186,7 @@ private:
      *
      * \param eKey_ Struct containing the key value
      */
-    void AcceptSpecial(TerminalKey_t eKey_);
+    void AcceptSpecial(TerminalKey eKey_);
 
     /*!
      * Handler functions for all states implemented within the object's
@@ -199,7 +199,7 @@ private:
     bool EscapeModifierHandler(char cInput_);
     bool ExpectSemiHandler(char cInput_);
 
-    TerminalParserState_t m_eState;
+    TerminalParser m_eState;
 
     bool    m_bEscaped;
     char    m_cEscapeBegin;

@@ -93,8 +93,8 @@ bool StateMachine::GetOpcode(StateOpcode_t* peOpcode_)
 //---------------------------------------------------------------------------
 void StateMachine::HandleEvent(const void* pvEvent_)
 {   
-    uint16_t u16StackPtr = m_u16StackDepth;                
-    bool bDone = false;        
+    auto u16StackPtr = m_u16StackDepth;
+    auto bDone = false;
     SetOpcode(STATE_OPCODE_RUN_STATE);
 
     while (!bDone) {
@@ -111,7 +111,7 @@ void StateMachine::HandleEvent(const void* pvEvent_)
                 break;
             case STATE_OPCODE_RUN_STATE: {
                 // Must have a run handler...                
-                StateReturn_t eResult = m_pstStateList[u16State].pfRun(this, pvEvent_);
+                auto eResult = m_pstStateList[u16State].pfRun(this, pvEvent_);
                 if (eResult == STATE_RETURN_UNHANDLED) {
                     if (u16StackPtr > 1) {
                         u16StackPtr--;

@@ -25,15 +25,15 @@ void CommandDispatcher::AddCommand(CommandHandler* pclHandler_)
 //---------------------------------------------------------------------------
 bool CommandDispatcher::Execute(const char* szCommandString_)
 {
-    int iCommandLength = CommandLength(szCommandString_);
-    const char* szArgs = (szCommandString_ + iCommandLength);
+    auto iCommandLength = CommandLength(szCommandString_);
+    auto* szArgs = (szCommandString_ + iCommandLength);
     if (iCommandLength == 0) {
         return true;
     }
 
-    CommandHandler* pclCurr = static_cast<CommandHandler*>(m_clCommandList.GetHead());
+    auto* pclCurr = static_cast<CommandHandler*>(m_clCommandList.GetHead());
     while (pclCurr != 0) {
-        const char* szCommandName = pclCurr->Name();
+       auto* szCommandName = pclCurr->Name();
 
         if ( (MemUtil::CompareStrings(szCommandString_, szCommandName, iCommandLength)) &&
              (CommandLength(szCommandName) == CommandLength(szCommandString_)) ) {

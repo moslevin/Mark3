@@ -81,13 +81,12 @@ i2c_return_t SoftwareI2C::SendStop(void)
 //---------------------------------------------------------------------------
 i2c_return_t SoftwareI2C::WriteAddress(uint8_t u8Address_, bool bRead_, bool* pbAck_)
 {
-    uint8_t u8Byte = u8Address_ << 1;
+    auto u8Byte = u8Address_ << 1;
     if (bRead_) {
         u8Byte |= 0x01;
     }
 
-    i2c_return_t rc = WriteByte(u8Byte, pbAck_);
-    return rc;
+    return WriteByte(u8Byte, pbAck_);
 }
 
 //---------------------------------------------------------------------------
@@ -96,11 +95,11 @@ i2c_return_t SoftwareI2C::WriteByte(uint8_t pu8Byte_, bool* pbAck_)
     uint8_t u8Mask = 0x80;
 
     while (u8Mask != 0u) {
-        bool bit = false;
+        auto bit = false;
         if ((u8Mask & pu8Byte_) == u8Mask) {
             bit = true;
         }
-        i2c_return_t rc = WriteBit(bit);
+        auto rc = WriteBit(bit);
         if (I2C_OK != rc) {
             return rc;
         }
@@ -118,7 +117,7 @@ i2c_return_t SoftwareI2C::ReadByte(uint8_t* pu8Byte_, bool bAck_)
     *pu8Byte_ = 0;
     while (u8Mask != 0u) {
         bool bit;
-        i2c_return_t rc = ReadBit(&bit);
+        auto rc = ReadBit(&bit);
         if (I2C_OK != rc) {
             return rc;
         }
@@ -224,8 +223,8 @@ i2c_return_t SoftwareI2C::SendAck(bool bAck_)
 //---------------------------------------------------------------------------
 i2c_return_t SoftwareI2C::RecvAck(bool* pbAck_)
 {
-    bool bBit = true;
-    i2c_return_t eReturn = ReadBit(&bBit);
+    auto bBit = true;
+    auto eReturn = ReadBit(&bBit);
     *pbAck_ = (!bBit);
     return eReturn;
 }

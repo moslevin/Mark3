@@ -53,11 +53,11 @@ void SoftwareSPI::Init(uint32_t u32Freq_, spi_mode_t eMode_)
 //---------------------------------------------------------------------------
 void SoftwareSPI::Transfer(uint8_t* pu8Input_, uint8_t* pu8Output_, uint16_t u16Len_)
 {
-    uint8_t* pu8Src = pu8Input_;
-    uint8_t* pu8Dst = pu8Output_;
+    auto* pu8Src = pu8Input_;
+    auto* pu8Dst = pu8Output_;
 
     for (uint16_t i = 0; i < u16Len_; i++) {
-        uint8_t u8Out   = *pu8Src++;
+        auto u8Out   = *pu8Src++;
         uint8_t u8In    = 0;
 
         uint8_t u8Mask  = 0x80;

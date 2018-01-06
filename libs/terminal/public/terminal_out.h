@@ -25,17 +25,17 @@ namespace Mark3
 {
 
 //---------------------------------------------------------------------------
-typedef enum {
-    TERMINAL_COLOR_BLACK,
-    TERMINAL_COLOR_RED,
-    TERMINAL_COLOR_GREEN,
-    TERMINAL_COLOR_YELLOW,
-    TERMINAL_COLOR_BLUE,
-    TERMINAL_COLOR_MAGENTA,
-    TERMINAL_COLOR_CYAN,
-    TERMINAL_COLOR_WHITE,
-    TERMINAL_COLOR_DEFAULT
-} TerminalColor_t;
+enum class TerminalColor : uint8_t {
+    Black,
+    Red,
+    Green,
+    Yellow,
+    Blue,
+    Magenta,
+    Cyan,
+    White,
+    Default
+};
 
 //---------------------------------------------------------------------------
 /*!
@@ -242,7 +242,7 @@ public:
      *
      * \param eColor_ Color code to set
      */
-    void SetForeColor(TerminalColor_t eColor_);
+    void SetForeColor(TerminalColor eColor_);
 
     // Background coloring
     /*!
@@ -252,7 +252,7 @@ public:
      *
      * \param eColor_ Color code to set
      */
-    void SetBackColor(TerminalColor_t eColor_);
+    void SetBackColor(TerminalColor eColor_);
 
     /*!
      * \brief WriteByte

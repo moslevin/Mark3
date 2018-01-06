@@ -35,13 +35,13 @@ void Streamer::Init(uint8_t* pau8Buffer_, uint16_t u16Size_)
 //---------------------------------------------------------------------------
 bool Streamer::Read(uint8_t* pu8Data_)
 {
-    bool rc = true;
+    auto rc = true;
 
     CS_ENTER();
     if (m_u16Avail == m_u16Size) {
         rc = false;
     } else {
-        uint8_t* pu8Dest = &m_pau8Buffer[m_u16Tail];
+        auto* pu8Dest = &m_pau8Buffer[m_u16Tail];
         if (pu8Dest == m_pu8LockAddr) {
             rc = false;
         } else {
@@ -126,7 +126,7 @@ uint16_t Streamer::Read(uint8_t* pu8Data_, uint16_t u16Len_)
 //---------------------------------------------------------------------------
 bool Streamer::Write(uint8_t u8Data_)
 {
-    bool rc = true;
+    auto rc = true;
 
     CS_ENTER();
     if (m_u16Avail == 0u) {
@@ -212,7 +212,7 @@ uint16_t Streamer::Write(uint8_t* pu8Data_, uint16_t u16Len_)
 //---------------------------------------------------------------------------
 bool Streamer::CanRead(void)
 {
-    bool bRc = true;
+    auto bRc = true;
     CS_ENTER();
     if (m_u16Avail == m_u16Size)
     {
@@ -225,7 +225,7 @@ bool Streamer::CanRead(void)
 //---------------------------------------------------------------------------
 bool Streamer::CanWrite(void)
 {
-    bool bRc = false;
+    auto bRc = false;
 
     CS_ENTER();
     if (m_u16Avail != 0u)
@@ -240,7 +240,7 @@ bool Streamer::CanWrite(void)
 //---------------------------------------------------------------------------
 bool Streamer::Claim(uint8_t** pu8Addr_)
 {
-    bool rc = true;
+    auto rc = true;
 
     CS_ENTER();
 

@@ -43,7 +43,7 @@ static const char* s_szDayNames[] = { "Sunday", "Monday", "Tuesday", "Wednesday"
 void RTC::Init(uint32_t u32TicksPerSecond_)
 {
     m_stCalendar.u8Day    = 0;
-    m_stCalendar.eMonth   = MONTH_JANUARY;
+    m_stCalendar.eMonth   = Month::January;
     m_stCalendar.u16Year  = 2016;
     m_stCalendar.u8Hour   = 0;
     m_stCalendar.u8Minute = 0;
@@ -73,16 +73,16 @@ uint8_t RTC::SetDateTime(const calendar_t* pstCal_)
     }
 
     // Month validation
-    if (pstCal_->eMonth >= MONTHS_PER_YEAR) {
+    if (pstCal_->eMonth >= Month::Months_Per_Year) {
         return 2;
     }
 
     // Leap day validation check
-    if ((pstCal_->eMonth == MONTH_FEBRUARY) && (pstCal_->u8Day > 29) && YearContainsLeapDay(pstCal_->u16Year)) {
+    if ((pstCal_->eMonth == Month::February) && (pstCal_->u8Day > 29) && YearContainsLeapDay(pstCal_->u16Year)) {
         return 3;
     }
     // Day-of-the-month validation check
-    if ((pstCal_->u8Day) == 0 || (pstCal_->u8Day > s_au8DaysPerMonth[pstCal_->eMonth])) {
+    if ((pstCal_->u8Day) == 0 || (pstCal_->u8Day > s_au8DaysPerMonth[static_cast<uint8_t>(pstCal_->eMonth)])) {
         return 4;
     }
 
@@ -140,24 +140,24 @@ void RTC::AddTime(uint32_t u32Ticks_)
         m_stCalendar.u8Hour = 0;
         m_stCalendar.u8Day++;
 
-        if ((m_stCalendar.eMonth == MONTH_FEBRUARY) && YearContainsLeapDay(m_stCalendar.u16Year)) {
+        if ((m_stCalendar.eMonth == Month::February) && YearContainsLeapDay(m_stCalendar.u16Year)) {
             if (m_stCalendar.u8Day != 29) {
                 break;
             }
         } else {
-            if (m_stCalendar.u8Day != s_au8DaysPerMonth[m_stCalendar.eMonth]) {
+            if (m_stCalendar.u8Day != s_au8DaysPerMonth[static_cast<uint8_t>(m_stCalendar.eMonth)]) {
                 break;
             }
         }
 
         m_stCalendar.u8Day  = 0;
         int next_month = ((int)m_stCalendar.eMonth + 1);
-        m_stCalendar.eMonth = (month_t)(next_month);
-        if (m_stCalendar.eMonth != MONTHS_PER_YEAR) {
+        m_stCalendar.eMonth = (Month)(next_month);
+        if (m_stCalendar.eMonth != Month::Months_Per_Year) {
             break;
         }
 
-        m_stCalendar.eMonth = MONTH_JANUARY;
+        m_stCalendar.eMonth = Month::January;
         m_stCalendar.u16Year++;
     }
 }
@@ -165,14 +165,14 @@ void RTC::AddTime(uint32_t u32Ticks_)
 //---------------------------------------------------------------------------
 const char* RTC::GetMonthName()
 {
-    return s_szMonthNames[m_stCalendar.eMonth];
+    return s_szMonthNames[static_cast<uint8_t>(m_stCalendar.eMonth)];
 }
 
 //---------------------------------------------------------------------------
 const char* RTC::GetDayOfWeek()
 {
     ComputeDayOfWeek();
-    return s_szDayNames[m_stCalendar.eDayOfWeek];
+    return s_szDayNames[static_cast<uint8_t>(m_stCalendar.eDayOfWeek)];
 }
 
 //---------------------------------------------------------------------------
@@ -198,7 +198,7 @@ bool RTC::YearContainsLeapDay(uint16_t u16Year_)
 void RTC::ComputeDayOfWeek()
 {
     uint32_t u32Days;
-    u32Days = (uint32_t)(m_stCalendar.u16Year - YEAR_CALENDAR_STARTS) * 365;
+    u32Days = static_cast<uint32_t>((m_stCalendar.u16Year - YEAR_CALENDAR_STARTS) * 365);
     for (uint16_t u16Year = YEAR_CALENDAR_STARTS; u16Year < m_stCalendar.u16Year; u16Year += 4) {
         if (YearContainsLeapDay(u16Year)) {
             u32Days++;
@@ -206,16 +206,16 @@ void RTC::ComputeDayOfWeek()
     }
     u32Days--;
 
-    for (int iMonth = (int)MONTH_JANUARY; iMonth < (int)m_stCalendar.eMonth; iMonth++) {
-        if (YearContainsLeapDay(m_stCalendar.u16Year) && (iMonth == (int)MONTH_FEBRUARY)) {
+    for (int iMonth = (int)Month::January; iMonth < (int)m_stCalendar.eMonth; iMonth++) {
+        if (YearContainsLeapDay(m_stCalendar.u16Year) && (iMonth == (int)Month::February)) {
             u32Days += 29;
         } else {
             u32Days += s_au8DaysPerMonth[iMonth];
         }
     }
     u32Days += m_stCalendar.u8Day + 1;
-    u32Days %= (uint32_t)(DAYS_PER_WEEK);
+    u32Days %= (uint32_t)(Day::Days_Per_Week);
 
-    m_stCalendar.eDayOfWeek = (day_t)(u32Days);
+    m_stCalendar.eDayOfWeek = (Day)(u32Days);
 }
 } //namespace Mark3

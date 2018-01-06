@@ -134,7 +134,7 @@ K_ADDR ProcessObject::GetObjectOffset()
 //---------------------------------------------------------------------------
 void ProcessObject::DestroyThread_i()
 {
-	Thread* pclThread = static_cast<Thread*>(m_pclObjectData);
+    auto* pclThread = static_cast<Thread*>(m_pclObjectData);
 	pclThread->Stop();
 	pclThread->~Thread();
 }
@@ -143,7 +143,7 @@ void ProcessObject::DestroyThread_i()
 //---------------------------------------------------------------------------
 void ProcessObject::DestroySemaphore_i()
 {
-	Semaphore* pclSemaphore = static_cast<Semaphore*>(m_pclObjectData);
+    auto* pclSemaphore = static_cast<Semaphore*>(m_pclObjectData);
 	pclSemaphore->~Semaphore();
 }
 #endif
@@ -152,7 +152,7 @@ void ProcessObject::DestroySemaphore_i()
 //---------------------------------------------------------------------------
 void ProcessObject::DestroyMutex_i()
 {
-	Mutex* pclSemaphore = static_cast<Mutex*>(m_pclObjectData);
+    auto* pclSemaphore = static_cast<Mutex*>(m_pclObjectData);
 	pclSemaphore->~Mutex();
 }
 #endif
@@ -161,7 +161,7 @@ void ProcessObject::DestroyMutex_i()
 //---------------------------------------------------------------------------
 void ProcessObject::DestroyEventFlag_i()
 {
-	EventFlag* pclEventFlag = static_cast<EventFlag*>(m_pclObjectData);
+    auto* pclEventFlag = static_cast<EventFlag*>(m_pclObjectData);
 	pclEventFlag->~EventFlag();
 }
 #endif
@@ -170,7 +170,7 @@ void ProcessObject::DestroyEventFlag_i()
 //---------------------------------------------------------------------------
 void ProcessObject::DestroyTimer_i()
 {
-	Timer* pclTimer = static_cast<Timer*>(m_pclObjectData);
+    auto* pclTimer = static_cast<Timer*>(m_pclObjectData);
 	pclTimer->Stop();
 	pclTimer->~Timer();
 }
@@ -180,7 +180,7 @@ void ProcessObject::DestroyTimer_i()
 //---------------------------------------------------------------------------
 void ProcessObject::DestroyNotify_i()
 {
-	Notify* pclNotify = static_cast<Notify*>(m_pclObjectData);
+    auto* pclNotify = static_cast<Notify*>(m_pclObjectData);
 	pclNotify->~Notify();
 }
 #endif
@@ -189,7 +189,7 @@ void ProcessObject::DestroyNotify_i()
 //---------------------------------------------------------------------------
 void ProcessObject::DestroyMailbox_i()
 {
-	Mailbox* pclMailbox = static_cast<Mailbox*>(m_pclObjectData);
+    auto* pclMailbox = static_cast<Mailbox*>(m_pclObjectData);
 	pclMailbox->~Mailbox();
 }
 #endif
@@ -198,14 +198,14 @@ void ProcessObject::DestroyMailbox_i()
 //---------------------------------------------------------------------------
 void ProcessObject::DestroyMessage_i()
 {
-	Message* pclMessage = static_cast<Message*>(m_pclObjectData);
+    auto* pclMessage = static_cast<Message*>(m_pclObjectData);
 	pclMessage->~Message();
 }
 
 //---------------------------------------------------------------------------
 void ProcessObject::DestroyMessageQueue_i()
 {
-	MessageQueue* pclMessageQ = static_cast<MessageQueue*>(m_pclObjectData);
+    auto* pclMessageQ = static_cast<MessageQueue*>(m_pclObjectData);
 	pclMessageQ->~MessageQueue();
 }
 #endif
@@ -214,7 +214,7 @@ void ProcessObject::DestroyMessageQueue_i()
 //---------------------------------------------------------------------------
 void ProcessObject::DestroyProcessTLS_i()
 {
-	ProcessTLS* pclProcessTLS = static_cast<ProcessTLS*>(m_pclObjectData);
+    auto* pclProcessTLS = static_cast<ProcessTLS*>(m_pclObjectData);
 	pclProcessTLS->~ProcessTLS();
 }
 #endif
@@ -230,7 +230,7 @@ Process::Process()
 //---------------------------------------------------------------------------
 Thread* Process::CreateThread()
 {
-	ProcessObject* pclProcessObject = AllocateProcessObject(POTYPE_THREAD);
+    auto* pclProcessObject = AllocateProcessObject(POTYPE_THREAD);
 	if (pclProcessObject == 0) {
 		return 0;
 	}
@@ -240,7 +240,7 @@ Thread* Process::CreateThread()
 //---------------------------------------------------------------------------
 void Process::DestroyThread(Thread* pclThread_)
 {
-	ProcessObject* pclBase = reinterpret_cast<ProcessObject*>((K_ADDR)pclThread_ - ProcessObject::GetObjectOffset());
+    auto* pclBase = reinterpret_cast<ProcessObject*>((K_ADDR)pclThread_ - ProcessObject::GetObjectOffset());
 #if KERNEL_USE_EXTENDED_CONTEXT
 	DestroyProcessTLS(static_cast<ProcessTLS*>(pclThread_->GetExtendedContext()));
 #endif
@@ -250,17 +250,17 @@ void Process::DestroyThread(Thread* pclThread_)
 //---------------------------------------------------------------------------
 K_WORD* Process::Allocate(K_ADDR kaSize_)
 {
-	void *pvObj = m_pclHeap->Allocate(sizeof(ProcessObject));
+    auto *pvObj = m_pclHeap->Allocate(sizeof(ProcessObject));
 	if (pvObj == 0) {
 		return 0;
 	}
-	void *pvObjData = m_pclHeap->Allocate(kaSize_);
+    auto *pvObjData = m_pclHeap->Allocate(kaSize_);
 	if (pvObjData == 0) {
 		m_pclHeap->Free(pvObj);
 		return 0;
 	}
 
-	ProcessObject *pclNewObj = static_cast<ProcessObject*>(pvObj);
+    auto *pclNewObj = static_cast<ProcessObject*>(pvObj);
 	pclNewObj->Init(POTYPE_TRACKED_ALLOC, pvObjData);
 
 	m_clProcessObjects.Add(pclNewObj);
@@ -270,7 +270,7 @@ K_WORD* Process::Allocate(K_ADDR kaSize_)
 //---------------------------------------------------------------------------
 void Process::Free(void* pvObject_)
 {
-	ProcessObject* pclBase = reinterpret_cast<ProcessObject*>((K_ADDR)pvObject_ - ProcessObject::GetObjectOffset());
+    auto* pclBase = reinterpret_cast<ProcessObject*>((K_ADDR)pvObject_ - ProcessObject::GetObjectOffset());
 	DestroyProcessObject(pclBase, &m_clProcessObjects);
 }
 
@@ -290,7 +290,7 @@ void Process::DestroyProcessStack(K_WORD* pwStack_)
 //---------------------------------------------------------------------------
 Semaphore* Process::CreateSemaphore()
 {
-	ProcessObject* pclProcessObject = AllocateProcessObject(POTYPE_SEMAPHORE);
+    auto* pclProcessObject = AllocateProcessObject(POTYPE_SEMAPHORE);
 	if (pclProcessObject == 0) {
 		return 0;
 	}
@@ -300,7 +300,7 @@ Semaphore* Process::CreateSemaphore()
 //---------------------------------------------------------------------------
 void Process::DestroySemaphore(Semaphore* pclSemaphore_)
 {
-	ProcessObject* pclBase = reinterpret_cast<ProcessObject*>((K_ADDR)pclSemaphore_ - ProcessObject::GetObjectOffset());
+    auto* pclBase = reinterpret_cast<ProcessObject*>((K_ADDR)pclSemaphore_ - ProcessObject::GetObjectOffset());
 	DestroyProcessObject(pclBase, &m_clProcessObjects);
 }
 #endif
@@ -309,7 +309,7 @@ void Process::DestroySemaphore(Semaphore* pclSemaphore_)
 //---------------------------------------------------------------------------
 Mutex* Process::CreateMutex()
 {
-	ProcessObject* pclProcessObject = AllocateProcessObject(POTYPE_MUTEX);
+    auto* pclProcessObject = AllocateProcessObject(POTYPE_MUTEX);
 	if (pclProcessObject == 0) {
 		return 0;
 	}
@@ -319,7 +319,7 @@ Mutex* Process::CreateMutex()
 //---------------------------------------------------------------------------
 void Process::DestroyMutex(Mutex* pclMutex_)
 {
-	ProcessObject* pclBase = reinterpret_cast<ProcessObject*>((K_ADDR)pclMutex_ - ProcessObject::GetObjectOffset());
+    auto* pclBase = reinterpret_cast<ProcessObject*>((K_ADDR)pclMutex_ - ProcessObject::GetObjectOffset());
 	DestroyProcessObject(pclBase, &m_clProcessObjects);
 }
 #endif
@@ -328,7 +328,7 @@ void Process::DestroyMutex(Mutex* pclMutex_)
 //---------------------------------------------------------------------------
 EventFlag* Process::CreateEventFlag()
 {
-	ProcessObject* pclProcessObject = AllocateProcessObject(POTYPE_EVENTFLAG);
+    auto* pclProcessObject = AllocateProcessObject(POTYPE_EVENTFLAG);
 	if (pclProcessObject == 0) {
 		return 0;
 	}
@@ -338,7 +338,7 @@ EventFlag* Process::CreateEventFlag()
 //---------------------------------------------------------------------------
 void Process::DestroyEventFlag(EventFlag* pclEventFlag_)
 {
-	ProcessObject* pclBase = reinterpret_cast<ProcessObject*>((K_ADDR)pclEventFlag_ - ProcessObject::GetObjectOffset());
+    auto* pclBase = reinterpret_cast<ProcessObject*>((K_ADDR)pclEventFlag_ - ProcessObject::GetObjectOffset());
 	DestroyProcessObject(pclBase, &m_clProcessObjects);
 }
 #endif
@@ -347,7 +347,7 @@ void Process::DestroyEventFlag(EventFlag* pclEventFlag_)
 //---------------------------------------------------------------------------
 Timer* Process::CreateTimer()
 {
-	ProcessObject* pclProcessObject = AllocateProcessObject(POTYPE_TIMER);
+    auto* pclProcessObject = AllocateProcessObject(POTYPE_TIMER);
 	if (pclProcessObject == 0) {
 		return 0;
 	}
@@ -357,7 +357,7 @@ Timer* Process::CreateTimer()
 //---------------------------------------------------------------------------
 void Process::DestroyTimer(Timer* pclTimer_)
 {
-	ProcessObject* pclBase = reinterpret_cast<ProcessObject*>((K_ADDR)pclTimer_ - ProcessObject::GetObjectOffset());
+    auto* pclBase = reinterpret_cast<ProcessObject*>((K_ADDR)pclTimer_ - ProcessObject::GetObjectOffset());
 	DestroyProcessObject(pclBase, &m_clTimerList);
 }
 #endif
@@ -366,7 +366,7 @@ void Process::DestroyTimer(Timer* pclTimer_)
 //---------------------------------------------------------------------------
 Notify* Process::CreateNotify()
 {
-	ProcessObject* pclProcessObject = AllocateProcessObject(POTYPE_NOTIFICATION);
+    auto* pclProcessObject = AllocateProcessObject(POTYPE_NOTIFICATION);
 	if (pclProcessObject == 0) {
 		return 0;
 	}
@@ -376,7 +376,7 @@ Notify* Process::CreateNotify()
 //---------------------------------------------------------------------------
 void Process::DestroyNotify(Notify* pclNotify_)
 {
-	ProcessObject* pclBase = reinterpret_cast<ProcessObject*>((K_ADDR)pclNotify_ - ProcessObject::GetObjectOffset());
+    auto* pclBase = reinterpret_cast<ProcessObject*>((K_ADDR)pclNotify_ - ProcessObject::GetObjectOffset());
 	DestroyProcessObject(pclBase, &m_clProcessObjects);
 }
 #endif
@@ -385,7 +385,7 @@ void Process::DestroyNotify(Notify* pclNotify_)
 //---------------------------------------------------------------------------
 Mailbox* Process::CreateMailbox()
 {
-	ProcessObject* pclProcessObject = AllocateProcessObject(POTYPE_MAILBOX);
+    auto* pclProcessObject = AllocateProcessObject(POTYPE_MAILBOX);
 	if (pclProcessObject == 0) {
 		return 0;
 	}
@@ -395,7 +395,7 @@ Mailbox* Process::CreateMailbox()
 //---------------------------------------------------------------------------
 void Process::DestroyMailbox(Mailbox* pclMailbox_)
 {
-	ProcessObject* pclBase = reinterpret_cast<ProcessObject*>((K_ADDR)pclMailbox_ - ProcessObject::GetObjectOffset());
+    auto* pclBase = reinterpret_cast<ProcessObject*>((K_ADDR)pclMailbox_ - ProcessObject::GetObjectOffset());
 	DestroyProcessObject(pclBase, &m_clProcessObjects);
 }
 #endif
@@ -404,7 +404,7 @@ void Process::DestroyMailbox(Mailbox* pclMailbox_)
 //---------------------------------------------------------------------------
 Message* Process::CreateMessage()
 {
-	ProcessObject* pclProcessObject = AllocateProcessObject(POTYPE_MESSAGE);
+    auto* pclProcessObject = AllocateProcessObject(POTYPE_MESSAGE);
 	if (pclProcessObject == 0) {
 		return 0;
 	}
@@ -414,7 +414,7 @@ Message* Process::CreateMessage()
 //---------------------------------------------------------------------------
 MessageQueue* Process::CreateMessageQueue()
 {
-	ProcessObject* pclProcessObject = AllocateProcessObject(POTYPE_MESSAGE_QUEUE);
+    auto* pclProcessObject = AllocateProcessObject(POTYPE_MESSAGE_QUEUE);
 	if (pclProcessObject == 0) {
 		return 0;
 	}
@@ -424,14 +424,14 @@ MessageQueue* Process::CreateMessageQueue()
 //---------------------------------------------------------------------------
 void Process::DestroyMessage(Message* pclMessage_)
 {
-	ProcessObject* pclBase = reinterpret_cast<ProcessObject*>((K_ADDR)pclMessage_ - ProcessObject::GetObjectOffset());
+    auto* pclBase = reinterpret_cast<ProcessObject*>((K_ADDR)pclMessage_ - ProcessObject::GetObjectOffset());
 	DestroyProcessObject(pclBase, &m_clProcessObjects);
 }
 
 //---------------------------------------------------------------------------
 void Process::DestroyMessageQueue(MessageQueue* pclMessageQ_)
 {
-	ProcessObject* pclBase = reinterpret_cast<ProcessObject*>((K_ADDR)pclMessageQ_ - ProcessObject::GetObjectOffset());
+    auto* pclBase = reinterpret_cast<ProcessObject*>((K_ADDR)pclMessageQ_ - ProcessObject::GetObjectOffset());
 	DestroyProcessObject(pclBase, &m_clProcessObjects);
 }
 #endif
@@ -440,7 +440,7 @@ void Process::DestroyMessageQueue(MessageQueue* pclMessageQ_)
 //---------------------------------------------------------------------------
 ProcessTLS* Process::CreateProcessTLS()
 {
-	ProcessObject* pclProcessObject = AllocateProcessObject(POTYPE_TLS);
+    auto* pclProcessObject = AllocateProcessObject(POTYPE_TLS);
 	if (pclProcessObject == 0) {
 		return 0;
 	}
@@ -450,14 +450,14 @@ ProcessTLS* Process::CreateProcessTLS()
 //---------------------------------------------------------------------------
 void Process::DestroyProcessTLS(ProcessTLS* pclProcessTLS_)
 {
-	ProcessObject* pclBase = reinterpret_cast<ProcessObject*>((K_ADDR)pclProcessTLS_ - ProcessObject::GetObjectOffset());
+    auto* pclBase = reinterpret_cast<ProcessObject*>((K_ADDR)pclProcessTLS_ - ProcessObject::GetObjectOffset());
 	DestroyProcessObject(pclBase, &m_clProcessObjects);
 }
 
 //---------------------------------------------------------------------------
 Process* Process::CurrentProcess()
 {
-	ProcessTLS* pclCurrent = static_cast<ProcessTLS*>(Scheduler::GetCurrentThread()->GetExtendedContext());
+    auto* pclCurrent = static_cast<ProcessTLS*>(Scheduler::GetCurrentThread()->GetExtendedContext());
     if (pclCurrent == 0) {
         return 0;
     }
@@ -468,30 +468,30 @@ Process* Process::CurrentProcess()
 //---------------------------------------------------------------------------
 ProcessObject* Process::AllocateProcessObject(ProcessObjectType_t eType_)
 {
-	void *pvObj = m_pclHeap->Allocate(sizeof(ProcessObject));
+    auto *pvObj = m_pclHeap->Allocate(sizeof(ProcessObject));
 	if (pvObj == 0) {
 		return 0;
 	}
 
-	void *pvObjData = m_pclHeap->Allocate(ProcessObject::ObjectSize(eType_));
+    auto *pvObjData = m_pclHeap->Allocate(ProcessObject::ObjectSize(eType_));
 	if (pvObjData == 0) {
 		m_pclHeap->Free(pvObj);
 		return 0;
 	}
 
-	ProcessObject* pclNewObj = new (pvObj) ProcessObject();
+    auto* pclNewObj = new (pvObj) ProcessObject();
 	pclNewObj->Init(eType_, pvObjData);
 
 #if KERNEL_USE_EXTENDED_CONTEXT
 	if (eType_ == POTYPE_THREAD) {
-		ProcessTLS* pclNewTLS = CreateProcessTLS();
+        auto* pclNewTLS = CreateProcessTLS();
 		if (pclNewTLS == 0) {
 			m_pclHeap->Free(pvObjData);
 			m_pclHeap->Free(pvObj);
 			return 0;
 		}
 		pclNewTLS->SetProcess(this);
-		Thread* pclNewThread = static_cast<Thread*>(pclNewObj->GetObject());
+        auto* pclNewThread = static_cast<Thread*>(pclNewObj->GetObject());
 		pclNewThread->SetExtendedContext(pclNewTLS);
 	}
 #endif
@@ -525,15 +525,15 @@ void Process::DestroyProcessObject(ProcessObject* pclObject_, DoubleLinkList* pc
 void Process::Destroy()
 {
 #if KERNEL_USE_TIMERS
-	DoubleLinkList* pclLists[] = {&m_clTimerList, &m_clThreadList, &m_clProcessObjects};
+    DoubleLinkList* pclLists[] = {&m_clTimerList, &m_clThreadList, &m_clProcessObjects};
 #else
-	DoubleLinkList* pclLists[] = {&m_clThreadList, &m_clProcessObjects};
+    DoubleLinkList* pclLists[] = {&m_clThreadList, &m_clProcessObjects};
 #endif
 
 	for (K_WORD i = 0; i < sizeof(pclLists)/sizeof(DoubleLinkList*); i++) {
-		ProcessObject* pclNext = static_cast<ProcessObject*>(pclLists[i]->GetHead());
+        auto* pclNext = static_cast<ProcessObject*>(pclLists[i]->GetHead());
 		while (pclNext != 0) {
-			ProcessObject *pclCurr = pclNext;
+            auto *pclCurr = pclNext;
 			pclNext = static_cast<ProcessObject*>(pclNext->GetNext());
 
 			DestroyProcessObject(pclCurr, pclLists[i]);

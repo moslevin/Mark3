@@ -37,8 +37,8 @@ void PowerBallot::Cast(power_vote_t eVote_)
 //---------------------------------------------------------------------------
 bool PowerMan::CountBallots(void)
 {
-    bool bCanSleep = false;
-    bool bMustWake = false;
+    auto bCanSleep = false;
+    auto bMustWake = false;
 
     CS_ENTER();
     for (uint16_t i = 0; i < MAX_BALLOTS / 8; i++) {
@@ -60,8 +60,8 @@ bool PowerMan::CountBallots(void)
 //---------------------------------------------------------------------------
 void PowerMan::ChangeVote(uint8_t u8Index_, power_vote_t eVote_)
 {
-    uint8_t u8Byte    = u8Index_ >> 3;
-    uint8_t u8BitMask = 1 << (u8Index_ & 0x0007);
+    auto u8Byte    = u8Index_ >> 3;
+    auto u8BitMask = 1 << (u8Index_ & 0x0007);
 
     CS_ENTER();
     m_au8SleepBallots[u8Byte] &= ~u8BitMask;

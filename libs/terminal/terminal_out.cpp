@@ -27,7 +27,7 @@ void TerminalOut::Escape(void)
 //---------------------------------------------------------------------------
 void TerminalOut::WriteString(const char* szStr_)
 {
-    const char *szSrc = szStr_;
+    auto *szSrc = szStr_;
     while (*szSrc != '\0') {
         WriteByte((uint8_t)*szSrc++);
     }
@@ -38,7 +38,7 @@ void TerminalOut::WriteVal(uint8_t u8Val_)
 {
     char tmp[4];
     MemUtil::DecimalToString(u8Val_, tmp);
-    char* src = tmp;
+    auto* src = tmp;
     while (*src != 0) {
         WriteByte(*src);
         src++;
@@ -246,23 +246,23 @@ void TerminalOut::Hidden(void)
 
 //---------------------------------------------------------------------------
 // Foreground coloring
-void TerminalOut::SetForeColor(TerminalColor_t eColor_)
+void TerminalOut::SetForeColor(TerminalColor eColor_)
 {
     Escape();
     WriteByte('[');
     WriteByte('3');
-    WriteByte('0' + eColor_);
+    WriteByte('0' + static_cast<uint8_t>(eColor_));
     WriteByte('m');
 }
 
 //---------------------------------------------------------------------------
 // Background coloring
-void TerminalOut::SetBackColor(TerminalColor_t eColor_)
+void TerminalOut::SetBackColor(TerminalColor eColor_)
 {
     Escape();
     WriteByte('[');
     WriteByte('4');
-    WriteByte('0' + eColor_);
+    WriteByte('0' + static_cast<uint8_t>(eColor_));
     WriteByte('m');
 }
 } //namespace Mark3

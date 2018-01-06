@@ -97,8 +97,9 @@ uint16_t Slip::ReadData(uint8_t* pu8Channel_, char* aucBuf_, uint16_t u16Len_)
     uint16_t u16CRC;
     uint16_t u16CRC_Calc = 0;
     uint16_t u16Len;
-    uint8_t* pu8Src = (uint8_t*)aucBuf_;
-    uint8_t* pu8Dst = (uint8_t*)aucBuf_;
+
+    auto* pu8Src = reinterpret_cast<uint8_t*>(aucBuf_);
+    auto* pu8Dst = reinterpret_cast<uint8_t*>(aucBuf_);
 
     u16ReadCount = m_pclDriver->Read(u16Len_, (uint8_t*)aucBuf_);
 
@@ -162,7 +163,7 @@ void Slip::WriteData(uint8_t u8Channel_, const char* aucBuf_, uint16_t u16Len_)
 
     if (u16Len_ == 0u) // Read to end-of-line (\0)
     {
-        uint8_t* pu8Buf = (uint8_t*)aucBuf_;
+        auto* pu8Buf = reinterpret_cast<const uint8_t*>(aucBuf_);
         while (*pu8Buf != '\0') {
             u16Len_++;
             pu8Buf++;
@@ -184,8 +185,8 @@ void Slip::WriteData(uint8_t u8Channel_, const char* aucBuf_, uint16_t u16Len_)
         aucBuf_++;
     }
 
-    WriteByte((uint8_t)(u16CRC >> 8));
-    WriteByte((uint8_t)(u16CRC & 0x00FF));
+    WriteByte(static_cast<uint8_t>(u16CRC >> 8));
+    WriteByte(static_cast<uint8_t>(u16CRC & 0x00FF));
 
     aucTmp[0] = FRAMING_BYTE;
     while (m_pclDriver->Write(1, aucTmp) == 0u) {
@@ -227,7 +228,7 @@ void Slip::WriteVector(uint8_t u8Channel_, SlipDataVector* astData_, uint16_t u1
     u16CRC = u8Channel_;
 
     // Write the length
-    WriteByte((uint8_t)(u16TotalLen >> 8));
+    WriteByte(static_cast<uint8_t>(u16TotalLen >> 8));
     u16CRC += (u16TotalLen >> 8);
 
     WriteByte((uint8_t)(u16TotalLen & 0x00FF));
@@ -238,14 +239,14 @@ void Slip::WriteVector(uint8_t u8Channel_, SlipDataVector* astData_, uint16_t u1
         uint8_t* aucBuf = astData_[i].pu8Data;
         for (j = 0; j < astData_[i].u8Size; j++) {
             WriteByte(*aucBuf);
-            u16CRC += (uint16_t)*aucBuf;
+            u16CRC += static_cast<uint16_t>(*aucBuf);
             aucBuf++;
         }
     }
 
     // Write the CRC
-    WriteByte((uint8_t)(u16CRC >> 8));
-    WriteByte((uint8_t)(u16CRC & 0x00FF));
+    WriteByte(static_cast<uint8_t>(u16CRC >> 8));
+    WriteByte(static_cast<uint8_t>(u16CRC & 0x00FF));
 
     // Write the end-of-message
     aucTmp[0] = FRAMING_BYTE;

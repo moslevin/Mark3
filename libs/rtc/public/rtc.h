@@ -30,41 +30,41 @@ namespace Mark3
 {
 
 //---------------------------------------------------------------------------
-typedef enum {
-    MONTH_JANUARY,
-    MONTH_FEBRUARY,
-    MONTH_MARCH,
-    MONTH_APRIL,
-    MONTH_MAY,
-    MONTH_JUNE,
-    MONTH_JULY,
-    MONTH_AUGUST,
-    MONTH_SEPTEMBER,
-    MONTH_OCTOBER,
-    MONTH_NEVEMBER,
-    MONTH_DECEMBER,
+enum class Month : uint8_t {
+    January,
+    February,
+    March,
+    April,
+    May,
+    June,
+    July,
+    August,
+    September,
+    October,
+    November,
+    December,
     //--
-    MONTHS_PER_YEAR
-} month_t;
+    Months_Per_Year
+};
 
 //---------------------------------------------------------------------------
-typedef enum {
-    DAY_SUNDAY,
-    DAY_MONDAY,
-    DAY_TUESDAY,
-    DAY_WEDNESDAY,
-    DAY_THURSDAY,
-    DAY_FRIDAY,
-    DAY_SATURDAY,
+enum class Day : uint8_t {
+    Sunday,
+    Monday,
+    Tuesday,
+    Wednesday,
+    Thursday,
+    Friday,
+    Saturday,
     //--
-    DAYS_PER_WEEK
-} day_t;
+    Days_Per_Week
+};
 
 //---------------------------------------------------------------------------
 typedef struct {
     uint8_t  u8Day;
-    day_t    eDayOfWeek;
-    month_t  eMonth;
+    Day      eDayOfWeek;
+    Month    eMonth;
     uint16_t u16Year;
     uint8_t  u8Hour;
     uint8_t  u8Minute;

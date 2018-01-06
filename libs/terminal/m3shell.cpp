@@ -51,19 +51,19 @@ void M3Shell::InputLoop()
 {
     m_clLineBuffer.Clear();
 
-    m_clTerminal.SetForeColor(TERMINAL_COLOR_GREEN);
+    m_clTerminal.SetForeColor(TerminalColor::Green);
     m_clTerminal.Bold();
     m_clTerminal.WriteString(m_szPrompt);
-    m_clTerminal.SetForeColor(TERMINAL_COLOR_WHITE);
+    m_clTerminal.SetForeColor(TerminalColor::White);
     m_clTerminal.ResetAttributes();
 
-    bool done = false;
+    auto done = false;
     while (!done) {
         KeyVal_t stKey;
         if (m_clTerminal.ReadLoop()) {
             m_clTerminal.GetLastKey(&stKey);
             if (stKey.bEscaped) {
-                if (stKey.eKey == TERMINAL_KEY_BACKSPACE) {
+                if (stKey.eKey == TerminalKey::Backspace) {
                     if (m_clLineBuffer.Backspace()) {
                         m_clTerminal.Backspace();
 
@@ -78,25 +78,25 @@ void M3Shell::InputLoop()
                         m_clTerminal.WriteByte(' ');
                         m_clTerminal.CursorLeft(u8LastIndex - u8Cursor + 1);
                     }
-                } else if (stKey.eKey == TERMINAL_KEY_LEFT) {
+                } else if (stKey.eKey == TerminalKey::Left) {
                     if (m_clLineBuffer.CursorLeft()) {
                         m_clTerminal.CursorLeft(1);
                     }
-                } else if (stKey.eKey == TERMINAL_KEY_RIGHT) {
+                } else if (stKey.eKey == TerminalKey::Right) {
                     if (m_clLineBuffer.CursorRight()) {
                         m_clTerminal.CursorRight(1);
                     }
-                } else if (stKey.eKey == TERMINAL_KEY_HOME) {
+                } else if (stKey.eKey == TerminalKey::Home) {
                     uint8_t u8Shift = m_clLineBuffer.CursorHome();
                     if (u8Shift != 0u) {
                         m_clTerminal.CursorLeft(u8Shift);
                     }
-                } else if (stKey.eKey == TERMINAL_KEY_END) {
+                } else if (stKey.eKey == TerminalKey::End) {
                     uint8_t u8Shift = m_clLineBuffer.CursorEnd();
                     if (u8Shift != 0u) {
                         m_clTerminal.CursorRight(u8Shift);
                     }
-                } else if (stKey.eKey == TERMINAL_KEY_DELETE) {
+                } else if (stKey.eKey == TerminalKey::Delete) {
                     m_clLineBuffer.Delete();
                     m_clTerminal.ClearFromCursor();
 
@@ -111,10 +111,10 @@ void M3Shell::InputLoop()
                     m_clTerminal.WriteByte(' ');
                     m_clTerminal.CursorLeft(u8LastIndex - u8Cursor + 1);
 
-                } else if (stKey.eKey == TERMINAL_KEY_CARRIAGE_RETURN) {
+                } else if (stKey.eKey == TerminalKey::Carriage_Return) {
                     m_clTerminal.WriteString("\r\n");
                     done = true;
-                } else if (stKey.eKey == TERMINAL_KEY_LINEFEED) {
+                } else if (stKey.eKey == TerminalKey::Linefeed) {
                     m_clTerminal.WriteByte('\0');
                     done = true;
                 }

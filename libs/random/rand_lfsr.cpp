@@ -41,15 +41,13 @@ void PseudoRandom::Seed(uint32_t u32Seed1_, uint32_t u32Seed2_)
 uint16_t PseudoRandom::GetRandom()
 {
     Shift(&m_u32LFSR2, POLY_MASK_32);
-    return (uint16_t)(Shift(&m_u32LFSR2, POLY_MASK_32) ^ Shift(&m_u32LFSR1, POLY_MASK_31));
+    return static_cast<uint16_t>(Shift(&m_u32LFSR2, POLY_MASK_32) ^ Shift(&m_u32LFSR1, POLY_MASK_31));
 }
 
 //---------------------------------------------------------------------------
 uint32_t PseudoRandom::Shift(uint32_t* pu32LFSR_, uint32_t u32Mask_)
 {
-    uint32_t u32Feedback;
-
-    u32Feedback = *pu32LFSR_ & 1;
+    auto u32Feedback = *pu32LFSR_ & 1;
     *pu32LFSR_ >>= 1;
     if (u32Feedback != 0u) {
         *pu32LFSR_ ^= u32Mask_;
