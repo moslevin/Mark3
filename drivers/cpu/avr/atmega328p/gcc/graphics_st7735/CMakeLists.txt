@@ -16,6 +16,7 @@ target_include_directories(graphics_st7735
     )
     
 target_link_libraries(graphics_st7735
+    driver
     graphics
     mark3
 )

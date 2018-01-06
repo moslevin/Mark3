@@ -9,7 +9,6 @@ set(LIB_SOURCES
     atomic.cpp
     autoalloc.cpp
     blocking.cpp
-    driver.cpp
     eventflag.cpp
     kernel.cpp
     kernelaware.cpp
@@ -35,7 +34,6 @@ set(LIB_HEADERS
     public/atomic.h
     public/autoalloc.h
     public/blocking.h
-    public/driver.h
     public/eventflag.h
     public/kernelaware.h
     public/ksemaphore.h

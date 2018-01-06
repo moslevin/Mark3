@@ -16,5 +16,6 @@ target_include_directories(eeprom
     )
     
 target_link_libraries(eeprom
+    driver
     mark3
 )

@@ -17,6 +17,7 @@ target_include_directories(drvUOLED
     )
     
 target_link_libraries(drvUOLED
+    driver
     mark3
     graphics
 )

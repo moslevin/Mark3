@@ -16,5 +16,6 @@ target_include_directories(uart
     )
     
 target_link_libraries(uart
+    driver
     mark3
 )

@@ -20,10 +20,10 @@ See license.txt for more information
 #pragma once
 
 #include "mark3.h"
+#include "driver.h"
 
 #include "terminal_in.h"
 #include "terminal_out.h"
-
 namespace Mark3
 {
 

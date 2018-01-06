@@ -39,8 +39,6 @@ See license.txt for more information
 #include "mailbox.h"
 
 #include "atomic.h"
-#include "driver.h"
-
 #include "kernelaware.h"
 
 #include "profile.h"

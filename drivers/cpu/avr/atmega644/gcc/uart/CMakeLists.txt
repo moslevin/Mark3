@@ -16,6 +16,7 @@ target_include_directories(atmegauart
     )
     
 target_link_libraries(atmegauart
+    driver
     mark3
     uart
 )

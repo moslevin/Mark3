@@ -25,5 +25,6 @@ target_include_directories(graphics
 )
 
 target_link_libraries(graphics 
+    driver
     mark3
 )

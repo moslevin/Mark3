@@ -16,5 +16,6 @@ target_include_directories(joystick
     )
     
 target_link_libraries(joystick
+    driver
     mark3
 )

@@ -50,10 +50,8 @@ Message s_clMessages[MESSAGE_POOL_SIZE];
 //---------------------------------------------------------------------------
 void TestMessageTest(void* pvArg)
 {
-    Message* pclMesg;
-    bool     bPass = true;
-
-    pclMesg = clMsgQ2.Receive();
+    auto bPass = true;
+    auto* pclMesg = clMsgQ2.Receive();
 
     if (pclMesg->GetCode() != 0x11) {
         bPass = false;
@@ -423,9 +421,7 @@ TEST(ut_sanity_msg)
     clMsgQ1.Init();
     clMsgQ2.Init();
 
-    Message* pclMesg;
-
-    pclMesg = s_clMessagePool.Pop();
+    auto* pclMesg = s_clMessagePool.Pop();
 
     clTestThread1.Init(aucTestStack1, TEST_STACK1_SIZE, 2, (ThreadEntryFunc)TestMessageTest, NULL);
     clTestThread1.Start();

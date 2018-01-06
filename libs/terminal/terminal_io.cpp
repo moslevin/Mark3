@@ -13,6 +13,7 @@ See license.txt for more information
 =========================================================================== */
 
 #include "mark3.h"
+#include "driver.h"
 
 #include "terminal_io.h"
 namespace Mark3 {

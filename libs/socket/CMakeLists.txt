@@ -16,6 +16,7 @@ target_include_directories(socket
     )
     
 target_link_libraries(socket
+    driver
     mark3
     streamer
 )

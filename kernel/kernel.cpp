@@ -27,7 +27,6 @@ See license.txt for more information
 #include "threadport.h"
 #include "timerlist.h"
 #include "message.h"
-#include "driver.h"
 #include "profile.h"
 #include "kernelprofile.h"
 #include "autoalloc.h"
@@ -89,9 +88,6 @@ void Kernel::Init(void)
     // Initialize the global kernel data - scheduler, timer-scheduler, and
     // the global message pool.
     Scheduler::Init();
-#if KERNEL_USE_DRIVER
-    DriverList::Init();
-#endif
 #if KERNEL_USE_TIMERS
     TimerScheduler::Init();
 #endif

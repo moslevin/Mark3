@@ -47,13 +47,12 @@ uint8_t aucIdleStack[PORT_KERNEL_DEFAULT_STACK_SIZE];
 uint8_t aucTxBuffer[UART_SIZE_TX];
 uint8_t aucRxBuffer[UART_SIZE_RX];
 
-typedef void (*FuncPtr)(void);
+using FuncPtr = void (*)(void);
 
 //---------------------------------------------------------------------------
 void init_tests()
 {
-    MyTestCase* pstTestCase;
-    pstTestCase = astTestCases;
+    auto* pstTestCase = astTestCases;
 
     while (pstTestCase->pclTestCase) {
         pstTestCase->pclTestCase->SetName(pstTestCase->szName);
@@ -64,8 +63,7 @@ void init_tests()
 //---------------------------------------------------------------------------
 void run_tests()
 {
-    MyTestCase* pstTestCase;
-    pstTestCase = astTestCases;
+    auto* pstTestCase = astTestCases;
 
     while (pstTestCase->pclTestCase) {
         pstTestCase->pfTestFunc();
@@ -82,7 +80,7 @@ void run_tests()
 void AppEntry(void* /*unused*/)
 {
     {
-        UartDriver* my_uart = static_cast<UartDriver*>(DriverList::FindByPath("/dev/tty"));
+        auto* my_uart = static_cast<UartDriver*>(DriverList::FindByPath("/dev/tty"));
         my_uart->SetBuffers(aucRxBuffer, UART_SIZE_RX, aucTxBuffer, UART_SIZE_TX);
         my_uart->Open();
 
@@ -120,7 +118,7 @@ void IdleEntry(void)
 //---------------------------------------------------------------------------
 void PrintString(const char* szStr_)
 {
-    char* szTemp = (char*)szStr_;
+    auto* szTemp = szStr_;
     while (*szTemp) {
         while (1 != clUART.Write(1, (uint8_t*)szTemp)) { /* Do nothing */
         }
@@ -131,16 +129,16 @@ void PrintString(const char* szStr_)
 void MyUnitTest::PrintTestResult()
 {
     char acTemp[6];
-    int  iLen;
 
     PrintString("Test ");
     PrintString(GetName());
     PrintString(": ");
-    iLen = MemUtil::StringLength(GetName());
+
+    auto iLen = MemUtil::StringLength(GetName());
     if (iLen >= 32) {
         iLen = 32;
     }
-    for (int i = 0; i < 32 - iLen; i++) {
+    for (uint16_t i = 0; i < 32 - iLen; i++) {
         PrintString(".");
     }
     if (GetPassed() == GetTotal()) {

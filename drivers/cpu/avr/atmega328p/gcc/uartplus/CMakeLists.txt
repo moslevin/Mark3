@@ -16,6 +16,7 @@ target_include_directories(uartplus
     )
     
 target_link_libraries(uartplus
+    driver
     mark3
     streamer
     uart

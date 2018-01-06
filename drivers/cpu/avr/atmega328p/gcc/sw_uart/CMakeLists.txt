@@ -16,5 +16,6 @@ target_include_directories(sw_uart
     )
     
 target_link_libraries(sw_uart
+    driver
     mark3
 )

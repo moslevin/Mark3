@@ -13,6 +13,7 @@ See license.txt for more information
 ===========================================================================*/
 #include "terminal_out.h"
 #include "memutil.h"
+#include "driver.h"
 
 #include <stdint.h>
 namespace Mark3 {

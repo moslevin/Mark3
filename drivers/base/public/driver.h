@@ -108,7 +108,6 @@ See license.txt for more information
 
 #include "ll.h"
 
-
 #if KERNEL_USE_DRIVER
 namespace Mark3
 {

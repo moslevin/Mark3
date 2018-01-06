@@ -16,5 +16,6 @@ target_include_directories(sound
     )
     
 target_link_libraries(sound
+    driver
     mark3
 )

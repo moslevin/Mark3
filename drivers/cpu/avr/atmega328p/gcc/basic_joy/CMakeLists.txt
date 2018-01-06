@@ -16,6 +16,7 @@ target_include_directories(basic_joy
     )
     
 target_link_libraries(basic_joy
+    driver
     joystick
     mark3
 )

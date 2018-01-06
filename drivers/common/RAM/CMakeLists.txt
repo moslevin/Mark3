@@ -16,5 +16,6 @@ target_include_directories(drvRAM
     )
     
 target_link_libraries(drvRAM
+    driver
     mark3
 )

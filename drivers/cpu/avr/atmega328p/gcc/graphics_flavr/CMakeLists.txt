@@ -16,6 +16,7 @@ target_include_directories(graphics_flavr
     )
     
 target_link_libraries(graphics_flavr
+    driver
     graphics
     mark3
 )

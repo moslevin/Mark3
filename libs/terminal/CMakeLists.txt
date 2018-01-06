@@ -28,6 +28,7 @@ target_include_directories(terminal
     )
     
 target_link_libraries(terminal
+    driver
     mark3
     memutil 
 )

@@ -38,9 +38,8 @@ volatile bool bTimedOut = false;
 //===========================================================================
 void MsgTimed(void* /*unused*/)
 {
-    Message* pclRet;
     u8PassCount = 0;
-    pclRet      = clMsgQ.Receive(10);
+    auto* pclRet      = clMsgQ.Receive(10);
     if (0 == pclRet) {
         u8PassCount++;
     } else {
@@ -62,11 +61,10 @@ void MsgTimed(void* /*unused*/)
 
 void MsgConsumer(void* /*unused_*/)
 {
-    Message* pclMsg;
     uint8_t  i;
 
     for (i = 0; i < 20; i++) {
-        pclMsg      = clMsgQ.Receive();
+        auto* pclMsg      = clMsgQ.Receive();
         u8PassCount = 0;
 
         if (pclMsg) {
@@ -128,7 +126,6 @@ TEST(ut_message_tx_rx)
         s_clMessagePool.Push(&s_clMessages[i]);
     }
 
-    Message* pclMsg;
     clMsgThread.Init(aucMsgStack, sizeof(aucMsgStack), 7, MsgConsumer, 0);
 
     clMsgQ.Init();
@@ -136,7 +133,7 @@ TEST(ut_message_tx_rx)
     clMsgThread.Start();
 
     // Get a message from the pool
-    pclMsg = s_clMessagePool.Pop();
+    auto* pclMsg = s_clMessagePool.Pop();
     EXPECT_FAIL_FALSE(pclMsg);
 
     // Send the message to the consumer thread
@@ -208,9 +205,7 @@ TEST(ut_message_timed_rx)
         s_clMessagePool.Push(&s_clMessages[i]);
     }
 
-    Message* pclMsg;
-
-    pclMsg = s_clMessagePool.Pop();
+    auto* pclMsg = s_clMessagePool.Pop();
     EXPECT_FAIL_FALSE(pclMsg);
 
     // Send the message to the consumer thread

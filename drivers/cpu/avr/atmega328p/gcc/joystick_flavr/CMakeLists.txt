@@ -16,6 +16,7 @@ target_include_directories(joystick_flavr
     )
     
 target_link_libraries(joystick_flavr
+    driver
     joystick
     mark3
 )

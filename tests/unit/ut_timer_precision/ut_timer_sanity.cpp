@@ -47,42 +47,36 @@ Timer     clTimer2;
 Timer     clTimer3;
 
 Semaphore clTimerSem;
-} // anonymous namespace
-
-namespace Mark3 {
+volatile uint32_t aulDelta[3];
 
 //---------------------------------------------------------------------------
-void TCallback(Thread* pclOwner_, void* data_)
-{
-    clTimerSem.Post();
-}
-
-//---------------------------------------------------------------------------
-static void TCallbackMulti1(Thread* pclOwner_, void* data_)
+void TCallbackMulti1(Thread* pclOwner_, void* data_)
 {
     // Send a message to a queue
-    Message* pclMsg = s_clMessagePool.Pop();
+    auto* pclMsg = s_clMessagePool.Pop();
     pclMsg->SetCode(0);
     clMsgQ.Send(pclMsg);
 }
 //---------------------------------------------------------------------------
-static void TCallbackMulti2(Thread* pclOwner_, void* data_)
+void TCallbackMulti2(Thread* pclOwner_, void* data_)
 {
     // Send a message to a queue
-    Message* pclMsg = s_clMessagePool.Pop();
+    auto* pclMsg = s_clMessagePool.Pop();
     pclMsg->SetCode(1);
     clMsgQ.Send(pclMsg);
 }
 //---------------------------------------------------------------------------
-static void TCallbackMulti3(Thread* pclOwner_, void* data_)
+void TCallbackMulti3(Thread* pclOwner_, void* data_)
 {
     // Send a message to a queue
-    Message* pclMsg = s_clMessagePool.Pop();
+    auto* pclMsg = s_clMessagePool.Pop();
     pclMsg->SetCode(2);
     clMsgQ.Send(pclMsg);
 }
+} // anonymous namespace
 
-volatile uint32_t aulDelta[3];
+namespace Mark3 {
+
 //---------------------------------------------------------------------------
 TEST(ut_timer_sanity_multi)
 {
@@ -193,9 +187,13 @@ TEST(ut_timer_sanity_precision)
     Profiler::Start();
 
     uint32_t i;
-    bool     bPass = true;
+    auto     bPass = true;
     // 1ms repeated counter
-    clTimer.Start(true, 1, TCallback, NULL);
+    auto lCallback = [](Thread* pclOwner_, void* data_) {
+        clTimerSem.Post();
+    };
+
+    clTimer.Start(true, 1, lCallback, NULL);
     for (i = 0; i < 10000; i++) {
         clProfiler1m.Start();
 
@@ -213,7 +211,7 @@ TEST(ut_timer_sanity_precision)
 
     bPass = true;
     // 10ms repeated counter
-    clTimer.Start(true, 10, TCallback, NULL);
+    clTimer.Start(true, 10, lCallback, NULL);
     for (i = 0; i < 1000; i++) {
         clProfiler10m.Start();
         clTimerSem.Pend();
@@ -230,7 +228,7 @@ TEST(ut_timer_sanity_precision)
     bPass = true;
 
     // 100ms repeated counter
-    clTimer.Start(true, 100, TCallback, NULL);
+    clTimer.Start(true, 100, lCallback, NULL);
     for (i = 0; i < 100; i++) {
         clProfiler100m.Start();
         clTimerSem.Pend();
