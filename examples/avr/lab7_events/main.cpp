@@ -69,8 +69,6 @@ EventFlag clFlags;
 void App1Main(void* unused_)
 {
     while (1) {
-        uint16_t u16Flags;
-
         // Block this thread until any of the event flags have been set by
         // some outside force (here, we use Thread 2).  As an exercise to the
         // user, try playing around with the event mask to see the effect it
@@ -84,7 +82,7 @@ void App1Main(void* unused_)
         // you wanted to trigger an action that only takes place once multiple
         // bits are set, you could block the thread waiting for a specific
         // event bitmask with EventFlagOperation::All_Set specified.
-        u16Flags = clFlags.Wait(0xFFFF, EventFlagOperation::Any_Set);
+        auto u16Flags = clFlags.Wait(0xFFFF, EventFlagOperation::Any_Set);
 
         // Print a message indicaating which bit was set this time.
         switch (u16Flags) {

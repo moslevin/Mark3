@@ -52,8 +52,8 @@ void BrBall::ToggleDirY(void)
 void BrBall::Update(void)
 {
     // Compute number of pixel updates to take place this frame
-    uint16_t u16XUpdates = (ABS(m_s16VelX100) + 50) / 100;
-    uint16_t u16YUpdates = (ABS(m_s16VelY100) + 50) / 100;
+    auto u16XUpdates = static_cast<uint16_t>(ABS(m_s16VelX100) + 50) / 100;
+    auto u16YUpdates = static_cast<uint16_t>(ABS(m_s16VelY100) + 50) / 100;
 
     if (u16XUpdates > u16YUpdates) {
         m_u16PixelUpdates = u16XUpdates;
@@ -67,8 +67,8 @@ void BrBall::Update(void)
 bool BrBall::MoveNextPixel(uint16_t* pu16X_, uint16_t* pu16Y_)
 {
     if (!m_u16UpdatesLeft) {
-        *pu16X_ = (uint16_t)(m_s16X100 / 100);
-        *pu16Y_ = (uint16_t)(m_s16Y100 / 100);
+        *pu16X_ = static_cast<uint16_t>(m_s16X100 / 100);
+        *pu16Y_ = static_cast<uint16_t>(m_s16Y100 / 100);
         return false;
     }
 
@@ -77,21 +77,21 @@ bool BrBall::MoveNextPixel(uint16_t* pu16X_, uint16_t* pu16Y_)
 
     m_u16UpdatesLeft--;
 
-    *pu16X_ = (uint16_t)(m_s16X100 / 100);
-    *pu16Y_ = (uint16_t)(m_s16Y100 / 100);
+    *pu16X_ = static_cast<uint16_t>(m_s16X100 / 100);
+    *pu16Y_ = static_cast<uint16_t>(m_s16Y100 / 100);
     return true;
 }
 
 //---------------------------------------------------------------------------
 void BrBall::SetX(uint16_t u16X_)
 {
-    m_s16X100 = (int16_t)(u16X_ * 100);
+    m_s16X100 = static_cast<int16_t>(u16X_ * 100);
 }
 
 //---------------------------------------------------------------------------
 void BrBall::SetY(uint16_t u16Y_)
 {
-    m_s16Y100 = (int16_t)(u16Y_ * 100);
+    m_s16Y100 = static_cast<int16_t>(u16Y_ * 100);
 }
 
 //---------------------------------------------------------------------------

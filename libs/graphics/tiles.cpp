@@ -30,15 +30,15 @@ void Tile_8x8::LoadTile(TileDef_t* pstTileDef_)
 
     // Tile size = ((width of the tile in pixels * bits-per-pixel encoded) / 8) rounded to the next byte * number of
     // rows.
-    uint16_t u16TileSize = (((uint16_t)pstTileDef_->m_u8Width * ((uint16_t)pstTileDef_->m_eFormat + 1)) + 7) >> 3;
+    auto u16TileSize = (static_cast<uint16_t>(pstTileDef_->m_u8Width) * (static_cast<uint16_t>(pstTileDef_->m_eFormat + 1)) + 7) >> 3;
     COLOR*   puBufPtr    = m_auTileBuffer;
 
-    u16TileSize *= (uint16_t)(pstTileDef_->m_u8Height);
+    u16TileSize *= static_cast<uint16_t>(pstTileDef_->m_u8Height);
 
     clStream.Init(pstTileDef_->m_pu8Data, u16TileSize);
     for (uint8_t i = 0; i < pstTileDef_->m_u8Height; i++) {
         for (uint8_t j = 0; j < pstTileDef_->m_u8Width; j++) {
-            uint8_t u8ColorIndex = clStream.ReadBits((uint8_t)pstTileDef_->m_eFormat + 1);
+            uint8_t u8ColorIndex = clStream.ReadBits(static_cast<uint8_t>(pstTileDef_->m_eFormat) + 1);
             *puBufPtr++          = pstTileDef_->m_puPalette[u8ColorIndex];
         }
         // Each row starts with a fresh byte

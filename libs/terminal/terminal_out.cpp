@@ -29,7 +29,7 @@ void TerminalOut::WriteString(const char* szStr_)
 {
     auto *szSrc = szStr_;
     while (*szSrc != '\0') {
-        WriteByte((uint8_t)*szSrc++);
+        WriteByte(static_cast<uint8_t>(*szSrc++));
     }
 }
 

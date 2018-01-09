@@ -48,7 +48,7 @@ void PeriodicCallback(Thread* owner, void* pvData_)
 {
     // Timer callback function used to post a semaphore.  Posting the semaphore
     // will wake up a thread that's pending on that semaphore.
-    Semaphore* pclSem = (Semaphore*)pvData_;
+    auto* pclSem = static_cast<Semaphore*>(pvData_);
     pclSem->Post();
 }
 

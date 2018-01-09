@@ -87,9 +87,9 @@ void Thread::Init(
 #endif
 
     KERNEL_TRACE_1("Stack Size: %d", u16StackSize_);
-    KERNEL_TRACE_1("Thread Pri: %d", (uint8_t)uXPriority_);
-    KERNEL_TRACE_1("Thread Id: %d", (uint16_t)m_u8ThreadID);
-    KERNEL_TRACE_1("Entrypoint: %x", (uint16_t)pfEntryPoint_);
+    KERNEL_TRACE_1("Thread Pri: %d", uXPriority_);
+    KERNEL_TRACE_1("Thread Id: %d", m_u8ThreadID);
+    KERNEL_TRACE_1("Entrypoint: %x", static_cast<K_ADDR>(pfEntryPoint_));
 
     // Initialize the thread parameters to their initial values.
     m_pwStack    = pwStack_;
@@ -152,7 +152,7 @@ void Thread::Start(void)
 
     // Remove the thread from the scheduler's "stopped" list, and add it
     // to the scheduler's ready list at the proper priority.
-    KERNEL_TRACE_1("Starting Thread %d", (uint16_t)m_u8ThreadID);
+    KERNEL_TRACE_1("Starting Thread %d", m_u8ThreadID);
 
     CS_ENTER();
     Scheduler::GetStopList()->Remove(this);
@@ -494,7 +494,7 @@ void Thread::ContextSwitchSWI()
 {
     // Call the context switch interrupt if the scheduler is enabled.
     if (static_cast<int>(Scheduler::IsEnabled()) == 1) {
-        KERNEL_TRACE_1("Context switch to Thread %d", (uint16_t)((Thread*)Scheduler::GetNextThread())->GetID());
+        KERNEL_TRACE_1("Context switch to Thread %d", Scheduler::GetNextThread()->GetID());
 #if KERNEL_USE_STACK_GUARD
 #if KERNEL_USE_IDLE_FUNC
         if ((g_pclCurrent != nullptr) && (g_pclCurrent->GetID() != 255)) {

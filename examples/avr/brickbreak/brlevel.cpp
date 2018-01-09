@@ -47,7 +47,7 @@ void BrLevel::Draw(void)
 
     char acStr[4];
 
-    MemUtil::DecimalToString((uint8_t)(m_u8Level + 1), acStr);
+    MemUtil::DecimalToString(static_cast<uint8_t>(m_u8Level + 1), acStr);
 
     stText.u16Top   = 8;
     stText.uColor   = COLOR_WHITE;

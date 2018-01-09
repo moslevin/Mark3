@@ -296,11 +296,11 @@ public:
      */
     void Enumerate(DCPU_Registers* pstRegisters_)
     {
-        pstRegisters_->A = (uint16_t)(m_u32HWID & 0x0000FFFF);
-        pstRegisters_->B = (uint16_t)((m_u32HWID >> 16) & 0x0000FFFF);
+        pstRegisters_->A = static_cast<uint16_t>(m_u32HWID & 0x0000FFFF);
+        pstRegisters_->B = static_cast<uint16_t>((m_u32HWID >> 16) & 0x0000FFFF);
         pstRegisters_->C = m_u16Version;
-        pstRegisters_->X = (uint16_t)(m_u32VID & 0x0000FFFF);
-        pstRegisters_->Y = (uint16_t)((m_u32VID >> 16) & 0x0000FFFF);
+        pstRegisters_->X = static_cast<uint16_t>(m_u32VID & 0x0000FFFF);
+        pstRegisters_->Y = static_cast<uint16_t>((m_u32VID >> 16) & 0x0000FFFF);
     }
 
     /*!
@@ -351,7 +351,7 @@ public:
      *  \param pu16ROM_ Pointer to the CPU's ROM buffer
      *  \param u16ROMSize_ Size of the ROM buffer in words
      */
-    void Init(uint16_t* pu16RAM_, uint16_t u16RAMSize_, const uint16_t* pu16ROM_, uint16_t u16ROMSize_);
+    void Init(uint16_t* pu16RAM_, uint16_t u16RAMSize_, uint16_t* pu16ROM_, uint16_t u16ROMSize_);
 
     /*!
      *  \brief RunOpcode

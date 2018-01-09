@@ -138,7 +138,7 @@ void Mutex::Claim_i(void)
     KERNEL_ASSERT(IsInitialized());
 #endif
 
-    KERNEL_TRACE_1("Claiming Mutex, Thread %d", (uint16_t)g_pclCurrent->GetID());
+    KERNEL_TRACE_1("Claiming Mutex, Thread %d", static_cast<uint16_t>(g_pclCurrent->GetID()));
 
 #if KERNEL_USE_TIMEOUTS
     Timer clTimer;
@@ -189,7 +189,7 @@ void Mutex::Claim_i(void)
     if (u32WaitTimeMS_ != 0u) {
         g_pclCurrent->SetExpired(false);
         clTimer.Init();
-        clTimer.Start(false, u32WaitTimeMS_, (TimerCallback)TimedMutex_Callback, (void*)this);
+        clTimer.Start(false, u32WaitTimeMS_, (TimerCallback)TimedMutex_Callback, this);
         bUseTimer = true;
     }
 #endif
@@ -252,7 +252,7 @@ void Mutex::Release()
     KERNEL_ASSERT(IsInitialized());
 #endif
 
-    KERNEL_TRACE_1("Releasing Mutex, Thread %d", (uint16_t)g_pclCurrent->GetID());
+    KERNEL_TRACE_1("Releasing Mutex, Thread %d", static_cast<uint16_t>(g_pclCurrent->GetID()));
 
     auto bSchedule = false;
 

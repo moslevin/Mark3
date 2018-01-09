@@ -35,6 +35,13 @@ See license.txt for more information
 namespace {
 using namespace Mark3;
 ATMegaUARTPlus* pclActive; // Pointer to the active object
+
+//---------------------------------------------------------------------------
+void StreamTimerCallback(Thread* pclOwner_, void* pvData_)
+{
+    auto *pclThis = reinterpret_cast<ATMegaUARTPlus*>(pvData_);
+    pclThis->StreamInCallback();
+}
 } // anonymous namespace
 
 namespace Mark3
@@ -42,22 +49,19 @@ namespace Mark3
 //---------------------------------------------------------------------------
 void ATMegaUARTPlus::SetBaud(uint32_t u32Baud_)
 {
-    uint16_t u16BaudTemp;
-    uint16_t u16PortTemp;
-
     // Calculate the baud rate from the value in the driver.
-    u16BaudTemp = (uint16_t)(((PORT_SYSTEM_FREQ / 16) / u32Baud_) - 1);
+    auto u16BaudTemp = static_cast<uint16_t>(((PORT_SYSTEM_FREQ / 16) / u32Baud_) - 1);
 
     // Save the current port config registers
-    u16PortTemp = UART_SRB;
+    auto u16PortTemp = UART_SRB;
 
     // Clear the registers (disable rx/tx/interrupts)
     UART_SRB = 0;
     UART_SRA = 0;
 
     // Set the baud rate high/low values.
-    UART_BAUDH = (uint8_t)(u16BaudTemp >> 8);
-    UART_BAUDL = (uint8_t)(u16BaudTemp & 0x00FF);
+    UART_BAUDH = static_cast<uint8_t>(u16BaudTemp >> 8);
+    UART_BAUDL = static_cast<uint8_t>(u16BaudTemp & 0x00FF);
 
     // Restore the Rx/Tx flags to their previous state
     UART_SRB = u16PortTemp;
@@ -104,12 +108,12 @@ uint16_t ATMegaUARTPlus::Control(uint16_t u16CmdId_, void* pvIn_, uint16_t u16Si
 {
     switch (static_cast<UartOpcode_t>(u16CmdId_)) {
         case UART_OPCODE_SET_BAUDRATE: {
-            uint32_t u32BaudRate = *((uint32_t*)pvIn_);
+            auto u32BaudRate = *(static_cast<uint32_t*>(pvIn_));
             SetBaud(u32BaudRate);
         } break;
         case UART_OPCODE_SET_BUFFERS: {
-            uint8_t* pau8In = (uint8_t*)pvIn_;
-            uint8_t* pau8Out = (uint8_t*)pvOut_;
+            auto* pau8In = static_cast<uint8_t*>(pvIn_);
+            auto* pau8Out = static_cast<uint8_t*>(pvOut_);
             m_clStreamIn.Init(pau8In, u16SizeIn_);
             m_clStreamOut.Init(pau8Out, u16SizeOut_);
         } break;
@@ -136,7 +140,7 @@ uint16_t ATMegaUARTPlus::Control(uint16_t u16CmdId_, void* pvIn_, uint16_t u16Si
 //---------------------------------------------------------------------------
 uint16_t ATMegaUARTPlus::Read(uint16_t u16SizeIn_, uint8_t* pvData_)
 {
-    uint8_t* pu8Data = pvData_;
+    auto* pu8Data = reinterpret_cast<uint8_t*>(pvData_);
     uint16_t u16Read = 0;
     while (u16SizeIn_) {
         if (m_clStreamIn.Read(pu8Data)) {
@@ -160,7 +164,7 @@ bool ATMegaUARTPlus::StreamOutByte(uint8_t u8In_)
     if (!m_clStreamOut.CanWrite()) {
         return false;
     }
-    bool bStart = false;
+    auto bStart = false;
     if (m_clStreamOut.IsEmpty() && m_bStartTx) {
         bStart = true;
         m_bStartTx = false;
@@ -175,7 +179,7 @@ bool ATMegaUARTPlus::StreamOutByte(uint8_t u8In_)
 //---------------------------------------------------------------------------
 uint16_t ATMegaUARTPlus::Write(uint16_t u16SizeOut_, uint8_t* pvData_)
 {
-    uint8_t* pu8Data = pvData_;
+    auto* pu8Data = reinterpret_cast<uint8_t*>(pvData_);
     uint16_t u16Written = 0;
     while (u16SizeOut_) {
         if (StreamOutByte(*pu8Data)) {
@@ -216,29 +220,20 @@ void ATMegaUARTPlus::StreamInCallback()
 }
 
 //---------------------------------------------------------------------------
-static void StreamTimerCallback(Thread* pclOwner_, void* pvData_)
-{
-    ATMegaUARTPlus *pclThis = (ATMegaUARTPlus*)pvData_;
-    pclThis->StreamInCallback();
-}
-
-//---------------------------------------------------------------------------
 void ATMegaUARTPlus::RxISR()
 {
-    uint8_t u8Byte;
-    u8Byte = UART_UDR;
-
+    auto u8Byte = UART_UDR;
     if (!m_clStreamIn.CanWrite()) {
         return;
     }
 
-    bool bStart = false;
+    auto bStart = false;
     if (m_clStreamIn.IsEmpty()) {
         bStart = true;
     }
     m_clStreamIn.Write(u8Byte);
     if (bStart) {
-        m_clTimerIn.Start(true, 50, StreamTimerCallback, (void*)this);
+        m_clTimerIn.Start(true, 50, StreamTimerCallback, this);
     }
     if ((u8Byte == 0) || (u8Byte == '\n')) {
         m_clNotifyIn.Signal();

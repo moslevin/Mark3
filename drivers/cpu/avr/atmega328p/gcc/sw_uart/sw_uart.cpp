@@ -150,7 +150,7 @@ void SoftwareUART::Init(uint32_t u32Baud_)
     m_u16Prescale = 1024;
 
     // Iteratively determine our ideal prescaler value for the supplied baud rate
-    bool     bDone = false;
+    auto     bDone = false;
     uint32_t u32BitPeriod;
     while (!bDone) {
         u32BitPeriod = (PORT_SYSTEM_FREQ / (uint32_t)m_u16Prescale) / u32Baud_;
@@ -189,7 +189,7 @@ void SoftwareUART::Init(uint32_t u32Baud_)
         u32BitPeriod = 255;
     }
 
-    m_u8TimerPeriod = (uint8_t)u32BitPeriod;
+    m_u8TimerPeriod = static_cast<uint8_t>(u32BitPeriod);
     bPendingRX      = false;
 
     TimerInit();

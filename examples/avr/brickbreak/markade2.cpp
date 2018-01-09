@@ -135,9 +135,11 @@ void IdleEntry(void)
 }
 } // anonymous namespace
 
+// Global -- these are used throughout the game, once initialized.
 JoystickDriver* pclJoystick = &clJoy_Sim;
 GraphicsDriver* pclDisplay = &clTFT_Sim;
 SoundDriver*    pclSound = &clSound;
+
 //---------------------------------------------------------------------------
 int main(void)
 {

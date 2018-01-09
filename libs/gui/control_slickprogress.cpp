@@ -64,19 +64,19 @@ void SlickProgressControl::Draw()
     pclDriver->Line(&stLine);
 
     // Draw the "completed" portion
-    u16ProgressWidth   = (uint16_t)(((((uint32_t)m_u8Progress) * (GetWidth() - 2)) + 50) / 100);
+    u16ProgressWidth   = static_cast<uint16_t>(((((uint32_t)m_u8Progress) * (GetWidth() - 2)) + 50) / 100);
     stRect.u16Top      = u16Y + GetTop() + 1;
     stRect.u16Bottom   = u16Y + GetTop() + ((GetHeight() - 1) / 2);
     stRect.u16Left     = u16X + GetLeft() + 1;
     stRect.u16Right    = stRect.u16Left + u16ProgressWidth - 1;
     stRect.bFill       = true;
-    stRect.u32ineColor = RGB_COLOR(0, (uint8_t)(MAX_GREEN * 0.85), (uint8_t)(MAX_BLUE * 0.25));
+    stRect.u32ineColor = RGB_COLOR(0, static_cast<uint8_t>(MAX_GREEN * 0.85), static_cast<uint8_t>(MAX_BLUE * 0.25));
     stRect.uFillColor  = stRect.u32ineColor;
     pclDriver->Rectangle(&stRect);
 
     stRect.u16Top      = stRect.u16Bottom + 1;
     stRect.u16Bottom   = u16Y + GetTop() + GetHeight() - 2;
-    stRect.u32ineColor = RGB_COLOR(0, (uint32_t)(MAX_GREEN * 0.75), (uint32_t)(MAX_BLUE * 0.20));
+    stRect.u32ineColor = RGB_COLOR(0, static_cast<uint32_t>(MAX_GREEN * 0.75), static_cast<uint32_t>(MAX_BLUE * 0.20));
     stRect.uFillColor  = stRect.u32ineColor;
     pclDriver->Rectangle(&stRect);
 

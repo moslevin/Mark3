@@ -58,7 +58,7 @@ TEST(ut_typical_mutex)
     // Create a higher-priority thread that will immediately pre-empt u16.
     // Verify that while we have the mutex held, that the high-priority thread
     // is blocked waiting for u16 to relinquish access.
-    clMutexThread.Init(aucTestStack, sizeof(aucTestStack), 7, lMutexTest, (void*)&clMutex);
+    clMutexThread.Init(aucTestStack, sizeof(aucTestStack), 7, lMutexTest, &clMutex);
 
     clMutex.Claim();
 
@@ -98,14 +98,14 @@ TEST(ut_timed_mutex)
     Mutex clMutex;
     clMutex.Init();
 
-    clMutexThread.Init(aucTestStack, sizeof(aucTestStack), 7, lTimedTest, (void*)&clMutex);
+    clMutexThread.Init(aucTestStack, sizeof(aucTestStack), 7, lTimedTest, &clMutex);
     clMutexThread.Start();
 
     EXPECT_FALSE(clMutex.Claim(10));
 
     Thread::Sleep(20);
 
-    clMutexThread.Init(aucTestStack, sizeof(aucTestStack), 7, lTimedTest, (void*)&clMutex);
+    clMutexThread.Init(aucTestStack, sizeof(aucTestStack), 7, lTimedTest, &clMutex);
     clMutexThread.Start();
 
     EXPECT_TRUE(clMutex.Claim(30));
@@ -133,8 +133,8 @@ TEST(ut_priority_mutex)
 
     Scheduler::GetCurrentThread()->SetPriority(3);
 
-    clMutexThread.Init(aucTestStack, sizeof(aucTestStack), 2, lMutexThread, (void*)&clMutex);
-    clTestThread2.Init(aucTestStack2, sizeof(aucTestStack2), 4, lMutexThread, (void*)&clMutex);
+    clMutexThread.Init(aucTestStack, sizeof(aucTestStack), 2, lMutexThread, &clMutex);
+    clTestThread2.Init(aucTestStack2, sizeof(aucTestStack2), 4, lMutexThread, &clMutex);
 
     // Start the low-priority thread and give it the mutex
     clMutexThread.Start();

@@ -165,7 +165,7 @@ int main(void)
                    sizeof(aucAppStack),          //!< Size of the stack
                    1,                       //!< Thread priority
                    AppEntry, //!< Entry function
-                   (void*)&AppThread);      //!< Entry function argument
+                   &AppThread);      //!< Entry function argument
 
     AppThread.Start(); //!< Schedule the threads
 

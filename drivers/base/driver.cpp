@@ -35,7 +35,6 @@ See license.txt for more information
 
 #include "kerneldebug.h"
 
-#if KERNEL_USE_DRIVER
 namespace Mark3
 {
 namespace
@@ -48,7 +47,7 @@ namespace
 class DevNull : public Driver
 {
 public:
-    virtual void     Init() { SetName("/dev/null"); };
+    virtual void     Init() { SetName("/dev/null"); }
     virtual uint8_t  Open() { return 0; }
     virtual uint8_t  Close() { return 0; }
     virtual uint16_t Read(uint16_t  /*u16Bytes_*/, uint8_t*  /*pu8Data_*/) { return 0; }
@@ -123,4 +122,3 @@ Driver* DriverList::FindByPath(const char* m_pcPath)
     return &clDevNull;
 }
 } //namespace Mark3
-#endif

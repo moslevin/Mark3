@@ -129,7 +129,7 @@ void NLFS_Test(void)
 void AppEntry(void)
 {
     {
-        UartDriver* my_uart = static_cast<UartDriver*>(DriverList::FindByPath("/dev/tty"));
+        auto* my_uart = static_cast<UartDriver*>(DriverList::FindByPath("/dev/tty"));
         my_uart->SetBuffers(aucRxBuffer, UART_SIZE_RX, aucTxBuffer, UART_SIZE_TX);
         my_uart->Open();
     }

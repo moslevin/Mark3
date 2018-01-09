@@ -152,7 +152,7 @@ uint16_t EventFlag::Wait_i(uint16_t u16Mask_, EventFlagOperation eMode_)
         if (u32TimeMS_ != 0u) {
             g_pclCurrent->SetExpired(false);
             clEventTimer.Init();
-            clEventTimer.Start(false, u32TimeMS_, TimedEventFlag_Callback, (void*)this);
+            clEventTimer.Start(false, u32TimeMS_, TimedEventFlag_Callback, this);
             bUseTimer = true;
         }
 #endif

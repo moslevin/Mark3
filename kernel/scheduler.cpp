@@ -61,9 +61,7 @@ void Scheduler::Init()
 //---------------------------------------------------------------------------
 void Scheduler::Schedule()
 {
-    PORT_PRIO_TYPE uXPrio;
-
-    uXPrio = m_clPrioMap.HighestPriority();
+    auto uXPrio = m_clPrioMap.HighestPriority();
 
 #if KERNEL_USE_IDLE_FUNC
     if (uXPrio == 0) {
@@ -79,9 +77,9 @@ void Scheduler::Schedule()
         uXPrio--;
 
         // Get the thread node at this priority.
-        g_pclNext = (Thread*)(m_aclPriorities[uXPrio].GetHead());
+        g_pclNext = static_cast<Thread*>(m_aclPriorities[uXPrio].GetHead());
     }
-    KERNEL_TRACE_1("Next Thread: %d\n", (uint16_t)((Thread*)g_pclNext)->GetID());
+    KERNEL_TRACE_1("Next Thread: %d\n", static_cast<uint16_t>(g_pclNext->GetID()));
 }
 
 //---------------------------------------------------------------------------

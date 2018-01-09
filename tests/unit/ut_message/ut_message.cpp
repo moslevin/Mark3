@@ -87,7 +87,7 @@ void MsgConsumer(void* /*unused_*/)
                 if (1337 == (pclMsg->GetCode())) {
                     u8PassCount++;
                 }
-                if (7331 == (uint16_t)(pclMsg->GetData())) {
+                if (7331 == reinterpret_cast<uint16_t>(pclMsg->GetData())) {
                     u8PassCount++;
                 }
 
@@ -95,7 +95,7 @@ void MsgConsumer(void* /*unused_*/)
                 if (0xA0A0 == (pclMsg->GetCode())) {
                     u8PassCount++;
                 }
-                if (0xC0C0 == (uint16_t)(pclMsg->GetData())) {
+                if (0xC0C0 == reinterpret_cast<uint16_t>(pclMsg->GetData())) {
                     u8PassCount++;
                 }
 
@@ -149,7 +149,7 @@ TEST(ut_message_tx_rx)
 
     // Send the message to the consumer thread
     pclMsg->SetCode(1337);
-    pclMsg->SetData((void*)7331);
+    pclMsg->SetData(reinterpret_cast<void*>(7331));
 
     clMsgQ.Send(pclMsg);
 

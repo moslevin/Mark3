@@ -76,7 +76,7 @@ void PrintThreadSlack(void)
         if (apclActiveThreads[i] != 0) {
             char szStr[10];
 
-            uint16_t u16Slack = apclActiveThreads[i]->GetStackSlack();
+            auto u16Slack = apclActiveThreads[i]->GetStackSlack();
             MemUtil::DecimalToHex((K_ADDR)apclActiveThreads[i], szStr);
             KernelAware::Print(szStr);
             KernelAware::Print(" ");
@@ -134,7 +134,7 @@ void ThreadContextSwitch(Thread* pclThread_)
 {
     KernelAware::Print("CS\n");
     static uint16_t u16LastTick = 0;
-    uint16_t        u16Ticks    = KernelTimer::Read();
+    auto u16Ticks    = KernelTimer::Read();
 
     CS_ENTER();
     for (uint8_t i = 0; i < MAX_THREADS; i++) {
@@ -153,7 +153,7 @@ void ThreadContextSwitch(Thread* pclThread_)
 //---------------------------------------------------------------------------
 void WorkerMain1(void* arg_)
 {
-    Semaphore* pclSem   = (Semaphore*)arg_;
+    auto* pclSem   = static_cast<Semaphore*>(arg_);
     uint32_t   u32Count = 0;
 
     // Do some work.  Post a semaphore to notify the other thread that the

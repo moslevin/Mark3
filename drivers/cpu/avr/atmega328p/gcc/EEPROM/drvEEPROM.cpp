@@ -53,7 +53,7 @@ uint8_t ATMegaEEPROM::Close()
 //---------------------------------------------------------------------------
 uint16_t ATMegaEEPROM::Read(uint16_t u16Bytes_, uint8_t* pu8Data_)
 {
-    uint16_t u16NumBytes = u16Bytes_;
+    auto u16NumBytes = u16Bytes_;
 
     if ((m_u16Address + u16Bytes_) >= EEPROM_SIZE) {
         u16NumBytes = EEPROM_SIZE - m_u16Address;
@@ -72,7 +72,7 @@ uint16_t ATMegaEEPROM::Read(uint16_t u16Bytes_, uint8_t* pu8Data_)
 //---------------------------------------------------------------------------
 uint16_t ATMegaEEPROM::Write(uint16_t u16Bytes_, uint8_t* pu8Data_)
 {
-    uint16_t u16NumBytes = u16Bytes_;
+    auto u16NumBytes = u16Bytes_;
 
     if ((m_u16Address + u16Bytes_) >= EEPROM_SIZE) {
         u16NumBytes = EEPROM_SIZE - m_u16Address;

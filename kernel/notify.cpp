@@ -157,7 +157,7 @@ bool Notify::Wait(uint32_t u32WaitTimeMS_, bool* pbFlag_)
             g_pclCurrent->SetExpired(false);
 
             clNotifyTimer.Init();
-            clNotifyTimer.Start(false, u32WaitTimeMS_, TimedNotify_Callback, (void*)this);
+            clNotifyTimer.Start(false, u32WaitTimeMS_, TimedNotify_Callback, this);
         }
 
         Block(g_pclCurrent);

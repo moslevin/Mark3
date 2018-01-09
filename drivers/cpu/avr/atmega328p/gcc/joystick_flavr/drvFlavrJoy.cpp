@@ -63,10 +63,8 @@ FlavrJoystick::Control(uint16_t u16Event_, void* pvIn_, uint16_t u16SizeIn_, voi
 //---------------------------------------------------------------------------
 void FlavrJoystick::ScanInternal()
 {
-    uint8_t u8Tmp;
-
     g_u8FlavrJoyUp = 1; //!! This command triggers the kernel-aware simulator to update g_u8FlavrJoy.
-    u8Tmp          = g_u8FlavrJoy;
+    auto u8Tmp          = g_u8FlavrJoy;
 
     if (u8Tmp & FLAVR_JOY_LEFT) {
         m_stCurrentReport.bLeft = true;

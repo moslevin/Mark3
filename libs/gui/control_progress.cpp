@@ -68,7 +68,7 @@ void ProgressControl::Draw()
     pclDriver->Line(&stLine);
 
     // Draw the "completed" portion
-    u16ProgressWidth   = (uint16_t)(((((uint32_t)m_u8Progress) * (GetWidth() - 2)) + 50) / 100);
+    u16ProgressWidth   = static_cast<uint16_t>(((((uint32_t)m_u8Progress) * (GetWidth() - 2)) + 50) / 100);
     stRect.u16Top      = u16Y + GetTop() + 1;
     stRect.u16Bottom   = u16Y + GetTop() + GetHeight() - 2;
     stRect.u16Left     = u16X + GetLeft() + 1;

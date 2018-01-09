@@ -217,10 +217,9 @@ void DCPU::SET()
 //---------------------------------------------------------------------------
 void DCPU::ADD()
 {
-    uint32_t u32Temp;
     DBG_PRINT("ADD\n");
 
-    u32Temp = (uint32_t)*a + (uint32_t)*b;
+    auto u32Temp = static_cast<uint32_t>(*a) + static_cast<uint32_t>(*b);
     if (u32Temp >= 65536) {
         m_stRegisters.EX = 0x0001;
     } else {
@@ -233,10 +232,9 @@ void DCPU::ADD()
 //---------------------------------------------------------------------------
 void DCPU::SUB()
 {
-    int32_t lTemp;
     DBG_PRINT("SUB\n");
 
-    lTemp = (int32_t)*b - (int32_t)*a;
+    auto lTemp = static_cast<int32_t>(*b) - static_cast<int32_t>(*a);
     if (lTemp < 0) {
         m_stRegisters.EX = 0xFFFF;
     } else {
@@ -249,36 +247,30 @@ void DCPU::SUB()
 //---------------------------------------------------------------------------
 void DCPU::MUL()
 {
-    uint32_t u32Temp;
-
     DBG_PRINT("MUL\n");
-    u32Temp          = (((uint32_t)*a * (uint32_t)*b));
-    m_stRegisters.EX = (uint16_t)(u32Temp >> 16);
-    *b               = (uint16_t)(u32Temp & 0x0000FFFF);
+    auto u32Temp     = ((static_cast<uint32_t>(*a) * static_cast<uint32_t>(*b)));
+    m_stRegisters.EX = static_cast<uint16_t>(u32Temp >> 16);
+    *b               = static_cast<uint16_t>(u32Temp & 0x0000FFFF);
 }
 
 //---------------------------------------------------------------------------
 void DCPU::MLI()
 {
-    int32_t lTemp;
-
     DBG_PRINT("MLI\n");
-    lTemp            = ((int32_t)(*(int16_t*)a) * (int32_t)(*(int16_t*)b));
-    m_stRegisters.EX = (uint16_t)(lTemp >> 16);
-    *b               = (uint16_t)(lTemp & 0x0000FFFF);
+    auto lTemp       = (static_cast<int32_t>(*reinterpret_cast<int16_t*>(a)) * static_cast<int32_t>(*reinterpret_cast<int16_t*>(b)));
+    m_stRegisters.EX = static_cast<uint16_t>(lTemp >> 16);
+    *b               = static_cast<uint16_t>(lTemp & 0x0000FFFF);
 }
 
 //---------------------------------------------------------------------------
 void DCPU::DIV()
 {
-    uint16_t u16Temp;
-
     DBG_PRINT("DIV\n");
     if (*a == 0) {
         *b               = 0;
         m_stRegisters.EX = 0;
     } else {
-        u16Temp          = (uint16_t)((((uint32_t)*b) << 16) / (uint32_t)*a);
+        auto u16Temp     = static_cast<uint16_t>(((static_cast<uint32_t>(*b)) << 16) / static_cast<uint32_t>(*a));
         *b               = *b / *a;
         m_stRegisters.EX = u16Temp;
     }
@@ -287,15 +279,14 @@ void DCPU::DIV()
 //---------------------------------------------------------------------------
 void DCPU::DVI()
 {
-    uint16_t u16Temp;
-
     DBG_PRINT("DVI\n");
     if (*a == 0) {
         *b               = 0;
         m_stRegisters.EX = 0;
     } else {
-        u16Temp          = (uint16_t)((((int32_t) * ((int16_t*)b)) << 16) / (int32_t)(*(int16_t*)a));
-        *b               = (uint16_t)(*(int16_t*)b / *(int16_t*)a);
+        auto u16Temp     = static_cast<uint16_t>(
+                    ((static_cast<int32_t>(*reinterpret_cast<int16_t*>(b)) << 16) / static_cast<int32_t>(*reinterpret_cast<int16_t*>(a))));
+        *b               = static_cast<uint16_t>(*reinterpret_cast<int16_t*>(a) / *reinterpret_cast<int16_t*>(a));
         m_stRegisters.EX = u16Temp;
     }
 }
@@ -318,7 +309,7 @@ void DCPU::MDI()
     if (*b == 0) {
         *a = 0;
     } else {
-        *b = (uint16_t)(*((int16_t*)b) % *((int16_t*)a));
+        *b = static_cast<uint16_t>(*reinterpret_cast<int16_t*>(b) % *reinterpret_cast<int16_t*>(a));
     }
 }
 
@@ -346,7 +337,7 @@ void DCPU::XOR()
 //---------------------------------------------------------------------------
 void DCPU::SHR()
 {
-    uint16_t u16Temp = (uint16_t)((((uint32_t)*b) << 16) >> (uint32_t)*a);
+    auto u16Temp = static_cast<uint16_t>(((static_cast<uint32_t>(*b)) << 16) >> static_cast<uint32_t>(*a));
 
     DBG_PRINT("SHR\n");
     *b               = *b >> *a;
@@ -356,16 +347,16 @@ void DCPU::SHR()
 //---------------------------------------------------------------------------
 void DCPU::ASR()
 {
-    uint16_t u16Temp = (uint16_t)((((int32_t)*b) << 16) >> (int32_t)*a);
+    auto u16Temp = static_cast<uint16_t>(((static_cast<int32_t>(*b)) << 16) >> static_cast<int32_t>(*a));
 
     DBG_PRINT("ASR\n");
-    *b               = (uint16_t)(*(int16_t*)b >> *(int16_t*)a);
+    *b               = static_cast<uint16_t>(*reinterpret_cast<int16_t*>(b) >> *reinterpret_cast<int16_t*>(a));
     m_stRegisters.EX = u16Temp;
 }
 //---------------------------------------------------------------------------
 void DCPU::SHL()
 {
-    uint16_t u16Temp = (uint16_t)((((uint32_t)*b) << (uint32_t)*a) >> 16);
+    auto u16Temp = static_cast<uint16_t>(((static_cast<uint32_t>(*b)) << static_cast<uint32_t>(*a)) >> 16);
 
     DBG_PRINT("SHL\n");
     *b               = *b << *a;
@@ -411,7 +402,7 @@ bool DCPU::IFG()
 bool DCPU::IFA()
 {
     DBG_PRINT("IFA\n");
-    return *((int16_t*)b) > *((int16_t*)a);
+    return *reinterpret_cast<int16_t*>(b) > *reinterpret_cast<int16_t*>(a);
 }
 
 //---------------------------------------------------------------------------
@@ -425,37 +416,35 @@ bool DCPU::IFL()
 bool DCPU::IFU()
 {
     DBG_PRINT("IFU\n");
-    return *(int16_t*)b < *(int16_t*)a;
+    return *reinterpret_cast<int16_t*>(b) < *reinterpret_cast<int16_t*>(a);
 }
 
 //---------------------------------------------------------------------------
 void DCPU::ADX()
 {
-    uint32_t u32Temp;
     DBG_PRINT("ADX\n");
-    u32Temp = (uint32_t)*b + (uint32_t)*a + (uint32_t)m_stRegisters.EX;
+    auto u32Temp = static_cast<uint32_t>(*b) + static_cast<uint32_t>(*a) + static_cast<uint32_t>(m_stRegisters.EX);
     if (u32Temp >= 0x10000) {
         m_stRegisters.EX = 1;
     } else {
         m_stRegisters.EX = 0;
     }
 
-    *b = ((uint16_t)(u32Temp & 0x0000FFFF));
+    *b = (static_cast<uint16_t>(u32Temp & 0x0000FFFF));
 }
 
 //---------------------------------------------------------------------------
 void DCPU::SBX()
 {
-    int32_t lTemp;
     DBG_PRINT("SBX\n");
-    lTemp = (int32_t)*b - (int32_t)*a + (int32_t)m_stRegisters.EX;
+    auto lTemp = static_cast<int32_t>(*b) - static_cast<int32_t>(*a) + static_cast<int32_t>(m_stRegisters.EX);
     if (lTemp < 0) {
         m_stRegisters.EX = 0xFFFF;
     } else {
         m_stRegisters.EX = 0;
     }
 
-    *b = ((uint16_t)(lTemp & 0x0000FFFF));
+    *b = (static_cast<uint16_t>(lTemp & 0x0000FFFF));
 }
 
 //---------------------------------------------------------------------------
@@ -572,12 +561,10 @@ void DCPU::IAQ()
 //---------------------------------------------------------------------------
 void DCPU::HWN()
 {
-    LinkListNode* pclNode;
-
     DBG_PRINT("HWN\n");
     m_u16TempA = 0;
     /*! Returns the number of connected hardware devices to "a" */
-    pclNode = m_clPluginList.GetHead();
+    auto pclNode = m_clPluginList.GetHead();
     while (pclNode != 0) {
         m_u16TempA++;
         pclNode = pclNode->GetNext();
@@ -590,15 +577,14 @@ void DCPU::HWN()
 void DCPU::HWQ()
 {
     DBG_PRINT("HWQ\n");
-    DCPUPlugin* pclPlugin;
-    pclPlugin = (DCPUPlugin*)m_clPluginList.GetHead();
+    auto pclPlugin = static_cast<DCPUPlugin*>(m_clPluginList.GetHead());
 
     while (pclPlugin != 0) {
         if (pclPlugin->GetDeviceNumber() == *a) {
             pclPlugin->Enumerate(&m_stRegisters);
             break;
         }
-        pclPlugin = (DCPUPlugin*)pclPlugin->GetNext();
+        pclPlugin = static_cast<DCPUPlugin*>(pclPlugin->GetNext());
     }
 }
 
@@ -607,20 +593,19 @@ void DCPU::HWI()
 {
     DBG_PRINT("HWI\n");
 
-    DCPUPlugin* pclPlugin;
-    pclPlugin = (DCPUPlugin*)m_clPluginList.GetHead();
+    auto* pclPlugin = static_cast<DCPUPlugin*>(m_clPluginList.GetHead());
 
     while (pclPlugin != 0) {
         if (pclPlugin->GetDeviceNumber() == *a) {
             pclPlugin->Interrupt(this);
             break;
         }
-        pclPlugin = (DCPUPlugin*)pclPlugin->GetNext();
+        pclPlugin = static_cast<DCPUPlugin*>(pclPlugin->GetNext());
     }
 }
 
 //---------------------------------------------------------------------------
-void DCPU::Init(uint16_t* pu16RAM_, uint16_t u16RAMSize_, const uint16_t* pu16ROM_, uint16_t u16ROMSize_)
+void DCPU::Init(uint16_t* pu16RAM_, uint16_t u16RAMSize_, uint16_t* pu16ROM_, uint16_t u16ROMSize_)
 {
     m_stRegisters.PC = 0;
     m_stRegisters.SP = u16RAMSize_;
@@ -636,7 +621,7 @@ void DCPU::Init(uint16_t* pu16RAM_, uint16_t u16RAMSize_, const uint16_t* pu16RO
     m_stRegisters.IA = 0;
     m_u32CycleCount  = 0;
 
-    m_pu16ROM    = (uint16_t*)pu16ROM_;
+    m_pu16ROM    = static_cast<uint16_t*>(pu16ROM_);
     m_u16ROMSize = u16ROMSize_;
 
     m_pu16RAM    = pu16RAM_;
@@ -674,7 +659,7 @@ uint8_t DCPU::GetOperand(uint8_t uCopType_, uint16_t** pu16Result_)
         case ARG_WORD_Z:
         case ARG_WORD_I:
         case ARG_WORD_J: {
-            uint16_t u16Temp = m_pu16ROM[m_stRegisters.PC++];
+            auto u16Temp = m_pu16ROM[m_stRegisters.PC++];
             u16Temp += m_stRegisters.au16Registers[uCopType_ - ARG_WORD_A];
             *pu16Result_ = &m_pu16RAM[u16Temp];
             u8RetVal     = 1;
@@ -688,7 +673,7 @@ uint8_t DCPU::GetOperand(uint8_t uCopType_, uint16_t** pu16Result_)
             break;
         case ARG_PEEK_SP: *pu16Result_ = &m_pu16RAM[m_stRegisters.SP]; break;
         case ARG_WORD_SP: {
-            uint16_t u16Temp = m_pu16ROM[++m_stRegisters.PC];
+            auto u16Temp = m_pu16ROM[++m_stRegisters.PC];
             u16Temp += m_stRegisters.SP;
             *pu16Result_ = &m_pu16RAM[u16Temp];
             u8RetVal++;
@@ -707,7 +692,7 @@ uint8_t DCPU::GetOperand(uint8_t uCopType_, uint16_t** pu16Result_)
 
         case ARG_LITERAL_0:
             *pu16Result_ = &m_u16TempA;
-            m_u16TempA   = (uint16_t)(-1);
+            m_u16TempA   = static_cast<uint16_t>(-1);
             break;
         case ARG_LITERAL_1:
         case ARG_LITERAL_2:
@@ -741,7 +726,7 @@ uint8_t DCPU::GetOperand(uint8_t uCopType_, uint16_t** pu16Result_)
         case ARG_LITERAL_1E:
         case ARG_LITERAL_1F:
             *pu16Result_ = &m_u16TempA;
-            m_u16TempA   = (uint16_t)(uCopType_ - ARG_LITERAL_1);
+            m_u16TempA   = static_cast<uint16_t>(uCopType_ - ARG_LITERAL_1);
             break;
         default: break;
     }
@@ -752,10 +737,10 @@ uint8_t DCPU::GetOperand(uint8_t uCopType_, uint16_t** pu16Result_)
 void DCPU::RunOpcode()
 {
     // Fetch the opcode @ the current program counter
-    uint16_t u16Word = m_pu16ROM[m_stRegisters.PC++];
-    uint8_t  uCop    = (uint8_t)DCPU_NORMAL_OPCODE_MASK(u16Word);
-    uint8_t  u8A     = (uint8_t)DCPU_A_MASK(u16Word);
-    uint8_t  u8B     = (uint8_t)DCPU_B_MASK(u16Word);
+    auto u16Word = m_pu16ROM[m_stRegisters.PC++];
+    auto  uCop    = static_cast<uint8_t>(DCPU_NORMAL_OPCODE_MASK(u16Word));
+    auto  u8A     = static_cast<uint8_t>(DCPU_A_MASK(u16Word));
+    auto  u8B     = static_cast<uint8_t>(DCPU_B_MASK(u16Word));
     uint8_t  u8Size  = 1;
 
     DBG_PRINT("0x%04X: %04X\n", m_stRegisters.PC - 1, u16Word);
@@ -772,7 +757,7 @@ void DCPU::RunOpcode()
         u8Size += GetOperand(u8B, &b);
 
         // Add the cycles to the runtime clock
-        m_u32CycleCount += (uint32_t)aucBasicOpcodeCycles[uCop];
+        m_u32CycleCount += static_cast<uint32_t>(aucBasicOpcodeCycles[uCop]);
         m_u32CycleCount += (u8Size - 1);
 
         // Execute the instruction once we've decoded the opcode and

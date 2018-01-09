@@ -46,10 +46,7 @@ uint8_t RAMDriver::Close()
 //---------------------------------------------------------------------------
 uint16_t RAMDriver::Read(uint16_t u16Bytes_, uint8_t* pu8Data_)
 {
-    uint16_t u16NumBytes = u16Bytes_;
-    uint16_t i;
-    uint8_t* pcTemp;
-
+    auto u16NumBytes = u16Bytes_;
     if ((m_u16Address + u16Bytes_) >= m_u16Size) {
         u16NumBytes = m_u16Size - m_u16Address;
     }
@@ -58,23 +55,19 @@ uint16_t RAMDriver::Read(uint16_t u16Bytes_, uint8_t* pu8Data_)
         return 0;
     }
 
-    pcTemp = &(m_pcData[m_u16Address]);
-    for (i = 0; i < u16NumBytes; i++) {
+    auto* pcTemp = &(m_pcData[m_u16Address]);
+    for (uint16_t i = 0; i < u16NumBytes; i++) {
         pu8Data_[i] = pcTemp[i];
     }
 
     m_u16Address += u16NumBytes;
-
     return u16NumBytes;
 }
 
 //---------------------------------------------------------------------------
 uint16_t RAMDriver::Write(uint16_t u16Bytes_, uint8_t* pu8Data_)
 {
-    uint16_t u16NumBytes = u16Bytes_;
-    uint16_t i;
-    uint8_t* pcTemp;
-
+    auto u16NumBytes = u16Bytes_;
     if ((m_u16Address + u16Bytes_) >= m_u16Size) {
         u16NumBytes = m_u16Size - m_u16Address;
     }
@@ -83,13 +76,12 @@ uint16_t RAMDriver::Write(uint16_t u16Bytes_, uint8_t* pu8Data_)
         return 0;
     }
 
-    pcTemp = &(m_pcData[m_u16Address]);
-    for (i = 0; i < u16NumBytes; i++) {
+    auto* pcTemp = &(m_pcData[m_u16Address]);
+    for (uint16_t i = 0; i < u16NumBytes; i++) {
         pcTemp[i] = pu8Data_[i];
     }
 
     m_u16Address += u16NumBytes;
-
     return u16NumBytes;
 }
 

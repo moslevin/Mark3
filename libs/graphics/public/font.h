@@ -36,7 +36,7 @@ typedef struct {
     The size of the glyph is the width*height (in bytes), plus the overhead
     of the struct parameters.
 */
-#define GLYPH_SIZE(x) (((uint16_t)((x->u8Width + 7) >> 3) * (uint16_t)(x->u8Height)) + sizeof(Glyph_t) - 1)
+#define GLYPH_SIZE(x) ((static_cast<uint16_t>((x->u8Width + 7) >> 3) * static_cast<uint16_t>(x->u8Height)) + sizeof(Glyph_t) - 1)
 
 //---------------------------------------------------------------------------
 typedef struct {

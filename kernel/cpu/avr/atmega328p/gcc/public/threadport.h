@@ -39,7 +39,7 @@ namespace Mark3 {
 
 //---------------------------------------------------------------------------
 //! Macro to find the top of a stack given its size and top address
-#define TOP_OF_STACK(x, y) (uint8_t*)(((uint16_t)x) + (y - 1))
+#define TOP_OF_STACK(x, y) (reinterpret_cast<K_WORD*>(reinterpret_cast<K_ADDR>(x) + (static_cast<K_ADDR>(y) - 1)))
 //! Push a value y to the stack pointer x and decrement the stack pointer
 #define PUSH_TO_STACK(x, y)                                                                                            \
     *x = y;                                                                                                            \
@@ -52,7 +52,7 @@ namespace Mark3 {
 inline uint8_t __mark3_clz8(uint8_t in_)
 {
     static const uint8_t u8Lookup[] = {4, 3, 2, 2, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0};
-    uint8_t hi = __builtin_avr_swap(in_) & 0x0F;
+    auto hi = __builtin_avr_swap(in_) & 0x0F;
     if (hi) {
         return u8Lookup[hi];
     }

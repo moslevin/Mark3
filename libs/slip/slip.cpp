@@ -132,10 +132,10 @@ uint16_t Slip::ReadData(uint8_t* pu8Channel_, char* aucBuf_, uint16_t u16Len_)
     u16CRC_Calc -= aucBuf_[u16Valid - 2];
     u16CRC_Calc -= aucBuf_[u16Valid - 1];
 
-    u16Len = ((uint16_t)aucBuf_[1]) << 8;
-    u16Len += ((uint16_t)aucBuf_[2]);
-    u16CRC = ((uint16_t)aucBuf_[u16Valid - 2]) << 8;
-    u16CRC += ((uint16_t)aucBuf_[u16Valid - 1]);
+    u16Len = static_cast<uint16_t>(aucBuf_[1]) << 8;
+    u16Len += static_cast<uint16_t>(aucBuf_[2]);
+    u16CRC = static_cast<uint16_t>(aucBuf_[u16Valid - 2]) << 8;
+    u16CRC += static_cast<uint16_t>(aucBuf_[u16Valid - 1]);
 
     if (u16CRC != u16CRC_Calc) {
         return 0;
@@ -173,15 +173,15 @@ void Slip::WriteData(uint8_t u8Channel_, const char* aucBuf_, uint16_t u16Len_)
     WriteByte(u8Channel_);
     u16CRC = u8Channel_;
 
-    WriteByte((uint8_t)(u16Len_ >> 8));
+    WriteByte(static_cast<uint8_t>(u16Len_ >> 8));
     u16CRC += (u16Len_ >> 8);
 
-    WriteByte((uint8_t)(u16Len_ & 0x00FF));
+    WriteByte(static_cast<uint8_t>(u16Len_ & 0x00FF));
     u16CRC += (u16Len_ & 0x00FF);
 
     while ((u16Len_--) != 0u) {
         WriteByte(*aucBuf_);
-        u16CRC += (uint16_t)*aucBuf_;
+        u16CRC += static_cast<uint16_t>(*aucBuf_);
         aucBuf_++;
     }
 
@@ -231,7 +231,7 @@ void Slip::WriteVector(uint8_t u8Channel_, SlipDataVector* astData_, uint16_t u1
     WriteByte(static_cast<uint8_t>(u16TotalLen >> 8));
     u16CRC += (u16TotalLen >> 8);
 
-    WriteByte((uint8_t)(u16TotalLen & 0x00FF));
+    WriteByte(static_cast<uint8_t>(u16TotalLen & 0x00FF));
     u16CRC += (u16TotalLen & 0x00FF);
 
     // Write the message fragments

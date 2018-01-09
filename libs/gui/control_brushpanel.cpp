@@ -45,9 +45,9 @@ void BrushPanelControl::Draw()
         u16PixelVal256 = (i * 256) / ((GetLeft() + GetWidth() + 1) >> 1);
         u16PixelVal256 = GREYSCALE_MIN + (u16PixelVal256 / (256 / (GREYSCALE_MAX - GREYSCALE_MIN)));
 
-        u8Red   = (uint8_t)(u16PixelVal256 / (256 / MAX_RED));
-        u8Blue  = (uint8_t)(u16PixelVal256 / (256 / MAX_BLUE));
-        u8Green = (uint8_t)(u16PixelVal256 / (256 / MAX_GREEN));
+        u8Red   = static_cast<uint8_t>(u16PixelVal256 / (256 / MAX_RED));
+        u8Blue  = static_cast<uint8_t>(u16PixelVal256 / (256 / MAX_BLUE));
+        u8Green = static_cast<uint8_t>(u16PixelVal256 / (256 / MAX_GREEN));
 
         stLine.uColor = RGB_COLOR(u8Red, u8Blue, u8Green);
 
@@ -60,9 +60,9 @@ void BrushPanelControl::Draw()
         u16PixelVal256 = (((GetLeft() + GetWidth()) - i) * 256) / ((GetLeft() + GetWidth() + 1) >> 1);
         u16PixelVal256 = GREYSCALE_MIN + (u16PixelVal256 / (256 / (GREYSCALE_MAX - GREYSCALE_MIN)));
 
-        u8Red   = (uint8_t)(u16PixelVal256 / (256 / MAX_RED));
-        u8Blue  = (uint8_t)(u16PixelVal256 / (256 / MAX_BLUE));
-        u8Green = (uint8_t)(u16PixelVal256 / (256 / MAX_GREEN));
+        u8Red   = static_cast<uint8_t>(u16PixelVal256 / (256 / MAX_RED));
+        u8Blue  = static_cast<uint8_t>(u16PixelVal256 / (256 / MAX_BLUE));
+        u8Green = static_cast<uint8_t>(u16PixelVal256 / (256 / MAX_GREEN));
 
         stLine.uColor = RGB_COLOR(u8Red, u8Blue, u8Green);
 

@@ -39,22 +39,19 @@ namespace Mark3
 //---------------------------------------------------------------------------
 void ATMegaUART::SetBaud(void)
 {
-    uint16_t u16BaudTemp;
-    uint16_t u16PortTemp;
-
     // Calculate the baud rate from the value in the driver.
-    u16BaudTemp = (uint16_t)(((PORT_SYSTEM_FREQ / 16) / m_u32BaudRate) - 1);
+    auto u16BaudTemp = static_cast<uint16_t>(((PORT_SYSTEM_FREQ / 16) / m_u32BaudRate) - 1);
 
     // Save the current port config registers
-    u16PortTemp = UART_SRB;
+    auto u16PortTemp = UART_SRB;
 
     // Clear the registers (disable rx/tx/interrupts)
     UART_SRB = 0;
     UART_SRA = 0;
 
     // Set the baud rate high/low values.
-    UART_BAUDH = (uint8_t)(u16BaudTemp >> 8);
-    UART_BAUDL = (uint8_t)(u16BaudTemp & 0x00FF);
+    UART_BAUDH = static_cast<uint8_t>(u16BaudTemp >> 8);
+    UART_BAUDL = static_cast<uint8_t>(u16BaudTemp & 0x00FF);
 
     // Restore the Rx/Tx flags to their previous state
     UART_SRB = u16PortTemp;
@@ -105,13 +102,13 @@ uint16_t ATMegaUART::Control(uint16_t u16CmdId_, void* pvIn_, uint16_t u16SizeIn
 {
     switch (static_cast<UartOpcode_t>(u16CmdId_)) {
         case UART_OPCODE_SET_BAUDRATE: {
-            uint32_t u32BaudRate = *((uint32_t*)pvIn_);
+            auto u32BaudRate = *(static_cast<uint32_t*>(pvIn_));
             m_u32BaudRate        = u32BaudRate;
             SetBaud();
         } break;
         case UART_OPCODE_SET_BUFFERS: {
-            m_pu8RxBuffer = (uint8_t*)pvIn_;
-            m_pu8TxBuffer = (uint8_t*)pvOut_;
+            m_pu8RxBuffer = static_cast<uint8_t*>(pvIn_);
+            m_pu8TxBuffer = static_cast<uint8_t*>(pvOut_);
             m_u8RxSize    = u16SizeIn_;
             m_u8TxSize    = u16SizeOut_;
         } break;
@@ -132,13 +129,12 @@ uint16_t ATMegaUART::Read(uint16_t u16SizeIn_, uint8_t* pvData_)
     // Read a string of characters of length N.  Return the number of bytes
     // actually read.  If less than the 1 length, this indicates that
     // the buffer is full and that the app needs to wait.
-
-    uint16_t i       = 0;
     uint16_t u16Read = 0;
-    bool     bExit   = 0;
-    uint8_t* pu8Data = (uint8_t*)pvData_;
 
-    for (i = 0; i < u16SizeIn_; i++) {
+    auto  bExit   = false;
+    auto* pu8Data = static_cast<uint8_t*>(pvData_);
+
+    for (uint16_t i = 0; i < u16SizeIn_; i++) {
         // If Tail != Head, there's data in the buffer.
         CS_ENTER();
         if (m_u8RxTail != m_u8RxHead) {
@@ -171,22 +167,21 @@ uint16_t ATMegaUART::Write(uint16_t u16SizeOut_, uint8_t* pvData_)
     // Write a string of characters of length N.  Return the number of bytes
     // actually written.  If less than the 1 length, this indicates that
     // the buffer is full and that the app needs to wait.
-    uint16_t i          = 0;
-    uint16_t u16Written = 0;
-    uint8_t  u8Next;
-    bool     bActivate = 0;
-    bool     bExit     = 0;
-    uint8_t* pu8Data   = (uint8_t*)pvData_;
+
+    bool     bActivate = false;
+    bool     bExit     = false;
+    auto* pu8Data   = static_cast<uint8_t*>(pvData_);
 
     // If the head = tail, we need to start sending data out the data ourselves.
     if (m_u8TxHead == m_u8TxTail) {
         bActivate = 1;
     }
 
-    for (i = 0; i < u16SizeOut_; i++) {
+    uint16_t u16Written = 0;
+    for (uint16_t i = 0; i < u16SizeOut_; i++) {
         CS_ENTER();
         // Check that head != tail (we have room)
-        u8Next = (m_u8TxHead + 1);
+        auto u8Next = (m_u8TxHead + 1);
         if (u8Next >= m_u8TxSize) {
             u8Next = 0;
         }
@@ -227,15 +222,13 @@ uint16_t ATMegaUART::Write(uint16_t u16SizeOut_, uint8_t* pvData_)
 void ATMegaUART::StartTx(void)
 {
     // Send the tail byte out.
-    uint8_t u8Next;
-
     CS_ENTER();
 
     // Send the byte at the tail index
     UART_UDR = m_pu8TxBuffer[m_u8TxTail];
 
     // Update the tail index
-    u8Next = (m_u8TxTail + 1);
+    auto u8Next = (m_u8TxTail + 1);
     if (u8Next >= m_u8TxSize) {
         u8Next = 0;
     }
@@ -247,14 +240,11 @@ void ATMegaUART::StartTx(void)
 //---------------------------------------------------------------------------
 void ATMegaUART::RxISR()
 {
-    uint8_t u8Temp;
-    uint8_t u8Next;
-
     // Read the byte from the data buffer register
-    u8Temp = UART_UDR;
+    auto u8Temp = UART_UDR;
 
     // Check that head != tail (we have room)
-    u8Next = (m_u8RxHead + 1);
+    auto u8Next = (m_u8RxHead + 1);
     if (u8Next >= m_u8RxSize) {
         u8Next = 0;
     }

@@ -15,11 +15,11 @@ void GraphicsUOLED::WriteByte(uint8_t u8Byte_)
 //---------------------------------------------------------------------------
 void GraphicsUOLED::WriteWord(uint16_t u16Word_)
 {
-    uint8_t u8Byte = (uint8_t)(u16Word_ >> 8);
+    auto u8Byte = static_cast<uint8_t>(u16Word_ >> 8);
     while (!m_pclDriver->Write(1, &u8Byte)) { /* do nothing */
     }
 
-    u8Byte = (uint8_t)u16Word_;
+    u8Byte = static_cast<uint8_t>(u16Word_);
     while (!m_pclDriver->Write(1, &u8Byte)) { /* do nothing */
     }
 }
@@ -309,7 +309,7 @@ void GraphicsUOLED::Text(DrawText_t* pstText_)
     }
 
     COMMAND_HEADER
-    const char* pcCursor = pstText_->pcString;
+    auto* pcCursor = pstText_->pcString;
 
     WriteWord(TEXT_PUT_STRING);
     while (*pcCursor) {
@@ -325,7 +325,7 @@ void GraphicsUOLED::Text(DrawText_t* pstText_)
 uint16_t GraphicsUOLED::TextWidth(DrawText_t* pstText_)
 {
     uint16_t    u16RetVal = 0;
-    const char* pcCursor  = pstText_->pcString;
+    auto* pcCursor  = pstText_->pcString;
 
     while (*pcCursor) {
         u16RetVal += 8;
@@ -356,7 +356,7 @@ void GraphicsUOLED::SetTextOpacity(bool bOpaque_)
 {
     COMMAND_HEADER
     WriteWord(TEXT_OPACITY);
-    WriteWord((uint16_t)bOpaque_);
+    WriteWord(static_cast<uint16_t>(bOpaque_));
     COMMAND_FOOTER
 }
 } //namespace Mark3

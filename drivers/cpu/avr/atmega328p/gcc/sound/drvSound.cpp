@@ -84,7 +84,7 @@ void SoundDriver::SetTone(SquareWave_t* pstWave_)
 //---------------------------------------------------------------------------
 void SongCallback(Thread* pclOwner_, void* pvData_)
 {
-    Song_t* pstSong = (Song_t*)pvData_;
+    auto* pstSong = static_cast<Song_t*>(pvData_);
     u16BeatTimer++;
     if (u16BeatTimer >= pstSong->astNotes[u16NoteIndex].u16DurationBPM32) {
         u16BeatTimer = 0;
@@ -106,7 +106,7 @@ void SongCallback(Thread* pclOwner_, void* pvData_)
 void SweepCallback(Thread* pstOwner_, void* pvData_)
 {
     uint16_t u16Freq;
-    Sweep_t* pstSweep = (Sweep_t*)pvData_;
+    auto* pstSweep = static_cast<Sweep_t*>(pvData_);
 
     if (u16SweepIdx < u16SweepSteps) {
         u16SweepIdx++;
@@ -214,17 +214,17 @@ SoundDriver::Control(uint16_t u16Event_, void* pvDataIn_, uint16_t u16SizeIn_, v
             Close();
             break;
         case SOUND_EVENT_SQUAREWAVE: {
-            SquareWave_t* pstSW = (SquareWave_t*)pvDataIn_;
+            auto* pstSW = static_cast<SquareWave_t*>(pvDataIn_);
             SetTone(pstSW);
             break;
         }
         case SOUND_EVENT_SONG: {
-            Song_t* pstSong = (Song_t*)pvDataIn_;
+            auto* pstSong = static_cast<Song_t*>(pvDataIn_);
             StartSong(pstSong);
             break;
         }
         case SOUND_EVENT_SWEEP: {
-            Sweep_t* pstSweep = (Sweep_t*)pvDataIn_;
+            auto* pstSweep = static_cast<Sweep_t*>(pvDataIn_);
             StartSweep(pstSweep);
             break;
         }

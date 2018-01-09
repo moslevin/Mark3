@@ -185,7 +185,7 @@ PORT_TIMER_COUNT_TYPE KernelTimer::SetExpiry(uint32_t u32Interval_)
     if (u32Interval_ > 65535) {
         u16SetInterval = 65535;
     } else {
-        u16SetInterval = (uint16_t)u32Interval_;
+        u16SetInterval = static_cast<uint16_t>(u32Interval_);
     }
 
     OCR1A = u16SetInterval;

@@ -54,7 +54,7 @@ Notify clNotify;
 void App1Main(void* unused_)
 {
     while (1) {
-        bool bNotified = false;
+        auto bNotified = false;
         // Block the thread until the notification object is signalled from
         // elsewhere.
         clNotify.Wait(&bNotified);

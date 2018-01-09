@@ -197,13 +197,13 @@ namespace Mark3
 // a series of LCD commands stored in PROGMEM byte array.
 void GraphicsST7735::CommandList(const uint8_t* pu8Data_)
 {
-    uint8_t u8NumCommands = pgm_read_byte(pu8Data_++); // Number of commands to follow
+    auto u8NumCommands = pgm_read_byte(pu8Data_++); // Number of commands to follow
     while (u8NumCommands--)                            // For each command...
     {
         WriteCommand(pgm_read_byte(pu8Data_++)); // Read, issue command
 
-        uint8_t  u8NumArgs = pgm_read_byte(pu8Data_++); // Number of args to follow
-        uint16_t u16Ms     = u8NumArgs & DELAY;         // If hibit set, delay follows args
+        auto  u8NumArgs = pgm_read_byte(pu8Data_++); // Number of args to follow
+        uint16_t u16Ms  = u8NumArgs & DELAY;         // If hibit set, delay follows args
 
         u8NumArgs &= ~DELAY; // Mask out delay bit
 
@@ -350,11 +350,11 @@ void GraphicsST7735::FastVLine(DrawLine_t* pstLine_)
     SetOpWindow(&stRect);
 
     // Count the pixels
-    uint16_t u16Pixels = pstLine_->u16Y2 - pstLine_->u16Y1 + 1;
+    auto u16Pixels = pstLine_->u16Y2 - pstLine_->u16Y1 + 1;
 
     // Set the high/low bytes of the color that we're going to write
-    uint8_t u8High = (uint8_t)((pstLine_->uColor) >> 8);
-    uint8_t u8Low  = (uint8_t)(pstLine_->uColor & 0xFF);
+    auto u8High = static_cast<uint8_t>((pstLine_->uColor) >> 8);
+    auto u8Low  = static_cast<uint8_t>(pstLine_->uColor & 0xFF);
 
     // Clock the pixel data out
     TFT_CD_OUT |= TFT_CD_PIN;
@@ -383,11 +383,11 @@ void GraphicsST7735::FastHLine(DrawLine_t* pstLine_)
     }
 
     // Count the pixels
-    uint16_t u16Pixels = pstLine_->u16X2 - pstLine_->u16X1 + 1;
+    auto u16Pixels = pstLine_->u16X2 - pstLine_->u16X1 + 1;
 
     // Set the high/low bytes of the color that we're going to write
-    uint8_t u8High = (uint8_t)((pstLine_->uColor) >> 8);
-    uint8_t u8Low  = (uint8_t)(pstLine_->uColor & 0xFF);
+    auto u8High = static_cast<uint8_t>((pstLine_->uColor) >> 8);
+    auto u8Low  = static_cast<uint8_t>(pstLine_->uColor & 0xFF);
 
     // Clock the pixel data out
     TFT_CD_OUT |= TFT_CD_PIN;
@@ -451,12 +451,12 @@ void GraphicsST7735::Rectangle(DrawRectangle_t* pstRectangle_)
 
         SetOpWindow(pstRectangle_);
 
-        uint32_t u32Pixels = (uint32_t)(pstRectangle_->u16Bottom - pstRectangle_->u16Top + 1)
-                             * (uint32_t)(pstRectangle_->u16Right - pstRectangle_->u16Left + 1);
+        auto u32Pixels =static_cast<uint32_t>(pstRectangle_->u16Bottom - pstRectangle_->u16Top + 1)
+                             * static_cast<uint32_t>(pstRectangle_->u16Right - pstRectangle_->u16Left + 1);
 
         // Set the high/low bytes of the color that we're going to write
-        uint8_t u8High = (uint8_t)((pstRectangle_->uFillColor) >> 8);
-        uint8_t u8Low  = (uint8_t)(pstRectangle_->uFillColor & 0xFF);
+        auto u8High = static_cast<uint8_t>((pstRectangle_->uFillColor) >> 8);
+        auto u8Low  = static_cast<uint8_t>(pstRectangle_->uFillColor & 0xFF);
 
         // Clock the pixel data out
         TFT_CD_OUT |= TFT_CD_PIN;
@@ -547,8 +547,8 @@ void GraphicsST7735::Point(DrawPoint_t* pstPoint_)
     WriteCommand(ST7735_RAMWR);
 
     // Get pixel color data in high/low bytes
-    uint8_t u8High = (uint8_t)((pstPoint_->uColor) >> 8);
-    uint8_t u8Low  = (uint8_t)(pstPoint_->uColor & 0xFF);
+    auto u8High = static_cast<uint8_t>((pstPoint_->uColor) >> 8);
+    auto u8Low  = static_cast<uint8_t>(pstPoint_->uColor & 0xFF);
 
     // Write the pixel data out
     TFT_CD_OUT |= TFT_CD_PIN;
@@ -577,9 +577,8 @@ void GraphicsST7735::Bitmap(DrawBitmap_t* pstBitmap_)
 
     SetOpWindow(&stRect);
 
-    uint32_t u32Pixels = (uint32_t)pstBitmap_->u16Width * (uint32_t)pstBitmap_->u16Height;
-
-    uint8_t* pu8Data = pstBitmap_->pu8Data;
+    auto u32Pixels = static_cast<uint32_t>(pstBitmap_->u16Width) * static_cast<uint32_t>(pstBitmap_->u16Height);
+    auto* pu8Data = pstBitmap_->pu8Data;
 
     // Write the pixel data out, assuming native 16-bit format.
     TFT_CD_OUT |= TFT_CD_PIN;
@@ -587,8 +586,8 @@ void GraphicsST7735::Bitmap(DrawBitmap_t* pstBitmap_)
 
     while (u32Pixels--) {
         // Get pixel color data in high/low bytes
-        uint8_t u8Low  = *pu8Data++;
-        uint8_t u8High = *pu8Data++;
+        auto u8Low  = *pu8Data++;
+        auto u8High = *pu8Data++;
 
         TFT_SPI_WRITE(u8High);
         TFT_SPI_WRITE(u8Low);

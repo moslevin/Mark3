@@ -215,12 +215,6 @@ See license.txt for more information
 #endif
 
 /*!
-    Enabling device drivers provides a posix-like filesystem interface for
-    peripheral device drivers.
-*/
-#define KERNEL_USE_DRIVER (1)
-
-/*!
     Provide Thread method to allow the user to set a name for each
     thread in the system.  Adds a const char* pointer to the size
     of the thread object.

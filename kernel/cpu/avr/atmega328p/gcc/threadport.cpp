@@ -44,10 +44,10 @@ void ThreadPort::InitStack(Thread* pclThread_)
     uint16_t i;
 
     // Get the address of the thread's entry function
-    u16Addr = (uint16_t)(pclThread_->m_pfEntryPoint);
+    u16Addr = reinterpret_cast<K_ADDR>(pclThread_->m_pfEntryPoint);
 
     // Start by finding the bottom of the stack
-    pu8Stack = (uint8_t*)pclThread_->m_pwStackTop;
+    pu8Stack = reinterpret_cast<K_WORD*>(pclThread_->m_pwStackTop);
 
     // clear the stack, and initialize it to a known-default value (easier
     // to debug when things go sour with stack corruption or overflow)
@@ -56,8 +56,8 @@ void ThreadPort::InitStack(Thread* pclThread_)
     }
 
     // Our context starts with the entry function
-    PUSH_TO_STACK(pu8Stack, (uint8_t)(u16Addr & 0x00FF));
-    PUSH_TO_STACK(pu8Stack, (uint8_t)((u16Addr >> 8) & 0x00FF));
+    PUSH_TO_STACK(pu8Stack, static_cast<uint8_t>(u16Addr & 0x00FF));
+    PUSH_TO_STACK(pu8Stack, static_cast<uint8_t>((u16Addr >> 8) & 0x00FF));
 
     // R0
     PUSH_TO_STACK(pu8Stack, 0x00); // R0
@@ -73,8 +73,8 @@ void ThreadPort::InitStack(Thread* pclThread_)
     }
 
     // Assume that the argument is the only stack variable
-    PUSH_TO_STACK(pu8Stack, (uint8_t)(((uint16_t)(pclThread_->m_pvArg)) & 0x00FF));        // R24
-    PUSH_TO_STACK(pu8Stack, (uint8_t)((((uint16_t)(pclThread_->m_pvArg)) >> 8) & 0x00FF)); // R25
+    PUSH_TO_STACK(pu8Stack, static_cast<uint8_t>((reinterpret_cast<K_ADDR>(pclThread_->m_pvArg)) & 0x00FF));        // R24
+    PUSH_TO_STACK(pu8Stack, static_cast<uint8_t>(((reinterpret_cast<K_ADDR>(pclThread_->m_pvArg)) >> 8) & 0x00FF)); // R25
 
     // Push the rest of the registers in the context
     for (i = 26; i <= 31; i++) {

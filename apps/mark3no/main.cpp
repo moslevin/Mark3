@@ -303,7 +303,7 @@ static void GetTime(const char* szArgs_)
     WriteString(pclUART, szMonth);
     WriteString(pclUART, " ");
 
-    MemUtil::DecimalToString((uint8_t)myTime.u8Day, szBuf);
+    MemUtil::DecimalToString(static_cast<uint8_t>myTime.u8Day, szBuf);
     WriteString(pclUART, szBuf);
     WriteString(pclUART, ", ");
 

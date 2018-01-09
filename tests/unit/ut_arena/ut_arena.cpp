@@ -45,7 +45,7 @@ K_WORD aucTestStack2[PORT_KERNEL_DEFAULT_STACK_SIZE];
 //===========================================================================
 void HeapScriptTest(void* pvParam_)
 {
-    uint16_t u16Index = ((uint16_t)pvParam_);
+    auto u16Index = reinterpret_cast<uint16_t>(pvParam_);
     uint16_t i;
 
     void* pvData;

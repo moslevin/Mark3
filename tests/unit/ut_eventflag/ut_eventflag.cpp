@@ -176,7 +176,7 @@ TEST(ut_waitany)
     for (i = 0; i < 16; i++) {
         uint8_t u8LastFlagCount = u8FlagCount;
 
-        clFlagGroup.Set((uint16_t)(1 << i));
+        clFlagGroup.Set(1 << i);
 
         Thread::Sleep(100);
         if ((i & 1) == 0) {
@@ -242,7 +242,7 @@ TEST(ut_waitall)
     for (i = 0; i < 16; i++) {
         uint8_t u8LastFlagCount = u8FlagCount;
 
-        clFlagGroup.Set((uint16_t)(1 << i));
+        clFlagGroup.Set(1 << i);
 
         Thread::Sleep(100);
         if (i != 15) {

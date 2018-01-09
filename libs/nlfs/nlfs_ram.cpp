@@ -60,7 +60,7 @@ void NLFS_RAM::Read_Block(uint32_t u32Block_, uint32_t u32Offset_, void* pvData_
 {
     void* pvSrc_ = (void*)(m_puHost->kaData + m_stLocalRoot.u32DataOffset + u32Offset_
                            + (u32Block_ * m_stLocalRoot.u32BlockSize));
-    MemUtil::CopyMemory(pvData_, pvSrc_, (uint16_t)u32Len_);
+    MemUtil::CopyMemory(pvData_, pvSrc_, static_cast<uint16_t>(u32Len_));
 }
 
 //---------------------------------------------------------------------------
@@ -68,6 +68,6 @@ void NLFS_RAM::Write_Block(uint32_t u32Block_, uint32_t u32Offset_, void* pvData
 {
     void* pvDst_ = (void*)(m_puHost->kaData + m_stLocalRoot.u32DataOffset + u32Offset_
                            + (u32Block_ * m_stLocalRoot.u32BlockSize));
-    MemUtil::CopyMemory(pvDst_, pvData_, (uint16_t)u32Len_);
+    MemUtil::CopyMemory(pvDst_, pvData_, static_cast<uint16_t>(u32Len_));
 }
 } //namespace Mark3

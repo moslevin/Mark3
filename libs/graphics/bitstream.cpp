@@ -37,7 +37,7 @@ void BitStreamer::AdvanceByte(void)
 //---------------------------------------------------------------------------
 uint8_t BitStreamer::ReadBits(uint8_t u8NumBits_)
 {
-    uint8_t u8Dat = m_pu8Data[m_u16ByteIndex];
+    auto u8Dat = m_pu8Data[m_u16ByteIndex];
     uint8_t u8Ret = 0;
     uint8_t u8IterBits;
     uint8_t u8Shift = 0;

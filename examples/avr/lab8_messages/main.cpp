@@ -75,7 +75,7 @@ Message s_clMessages[MESSAGE_POOL_SIZE];
 //---------------------------------------------------------------------------
 void App1Main(void* unused_)
 {
-    uint16_t u16Data = 0;
+    auto u16Data = 0;
     while (1) {
         // This thread grabs a message from the global message pool, sets a
         // code-value and the message data pointer, then sends the message to
@@ -83,7 +83,7 @@ void App1Main(void* unused_)
         // for a message to arrive in the queue.
 
         // Get the message object
-        Message* pclMsg = s_clMessagePool.Pop();
+        auto* pclMsg = s_clMessagePool.Pop();
 
         // Set the message object's data (contrived in this example)
         pclMsg->SetCode(0x1337);
@@ -114,7 +114,7 @@ void App2Main(void* unused_)
         // this thread receives the message, it is "owned" by the thread, and
         // must be returned back to its source message pool when it is no longer
         // needed.
-        Message* pclMsg = clMsgQ.Receive();
+        auto* pclMsg = clMsgQ.Receive();
 
         // We received a message, now print out its information
         KernelAware::Print("Received Message\n");

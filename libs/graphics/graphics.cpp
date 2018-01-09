@@ -34,7 +34,8 @@ void GraphicsDriver::ClearScreen()
     stPoint.uColor = COLOR_BLACK;
 
     for (stPoint.u16X = 0; stPoint.u16X < m_u16Res16X; stPoint.u16X++) {
-        for (stPoint.u16Y = 0; stPoint.u16Y < m_u16Res16Y; stPoint.u16Y++) {
+        for (stPoint.u16Y = 0; stPoint.u16Y < m_u16Res16Y
+             ; stPoint.u16Y++) {
             // Pixel Write
             DrawPixel(&stPoint);
         }
@@ -53,13 +54,13 @@ void GraphicsDriver::Line(DrawLine_t* pstLine_)
     // www.cs.unc.edu/~mcmillan/comp136/Lecture6/Lines.html
 
     DrawPoint_t stPoint;
-    int16_t     s16X1     = (int16_t)pstLine_->u16X1;
-    int16_t     s16X2     = (int16_t)pstLine_->u16X2;
-    int16_t     s16Y1     = (int16_t)pstLine_->u16Y1;
-    int16_t     s16Y2     = (int16_t)pstLine_->u16Y2;
-    int16_t     s16DeltaY = s16Y2 - s16Y1;
-    int16_t     s16DeltaX = s16X2 - s16X1;
-    char        cStepx, cStepy;
+    auto     s16X1     = static_cast<int16_t>(pstLine_->u16X1);
+    auto     s16X2     = static_cast<int16_t>(pstLine_->u16X2);
+    auto     s16Y1     = static_cast<int16_t>(pstLine_->u16Y1);
+    auto     s16Y2     = static_cast<int16_t>(pstLine_->u16Y2);
+    auto     s16DeltaY = s16Y2 - s16Y1;
+    auto     s16DeltaX = s16X2 - s16X1;
+    char     cStepx, cStepy;
     stPoint.uColor = pstLine_->uColor;
 
     if (s16DeltaY < 0) {
@@ -159,22 +160,18 @@ void GraphicsDriver::Circle(DrawCircle_t* pstCircle_)
 {
     DrawPoint_t stPoint;
     int16_t     s16X;
-    int16_t     s16Y;
-    uint32_t    u32RadSquare;
-
-    uint32_t u32XSquare;
-    uint32_t u32YSquare;
+    int16_t     s16Y;   
 
     // Get the radius squared value...
-    u32RadSquare = (uint32_t)pstCircle_->u16Radius;
+    auto u32RadSquare = static_cast<uint32_t>(pstCircle_->u16Radius);
     u32RadSquare *= u32RadSquare;
 
     // Look at the upper-right quarter of the circle
-    for (s16X = 0; s16X <= (int16_t)pstCircle_->u16Radius; s16X++) {
-        u32XSquare = (uint32_t)s16X;
+    for (s16X = 0; s16X <= static_cast<int16_t>(pstCircle_->u16Radius); s16X++) {
+        auto u32XSquare = static_cast<uint32_t>(s16X);
         u32XSquare *= u32XSquare;
-        for (s16Y = 0; s16Y <= (int16_t)pstCircle_->u16Radius; s16Y++) {
-            u32YSquare = (uint32_t)s16Y;
+        for (s16Y = 0; s16Y <= static_cast<int16_t>(pstCircle_->u16Radius); s16Y++) {
+            auto u32YSquare = static_cast<uint32_t>(s16Y);
             u32YSquare *= u32YSquare;
 
             // if filled...
@@ -223,29 +220,22 @@ void GraphicsDriver::Circle(DrawCircle_t* pstCircle_)
 void GraphicsDriver::Ellipse(DrawEllipse_t* pstEllipse_)
 {
     DrawPoint_t stPoint;
-    int16_t     s16X;
-    int16_t     s16Y;
-    uint32_t    u32Radius;
-    uint32_t    u32HSquare;
-    uint32_t    u32VSquare;
-    uint32_t    u32XSquare;
-    uint32_t    u32YSquare;
 
-    u32HSquare = (uint32_t)pstEllipse_->u16Width;
+    auto u32HSquare = static_cast<uint32_t>(pstEllipse_->u16Width);
     u32HSquare *= u32HSquare;
 
-    u32VSquare = (uint32_t)pstEllipse_->u16Height;
+    auto u32VSquare = static_cast<uint32_t>(pstEllipse_->u16Height);
     u32VSquare *= u32VSquare;
 
-    u32Radius = u32HSquare * u32VSquare;
+    auto u32Radius = u32HSquare * u32VSquare;
 
-    for (s16X = 0; s16X <= (int16_t)pstEllipse_->u16Width; s16X++) {
-        u32XSquare = (uint32_t)s16X;
+    for (int16_t s16X = 0; s16X <= static_cast<int16_t>(pstEllipse_->u16Width); s16X++) {
+        auto u32XSquare = static_cast<uint32_t>(s16X);
         u32XSquare *= u32XSquare;
         u32XSquare *= u32HSquare;
 
-        for (s16Y = 0; s16Y <= (int16_t)pstEllipse_->u16Height; s16Y++) {
-            u32YSquare = (uint32_t)s16Y;
+        for (int16_t s16Y = 0; s16Y <= static_cast<int16_t>(pstEllipse_->u16Height); s16Y++) {
+            auto u32YSquare = static_cast<uint32_t>(s16Y);
             u32YSquare *= u32YSquare;
             u32YSquare *= u32VSquare;
 
@@ -364,13 +354,13 @@ void GraphicsDriver::Move(DrawMove_t* pstMove_)
     for (s16X = 0; s16X < pstMove_->u16CopyWidth; s16X++) {
         for (s16Y = 0; s16Y < pstMove_->u16CopyHeight; s16Y++) {
             // Read from source (value read into the point struct)
-            stPoint.u16Y = (uint16_t)((int32_t)pstMove_->u16SrcY + ((int32_t)s16Y * s16YInc));
-            stPoint.u16X = (uint16_t)((int32_t)pstMove_->u16SrcX + ((int32_t)s16X * s16XInc));
+            stPoint.u16Y = static_cast<uint16_t>(static_cast<int32_t>(pstMove_->u16SrcY) + (static_cast<int32_t>(s16Y) * s16YInc));
+            stPoint.u16X = static_cast<uint16_t>(static_cast<int32_t>(pstMove_->u16SrcX) + (static_cast<int32_t>(s16X) * s16XInc));
             ReadPixel(&stPoint);
 
             // Copy to dest
-            stPoint.u16Y = (uint16_t)((int32_t)pstMove_->u16DstY + ((int32_t)s16Y * s16YInc));
-            stPoint.u16X = (uint16_t)((int32_t)pstMove_->u16DstX + ((int32_t)s16X * s16XInc));
+            stPoint.u16Y = static_cast<uint16_t>(static_cast<int32_t>(pstMove_->u16DstY) + (static_cast<int32_t>(s16Y) * s16YInc));
+            stPoint.u16X = static_cast<uint16_t>(static_cast<int32_t>(pstMove_->u16DstX) + (static_cast<int32_t>(s16X) * s16XInc));
             DrawPixel(&stPoint);
         }
     }
@@ -384,7 +374,7 @@ void GraphicsDriver::Text(DrawText_t* pstText_)
     uint16_t    u16StartY;
     uint16_t    u16CharOffsetX;
     uint16_t    u16CharIndex = 0;
-    uint8_t*    pu8Data      = (uint8_t*)pstText_->pstFont->pu8FontData;
+    auto*    pu8Data      = pstText_->pstFont->pu8FontData;
     DrawPoint_t stPoint;
 
     // set the color for this element.
@@ -409,7 +399,7 @@ void GraphicsDriver::Text(DrawText_t* pstText_)
             u8Height = Font_ReadByte(u16Offset + 1, pu8Data);
 
             // Adjust the offset to point to the next glyph
-            u16Offset += ((((uint16_t)u8Width + 7) >> 3) * (uint16_t)u8Height) + (sizeof(Glyph_t) - 1);
+            u16Offset += (((static_cast<uint16_t>(u8Width) + 7) >> 3) * static_cast<uint16_t>(u8Height)) + (sizeof(Glyph_t) - 1);
         }
 
         // Header information:  glyph size and vertical offset
@@ -417,15 +407,15 @@ void GraphicsDriver::Text(DrawText_t* pstText_)
         u8Height  = Font_ReadByte(u16Offset++, pu8Data);
         u8VOffset = Font_ReadByte(u16Offset++, pu8Data);
 
-        u16StartY = pstText_->u16Top + (uint16_t)u8VOffset;
+        u16StartY = pstText_->u16Top +static_cast<uint16_t>(u8VOffset);
         u16StartX = pstText_->u16Left;
 
         // Draw the font from left->right, top->bottom
-        for (u16Y = u16StartY; u16Y < u16StartY + (uint16_t)u8Height; u16Y++) {
+        for (u16Y = u16StartY; u16Y < u16StartY + static_cast<uint16_t>(u8Height); u16Y++) {
             uint8_t u8TempChar = Font_ReadByte(u16Offset, pu8Data);
             u8Bitmask          = 0x80;
 
-            for (u16X = u16CharOffsetX + u16StartX; u16X < u16CharOffsetX + u16StartX + (uint16_t)u8Width; u16X++) {
+            for (u16X = u16CharOffsetX + u16StartX; u16X < u16CharOffsetX + u16StartX + static_cast<uint16_t>(u8Width); u16X++) {
                 if (u8Bitmask == 0u) {
                     u8Bitmask = 0x80;
                     u16Offset++;
@@ -449,7 +439,7 @@ void GraphicsDriver::Text(DrawText_t* pstText_)
 
         // Next character
         u16CharIndex++;
-        u16CharOffsetX += (uint16_t)u8Width + 1;
+        u16CharOffsetX += static_cast<uint16_t>(u8Width) + 1;
     }
 }
 
@@ -463,7 +453,7 @@ void GraphicsDriver::TextFX(DrawText_t* pstText_, TextFX_t* pstFX_)
     uint16_t    u16StartY;
     uint16_t    u16CharOffsetX;
     uint16_t    u16CharIndex = 0;
-    uint8_t*    pu8Data      = (uint8_t*)pstText_->pstFont->pu8FontData;
+    auto*    pu8Data      = pstText_->pstFont->pu8FontData;
     DrawPoint_t stPoint;
 
     // set the color for this element.
@@ -488,7 +478,7 @@ void GraphicsDriver::TextFX(DrawText_t* pstText_, TextFX_t* pstFX_)
             u8Height = Font_ReadByte(u16Offset + 1, pu8Data);
 
             // Adjust the offset to point to the next glyph
-            u16Offset += ((((uint16_t)u8Width + 7) >> 3) * (uint16_t)u8Height) + (sizeof(Glyph_t) - 1);
+            u16Offset += (((static_cast<uint16_t>(u8Width) + 7) >> 3) * static_cast<uint16_t>(u8Height)) + (sizeof(Glyph_t) - 1);
         }
 
         // Header information:  glyph size and vertical offset
@@ -496,11 +486,11 @@ void GraphicsDriver::TextFX(DrawText_t* pstText_, TextFX_t* pstFX_)
         u8Height  = Font_ReadByte(u16Offset++, pu8Data);
         u8VOffset = Font_ReadByte(u16Offset++, pu8Data);
 
-        u16StartY = pstText_->u16Top + (uint16_t)u8VOffset;
+        u16StartY = pstText_->u16Top + static_cast<uint16_t>(u8VOffset);
         u16StartX = pstText_->u16Left;
 
         // Draw the font from left->right, top->bottom
-        for (u16Y = u16StartY; u16Y < u16StartY + (uint16_t)u8Height; u16Y++) {
+        for (u16Y = u16StartY; u16Y < u16StartY + static_cast<uint16_t>(u8Height); u16Y++) {
             uint8_t u8TempChar = Font_ReadByte(u16Offset, pu8Data);
             u8Bitmask          = 0x80;
             u16PartialY        = 0;
@@ -508,7 +498,7 @@ void GraphicsDriver::TextFX(DrawText_t* pstText_, TextFX_t* pstFX_)
 
             uint16_t u16TempPartialX = 0;
 
-            for (u16X = u16CharOffsetX + u16StartX; u16X < u16CharOffsetX + u16StartX + (uint16_t)u8Width; u16X++) {
+            for (u16X = u16CharOffsetX + u16StartX; u16X < u16CharOffsetX + u16StartX + static_cast<uint16_t>(u8Width); u16X++) {
                 uint16_t u16TempPartialY = 0;
                 u16PartialY              = 0;
                 if (u8Bitmask == 0u) {
@@ -587,7 +577,7 @@ void GraphicsDriver::TextFX(DrawText_t* pstText_, TextFX_t* pstFX_)
 
         // Next character
         u16CharIndex++;
-        u16CharOffsetX += (uint16_t)u8Width + 1;
+        u16CharOffsetX += static_cast<uint16_t>(u8Width) + 1;
     }
 }
 
@@ -597,7 +587,7 @@ uint16_t GraphicsDriver::TextWidth(DrawText_t* pstText_)
     uint16_t u16CharOffsetX;
     uint16_t u16CharIndex = 0;
     uint16_t u16X;
-    uint8_t* pu8Data = (uint8_t*)pstText_->pstFont->pu8FontData;
+    auto* pu8Data = pstText_->pstFont->pu8FontData;
 
     u16CharOffsetX = 0;
 
@@ -616,7 +606,7 @@ uint16_t GraphicsDriver::TextWidth(DrawText_t* pstText_)
             u8Height = Font_ReadByte(u16Offset + 1, pu8Data);
 
             // Adjust the offset to point to the next glyph
-            u16Offset += ((((uint16_t)u8Width + 7) >> 3) * (uint16_t)u8Height) + (sizeof(Glyph_t) - 1);
+            u16Offset += (((static_cast<uint16_t>(u8Width) + 7) >> 3) * static_cast<uint16_t>(u8Height)) + (sizeof(Glyph_t) - 1);
         }
 
         // Header information:  glyph size and vertical offset
@@ -625,7 +615,7 @@ uint16_t GraphicsDriver::TextWidth(DrawText_t* pstText_)
 
         // Next character
         u16CharIndex++;
-        u16CharOffsetX += (uint16_t)u8Width + 1;
+        u16CharOffsetX += static_cast<uint16_t>(u8Width) + 1;
     }
 
     return u16CharOffsetX;

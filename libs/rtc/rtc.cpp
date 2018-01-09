@@ -151,8 +151,8 @@ void RTC::AddTime(uint32_t u32Ticks_)
         }
 
         m_stCalendar.u8Day  = 0;
-        int next_month = ((int)m_stCalendar.eMonth + 1);
-        m_stCalendar.eMonth = (Month)(next_month);
+        int next_month = static_cast<int>(m_stCalendar.eMonth) + 1;
+        m_stCalendar.eMonth = static_cast<Month>(next_month);
         if (m_stCalendar.eMonth != Month::Months_Per_Year) {
             break;
         }
@@ -197,8 +197,7 @@ bool RTC::YearContainsLeapDay(uint16_t u16Year_)
 //---------------------------------------------------------------------------
 void RTC::ComputeDayOfWeek()
 {
-    uint32_t u32Days;
-    u32Days = static_cast<uint32_t>((m_stCalendar.u16Year - YEAR_CALENDAR_STARTS) * 365);
+    auto u32Days = static_cast<uint32_t>((m_stCalendar.u16Year - YEAR_CALENDAR_STARTS) * 365);
     for (uint16_t u16Year = YEAR_CALENDAR_STARTS; u16Year < m_stCalendar.u16Year; u16Year += 4) {
         if (YearContainsLeapDay(u16Year)) {
             u32Days++;
@@ -206,16 +205,18 @@ void RTC::ComputeDayOfWeek()
     }
     u32Days--;
 
-    for (int iMonth = (int)Month::January; iMonth < (int)m_stCalendar.eMonth; iMonth++) {
-        if (YearContainsLeapDay(m_stCalendar.u16Year) && (iMonth == (int)Month::February)) {
+    for (int iMonth = static_cast<int>(Month::January);
+         iMonth < static_cast<int>(m_stCalendar.eMonth); iMonth++) {
+
+        if (YearContainsLeapDay(m_stCalendar.u16Year) && (iMonth == static_cast<int>(Month::February))) {
             u32Days += 29;
         } else {
             u32Days += s_au8DaysPerMonth[iMonth];
         }
     }
     u32Days += m_stCalendar.u8Day + 1;
-    u32Days %= (uint32_t)(Day::Days_Per_Week);
+    u32Days %= static_cast<uint32_t>(Day::Days_Per_Week);
 
-    m_stCalendar.eDayOfWeek = (Day)(u32Days);
+    m_stCalendar.eDayOfWeek = static_cast<Day>(u32Days);
 }
 } //namespace Mark3

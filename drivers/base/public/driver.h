@@ -108,7 +108,6 @@ See license.txt for more information
 
 #include "ll.h"
 
-#if KERNEL_USE_DRIVER
 namespace Mark3
 {
 class DriverList;
@@ -272,4 +271,3 @@ private:
     static DoubleLinkList m_clDriverList;
 };
 } //namespace Mark3
-#endif // KERNEL_USE_DRIVER

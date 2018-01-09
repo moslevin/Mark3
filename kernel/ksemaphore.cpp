@@ -136,7 +136,7 @@ bool Semaphore::Post()
     KERNEL_ASSERT(IsInitialized());
 #endif
 
-    KERNEL_TRACE_1("Posting semaphore, Thread %d", (uint16_t)g_pclCurrent->GetID());
+    KERNEL_TRACE_1("Posting semaphore, Thread %d", static_cast<uint16_t>(g_pclCurrent->GetID()));
 
     auto bThreadWake = false;
     auto bBail       = false;
@@ -188,7 +188,7 @@ void Semaphore::Pend_i(void)
     KERNEL_ASSERT(IsInitialized());
 #endif
 
-    KERNEL_TRACE_1("Pending semaphore, Thread %d", (uint16_t)g_pclCurrent->GetID());
+    KERNEL_TRACE_1("Pending semaphore, Thread %d", static_cast<uint16_t>(g_pclCurrent->GetID()));
 
 #if KERNEL_USE_TIMEOUTS
     Timer clSemTimer;
@@ -211,7 +211,7 @@ void Semaphore::Pend_i(void)
         if (u32WaitTimeMS_ != 0u) {
             g_pclCurrent->SetExpired(false);
             clSemTimer.Init();
-            clSemTimer.Start(false, u32WaitTimeMS_, TimedSemaphore_Callback, (void*)this);
+            clSemTimer.Start(false, u32WaitTimeMS_, TimedSemaphore_Callback, this);
             bUseTimer = true;
         }
 #endif
