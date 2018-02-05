@@ -301,6 +301,16 @@ for LINE in ${MARK3_DATA}; do
             MODNAME="${ARCH_STRING} - Kernel Aware Simulation Support......"
             PORT_SIZE=$(( PORT_SIZE+${DEC} ))
             ;;
+        "condvar.cpp.obj")
+            #Ruler:  ----5---10----5---20----5---30----5---40----5---50----5---60"
+            MODNAME="Condition Variables (Synchronization Object)...."
+            SYNCOBJ_SIZE=$(( SYNCOBJ_SIZE+${DEC} ))
+            ;;
+        "readerwriter.cpp.obj")
+            #Ruler:  ----5---10----5---20----5---30----5---40----5---50----5---60"
+            MODNAME="Reader-writer Locks (Synchronization Object)...."
+            SYNCOBJ_SIZE=$(( SYNCOBJ_SIZE+${DEC} ))
+            ;;
          *)
             MODNAME=${MODULE}
             ;;

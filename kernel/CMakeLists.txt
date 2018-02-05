@@ -9,6 +9,7 @@ set(LIB_SOURCES
     atomic.cpp
     autoalloc.cpp
     blocking.cpp
+    condvar.cpp
     eventflag.cpp
     kernel.cpp
     kernelaware.cpp
@@ -21,6 +22,7 @@ set(LIB_SOURCES
     priomap.cpp
     profile.cpp
     quantum.cpp
+    readerwriter.cpp
     scheduler.cpp
     thread.cpp
     threadlist.cpp
@@ -34,6 +36,7 @@ set(LIB_HEADERS
     public/atomic.h
     public/autoalloc.h
     public/blocking.h
+    public/condvar.h
     public/eventflag.h
     public/kernelaware.h
     public/ksemaphore.h
@@ -47,6 +50,7 @@ set(LIB_HEADERS
     public/priomap.h
     public/profile.h
     public/quantum.h
+    public/readerwriter.h
     public/scheduler.h
     public/thread.h
     public/threadlist.h

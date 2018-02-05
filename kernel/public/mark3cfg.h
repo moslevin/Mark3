@@ -168,6 +168,28 @@ See license.txt for more information
 #define KERNEL_USE_EVENTFLAG (1)
 
 /*!
+    Provides reader-writer locks.  Allows current read access, or single
+    write-access to a resource.  Readers wait for the writer to release the lock,
+    and writers wait for all readers to release the lock before acquiring the
+    resource.
+*/
+#if KERNEL_USE_MUTEX
+# define KERNEL_USE_READERWRITER (1)
+#else
+# define KERNEL_USE_READERWRITER (0)
+#endif
+
+/*!
+    Provides condition variables.  Allows a thread to wait for a specific condition to
+    be true before proceeding.
+*/
+#if KERNEL_USE_SEMAPHORE && KERNEL_USE_MUTEX
+# define KERNEL_USE_CONDVAR (1)
+#else
+# define KERNEL_USE_CONDVAR (0)
+#endif
+
+/*!
     Enable inter-thread messaging using message queues.  This is the preferred
     mechanism for IPC for serious multi-threaded communications; generally
     anywhere a semaphore or event-flag is insufficient.
