@@ -91,7 +91,7 @@ void ReaderWriterLock::ReleaseWriter()
 #if KERNEL_USE_TIMEOUTS
 bool ReaderWriterLock::AcquireReader_i(uint32_t u32TimeoutMs_)
 {
-    auto rc = false;
+    auto rc = true;
     if (!m_clReaderMutex.Claim(u32TimeoutMs_)) {
         return false;
     }

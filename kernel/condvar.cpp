@@ -63,8 +63,7 @@ bool ConditionVariable::Wait(Mutex* pclMutex_, uint32_t u32WaitTimeMS_)
 
     m_clMutex.Release();
 
-    auto rc = m_clSemaphore.Pend(u32WaitTimeMS_);
-    if (!rc) {
+    if (!m_clSemaphore.Pend(u32WaitTimeMS_)) {
         return false;
     }
     return pclMutex_->Claim(u32WaitTimeMS_);
