@@ -19,9 +19,11 @@ See license.txt for more information
 
  */
 
+#pragma once
+
 #include "kerneltypes.h"
-#ifndef __KERNELSWI_H_
-#define __KERNELSWI_H_
+
+namespace Mark3 {
 
 //---------------------------------------------------------------------------
 /*!
@@ -86,4 +88,4 @@ public:
     static void RI(bool bEnable_);
 };
 
-#endif // __KERNELSIW_H_
+} // namespace Mark3

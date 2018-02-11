@@ -22,13 +22,14 @@ See license.txt for more information
 #include "kerneltypes.h"
 #include "kernelswi.h"
 
-#include "m3_core_cm4.h"
+#include "stm32f4xx.h"
+namespace Mark3 {
 //---------------------------------------------------------------------------
 void KernelSWI::Config(void)
 {
     uint8_t u8MinPriority = (uint8_t)((1 << __NVIC_PRIO_BITS) - 1);
-    M3_NVIC_SetPriority(M3_SVC_IRQn, u8MinPriority);
-    M3_NVIC_SetPriority(M3_PENDSV_IRQn, u8MinPriority);
+    NVIC_SetPriority(SVCall_IRQn, u8MinPriority);
+    NVIC_SetPriority(PendSV_IRQn, u8MinPriority);
     Clear();
 }
 
@@ -73,3 +74,5 @@ void KernelSWI::Trigger(void)
 {
     SCB->ICSR = SCB_ICSR_PENDSVSET_Msk;
 }
+
+} // namespace Mark3
