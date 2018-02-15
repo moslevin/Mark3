@@ -29,6 +29,8 @@ void __cxa_pure_virtual(void)
 }
 }
 
+using namespace Mark3;
+
 //---------------------------------------------------------------------------
 // This block declares the thread data for one main application thread.  It
 // defines a thread object, stack (in word-array form), and the entry-point

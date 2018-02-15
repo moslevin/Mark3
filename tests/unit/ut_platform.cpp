@@ -25,6 +25,10 @@ See license.txt for more information
 #include <avr/sleep.h>
 #endif
 
+//---------------------------------------------------------------------------
+#define UART_SIZE_RX (12) //!< UART RX Buffer size
+#define UART_SIZE_TX (12) //!< UART TX Buffer size
+
 extern "C" {
 void __cxa_pure_virtual(void)
 {

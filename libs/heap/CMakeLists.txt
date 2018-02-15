@@ -6,7 +6,6 @@ set(LIB_SOURCES
     fixed_heap.cpp
     heapblock.cpp
     slab.cpp
-    system_heap.cpp
 )
 
 set(LIB_HEADERS
@@ -16,8 +15,6 @@ set(LIB_HEADERS
     public/fixed_heap.h
     public/heapblock.h
     public/slab.h
-    public/system_heap.h
-    public/system_heap_config.h
 )
 
 mark3_add_library(heap ${LIB_SOURCES} ${LIB_HEADERS})

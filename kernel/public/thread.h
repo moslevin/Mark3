@@ -108,7 +108,7 @@ public:
      *
     * \return Pointer to a newly-created thread.
     */
-    static Thread* Init(uint16_t u16StackSize_, uint8_t uXPriority_, ThreadEntryFunc pfEntryPoint_, void* pvArg_);
+    static Thread* Init(uint16_t u16StackSize_, PORT_PRIO_TYPE uXPriority_, ThreadEntryFunc pfEntryPoint_, void* pvArg_);
 #endif
 
     /*!

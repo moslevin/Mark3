@@ -70,7 +70,7 @@ Thread::~Thread()
 
 //---------------------------------------------------------------------------
 void Thread::Init(
-    K_WORD* pwStack_, K_ADDR u16StackSize_, PORT_PRIO_TYPE uXPriority_, ThreadEntryFunc pfEntryPoint_, void* pvArg_)
+    K_WORD* pwStack_, uint16_t u16StackSize_, PORT_PRIO_TYPE uXPriority_, ThreadEntryFunc pfEntryPoint_, void* pvArg_)
 {
     static uint8_t u8ThreadID = 0;
 

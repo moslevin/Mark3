@@ -1,0 +1,2 @@
+add_subdirectory(lab1_kernel_setup)
+add_subdirectory(lab5_mutexes)

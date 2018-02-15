@@ -1,3 +1,6 @@
 if("${mark3_arch}" STREQUAL "avr")
     add_subdirectory(${mark3_arch})
 endif("${mark3_arch}" STREQUAL "avr")    
+if("${mark3_arch}" STREQUAL "cm4f")
+    add_subdirectory(${mark3_arch})
+endif("${mark3_arch}" STREQUAL "cm4f")    

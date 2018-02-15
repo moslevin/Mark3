@@ -1,4 +1,5 @@
-if(${mark3_arch} STREQUAL "avr")
-    add_subdirectory(profiling)
-    add_subdirectory(unit)
-endif(${mark3_arch} STREQUAL "avr")    
+subdirlist(SUBDIRS ${CMAKE_CURRENT_LIST_DIR})
+
+foreach(subdir ${SUBDIRS})
+  add_subdirectory(${subdir})
+endforeach()

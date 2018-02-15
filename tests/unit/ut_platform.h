@@ -23,10 +23,6 @@ namespace Mark3
 {
 
 //---------------------------------------------------------------------------
-#define UART_SIZE_RX (12) //!< UART RX Buffer size
-#define UART_SIZE_TX (12) //!< UART TX Buffer size
-
-//---------------------------------------------------------------------------
 class MyUnitTest : public UnitTest
 {
 public:

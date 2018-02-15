@@ -16,5 +16,10 @@ set(arm_extra_headers
     ${folder_prefix}/threadport.h
     )
 
+set(arm_extra_libs
+    stm32f429-startup
+)
+
 set_property(GLOBAL PROPERTY global_mark3_extra_cxx "${arm_extra_cxx}")
 set_property(GLOBAL PROPERTY global_mark3_extra_headers "${arm_extra_headers}")
+set_property(GLOBAL PROPERTY global_mark3_extra_libs "${arm_extra_libs}")

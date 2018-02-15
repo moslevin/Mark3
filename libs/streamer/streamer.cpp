@@ -20,6 +20,7 @@ See license.txt for more information
 #include "kerneltypes.h"
 #include "mark3.h"
 #include "streamer.h"
+
 namespace Mark3 {
 //---------------------------------------------------------------------------
 void Streamer::Init(uint8_t* pau8Buffer_, uint16_t u16Size_)

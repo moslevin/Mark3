@@ -51,6 +51,7 @@ void __cxa_pure_virtual(void)
 {
 }
 }
+using namespace Mark3;
 
 //---------------------------------------------------------------------------
 // This block declares the thread data for the main application thread.  It

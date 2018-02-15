@@ -1,3 +1,4 @@
-add_subdirectory(uart)
-add_subdirectory(uartplus)
-add_subdirectory(sound)
+subdirlist(SUBDIRS ${CMAKE_CURRENT_LIST_DIR})
+foreach(subdir ${SUBDIRS})
+  add_subdirectory(${subdir})
+endforeach()
