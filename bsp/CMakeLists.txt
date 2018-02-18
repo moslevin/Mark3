@@ -1,4 +1,2 @@
-subdirlist(SUBDIRS ${CMAKE_CURRENT_LIST_DIR})
-foreach(subdir ${SUBDIRS})
-  add_subdirectory(${subdir})
-endforeach()
+add_subdirectory("/arch/${mark3_arch}/${march3_variant}/${mark3_toolchain}")
+

@@ -1,6 +1,6 @@
 project(kernel)
 
-include("./cpu/${mark3_arch}/${mark3_variant}/${mark3_toolchain}/CMakeLists.txt")
+include("./arch/${mark3_arch}/${mark3_variant}/${mark3_toolchain}/CMakeLists.txt")
 
 get_property(local_mark3_extra_cxx GLOBAL PROPERTY global_mark3_extra_cxx)
 get_property(local_mark3_extra_headers GLOBAL PROPERTY global_mark3_extra_headers)
@@ -66,7 +66,7 @@ mark3_add_library(mark3 ${LIB_SOURCES} ${LIB_HEADERS})
 target_include_directories(mark3 
     PUBLIC
         public
-        cpu/${mark3_arch}/${mark3_variant}/${mark3_toolchain}/public
+        arch/${mark3_arch}/${mark3_variant}/${mark3_toolchain}/public
     )
 
 target_link_libraries(mark3
