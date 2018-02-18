@@ -11,7 +11,7 @@ message(STATUS " CPU Variant       = ${mark3_variant}")
 message(STATUS " Toolchain         = ${mark3_toolchain}")
 message(STATUS "-----------------------------------------------")
 
-include("${mark3_root_dir}/build/${mark3_arch}/${mark3_variant}/${mark3_toolchain}/platform.cmake")
+include("${mark3_root_dir}/build/arch/${mark3_arch}/${mark3_variant}/${mark3_toolchain}/platform.cmake")
 
 get_property(mark3_cc GLOBAL PROPERTY global_cc)
 get_property(mark3_cxx GLOBAL PROPERTY global_cxx)
