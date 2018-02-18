@@ -29,13 +29,13 @@ See license.txt for more information
 #include "timerlist.h"
 #include "quantum.h"
 #include "kernel.h"
-
+#include "kernelaware.h"
 #include <avr/io.h>
 #include <avr/interrupt.h>
 
 //---------------------------------------------------------------------------
-Thread* g_pclCurrentThread;
-
+namespace Mark3
+{
 //---------------------------------------------------------------------------
 void ThreadPort::InitStack(Thread* pclThread_)
 {
@@ -174,4 +174,5 @@ ISR(INT2_vect)
     Thread_RestoreContext(); // Pop the context (registers) of the next task
     ASM("reti");             // Return to the next task
 }
+} //namespace Mark3
 

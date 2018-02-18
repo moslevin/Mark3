@@ -18,17 +18,16 @@ See license.txt for more information
     \brief  Kernel Software interrupt declarations
 
  */
-
+#pragma once
 #include "kerneltypes.h"
-
-#ifndef __KERNELSWI_H_
-#define __KERNELSWI_H_
 
 //---------------------------------------------------------------------------
 /*!
  *  Class providing the software-interrupt required for context-switching in
  *  the kernel.
  */
+namespace Mark3
+{
 class KernelSWI
 {
 public:
@@ -87,5 +86,4 @@ public:
      */
     static void RI(bool bEnable_);
 };
-
-#endif // __KERNELSIW_H_
+} // namespace Mark3

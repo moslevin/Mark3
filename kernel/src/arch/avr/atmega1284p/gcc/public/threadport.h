@@ -17,15 +17,15 @@ See license.txt for more information
 
     \brief  ATMega328p Multithreading support.
  */
-
-#ifndef __THREADPORT_H_
-#define __THREADPORT_H_
+#pragma once
 
 #include "kerneltypes.h"
 #include "thread.h"
 
 #include <avr/io.h>
 #include <avr/interrupt.h>
+
+namespace Mark3 {
 
 // clang-format off
 //---------------------------------------------------------------------------
@@ -40,7 +40,7 @@ See license.txt for more information
 
 //---------------------------------------------------------------------------
 //! Macro to find the top of a stack given its size and top address
-#define TOP_OF_STACK(x, y)        (uint8_t*) ( ((uint16_t)x) + (y-1) )
+#define TOP_OF_STACK(x, y)         (reinterpret_cast<K_WORD*>(reinterpret_cast<K_ADDR>(x) + (static_cast<K_ADDR>(y) - 1)))
 //! Push a value y to the stack pointer x and decrement the stack pointer
 #define PUSH_TO_STACK(x, y)        *x = y; x--;
 #define STACK_GROWS_DOWN           (1)
@@ -207,4 +207,4 @@ private:
     static void InitStack(Thread *pstThread_);
 };
 
-#endif //__ThreadPORT_H_
+} // namespace Mark3
