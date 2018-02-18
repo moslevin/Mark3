@@ -1,4 +1,4 @@
-set(folder_prefix ./cpu/${mark3_arch}/${mark3_variant}/${mark3_toolchain})
+set(folder_prefix ./arch/${mark3_arch}/${mark3_variant}/${mark3_toolchain})
 
 set(avr_extra_cxx
     ${folder_prefix}/kernelprofile.cpp

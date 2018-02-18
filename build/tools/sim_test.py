@@ -4,9 +4,9 @@ import pexpect
 
 # Set the environment variables for the test platform
 platform  = "avr"
-cpu       = "atmega328p"
+cpu       = "atmega1284p"
 toolchain = "gcc"
-stage	= "./out/avr_atmega328p_gcc/"
+stage	= "./out/avr_atmega1284p_gcc/kernel/"
 # List of unit tests to run
 test_list = ["ut_logic", "ut_thread", "ut_semaphore", "ut_mutex", "ut_eventflag", "ut_message", "ut_mailbox", "ut_notify", "ut_timers", "ut_sanity" ]
 
@@ -14,7 +14,7 @@ test_list = ["ut_logic", "ut_thread", "ut_semaphore", "ut_mutex", "ut_eventflag"
 for test in test_list:
 	# Build the commandline used to run the tests
 
-	test_cmd = "flavr --exitreset --silent --elffile %s/tests/unit/%s/%s.elf" % (stage, test, test)
+	test_cmd = "flavr --variant %s --exitreset --silent --elffile %s/tests/unit/%s/%s.elf" % (cpu, stage, test, test)
 	child = pexpect.spawn( test_cmd )
 
 	print "--[Running Test: %s]--" % test 
