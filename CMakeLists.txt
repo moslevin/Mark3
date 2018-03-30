@@ -4,6 +4,7 @@ project (Mark3)
 # This contains all of the build rules for custom binaries.
 include("./build/rules.cmake")
 
+add_subdirectory(bsp)
 add_subdirectory(drivers)
 add_subdirectory(external)
 add_subdirectory(kernel)
