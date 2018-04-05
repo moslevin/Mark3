@@ -38,6 +38,7 @@ See license.txt for more information
 #include "notify.h"
 #include "mailbox.h"
 #include "readerwriter.h"
+#include "condvar.h"
 
 #include "atomic.h"
 #include "kernelaware.h"
