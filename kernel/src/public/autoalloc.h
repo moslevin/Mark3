@@ -43,6 +43,8 @@ enum class AutoAllocType : uint8_t {
     Semaphore,
     Thread,
     Timer,
+    ConditionVariable,
+    ReaderWriterLock,
 //-- Allow for users to define their own object types beginning with AutoAllocType_t::User
     User,
 //--
@@ -85,6 +87,14 @@ class Thread;
 
 #if KERNEL_USE_TIMERS
 class Timer;
+#endif
+
+#if KERNEL_USE_READERWRITER
+class ReaderWriterLock;
+#endif
+
+#if KERNEL_USE_CONDVAR
+class ConditionVariable;
 #endif
 
 class AutoAlloc
@@ -241,7 +251,36 @@ public:
      */
     static void DestroyMessageQueue(MessageQueue* pclMessageQ_);
 #endif
+#if KERNEL_USE_CONDVAR
+    /*!
+     * \brief NewConditionVariable
+     * Create and initialize a new condition variable from within the system
+     * \return pointer to a new ConditionVariable object, or NULL on failure
+     */
+    static ConditionVariable* NewConditionVariable();
 
+    /*!
+     * \brief DestroyConditionVariable
+     * Destroy and deallocate a previously-allocated condition variable object
+     * \param pclConditionVariable_ Pointer to the object to destroy
+     */
+    static void DestroyConditionVariable(ConditionVariable* pclConditionVariable_);
+#endif
+#if KERNEL_USE_READERWRITER
+    /*!
+     * \brief NewReaderWriterLock
+     * Allocate and initialize a new ReaderWriterLock object from within the system
+     * \return Pointer to a new ReaderWriterLock object, or NULL on failure
+     */
+    static ReaderWriterLock* NewReaderWriterLock();
+
+    /*!
+     * \brief DestroyReaderWriterLock
+     * Destroy and deallocate a previously-allocated ReaderWriterLock object
+     * \param pclReaderWriterLock_ Pointer to the object to destroy
+     */
+    static void DestroyReaderWriterLock(ReaderWriterLock* pclReaderWriterLock_);
+#endif
     /*!
      * \brief NewThread
      * Allocate and construct a new Thread object for use within the system

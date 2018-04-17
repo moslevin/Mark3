@@ -175,6 +175,20 @@ typedef struct {
     uint16_t        m_u16EventFlag;
 } Fake_EventFlag;
 
+//---------------------------------------------------------------------------
+typedef struct {
+    Fake_Mutex m_clGlobalMutex;
+    Fake_Mutex m_clReaderMutex;
+    uint8_t m_u8ReadCount;
+} Fake_ConditionVariable;
+
+//---------------------------------------------------------------------------
+typedef struct {
+    Fake_Mutex m_clMutex;
+    Fake_Semaphore m_clSemaphore;
+    uint8_t m_u8Waiters;
+} Fake_ReaderWriterLock;
+
 #if defined(__cplusplus)
 }
 #endif

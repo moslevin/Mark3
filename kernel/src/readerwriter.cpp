@@ -34,6 +34,8 @@ See license.txt for more information
 #if KERNEL_USE_READERWRITER
 
 namespace Mark3 {
+
+//---------------------------------------------------------------------------
 void ReaderWriterLock::Init()
 {
     m_u8ReadCount = 0;
@@ -41,6 +43,7 @@ void ReaderWriterLock::Init()
     m_clReaderMutex.Init();
 }
 
+//---------------------------------------------------------------------------
 void ReaderWriterLock::AcquireReader()
 {
 #if KERNEL_USE_TIMEOUTS
@@ -50,6 +53,7 @@ void ReaderWriterLock::AcquireReader()
 #endif
 }
 
+//---------------------------------------------------------------------------
 #if KERNEL_USE_TIMEOUTS
 bool ReaderWriterLock::AcquireReader(uint32_t u32TimeoutMs_)
 {
@@ -57,6 +61,7 @@ bool ReaderWriterLock::AcquireReader(uint32_t u32TimeoutMs_)
 }
 #endif
 
+//---------------------------------------------------------------------------
 void ReaderWriterLock::ReleaseReader()
 {
     m_clReaderMutex.Claim();
@@ -67,6 +72,7 @@ void ReaderWriterLock::ReleaseReader()
     m_clReaderMutex.Release();
 }
 
+//---------------------------------------------------------------------------
 void ReaderWriterLock::AcquireWriter()
 {
 #if KERNEL_USE_TIMEOUTS
@@ -76,6 +82,7 @@ void ReaderWriterLock::AcquireWriter()
 #endif
 }
 
+//---------------------------------------------------------------------------
 #if KERNEL_USE_TIMEOUTS
 bool ReaderWriterLock::AcquireWriter(uint32_t u32TimeoutMs_)
 {
@@ -83,11 +90,13 @@ bool ReaderWriterLock::AcquireWriter(uint32_t u32TimeoutMs_)
 }
 #endif
 
+//---------------------------------------------------------------------------
 void ReaderWriterLock::ReleaseWriter()
 {
     m_clGlobalMutex.Release();
 }
 
+//---------------------------------------------------------------------------
 #if KERNEL_USE_TIMEOUTS
 bool ReaderWriterLock::AcquireReader_i(uint32_t u32TimeoutMs_)
 {
@@ -118,6 +127,7 @@ void ReaderWriterLock::AcquireReader_i()
 }
 #endif
 
+//---------------------------------------------------------------------------
 #if KERNEL_USE_TIMEOUTS
 bool ReaderWriterLock::AcquireWriter_i(uint32_t u32TimeoutMs_)
 {

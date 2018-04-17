@@ -34,12 +34,15 @@ See license.txt for more information
 
 namespace Mark3 {
 
+//---------------------------------------------------------------------------
 void ConditionVariable::Init()
+
 {
     m_clMutex.Init();
     m_clSemaphore.Init(0, 255);
 }
 
+//---------------------------------------------------------------------------
 void ConditionVariable::Wait(Mutex* pclMutex_)
 {
     m_clMutex.Claim();
@@ -54,6 +57,7 @@ void ConditionVariable::Wait(Mutex* pclMutex_)
 }
 
 #if KERNEL_USE_TIMEOUTS
+//---------------------------------------------------------------------------
 bool ConditionVariable::Wait(Mutex* pclMutex_, uint32_t u32WaitTimeMS_)
 {
     m_clMutex.Claim();
@@ -70,6 +74,7 @@ bool ConditionVariable::Wait(Mutex* pclMutex_, uint32_t u32WaitTimeMS_)
 }
 #endif
 
+//---------------------------------------------------------------------------
 void ConditionVariable::Signal()
 {
     m_clMutex.Claim();
@@ -80,6 +85,7 @@ void ConditionVariable::Signal()
     m_clMutex.Release();
 }
 
+//---------------------------------------------------------------------------
 void ConditionVariable::Broadcast()
 {
     m_clMutex.Claim();

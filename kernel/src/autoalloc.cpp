@@ -155,7 +155,6 @@ void AutoAlloc::DestroyMessageQueue(MessageQueue *pclMessageQ_)
     pclMessageQ_->~MessageQueue();
     Free(AutoAllocType::MessageQueue, pclMessageQ_);
 }
-
 #endif
 
 #if KERNEL_USE_NOTIFY
@@ -174,7 +173,6 @@ void AutoAlloc::DestroyNotify(Notify *pclNotify_)
     pclNotify_->~Notify();
     Free(AutoAllocType::Notify, pclNotify_);
 }
-
 #endif
 
 #if KERNEL_USE_MAILBOX
@@ -193,7 +191,42 @@ void AutoAlloc::DestroyMailbox(Mailbox *pclMailbox_)
     pclMailbox_->~Mailbox();
     Free(AutoAllocType::MailBox, pclMailbox_);
 }
+#endif
 
+#if KERNEL_USE_CONDVAR
+//---------------------------------------------------------------------------
+ConditionVariable* AutoAlloc::NewConditionVariable()
+{
+    void* pvObj = Allocate(AutoAllocType::ConditionVariable, sizeof(ConditionVariable));
+    if (pvObj) {
+        return new (pvObj) ConditionVariable();
+    }
+    return 0;
+}
+//---------------------------------------------------------------------------
+void AutoAlloc::DestroyConditionVariable(ConditionVariable* pclCondvar_)
+{
+    pclCondvar_->~ConditionVariable();
+    Free(AutoAllocType::ConditionVariable, pclCondvar_);
+}
+#endif
+
+#if KERNEL_USE_READERWRITER
+//---------------------------------------------------------------------------
+ReaderWriterLock* AutoAlloc::NewReaderWriterLock()
+{
+    void* pvObj = Allocate(AutoAllocType::ReaderWriterLock, sizeof(ReaderWriterLock));
+    if (pvObj) {
+        return new (pvObj) ReaderWriterLock();
+    }
+    return 0;
+}
+//---------------------------------------------------------------------------
+void AutoAlloc::DestroyReaderWriterLock(ReaderWriterLock *pclReaderWriterLock_)
+{
+    pclReaderWriterLock_->~ReaderWriterLock();
+    Free(AutoAllocType::ReaderWriterLock, pclReaderWriterLock_);
+}
 #endif
 
 //---------------------------------------------------------------------------

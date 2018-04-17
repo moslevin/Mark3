@@ -145,6 +145,31 @@ void Free_Mailbox(Mailbox_t handle)
 {
     AutoAlloc::DestroyMailbox((Mailbox*)handle);
 }
+#endif
+#if KERNEL_USE_CONDVAR
+//---------------------------------------------------------------------------
+ConditionVariable_t Alloc_ConditionVariable(void)
+{
+    return (ConditionVariable_t)AutoAlloc::NewConditionVariable();
+}
+//---------------------------------------------------------------------------
+void Free_ConditionVariable(ConditionVariable_t handle)
+{
+    AutoAlloc::DestroyConditionVariable((ConditionVariable*)handle);
+}
+
+#endif
+#if KERNEL_USE_READERWRITER
+//---------------------------------------------------------------------------
+ReaderWriterLock_t Alloc_ReaderWriterLock(void)
+{
+    return (ReaderWriterLock_t)AutoAlloc::NewReaderWriterLock();
+}
+//---------------------------------------------------------------------------
+void Free_ReaderWriterLock(ReaderWriterLock_t handle)
+{
+    AutoAlloc::DestroyReaderWriterLock((ReaderWriterLock*)handle);
+}
 
 #endif
 //---------------------------------------------------------------------------
@@ -881,6 +906,100 @@ bool Mailbox_IsEmpty(Mailbox_t handle)
 {
     Mailbox* pclMBox = (Mailbox*)handle;
     return pclMBox->IsEmpty();
+}
+#endif
+#endif
+
+//---------------------------------------------------------------------------
+// Condition Variables
+#if KERNEL_USE_CONDVAR
+//---------------------------------------------------------------------------
+void ConditionVariable_Init(ConditionVariable_t handle)
+{
+    ConditionVariable* pclCondvar = (ConditionVariable*)handle;
+    pclCondvar->Init();
+}
+//---------------------------------------------------------------------------
+void ConditionVariable_Wait(ConditionVariable_t handle, Mutex_t hMutex_)
+{
+    ConditionVariable* pclCondvar = (ConditionVariable*)handle;
+    Mutex* pclMutex = (Mutex*)hMutex_;
+    pclCondvar->Wait(pclMutex);
+}
+//---------------------------------------------------------------------------
+void ConditionVariable_Signal(ConditionVariable_t handle)
+{
+    ConditionVariable* pclCondvar = (ConditionVariable*)handle;
+    pclCondvar->Signal();
+}
+//---------------------------------------------------------------------------
+void ConditionVariable_Broadcast(ConditionVariable_t handle)
+{
+    ConditionVariable* pclCondvar = (ConditionVariable*)handle;
+    pclCondvar->Broadcast();
+}
+#if KERNEL_USE_TIMEOUTS
+//---------------------------------------------------------------------------
+bool ConditionVariable_TimedWait(ConditionVariable_t handle, Mutex_t hMutex_, uint32_t u32WaitTimeMS_)
+{
+    ConditionVariable* pclCondvar = (ConditionVariable*)handle;
+    Mutex* pclMutex = (Mutex*)hMutex_;
+    return pclCondvar->Wait(pclMutex, u32WaitTimeMS_);
+}
+#endif
+#endif
+
+//---------------------------------------------------------------------------
+// Reader-writer locks
+#if KERNEL_USE_READERWRITER
+//---------------------------------------------------------------------------
+void ReaderWriterLock_Init(ReaderWriterLock_t handle)
+{
+    ReaderWriterLock* pclReaderWriter = (ReaderWriterLock*)handle;
+    pclReaderWriter->Init();
+}
+
+//---------------------------------------------------------------------------
+void ReaderWriterLock_AcquireReader(ReaderWriterLock_t handle)
+{
+    ReaderWriterLock* pclReaderWriter = (ReaderWriterLock*)handle;
+    pclReaderWriter->AcquireReader();
+}
+
+//---------------------------------------------------------------------------
+void ReaderWriterLock_ReleaseReader(ReaderWriterLock_t handle)
+{
+    ReaderWriterLock* pclReaderWriter = (ReaderWriterLock*)handle;
+    pclReaderWriter->ReleaseReader();
+}
+
+//---------------------------------------------------------------------------
+void ReaderWriterLock_AcquireWriter(ReaderWriterLock_t handle)
+{
+    ReaderWriterLock* pclReaderWriter = (ReaderWriterLock*)handle;
+    pclReaderWriter->AcquireWriter();
+}
+
+//---------------------------------------------------------------------------
+void ReaderWriterLock_ReleaseWriter(ReaderWriterLock_t handle)
+{
+    ReaderWriterLock* pclReaderWriter = (ReaderWriterLock*)handle;
+    pclReaderWriter->ReleaseWriter();
+}
+
+#if KERNEL_USE_TIMEOUTS
+//---------------------------------------------------------------------------
+bool ReaderWriterLock_TimedAcquireWriter(ReaderWriterLock_t handle, uint32_t u32TimeoutMs_)
+{
+    ReaderWriterLock* pclReaderWriter = (ReaderWriterLock*)handle;
+    return pclReaderWriter->AcquireWriter(u32TimeoutMs_);
+}
+
+//---------------------------------------------------------------------------
+bool ReaderWriterLock_TimedAcquireReader(ReaderWriterLock_t handle, uint32_t u32TimeoutMs_)
+{
+    ReaderWriterLock* pclReaderWriter = (ReaderWriterLock*)handle;
+    return pclReaderWriter->AcquireReader(u32TimeoutMs_);
 }
 #endif
 #endif

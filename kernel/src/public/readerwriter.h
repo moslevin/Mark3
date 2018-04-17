@@ -100,8 +100,8 @@ public:
      * Release the currently held writer, allowing other readers/writers to access the object
      */
     void ReleaseWriter();
-private:
 
+private:
 #if KERNEL_USE_TIMEOUTS
     /*!
      * @brief AcquireReader_i
@@ -127,7 +127,6 @@ private:
     bool AcquireWriter_i(uint32_t u32TimeoutMs_);
 #endif
 
-private:
     Mutex m_clGlobalMutex;  //!< Mutex used to lock the object against concurrent read + write
     Mutex m_clReaderMutex;  //!< Mutex used to lock object for readers
     uint8_t m_u8ReadCount;  //!< Number of concurrent readers

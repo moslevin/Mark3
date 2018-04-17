@@ -44,6 +44,8 @@ typedef void* Notify_t;       //!< Notification object opaque handle data type
 typedef void* Semaphore_t;    //!< Semaphore opaque handle data type
 typedef void* Thread_t;       //!< Thread opaque handle data type
 typedef void* Timer_t;        //!< Timer opaque handle data type
+typedef void* ConditionVariable_t; //!< Condition Variable opaque handle data type
+typedef void* ReaderWriterLock_t;  //!< Reader-writer-lock opaque handle data type
 
 //---------------------------------------------------------------------------
 // Function pointer types used by Kernel APIs
@@ -64,6 +66,8 @@ typedef void (*thread_context_callout_t)(Thread_t hThread_);
 #define NOTIFY_SIZE (sizeof(Fake_Notify))
 #define EVENTFLAG_SIZE (sizeof(Fake_EventFlag))
 #define MESSAGEPOOL_SIZE (sizeof(Fake_MessagePool))
+#define CONDITIONVARIABLE_SIZE (sizeof(Fake_ConditionVariable))
+#define READERWRITERLOCK_SIZE (sizeof(Fake_ReaderWriterLock))
 
 //---------------------------------------------------------------------------
 typedef enum {
@@ -131,6 +135,14 @@ typedef enum {
 #define DECLARE_EVENTFLAG(name)                                                                                        \
     K_WORD      TOKEN_2(__eventflag_, name)[WORD_ROUND(EVENTFLAG_SIZE)];                                               \
     EventFlag_t name = (EventFlag_t)TOKEN_2(__eventflag_, name);
+
+#define DECLARE_CONDITIONVARIABLE(name)                                                                                \
+    K_WORD      TOKEN_2(__condvar_, name)[WORD_ROUND(EVENTFLAG_SIZE)];                                                 \
+    ConditionVariable_t name = (ConditionVariable_t)TOKEN_2(__condvar_, name);
+
+#define DECLARE_READERWRITERLOCK(name)                                                                                 \
+    K_WORD      TOKEN_2(__readerwriterlock_, name)[WORD_ROUND(EVENTFLAG_SIZE)];                                        \
+    ReaderWriterLock_t name = (ReaderWriterLock_t)TOKEN_2(__readerwriterlock_, name);
 
 //---------------------------------------------------------------------------
 // Allocate-once Memory managment APIs
@@ -893,25 +905,28 @@ void MessageQueue_Send(MessageQueue_t handle, Message_t hMessage_);
  * \sa uint16_t MessageQueue::GetCount()
  * \return Count of pending messages in the queue.
  */
-uint16_t MessageQueue_GetCount(void);
+uint16_t MessageQueue_GetCount(MessageQueue_t handle);
 
 /*!
  * \brief MessagePool_Init
- * \param handle
+ * \sa void MessagePool::Init()
+ * \param handle Handle of the message pool object
  */
 void MessagePool_Init(MessagePool_t handle);
 
 /*!
  * \brief MessagePool_Push
- * \param handle
- * \param msg
+ * \sa void MessagePool::Push(Message* pclMessage_)
+ * \param handle  Handle of the message pool object
+ * \param msg Message object to return back to the pool
  */
 void MessagePool_Push(MessagePool_t handle, Message_t msg);
 
 /*!
  * \brief MessagePool_Pop
- * \param handle
- * \return
+ * \sa Message* MessagePool::Pop()
+ * \param handle  Handle of the message pool object
+ * \return Handle to a Message object, or NULL on allocation error
  */
 Message_t MessagePool_Pop(MessagePool_t handle);
 
@@ -1033,6 +1048,108 @@ bool Mailbox_IsFull(Mailbox_t handle);
  * \return true if the mailbox is empty, false otherwise
  */
 bool Mailbox_IsEmpty(Mailbox_t handle);
+#endif
+#endif
+
+//---------------------------------------------------------------------------
+// Condition Variables
+#if KERNEL_USE_CONDVAR
+/*!
+ * \brief ConditionVariable_Init
+ * \sa void ConditionVariable::Init()
+ * \param handle Handle of the condition variable object
+ */
+void ConditionVariable_Init(ConditionVariable_t handle);
+
+/*!
+ * \brief ConditionVariable_Wait
+ * \sa void ConditionVariable::Wait(Mutex* pclMutex_)
+ * \param handle Handle of the condition variable object
+ * \param hMutex_ Handle of the mutex to lock on acquisition of the condition variable
+ */
+void ConditionVariable_Wait(ConditionVariable_t handle, Mutex_t hMutex_);
+
+/*!
+ * \brief ConditionVariable_Signal
+ * \sa void ConditionVariable::Signal()
+ * \param handle Handle of the condition variable object
+ */
+void ConditionVariable_Signal(ConditionVariable_t handle);
+
+/*!
+ * \brief ConditionVariable_Broadcast
+ * \sa void ConditionVariable::Broadcast()
+ * \param handle Handle of the condition variable object
+ */
+void ConditionVariable_Broadcast(ConditionVariable_t handle);
+#if KERNEL_USE_TIMEOUTS
+/*!
+ * \brief ConditionVariable_TimedWait
+ * \sa bool ConditionVariable::Wait(Mutex* pclMutex_, uint32_t u32WaitTimeMS_)
+ * \param handle Handle of the condition variable object
+ * \param hMutex_ Handle of the mutex to lock on acquisition of the condition variable
+ * \param u32WaitTimeMS_ Maximum time to wait for object
+ * \return true on success, false on timeout
+ */
+bool ConditionVariable_TimedWait(ConditionVariable_t handle, Mutex_t hMutex_, uint32_t u32WaitTimeMS_);
+#endif
+#endif
+
+//---------------------------------------------------------------------------
+// Reader-writer locks
+#if KERNEL_USE_READERWRITER
+/*!
+ * \brief ReaderWriterLock_Init
+ * \sa void ReaderWriterLock::Init()
+ * \param handle Handle of the reader-writer object
+ */
+void ReaderWriterLock_Init(ReaderWriterLock_t handle);
+
+/*!
+ * \brief ReaderWriterLock_AcquireReader
+ * \sa void ReaderWriterLock::AcquireReader()
+ * \param handle Handle of the reader-writer object
+ */
+void ReaderWriterLock_AcquireReader(ReaderWriterLock_t handle);
+
+/*!
+ * \brief ReaderWriterLock_ReleaseReader
+ * \sa void ReaderWriterLock::ReleaseReader()
+ * \param handle Handle of the reader-writer object
+ */
+void ReaderWriterLock_ReleaseReader(ReaderWriterLock_t handle);
+
+/*!
+ * \brief ReaderWriterLock_AcquireWriter
+ * \sa void ReaderWriterLock::AcquireWriter()
+ * \param handle Handle of the reader-writer object
+ */
+void ReaderWriterLock_AcquireWriter(ReaderWriterLock_t handle);
+
+/*!
+ * \brief ReaderWriterLock_ReleaseWriter
+ * \sa void ReaderWriterLock::ReleaseWriter()
+ * \param handle Handle of the reader-writer object
+ */
+void ReaderWriterLock_ReleaseWriter(ReaderWriterLock_t handle);
+#if KERNEL_USE_TIMEOUTS
+/*!
+ * \brief ReaderWriterLock_TimedAcquireWriter
+ * \sa bool ReaderWriterLock::AcquireWriter(uint32_t u32TimeoutMs_)
+ * \param handle Handle of the reader-writer object
+ * \param u32TimeoutMs_ Maximum time to wait for the writer lock before bailing
+ * \return true on success, false on timeout
+ */
+bool ReaderWriterLock_TimedAcquireWriter(ReaderWriterLock_t handle, uint32_t u32TimeoutMs_);
+
+/*!
+ * \brief ReaderWriterLock_TimedAcquireReader
+ * \sa bool ReaderWriterLock::AcquireReader(uint32_t u32TimeoutMs_)
+ * \param handle Handle of the reader-writer object
+ * \param u32TimeoutMs_  Maximum time to wait for the reader lock before bailing
+ * \return true on success, false on timeout
+ */
+bool ReaderWriterLock_TimedAcquireReader(ReaderWriterLock_t handle, uint32_t u32TimeoutMs_);
 #endif
 #endif
 
