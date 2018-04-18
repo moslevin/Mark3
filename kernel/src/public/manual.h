@@ -232,6 +232,18 @@ See license.txt for more information
     additional per-thread flag-mask to be allocated, which adds 2 bytes
     to the size of each thread object.
 
+    <b>KERNEL_USE_READERWRITER</b>
+
+    Provides reader-writer locks.  Allows current read access, or single
+    write-access to a resource.  Readers wait for the writer to release the lock,
+    and writers wait for all readers to release the lock before acquiring the
+    resource.
+
+    <b>KERNEL_USE_CONDVAR</b>
+
+    Provides condition variables.  Allows a thread to wait for a specific condition
+    to be true before proceeding, with a mutual-exclusion lock held.
+
     \section CONFIG_IPC Inter-process/thread Communication
 
     <b>KERNEL_USE_MESSAGE</b>
@@ -352,8 +364,7 @@ See license.txt for more information
 
     This feature enables an additional set of APIs that allow for objects
     to be created on-the-fly out of a special heap, without having to
-    explicitly allocate them (from stack, heap, or static memory). Note
-    that auto-alloc memory cannot be reclaimed.
+    explicitly allocate them (from stack, heap, or static memory).
 
     <b>AUTO_ALLOC_SIZE</b>
 
@@ -4005,6 +4016,7 @@ See license.txt for more information
     - New: ConditionVariable kernel API
     - New: ReaderWriterLock kernel API
     - New: Slab memory allocator
+    - New: Bitmap object-allocator
     - New: AutoAlloc redirects to user-defined allocators
     - New: Global new() and delete() overrides redirect to AutoAlloc APIs
     - Updated Mark3c for new APIs

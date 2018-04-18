@@ -775,11 +775,12 @@ WARN_LOGFILE           =
 # spaces. See also FILE_PATTERNS and EXTENSION_MAPPING
 # Note: If this tag is empty the current directory is searched.
 
-INPUT                  = ../kernel \
-                         ../kernel/public \
-                         ../kernel/cpu/avr/atmega328p/gcc \
-                         ../kernel/cpu/avr/atmega328p/gcc/public \
-                         ../libs/mark3c/public
+INPUT                  = ../src \
+                         ../src/public \
+                         ../src/arch/avr/atmega1284p/gcc \
+                         ../src/arch/avr/atmega1284p/gcc/public \
+                         ../libs/mark3c/src/ \
+			 ../libs/mark3c/src/public \
 
 # This tag can be used to specify the character encoding of the source files
 # that doxygen parses. Internally doxygen uses the UTF-8 encoding. Doxygen uses
