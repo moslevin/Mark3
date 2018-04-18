@@ -23,7 +23,37 @@ See license.txt for more information
 #include "threadport.h"
 #include "kernel.h"
 
+#include <stdint.h>
+
 #if KERNEL_USE_AUTO_ALLOC
+using namespace Mark3;
+//---------------------------------------------------------------------------
+// Override new() and delete() using functions provided to AutoAlloc
+//---------------------------------------------------------------------------
+void* operator new(size_t n)
+{
+    return AutoAlloc::NewRawData(n);
+}
+
+//---------------------------------------------------------------------------
+void* operator new[](size_t n)
+{
+    return AutoAlloc::NewRawData(n);
+}
+
+//---------------------------------------------------------------------------
+void operator delete(void * p)
+{
+    AutoAlloc::DestroyRawData(p);
+}
+
+//---------------------------------------------------------------------------
+void operator delete[](void * p)
+{
+    AutoAlloc::DestroyRawData(p);
+}
+
+//---------------------------------------------------------------------------
 namespace Mark3
 {
 AutoAllocAllocator_t AutoAlloc::m_pfAllocator;    //!< Function used to allocate objects

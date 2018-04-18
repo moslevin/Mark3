@@ -30,7 +30,7 @@ See license.txt for more information
 
     --[Mark3 Realtime Platform]--------------------------------------------------
 
-    Copyright (c) 2012 - 2017 Funkenstein Software Consulting, all rights reserved.
+    Copyright (c) 2012 - 2018 Funkenstein Software Consulting, all rights reserved.
     See license for more information
 
     \endverbatim
@@ -1228,6 +1228,136 @@ See license.txt for more information
 
     \endcode
 
+    \section CONDVAR Condition Variables
+
+    Condition Variables, implemented in Mark3 with the ConditionVariable class,
+    provide an implementation of the classic Monitor pattern.  This object allows
+    a thread to wait for a specific condition to occur, claiming a shared lock
+    once the condition is met.  Threads may also choose to signal a single blocking
+    thread to indicate a condition has changed, or broadcast condition changes to
+    all waiting threads.
+
+    \subsection CONDVAREX Condition Variable Example
+
+    \code
+
+    // Define a condition variable object, a shared lock, and
+    // a piece of common data shared between threads to represent
+    // a condition.
+
+    // Assume Mutex and ConditionVariable are initialized
+    // prior to use.
+    static ConditionVariable clCondVar;
+    static Mutex clSharedLock;
+    static volatile int iCondition = 0;
+
+    ...
+
+    void CondThread1(void *unused_)
+    {
+        while (1)
+        {
+            // Wait until
+            clCondVar.Wait(&clSharedLock);
+
+            // Only act on a specific condition
+            if (iCondition == 1337) {
+                // Do something
+            }
+
+            clSharedLock.Release();
+        }
+    }
+
+    void CondThread2(void *unused_)
+    {
+        // Assume Mutex and ConditionVariable are initialized
+        // prior to use.
+        while (1)
+        {
+            // Wait until
+            clCondVar.Wait(&clSharedLock);
+
+            // Act on a *different* condition than the other thread
+            if (iCondition == 5454) {
+                // Do something
+            }
+
+            clSharedLock.Release();
+        }
+    }
+
+    void SignalThread(void* unused)
+    {
+        while (1) {
+            // Sleep for a while
+            Thread::Sleep(100);
+
+            // Update the condition in a thread-safe manner
+            clSharedLock.Claim();
+            iCondition = 1337;
+            clSharedLock.Release();
+
+            // Wake one thread to check for the updated condition
+            clCondVar.Signal();
+
+            // Sleep for a while
+            Thread::Sleep(100);
+
+            // Update the condition in a thread-safe manner
+            clSharedLock.Claim();
+            iCondition = 1337;
+            clSharedLock.Release();
+
+            // Wake all threads to check for the updated condition
+            clCondVar.Broadcast();
+        }
+    }
+
+    \endcode
+
+    \section RWLOCKS Reader-Write Locks
+
+    Reader-Writer locks are provided in Mark3 to provide an efficient way for
+    multiple threads to share concurrent, non-destructive access to a resource,
+    while preventing concurrent destructive/non-destructive accesses.  A single
+    "writer" may hold the lock, or 1-or-more "readers" may hold the lock.  In the
+    case that readers hold the lock, writers will block until all readers have
+    relinquished their access to the resource.  In the case that a writer holds the
+    lock, all other readers and writers must wait until the lock is relinquished.
+
+    \subsection RWLOCKEX Reader-Write Lock Example
+
+    \code
+
+    void WriterTask(void* param)
+    {
+        auto pclRWLock = static_cast<ReaderWriterLock*>(param);
+
+        pclRWLock->AcquireWriter();
+        // All other readers and writers will have to wait until
+        // the lock is released.
+        iNumWrites++;
+        ...
+        pclRWLock->ReleaseWriter();
+    }
+
+    void ReaderTask(void* param)
+    {
+        auto pclRWLock = static_cast<ReaderWriterLock*>(param);
+
+        pclRWLock->AcquireReader();
+        // Any number of reader threads can also acquire the lock
+        // without having to block, waiting for this task to release it.
+        // Writers must block until all readers have released their references
+        // to the lock.
+        iNumReads++;
+        ...
+        pclRWLock->ReleaseReader();
+    }
+
+    \endcode
+
     \section SLP Sleep
 
     There are instances where it may be necessary for a thread to poll a
@@ -2378,6 +2508,8 @@ See license.txt for more information
     |                     | EventFlag             |  eventflag.cpp/.h               |
     |                     | Mutex                 |  mutex.cpp/.h                   |
     |                     | Notify                |  notify.cpp/.h                  |
+    |                     | ConditionVariable     |  condvar.cpp/.h                 |
+    |                     | ReaderWriterLock      |  readerwriter.cpp/.h            |
     |IPC/Message-passing  | Mailbox               |  mailbox.cpp/.h                 |
     |                     | MessageQueue          |  message.cpp/.h                 |
     |                     | GlobalMessagePool     |  message.cpp/.h                 |
@@ -2385,7 +2517,6 @@ See license.txt for more information
     |                     | KernelAware           |  kernelaware.cpp/.h             |
     |                     | TraceBuffer           |  tracebuffer.cpp/.h             |
     |                     | Buffalogger           |  buffalogger.h                  |
-    |Device Drivers       | Driver                |  driver.cpp/.h                  |
     |Atomic Operations    | Atomic                |  atomic.cpp/.h                  |
     |Kernel               | Kernel                |  kernel.cpp/.h                  |
 
@@ -3077,6 +3208,8 @@ See license.txt for more information
     operations that are guaranteed to execute uninterrupted.  Basic atomic
     primatives provided here include Set/Add/Delete for 8, 16, and 32-bit integer
     types, as well as an atomic test-and-set.
+
+    \subsection
 
     \subsection DRIVERS Drivers
 
@@ -3860,21 +3993,23 @@ See license.txt for more information
 
     Note that the relevant kernel-object Init() function *must* be called prior to using
     any kernel object, whether or not they have been allocated statically, or dynamically.
-
-    \section MARK3DRV Drivers in Mark3C
-
-    Because the Mark3 driver framework makes extensive use of inheritence and
-    virtual functions in C++, it is difficult to wrap for use with C.  In addition, all
-    derived drivers types would still need to have their custom interfaces wrapped with
-    C-language bindings in order to be accessible from C, which is cumbersome and
-    inelegant, and duplicates large portions of code.  As a result, it's probably less
-    work to write a Mark3C specific driver module with a similar interface to Mark3,
-    on which drivers can be ported where necessary, or implemented directly on for
-    efficiency.  The APIs presented in driver3c.h provide such an interface for use
-    in Mark3c.
 */
 /*!
     \page RELEASE Release Notes
+
+    \section RELR7 R7 Release
+    - Re-focusing project on kernel integrating with 3rd party code instead of 1st party middleware
+    - New: Refactored codebase to C++14 standard
+    - New: Moved non-kernel code, drivers, libs, and BSPs to separate repos from kernel
+    - New: Modular repository-based structure, managed via Android's Repo tool
+    - New: ConditionVariable kernel API
+    - New: ReaderWriterLock kernel API
+    - New: Slab memory allocator
+    - New: AutoAlloc redirects to user-defined allocators
+    - New: Global new() and delete() overrides redirect to AutoAlloc APIs
+    - Updated Mark3c for new APIs
+    - Moved driver layer out of the kernel
+    .
 
     \section RELR6 R6 Release
     - New: Replace recursive-make build system with CMake and Ninja

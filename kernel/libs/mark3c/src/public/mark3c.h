@@ -20,7 +20,6 @@ See license.txt for more information
 
 #include "mark3cfg.h"
 #include "fake_types.h"
-#include "driver3c.h"
 
 #include <stdint.h>
 #include <stdbool.h>

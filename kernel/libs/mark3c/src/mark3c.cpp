@@ -776,7 +776,7 @@ Message_t MessageQueue_Receive(MessageQueue_t handle)
 //---------------------------------------------------------------------------
 void MessagePool_Init(MessagePool_t handle)
 {
-    MessagePool* pclMsgPool = (MessagePool*)handle;
+    MessagePool* pclMsgPool = new ((void*)handle) MessagePool();
     pclMsgPool->Init();
 }
 
@@ -916,7 +916,7 @@ bool Mailbox_IsEmpty(Mailbox_t handle)
 //---------------------------------------------------------------------------
 void ConditionVariable_Init(ConditionVariable_t handle)
 {
-    ConditionVariable* pclCondvar = (ConditionVariable*)handle;
+    ConditionVariable* pclCondvar = new ((void*)handle) ConditionVariable();
     pclCondvar->Init();
 }
 //---------------------------------------------------------------------------
@@ -955,7 +955,7 @@ bool ConditionVariable_TimedWait(ConditionVariable_t handle, Mutex_t hMutex_, ui
 //---------------------------------------------------------------------------
 void ReaderWriterLock_Init(ReaderWriterLock_t handle)
 {
-    ReaderWriterLock* pclReaderWriter = (ReaderWriterLock*)handle;
+    ReaderWriterLock* pclReaderWriter = new ((void*)handle) ReaderWriterLock();
     pclReaderWriter->Init();
 }
 
