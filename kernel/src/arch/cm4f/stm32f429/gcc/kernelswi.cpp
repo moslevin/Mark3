@@ -23,6 +23,7 @@ See license.txt for more information
 #include "kernelswi.h"
 
 #include "stm32f4xx.h"
+
 namespace Mark3 {
 //---------------------------------------------------------------------------
 void KernelSWI::Config(void)

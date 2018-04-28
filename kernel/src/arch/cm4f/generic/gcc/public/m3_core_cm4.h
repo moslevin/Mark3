@@ -34,8 +34,7 @@
    POSSIBILITY OF SUCH DAMAGE.
    ---------------------------------------------------------------------------*/
 // clang-format off
-#ifndef __M3_CORE_CM3_H__
-#define __M3_CORE_CM3_H__
+#pragma once
 
 #if defined ( __ICCARM__ )
  #pragma system_include  /* treat file as system include file for MISRA check */
@@ -1457,4 +1456,3 @@ __STATIC_INLINE uint32_t M3_SysTick_Config(uint32_t ticks)
 }
 #endif
 
-#endif //__M3_CORE_CM3_H__

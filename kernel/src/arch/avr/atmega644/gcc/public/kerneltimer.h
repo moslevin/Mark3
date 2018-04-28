@@ -18,15 +18,16 @@ See license.txt for more information
     \brief  Kernel Timer Class declaration
  */
 
-#ifndef __KERNELTIMER_H_
-#define __KERNELTIMER_H_
+#pragma once
 
 #include "kerneltypes.h"
 #include "mark3cfg.h"
 
+namespace Mark3
+{
 //---------------------------------------------------------------------------
 /*!
- *  Hardware timer interface, used by all scheduling/timer subsystems.
+    Hardware timer interface, used by all scheduling/timer subsystems.
  */
 class KernelTimer
 {
@@ -34,44 +35,44 @@ public:
     /*!
      *  \brief Config
      *
-     *   Initializes the kernel timer before use
+     *  Initializes the kernel timer before use
      */
     static void Config(void);
 
     /*!
      *  \brief Start
      *
-     *   Starts the kernel time (must be configured first)
+     *  Starts the kernel time (must be configured first)
      */
     static void Start(void);
 
     /*!
      *  \brief Stop
      *
-     *   Shut down the kernel timer, used when no timers are scheduled
+     *  Shut down the kernel timer, used when no timers are scheduled
      */
     static void Stop(void);
 
     /*!
      *  \brief DI
      *
-     *   Disable the kernel timer's expiry interrupt
+     *  Disable the kernel timer's expiry interrupt
      */
     static uint8_t DI(void);
 
     /*!
      *  \brief RI
      *
-     *   Retstore the state of the kernel timer's expiry interrupt.
+     *  Retstore the state of the kernel timer's expiry interrupt.
      *
-     *   \param bEnable_ 1 enable, 0 disable
+     *  \param bEnable_ 1 enable, 0 disable
      */
     static void RI(bool bEnable_);
 
     /*!
      *  \brief EI
      *
-     *   Enable the kernel timer's expiry interrupt
+     *  Enable the kernel timer's expiry interrupt
      */
     static void EI(void);
 
@@ -85,7 +86,7 @@ public:
      *  \param u32Interval_ Time (in HW-specific) ticks to subtract
      *  \return Value in ticks stored in the timer's expiry register
      */
-    static uint32_t SubtractExpiry(uint32_t u32Interval_);
+    static PORT_TIMER_COUNT_TYPE SubtractExpiry(PORT_TIMER_COUNT_TYPE uInterval_);
 
     /*!
      *  \brief TimeToExpiry
@@ -93,9 +94,9 @@ public:
      *  Returns the number of ticks remaining before the next timer
      *  expiry.
      *
-     *  \param Time before next expiry in platform-specific ticks
+     *  \return Time before next expiry in platform-specific ticks
      */
-    static uint32_t TimeToExpiry(void);
+    static PORT_TIMER_COUNT_TYPE TimeToExpiry(void);
 
     /*!
      *  \brief SetExpiry
@@ -105,7 +106,7 @@ public:
      *  \param u32Interval_ Desired interval in ticks to set the timer for
      *  \return Actual number of ticks set (may be less than desired)
      */
-    static uint32_t SetExpiry(uint32_t u32Interval_);
+    static PORT_TIMER_COUNT_TYPE SetExpiry(uint32_t u32Interval_);
 
     /*!
      *  \brief GetOvertime
@@ -115,7 +116,7 @@ public:
      *
      *  \return Number of ticks that have elapsed after last timer expiration
      */
-    static uint32_t GetOvertime(void);
+    static PORT_TIMER_COUNT_TYPE GetOvertime(void);
 
     /*!
      *  \brief ClearExpiry
@@ -131,7 +132,6 @@ public:
      *
      *  \return Value held in the timer register
      */
-    static uint16_t Read(void);
+    static PORT_TIMER_COUNT_TYPE Read(void);
 };
-
-#endif //__KERNELTIMER_H_
+} //namespace Mark3

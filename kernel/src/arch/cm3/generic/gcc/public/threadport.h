@@ -17,9 +17,7 @@ See license.txt for more information
 
     \brief  Cortex M3 Multithreading support.
  */
-
-#ifndef __THREADPORT_H_
-#define __THREADPORT_H_
+#pragma once
 
 #include "kerneltypes.h"
 #include "thread.h"
@@ -76,6 +74,7 @@ do {                                    \
     ::[input] "m" (__sr) : "r0");       \
 } while(0);
 
+namespace Mark3 {
 //------------------------------------------------------------------------
 class Thread;
 /*!
@@ -106,5 +105,4 @@ private:
      */
     static void InitStack(Thread *pstThread_);
 };
-
-#endif //__ThreadPORT_H_
+} // namespace Mark3

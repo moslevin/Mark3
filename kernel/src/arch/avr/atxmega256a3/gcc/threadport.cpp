@@ -33,6 +33,7 @@ See license.txt for more information
 #include <avr/io.h>
 #include <avr/interrupt.h>
 
+namespace Mark3 {
 //---------------------------------------------------------------------------
 Thread* g_pclCurrentThread;
 
@@ -182,3 +183,4 @@ ISR(INT0_vect)
     Thread_RestoreContext(); // Pop the context (registers) of the next task
     ASM("reti");             // Return to the next task
 }
+} // namespace Mark3

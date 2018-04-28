@@ -26,13 +26,16 @@ See license.txt for more information
 #include "ksemaphore.h"
 #include "thread.h"
 
+using namespace Mark3;
+namespace {
 //---------------------------------------------------------------------------
 // Static objects implementing the timer thread and its synchronization objects
 #if KERNEL_TIMERS_THREADED
-static Thread s_clTimerThread;
-static K_WORD s_clTimerThreadStack[PORT_KERNEL_TIMERS_THREAD_STACK];
-static Semaphore s_clTimerSemaphore;
+Thread s_clTimerThread;
+K_WORD s_clTimerThreadStack[PORT_KERNEL_TIMERS_THREAD_STACK];
+Semaphore s_clTimerSemaphore;
 #endif
+} // anonymous namespace
 
 //---------------------------------------------------------------------------
 extern "C" {
@@ -58,6 +61,7 @@ void SysTick_Handler(void)
     SCB->ICSR = SCB_ICSR_PENDSTCLR_Msk;
 }
 
+namespace Mark3 {
 //---------------------------------------------------------------------------
 #if KERNEL_TIMERS_THREADED
 static void KernelTimer_Task(void* unused)
@@ -157,4 +161,4 @@ void KernelTimer::RI(bool bEnable_)
 {
 }
 
-//---------------------------------------------------------------------------
+} // namespace Mark3

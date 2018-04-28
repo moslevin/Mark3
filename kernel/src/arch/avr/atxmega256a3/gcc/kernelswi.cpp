@@ -28,6 +28,7 @@ See license.txt for more information
 #define TIMER_SWI_EVENT_CHANNEL (0x00)
 #define TIMER_SWI_EVENT_FLAG (0x08)
 
+namespace Mark3 {
 //---------------------------------------------------------------------------
 void KernelSWI::Config(void)
 {
@@ -106,3 +107,4 @@ void KernelSWI::Trigger(void)
         EVSYS.STROBE |= 0x01;
     }
 }
+} // namespace Mark3

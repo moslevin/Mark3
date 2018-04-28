@@ -34,7 +34,7 @@ See license.txt for more information
 #include <avr/interrupt.h>
 
 //---------------------------------------------------------------------------
-Thread* g_pclCurrentThread;
+namespace Mark3 {
 
 //---------------------------------------------------------------------------
 void ThreadPort::InitStack(Thread* pclThread_)
@@ -173,3 +173,4 @@ ISR(INT0_vect)
     Thread_RestoreContext(); // Pop the context (registers) of the next task
     ASM("reti");             // Return to the next task
 }
+} //namespace Mark3

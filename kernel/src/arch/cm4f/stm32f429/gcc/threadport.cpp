@@ -42,7 +42,6 @@ void SVC_Handler(void) __attribute__((naked));
 void PendSV_Handler(void) __attribute__((naked));
 }
 
-
 //---------------------------------------------------------------------------
 /*
     The SVC Call
@@ -66,19 +65,14 @@ void PendSV_Handler(void) __attribute__((naked));
         ldr r2, [r1]         ; r2 contains the current stack-top
 
     load_manually_placed_context_r11_r4:
-        ; Handle the bottom 32-bytes of the stack frame
+        ; Handle the bottom 36-bytes of the stack frame
         ; On cortex m3 and up, we can do this in one ldmia instruction.
-        ldmia r2!, {r4-r11}
+        ldmia r2!, {r4-r11, r14}
 
     set_psp:
         ; Since r2 is coincidentally back to where the stack pointer should be,
         ; Set the program stack pointer such that returning from the exception handler
         msr psp, r2
-
-    load_manually_placed_context_r11_r4:
-        ; Get back to the bottom of the manually stacked registers and pop.
-        sub r2, #32
-        ldmia r2!, {r4-r11}  ; Register r4-r11 are restored.
 
     ** Note - Since we don't care about these registers on init, we could take a shortcut if we wanted to **
     shortcut_init:
@@ -110,17 +104,13 @@ void SVC_Handler(void)
         " add r3, #8 \n "
         " ldr r2, [r3] \n "
         // Stack pointer is in r2, start loading registers from the "manually-stacked" set
-        " ldmia r2!, {r4-r11} \n "
+        " ldmia r2!, {r4-r11, r14} \n "
         // After subtracting R2 by #32 due to stack popping, our PSP is where it
         // needs to be when we return from the exception handler
         " msr psp, r2 \n "
         " isb \n "
         // Return into thread mode, using PSP as the thread's stack pointer
-        // To do this, or 0x0D into the current lr.
-        " mov r0, #0x0D \n "
-        " mov r1, lr \n "
-        " orr r0, r1 \n "
-        " bx r0 \n "
+        " bx lr \n "
         :
         : [CURRENT_THREAD] "r"(g_pclCurrent));
 }
@@ -148,30 +138,8 @@ void SVC_Handler(void)
 
 1) Saving the context.
 
-    Alright, so when we enter the exception handler, We should expect that the
-    exception stack frame is stored to our PSP.  This takes care of everything
-    but r4-r11.  Similar to the "restore context" code, we'll have to break up
-    the register storage into multiple chunks.
-
-    ; Get address of current thread stack
-    ldr r0, g_pclCurrentThread
-    ldr r1, [r0]
-    add r1, #8
-
-    ; Grab the psp and adjust it by 32 based on the extra registers we're going
-    ; to be manually stacking.
-    mrs r2, psp
-    sub r2, #32
-
-    ; While we're here, store the new top-of-stack value
-    str r2, [r1]
-
-    ; And, while r2 is at the bottom of the stack frame, stack r11-r4
-    stmia r2!, {r4-r11}
-
-    ; Done!
-
-    Thread's top-of-stack value is stored, all registers are stacked.  We're good to go!
+    !!ToDo -- add documentation about how this works on cortex m4f, especially
+    in the context of the floating-point registers, lazy stacking, etc.
 
 2)  Swap threads
 
@@ -192,16 +160,20 @@ void PendSV_Handler(void)
         " mov r3, r1 \n "
         " add r3, #8 \n "
 
-        //  Grab the psp and adjust it by 32 based on the extra registers we're going
-        // to be manually stacking.
         " mrs r2, psp \n "
-        " sub r2, #32 \n "
 
-        // While we're here, store the new top-of-stack value
+        // Check to see if the thread was using floating point -- if so, we need to
+        // store the remaining registers not automatically handled automagically on
+        // entry to the exception handler.
+        " tst r14, #0x10\n "
+        " it eq \n "
+        " vstmdbeq r2!, {s16-s31} \n "
+
+        // And, while r2 is at the bottom of the stack frame, stack r4-r11, lr
+        " stmdb r2!, {r4-r11, r14} \n "
+
+        // Store the new top-of-stack value to the current thread object
         " str r2, [r3] \n "
-
-        // And, while r2 is at the bottom of the stack frame, stack r4-r11
-        " stmia r2!, {r4-r11} \n "
 
         // Equivalent of Thread_Swap() -- g_pclNext -> g_pclCurrent
         " cpsid i \n "
@@ -216,7 +188,13 @@ void PendSV_Handler(void)
         " ldr r2, [r0] \n "
 
         // Stack pointer is in r2, start loading registers from the "manually-stacked" set
-        " ldmia r2!, {r4-r11} \n "
+        " ldmia r2!, {r4-r11, r14} \n "
+
+        // Check to see if the thread was using floating point -- if so, we need to
+        // store the remaining registers not automatically handled due to lazy stacking
+        " tst r14, #0x10\n "
+        " it eq \n "
+        " vldmiaeq r2!, {s16-s31} \n "
 
         // After subbing R2 #32 through ldmia/stack popping, our PSP is where it
         // needs to be when we return from the exception handler
@@ -224,18 +202,17 @@ void PendSV_Handler(void)
 
         // lr contains the proper EXC_RETURN value, we're done with exceptions.
         " bx lr \n "
-        " nop \n "
 
         // Must be 4-byte aligned.  Also - GNU assembler, I hate you for making me resort to this.
         " NEXT_: .word g_pclNext \n"
         " CURR_: .word g_pclCurrent \n");
 }
 
-
 namespace Mark3 {
 static void ThreadPort_StartFirstThread(void) __attribute__((naked));
 //---------------------------------------------------------------------------
 volatile uint32_t g_ulCriticalCount;
+
 
 //---------------------------------------------------------------------------
 /*
@@ -304,7 +281,7 @@ void ThreadPort::InitStack(Thread* pclThread_)
     //-- Simulated Exception Stack Frame --
     PUSH_TO_STACK(pu32Stack, 0x01000000); // XSPR
     PUSH_TO_STACK(pu32Stack, u32Addr);    // PC
-    PUSH_TO_STACK(pu32Stack, 0);          // LR
+    PUSH_TO_STACK(pu32Stack, 0);
     PUSH_TO_STACK(pu32Stack, 0x12);
     PUSH_TO_STACK(pu32Stack, 0x3);
     PUSH_TO_STACK(pu32Stack, 0x2);
@@ -312,6 +289,7 @@ void ThreadPort::InitStack(Thread* pclThread_)
     PUSH_TO_STACK(pu32Stack, (uint32_t)pclThread_->m_pvArg); // R0 = argument
 
     //-- Simulated Manually-Stacked Registers --
+    PUSH_TO_STACK(pu32Stack, 0xFFFFFFFD); // Default "EXC_RETURN" value -- Thread mode, floating point.
     PUSH_TO_STACK(pu32Stack, 0x11);
     PUSH_TO_STACK(pu32Stack, 0x10);
     PUSH_TO_STACK(pu32Stack, 0x09);
@@ -348,13 +326,13 @@ void ThreadPort::StartThreads()
     KernelSWI::Start();   // enable the task switch SWI
 
 #if KERNEL_USE_QUANTUM
-    // Restart the thread quantum timer, as any value held prior to starting
-    // the kernel will be invalid.  This fixes a bug where multiple threads
-    // started with the highest priority before starting the kernel causes problems
-    // until the running thread voluntarily blocks.
     Quantum::RemoveThread();
     Quantum::AddThread(g_pclCurrent);
 #endif
+
+    SCB->CPACR |= 0x00F00000; // Enable floating-point
+
+    FPU->FPCCR |= (FPU_FPCCR_ASPEN_Msk | FPU_FPCCR_LSPEN_Msk); // Enable lazy-stacking
 
     ThreadPort_StartFirstThread(); // Jump to the first thread (does not return)
 }
@@ -382,9 +360,8 @@ void ThreadPort::StartThreads()
     -Enable exceptions/interrupts
     -Call SVC
 
-    Optionally, we can reset the MSP stack pointer to the top-of-stack.
-    Note, the default stack pointer location is stored at address
-    0x00000000 on all ARM Cortex M0 parts
+    Optionally, we can reset the MSP stack pointer to the top-of-stack;
+    load the top-of-stack value from the NVIC's stack offset register.
 
     (While Mark3 avoids assembler code as much as possible, there are some
     places where it cannot be avoided.  However, we can at least inline it
@@ -401,4 +378,3 @@ void ThreadPort_StartFirstThread(void)
 }
 
 } // namespace Mark3
-

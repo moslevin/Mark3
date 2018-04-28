@@ -17,12 +17,10 @@ See license.txt for more information
 
     \brief  Kernel Timer Class declaration
  */
+#pragma once
 
 #include "kerneltypes.h"
 #include "mark3cfg.h"
-
-#ifndef __KERNELTIMER_H_
-#define __KERNELTIMER_H_
 
 //---------------------------------------------------------------------------
 /*!
@@ -133,5 +131,3 @@ public:
      */
     static uint16_t Read(void);
 };
-
-#endif //__KERNELTIMER_H_

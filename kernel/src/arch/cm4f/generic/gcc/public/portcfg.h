@@ -21,9 +21,7 @@ See license.txt for more information
 
     !! NOTE:  This file must ONLY be included from mark3cfg.h
 */
-
-#ifndef __PORTCFG_H__
-#define __PORTCFG_H__
+#pragma once
 
 #include <stdint.h>
 /*!
@@ -96,5 +94,3 @@ extern uint32_t SystemCoreClock;
     be initialized to a negative value.
 */
 #define PORT_MIN_TIMER_TICKS        (0)
-
-#endif // __PORTCFG_H__

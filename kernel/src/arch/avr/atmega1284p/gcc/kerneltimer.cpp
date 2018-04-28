@@ -29,42 +29,22 @@ See license.txt for more information
 #include <avr/io.h>
 #include <avr/interrupt.h>
 
-namespace Mark3
-{
-
 #define TCCR1B_INIT ((1 << WGM12) | (1 << CS12))
 #define TIMER_IMSK (1 << OCIE1A)
 #define TIMER_IFR (1 << OCF1A)
 
+namespace {
+using namespace Mark3;
 //---------------------------------------------------------------------------
 // Static objects implementing the timer thread and its synchronization objects
 #if KERNEL_TIMERS_THREADED
-static Thread s_clTimerThread;
-static K_WORD s_clTimerThreadStack[PORT_KERNEL_TIMERS_THREAD_STACK];
-static Semaphore s_clTimerSemaphore;
-#endif
-
-//---------------------------------------------------------------------------
-/*!
- *   \brief ISR(TIMER1_COMPA_vect)
- *   Timer interrupt ISR - service the timer thread
- */
-//---------------------------------------------------------------------------
-ISR(TIMER1_COMPA_vect)
-{
-#if KERNEL_TIMERS_THREADED
-    KernelTimer::ClearExpiry();
-    s_clTimerSemaphore.Post();
-#else
-    #if KERNEL_USE_TIMERS
-        TimerScheduler::Process();
-    #endif
-    #if KERNEL_USE_QUANTUM
-        Quantum::UpdateTimer();
-    #endif
+Thread s_clTimerThread;
+K_WORD s_clTimerThreadStack[PORT_KERNEL_TIMERS_THREAD_STACK];
+Semaphore s_clTimerSemaphore;
 #endif
 }
 
+namespace Mark3 {
 //---------------------------------------------------------------------------
 #if KERNEL_TIMERS_THREADED
 static void KernelTimer_Task(void* unused)
@@ -234,3 +214,25 @@ void KernelTimer::RI(bool bEnable_)
 #endif
 }
 } //namespace Mark3
+
+//---------------------------------------------------------------------------
+/*!
+ *   \brief ISR(TIMER1_COMPA_vect)
+ *   Timer interrupt ISR - service the timer thread
+ */
+//---------------------------------------------------------------------------
+using namespace Mark3;
+ISR(TIMER1_COMPA_vect)
+{
+#if KERNEL_TIMERS_THREADED
+    KernelTimer::ClearExpiry();
+    s_clTimerSemaphore.Post();
+#else
+    #if KERNEL_USE_TIMERS
+        TimerScheduler::Process();
+    #endif
+    #if KERNEL_USE_QUANTUM
+        Quantum::UpdateTimer();
+    #endif
+#endif
+}

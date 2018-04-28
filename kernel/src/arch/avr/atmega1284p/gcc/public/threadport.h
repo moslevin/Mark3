@@ -37,7 +37,6 @@ namespace Mark3 {
 #define SPH_        0x3E
 #define SPL_        0x3D
 
-
 //---------------------------------------------------------------------------
 //! Macro to find the top of a stack given its size and top address
 #define TOP_OF_STACK(x, y)         (reinterpret_cast<K_WORD*>(reinterpret_cast<K_ADDR>(x) + (static_cast<K_ADDR>(y) - 1)))

@@ -16,13 +16,11 @@ See license.txt for more information
 
     \brief Profiling timer hardware interface
  */
+#pragma once
 
 #include "kerneltypes.h"
 #include "mark3cfg.h"
 #include "ll.h"
-
-#ifndef __KPROFILE_H__
-#define __KPROFILE_H__
 
 #if KERNEL_USE_PROFILER
 
@@ -30,6 +28,7 @@ See license.txt for more information
 #define TICKS_PER_OVERFLOW (256)
 #define CLOCK_DIVIDE (8)
 
+namespace Mark3 {
 //---------------------------------------------------------------------------
 /*!
  *  System profiling timer interface
@@ -82,7 +81,5 @@ public:
 private:
     static uint32_t m_u32Epoch;
 };
-
+} // namespace Mark3
 #endif // KERNEL_USE_PROFILER
-
-#endif

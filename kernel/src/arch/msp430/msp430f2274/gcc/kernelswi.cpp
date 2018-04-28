@@ -23,6 +23,7 @@ See license.txt for more information
 #include "kernelswi.h"
 #include <msp430.h>
 
+namespace Mark3 {
 //---------------------------------------------------------------------------
 void KernelSWI::Config(void)
 {
@@ -70,3 +71,5 @@ void KernelSWI::Trigger(void)
 {
     P1IFG |= 0x04;
 }
+
+} // using namespace Mark3

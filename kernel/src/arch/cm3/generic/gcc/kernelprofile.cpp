@@ -26,6 +26,7 @@ See license.txt for more information
 #include "m3_core_cm3.h"
 
 #if KERNEL_USE_PROFILER
+namespace Mark3 {
 uint32_t Profiler::m_u32Epoch;
 
 //---------------------------------------------------------------------------
@@ -53,4 +54,5 @@ void Profiler::Process()
 {
 }
 
+} // namespace Mark3
 #endif

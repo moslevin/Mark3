@@ -30,182 +30,16 @@ See license.txt for more information
 #include "quantum.h"
 #include "m3_core_cm3.h"
 
+
 //---------------------------------------------------------------------------
 #if KERNEL_USE_IDLE_FUNC
 #error "KERNEL_USE_IDLE_FUNC not supported in this port"
 #endif
 
 //---------------------------------------------------------------------------
-static void ThreadPort_StartFirstThread(void) __attribute__((naked));
 extern "C" {
 void SVC_Handler(void) __attribute__((naked));
 void PendSV_Handler(void) __attribute__((naked));
-}
-
-//---------------------------------------------------------------------------
-volatile uint32_t g_ulCriticalCount;
-
-//---------------------------------------------------------------------------
-/*
-    1) Setting up the thread stacks
-
-    Stack consists of 2 separate frames mashed together.
-    a) Exception Stack Frame
-
-    Contains the 8 registers the CPU pushes/pops to/from the stack on execution
-    of an exception:
-
-    [ XPSR ]
-    [ PC   ]
-    [ LR   ]
-    [ R12  ]
-    [ R3   ]
-    [ R2   ]
-    [ R1   ]
-    [ R0   ]
-
-    XPSR - Needs to be set to 0x01000000; the "T" bit (thumb) must be set for
-           any thread executing on an ARMv6-m processor
-    PC - Should be set with the initial entry point for the thread
-    LR - The base link register.  We can leave this as 0, and set to 0xD on
-         first context switch to tell the CPU to resume execution using the
-         stack pointer held in the PSP as the regular stack.
-
-    This is done by the CPU automagically- this format is part of the
-    architecture, and there's nothing we can do to change or modify it.
-
-    b) "Other" Register Context
-
-    [ R11   ]
-    ...
-    [ R4    ]
-
-    These are the other GP registers that need to be backed up/restored on a
-    context switch, but aren't by default on a CM0 exception.  If there were
-    any additional hardware registers to back up, then we'd also have to
-    include them in this part of the context.
-
-    These all need to be manually pushed to the stack on stack creation, and
-    puhsed/pop as part of a normal context switch.
-*/
-void ThreadPort::InitStack(Thread* pclThread_)
-{
-    uint32_t* pu32Stack;
-    uint32_t* pu32Temp;
-    uint32_t  u32Addr;
-    uint16_t  i;
-
-    // Get the entrypoint for the thread
-    u32Addr = (uint32_t)(pclThread_->m_pfEntryPoint);
-
-    // Get the top-of-stack pointer for the thread
-    pu32Stack = (uint32_t*)pclThread_->m_pwStackTop;
-
-    // Initialize the stack to all FF's to aid in stack depth checking
-    pu32Temp = (uint32_t*)pclThread_->m_pwStack;
-    for (i = 0; i < pclThread_->m_u16StackSize / sizeof(uint32_t); i++) {
-        pu32Temp[i] = 0xFFFFFFFF;
-    }
-
-    PUSH_TO_STACK(pu32Stack, 0); // We need one word of padding, apparently...
-
-    //-- Simulated Exception Stack Frame --
-    PUSH_TO_STACK(pu32Stack, 0x01000000); // XSPR
-    PUSH_TO_STACK(pu32Stack, u32Addr);    // PC
-    PUSH_TO_STACK(pu32Stack, 0);          // LR
-    PUSH_TO_STACK(pu32Stack, 0x12);
-    PUSH_TO_STACK(pu32Stack, 0x3);
-    PUSH_TO_STACK(pu32Stack, 0x2);
-    PUSH_TO_STACK(pu32Stack, 0x1);
-    PUSH_TO_STACK(pu32Stack, (uint32_t)pclThread_->m_pvArg); // R0 = argument
-
-    //-- Simulated Manually-Stacked Registers --
-    PUSH_TO_STACK(pu32Stack, 0x11);
-    PUSH_TO_STACK(pu32Stack, 0x10);
-    PUSH_TO_STACK(pu32Stack, 0x09);
-    PUSH_TO_STACK(pu32Stack, 0x08);
-    PUSH_TO_STACK(pu32Stack, 0x07);
-    PUSH_TO_STACK(pu32Stack, 0x06);
-    PUSH_TO_STACK(pu32Stack, 0x05);
-    PUSH_TO_STACK(pu32Stack, 0x04);
-    pu32Stack++;
-
-    pclThread_->m_pwStackTop = pu32Stack;
-}
-
-//---------------------------------------------------------------------------
-void Thread_Switch(void)
-{
-    g_pclCurrent = (Thread*)g_pclNext;
-}
-
-//---------------------------------------------------------------------------
-void ThreadPort::StartThreads()
-{
-    KernelSWI::Config();   // configure the task switch SWI
-    KernelTimer::Config(); // configure the kernel timer
-#if KERNEL_USE_PROFILER
-    Profiler::Init();
-#endif
-    Scheduler::SetScheduler(1); // enable the scheduler
-    Scheduler::Schedule();      // run the scheduler - determine the first thread to run
-
-    Thread_Switch(); // Set the next scheduled thread to the current thread
-
-    KernelTimer::Start(); // enable the kernel timer
-    KernelSWI::Start();   // enable the task switch SWI
-
-#if KERNEL_USE_QUANTUM
-    // Restart the thread quantum timer, as any value held prior to starting
-    // the kernel will be invalid.  This fixes a bug where multiple threads
-    // started with the highest priority before starting the kernel causes problems
-    // until the running thread voluntarily blocks.
-    Quantum::RemoveThread();
-    Quantum::AddThread(g_pclCurrent);
-#endif
-
-    ThreadPort_StartFirstThread(); // Jump to the first thread (does not return)
-}
-
-//---------------------------------------------------------------------------
-/*
-    The same general process applies to starting the kernel as per usual
-
-    We can either:
-        1) Simulate a return from an exception manually to start the first
-           thread, or..
-        2) use a software exception to trigger the first "Context Restore
-            /Return from Interrupt" that we have otherwised used to this point.
-
-    For 1), we basically have to restore the whole stack manually, not relying
-    on the CPU to do any of this for u16.  That's certainly doable, but not all
-    Cortex parts support this (due to other members of the family supporting
-    priveleged modes).  So, we will opt for the second option.
-
-    So, to implement a software interrupt to restore our first thread, we will
-    use the SVC instruction to generate that exception.
-
-    At the end of thread initialization, we have to do 2 things:
-
-    -Enable exceptions/interrupts
-    -Call SVC
-
-    Optionally, we can reset the MSP stack pointer to the top-of-stack.
-    Note, the default stack pointer location is stored at address
-    0x00000000 on all ARM Cortex M0 parts
-
-    (While Mark3 avoids assembler code as much as possible, there are some
-    places where it cannot be avoided.  However, we can at least inline it
-    in most circumstances.)
-*/
-void ThreadPort_StartFirstThread(void)
-{
-    ASM(" ldr r0, =0xE000ED08 \n"
-        " ldr r0, [r0] \n"
-        " ldr r1, [r0] \n"
-        " msr msp, r1 \n"
-        " cpsie i \n"
-        " svc 0 \n");
 }
 
 //---------------------------------------------------------------------------
@@ -395,3 +229,174 @@ void PendSV_Handler(void)
         " NEXT_: .word g_pclNext \n"
         " CURR_: .word g_pclCurrent \n");
 }
+
+namespace Mark3 {
+static void ThreadPort_StartFirstThread(void) __attribute__((naked));
+//---------------------------------------------------------------------------
+volatile uint32_t g_ulCriticalCount;
+
+//---------------------------------------------------------------------------
+/*
+    1) Setting up the thread stacks
+
+    Stack consists of 2 separate frames mashed together.
+    a) Exception Stack Frame
+
+    Contains the 8 registers the CPU pushes/pops to/from the stack on execution
+    of an exception:
+
+    [ XPSR ]
+    [ PC   ]
+    [ LR   ]
+    [ R12  ]
+    [ R3   ]
+    [ R2   ]
+    [ R1   ]
+    [ R0   ]
+
+    XPSR - Needs to be set to 0x01000000; the "T" bit (thumb) must be set for
+           any thread executing on an ARMv6-m processor
+    PC - Should be set with the initial entry point for the thread
+    LR - The base link register.  We can leave this as 0, and set to 0xD on
+         first context switch to tell the CPU to resume execution using the
+         stack pointer held in the PSP as the regular stack.
+
+    This is done by the CPU automagically- this format is part of the
+    architecture, and there's nothing we can do to change or modify it.
+
+    b) "Other" Register Context
+
+    [ R11   ]
+    ...
+    [ R4    ]
+
+    These are the other GP registers that need to be backed up/restored on a
+    context switch, but aren't by default on a CM0 exception.  If there were
+    any additional hardware registers to back up, then we'd also have to
+    include them in this part of the context.
+
+    These all need to be manually pushed to the stack on stack creation, and
+    puhsed/pop as part of a normal context switch.
+*/
+void ThreadPort::InitStack(Thread* pclThread_)
+{
+    uint32_t* pu32Stack;
+    uint32_t* pu32Temp;
+    uint32_t  u32Addr;
+    uint16_t  i;
+
+    // Get the entrypoint for the thread
+    u32Addr = (uint32_t)(pclThread_->m_pfEntryPoint);
+
+    // Get the top-of-stack pointer for the thread
+    pu32Stack = (uint32_t*)pclThread_->m_pwStackTop;
+
+    // Initialize the stack to all FF's to aid in stack depth checking
+    pu32Temp = (uint32_t*)pclThread_->m_pwStack;
+    for (i = 0; i < pclThread_->m_u16StackSize / sizeof(uint32_t); i++) {
+        pu32Temp[i] = 0xFFFFFFFF;
+    }
+
+    PUSH_TO_STACK(pu32Stack, 0); // We need one word of padding, apparently...
+
+    //-- Simulated Exception Stack Frame --
+    PUSH_TO_STACK(pu32Stack, 0x01000000); // XSPR
+    PUSH_TO_STACK(pu32Stack, u32Addr);    // PC
+    PUSH_TO_STACK(pu32Stack, 0);          // LR
+    PUSH_TO_STACK(pu32Stack, 0x12);
+    PUSH_TO_STACK(pu32Stack, 0x3);
+    PUSH_TO_STACK(pu32Stack, 0x2);
+    PUSH_TO_STACK(pu32Stack, 0x1);
+    PUSH_TO_STACK(pu32Stack, (uint32_t)pclThread_->m_pvArg); // R0 = argument
+
+    //-- Simulated Manually-Stacked Registers --
+    PUSH_TO_STACK(pu32Stack, 0x11);
+    PUSH_TO_STACK(pu32Stack, 0x10);
+    PUSH_TO_STACK(pu32Stack, 0x09);
+    PUSH_TO_STACK(pu32Stack, 0x08);
+    PUSH_TO_STACK(pu32Stack, 0x07);
+    PUSH_TO_STACK(pu32Stack, 0x06);
+    PUSH_TO_STACK(pu32Stack, 0x05);
+    PUSH_TO_STACK(pu32Stack, 0x04);
+    pu32Stack++;
+
+    pclThread_->m_pwStackTop = pu32Stack;
+}
+
+//---------------------------------------------------------------------------
+void Thread_Switch(void)
+{
+    g_pclCurrent = (Thread*)g_pclNext;
+}
+
+//---------------------------------------------------------------------------
+void ThreadPort::StartThreads()
+{
+    KernelSWI::Config();   // configure the task switch SWI
+    KernelTimer::Config(); // configure the kernel timer
+#if KERNEL_USE_PROFILER
+    Profiler::Init();
+#endif
+    Scheduler::SetScheduler(1); // enable the scheduler
+    Scheduler::Schedule();      // run the scheduler - determine the first thread to run
+
+    Thread_Switch(); // Set the next scheduled thread to the current thread
+
+    KernelTimer::Start(); // enable the kernel timer
+    KernelSWI::Start();   // enable the task switch SWI
+
+#if KERNEL_USE_QUANTUM
+    // Restart the thread quantum timer, as any value held prior to starting
+    // the kernel will be invalid.  This fixes a bug where multiple threads
+    // started with the highest priority before starting the kernel causes problems
+    // until the running thread voluntarily blocks.
+    Quantum::RemoveThread();
+    Quantum::AddThread(g_pclCurrent);
+#endif
+
+    ThreadPort_StartFirstThread(); // Jump to the first thread (does not return)
+}
+
+//---------------------------------------------------------------------------
+/*
+    The same general process applies to starting the kernel as per usual
+
+    We can either:
+        1) Simulate a return from an exception manually to start the first
+           thread, or..
+        2) use a software exception to trigger the first "Context Restore
+            /Return from Interrupt" that we have otherwised used to this point.
+
+    For 1), we basically have to restore the whole stack manually, not relying
+    on the CPU to do any of this for u16.  That's certainly doable, but not all
+    Cortex parts support this (due to other members of the family supporting
+    priveleged modes).  So, we will opt for the second option.
+
+    So, to implement a software interrupt to restore our first thread, we will
+    use the SVC instruction to generate that exception.
+
+    At the end of thread initialization, we have to do 2 things:
+
+    -Enable exceptions/interrupts
+    -Call SVC
+
+    Optionally, we can reset the MSP stack pointer to the top-of-stack.
+    Note, the default stack pointer location is stored at address
+    0x00000000 on all ARM Cortex M0 parts
+
+    (While Mark3 avoids assembler code as much as possible, there are some
+    places where it cannot be avoided.  However, we can at least inline it
+    in most circumstances.)
+*/
+void ThreadPort_StartFirstThread(void)
+{
+    ASM(" ldr r0, =0xE000ED08 \n"
+        " ldr r0, [r0] \n"
+        " ldr r1, [r0] \n"
+        " msr msp, r1 \n"
+        " cpsie i \n"
+        " svc 0 \n");
+}
+
+} // namespace Mark3
+

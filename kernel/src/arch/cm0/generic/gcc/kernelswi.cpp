@@ -24,6 +24,7 @@ See license.txt for more information
 #include "threadport.h"
 #include "m3_core_cm0.h"
 
+namespace Mark3 {
 //---------------------------------------------------------------------------
 void KernelSWI::Config(void)
 {
@@ -72,3 +73,4 @@ void KernelSWI::Trigger(void)
 {
     SCB->ICSR = SCB_ICSR_PENDSVSET_Msk;
 }
+} // namespace Mark3

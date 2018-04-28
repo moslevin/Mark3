@@ -17,15 +17,15 @@ See license.txt for more information
 
     \brief  ATMega328p Multithreading support.
  */
-
-#ifndef __THREADPORT_H_
-#define __THREADPORT_H_
+#pragma once
 
 #include "kerneltypes.h"
 #include "thread.h"
 
 #include <avr/io.h>
 #include <avr/interrupt.h>
+
+namespace Mark3 {
 
 // clang-format off
 //---------------------------------------------------------------------------
@@ -211,4 +211,4 @@ private:
     static void InitStack(Thread *pstThread_);
 };
 
-#endif //__ThreadPORT_H_
+} // namespace Mark3

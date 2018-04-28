@@ -17,7 +17,6 @@ See license.txt for more information
 
     \brief  Cortex M4  Multithreading support.
  */
-
 #pragma once
 
 #include "kerneltypes.h"

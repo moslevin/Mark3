@@ -17,14 +17,13 @@ See license.txt for more information
 
     \brief  Cortex M-0 Multithreading support.
  */
-
-#ifndef __THREADPORT_H_
-#define __THREADPORT_H_
+#pragma once
 
 #include "kerneltypes.h"
 #include "thread.h"
 
 // clang-format off
+
 //---------------------------------------------------------------------------
 //! ASM Macro - simplify the use of ASM directive in C
 #define ASM      asm volatile
@@ -35,11 +34,6 @@ See license.txt for more information
 //! Push a value y to the stack pointer x and decrement the stack pointer
 #define PUSH_TO_STACK(x, y)        *x = y; x--;
 #define STACK_GROWS_DOWN           (1)
-
-//------------------------------------------------------------------------
-//! These macros *must* be used in matched-pairs !
-//! Nesting *is* supported !
-extern volatile uint32_t g_ulCriticalCount;
 
 //------------------------------------------------------------------------
 #ifndef xDMB
@@ -60,17 +54,21 @@ extern volatile uint32_t g_ulCriticalCount;
 #define CS_ENTER()    \
 { \
     DISABLE_INTS(); \
-    g_ulCriticalCount++;\
+    Mark3::g_ulCriticalCount++;\
 }
 //------------------------------------------------------------------------
 //! Exit critical section (restore previous PRIMASK status register value)
 #define CS_EXIT() \
 { \
-    g_ulCriticalCount--; \
-    if( 0 == g_ulCriticalCount ) { \
+    Mark3::g_ulCriticalCount--; \
+    if( 0 == Mark3::g_ulCriticalCount ) { \
         ENABLE_INTS(); \
     } \
 }
+
+namespace Mark3 {
+//------------------------------------------------------------------------
+extern volatile uint32_t g_ulCriticalCount;
 
 //------------------------------------------------------------------------
 class Thread;
@@ -102,5 +100,4 @@ private:
      */
     static void InitStack(Thread *pstThread_);
 };
-
-#endif //__ThreadPORT_H_
+} // namespace Mark3

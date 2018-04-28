@@ -26,7 +26,6 @@ See license.txt for more information
 #include "kernelprofile.h"
 #include "kernelswi.h"
 #include "kerneltimer.h"
-#include "kernelprofile.h"
 #include "timerlist.h"
 #include "quantum.h"
 #include "kernel.h"
@@ -34,6 +33,7 @@ See license.txt for more information
 #include <avr/io.h>
 #include <avr/interrupt.h>
 
+namespace Mark3 {
 //---------------------------------------------------------------------------
 Thread* g_pclCurrentThread;
 
@@ -159,9 +159,12 @@ void ThreadPort::StartThreads()
 
     // Restore the context...
     Thread_RestoreContext(); // restore the context of the first running thread
-    ASM("reti");             // return from interrupt - will return to the first scheduled thread
-}
 
+    ASM("reti"); // return from interrupt - will return to the first scheduled thread
+}
+} // namespace Mark3
+
+using namespace Mark3;
 //---------------------------------------------------------------------------
 /*!
  *  \brief ISR(INT0_vect)
@@ -175,20 +178,4 @@ ISR(INT0_vect)
     Thread_Switch();         // Switch to the next task
     Thread_RestoreContext(); // Pop the context (registers) of the next task
     ASM("reti");             // Return to the next task
-}
-
-//---------------------------------------------------------------------------
-/*!
- *  \brief ISR(TIMER1_COMPA_vect)
- *   Timer interrupt ISR - causes a tick, which may cause a context switch
- */
-//---------------------------------------------------------------------------
-ISR(TIMER1_COMPA_vect)
-{
-#if KERNEL_USE_TIMERS
-    TimerScheduler::Process();
-#endif
-#if KERNEL_USE_QUANTUM
-    Quantum::UpdateTimer();
-#endif
 }

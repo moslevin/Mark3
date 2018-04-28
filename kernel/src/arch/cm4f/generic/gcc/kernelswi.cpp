@@ -23,6 +23,8 @@ See license.txt for more information
 #include "kernelswi.h"
 
 #include "m3_core_cm4.h"
+
+namespace Mark3 {
 //---------------------------------------------------------------------------
 void KernelSWI::Config(void)
 {
@@ -73,3 +75,5 @@ void KernelSWI::Trigger(void)
 {
     SCB->ICSR = SCB_ICSR_PENDSVSET_Msk;
 }
+
+} // namespace Mark3

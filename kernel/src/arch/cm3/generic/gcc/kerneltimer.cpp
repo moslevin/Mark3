@@ -26,22 +26,26 @@ See license.txt for more information
 #include "ksemaphore.h"
 #include "thread.h"
 
+namespace {
 //---------------------------------------------------------------------------
 // Static objects implementing the timer thread and its synchronization objects
 #if KERNEL_TIMERS_THREADED
-static Thread s_clTimerThread;
-static K_WORD s_clTimerThreadStack[PORT_KERNEL_TIMERS_THREAD_STACK];
-static Semaphore s_clTimerSemaphore;
+Thread s_clTimerThread;
+K_WORD s_clTimerThreadStack[PORT_KERNEL_TIMERS_THREAD_STACK];
+Semaphore s_clTimerSemaphore;
 #endif
+
+} // anonymous namespace
+
+using namespace Mark3;
 
 //---------------------------------------------------------------------------
 extern "C" {
-void SysTick_Handler(void);
-}
-
-//---------------------------------------------------------------------------
 void SysTick_Handler(void)
 {
+    if (!Kernel::IsStarted()) {
+        return;
+    }
 #if KERNEL_TIMERS_THREADED
     KernelTimer::ClearExpiry();
     s_clTimerSemaphore.Post();
@@ -57,6 +61,9 @@ void SysTick_Handler(void)
     // Clear the systick interrupt pending bit.
     SCB->ICSR = SCB_ICSR_PENDSTCLR_Msk;
 }
+}
+
+namespace Mark3 {
 
 //---------------------------------------------------------------------------
 #if KERNEL_TIMERS_THREADED
@@ -94,11 +101,11 @@ void KernelTimer::Config(void)
 void KernelTimer::Start(void)
 {
     // Barely higher priority than the SVC and PendSV interrupts.
-    uint8_t u8Priority = (uint8_t)((1 << __NVIC_PRIO_BITS) - 2);
+    uint8_t u8Priority = static_cast<uint8_t>((1 << __NVIC_PRIO_BITS) - 2);
 
-    M3_SysTick_Config(PORT_TIMER_FREQ); // 1KHz fixed clock...
-    M3_NVIC_SetPriority(M3_SYSTICK_IRQn, u8Priority);
-    M3_NVIC_EnableIRQ(M3_SYSTICK_IRQn);
+    SysTick_Config(PORT_TIMER_FREQ); // 1KHz fixed clock...
+    NVIC_SetPriority(SysTick_IRQn, u8Priority);
+    NVIC_EnableIRQ(SysTick_IRQn);
 }
 
 //---------------------------------------------------------------------------
@@ -161,3 +168,4 @@ void KernelTimer::RI(bool bEnable_)
 }
 
 //---------------------------------------------------------------------------
+} // namespace Mark3

@@ -17,9 +17,7 @@ See license.txt for more information
 
     \brief  MSP430 Multithreading support.
  */
-
-#ifndef __THREADPORT_H_
-#define __THREADPORT_H_
+#pragma once
 
 #include "kerneltypes.h"
 #include "thread.h"
@@ -28,10 +26,6 @@ See license.txt for more information
 #include <in430.h>
 
 // clang-format off
-//---------------------------------------------------------------------------
-extern volatile uint8_t g_u8CSCount;
-extern volatile uint16_t g_u16SR;
-
 //---------------------------------------------------------------------------
 //! ASM Macro - simplify the use of ASM directive in C
 #define ASM(x)      asm volatile(x);
@@ -89,31 +83,36 @@ extern volatile uint16_t g_u16SR;
 do { \
     uint16_t u16IntState = __get_interrupt_state(); \
     __dint(); \
-    if (0 == g_u8CSCount) \
+    if (0 == Mark3::g_u8CSCount) \
     { \
-        g_u16SR = u16IntState; \
+        Mark3::g_u16SR = u16IntState; \
     } \
-    g_u8CSCount++; \
+    Mark3::g_u8CSCount++; \
 } while(0);
 
 //------------------------------------------------------------------------
 //! Exit critical section (restore GIE bit in
 #define CS_EXIT() \
 do { \
-    if (1 == g_u8CSCount) \
+    if (1 == Mark3::g_u8CSCount) \
     { \
-        if((g_u16SR & 0x0008) == 0x0008) \
+        if((Mark3::g_u16SR & 0x0008) == 0x0008) \
         { \
             __nop(); \
             __eint(); \
         } \
     } \
-    g_u8CSCount--; \
+    Mark3::g_u8CSCount--; \
 } while(0);
 
 //------------------------------------------------------------------------
 #define ENABLE_INTS()   __eint();
 #define DISABLE_INTS()  __dint();
+
+namespace Mark3 {
+//---------------------------------------------------------------------------
+extern volatile uint8_t g_u8CSCount;
+extern volatile uint16_t g_u16SR;
 
 //------------------------------------------------------------------------
 class Thread;
@@ -146,4 +145,4 @@ private:
     static void InitStack(Thread *pstThread_);
 };
 
-#endif //__ThreadPORT_H_
+} // namespace Mark3

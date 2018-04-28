@@ -34,6 +34,8 @@ See license.txt for more information
 #include <msp430.h>
 #include <in430.h>
 
+namespace Mark3 {
+
 //---------------------------------------------------------------------------
 volatile uint8_t  g_u8CSCount;
 volatile uint16_t g_u16SR;
@@ -145,11 +147,14 @@ void ThreadPort::StartThreads()
     ASM("reti");             // return from interrupt - will return to the first scheduled thread
 }
 
+} // namespace Mark3
+
 //---------------------------------------------------------------------------
 /*!
  * Kernel Context-switch SWI
  */
 //---------------------------------------------------------------------------
+using namespace Mark3;
 void __attribute__((interrupt(PORT1_VECTOR), naked)) isr_KernelSWI(void)
 {
     Thread_SaveContext();    // Push the context (registers) of the current task
