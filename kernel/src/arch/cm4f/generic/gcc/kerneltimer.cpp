@@ -21,7 +21,7 @@ See license.txt for more information
 #include "kerneltypes.h"
 #include "kerneltimer.h"
 #include "threadport.h"
-
+#include "kernel.h"
 #include "m3_core_cm4.h"
 
 #include "ksemaphore.h"
@@ -104,9 +104,9 @@ void KernelTimer::Start(void)
     // Barely higher priority than the SVC and PendSV interrupts.
     uint8_t u8Priority = static_cast<uint8_t>((1 << __NVIC_PRIO_BITS) - 2);
 
-    SysTick_Config(PORT_TIMER_FREQ); // 1KHz fixed clock...
-    NVIC_SetPriority(SysTick_IRQn, u8Priority);
-    NVIC_EnableIRQ(SysTick_IRQn);
+    M3_SysTick_Config(PORT_TIMER_FREQ); // 1KHz fixed clock...
+    M3_NVIC_SetPriority(M3_SYSTICK_IRQn, u8Priority);
+    M3_NVIC_EnableIRQ(M3_SYSTICK_IRQn);
 }
 
 //---------------------------------------------------------------------------

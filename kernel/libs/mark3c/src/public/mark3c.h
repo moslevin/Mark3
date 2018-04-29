@@ -18,13 +18,13 @@ See license.txt for more information
     \brief  Header providing C-language API bindings for the Mark3 kernel.
 */
 
+#pragma once
+
 #include "mark3cfg.h"
 #include "fake_types.h"
 
 #include <stdint.h>
 #include <stdbool.h>
-
-#pragma once
 
 #if defined(__cplusplus)
 extern "C" {

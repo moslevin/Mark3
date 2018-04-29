@@ -8,7 +8,7 @@ cpu       = "atmega1284p"
 toolchain = "gcc"
 stage	= "./out/avr_atmega1284p_gcc/kernel/"
 # List of unit tests to run
-test_list = ["ut_logic", "ut_thread", "ut_semaphore", "ut_mutex", "ut_eventflag", "ut_message", "ut_mailbox", "ut_notify", "ut_timers", "ut_sanity" ]
+test_list = ["ut_logic", "ut_thread", "ut_semaphore", "ut_mutex", "ut_eventflag", "ut_message", "ut_mailbox", "ut_notify", "ut_timers", "ut_sanity", "ut_condvar", "ut_readerwriter" ]
 
 # Run each test in succession
 for test in test_list:

@@ -170,7 +170,7 @@ uint32_t KernelTimer::TimeToExpiry(void)
 uint32_t KernelTimer::GetOvertime(void)
 {
 #if KERNEL_TIMERS_TICKLESS
-    (uint32_t) KernelTimer::Read();
+    return (uint32_t) KernelTimer::Read();
 #else
     return 0;
 #endif
