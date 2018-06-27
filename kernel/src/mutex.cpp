@@ -109,7 +109,7 @@ uint8_t Mutex::WakeNext()
 }
 
 //---------------------------------------------------------------------------
-void Mutex::Init()
+void Mutex::Init(bool bRecursive_)
 {
     // Cannot re-init a mutex which has threads blocked on it
 #if KERNEL_EXTRA_CHECKS
@@ -121,7 +121,7 @@ void Mutex::Init()
     m_u8MaxPri  = 0;    // Set the maximum priority inheritence state
     m_pclOwner  = NULL; // Clear the mutex owner
     m_u8Recurse = 0;    // Reset recurse count
-
+    m_bRecursive = bRecursive_;
 #if KERNEL_EXTRA_CHECKS
     SetInitialized();
 #endif
@@ -169,7 +169,7 @@ void Mutex::Claim_i(void)
 
     // If the mutex is already claimed, check to see if this is the owner thread,
     // since we allow the mutex to be claimed recursively.
-    if (g_pclCurrent == m_pclOwner) {
+    if (m_bRecursive && (g_pclCurrent == m_pclOwner)) {
         // Ensure that we haven't exceeded the maximum recursive-lock count
         KERNEL_ASSERT((m_u8Recurse < 255));
         m_u8Recurse++;
@@ -264,7 +264,7 @@ void Mutex::Release()
 
     // If the owner had claimed the lock multiple times, decrease the lock
     // count and return immediately.
-    if (m_u8Recurse != 0u) {
+    if (m_bRecursive && (m_u8Recurse != 0u)) {
         m_u8Recurse--;
         Scheduler::SetScheduler(true);
         return;

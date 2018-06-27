@@ -16,6 +16,7 @@ set(LIB_SOURCES
     kernelaware.cpp
     ksemaphore.cpp
     ll.cpp
+    lockguard.cpp
     mailbox.cpp
     message.cpp
     mutex.cpp

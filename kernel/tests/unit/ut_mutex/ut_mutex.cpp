@@ -19,6 +19,7 @@ See license.txt for more information
 #include "../ut_platform.h"
 #include "thread.h"
 #include "mutex.h"
+#include "lockguard.h"
 
 namespace {
 using namespace Mark3;
@@ -166,8 +167,81 @@ TEST(ut_priority_mutex)
 TEST_END
 
 //===========================================================================
+TEST(ut_raii)
+{
+    Mutex clMutex;
+    clMutex.Init();
+
+    auto lRAIIThread = [](void* mutex_) {
+        u8Token = 0;
+        auto* pclMutex = static_cast<Mutex*>(mutex_);
+        {
+            LockGuard lockGuard{pclMutex};
+            Thread::Sleep(100);
+            u8Token = 1;
+        }
+        Scheduler::GetCurrentThread()->Exit();
+    };
+
+    Scheduler::GetCurrentThread()->SetPriority(3);
+    clMutexThread.Init(aucTestStack, sizeof(aucTestStack), 2, lRAIIThread, &clMutex);
+    clMutexThread.Start();
+
+    Thread::Sleep(50);
+    EXPECT_EQUALS(u8Token, 0);
+    {
+        LockGuard lockGuard{&clMutex};
+        EXPECT_EQUALS(u8Token, 1);
+    }
+}
+TEST_END
+
+//===========================================================================
+TEST(ut_raii_timeout)
+{
+    u8Token = 0;
+    auto lRAIIThread = [](void* mutex_) {
+        auto* pclMutex = static_cast<Mutex*>(mutex_);
+        {
+            LockGuard lockGuard{pclMutex, 50};
+            if (lockGuard.isAcquired()) {
+                u8Token = 1;
+            } else {
+                u8Token = 2;
+            }
+            Thread::Sleep(100);
+        }
+        Scheduler::GetCurrentThread()->Exit();
+    };
+
+    Mutex clMutex;
+    clMutex.Init();
+
+    Scheduler::GetCurrentThread()->SetPriority(3);
+    clMutexThread.Init(aucTestStack, sizeof(aucTestStack), 2, lRAIIThread, &clMutex);
+    clTestThread2.Init(aucTestStack2, sizeof(aucTestStack2), 2, lRAIIThread, &clMutex);
+
+    EXPECT_EQUALS(u8Token, 0);
+    clMutexThread.Start();
+
+    Thread::Sleep(30);
+    EXPECT_EQUALS(u8Token, 1);
+    clTestThread2.Start();
+
+    Thread::Sleep(30);
+    EXPECT_EQUALS(u8Token, 1);
+
+    Thread::Sleep(50);
+    EXPECT_EQUALS(u8Token, 2);
+
+    Thread::Sleep(100);
+}
+TEST_END
+
+//===========================================================================
 // Test Whitelist Goes Here
 //===========================================================================
 TEST_CASE_START
-TEST_CASE(ut_typical_mutex), TEST_CASE(ut_timed_mutex), TEST_CASE(ut_priority_mutex), TEST_CASE_END
+TEST_CASE(ut_typical_mutex), TEST_CASE(ut_timed_mutex), TEST_CASE(ut_priority_mutex), TEST_CASE(ut_raii),
+TEST_CASE(ut_raii_timeout), TEST_CASE_END
 } //namespace Mark3
