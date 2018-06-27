@@ -27,9 +27,9 @@ volatile uint8_t u8TestVal;
 Mutex clMutex;
 
 //---------------------------------------------------------------------------
-#define TEST_STACK1_SIZE (220)
-#define TEST_STACK2_SIZE (220)
-#define TEST_STACK3_SIZE (220)
+#define TEST_STACK1_SIZE (PORT_KERNEL_DEFAULT_STACK_SIZE)
+#define TEST_STACK2_SIZE (PORT_KERNEL_DEFAULT_STACK_SIZE)
+#define TEST_STACK3_SIZE (PORT_KERNEL_DEFAULT_STACK_SIZE)
 
 MessageQueue clMsgQ1;
 MessageQueue clMsgQ2;

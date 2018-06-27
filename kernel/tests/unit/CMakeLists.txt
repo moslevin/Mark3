@@ -19,10 +19,18 @@ target_include_directories(ut_base
 target_link_libraries(ut_base
     mark3
     memutil
-    atmegauart
+    uart
 )
+
+if("${mark3_arch}" STREQUAL "avr")
+    target_link_libraries(ut_base
+        atmegauart
+     )
+endif()
 
 subdirlist(SUBDIRS ${CMAKE_CURRENT_LIST_DIR})
 foreach(subdir ${SUBDIRS})
-  add_subdirectory(${subdir})
+  if(NOT ${subdir} MATCHES ".git")
+    add_subdirectory(${subdir})
+  endif()
 endforeach()

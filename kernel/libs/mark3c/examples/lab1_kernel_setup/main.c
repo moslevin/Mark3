@@ -50,7 +50,7 @@ of static threads.
 // This block declares the thread data for the main application thread.  It
 // defines a thread object, stack (in word-array form), and the entry-point
 // function used by the application thread.
-#define APP_STACK_SIZE (320 / sizeof(K_WORD))
+#define APP_STACK_SIZE (PORT_KERNEL_DEFAULT_STACK_SIZE)
 DECLARE_THREAD(hAppThread);
 static K_WORD awAppStack[APP_STACK_SIZE];
 static void AppMain(void* unused_);
@@ -59,7 +59,7 @@ static void AppMain(void* unused_);
 // This block declares the thread data for the idle thread.  It defines a
 // thread object, stack (in word-array form), and the entry-point function
 // used by the idle thread.
-#define IDLE_STACK_SIZE (320 / sizeof(K_WORD))
+#define IDLE_STACK_SIZE (PORT_KERNEL_DEFAULT_STACK_SIZE)
 DECLARE_THREAD(hIdleThread);
 static K_WORD awIdleStack[IDLE_STACK_SIZE];
 static void IdleMain(void* unused_);

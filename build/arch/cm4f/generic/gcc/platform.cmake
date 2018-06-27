@@ -57,8 +57,7 @@ set(CM4_LN_FLAGS "\
     -Wl,--gc-sections \
     -mthumb \
     -mcpu=cortex-m4 \
-    -mfloat-abi=hard \
-    -mfpu=fpv4-sp-d16
+    -mfloat-abi=soft \
     ")
     
 set(CM4_LN_DBG_FLAGS "\
@@ -69,8 +68,7 @@ set(CM4_LN_DBG_FLAGS "\
     -Wl,--end-group \
     -mthumb \
     -mcpu=cortex-m4 \
-    -mfloat-abi=hard \
-    -mfpu=fpv4-sp-d16
+    -mfloat-abi=soft \
     ")
     
 set(CM4_OBJCOPY_FLAGS

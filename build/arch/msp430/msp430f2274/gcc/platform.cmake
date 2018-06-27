@@ -8,7 +8,7 @@ find_program(MSP_OBJDUMP msp430-elf-objdump)
 set(MSP_CC_FLAGS "\
     -funsigned-char \
     -funsigned-bitfields \
-    -O0 \
+    -Os \
     -g3 \
     -fpack-struct \
     -fshort-enums \
@@ -24,7 +24,7 @@ set(MSP_CXX_FLAGS "\
     -funsigned-bitfields \
     -fno-exceptions \
     -fno-rtti \
-    -O0 \
+    -Os \
     -g3 \
     -std=c++11 \
     -fpack-struct \
@@ -37,23 +37,21 @@ set(MSP_CXX_FLAGS "\
     ")
 
 set(MSP_LN_FLAGS "\
-    --specs=nosys.specs \
-    --disable-newlib-supplied-syscalls \
     -Wl,--start-group \
     -Wl,-lm \
     -Wl,--end-group \
     -Wl,--gc-sections \
-    -mmcu=msp430f2274
+    -mmcu=msp430f2274 \
+    -L/home/moslevin/ti/gcc/include/ \
     ")
 
 set(MSP_LN_DBG_FLAGS "\
-    --specs=nosys.specs \
-    --disable-newlib-supplied-syscalls \
     -Wl,--start-group \
     -Wl,-lm \
     -Wl,--end-group \
     -Wl,--section-start=.logger=0x1000000 \
-    -mmcu=msp430f2274
+    -mmcu=msp430f2274 \
+    -L/home/moslevin/ti/gcc/include/ \
     ")
 
 set(MSP_OBJCOPY_FLAGS

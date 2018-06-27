@@ -44,7 +44,7 @@ a thread object and stack for Idle functionality.
 // This block declares the thread data for the main application thread.  It
 // defines a thread object, stack (in word-array form), and the entry-point
 // function used by the application thread.
-#define APP_STACK_SIZE (320 / sizeof(K_WORD))
+#define APP_STACK_SIZE (PORT_KERNEL_DEFAULT_STACK_SIZE)
 DECLARE_THREAD(hAppThread);
 static K_WORD awAppStack[APP_STACK_SIZE];
 static void AppMain(void* unused_);

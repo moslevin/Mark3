@@ -1,6 +1,4 @@
 add_subdirectory(examples)
 add_subdirectory(libs)
 add_subdirectory(src)
-if("${mark3_arch}" STREQUAL "avr")
-    add_subdirectory(tests)
-endif("${mark3_arch}" STREQUAL "avr")    
+add_subdirectory(tests)

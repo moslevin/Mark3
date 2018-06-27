@@ -15,12 +15,13 @@ See license.txt for more information
 //---------------------------------------------------------------------------
 
 #include "mark3.h"
-#include "drvATMegaUART.h"
 #include "unit_test.h"
 #include "ut_platform.h"
 #include "memutil.h"
+#include "drvUART.h"
 
 #if defined(AVR)
+#include "drvATMegaUART.h"
 #include <avr/io.h>
 #include <avr/sleep.h>
 #endif
@@ -40,12 +41,15 @@ namespace Mark3
 Thread AppThread; //!< Main "application" thread
 K_WORD aucAppStack[(PORT_KERNEL_DEFAULT_STACK_SIZE * 3) / 2];
 
+#if defined(AVR)
 ATMegaUART clUART; //!< UART device driver object
+#endif
+
 
 //---------------------------------------------------------------------------
 #if !KERNEL_USE_IDLE_FUNC
 Thread  IdleThread; //!< Idle thread - runs when app can't
-uint8_t aucIdleStack[PORT_KERNEL_DEFAULT_STACK_SIZE];
+K_WORD aucIdleStack[PORT_KERNEL_DEFAULT_STACK_SIZE];
 #endif
 //---------------------------------------------------------------------------
 uint8_t aucTxBuffer[UART_SIZE_TX];
@@ -97,7 +101,11 @@ void AppEntry(void* /*unused*/)
 }
 
 //---------------------------------------------------------------------------
+#if KERNEL_USE_IDLE_FUNC
 void IdleEntry(void)
+#else
+void IdleEntry(void* args)
+#endif
 {
 #if !KERNEL_USE_IDLE_FUNC
     while (1) {
@@ -122,9 +130,10 @@ void IdleEntry(void)
 //---------------------------------------------------------------------------
 void PrintString(const char* szStr_)
 {
+    auto* pclDriver = DriverList::FindByPath("/dev/tty");
     auto* szTemp = szStr_;
     while (*szTemp) {
-        while (1 != clUART.Write(1, (uint8_t*)szTemp)) { /* Do nothing */
+        while (1 != pclDriver->Write(1, (uint8_t*)szTemp)) { /* Do nothing */
         }
         szTemp++;
     }
@@ -179,16 +188,18 @@ int main(void)
     IdleThread.Init(aucIdleStack,             //!< Pointer to the stack
                     sizeof(aucIdleStack),          //!< Size of the stack
                     0,                        //!< Thread priority
-                    (ThreadEntry_t)IdleEntry, //!< Entry function
+                    (ThreadEntryFunc)IdleEntry, //!< Entry function
                     NULL);                    //!< Entry function argument
 
     IdleThread.Start();
 #endif
 
+#if defined(AVR)
     clUART.SetName("/dev/tty"); //!< Add the serial driver
     clUART.Init();
 
     DriverList::Add(&clUART);
+#endif
 
     Kernel::Start(); //!< Start the kernel!
     return 0;

@@ -26,7 +26,7 @@ using namespace Mark3;
 //===========================================================================
 Notify           clNotify;
 Thread           clThread;
-K_WORD           awStack[192];
+K_WORD           awStack[PORT_KERNEL_DEFAULT_STACK_SIZE];
 volatile uint8_t u8Count = 0;
 }
 
@@ -46,7 +46,7 @@ TEST(ut_notify)
         }
     };
 
-    clThread.Init(awStack, 192, 2, lNotifyFunc, NULL);
+    clThread.Init(awStack, PORT_KERNEL_DEFAULT_STACK_SIZE, 2, lNotifyFunc, NULL);
     clThread.Start();
     for (int i = 0; i < 10; i++) {
         clNotify.Wait(0);

@@ -29,11 +29,9 @@ namespace {
 volatile uint8_t u8TestVal;
 
 //---------------------------------------------------------------------------
-#define TEST_STACK1_SIZE (384)
-#define TEST_STACK2_SIZE (32)
-#define TEST_STACK3_SIZE (32)
-#define MAIN_STACK_SIZE (384)
-#define IDLE_STACK_SIZE (384)
+#define TEST_STACK1_SIZE (PORT_KERNEL_DEFAULT_STACK_SIZE * 2)
+#define MAIN_STACK_SIZE (PORT_KERNEL_DEFAULT_STACK_SIZE * 2)
+#define IDLE_STACK_SIZE (PORT_KERNEL_DEFAULT_STACK_SIZE * 2)
 
 //---------------------------------------------------------------------------
 Semaphore clSemaphore;

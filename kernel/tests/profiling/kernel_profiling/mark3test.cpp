@@ -3,7 +3,6 @@
 #include "kernel.h"
 #include "thread.h"
 #include "driver.h"
-#include "drvATMegaUART.h"
 #include "profile.h"
 #include "kernelprofile.h"
 #include "ksemaphore.h"
@@ -11,9 +10,12 @@
 #include "message.h"
 #include "timerlist.h"
 
+#if defined(AVR)
+#include "drvATMegaUART.h"
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <avr/sleep.h>
+#endif
 
 extern "C" void __cxa_pure_virtual()
 {
@@ -68,15 +70,15 @@ private:
 volatile uint8_t u8TestVal;
 
 //---------------------------------------------------------------------------
+#if defined(AVR)
 ATMegaUART clUART;
 uint8_t    aucTxBuf[32];
+#endif
 
 //---------------------------------------------------------------------------
-#define TEST_STACK1_SIZE (384)
-#define TEST_STACK2_SIZE (32)
-#define TEST_STACK3_SIZE (32)
-#define MAIN_STACK_SIZE (384)
-#define IDLE_STACK_SIZE (384)
+#define TEST_STACK1_SIZE (PORT_KERNEL_DEFAULT_STACK_SIZE * 2)
+#define MAIN_STACK_SIZE (PORT_KERNEL_DEFAULT_STACK_SIZE * 2)
+#define IDLE_STACK_SIZE (PORT_KERNEL_DEFAULT_STACK_SIZE * 2)
 
 //---------------------------------------------------------------------------
 ProfileTimer clProfileOverhead;
@@ -433,10 +435,12 @@ int main(void)
     clMainThread.Start();
     clIdleThread.Start();
 
+#if defined(AVR)
     clUART.SetName("/dev/tty");
     clUART.Init();
 
     DriverList::Add(&clUART);
+#endif
 
     Kernel::Start();
 }

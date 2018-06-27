@@ -40,7 +40,7 @@ IPC even more flexibility.
 // This block declares the thread data for one main application thread.  It
 // defines a thread object, stack (in word-array form), and the entry-point
 // function used by the application thread.
-#define APP1_STACK_SIZE (320 / sizeof(K_WORD))
+#define APP1_STACK_SIZE (PORT_KERNEL_DEFAULT_STACK_SIZE)
 DECLARE_THREAD(hApp1Thread);
 static K_WORD awApp1Stack[APP1_STACK_SIZE];
 static void App1Main(void* unused_);
@@ -49,7 +49,7 @@ static void App1Main(void* unused_);
 // This block declares the thread data for one main application thread.  It
 // defines a thread object, stack (in word-array form), and the entry-point
 // function used by the application thread.
-#define APP2_STACK_SIZE (320 / sizeof(K_WORD))
+#define APP2_STACK_SIZE (PORT_KERNEL_DEFAULT_STACK_SIZE)
 DECLARE_THREAD(hApp2Thread);
 static K_WORD awApp2Stack[APP2_STACK_SIZE];
 static void App2Main(void* unused_);
