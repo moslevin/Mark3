@@ -25,9 +25,6 @@ Takeaway:
   in situations where even a semaphore would be a heavier-weigth option.
 
 ===========================================================================*/
-#if !KERNEL_USE_IDLE_FUNC
-#error "This demo requires KERNEL_USE_IDLE_FUNC"
-#endif
 
 //---------------------------------------------------------------------------
 #define APP_STACK_SIZE (256 / sizeof(K_WORD))

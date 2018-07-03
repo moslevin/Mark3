@@ -15,20 +15,11 @@ See license.txt for more information
 //---------------------------------------------------------------------------
 
 #include "mark3.h"
+#include "driver.h"
 #include "unit_test.h"
 #include "ut_platform.h"
 #include "memutil.h"
-#include "drvUART.h"
-
-#if defined(AVR)
-#include "drvATMegaUART.h"
-#include <avr/io.h>
-#include <avr/sleep.h>
-#endif
-
-//---------------------------------------------------------------------------
-#define UART_SIZE_RX (12) //!< UART RX Buffer size
-#define UART_SIZE_TX (12) //!< UART TX Buffer size
+#include "ut_support.h"
 
 extern "C" {
 void __cxa_pure_virtual(void)
@@ -41,19 +32,12 @@ namespace Mark3
 Thread AppThread; //!< Main "application" thread
 K_WORD aucAppStack[(PORT_KERNEL_DEFAULT_STACK_SIZE * 3) / 2];
 
-#if defined(AVR)
-ATMegaUART clUART; //!< UART device driver object
-#endif
-
 
 //---------------------------------------------------------------------------
 #if !KERNEL_USE_IDLE_FUNC
 Thread  IdleThread; //!< Idle thread - runs when app can't
 K_WORD aucIdleStack[PORT_KERNEL_DEFAULT_STACK_SIZE];
 #endif
-//---------------------------------------------------------------------------
-uint8_t aucTxBuffer[UART_SIZE_TX];
-uint8_t aucRxBuffer[UART_SIZE_RX];
 
 using FuncPtr = void (*)(void);
 
@@ -80,6 +64,8 @@ void run_tests()
     PrintString("--DONE--\n");
     Thread::Sleep(100);
 
+    UnitTestSupport::OnExit(0);
+
     FuncPtr pfReset = 0;
     pfReset();
 }
@@ -88,10 +74,7 @@ void run_tests()
 void AppEntry(void* /*unused*/)
 {
     {
-        auto* my_uart = static_cast<UartDriver*>(DriverList::FindByPath("/dev/tty"));
-        my_uart->SetBuffers(aucRxBuffer, UART_SIZE_RX, aucTxBuffer, UART_SIZE_TX);
-        my_uart->Open();
-
+        UnitTestSupport::OnStart();
         init_tests();
     }
 
@@ -102,30 +85,18 @@ void AppEntry(void* /*unused*/)
 
 //---------------------------------------------------------------------------
 #if KERNEL_USE_IDLE_FUNC
-void IdleEntry(void)
+void IdleEntry()
+{
+     UnitTestSupport::OnIdle();
+}
 #else
 void IdleEntry(void* args)
-#endif
 {
-#if !KERNEL_USE_IDLE_FUNC
     while (1) {
-#endif
-
-#if defined(AVR)
-        // LPM code;
-        set_sleep_mode(SLEEP_MODE_IDLE);
-        cli();
-        sleep_enable();
-        sei();
-        sleep_cpu();
-        sleep_disable();
-        sei();
-#endif
-
-#if !KERNEL_USE_IDLE_FUNC
+        UnitTestSupport::OnIdle();
     }
-#endif
 }
+#endif
 
 //---------------------------------------------------------------------------
 void PrintString(const char* szStr_)
@@ -182,9 +153,7 @@ int main(void)
 
     AppThread.Start(); //!< Schedule the threads
 
-#if KERNEL_USE_IDLE_FUNC
-    Kernel::SetIdleFunc(IdleEntry);
-#else
+#if !KERNEL_USE_IDLE_FUNC
     IdleThread.Init(aucIdleStack,             //!< Pointer to the stack
                     sizeof(aucIdleStack),          //!< Size of the stack
                     0,                        //!< Thread priority
@@ -192,14 +161,11 @@ int main(void)
                     NULL);                    //!< Entry function argument
 
     IdleThread.Start();
+#else
+    Kernel::SetIdleFunc(IdleEntry);
 #endif
 
-#if defined(AVR)
-    clUART.SetName("/dev/tty"); //!< Add the serial driver
-    clUART.Init();
-
-    DriverList::Add(&clUART);
-#endif
+    UnitTestSupport::OnInit();
 
     Kernel::Start(); //!< Start the kernel!
     return 0;

@@ -165,7 +165,7 @@ TEST_END
 volatile uint32_t u32Delta = 0;
 
 TEST(ut_timer_sanity_precision)
-{    
+{
     s_clMessagePool.Init();
     for (int i = 0; i < MESSAGE_POOL_SIZE; i++) {
         s_clMessages[i].Init();

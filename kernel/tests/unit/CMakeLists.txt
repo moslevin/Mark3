@@ -17,16 +17,8 @@ target_include_directories(ut_base
 )
 
 target_link_libraries(ut_base
-    mark3
-    memutil
-    uart
+    ut_support
 )
-
-if("${mark3_arch}" STREQUAL "avr")
-    target_link_libraries(ut_base
-        atmegauart
-     )
-endif()
 
 subdirlist(SUBDIRS ${CMAKE_CURRENT_LIST_DIR})
 foreach(subdir ${SUBDIRS})

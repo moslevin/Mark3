@@ -13,11 +13,6 @@
 #include "../ut_platform.h"
 #include "kernelaware.h"
 
-//---------------------------------------------------------------------------
-#include <avr/io.h>
-#include <avr/interrupt.h>
-#include <avr/sleep.h>
-
 namespace {
 using namespace Mark3;
 //---------------------------------------------------------------------------

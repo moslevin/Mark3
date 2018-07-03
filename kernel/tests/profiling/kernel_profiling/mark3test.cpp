@@ -9,6 +9,7 @@
 #include "mutex.h"
 #include "message.h"
 #include "timerlist.h"
+#include "ut_support.h"
 
 #if defined(AVR)
 #include "drvATMegaUART.h"
@@ -70,17 +71,6 @@ private:
 volatile uint8_t u8TestVal;
 
 //---------------------------------------------------------------------------
-#if defined(AVR)
-ATMegaUART clUART;
-uint8_t    aucTxBuf[32];
-#endif
-
-//---------------------------------------------------------------------------
-#define TEST_STACK1_SIZE (PORT_KERNEL_DEFAULT_STACK_SIZE * 2)
-#define MAIN_STACK_SIZE (PORT_KERNEL_DEFAULT_STACK_SIZE * 2)
-#define IDLE_STACK_SIZE (PORT_KERNEL_DEFAULT_STACK_SIZE * 2)
-
-//---------------------------------------------------------------------------
 ProfileTimer clProfileOverhead;
 
 ProfileTimer clSemInitTimer;
@@ -110,24 +100,14 @@ Thread clIdleThread;
 Thread clTestThread1;
 
 //---------------------------------------------------------------------------
-uint8_t aucMainStack[MAIN_STACK_SIZE];
-uint8_t awIdleStack[IDLE_STACK_SIZE];
-uint8_t awTestStack1[TEST_STACK1_SIZE];
+K_WORD awMainStack[PORT_KERNEL_DEFAULT_STACK_SIZE];
+K_WORD awIdleStack[PORT_KERNEL_DEFAULT_STACK_SIZE];
+K_WORD awTestStack1[PORT_KERNEL_DEFAULT_STACK_SIZE];
 
 //---------------------------------------------------------------------------
 void IdleMain(void* unused)
 {
     while (1) {
-#if 1
-        // LPM code;
-        set_sleep_mode(SLEEP_MODE_IDLE);
-        cli();
-        sleep_enable();
-        sei();
-        sleep_cpu();
-        sleep_disable();
-        sei();
-#endif
     }
 }
 
@@ -198,10 +178,11 @@ void ProfileOverhead()
 }
 
 //---------------------------------------------------------------------------
-void Semaphore_Flyback(Semaphore* pclSem_)
+void Semaphore_Flyback(void* pvArg_)
 {
+    auto* pclSem = static_cast<Semaphore*>(pvArg_);
     clSemaphoreFlyback.Start();
-    pclSem_->Pend();
+    pclSem->Pend();
     clSemaphoreFlyback.Stop();
 
     Scheduler::GetCurrentThread()->Exit();
@@ -214,27 +195,27 @@ void Semaphore_Profiling()
 
     uint16_t i;
 
-    for (i = 0; i < 100; i++) {
-        clSemInitTimer.Start();
+    clSemInitTimer.Start();
+    for (i = 0; i < 1000; i++) {
         clSem.Init(0, 1000);
-        clSemInitTimer.Stop();
     }
+    clSemInitTimer.Stop();
 
-    for (i = 0; i < 100; i++) {
-        clSemPostTimer.Start();
+    clSemPostTimer.Start();
+    for (i = 0; i < 1000; i++) {
         clSem.Post();
-        clSemPostTimer.Stop();
     }
+    clSemPostTimer.Stop();
 
-    for (i = 0; i < 100; i++) {
-        clSemPendTimer.Start();
+    clSemPendTimer.Start();
+    for (i = 0; i < 1000; i++) {
         clSem.Pend();
-        clSemPendTimer.Stop();
     }
+    clSemPendTimer.Stop();
 
     clSem.Init(0, 1);
-    for (i = 0; i < 100; i++) {
-        clTestThread1.Init(awTestStack1, TEST_STACK1_SIZE, 2, (ThreadEntryFunc)Semaphore_Flyback, (void*)&clSem);
+    for (i = 0; i < 1000; i++) {
+        clTestThread1.Init(awTestStack1, sizeof(awTestStack1), 2, Semaphore_Flyback, (void*)&clSem);
         clTestThread1.Start();
 
         clSem.Post();
@@ -249,21 +230,18 @@ void Mutex_Profiling()
     uint16_t i;
     Mutex    clMutex;
 
-    for (i = 0; i < 10; i++) {
-        clMutexInitTimer.Start();
+    clMutexInitTimer.Start();
+    for (i = 0; i < 1000; i++) {
         clMutex.Init();
-        clMutexInitTimer.Stop();
     }
+    clMutexInitTimer.Stop();
 
-    for (i = 0; i < 100; i++) {
-        clMutexClaimTimer.Start();
+    clMutexClaimTimer.Start();
+    for (i = 0; i < 1000; i++) {
         clMutex.Claim();
-        clMutexClaimTimer.Stop();
-
-        clMutexReleaseTimer.Start();
         clMutex.Release();
-        clMutexReleaseTimer.Stop();
     }
+    clMutexClaimTimer.Stop();
 }
 
 //---------------------------------------------------------------------------
@@ -289,7 +267,7 @@ void Thread_Profiling()
         // test thread, simulating an "average" system thread.  Create the
         // thread at a higher priority than the current thread.
         clThreadInitTimer.Start();
-        clTestThread1.Init(awTestStack1, TEST_STACK1_SIZE, 2, (ThreadEntryFunc)Thread_ProfilingThread, NULL);
+        clTestThread1.Init(awTestStack1, sizeof(awTestStack1), 2, (ThreadEntryFunc)Thread_ProfilingThread, NULL);
         clThreadInitTimer.Stop();
 
         // Profile the time it takes from calling "start" to the time when the
@@ -305,13 +283,8 @@ void Thread_Profiling()
 
     Scheduler::SetScheduler(0);
     for (i = 0; i < 100; i++) {
-        // Context switch profiling - this is equivalent to what's actually
-        // done within the AVR-implementation.
         clContextSwitchTimer.Start();
         {
-            Thread_SaveContext();
-            g_pclNext = g_pclCurrent;
-            Thread_RestoreContext();
         }
         clContextSwitchTimer.Stop();
     }
@@ -385,17 +358,11 @@ void ProfilePrintResults()
 //---------------------------------------------------------------------------
 void AppMain(void* unused)
 {
-    UartDriver* pclUART = static_cast<UartDriver*>(DriverList::FindByPath("/dev/tty"));
+    UnitTestSupport::OnStart();
+    auto* pclUART = DriverList::FindByPath("/dev/tty");
 
-    ProfileInit();
-
-    pclUART->SetBuffers(NULL, 0, aucTxBuf, 32);
-    pclUART->EnableRx(false);
-    pclUART->SetBaudRate(57600);
-
-    pclUART->Open();
     pclUART->Write(6, (uint8_t*)"START\n");
-
+    ProfileInit();
     for (uint32_t i = 0; i < 100; i++) {
         //---[ API Profiling ]-----------------------------
         Profiler::Start();
@@ -428,19 +395,15 @@ int main(void)
 {
     Kernel::Init();
 
-    clMainThread.Init(aucMainStack, MAIN_STACK_SIZE, 1, AppMain, NULL);
+    clMainThread.Init(awMainStack, sizeof(awMainStack), 1, AppMain, NULL);
 
-    clIdleThread.Init(awIdleStack, IDLE_STACK_SIZE, 0, IdleMain, NULL);
+    clIdleThread.Init(awIdleStack, sizeof(awIdleStack), 0, IdleMain, NULL);
 
     clMainThread.Start();
     clIdleThread.Start();
 
-#if defined(AVR)
-    clUART.SetName("/dev/tty");
-    clUART.Init();
-
-    DriverList::Add(&clUART);
-#endif
+    UnitTestSupport::OnInit();
 
     Kernel::Start();
+    return 0;
 }

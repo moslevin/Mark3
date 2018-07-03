@@ -44,7 +44,7 @@ Thread clIdleThread;
 Thread clTestThread1;
 
 //---------------------------------------------------------------------------
-uint8_t aucMainStack[MAIN_STACK_SIZE];
+uint8_t awMainStack[MAIN_STACK_SIZE];
 uint8_t aucIdleStack[IDLE_STACK_SIZE];
 uint8_t aucTestStack1[TEST_STACK1_SIZE];
 
@@ -273,7 +273,7 @@ int main(void)
 {
     Kernel::Init();
 
-    clMainThread.Init(aucMainStack, MAIN_STACK_SIZE, 1, AppMain, NULL);
+    clMainThread.Init(awMainStack, MAIN_STACK_SIZE, 1, AppMain, NULL);
 
     clIdleThread.Init(aucIdleStack, MAIN_STACK_SIZE, 0, IdleMain, NULL);
 

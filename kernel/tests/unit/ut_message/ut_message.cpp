@@ -87,7 +87,7 @@ void MsgConsumer(void* /*unused_*/)
                 if (1337 == (pclMsg->GetCode())) {
                     u8PassCount++;
                 }
-                if (7331 == reinterpret_cast<uint16_t>(pclMsg->GetData())) {
+                if (7331 == reinterpret_cast<K_ADDR>(pclMsg->GetData())) {
                     u8PassCount++;
                 }
 
@@ -95,7 +95,7 @@ void MsgConsumer(void* /*unused_*/)
                 if (0xA0A0 == (pclMsg->GetCode())) {
                     u8PassCount++;
                 }
-                if (0xC0C0 == reinterpret_cast<uint16_t>(pclMsg->GetData())) {
+                if (0xC0C0 == reinterpret_cast<K_ADDR>(pclMsg->GetData())) {
                     u8PassCount++;
                 }
 
@@ -172,7 +172,7 @@ TEST_END
 
 //===========================================================================
 TEST(ut_message_exhaust)
-{    
+{
     s_clMessagePool.Init();
     for (int i = 0; i < MESSAGE_POOL_SIZE; i++) {
         s_clMessages[i].Init();

@@ -39,6 +39,7 @@ memory footprint for the application, as you can avoid having to declare
 a thread object and stack for Idle functionality.
 
 ===========================================================================*/
+#if KERNEL_USE_IDLE_FUNC
 
 //---------------------------------------------------------------------------
 // This block declares the thread data for the main application thread.  It
@@ -103,3 +104,10 @@ void IdleMain(void)
     // it's worthwhile keeping this function brief, limited to absolutely
     // necessary functionality, and with minimal stack use.
 }
+#else
+#pragma message("This demo requires KERNEL_USE_IDLE_FUNC - compiling as stub")
+int main(void)
+{
+    return 0;
+}
+#endif // KERNEL_USE_IDLE_FUNC

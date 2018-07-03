@@ -26,10 +26,6 @@ Takeaway:
   between threads.
 
 ===========================================================================*/
-#if !KERNEL_USE_IDLE_FUNC
-#error "This demo requires KERNEL_USE_IDLE_FUNC"
-#endif
-
 //---------------------------------------------------------------------------
 #define APP_STACK_SIZE (256 / sizeof(K_WORD))
 DECLARE_THREAD(hApp1Thread);
