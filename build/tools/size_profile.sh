@@ -42,6 +42,16 @@ case ${ARCH} in
         COMPILER_BIN="arm-none-eabi-gcc"
         ARCH_STRING="ARM Cortex-M0"
     ;;
+    "cm3")
+        SIZE_BIN="arm-none-eabi-size"
+        COMPILER_BIN="arm-none-eabi-gcc"
+        ARCH_STRING="ARM Cortex-M3"
+    ;;    
+    "cm4f")
+        SIZE_BIN="arm-none-eabi-size"
+        COMPILER_BIN="arm-none-eabi-gcc"
+        ARCH_STRING="ARM Cortex-M4F"
+    ;;        
     "msp430")
         SIZE_BIN="msp430-size"
         COMPILER_BIN="msp430-gcc"
@@ -311,6 +321,11 @@ for LINE in ${MARK3_DATA}; do
             MODNAME="Reader-writer Locks (Synchronization Object)...."
             SYNCOBJ_SIZE=$(( SYNCOBJ_SIZE+${DEC} ))
             ;;
+        "lockguard.cpp.obj")
+            #Ruler:  ----5---10----5---20----5---30----5---40----5---50----5---60"
+            MODNAME="RAII Locking Support based on Mark3 Mutex class."
+            SYNCOBJ_SIZE=$(( SYNCOBJ_SIZE+${DEC} ))
+            ;;            
          *)
             MODNAME=${MODULE}
             ;;
@@ -331,7 +346,7 @@ TOTAL_SIZE=$(( FEATURE_SIZE+PORT_SIZE+SYNCOBJ_SIZE+KERNEL_SIZE ))
 #Ruler:  ----5---10----5---20----5---30----5---40----5---50----5---60----5---70----5---80"
 
 if [ "${FORMAT}" = "console" ]; then
-    echo    "\n"
+    echo    
     echo    "================================================================="
     echo    "Mark3 Kernel Size Summary"
     echo    "================================================================="

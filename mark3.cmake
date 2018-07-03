@@ -24,6 +24,7 @@ get_property(mark3_ln_flags GLOBAL PROPERTY global_ln_flags)
 get_property(mark3_ln_dbg_flags GLOBAL PROPERTY global_ln_dbg_flags)
 get_property(mark3_objcopy_flags GLOBAL PROPERTY global_objcopy_flags)
 get_property(mark3_objcopy_dbg_flags GLOBAL PROPERTY global_objcopy_dbg_flags)
+get_property(mark3_base_libs GLOBAL PROPERTY global_base_libs)
 
 set(CMAKE_SYSTEM_NAME Generic)
 set(CMAKE_SYSTEM_PROCESSOR ${mark3_arch})
