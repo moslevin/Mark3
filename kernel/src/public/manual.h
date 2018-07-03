@@ -8,7 +8,7 @@
 
 --[Mark3 Realtime Platform]--------------------------------------------------
 
-Copyright (c) 2012 - 2017 Funkenstein Software Consulting, all rights reserved.
+Copyright (c) 2012 - 2018 m0slevin, all rights reserved.
 See license.txt for more information
 ===========================================================================*/
 /*!
@@ -30,7 +30,7 @@ See license.txt for more information
 
     --[Mark3 Realtime Platform]--------------------------------------------------
 
-    Copyright (c) 2012 - 2018 Funkenstein Software Consulting, all rights reserved.
+    Copyright (c) 2012 - 2018 m0slevin, all rights reserved.
     See license for more information
 
     \endverbatim
@@ -72,7 +72,7 @@ See license.txt for more information
 
     \verbatim
 
-    Copyright (c) 2012 - 2017, Funkenstein Software Consulting
+    Copyright (c) 2012 - 2018, m0slevin
     All rights reserved.
 
     Redistribution and use in source and binary forms, with or without
@@ -82,7 +82,7 @@ See license.txt for more information
         - Redistributions in binary form must reproduce the above copyright
           notice, this list of conditions and the following disclaimer in the
           documentation and/or other materials provided with the distribution.
-        - Neither the name of Funkenstein Software Consulting, nor the
+        - Neither the name of m0slevin, nor the
           names of its contributors may be used to endorse or promote products
           derived from this software without specific prior written permission.
         .

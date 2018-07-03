@@ -59,7 +59,7 @@
  */
 
  /**
-  * Modifications by Funkenstein Software Consulting:
+  * Modifications by m0slevin:
   * 1) Rename all APIs to M3_ in order to avoid collisions with user code
   *    linking to Mark3.
   * 2) Remove dependencies on other headers, except stdint.h.
