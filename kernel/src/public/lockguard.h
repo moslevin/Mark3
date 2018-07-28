@@ -21,8 +21,6 @@ See license.txt for more information
 
 #include "mark3.h"
 
-#if KERNEL_USE_MUTEX
-
 namespace Mark3 {
 
 /**
@@ -36,14 +34,11 @@ public:
      */
     LockGuard(Mutex* pclMutex);
 
-#if KERNEL_USE_TIMEOUTS
-
     /**
      * @param pclMutex mutex to lock during construction
      * @param u32TimeoutMs_ timeout (in ms) to wait before bailng
      */
     LockGuard(Mutex* pclMutex, uint32_t u32TimeoutMs_);
-#endif
 
     ~LockGuard();
 
@@ -60,5 +55,3 @@ private:
     Mutex* m_pclMutex;
 };
 } // namespace Mark3
-
-#endif // KERNEL_USE_MUTEX

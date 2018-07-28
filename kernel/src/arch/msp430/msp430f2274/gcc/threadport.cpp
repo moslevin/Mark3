@@ -29,7 +29,6 @@ See license.txt for more information
 #include "timerlist.h"
 #include "quantum.h"
 #include "kernel.h"
-#include "kernelaware.h"
 
 #include <msp430.h>
 #include <in430.h>

@@ -55,7 +55,6 @@ See license.txt for more information
 #include "mark3cfg.h"
 #include "ll.h"
 
-#if KERNEL_USE_PROFILER
 namespace Mark3
 {
 /*!
@@ -133,4 +132,3 @@ private:
     bool     m_bActive;             //!< Wheter or not the timer is active or stopped
 };
 } //namespace Mark3
-#endif // KERNEL_USE_PROFILE

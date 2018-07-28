@@ -11,7 +11,6 @@
 #include "timerlist.h"
 #include "../unit_test.h"
 #include "../ut_platform.h"
-#include "kernelaware.h"
 
 namespace {
 using namespace Mark3;

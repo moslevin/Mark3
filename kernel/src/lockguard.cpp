@@ -27,13 +27,11 @@ LockGuard::LockGuard(Mutex *pclMutex_)
     m_pclMutex->Claim();
 }
 
-#if KERNEL_USE_TIMEOUTS
 LockGuard::LockGuard(Mutex* pclMutex_, uint32_t u32TimeoutMs_)
 : m_pclMutex{pclMutex_}
 {
     m_bIsAcquired = m_pclMutex->Claim(u32TimeoutMs_);
 }
-#endif
 
 LockGuard::~LockGuard()
 {

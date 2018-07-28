@@ -25,7 +25,6 @@ See license.txt for more information
 
 #include <stdint.h>
 
-#if KERNEL_USE_AUTO_ALLOC
 using namespace Mark3;
 //---------------------------------------------------------------------------
 // Override new() and delete() using functions provided to AutoAlloc
@@ -83,8 +82,6 @@ void AutoAlloc::Free(AutoAllocType eType_, void* pvObj_)
     }
     m_pfFree(eType_, pvObj_);
 }
-
-#if KERNEL_USE_SEMAPHORE
 //---------------------------------------------------------------------------
 Semaphore* AutoAlloc::NewSemaphore(void)
 {
@@ -100,9 +97,6 @@ void AutoAlloc::DestroySemaphore(Semaphore *pclSemaphore_)
     pclSemaphore_->~Semaphore();
     Free(AutoAllocType::Semaphore, pclSemaphore_);
 }
-#endif
-
-#if KERNEL_USE_MUTEX
 //---------------------------------------------------------------------------
 Mutex* AutoAlloc::NewMutex(void)
 {
@@ -118,9 +112,6 @@ void AutoAlloc::DestroyMutex(Mutex *pclMutex_)
     pclMutex_->~Mutex();
     Free(AutoAllocType::Mutex, pclMutex_);
 }
-#endif
-
-#if KERNEL_USE_EVENTFLAG
 //---------------------------------------------------------------------------
 EventFlag* AutoAlloc::NewEventFlag(void)
 {
@@ -136,9 +127,6 @@ void AutoAlloc::DestroyEventFlag(EventFlag *pclEventFlag_)
     pclEventFlag_->~EventFlag();
     Free(AutoAllocType::EventFlag, pclEventFlag_);
 }
-#endif
-
-#if KERNEL_USE_MESSAGE
 //---------------------------------------------------------------------------
 Message* AutoAlloc::NewMessage(void)
 {
@@ -185,9 +173,7 @@ void AutoAlloc::DestroyMessageQueue(MessageQueue *pclMessageQ_)
     pclMessageQ_->~MessageQueue();
     Free(AutoAllocType::MessageQueue, pclMessageQ_);
 }
-#endif
 
-#if KERNEL_USE_NOTIFY
 //---------------------------------------------------------------------------
 Notify* AutoAlloc::NewNotify(void)
 {
@@ -203,9 +189,7 @@ void AutoAlloc::DestroyNotify(Notify *pclNotify_)
     pclNotify_->~Notify();
     Free(AutoAllocType::Notify, pclNotify_);
 }
-#endif
 
-#if KERNEL_USE_MAILBOX
 //---------------------------------------------------------------------------
 Mailbox* AutoAlloc::NewMailbox(void)
 {
@@ -221,9 +205,7 @@ void AutoAlloc::DestroyMailbox(Mailbox *pclMailbox_)
     pclMailbox_->~Mailbox();
     Free(AutoAllocType::MailBox, pclMailbox_);
 }
-#endif
 
-#if KERNEL_USE_CONDVAR
 //---------------------------------------------------------------------------
 ConditionVariable* AutoAlloc::NewConditionVariable()
 {
@@ -239,9 +221,7 @@ void AutoAlloc::DestroyConditionVariable(ConditionVariable* pclCondvar_)
     pclCondvar_->~ConditionVariable();
     Free(AutoAllocType::ConditionVariable, pclCondvar_);
 }
-#endif
 
-#if KERNEL_USE_READERWRITER
 //---------------------------------------------------------------------------
 ReaderWriterLock* AutoAlloc::NewReaderWriterLock()
 {
@@ -257,7 +237,6 @@ void AutoAlloc::DestroyReaderWriterLock(ReaderWriterLock *pclReaderWriterLock_)
     pclReaderWriterLock_->~ReaderWriterLock();
     Free(AutoAllocType::ReaderWriterLock, pclReaderWriterLock_);
 }
-#endif
 
 //---------------------------------------------------------------------------
 Thread* AutoAlloc::NewThread(void)
@@ -275,7 +254,6 @@ void AutoAlloc::DestroyThread(Thread *pclThread_)
     Free(AutoAllocType::Thread, pclThread_);
 }
 
-#if KERNEL_USE_TIMERS
 //---------------------------------------------------------------------------
 Timer* AutoAlloc::NewTimer(void)
 {
@@ -291,7 +269,6 @@ void AutoAlloc::DestroyTimer(Timer *pclTimer_)
     pclTimer_->~Timer();
     Free(AutoAllocType::Timer, pclTimer_);
 }
-#endif
 
 //---------------------------------------------------------------------------
 void* AutoAlloc::NewUserTypeAllocation(uint8_t eType_)
@@ -314,4 +291,3 @@ void AutoAlloc::DestroyRawData(void *pvData_)
     Free(AutoAllocType::Raw, pvData_);
 }
 } //namespace Mark3
-#endif

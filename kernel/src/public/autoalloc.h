@@ -23,13 +23,10 @@ See license.txt for more information
 #include <stdbool.h>
 #include "mark3cfg.h"
 
-#if KERNEL_USE_AUTO_ALLOC
 namespace Mark3
 {
-
 //---------------------------------------------------------------------------
 // Define function pointer types used for interfacing with an external heap.
-
 //---------------------------------------------------------------------------
 enum class AutoAllocType : uint8_t {
 //-- Kernel object types
@@ -57,45 +54,18 @@ using AutoAllocFree_t = void* (*)(AutoAllocType eType_, void* pvObj_);
 
 //---------------------------------------------------------------------------
 // Forward declaration of kernel objects that can be auotomatically allocated.
-#if KERNEL_USE_EVENTFLAG
 class EventFlag;
-#endif
-
-#if KERNEL_USE_MAILBOX
 class Mailbox;
-#endif
-
-#if KERNEL_USE_MESSAGE
 class Message;
 class MessagePool;
 class MessageQueue;
-#endif
-
-#if KERNEL_USE_MUTEX
 class Mutex;
-#endif
-
-#if KERNEL_USE_NOTIFY
 class Notify;
-#endif
-
-#if KERNEL_USE_SEMAPHORE
 class Semaphore;
-#endif
-
 class Thread;
-
-#if KERNEL_USE_TIMERS
 class Timer;
-#endif
-
-#if KERNEL_USE_READERWRITER
 class ReaderWriterLock;
-#endif
-
-#if KERNEL_USE_CONDVAR
 class ConditionVariable;
-#endif
 
 class AutoAlloc
 {
@@ -118,7 +88,6 @@ public:
     static void SetAllocatorFunctions(AutoAllocAllocator_t pfAllocator_, AutoAllocFree_t pfFree_)
         {m_pfAllocator = pfAllocator_; m_pfFree = pfFree_;}
 
-#if KERNEL_USE_SEMAPHORE
     /*!
      * \brief NewSemaphore
      * Allocate and create a new Mutex object for use within the system.
@@ -132,8 +101,7 @@ public:
      * \param pclSemaphore_ Pointer to the object to destroy.
      */
     static void DestroySemaphore(Semaphore* pclSemaphore_);
-#endif
-#if KERNEL_USE_MUTEX
+
     /*!
      * \brief NewMutex
      * Allocate and create a new Mutex object for use within the system.
@@ -147,8 +115,6 @@ public:
      * \param pclMutex_ Pointer to the object to destroy.
      */
     static void DestroyMutex(Mutex* pclMutex_);
-#endif
-#if KERNEL_USE_EVENTFLAG
     /*!
      * \brief NewEventFlag
      * Allocate and create a new EventFlag object for use within the system.
@@ -162,8 +128,7 @@ public:
      * \param pclEventFlag_ Pointer to the object to destroy.
      */
     static void DestroyEventFlag(EventFlag* pclEventFlag_);
-#endif
-#if KERNEL_USE_TIMERS
+
     /*!
      * \brief NewTimer
      * Allocate and create a new Timer object for use within the system.
@@ -177,8 +142,7 @@ public:
      * \param pclTimer_ Pointer to the object to destroy.
      */
     static void DestroyTimer(Timer* pclTimer_);
-#endif
-#if KERNEL_USE_NOTIFY
+
     /*!
      * \brief NewNotify
      * Allocate and construct a new Thread object for use within the system.
@@ -192,8 +156,7 @@ public:
      * \param pclNotify_ Pointer to the object to destroy.
      */
     static void DestroyNotify(Notify* pclNotify_);
-#endif
-#if KERNEL_USE_MAILBOX
+
     /*!
      * \brief NewMailbox
      * Allocate and construct a new Mailbox object for use within the system.
@@ -207,8 +170,7 @@ public:
      * \param pclMailbox_ Pointer to the object to destroy.
      */
     static void DestroyMailbox(Mailbox* pclMailbox_);
-#endif
-#if KERNEL_USE_MESSAGE
+
     /*!
      * \brief NewMessage
      * Allocate and construct a new Message object for use within the system.
@@ -250,8 +212,7 @@ public:
      * \param pclMessageQ_ Pointer to the object to destroy.
      */
     static void DestroyMessageQueue(MessageQueue* pclMessageQ_);
-#endif
-#if KERNEL_USE_CONDVAR
+
     /*!
      * \brief NewConditionVariable
      * Create and initialize a new condition variable from within the system
@@ -265,8 +226,7 @@ public:
      * \param pclConditionVariable_ Pointer to the object to destroy
      */
     static void DestroyConditionVariable(ConditionVariable* pclConditionVariable_);
-#endif
-#if KERNEL_USE_READERWRITER
+
     /*!
      * \brief NewReaderWriterLock
      * Allocate and initialize a new ReaderWriterLock object from within the system
@@ -280,7 +240,7 @@ public:
      * \param pclReaderWriterLock_ Pointer to the object to destroy
      */
     static void DestroyReaderWriterLock(ReaderWriterLock* pclReaderWriterLock_);
-#endif
+
     /*!
      * \brief NewThread
      * Allocate and construct a new Thread object for use within the system
@@ -335,4 +295,3 @@ private:
     static AutoAllocFree_t      m_pfFree;         //!< Funciton used to free objects
 };
 } //namespace Mark3
-#endif

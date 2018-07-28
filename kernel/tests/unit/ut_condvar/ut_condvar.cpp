@@ -39,7 +39,7 @@ Mutex clMutex;
 } // anonymous namespace
 
 namespace Mark3 {
-#if KERNEL_USE_CONDVAR
+
 //===========================================================================
 // Local Defines
 //===========================================================================
@@ -329,20 +329,16 @@ TEST(ut_condvar_timedwait_success)
     EXPECT_TRUE(isSignalled);
 }
 TEST_END
-#endif // KERNEL_USE_CONDVAR
-
 //===========================================================================
 // Test Whitelist Goes Here
 //===========================================================================
 TEST_CASE_START
-#if KERNEL_USE_CONDVAR
  TEST_CASE(ut_condvar_wait_signal),
  TEST_CASE(ut_condvar_wait_broadcast),
  TEST_CASE(ut_condvar_wait_multi_signal),
  TEST_CASE(ut_condvar_wait_multi_broadcast),
  TEST_CASE(ut_condvar_wait_timeout),
  TEST_CASE(ut_condvar_timedwait_success),
-#endif
 TEST_CASE_END
 } //namespace Mark3
 

@@ -132,7 +132,7 @@ void AppMain(void* unused_)
     // sleeping, CPU execution will transition to the Idle thread.
 
     while (1) {
-        KernelAware::Print("Hello World!\n");
+        // KernelAware::Print("Hello World!\n");
         Thread::Sleep(1000);
     }
 }

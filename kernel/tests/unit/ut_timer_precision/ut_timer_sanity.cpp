@@ -21,7 +21,6 @@ See license.txt for more information
 
 //---------------------------------------------------------------------------
 #include "mark3.h"
-#include "kernelaware.h"
 #include "../unit_test.h"
 #include "../ut_platform.h"
 

@@ -56,7 +56,6 @@ void ReaderTask(void* param)
 } // anonymous namespace
 
 namespace Mark3 {
-#if KERNEL_USE_READERWRITER
 //===========================================================================
 // Local Defines
 //===========================================================================
@@ -375,12 +374,10 @@ TEST(ut_rw_timed_write_success)
 }
 TEST_END
 
-#endif // KERNEL_USE_READERWRITER
 //===========================================================================
 // Test Whitelist Goes Here
 //===========================================================================
 TEST_CASE_START
-#if KERNEL_USE_READERWRITER
  TEST_CASE(ut_rw_single_reader),
  TEST_CASE(ut_rw_single_writer),
  TEST_CASE(ut_rw_multiple_writers_block),
@@ -391,6 +388,5 @@ TEST_CASE_START
  TEST_CASE(ut_rw_reader_timeout),
  TEST_CASE(ut_rw_timed_read_success),
  TEST_CASE(ut_rw_timed_write_success),
-#endif
 TEST_CASE_END
 } //namespace Mark3

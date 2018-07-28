@@ -145,7 +145,6 @@ typedef enum {
 
 //---------------------------------------------------------------------------
 // Allocate-once Memory managment APIs
-#if defined KERNEL_USE_AUTO_ALLOC
 /*!
  * \brief Alloc_Memory
  * \sa void* AutoAlloc::NewRawData(size_t sSize_)
@@ -160,7 +159,6 @@ void* Alloc_Memory(size_t eSize_);
  */
 void Free_Memory(void* pvObject_);
 
-#if KERNEL_USE_SEMAPHORE
 /*!
  * \brief Alloc_Semaphore
  * \sa Semaphore* AutoAlloc::NewSemaphore()
@@ -169,8 +167,6 @@ void Free_Memory(void* pvObject_);
 Semaphore_t Alloc_Semaphore(void);
 void Free_Semaphore(Semaphore_t handle);
 
-#endif
-#if KERNEL_USE_MUTEX
 /*!
  * \brief Alloc_Mutex
  * \sa Mutex* AutoAlloc::NewMutex()
@@ -179,8 +175,6 @@ void Free_Semaphore(Semaphore_t handle);
 Mutex_t Alloc_Mutex(void);
 void Free_Mutex(Mutex_t handle);
 
-#endif
-#if KERNEL_USE_EVENTFLAG
 /*!
  * \brief Alloc_EventFlag
  * \sa EventFlag* AutoAlloc::NewEventFlag()
@@ -189,8 +183,6 @@ void Free_Mutex(Mutex_t handle);
 EventFlag_t Alloc_EventFlag(void);
 void Free_EventFlag(EventFlag_t handle);
 
-#endif
-#if KERNEL_USE_MESSAGE
 /*!
  * \brief Alloc_Message
  * \sa AutoAlloc::NewMessage()
@@ -210,9 +202,6 @@ void Free_MessageQueue(MessageQueue_t handle);
 MessagePool_t Alloc_MessagePool(void);
 void Free_MessagePool(MessagePool_t handle);
 
-
-#endif
-#if KERNEL_USE_NOTIFY
 /*!
  * \brief Alloc_Notify
  * \sa Notify* AutoAlloc::NewNotify()
@@ -221,8 +210,6 @@ void Free_MessagePool(MessagePool_t handle);
 Notify_t Alloc_Notify(void);
 void Free_Notify(Notify_t handle);
 
-#endif
-#if KERNEL_USE_MAILBOX
 /*!
  * \brief Alloc_Mailbox
  * \sa Mailbox* AutoAlloc::NewMailbox()
@@ -230,7 +217,7 @@ void Free_Notify(Notify_t handle);
  */
 Mailbox_t Alloc_Mailbox(void);
 void Free_Mailbox(Mailbox_t handle);
-#endif
+
 /*!
  * \brief Alloc_Thread
  * \sa Thread* AutoAlloc::NewThread()
@@ -239,7 +226,6 @@ void Free_Mailbox(Mailbox_t handle);
 Thread_t Alloc_Thread(void);
 void Free_Thread(Thread_t handle);
 
-#if KERNEL_USE_TIMERS
 /*!
  * \brief Alloc_Timer
  * \sa Timer* AutoAlloc::NewTimer()
@@ -247,9 +233,6 @@ void Free_Thread(Thread_t handle);
  */
 Timer_t Alloc_Timer(void);
 void Free_Timer(Timer_t handle);
-
-#endif
-#endif
 
 //---------------------------------------------------------------------------
 // Kernel APIs
@@ -290,18 +273,7 @@ bool Kernel_IsPanic(void);
  * \param u16Cause_ Reason for the kernel panic
  */
 void Kernel_Panic(uint16_t u16Cause_);
-#if KERNEL_USE_IDLE_FUNC
-typedef void (*idle_func_t)(void);
 
-/*!
- * \brief Kernel_SetIdleFunc
- * \sa void Kernel::SetIdleFunc(IdleFunc_t pfIdle_)
- * \param pfIdle_ Pointer to the idle function
- */
-void Kernel_SetIdleFunc(idle_func_t pfIdle_);
-#endif
-
-#if KERNEL_USE_THREAD_CALLOUTS
 /*!
  * \brief Kernel_SetThreadCreateCallout
  * \sa Kernel::SetThreadCreateCallout
@@ -342,9 +314,7 @@ thread_exit_callout_t Kernel_GetThreadExitCallout(void);
  * \return Current function called on each context switch
  */
 thread_context_callout_t Kernel_GetThreadContextSwitchCallout(void);
-#endif
 
-#if KERNEL_USE_STACK_GUARD
 /*!
  * \brief Kernel_SetStackGuardThreshold
  * \sa Kernel::SetStackGuardThreshold
@@ -359,7 +329,6 @@ void Kernel_SetStackGuardThreshold(uint16_t u16Threshold_);
  * \return Current kernel stack-guard threshold
  */
 uint16_t Kernel_GetStackGuardThreshold(void);
-#endif
 //---------------------------------------------------------------------------
 // Scheduler APIs
 /*!
@@ -415,7 +384,6 @@ void Thread_Start(Thread_t handle);
  * \param handle Handle of the thread to stop
  */
 void Thread_Stop(Thread_t handle);
-#if KERNEL_USE_THREADNAME
 /*!
  * \brief Thread_SetName
  * \sa void Thread::SetName(const char *szName_)
@@ -430,7 +398,6 @@ void Thread_SetName(Thread_t handle, const char* szName_);
  * \return Thread current name, or NULL if no name specified
  */
 const char* Thread_GetName(Thread_t handle);
-#endif
 /*!
  * \brief Thread_GetPriority
  * \sa PORT_PRIO_TYPE Thread::GetPriority()
@@ -445,7 +412,6 @@ PORT_PRIO_TYPE Thread_GetPriority(Thread_t handle);
  * \return Current priority of the thread considering priority inheritence
  */
 PORT_PRIO_TYPE Thread_GetCurPriority(Thread_t handle);
-#if KERNEL_USE_QUANTUM
 /*!
  * \brief Thread_SetQuantum
  * \sa void Thread::SetQuentum(uint16_t u16Quantum_)
@@ -460,7 +426,6 @@ void Thread_SetQuantum(Thread_t handle, uint16_t u16Quantum_);
  * \return Thread's current execution quantum
  */
 uint16_t Thread_GetQuantum(Thread_t handle);
-#endif
 /*!
  * \brief Thread_SetPriority
  * \sa void Thread::SetPriority(PORT_PRIO_TYPE uXPriority_)
@@ -468,15 +433,12 @@ uint16_t Thread_GetQuantum(Thread_t handle);
  * \param uXPriority_ New priority level
  */
 void Thread_SetPriority(Thread_t handle, PORT_PRIO_TYPE uXPriority_);
-#if KERNEL_USE_DYNAMIC_THREADS
 /*!
  * \brief Thread_Exit
  * \sa void Thread::Exit()
  * \param handle Handle of the thread
  */
 void Thread_Exit(Thread_t handle);
-#endif
-#if KERNEL_USE_SLEEP
 /*!
  * \brief Thread_Sleep
  * \sa void Thread::Sleep(uint32_t u32TimeMs_)
@@ -489,8 +451,6 @@ void Thread_Sleep(uint32_t u32TimeMs_);
  * \param u32TimeUs_ Time in us to block the thread for
  */
 void Thread_USleep(uint32_t u32TimeUs_);
-#endif
-#if KERNEL_USE_EXTENDED_CONTEXT
 /*!
  * \brief Thread_GetExtendedContext
  * \sa Thread::GetExtendedContext()
@@ -506,8 +466,6 @@ void* Thread_GetExtendedContext(Thread_t handle);
  * \param pvData_ Pointer to Object to assign to Thread's extended context
  */
 void Thread_SetExtendedContext(Thread_t handle, void* pvData_);
-
-#endif
 /*!
  * \brief Thread_Yield
  * \sa void Thread::Yield()
@@ -544,7 +502,6 @@ thread_state_t Thread_GetState(Thread_t handle);
 
 //---------------------------------------------------------------------------
 // Timer APIs
-#if KERNEL_USE_TIMERS
 typedef void (*timer_callback_t)(Thread_t hOwner_, void* pvData_);
 /*!
  * \brief Timer_Init
@@ -583,11 +540,9 @@ void Timer_Restart(Timer_t handle);
  * \param handle Handle of the timer
  */
 void Timer_Stop(Timer_t handle);
-#endif
 
 //---------------------------------------------------------------------------
 // Semaphore APIs
-#if KERNEL_USE_SEMAPHORE
 /*!
  * \brief Semaphore_Init
  * \sa void Semaphore::Init(uint16_t u16InitVal_, uint16_t u16MaxVal_)
@@ -608,7 +563,6 @@ void Semaphore_Post(Semaphore_t handle);
  * \param handle Handle of the semaphore
  */
 void Semaphore_Pend(Semaphore_t handle);
-#if KERNEL_USE_TIMEOUTS
 /*!
  * \brief Semaphore_TimedPend
  * \sa bool Semaphore::Pend(uint32_t u32WaitTimeMS_)
@@ -617,12 +571,9 @@ void Semaphore_Pend(Semaphore_t handle);
  * \return true if semaphore was acquired, false on timeout
  */
 bool Semaphore_TimedPend(Semaphore_t handle, uint32_t u32WaitTimeMS_);
-#endif
-#endif
 
 //---------------------------------------------------------------------------
 // Mutex APIs
-#if KERNEL_USE_MUTEX
 /*!
  * \brief Mutex_Init
  * \sa void Mutex::Init()
@@ -641,7 +592,6 @@ void Mutex_Claim(Mutex_t handle);
  * \param handle Handle of the mutex
  */
 void Mutex_Release(Mutex_t handle);
-#if KERNEL_USE_TIMEOUTS
 /*!
  * \brief Mutex_TimedClaim
  * \sa bool Mutex::Claim(uint32_t u32WaitTimeMS_)
@@ -650,12 +600,9 @@ void Mutex_Release(Mutex_t handle);
  * \return true if mutex was claimed, false on timeout
  */
 bool Mutex_TimedClaim(Mutex_t handle, uint32_t u32WaitTimeMS_);
-#endif
-#endif
 
 //---------------------------------------------------------------------------
 // EventFlag APIs
-#if KERNEL_USE_EVENTFLAG
 /*!
  * \brief EventFlag_Init
  * \sa void EventFlag::Init()
@@ -671,7 +618,6 @@ void EventFlag_Init(EventFlag_t handle);
  * \return bitfield contained in the eventflag on unblock
  */
 uint16_t EventFlag_Wait(EventFlag_t handle, uint16_t u16Mask_, event_flag_operation_t eMode_);
-#if KERNEL_USE_TIMEOUTS
 /*!
  * \brief EventFlag_TimedWait
  * \sa uint16_t EventFlag::Wait(uint16_t u16Mask_, event_flag_operation_t eMode_, uint32_t u32TimeMS_)
@@ -682,7 +628,6 @@ uint16_t EventFlag_Wait(EventFlag_t handle, uint16_t u16Mask_, event_flag_operat
  * \return bitfield contained in the eventflag on unblock, or 0 on expiry.
  */
 uint16_t EventFlag_TimedWait(EventFlag_t handle, uint16_t u16Mask_, event_flag_operation_t eMode_, uint32_t u32TimeMS_);
-#endif
 /*!
  * \brief EventFlag_Set
  * \sa void EventFlag::Set(uint16_t u16Mask_)
@@ -704,11 +649,9 @@ void EventFlag_Clear(EventFlag_t handle, uint16_t u16Mask_);
  * \return Return the current bitmask
  */
 uint16_t EventFlag_GetMask(EventFlag_t handle);
-#endif
 
 //---------------------------------------------------------------------------
 // Notification APIs
-#if KERNEL_USE_NOTIFY
 /*!
  * \brief Notify_Init
  * \sa void Notify::Init()
@@ -728,7 +671,6 @@ void Notify_Signal(Notify_t handle);
  * \param pbFlag_ Flag to set to true on notification
  */
 void Notify_Wait(Notify_t handle, bool* pbFlag_);
-#if KERNEL_USE_TIMEOUTS
 /*!
  * \brief Notify_TimedWait
  * \sa bool Notify::Wait(uint32_t u32WaitTimeMS_, bool *pbFlag_)
@@ -738,12 +680,9 @@ void Notify_Wait(Notify_t handle, bool* pbFlag_);
  * \return true on unblock, false on timeout
  */
 bool Notify_TimedWait(Notify_t handle, uint32_t u32WaitTimeMS_, bool* pbFlag_);
-#endif
-#endif
 
 //---------------------------------------------------------------------------
 // Atomic Functions
-#if KERNEL_USE_ATOMIC
 /*!
  * \brief Atomic_Set8
  * \sa uint8_t Atomic::Set(uint8_t *pu8Source_, uint8_t u8Val_)
@@ -825,11 +764,9 @@ uint32_t Atomic_Sub32(uint32_t* pu32Source_, uint32_t u32Val_);
  * \return true - Lock value was "true" on entry, false - Lock was set
  */
 bool Atomic_TestAndSet(bool* pbLock);
-#endif
 
 //---------------------------------------------------------------------------
 // Message/Message Queue APIs
-#if KERNEL_USE_MESSAGE
 /*!
  * \brief Message_Init
  * \sa void Message::Init()
@@ -877,7 +814,6 @@ void MessageQueue_Init(MessageQueue_t handle);
  * \return Pointer to a message object at the head of the queue
  */
 Message_t MessageQueue_Receive(MessageQueue_t handle);
-#if KERNEL_USE_TIMEOUTS
 /*!
  * \brief MessageQueue_TimedReceive
  * \sa Message_t MessageQueue::TimedReceive(uint32_t u32TimeWaitMS_)
@@ -889,7 +825,6 @@ Message_t MessageQueue_Receive(MessageQueue_t handle);
  *         NULL on timeout.
  */
 Message_t MessageQueue_TimedReceive(MessageQueue_t handle, uint32_t u32TimeWaitMS_);
-#endif
 
 /*!
  * \brief MessageQueue_Send
@@ -929,11 +864,8 @@ void MessagePool_Push(MessagePool_t handle, Message_t msg);
  */
 Message_t MessagePool_Pop(MessagePool_t handle);
 
-#endif
-
 //---------------------------------------------------------------------------
 // Mailbox APIs
-#if KERNEL_USE_MAILBOX
 
 /*!
  * \brief Mailbox_Init
@@ -1000,7 +932,6 @@ void Mailbox_Receive(Mailbox_t handle, void* pvData_);
  *                copied into upon delivery.
  */
 void Mailbox_ReceiveTail(Mailbox_t handle, void* pvData_);
-#if KERNEL_USE_TIMEOUTS
 
 /*!
  * \brief Mailbox_TimedReceive
@@ -1047,12 +978,9 @@ bool Mailbox_IsFull(Mailbox_t handle);
  * \return true if the mailbox is empty, false otherwise
  */
 bool Mailbox_IsEmpty(Mailbox_t handle);
-#endif
-#endif
 
 //---------------------------------------------------------------------------
 // Condition Variables
-#if KERNEL_USE_CONDVAR
 /*!
  * \brief ConditionVariable_Init
  * \sa void ConditionVariable::Init()
@@ -1081,7 +1009,7 @@ void ConditionVariable_Signal(ConditionVariable_t handle);
  * \param handle Handle of the condition variable object
  */
 void ConditionVariable_Broadcast(ConditionVariable_t handle);
-#if KERNEL_USE_TIMEOUTS
+
 /*!
  * \brief ConditionVariable_TimedWait
  * \sa bool ConditionVariable::Wait(Mutex* pclMutex_, uint32_t u32WaitTimeMS_)
@@ -1091,12 +1019,9 @@ void ConditionVariable_Broadcast(ConditionVariable_t handle);
  * \return true on success, false on timeout
  */
 bool ConditionVariable_TimedWait(ConditionVariable_t handle, Mutex_t hMutex_, uint32_t u32WaitTimeMS_);
-#endif
-#endif
 
 //---------------------------------------------------------------------------
 // Reader-writer locks
-#if KERNEL_USE_READERWRITER
 /*!
  * \brief ReaderWriterLock_Init
  * \sa void ReaderWriterLock::Init()
@@ -1131,7 +1056,7 @@ void ReaderWriterLock_AcquireWriter(ReaderWriterLock_t handle);
  * \param handle Handle of the reader-writer object
  */
 void ReaderWriterLock_ReleaseWriter(ReaderWriterLock_t handle);
-#if KERNEL_USE_TIMEOUTS
+
 /*!
  * \brief ReaderWriterLock_TimedAcquireWriter
  * \sa bool ReaderWriterLock::AcquireWriter(uint32_t u32TimeoutMs_)
@@ -1149,88 +1074,6 @@ bool ReaderWriterLock_TimedAcquireWriter(ReaderWriterLock_t handle, uint32_t u32
  * \return true on success, false on timeout
  */
 bool ReaderWriterLock_TimedAcquireReader(ReaderWriterLock_t handle, uint32_t u32TimeoutMs_);
-#endif
-#endif
-
-//---------------------------------------------------------------------------
-// Kernel-Aware Simulation APIs
-#if KERNEL_AWARE_SIMULATION
-
-/*!
- * \brief KernelAware_ProfileInit
- * \sa void KernelAware::ProfileInit(const char *szStr_);
- * \param szStr_ String to use as a tag for the profilng session.
- */
-void KernelAware_ProfileInit(const char* szStr_);
-
-/*!
- * \brief KernelAware_ProfileStart
- * \sa void KernelAware::ProfileStart()
- */
-void KernelAware_ProfileStart(void);
-
-/*!
- * \brief KernelAware_ProfileStop
- * \sa void KernelAware::ProfileStop()
- */
-void KernelAware_ProfileStop(void);
-
-/*!
- * \brief KernelAware_ProfileReport
- * \sa void KernelAware::ProfileReport()
- */
-void KernelAware_ProfileReport(void);
-
-/*!
- * \brief KernelAware_ExitSimulator
- * \sa void KernelAware::ExitSimulator()
- *
- */
-void KernelAware_ExitSimulator(void);
-
-/*!
- * \brief KernelAware_Print
- * \sa void KernelAware::Print(const char *szStr_)
- * \param szStr_ String to print to the kernel-aware simulator
- */
-void KernelAware_Print(const char* szStr_);
-
-/*!
- * \brief KernelAware_Trace
- * \sa void KernelAware::Trace(uint16_t u16File_, uint16_t u16Line_);
- * \param u16File_   16-bit code representing the file
- * \param u16Line_   16-bit code representing the line in the file
- */
-void KernelAware_Trace(uint16_t u16File_, uint16_t u16Line_);
-
-/*!
- * \brief KernelAware_Trace1
- * \sa void KernelAware::Trace(uint16_t u16File_, uint16_t u16Line_, uint16_t u16Arg1_);
- * \param u16File_   16-bit code representing the file
- * \param u16Line_   16-bit code representing the line in the file
- * \param u16Arg1_   16-bit argument to the format string.
- */
-void KernelAware_Trace1(uint16_t u16File_, uint16_t u16Line_, uint16_t u16Arg1_);
-/*!
- * \brief KernelAware_Trace2
- * \sa void KernelAware::Trace(uint16_t u16File_, uint16_t u16Line_, uint16_t u16Arg1_, uint16_t u16Arg2_);
- * \param u16File_   16-bit code representing the file
- * \param u16Line_   16-bit code representing the line in the file
- * \param u16Arg1_   16-bit argument to the format string.
- * \param u16Arg2_   16-bit argument to the format string.
- */
-void KernelAware_Trace2(uint16_t u16File_, uint16_t u16Line_, uint16_t u16Arg1_, uint16_t u16Arg2_);
-/*!
- * \brief KernelAware_IsSimulatorAware
- *
- * \sa void Kernel::IsSimulatorAware()
- *
- * \return true if the runtime environment/simulator is aware that
- *         it is running the Mark3 kernel.
- *
- */
-bool KernelAware_IsSimulatorAware(void);
-#endif
 
 #if defined(__cplusplus)
 }

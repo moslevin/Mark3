@@ -84,19 +84,12 @@ void AppEntry(void* /*unused*/)
 }
 
 //---------------------------------------------------------------------------
-#if KERNEL_USE_IDLE_FUNC
-void IdleEntry()
-{
-     UnitTestSupport::OnIdle();
-}
-#else
 void IdleEntry(void* args)
 {
     while (1) {
         UnitTestSupport::OnIdle();
     }
 }
-#endif
 
 //---------------------------------------------------------------------------
 void PrintString(const char* szStr_)
@@ -153,7 +146,6 @@ int main(void)
 
     AppThread.Start(); //!< Schedule the threads
 
-#if !KERNEL_USE_IDLE_FUNC
     IdleThread.Init(aucIdleStack,             //!< Pointer to the stack
                     sizeof(aucIdleStack),          //!< Size of the stack
                     0,                        //!< Thread priority
@@ -161,9 +153,6 @@ int main(void)
                     NULL);                    //!< Entry function argument
 
     IdleThread.Start();
-#else
-    Kernel::SetIdleFunc(IdleEntry);
-#endif
 
     UnitTestSupport::OnInit();
 

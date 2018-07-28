@@ -69,10 +69,8 @@ class Thread;
 class BlockingObject
 {
 public:
-#if KERNEL_EXTRA_CHECKS
     BlockingObject() { m_u8Initialized = BLOCKING_INVALID_COOKIE; }
     ~BlockingObject() { m_u8Initialized = BLOCKING_INVALID_COOKIE; }
-#endif
 
 protected:
     /*!
@@ -126,7 +124,6 @@ protected:
      */
     ThreadList m_clBlockList;
 
-#if KERNEL_EXTRA_CHECKS
     /*!
      * Token used to check whether or not the object has been initialized
      * prior to use.
@@ -143,7 +140,5 @@ protected:
      * \return
      */
     bool IsInitialized(void) { return (m_u8Initialized == BLOCKING_INIT_COOKIE); }
-
-#endif
 };
 } //namespace Mark3

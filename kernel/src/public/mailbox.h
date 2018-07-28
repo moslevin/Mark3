@@ -24,7 +24,6 @@ See license.txt for more information
 #include "threadport.h"
 #include "ksemaphore.h"
 
-#if KERNEL_USE_MAILBOX
 namespace Mark3
 {
 /*!
@@ -50,7 +49,6 @@ public:
      */
     void Init(void* pvBuffer_, uint16_t u16BufferSize_, uint16_t u16ElementSize_);
 
-#if KERNEL_USE_AUTO_ALLOC
     /*!
      * \brief Init
      *
@@ -65,8 +63,6 @@ public:
      * \param u16ElementSize_   Size of each envelope, in bytes
      */
     static Mailbox* Init(uint16_t u16BufferSize_, uint16_t u16ElementSize_);
-
-#endif
 
     /*!
      * \brief Send
@@ -98,7 +94,6 @@ public:
      */
     bool SendTail(void* pvData_);
 
-#if KERNEL_USE_TIMEOUTS
     /*!
      * \brief Send
      *
@@ -130,7 +125,6 @@ public:
      * \return                  true - envelope was delivered, false - mailbox is full.
      */
     bool SendTail(void* pvData_, uint32_t u32TimeoutMS_);
-#endif
 
     /*!
      * \brief Receive
@@ -154,7 +148,6 @@ public:
      */
     void ReceiveTail(void* pvData_);
 
-#if KERNEL_USE_TIMEOUTS
     /*!
      * \brief Receive
      *
@@ -182,7 +175,6 @@ public:
      * \return true - envelope was delivered, false - delivery timed out.
      */
     bool ReceiveTail(void* pvData_, uint32_t u32TimeoutMS_);
-#endif
 
     uint16_t GetFreeSlots(void)
     {
@@ -296,7 +288,6 @@ private:
         m_u16Head--;
     }
 
-#if KERNEL_USE_TIMEOUTS
     /*!
      * \brief Send_i
      *
@@ -308,20 +299,7 @@ private:
      * \return          true - data successfully written, false - buffer full
      */
     bool Send_i(const void* pvData_, bool bTail_, uint32_t u32TimeoutMS_);
-#else
-    /*!
-     * \brief Send_i
-     *
-     * Internal method which implements all Send() methods in the class.
-     *
-     * \param pvData_   Pointer to the envelope data
-     * \param bTail_    true - write to tail, false - write to head
-     * \return          true - data successfully written, false - buffer full
-     */
-    bool Send_i(const void* pvData_, bool bTail_);
-#endif
 
-#if KERNEL_USE_TIMEOUTS
     /*!
      * \brief Receive_i
      *
@@ -333,17 +311,6 @@ private:
      * \return              true - read successfully, false - timeout.
      */
     bool Receive_i(const void* pvData_, bool bTail_, uint32_t u32WaitTimeMS_);
-#else
-    /*!
-     * \brief Receive_i
-     *
-     * Internal method which implements all Read() methods in the class.
-     *
-     * \param pvData_       Pointer to the envelope data
-     * \param bTail_        true - read from tail, false - read from head
-     */
-    void Receive_i(const void* pvData_, bool bTail_);
-#endif
 
     uint16_t m_u16Head; //!< Current head index
     uint16_t m_u16Tail; //!< Current tail index
@@ -355,10 +322,6 @@ private:
     const void* m_pvBuffer;       //!< Pointer to the data-buffer managed by this mailbox
 
     Semaphore m_clRecvSem; //!< Counting semaphore used to synchronize threads on the object
-
-#if KERNEL_USE_TIMEOUTS
     Semaphore m_clSendSem; //!< Binary semaphore for send-blocked threads.
-#endif
 };
 } //namespace Mark3
-#endif

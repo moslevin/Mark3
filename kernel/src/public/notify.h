@@ -23,7 +23,6 @@ See license.txt for more information
 #include "mark3cfg.h"
 #include "blocking.h"
 
-#if KERNEL_USE_NOTIFY
 namespace Mark3
 {
 /*!
@@ -65,7 +64,6 @@ public:
      */
     void Wait(bool* pbFlag_);
 
-#if KERNEL_USE_TIMEOUTS
     /*!
      * \brief Wait
      *
@@ -79,7 +77,6 @@ public:
      * \return true on notification, false on timeout
      */
     bool Wait(uint32_t u32WaitTimeMS_, bool* pbFlag_);
-#endif
 
     /*!
      * \brief WakeMe
@@ -97,5 +94,4 @@ private:
     bool m_bPending;
 };
 } //namespace Mark3
-#endif
 

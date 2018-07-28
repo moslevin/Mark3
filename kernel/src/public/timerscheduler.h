@@ -27,7 +27,6 @@ See license.txt for more information
 #include "timer.h"
 #include "timerlist.h"
 
-#if KERNEL_USE_TIMERS
 namespace Mark3
 {
 //---------------------------------------------------------------------------
@@ -77,5 +76,4 @@ private:
     static TimerList m_clTimerList;
 };
 } //namespace Mark3
-#endif // KERNEL_USE_TIMERS
 

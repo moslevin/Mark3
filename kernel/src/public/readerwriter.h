@@ -24,7 +24,6 @@ See license.txt for more information
 #include "blocking.h"
 #include "mutex.h"
 
-#if KERNEL_USE_READERWRITER
 namespace Mark3 {
 
 /*!
@@ -57,7 +56,6 @@ public:
      */
     void AcquireReader();
 
-#if KERNEL_USE_TIMEOUTS
     /*!
      * @brief AcquireReader
      * Acquire the object's reader lock.  Multiple concurrent readers are allowed.
@@ -67,7 +65,6 @@ public:
      * @return true on success, false on timeout
      */
     bool AcquireReader(uint32_t u32TimeoutMs_);
-#endif
     
     /*!
      * @brief ReleaseReader
@@ -83,7 +80,6 @@ public:
      */
     void AcquireWriter();
 
-#if KERNEL_USE_TIMEOUTS
     /*!
      * @brief AcquireWriter
      * Acquire the writer lock.  Only a single writer is allowed to access the object
@@ -93,7 +89,6 @@ public:
      * @return true on success, false on timeout
      */
     bool AcquireWriter(uint32_t u32TimeoutMs_);
-#endif
 
     /*!
      * @brief ReleaseWriter
@@ -102,7 +97,6 @@ public:
     void ReleaseWriter();
 
 private:
-#if KERNEL_USE_TIMEOUTS
     /*!
      * @brief AcquireReader_i
      * Internal helper function for AcquireReaer
@@ -110,14 +104,6 @@ private:
      * @return true on success, false on timeout
      */
     bool AcquireReader_i(uint32_t u32TimeoutMs_);
-#else
-    /*!
-     * \brief AcquireReader_i
-     */
-    void AcquireReader_i();
-#endif
-
-#if KERNEL_USE_TIMEOUTS
     /*!
      * @brief AcquireWriter_i
      * Internal helper function for AcquireWriter
@@ -125,7 +111,6 @@ private:
      * @return true on success, false on timeout
      */
     bool AcquireWriter_i(uint32_t u32TimeoutMs_);
-#endif
 
     Mutex m_clGlobalMutex;  //!< Mutex used to lock the object against concurrent read + write
     Mutex m_clReaderMutex;  //!< Mutex used to lock object for readers
@@ -133,4 +118,3 @@ private:
 };
 
 } // namespace Mark3
-#endif

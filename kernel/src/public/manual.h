@@ -2527,7 +2527,6 @@ See license.txt for more information
     |Debugging            | Miscellaneous Macros  |  kerneldebug.h                  |
     |                     | KernelAware           |  kernelaware.cpp/.h             |
     |                     | TraceBuffer           |  tracebuffer.cpp/.h             |
-    |                     | Buffalogger           |  buffalogger.h                  |
     |Atomic Operations    | Atomic                |  atomic.cpp/.h                  |
     |Kernel               | Kernel                |  kernel.cpp/.h                  |
 

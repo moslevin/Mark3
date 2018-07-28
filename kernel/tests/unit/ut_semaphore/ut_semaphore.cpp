@@ -21,7 +21,6 @@ See license.txt for more information
 #include "thread.h"
 #include "memutil.h"
 #include "driver.h"
-#include "kernelaware.h"
 
 //===========================================================================
 // Local Defines
@@ -78,13 +77,9 @@ TEST(ut_semaphore_post_pend)
 
     clThread.Init(aucStack, sizeof(aucStack), 7, lPostPend, (void*)&clSem1);
     clThread.Start();
-    KernelAware::ProfileInit("seminit");
     for (int i = 0; i < 10; i++) {
-        KernelAware::ProfileStart();
         clSem1.Post();
-        KernelAware::ProfileStop();
     }
-    KernelAware::ProfileReport();
 
     // Verify all 10 posts have been acknowledged by the high-priority thread
     EXPECT_EQUALS(u8Counter, 10);

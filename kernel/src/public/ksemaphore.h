@@ -26,7 +26,6 @@ See license.txt for more information
 #include "blocking.h"
 #include "threadlist.h"
 
-#if KERNEL_USE_SEMAPHORE
 namespace Mark3
 {
 //---------------------------------------------------------------------------
@@ -100,7 +99,6 @@ public:
      */
     uint16_t GetCount();
 
-#if KERNEL_USE_TIMEOUTS
     /*!
      *  \brief
      *
@@ -125,7 +123,6 @@ public:
      *  used this for any other purposes.
      */
     void WakeMe(Thread* pclChosenOne_);
-#endif
 
 private:
     /*!
@@ -135,7 +132,6 @@ private:
      */
     uint8_t WakeNext();
 
-#if KERNEL_USE_TIMEOUTS
     /*!
      * \brief Pend_i
      *
@@ -145,18 +141,8 @@ private:
      * \return true on success, false on failure.
      */
     bool Pend_i(uint32_t u32WaitTimeMS_);
-#else
-    /*!
-     * \brief Pend_i
-     *
-     * Internal function used to abstract timed and untimed semaphore pend operations.
-     *
-     */
-    void Pend_i(void);
-#endif
 
     uint16_t m_u16Value;    //!< Current count held by the semaphore
     uint16_t m_u16MaxValue; //!< Maximum count that can be held by this semaphore
 };
 } //namespace Mark3
-#endif // KERNEL_USE_SEMAPHORE

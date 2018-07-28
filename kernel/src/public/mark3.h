@@ -41,7 +41,6 @@ See license.txt for more information
 #include "condvar.h"
 
 #include "atomic.h"
-#include "kernelaware.h"
 
 #include "profile.h"
 #include "autoalloc.h"

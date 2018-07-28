@@ -13,7 +13,6 @@ set(LIB_SOURCES
     condvar.cpp
     eventflag.cpp
     kernel.cpp
-    kernelaware.cpp
     ksemaphore.cpp
     ll.cpp
     lockguard.cpp
@@ -30,7 +29,6 @@ set(LIB_SOURCES
     threadlist.cpp
     timer.cpp
     timerlist.cpp
-    tracebuffer.cpp
     ${local_mark3_extra_cxx}
     )
 
@@ -40,7 +38,6 @@ set(LIB_HEADERS
     public/blocking.h
     public/condvar.h
     public/eventflag.h
-    public/kernelaware.h
     public/ksemaphore.h
     public/ll.h
     public/mailbox.h
@@ -58,7 +55,6 @@ set(LIB_HEADERS
     public/threadlist.h
     public/timer.h
     public/timerlist.h
-    public/tracebuffer.h
     ${local_mark3_extra_cxx}
     )
 

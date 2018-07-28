@@ -96,35 +96,6 @@ public:
      */
     static void Panic(uint16_t u16Cause_);
 
-#if KERNEL_USE_IDLE_FUNC
-    /*!
-     * \brief SetIdleFunc Set the function to be called when no active threads
-     *        are available to be scheduled by the scheduler.
-     * \param pfIdle_ Pointer to the idle function
-     */
-    static void SetIdleFunc(IdleFunc pfIdle_) { m_pfIdle = pfIdle_; }
-    /*!
-     * \brief IdleFunc Call the low-priority idle function when no active
-     *        threads are available to be scheduled.
-     */
-    static void Idle(void)
-    {
-        if (m_pfIdle != 0) {
-            m_pfIdle();
-        }
-    }
-
-    /*!
-     * \brief GetIdleThread Return a pointer to the Kernel's idle thread
-     *        object to the user.  Note that the Thread object involved is
-     *        to be used for comparisons only -- the thread itself is "virtual",
-     *        and doesn't represent a unique execution context with its own stack.
-     * \return Pointer to the Kernel's idle thread object
-     */
-    static Thread* GetIdleThread(void) { return (Thread*)&m_clIdle; }
-#endif
-
-#if KERNEL_USE_THREAD_CALLOUTS
     /*!
      * \brief SetThreadCreateCallout
      *
@@ -190,31 +161,20 @@ public:
      *         or NULL if not set.
      */
     static ThreadContextCallout GetThreadContextSwitchCallout(void) { return m_pfThreadContextCallout; }
-#endif
 
-#if KERNEL_USE_STACK_GUARD
     static void SetStackGuardThreshold(uint16_t u16Threshold_) { m_u16GuardThreshold = u16Threshold_; }
     static uint16_t                             GetStackGuardThreshold(void) { return m_u16GuardThreshold; }
-#endif
 
 private:
     static bool        m_bIsStarted; //!< true if kernel is running, false otherwise
     static bool        m_bIsPanic;   //!< true if kernel is in panic state, false otherwise
     static PanicFunc m_pfPanic;    //!< set panic function
-#if KERNEL_USE_IDLE_FUNC
-    static IdleFunc   m_pfIdle; //!< set idle function
-    static FakeThread_t m_clIdle; //!< Idle thread object (note: not a real thread)
-#endif
 
-#if KERNEL_USE_THREAD_CALLOUTS
     static ThreadCreateCallout  m_pfThreadCreateCallout;  //!< Function to call on thread creation
     static ThreadExitCallout    m_pfThreadExitCallout;    //!< Function to call on thread exit
     static ThreadContextCallout m_pfThreadContextCallout; //!< Function to call on context switch
-#endif
 
-#if KERNEL_USE_STACK_GUARD
     static uint16_t m_u16GuardThreshold;
-#endif
 };
 
 } //namespace Mark3

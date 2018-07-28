@@ -29,7 +29,6 @@ See license.txt for more information
 #include "timerlist.h"
 #include "quantum.h"
 #include "kernel.h"
-#include "kernelaware.h"
 #include <avr/io.h>
 #include <avr/interrupt.h>
 

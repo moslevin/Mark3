@@ -54,7 +54,6 @@ public:
      */
     void Wait(Mutex* pclMutex_);
 
-#if KERNEL_USE_TIMEOUTS
     /*!
      * @brief Wait
      * Block the current thread, and wait for the object to be signalled.  The specified
@@ -64,7 +63,6 @@ public:
      * @return true on success, false on timeout
      */
     bool Wait(Mutex* pclMutex_, uint32_t u32WaitTimeMS_);
-#endif
 
     /*!
      * @brief Signal
@@ -83,6 +81,4 @@ private:
     Semaphore m_clSemaphore;
     uint8_t m_u8Waiters;
 };
-
-
 } // namespace Mark3

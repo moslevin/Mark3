@@ -24,7 +24,6 @@ See license.txt for more information
 #include "mark3cfg.h"
 #include "threadport.h"
 
-#if KERNEL_USE_ATOMIC
 namespace Mark3
 {
 /*!
@@ -85,4 +84,3 @@ namespace Atomic
     bool TestAndSet(bool* pbLock);
 } // namespace Atomic
 } //namespace Mark3
-#endif // KERNEL_USE_ATOMIC

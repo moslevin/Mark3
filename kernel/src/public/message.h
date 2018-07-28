@@ -83,12 +83,8 @@ See license.txt for more information
 
 #include "ll.h"
 #include "ksemaphore.h"
-
-#if KERNEL_USE_MESSAGE
-
-#if KERNEL_USE_TIMEOUTS
 #include "timerlist.h"
-#endif
+
 namespace Mark3
 {
 //---------------------------------------------------------------------------
@@ -230,7 +226,6 @@ public:
      */
     Message* Receive();
 
-#if KERNEL_USE_TIMEOUTS
     /*!
      *  \brief Receive
      *
@@ -246,7 +241,6 @@ public:
      *          NULL on timeout.
      */
     Message* Receive(uint32_t u32TimeWaitMS_);
-#endif
 
     /*!
      *  \brief Send
@@ -268,7 +262,6 @@ public:
     uint16_t GetCount();
 
 private:
-#if KERNEL_USE_TIMEOUTS
     /*!
      * \brief Receive_i
      *
@@ -279,16 +272,6 @@ private:
      * \return Pointer to a message, or 0 on timeout.
      */
     Message* Receive_i(uint32_t u32TimeWaitMS_);
-#else
-    /*!
-     * \brief Receive_i
-     *
-     * Internal function used to abstract Receive calls.
-     *
-     * \return Pointer to a message.
-     */
-    Message* Receive_i(void);
-#endif
 
     //! Counting semaphore used to manage thread blocking
     Semaphore m_clSemaphore;
@@ -297,4 +280,3 @@ private:
     DoubleLinkList m_clLinkList;
 };
 } //namespace Mark3
-#endif // KERNEL_USE_MESSAGE

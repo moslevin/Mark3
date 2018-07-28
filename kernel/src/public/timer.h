@@ -24,7 +24,6 @@ See license.txt for more information
 
 #include "ll.h"
 
-#if KERNEL_USE_TIMERS
 namespace Mark3
 {
 class Thread;
@@ -268,7 +267,6 @@ public:
 private:    
     friend class TimerList;
 
-#if KERNEL_EXTRA_CHECKS
     /*!
      * \brief SetInitialized
      */
@@ -282,7 +280,6 @@ private:
 
     //! Cookie used to determine whether or not the timer is initialized
     uint8_t m_u8Initialized;
-#endif
 
     //! Flags for the timer, defining if the timer is one-shot or repeated
     uint8_t m_u8Flags;
@@ -306,5 +303,4 @@ private:
     void* m_pvData;
 };
 } //namespace Mark3
-#endif // KERNEL_USE_TIMERS
 

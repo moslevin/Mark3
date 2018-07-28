@@ -54,7 +54,6 @@ See license.txt for more information
 
 #include "blocking.h"
 
-#if KERNEL_USE_MUTEX
 namespace Mark3
 {
 //---------------------------------------------------------------------------
@@ -96,8 +95,6 @@ public:
      */
     void Claim();
 
-#if KERNEL_USE_TIMEOUTS
-
     /*!
      *  \brief Claim
      *
@@ -123,8 +120,6 @@ public:
      *  \param pclOwner_ Thread to unblock from this object.
      */
     void WakeMe(Thread* pclOwner_);
-
-#endif
 
     /*!
      *  \brief Release
@@ -156,7 +151,6 @@ private:
      */
     uint8_t WakeNext();
 
-#if KERNEL_USE_TIMEOUTS
     /*!
      * \brief Claim_i
      *
@@ -166,15 +160,6 @@ private:
      * \return true on successful claim, false otherwise
       */
     bool Claim_i(uint32_t u32WaitTimeMS_);
-#else
-    /*!
-     * \brief Claim_i
-     *
-     * Abstraction for mutex claim operations.
-     *
-     */
-    void Claim_i(void);
-#endif
 
     uint8_t m_u8Recurse; //!< The recursive lock-count when a mutex is claimed multiple times by the same owner
     bool    m_bReady;    //!< State of the mutex - true = ready, false = claimed
@@ -183,4 +168,3 @@ private:
     Thread* m_pclOwner;  //!< Pointer to the thread that owns the mutex (when claimed)
 };
 } //namespace Mark3
-#endif // KERNEL_USE_MUTEX

@@ -102,11 +102,7 @@ public:
     PORT_PRIO_TYPE HighestPriority(void);
 
 private:
-#if PRIO_MAP_MULTI_LEVEL
     PRIO_MAP_WORD_TYPE m_auXPriorityMap[PRIO_MAP_NUM_WORDS];
     PRIO_MAP_WORD_TYPE m_uXPriorityMapL2;
-#else
-    PRIO_MAP_WORD_TYPE m_uXPriorityMap;
-#endif
 };
 } //namespace Mark3

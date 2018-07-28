@@ -23,7 +23,6 @@ See license.txt for more information
 #include "blocking.h"
 #include "thread.h"
 
-#if KERNEL_USE_EVENTFLAG
 namespace Mark3
 {
 //---------------------------------------------------------------------------
@@ -62,7 +61,6 @@ public:
      */
     uint16_t Wait(uint16_t u16Mask_, EventFlagOperation eMode_);
 
-#if KERNEL_USE_TIMEOUTS
     /*!
      * \brief Wait - Block a thread on the specific flags in this event flag group
      * \param u16Mask_ - 16-bit bitmask to block on
@@ -81,8 +79,6 @@ public:
      * \param pclOwner_ Pointer to the owner thread to unblock.
      */
     void WakeMe(Thread* pclChosenOne_);
-
-#endif
 
     /*!
      * \brief Set - Set additional flags in this object (logical OR).  This API can potentially
@@ -104,7 +100,6 @@ public:
     uint16_t GetMask();
 
 private:
-#if KERNEL_USE_TIMEOUTS
     /*!
      * \brief Wait_i
      *
@@ -118,21 +113,7 @@ private:
      * \return Bitmask condition that caused the thread to unblock, or 0 on error or timeout
      */
     uint16_t Wait_i(uint16_t u16Mask_, EventFlagOperation eMode_, uint32_t u32TimeMS_);
-#else
-    /*!
-     * \brief Wait_i
-     * Interal abstraction used to manage wait operations
-     *
-     * \param u16Mask_ - 16-bit bitmask to block on
-     * \param eMode_ - EventFlagOperation::Any_Set:  Thread will block on any of the bits in the mask
-     *               - EventFlagOperation::All_Set:  Thread will block on all of the bits in the mask
-     *
-     * \return Bitmask condition that caused the thread to unblock.
-     */
-    uint16_t Wait_i(uint16_t u16Mask_, EventFlagOperation eMode_);
-#endif
 
     uint16_t m_u16SetMask; //!< Event flags currently set in this object
 };
 } //namespace Mark3
-#endif // KERNEL_USE_EVENTFLAG

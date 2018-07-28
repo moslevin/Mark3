@@ -53,50 +53,37 @@ inline uint8_t priority_from_bitmap(PORT_PRIO_TYPE uXPrio_)
 //---------------------------------------------------------------------------
 PriorityMap::PriorityMap()
 {
-#if PRIO_MAP_MULTI_LEVEL
     m_uXPriorityMapL2 = 0;
     for (int i = 0; i < PRIO_MAP_NUM_WORDS; i++) {
         m_auXPriorityMap[i] = 0;
     }
-#else
-    m_uXPriorityMap = 0;
-#endif
 }
 
 //---------------------------------------------------------------------------
 void PriorityMap::Set(PORT_PRIO_TYPE uXPrio_)
 {
     PORT_PRIO_TYPE uXPrioBit = PRIO_BIT(uXPrio_);
-#if PRIO_MAP_MULTI_LEVEL
     PORT_PRIO_TYPE uXWordIdx = PRIO_MAP_WORD_INDEX(uXPrio_);
 
     m_auXPriorityMap[uXWordIdx] |= (1 << uXPrioBit);
     m_uXPriorityMapL2 |= (1 << uXWordIdx);
-#else
-    m_uXPriorityMap |= (1 << uXPrioBit);
-#endif
 }
 
 //---------------------------------------------------------------------------
 void PriorityMap::Clear(PORT_PRIO_TYPE uXPrio_)
 {
     PORT_PRIO_TYPE uXPrioBit = PRIO_BIT(uXPrio_);
-#if PRIO_MAP_MULTI_LEVEL
     PORT_PRIO_TYPE uXWordIdx = PRIO_MAP_WORD_INDEX(uXPrio_);
 
     m_auXPriorityMap[uXWordIdx] &= ~(1 << uXPrioBit);
     if (!m_auXPriorityMap[uXWordIdx]) {
         m_uXPriorityMapL2 &= ~(1 << uXWordIdx);
     }
-#else
-    m_uXPriorityMap &= ~(1 << uXPrioBit);
-#endif
 }
 
 //---------------------------------------------------------------------------
 PORT_PRIO_TYPE PriorityMap::HighestPriority(void)
 {
-#if PRIO_MAP_MULTI_LEVEL
     PORT_PRIO_TYPE uXMapIdx = priority_from_bitmap(m_uXPriorityMapL2);
     if (!uXMapIdx) {
         return 0;
@@ -104,9 +91,6 @@ PORT_PRIO_TYPE PriorityMap::HighestPriority(void)
     uXMapIdx--;
     PORT_PRIO_TYPE uXPrio = priority_from_bitmap(m_auXPriorityMap[uXMapIdx]);
     uXPrio += (uXMapIdx * PRIO_MAP_BITS);
-#else
-    PORT_PRIO_TYPE uXPrio = priority_from_bitmap(m_uXPriorityMap);
-#endif
     return uXPrio;
 }
 } //namespace Mark3

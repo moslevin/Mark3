@@ -65,11 +65,9 @@ public:
     void* operator new(size_t sz, void* pv) { return (Thread*)pv; };
     ~Thread();
 
-#if KERNEL_EXTRA_CHECKS
     Thread() { m_eState = ThreadState::Invalid; }
 
     bool IsInitialized() { return (m_eState != ThreadState::Invalid); }
-#endif
 
     /*!
      *  \brief Init
@@ -89,7 +87,6 @@ public:
     void
     Init(K_WORD* pwStack_, uint16_t u16StackSize_, PORT_PRIO_TYPE uXPriority_, ThreadEntryFunc pfEntryPoint_, void* pvArg_);
 
-#if KERNEL_USE_AUTO_ALLOC
     /*!
     * \brief Init
     *
@@ -109,7 +106,6 @@ public:
     * \return Pointer to a newly-created thread.
     */
     static Thread* Init(uint16_t u16StackSize_, PORT_PRIO_TYPE uXPriority_, ThreadEntryFunc pfEntryPoint_, void* pvArg_);
-#endif
 
     /*!
      *  \brief Start
@@ -128,7 +124,6 @@ public:
      */
     void Stop();
 
-#if KERNEL_USE_THREADNAME
     /*!
      *  \brief SetName
      *
@@ -146,7 +141,6 @@ public:
      *          will be NULL.
      */
     const char* GetName() { return m_szName; }
-#endif
 
     /*!
      *  \brief GetOwner
@@ -182,7 +176,7 @@ public:
      *  \return Priority of the current thread
      */
     PORT_PRIO_TYPE GetCurPriority(void) { return m_uXCurPriority; }
-#if KERNEL_USE_QUANTUM
+
     /*!
      *  \brief SetQuantum
      *
@@ -199,7 +193,6 @@ public:
      *  \return The thread's quantum
      */
     uint16_t GetQuantum(void) { return m_u16Quantum; }
-#endif
 
     /*!
      *  \brief SetCurrent
@@ -242,7 +235,6 @@ public:
      */
     void InheritPriority(PORT_PRIO_TYPE uXPriority_);
 
-#if KERNEL_USE_DYNAMIC_THREADS
     /*!
      *  \brief Exit
      *
@@ -255,9 +247,7 @@ public:
      *  This must not be called on the idle thread.
      */
     void Exit();
-#endif
 
-#if KERNEL_USE_SLEEP
     /*!
      *  \brief Sleep
      *
@@ -277,7 +267,6 @@ public:
      *  \param u32TimeUs_ Time to sleep (in microseconds)
      */
     static void USleep(uint32_t u32TimeUs_);
-#endif
 
     /*!
      *  \brief Yield
@@ -318,7 +307,6 @@ public:
      */
     uint16_t GetStackSlack();
 
-#if KERNEL_USE_EVENTFLAG
     /*!
      *  \brief GetEventFlagMask returns the thread's current event-flag mask,
      *        which is used in conjunction with the EventFlag blocking object
@@ -343,15 +331,11 @@ public:
      * \return The thread's event flag mode.
      */
     EventFlagOperation GetEventFlagMode() { return m_eFlagMode; }
-#endif
 
-#if KERNEL_USE_TIMEOUTS || KERNEL_USE_SLEEP
     /*!
      *  Return a pointer to the thread's timer object
      */
     Timer* GetTimer();
-#endif
-#if KERNEL_USE_TIMEOUTS
 
     /*!
      * \brief SetExpired
@@ -369,18 +353,7 @@ public:
      * \return true - call expired, false - call did not expire
      */
     bool GetExpired();
-#endif
 
-#if KERNEL_USE_IDLE_FUNC
-    /*!
-     * \brief InitIdle Initialize this Thread object as the Kernel's idle
-     *        thread.  There should only be one of these, maximum, in a
-     *        given system.
-     */
-    void InitIdle();
-#endif
-
-#if KERNEL_USE_EXTENDED_CONTEXT
     /*!
      * \brief GetExtendedContext
      *
@@ -404,7 +377,6 @@ public:
      * \param pvData_ Object to assign to the extended data pointer.+
      */
     void SetExtendedContext(void* pvData_) { m_pvExtendedContext = pvData_; }
-#endif
 
     /*!
      * \brief GetState Returns the current state of the thread to the
@@ -470,15 +442,11 @@ private:
     //! Enum indicating the thread's current state    
     ThreadState m_eState;
 
-#if KERNEL_USE_EXTENDED_CONTEXT
     //! Pointer provided to a Thread to implement thread-local storage
     void*   m_pvExtendedContext;
-#endif
 
-#if KERNEL_USE_THREADNAME
     //! Thread name
     const char* m_szName;
-#endif
 
     //! Size of the stack (in bytes)
     uint16_t m_u16StackSize;
@@ -495,75 +463,20 @@ private:
     //! Pointer to the argument passed into the thread's entrypoint
     void* m_pvArg;
 
-#if KERNEL_USE_QUANTUM
     //! Thread quantum (in milliseconds)
     uint16_t m_u16Quantum;
-#endif
 
-#if KERNEL_USE_EVENTFLAG
     //! Event-flag mask
     uint16_t m_u16FlagMask;
 
     //! Event-flag mode
     EventFlagOperation m_eFlagMode;
-#endif
 
-#if KERNEL_USE_TIMEOUTS || KERNEL_USE_SLEEP
     //! Timer used for blocking-object timeouts
     Timer m_clTimer;
-#endif
 
-#if KERNEL_USE_TIMEOUTS
     //! Indicate whether or not a blocking-object timeout has occurred
     bool m_bExpired;
-#endif
 };
 
-#if KERNEL_USE_IDLE_FUNC
-//---------------------------------------------------------------------------
-/*!
- *  If the kernel is set up to use an idle function instead of an idle thread,
- *  we use a placeholder data structure to "simulate" the effect of having an
- *  idle thread in the system.  When cast to a Thread, this data structure will
- *  still result in GetPriority() calls being valid, which is all that is
- *  needed to support the tick-based/tickless times -- while saving a fairly
- *  decent chunk of RAM on a small micro.
- *
- *  Note that this struct must have the same memory layout as the Thread class
- *  up to the last item.
- */
-typedef struct {
-    LinkListNode* next;
-    LinkListNode* prev;
-
-    //! Pointer to the top of the thread's stack
-    K_WORD* m_pwStackTop;
-
-    //! Pointer to the thread's stack
-    K_WORD* m_pwStack;
-
-    //! Thread ID
-    uint8_t m_u8ThreadID;
-
-    //! Default priority of the thread
-    PORT_PRIO_TYPE m_uXPriority;
-
-    //! Current priority of the thread (priority inheritence)
-    PORT_PRIO_TYPE m_uXCurPriority;
-
-    //! Enum indicating the thread's current state
-    ThreadState m_eState;
-
-#if KERNEL_USE_EXTENDED_CONTEXT
-    //! Pointer provided to a Thread to implement thread-local storage
-    void*   m_pvExtendedContext;
-#endif
-
-#if KERNEL_USE_THREADNAME
-    //! Thread name
-    const char* m_szName;
-#endif
-
-} FakeThread_t;
-#endif //KERNEL_USE_IDLE_FUNC
 } //namespace Mark3

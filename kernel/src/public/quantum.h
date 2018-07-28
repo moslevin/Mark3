@@ -29,7 +29,6 @@ See license.txt for more information
 #include "timerlist.h"
 #include "timerscheduler.h"
 
-#if KERNEL_USE_QUANTUM
 namespace Mark3
 {
 class Timer;
@@ -83,11 +82,9 @@ public:
      */
     static void ClearInTimer(void) { m_bInTimer = false; }
 
-#if KERNEL_TIMERS_THREADED
-    void SetTimerThread(Thread* pclTimerThread_);
+    static void SetTimerThread(Thread* pclTimerThread_);
 
-    Thread* GetTimerThread();
-#endif
+    static Thread* GetTimerThread();
 
 private:
     /*!
@@ -103,13 +100,9 @@ private:
      */
     static void SetTimer(Thread* pclThread_);
 
-#if KERNEL_TIMERS_THREADED
     static Thread* m_pclTimerThread;
-#endif
-
     static Timer m_clQuantumTimer;
     static bool  m_bActive;
     static bool  m_bInTimer;
 };
 } //namespace Mark3
-#endif // KERNEL_USE_QUANTUM
