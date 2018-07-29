@@ -30,20 +30,12 @@ be activated when needed, without impacting the responsiveness of the rest
 of the application.
 
 ===========================================================================*/
-#if !KERNEL_USE_IDLE_FUNC
-#error "This demo requires KERNEL_USE_IDLE_FUNC"
-#endif
-#if !KERNEL_USE_THREAD_CALLOUTS
-#error "This demo requires KERNEL_USE_THREAD_CALLOUTS"
-#endif
-#if !KERNEL_TIMERS_TICKLESS
-#error "This demo requires KERNEL_TIMERS_TICKLESS"
-#endif
 
 extern "C" {
 void __cxa_pure_virtual(void)
 {
 }
+void DebugPrint(const char* szString_);
 }
 
 namespace {
@@ -53,53 +45,56 @@ using namespace Mark3;
 // This block declares the thread data for one main application thread.  It
 // defines a thread object, stack (in word-array form), and the entry-poi   nt
 // function used by the application thread.
-#define APP1_STACK_SIZE (400 / sizeof(K_WORD))
 Thread clApp1Thread;
-K_WORD awApp1Stack[APP1_STACK_SIZE];
+K_WORD awApp1Stack[PORT_KERNEL_DEFAULT_STACK_SIZE];
 void App1Main(void* unused_);
 
 //---------------------------------------------------------------------------
 // This block declares the thread stack data for a thread that we'll create
 // dynamically.
-#define APP2_STACK_SIZE (400 / sizeof(K_WORD))
-K_WORD awApp2Stack[APP2_STACK_SIZE];
+K_WORD awApp2Stack[PORT_KERNEL_DEFAULT_STACK_SIZE];
 
-#if KERNEL_USE_THREAD_CALLOUTS
+//---------------------------------------------------------------------------
+// idle thread -- do nothing
+Thread clIdleThread;
+K_WORD awIdleStack[PORT_KERNEL_DEFAULT_STACK_SIZE];
+void IdleMain(void* /*unused_*/) {while (1) {} }
+
 #define MAX_THREADS (10)
 Thread*  apclActiveThreads[10];
 uint32_t au16ActiveTime[10];
 
 void PrintThreadSlack(void)
 {
-    KernelAware::Print("Stack Slack");
+    Kernel::DebugPrint("Stack Slack");
     for (uint8_t i = 0; i < MAX_THREADS; i++) {
         if (apclActiveThreads[i] != 0) {
             char szStr[10];
 
             auto u16Slack = apclActiveThreads[i]->GetStackSlack();
             MemUtil::DecimalToHex((K_ADDR)apclActiveThreads[i], szStr);
-            KernelAware::Print(szStr);
-            KernelAware::Print(" ");
+            Kernel::DebugPrint(szStr);
+            Kernel::DebugPrint(" ");
             MemUtil::DecimalToString(u16Slack, szStr);
-            KernelAware::Print(szStr);
-            KernelAware::Print("\n");
+            Kernel::DebugPrint(szStr);
+            Kernel::DebugPrint("\n");
         }
     }
 }
 
 void PrintCPUUsage(void)
 {
-    KernelAware::Print("Cpu usage\n");
+    Kernel::DebugPrint("Cpu usage\n");
     for (int i = 0; i < MAX_THREADS; i++) {
         if (apclActiveThreads[i] != 0) {
-            KernelAware::Trace(0, __LINE__, (K_ADDR)apclActiveThreads[i], au16ActiveTime[i]);
+            //KernelAware::Trace(0, __LINE__, (K_ADDR)apclActiveThreads[i], au16ActiveTime[i]);
         }
     }
 }
 
 void ThreadCreate(Thread* pclThread_)
 {
-    KernelAware::Print("TC\n");
+    Kernel::DebugPrint("TC\n");
     CS_ENTER();
     for (uint8_t i = 0; i < MAX_THREADS; i++) {
         if (apclActiveThreads[i] == 0) {
@@ -115,7 +110,7 @@ void ThreadCreate(Thread* pclThread_)
 
 void ThreadExit(Thread* pclThread_)
 {
-    KernelAware::Print("TX\n");
+    Kernel::DebugPrint("TX\n");
     CS_ENTER();
     for (uint8_t i = 0; i < MAX_THREADS; i++) {
         if (apclActiveThreads[i] == pclThread_) {
@@ -132,7 +127,7 @@ void ThreadExit(Thread* pclThread_)
 
 void ThreadContextSwitch(Thread* pclThread_)
 {
-    KernelAware::Print("CS\n");
+    Kernel::DebugPrint("CS\n");
     static uint16_t u16LastTick = 0;
     auto u16Ticks    = KernelTimer::Read();
 
@@ -148,8 +143,6 @@ void ThreadContextSwitch(Thread* pclThread_)
     u16LastTick = u16Ticks;
 }
 
-#endif
-
 //---------------------------------------------------------------------------
 void WorkerMain1(void* arg_)
 {
@@ -162,7 +155,7 @@ void WorkerMain1(void* arg_)
         u32Count++;
     }
 
-    KernelAware::Print("Worker1 -- Done Work\n");
+    Kernel::DebugPrint("Worker1 -- Done Work\n");
     pclSem->Post();
 
     // Work is completed, just spin now.  Let another thread destory u16.
@@ -177,7 +170,7 @@ void WorkerMain2(void* arg_)
         u32Count++;
     }
 
-    KernelAware::Print("Worker2 -- Done Work\n");
+    Kernel::DebugPrint("Worker2 -- Done Work\n");
 
     // A dynamic thread can self-terminate as well:
     Scheduler::GetCurrentThread()->Exit();
@@ -202,7 +195,7 @@ void App1Main(void* unused_)
             u32Count++;
         }
 
-        KernelAware::Print("Thread -- Done Work\n");
+        Kernel::DebugPrint("Thread -- Done Work\n");
 
         PrintThreadSlack();
 
@@ -223,14 +216,14 @@ void App1Main(void* unused_)
             u32Count++;
         }
 
-        KernelAware::Print("Thread -- Done Work\n");
+        Kernel::DebugPrint("Thread -- Done Work\n");
 
         // Check that we're sure the worker thread has terminated before we try running the
         // test loop again.
         while (clMyThread.GetState() != ThreadState::Exit) {
         }
 
-        KernelAware::Print("  Test Done\n");
+        Kernel::DebugPrint("  Test Done\n");
         Thread::Sleep(1000);
         PrintThreadSlack();
     }
@@ -243,10 +236,14 @@ int main(void)
 {
     // See the annotations in previous labs for details on init.
     Kernel::Init();
+    Kernel::SetDebugPrintFunction(DebugPrint);
 
     Kernel::SetThreadCreateCallout(ThreadCreate);
     Kernel::SetThreadExitCallout(ThreadExit);
     Kernel::SetThreadContextSwitchCallout(ThreadContextSwitch);
+
+    clIdleThread.Init(awIdleStack, sizeof(awIdleStack), 0, IdleMain, 0);
+    clIdleThread.Start();
 
     clApp1Thread.Init(awApp1Stack, sizeof(awApp1Stack), 1, App1Main, 0);
     clApp1Thread.Start();

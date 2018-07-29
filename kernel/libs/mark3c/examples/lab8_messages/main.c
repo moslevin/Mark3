@@ -13,6 +13,8 @@ See license.txt for more information
 ===========================================================================*/
 #include "mark3c.h"
 
+extern void DebugPrint(const char* szString_);
+
 /*===========================================================================
 
 Lab Example 8:  Using messages for IPC.
@@ -68,6 +70,7 @@ int main(void)
 {
     // See the annotations in previous labs for details on init.
     Kernel_Init();
+    Kernel_SetDebugPrintFunction(DebugPrint);
 
     Thread_Init(hApp1Thread, awApp1Stack, APP1_STACK_SIZE, 1, App1Main, 0);
     Thread_Init(hApp2Thread, awApp2Stack, APP2_STACK_SIZE, 1, App2Main, 0);
@@ -141,8 +144,8 @@ void App2Main(void* unused_)
         Message_t hMsg = MessageQueue_Receive(hMsgQ);
 
         // We received a message, now print out its information
-        KernelAware_Print("Received Message\n");
-        KernelAware_Trace2(0, __LINE__, Message_GetCode(hMsg), *((uint16_t*)Message_GetData(hMsg)));
+        Kernel_DebugPrint("Received Message\n");
+        // KernelAware_Trace2(0, __LINE__, Message_GetCode(hMsg), *((uint16_t*)Message_GetData(hMsg)));
 
         // Done with the message, return it back to the global message queue.
         MessagePool_Push(hMsgPool, hMsg);

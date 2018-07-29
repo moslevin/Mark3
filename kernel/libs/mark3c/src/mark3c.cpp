@@ -261,6 +261,18 @@ uint16_t Kernel_GetStackGuardThreshold(void)
 }
 
 //---------------------------------------------------------------------------
+void Kernel_SetDebugPrintFunction(kernel_debug_print_t pfPrintFunction_)
+{
+    Kernel::SetDebugPrintFunction(pfPrintFunction_);
+}
+
+//---------------------------------------------------------------------------
+void Kernel_DebugPrint(const char* szString_)
+{
+    Kernel::DebugPrint(szString_);
+}
+
+//---------------------------------------------------------------------------
 // Scheduler APIs
 void Scheduler_Enable(bool bEnable_)
 {

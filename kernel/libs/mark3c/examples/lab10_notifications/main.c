@@ -13,6 +13,8 @@ See license.txt for more information
 ===========================================================================*/
 #include "mark3c.h"
 
+extern void DebugPrint(const char* szString_);
+
 /*===========================================================================
 
 Lab Example 10:  Thread Notifications
@@ -46,6 +48,7 @@ int main(void)
 {
     // See the annotations in previous labs for details on init.
     Kernel_Init();
+    Kernel_SetDebugPrintFunction(DebugPrint);
 
     // Initialize notifer and notify-ee threads
     Thread_Init(hApp1Thread, awApp1Stack, sizeof(awApp1Stack), 1, App1Main, 0);
@@ -71,7 +74,7 @@ void App1Main(void* unused_)
         // elsewhere.
         Notify_Wait(hNotify, &bNotified);
 
-        KernelAware_Print("T1: Notified\n");
+        Kernel_DebugPrint("T1: Notified\n");
     }
 }
 
@@ -81,10 +84,10 @@ void App2Main(void* unused_)
     while (1) {
         // Wait a while, then signal the notification object
 
-        KernelAware_Print("T2: Wait 1s\n");
+        Kernel_DebugPrint("T2: Wait 1s\n");
         Thread_Sleep(1000);
 
-        KernelAware_Print("T2: Notify\n");
+        Kernel_DebugPrint("T2: Notify\n");
         Notify_Signal(hNotify);
     }
 }

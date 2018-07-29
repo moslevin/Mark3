@@ -95,7 +95,6 @@ Message* MessageQueue::Receive_i(uint32_t u32TimeWaitMS_)
     if (!m_clSemaphore.Pend(u32TimeWaitMS_)) {
         return NULL;
     }
-    m_clSemaphore.Pend();
 
     CS_ENTER();
 

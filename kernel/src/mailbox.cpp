@@ -73,7 +73,6 @@ Mailbox* Mailbox::Init(uint16_t u16BufferSize_, uint16_t u16ElementSize_)
 void Mailbox::Receive(void* pvData_)
 {
     KERNEL_ASSERT(pvData_);
-
     Receive_i(pvData_, false, 0);
 }
 
@@ -88,7 +87,6 @@ bool Mailbox::Receive(void* pvData_, uint32_t u32TimeoutMS_)
 void Mailbox::ReceiveTail(void* pvData_)
 {
     KERNEL_ASSERT(pvData_);
-
     Receive_i(pvData_, true, 0);
 }
 
@@ -103,7 +101,6 @@ bool Mailbox::ReceiveTail(void* pvData_, uint32_t u32TimeoutMS_)
 bool Mailbox::Send(void* pvData_)
 {
     KERNEL_ASSERT(pvData_);
-
     return Send_i(pvData_, false, 0);
 }
 
@@ -111,7 +108,6 @@ bool Mailbox::Send(void* pvData_)
 bool Mailbox::SendTail(void* pvData_)
 {
     KERNEL_ASSERT(pvData_);
-
     return Send_i(pvData_, true, 0);
 }
 
@@ -119,7 +115,6 @@ bool Mailbox::SendTail(void* pvData_)
 bool Mailbox::Send(void* pvData_, uint32_t u32TimeoutMS_)
 {
     KERNEL_ASSERT(pvData_);
-
     return Send_i(pvData_, false, u32TimeoutMS_);
 }
 
@@ -127,7 +122,6 @@ bool Mailbox::Send(void* pvData_, uint32_t u32TimeoutMS_)
 bool Mailbox::SendTail(void* pvData_, uint32_t u32TimeoutMS_)
 {
     KERNEL_ASSERT(pvData_);
-
     return Send_i(pvData_, true, u32TimeoutMS_);
 }
 
@@ -197,7 +191,6 @@ bool Mailbox::Receive_i(const void* pvData_, bool bTail_, uint32_t u32WaitTimeMS
         // time allotted.  Bail.
         return false;
     }
-    m_clRecvSem.Pend();
 
     // Disable the scheduler while we do this -- this ensures we don't have
     // multiple concurrent readers off the same queue, which could be problematic

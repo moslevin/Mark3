@@ -35,14 +35,11 @@ can write to/block on a single message queue, which give this method of
 IPC even more flexibility.
 
 ===========================================================================*/
-#if !KERNEL_USE_IDLE_FUNC
-#error "This demo requires KERNEL_USE_IDLE_FUNC"
-#endif
-
 extern "C" {
 void __cxa_pure_virtual(void)
 {
 }
+void DebugPrint(const char* szString_);
 }
 
 namespace {
@@ -64,6 +61,12 @@ void App1Main(void* unused_);
 Thread clApp2Thread;
 K_WORD awApp2Stack[APP2_STACK_SIZE];
 void App2Main(void* unused_);
+
+//---------------------------------------------------------------------------
+// idle thread -- do nothing
+Thread clIdleThread;
+K_WORD awIdleStack[PORT_KERNEL_DEFAULT_STACK_SIZE];
+void IdleMain(void* /*unused_*/) {while (1) {} }
 
 //---------------------------------------------------------------------------
 MessageQueue clMsgQ;
@@ -117,8 +120,8 @@ void App2Main(void* unused_)
         auto* pclMsg = clMsgQ.Receive();
 
         // We received a message, now print out its information
-        KernelAware::Print("Received Message\n");
-        KernelAware::Trace(0, __LINE__, pclMsg->GetCode(), *((uint16_t*)pclMsg->GetData()));
+        Kernel::DebugPrint("Received Message\n");
+        // KernelAware::Trace(0, __LINE__, pclMsg->GetCode(), *((uint16_t*)pclMsg->GetData()));
 
         // Done with the message, return it back to the global message queue.
         s_clMessagePool.Push(pclMsg);
@@ -132,6 +135,10 @@ int main(void)
 {
     // See the annotations in previous labs for details on init.
     Kernel::Init();
+    Kernel::SetDebugPrintFunction(DebugPrint);
+
+    clIdleThread.Init(awIdleStack, sizeof(awIdleStack), 0, IdleMain, 0);
+    clIdleThread.Start();
 
     clApp1Thread.Init(awApp1Stack, sizeof(awApp1Stack), 1, App1Main, 0);
     clApp2Thread.Init(awApp2Stack, sizeof(awApp2Stack), 1, App2Main, 0);

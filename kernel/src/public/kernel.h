@@ -36,6 +36,8 @@ See license.txt for more information
 #include "paniccodes.h"
 #include "thread.h"
 
+using DebugPrintFunction = void (*)(const char* szString_);
+
 namespace Mark3
 {
 //---------------------------------------------------------------------------
@@ -135,6 +137,29 @@ public:
     }
 
     /*!
+     * \brief SetDebugPrintFunction
+     *
+     * Set the function to be used when printing kernel debug information
+     *
+     * \param pfPrintFunction_
+     */
+    static void SetDebugPrintFunction(DebugPrintFunction pfPrintFunction_)
+    {
+        m_pfDebugPrintFunction = pfPrintFunction_;
+    }
+
+    /*!
+     * \brief DebugPrint
+     *
+     * Print a string to the configured output interface.  Has no effect
+     * if Kernel::SetDebugPrintFunction() has not been called with a valid
+     * print handler.
+     *
+     * \param szString_ string to print
+     */
+    static void DebugPrint(const char* szString_);
+
+    /*!
      * \brief GetThreadCreateCallout
      *
      * Return the current function called on every Thread::Init();
@@ -173,7 +198,7 @@ private:
     static ThreadCreateCallout  m_pfThreadCreateCallout;  //!< Function to call on thread creation
     static ThreadExitCallout    m_pfThreadExitCallout;    //!< Function to call on thread exit
     static ThreadContextCallout m_pfThreadContextCallout; //!< Function to call on context switch
-
+    static DebugPrintFunction m_pfDebugPrintFunction; //!< Function to call to print debug info
     static uint16_t m_u16GuardThreshold;
 };
 

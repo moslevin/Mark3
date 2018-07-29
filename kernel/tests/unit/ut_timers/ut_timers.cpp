@@ -210,17 +210,6 @@ TEST(ut_timer_repeat)
     EXPECT_LT(u32TimeVal, u32TempTime);
 #endif
 
-#if 0
-    // Debug code to print out the profiling times
-    Driver *pclDriver = DriverList::FindByPath("/dev/tty");
-    char acData[13];
-    MemUtil::DecimalToString(u32TimeVal, acData);
-    pclDriver->Write( MemUtil::StringLength(acData), (uint8_t*)acData);
-    pclDriver->Write(1, (uint8_t*)(" "));
-    MemUtil::DecimalToString(u32TempTime, acData);
-    pclDriver->Write( MemUtil::StringLength(acData), (uint8_t*)acData);
-#endif
-
     Profiler::Stop();
 }
 TEST_END

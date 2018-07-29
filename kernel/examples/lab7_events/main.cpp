@@ -31,14 +31,12 @@ This provides an efficient, robust way for threads to process asynchronous
 system events that occur with a unified interface.
 
 ===========================================================================*/
-#if !KERNEL_USE_IDLE_FUNC
-#error "This demo requires KERNEL_USE_IDLE_FUNC"
-#endif
 
 extern "C" {
 void __cxa_pure_virtual(void)
 {
 }
+void DebugPrint(const char* szString_);
 }
 
 namespace {
@@ -61,6 +59,12 @@ void App1Main(void* unused_);
 Thread clApp2Thread;
 K_WORD awApp2Stack[APP2_STACK_SIZE];
 void App2Main(void* unused_);
+
+//---------------------------------------------------------------------------
+// idle thread -- do nothing
+Thread clIdleThread;
+K_WORD awIdleStack[PORT_KERNEL_DEFAULT_STACK_SIZE];
+void IdleMain(void* /*unused_*/) {while (1) {} }
 
 //---------------------------------------------------------------------------
 EventFlag clFlags;
@@ -86,22 +90,22 @@ void App1Main(void* unused_)
 
         // Print a message indicaating which bit was set this time.
         switch (u16Flags) {
-            case 0x0001: KernelAware::Print("Event1\n"); break;
-            case 0x0002: KernelAware::Print("Event2\n"); break;
-            case 0x0004: KernelAware::Print("Event3\n"); break;
-            case 0x0008: KernelAware::Print("Event4\n"); break;
-            case 0x0010: KernelAware::Print("Event5\n"); break;
-            case 0x0020: KernelAware::Print("Event6\n"); break;
-            case 0x0040: KernelAware::Print("Event7\n"); break;
-            case 0x0080: KernelAware::Print("Event8\n"); break;
-            case 0x0100: KernelAware::Print("Event9\n"); break;
-            case 0x0200: KernelAware::Print("Event10\n"); break;
-            case 0x0400: KernelAware::Print("Event11\n"); break;
-            case 0x0800: KernelAware::Print("Event12\n"); break;
-            case 0x1000: KernelAware::Print("Event13\n"); break;
-            case 0x2000: KernelAware::Print("Event14\n"); break;
-            case 0x4000: KernelAware::Print("Event15\n"); break;
-            case 0x8000: KernelAware::Print("Event16\n"); break;
+            case 0x0001: Kernel::DebugPrint("Event1\n"); break;
+            case 0x0002: Kernel::DebugPrint("Event2\n"); break;
+            case 0x0004: Kernel::DebugPrint("Event3\n"); break;
+            case 0x0008: Kernel::DebugPrint("Event4\n"); break;
+            case 0x0010: Kernel::DebugPrint("Event5\n"); break;
+            case 0x0020: Kernel::DebugPrint("Event6\n"); break;
+            case 0x0040: Kernel::DebugPrint("Event7\n"); break;
+            case 0x0080: Kernel::DebugPrint("Event8\n"); break;
+            case 0x0100: Kernel::DebugPrint("Event9\n"); break;
+            case 0x0200: Kernel::DebugPrint("Event10\n"); break;
+            case 0x0400: Kernel::DebugPrint("Event11\n"); break;
+            case 0x0800: Kernel::DebugPrint("Event12\n"); break;
+            case 0x1000: Kernel::DebugPrint("Event13\n"); break;
+            case 0x2000: Kernel::DebugPrint("Event14\n"); break;
+            case 0x4000: Kernel::DebugPrint("Event15\n"); break;
+            case 0x8000: Kernel::DebugPrint("Event16\n"); break;
             default: break;
         }
 
@@ -141,6 +145,10 @@ int main(void)
 {
     // See the annotations in previous labs for details on init.
     Kernel::Init();
+    Kernel::SetDebugPrintFunction(DebugPrint);
+
+    clIdleThread.Init(awIdleStack, sizeof(awIdleStack), 0, IdleMain, 0);
+    clIdleThread.Start();
 
     clApp1Thread.Init(awApp1Stack, sizeof(awApp1Stack), 1, App1Main, 0);
     clApp2Thread.Init(awApp2Stack, sizeof(awApp2Stack), 1, App2Main, 0);

@@ -33,14 +33,11 @@ Semaphores can be used to control which threads execute at which time.  This
 allows threads to work cooperatively to achieve a goal in the system.
 
 ===========================================================================*/
-#if !KERNEL_USE_IDLE_FUNC
-#error "This demo requires KERNEL_USE_IDLE_FUNC"
-#endif
-
 extern "C" {
 void __cxa_pure_virtual(void)
 {
 }
+void DebugPrint(const char* szString_);
 }
 
 namespace {
@@ -64,6 +61,12 @@ K_WORD awApp2Stack[APP2_STACK_SIZE];
 void App2Main(void* unused_);
 
 //---------------------------------------------------------------------------
+// idle thread -- do nothing
+Thread clIdleThread;
+K_WORD awIdleStack[PORT_KERNEL_DEFAULT_STACK_SIZE];
+void IdleMain(void* /*unused_*/) {while (1) {} }
+
+//---------------------------------------------------------------------------
 // This is the semaphore that we'll use to synchronize two threads in this
 // demo application
 Semaphore clMySem;
@@ -73,14 +76,14 @@ void App1Main(void* unused_)
 {
     while (1) {
         // Wait until the semaphore is posted from the other thread
-        KernelAware::Print("Wait\n");
+        Kernel::DebugPrint("Wait\n");
         clMySem.Pend();
 
         // Producer thread has finished doing its work -- do something to
         // consume its output.  Once again - a contrived example, but we
         // can imagine that printing out the message is "consuming" the output
         // from the other thread.
-        KernelAware::Print("Triggered!\n");
+        Kernel::DebugPrint("Triggered!\n");
     }
 }
 
@@ -97,7 +100,7 @@ void App2Main(void* unused_)
         u32Counter++;
         if (u32Counter == 1000000) {
             u32Counter = 0;
-            KernelAware::Print("Posted\n");
+            Kernel::DebugPrint("Posted\n");
             clMySem.Post();
         }
     }
@@ -110,6 +113,10 @@ int main(void)
 {
     // See the annotations in previous labs for details on init.
     Kernel::Init();
+    Kernel::SetDebugPrintFunction(DebugPrint);
+
+    clIdleThread.Init(awIdleStack, sizeof(awIdleStack), 0, IdleMain, 0);
+    clIdleThread.Start();
 
     // In this example we create two threads to illustrate the use of a
     // binary semaphore as a synchronization method between two threads.

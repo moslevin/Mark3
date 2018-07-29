@@ -12,8 +12,6 @@ Copyright (c) 2012 - 2018 m0slevin, all rights reserved.
 See license.txt for more information
 ===========================================================================*/
 #include "mark3.h"
-#include "threadport.h"
-
 /*===========================================================================
 
 Lab Example 1: Initializing the Mark3 RTOS kernel with two threads.
@@ -50,26 +48,58 @@ extern "C" {
 void __cxa_pure_virtual(void)
 {
 }
+void DebugPrint(const char* szString_);
 }
 
+namespace {
+using namespace Mark3;
 //---------------------------------------------------------------------------
 // This block declares the thread data for the main application thread.  It
 // defines a thread object, stack (in word-array form), and the entry-point
 // function used by the application thread.
-#define APP_STACK_SIZE (1024 / sizeof(K_WORD))
-static Thread clAppThread;
-static K_WORD awAppStack[APP_STACK_SIZE] __attribute__((aligned(8)));
-static void AppMain(void* unused_);
+Thread clAppThread;
+K_WORD awAppStack[PORT_KERNEL_DEFAULT_STACK_SIZE];
+void AppMain(void* unused_);
 
 //---------------------------------------------------------------------------
 // This block declares the thread data for the idle thread.  It defines a
 // thread object, stack (in word-array form), and the entry-point function
 // used by the idle thread.
-#define IDLE_STACK_SIZE (1024 / sizeof(K_WORD))
-static Thread clIdleThread;
-static K_WORD awIdleStack[IDLE_STACK_SIZE] __attribute__((aligned(8)));
-static void IdleMain(void* unused_);
+Thread clIdleThread;
+K_WORD awIdleStack[PORT_KERNEL_DEFAULT_STACK_SIZE];
+void IdleMain(void* unused_);
 
+//---------------------------------------------------------------------------
+void AppMain(void* unused_)
+{
+    // This function is run from within the application thread.  Here, we
+    // simply print a friendly greeting and allow the thread to sleep for a
+    // while before repeating the message.  Note that while the thread is
+    // sleeping, CPU execution will transition to the Idle thread.
+
+    while (1) {
+        Kernel::DebugPrint("Hello World!\n");
+        Thread::Sleep(1000);
+    }
+}
+
+//---------------------------------------------------------------------------
+void IdleMain(void* unused_)
+{
+    while (1) {
+        // Low priority task + power management routines go here.
+        // The actions taken in this context must *not* cause the thread
+        // to block, as the kernel requires that at least one thread is
+        // schedulable at all times when not using an idle thread.
+
+        // Note that if you have no special power-management code or idle
+        // tasks, an empty while(1){} loop is sufficient to guarantee that
+        // condition.
+    }
+}
+} // anonymous namespace
+
+using namespace Mark3;
 //---------------------------------------------------------------------------
 int main(void)
 {
@@ -79,6 +109,7 @@ int main(void)
     // rely on hardware peripherals (timer, software interrupt, etc.) used by the
     // kernel.
     Kernel::Init();
+    Kernel::SetDebugPrintFunction(DebugPrint);
 
     // Once the kernel initialization has been complete, the user can add their
     // application thread(s) and idle thread.  Threads added before the kerel
@@ -121,35 +152,4 @@ int main(void)
     // avoid warnings.
 
     return 0;
-}
-
-//---------------------------------------------------------------------------
-void AppMain(void* unused_)
-{
-    // This function is run from within the application thread.  Here, we
-    // simply print a friendly greeting and allow the thread to sleep for a
-    // while before repeating the message.  Note that while the thread is
-    // sleeping, CPU execution will transition to the Idle thread.
-
-    while (1) {
-        // KernelAware::Print("Hello World!\n");
-        Thread::Sleep(1000);
-    }
-}
-
-//---------------------------------------------------------------------------
-void IdleMain(void* unused_)
-{
-    while (1) {
-        volatile uint32_t ctr = 0;
-        ctr++;
-        // Low priority task + power management routines go here.
-        // The actions taken in this context must *not* cause the thread
-        // to block, as the kernel requires that at least one thread is
-        // schedulable at all times when not using an idle thread.
-
-        // Note that if you have no special power-management code or idle
-        // tasks, an empty while(1){} loop is sufficient to guarantee that
-        // condition.
-    }
 }

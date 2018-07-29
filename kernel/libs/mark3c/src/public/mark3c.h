@@ -51,6 +51,7 @@ typedef void* ReaderWriterLock_t;  //!< Reader-writer-lock opaque handle data ty
 typedef void (*thread_create_callout_t)(Thread_t hThread_);
 typedef void (*thread_exit_callout_t)(Thread_t hThread_);
 typedef void (*thread_context_callout_t)(Thread_t hThread_);
+typedef void (*kernel_debug_print_t)(const char* szString_);
 
 //---------------------------------------------------------------------------
 // Use the sizes of the structs in fake_types.h to generate opaque object-blobs
@@ -1074,6 +1075,20 @@ bool ReaderWriterLock_TimedAcquireWriter(ReaderWriterLock_t handle, uint32_t u32
  * \return true on success, false on timeout
  */
 bool ReaderWriterLock_TimedAcquireReader(ReaderWriterLock_t handle, uint32_t u32TimeoutMs_);
+
+/*!
+ * \brief Kernel_SetDebugPrintFunction
+ * \sa void Kernel::SetDebugPrintFunction()
+ * \param pfPrintFunction_ Function to use to print debug information from the kernel
+ */
+void Kernel_SetDebugPrintFunction(kernel_debug_print_t pfPrintFunction_);
+
+/*!
+ * \brief KernelDebug_DebugPrint
+ * \sa void DebugPrint(const char* szString_)
+ * \param szString_ String to print to debug interface
+ */
+void Kernel_DebugPrint(const char* szString_);
 
 #if defined(__cplusplus)
 }

@@ -13,6 +13,8 @@ See license.txt for more information
 ===========================================================================*/
 #include "mark3c.h"
 
+extern void DebugPrint(const char* szString_);
+
 /*===========================================================================
 
 Lab Example 9:  Dynamic Threading
@@ -50,6 +52,7 @@ int main(void)
 {
     // See the annotations in previous labs for details on init.
     Kernel_Init();
+    Kernel_SetDebugPrintFunction(DebugPrint);
 
     Thread_Init(hApp1Thread, awApp1Stack, APP1_STACK_SIZE, 1, App1Main, 0);
     Thread_Start(hApp1Thread);
@@ -71,7 +74,7 @@ static void WorkerMain1(void* arg_)
         ulCount++;
     }
 
-    KernelAware_Print("Worker1 -- Done Work\n");
+    Kernel_DebugPrint("Worker1 -- Done Work\n");
     Semaphore_Post(hSem);
 
     // Work is completed, just spin now.  Let another thread destory us.
@@ -86,7 +89,7 @@ static void WorkerMain2(void* arg_)
         ulCount++;
     }
 
-    KernelAware_Print("Worker2 -- Done Work\n");
+    Kernel_DebugPrint("Worker2 -- Done Work\n");
 
     // A dynamic thread can self-terminate as well:
     Thread_Exit(Scheduler_GetCurrentThread());
@@ -111,7 +114,7 @@ void App1Main(void* unused_)
             ulCount++;
         }
 
-        KernelAware_Print("Thread -- Done Work\n");
+        Kernel_DebugPrint("Thread -- Done Work\n");
 
         // Wait for the other thread to finish its job.
         Semaphore_Pend(hMySem);
@@ -130,14 +133,14 @@ void App1Main(void* unused_)
             ulCount++;
         }
 
-        KernelAware_Print("Thread -- Done Work\n");
+        Kernel_DebugPrint("Thread -- Done Work\n");
 
         // Check that we're sure the worker thread has terminated before we try running the
         // test loop again.
         while (Thread_GetState(hMyThread) != THREAD_STATE_EXIT) {
         }
 
-        KernelAware_Print("  Test Done\n");
+        Kernel_DebugPrint("  Test Done\n");
         Thread_Sleep(100);
     }
 }

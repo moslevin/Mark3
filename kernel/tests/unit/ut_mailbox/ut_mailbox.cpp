@@ -25,7 +25,7 @@ using namespace Mark3;
 // Local Defines
 //===========================================================================
 Thread clMBoxThread;
-K_WORD akMBoxStack[PORT_KERNEL_DEFAULT_STACK_SIZE];
+K_WORD akMBoxStack[PORT_KERNEL_DEFAULT_STACK_SIZE * 2];
 
 #define MBOX_BUFFER_SIZE (128)
 Mailbox clMbox;
@@ -91,7 +91,6 @@ TEST(mailbox_blocking_timed)
     //!! of failures more prevalent.
     Thread::Sleep(115);
     EXPECT_GTE(u16Timeouts, 10);
-
     for (int i = 0; i < 10; i++) {
         EXPECT_TRUE(clMbox.Send((void*)aucTxBuf));
         EXPECT_TRUE(MemUtil::CompareMemory((void*)aucRxBuf, (void*)aucTxBuf, 16));
@@ -108,19 +107,18 @@ TEST_END
 TEST(mailbox_send_recv)
 {
     clMbox.Init((void*)aucMBoxBuffer, MBOX_BUFFER_SIZE, 16);
-
     for (int i = 0; i < 8; i++) {
-        EXPECT_TRUE(clMbox.Send((void*)aucTxBuf));
         for (int j = 0; j < 16; j++) {
-            aucTxBuf[j]++;
+            aucTxBuf[j] = i + j;
         }
+        EXPECT_TRUE(clMbox.Send((void*)aucTxBuf));
     }
     EXPECT_FALSE(clMbox.Send((void*)aucTxBuf));
 
     for (int i = 0; i < 8; i++) {
         clMbox.Receive((void*)aucRxBuf);
         for (int j = 0; j < 16; j++) {
-            aucTxBuf[j]--;
+            aucTxBuf[j] = (7 - i) + j;
         }
         EXPECT_TRUE(MemUtil::CompareMemory((void*)aucRxBuf, (void*)aucTxBuf, 16));
     }

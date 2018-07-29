@@ -31,7 +31,6 @@ See license.txt for more information
 #include "kernel.h"
 #include "priomap.h"
 #include "kerneldebug.h"
-
 namespace Mark3
 {
 //---------------------------------------------------------------------------
@@ -324,7 +323,6 @@ uint16_t Thread::GetStackSlack()
 //---------------------------------------------------------------------------
 void Thread::Yield()
 {
-
     CS_ENTER();
     // Run the scheduler
     if (Scheduler::IsEnabled()) {
@@ -410,7 +408,7 @@ void Thread::ContextSwitchSWI()
 {
     // Call the context switch interrupt if the scheduler is enabled.
     if (static_cast<int>(Scheduler::IsEnabled()) == 1) {
-        if (g_pclCurrent->GetStackSlack() <= Kernel::GetStackGuardThreshold()) {
+        if (g_pclCurrent && (g_pclCurrent->GetStackSlack() <= Kernel::GetStackGuardThreshold())) {
             Kernel::Panic(PANIC_STACK_SLACK_VIOLATED);
         }
         ThreadContextCallout pfCallout = Kernel::GetThreadContextSwitchCallout();

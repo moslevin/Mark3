@@ -24,6 +24,46 @@ See license.txt for more information
 #pragma once
 
 #include <stdint.h>
+
+
+/*!
+    Define the number of thread priorities that the kernel's scheduler will
+    support.  The number of thread priorities is limited only by the memory
+    of the host CPU, as a ThreadList object is statically-allocated for each
+    thread priority.
+
+    In practice, systems rarely need more than 32 priority levels, with the
+    most complex having the capacity for 256.
+*/
+#define KERNEL_NUM_PRIORITIES (16)
+
+/*!
+    If you've opted to use the kernel timers module, you have an option
+    as to which timer implementation to use:  Tick-based or Tick-less.
+
+    Tick-based timers provide a "traditional" RTOS timer implementation
+    based on a fixed-frequency timer interrupt.  While this provides
+    very accurate, reliable timing, it also means that the CPU is being
+    interrupted far more often than may be necessary (as not all timer
+    ticks result in "real work" being done).
+
+    Tick-less timers still rely on a hardware timer interrupt, but uses
+    a dynamic expiry interval to ensure that the interrupt is only
+    called when the next timer expires.  This increases the complexity
+    of the timer interrupt handler, but reduces the number and frequency.
+
+    Note that the CPU port (kerneltimer.cpp) must be implemented for the
+    particular timer variant desired.
+*/
+#define KERNEL_TIMERS_TICKLESS (0)
+
+#define KERNEL_TIMERS_THREAD_PRIORITY  (KERNEL_NUM_PRIORITIES - 1)
+
+#define THREAD_QUANTUM_DEFAULT  (4)
+
+#define KERNEL_STACK_GUARD_DEFAULT (32) // words
+
+
 /*!
     Define a macro indicating the CPU architecture for which this port belongs.
 
@@ -82,7 +122,7 @@ extern uint32_t SystemCoreClock;
 /*!
     Define the size of the kernel-timer thread stack (if one is configured)
 */
-#define PORT_KERNEL_TIMERS_THREAD_STACK     ((K_ADDR)256)
+#define PORT_KERNEL_TIMERS_THREAD_STACK     ((K_ADDR)512)
 
 /*!
     Define the native type corresponding to the kernel timer hardware's counter register.

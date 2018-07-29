@@ -13,6 +13,7 @@ See license.txt for more information
 ===========================================================================*/
 #include "mark3c.h"
 
+extern void DebugPrint(const char* szString_);
 /*===========================================================================
 
 Lab Example 4:  Using binary semaphores
@@ -62,6 +63,7 @@ int main(void)
 {
     // See the annotations in previous labs for details on init.
     Kernel_Init();
+    Kernel_SetDebugPrintFunction(DebugPrint);
 
     // In this example we create two threads to illustrate the use of a
     // binary semaphore as a synchronization method between two threads.
@@ -94,14 +96,14 @@ void App1Main(void* unused_)
 {
     while (1) {
         // Wait until the semaphore is posted from the other thread
-        KernelAware_Print("Wait\n");
+        Kernel_DebugPrint("Wait\n");
         Semaphore_Pend(hMySem);
 
         // Producer thread has finished doing its work -- do something to
         // consume its output.  Once again - a contrived example, but we
         // can imagine that printing out the message is "consuming" the output
         // from the other thread.
-        KernelAware_Print("Triggered!\n");
+        Kernel_DebugPrint("Triggered!\n");
     }
 }
 
@@ -118,7 +120,7 @@ void App2Main(void* unused_)
         ulCounter++;
         if (ulCounter == 1000) {
             ulCounter = 0;
-            KernelAware_Print("Posted\n");
+            Kernel_DebugPrint("Posted\n");
             Semaphore_Post(hMySem);
         }
     }

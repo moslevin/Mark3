@@ -13,6 +13,7 @@ See license.txt for more information
 ===========================================================================*/
 #include "mark3c.h"
 
+extern void DebugPrint(const char* szString_);
 /*===========================================================================
 
 Lab Example 5:  Using Mutexes.
@@ -57,6 +58,7 @@ int main(void)
 {
     // See the annotations in previous labs for details on init.
     Kernel_Init();
+    Kernel_SetDebugPrintFunction(DebugPrint);
 
     Thread_Init(hApp1Thread, awApp1Stack, APP1_STACK_SIZE, 1, App1Main, 0);
     Thread_Init(hApp2Thread, awApp2Stack, APP2_STACK_SIZE, 1, App2Main, 0);
@@ -87,13 +89,13 @@ void App1Main(void* unused_)
         // Start our work (incrementing a counter).  Notice that the Start and
         // Done prints wind up as a pair when simuated with flAVR.
 
-        KernelAware_Print("Thread1: Start\n");
+        Kernel_DebugPrint("Thread1: Start\n");
         ulCounter++;
         while (ulCounter <= 10000) {
             ulCounter++;
         }
         ulCounter = 0;
-        KernelAware_Print("Thread1: Done\n");
+        Kernel_DebugPrint("Thread1: Done\n");
 
         // Release the lock, allowing the other thread to do its thing.
         Mutex_Release(hMyMutex);
@@ -114,13 +116,13 @@ void App2Main(void* unused_)
         // Start our work (incrementing a counter).  Notice that the Start and
         // Done prints wind up as a pair when simuated with flAVR.
 
-        KernelAware_Print("Thread2: Start\n");
+        Kernel_DebugPrint("Thread2: Start\n");
         ulCounter++;
         while (ulCounter <= 10000) {
             ulCounter++;
         }
         ulCounter = 0;
-        KernelAware_Print("Thread2: Done\n");
+        Kernel_DebugPrint("Thread2: Done\n");
 
         // Release the lock, allowing the other thread to do its thing.
         Mutex_Release(hMyMutex);

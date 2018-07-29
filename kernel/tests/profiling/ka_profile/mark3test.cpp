@@ -11,6 +11,7 @@
 #include "mutex.h"
 #include "message.h"
 #include "timerlist.h"
+#include "kernelaware.h"
 
 #include <avr/io.h>
 #include <avr/interrupt.h>

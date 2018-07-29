@@ -127,7 +127,6 @@ bool Semaphore::Post()
         // posted, so wake the next one (highest priority goes first).
         bThreadWake = (WakeNext() != 0u);
     }
-
     CS_EXIT();
 
     // If we weren't able to increment the semaphore count, fail out.

@@ -13,6 +13,7 @@ See license.txt for more information
 ===========================================================================*/
 #include "mark3c.h"
 
+extern void DebugPrint(const char* szString_);
 /*===========================================================================
 
 Lab Example 11:  Mailboxes
@@ -50,6 +51,7 @@ int main(void)
 {
     // See the annotations in previous labs for details on init.
     Kernel_Init();
+    Kernel_SetDebugPrintFunction(DebugPrint);
 
     // Initialize the threads used in this example
     Thread_Init(hApp1Thread, awApp1Stack, sizeof(awApp1Stack), 1, App1Main, 0);
@@ -75,7 +77,7 @@ void App1Main(void* unused_)
         // Wait until there is an envelope available in the shared mailbox, and
         // then log a trace message.
         Mailbox_Receive(hMailbox, &stMsg);
-        KernelAware_Trace2(0, __LINE__, stMsg.au8Buffer[0], stMsg.au8Buffer[9]);
+        // KernelAware_Trace2(0, __LINE__, stMsg.au8Buffer[0], stMsg.au8Buffer[9]);
     }
 }
 
@@ -91,7 +93,7 @@ void App2Main(void* unused_)
         // it gets to the sleep, at which point the other thread will be allowed
         // to execute.
 
-        KernelAware_Print("Messages Begin\n");
+        Kernel_DebugPrint("Messages Begin\n");
 
         uint8_t i, j;
         for (i = 0; i < 10; i++) {
@@ -101,7 +103,7 @@ void App2Main(void* unused_)
             Mailbox_Send(hMailbox, &stMsg);
         }
 
-        KernelAware_Print("Messages End\n");
+        Kernel_DebugPrint("Messages End\n");
         Thread_Sleep(2000);
     }
 }

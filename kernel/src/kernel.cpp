@@ -42,7 +42,7 @@ PanicFunc Kernel::m_pfPanic;    //!< set panic function
 ThreadCreateCallout  Kernel::m_pfThreadCreateCallout;  //!< Function to call on thread creation
 ThreadExitCallout    Kernel::m_pfThreadExitCallout;    //!< Function to call on thread exit
 ThreadContextCallout Kernel::m_pfThreadContextCallout; //!< Function to call on context switch
-
+DebugPrintFunction   Kernel::m_pfDebugPrintFunction;   //!< Function to call when printing debug info
 uint16_t Kernel::m_u16GuardThreshold;
 
 //---------------------------------------------------------------------------
@@ -73,4 +73,13 @@ void Kernel::Panic(uint16_t u16Cause_)
         while (true) { }
     }
 }
+
+//---------------------------------------------------------------------------
+void Kernel::DebugPrint(const char* szString_)
+{
+    if (m_pfDebugPrintFunction != nullptr) {
+        m_pfDebugPrintFunction(szString_);
+    }
+}
+
 } //namespace Mark3

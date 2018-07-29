@@ -19,17 +19,18 @@ Lab Example 6:  using Periodic and One-shot timers.
 
 Lessons covered in this example include:
 
+Demonstration of the periodic and one-shot timer APIs provided by Mark3
+
 Takeaway:
 
-===========================================================================*/
-#if !KERNEL_USE_IDLE_FUNC
-#error "This demo requires KERNEL_USE_IDLE_FUNC"
-#endif
+Mark3 can be used to provide flexible one-shot and periodic timers.
 
+===========================================================================*/
 extern "C" {
 void __cxa_pure_virtual(void)
 {
 }
+void DebugPrint(const char* szString_);
 }
 
 namespace {
@@ -44,6 +45,12 @@ K_WORD awApp1Stack[APP1_STACK_SIZE];
 void App1Main(void* unused_);
 
 //---------------------------------------------------------------------------
+// idle thread -- do nothing
+Thread clIdleThread;
+K_WORD awIdleStack[PORT_KERNEL_DEFAULT_STACK_SIZE];
+void IdleMain(void* /*unused_*/) {while (1) {} }
+
+//---------------------------------------------------------------------------
 void PeriodicCallback(Thread* owner, void* pvData_)
 {
     // Timer callback function used to post a semaphore.  Posting the semaphore
@@ -55,7 +62,7 @@ void PeriodicCallback(Thread* owner, void* pvData_)
 //---------------------------------------------------------------------------
 void OneShotCallback(Thread* owner, void* pvData_)
 {
-    KernelAware::Print("One-shot timer expired.\n");
+    Kernel::DebugPrint("One-shot timer expired.\n");
 }
 
 //---------------------------------------------------------------------------
@@ -90,7 +97,7 @@ void App1Main(void* unused_)
 
         // Take some action after the timer posts the semaphore to wake this
         // thread.
-        KernelAware::Print("Thread Triggered.\n");
+        Kernel::DebugPrint("Thread Triggered.\n");
     }
 }
 } // anonymous namespace
@@ -102,6 +109,10 @@ int main(void)
 {
     // See the annotations in previous labs for details on init.
     Kernel::Init();
+    Kernel::SetDebugPrintFunction(DebugPrint);
+
+    clIdleThread.Init(awIdleStack, sizeof(awIdleStack), 0, IdleMain, 0);
+    clIdleThread.Start();
 
     clApp1Thread.Init(awApp1Stack, sizeof(awApp1Stack), 1, App1Main, 0);
 

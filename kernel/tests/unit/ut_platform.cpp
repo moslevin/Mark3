@@ -34,10 +34,8 @@ K_WORD aucAppStack[(PORT_KERNEL_DEFAULT_STACK_SIZE * 3) / 2];
 
 
 //---------------------------------------------------------------------------
-#if !KERNEL_USE_IDLE_FUNC
 Thread  IdleThread; //!< Idle thread - runs when app can't
 K_WORD aucIdleStack[PORT_KERNEL_DEFAULT_STACK_SIZE];
-#endif
 
 using FuncPtr = void (*)(void);
 

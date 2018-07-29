@@ -29,14 +29,12 @@ Takeaway:
   also with round-robin time-slicing between threads at the same priority.
 
 ===========================================================================*/
-#if !KERNEL_USE_IDLE_FUNC
-#error "This demo requires KERNEL_USE_IDLE_FUNC"
-#endif
 
 extern "C" {
 void __cxa_pure_virtual(void)
 {
 }
+void DebugPrint(const char* szString_);
 }
 
 namespace {
@@ -58,6 +56,12 @@ K_WORD awApp2Stack[PORT_KERNEL_DEFAULT_STACK_SIZE];
 void App2Main(void* unused_);
 
 //---------------------------------------------------------------------------
+// idle thread -- do nothing
+Thread clIdleThread;
+K_WORD awIdleStack[PORT_KERNEL_DEFAULT_STACK_SIZE];
+void IdleMain(void* /*unused_*/) {while (1) {} }
+
+//---------------------------------------------------------------------------
 void App1Main(void* unused_)
 {
     // Simple loop that increments a volatile counter to 1000000 then resets
@@ -67,7 +71,7 @@ void App1Main(void* unused_)
         u32Counter++;
         if (u32Counter == 1000000) {
             u32Counter = 0;
-            KernelAware::Print("Thread 1 - Did some work\n");
+            Kernel::DebugPrint("Thread 1 - Did some work\n");
         }
     }
 }
@@ -83,7 +87,7 @@ void App2Main(void* unused_)
         u32Counter++;
         if (u32Counter == 1000000) {
             u32Counter = 0;
-            KernelAware::Print("Thread 2 - Did some work\n");
+            Kernel::DebugPrint("Thread 2 - Did some work\n");
         }
     }
 }
@@ -95,6 +99,10 @@ int main(void)
 {
     // See the annotations in lab1.
     Kernel::Init();
+    Kernel::SetDebugPrintFunction(DebugPrint);
+
+    clIdleThread.Init(awIdleStack, sizeof(awIdleStack), 0, IdleMain, 0);
+    clIdleThread.Start();
 
     // In this exercise, we create two threads at the same priority level.
     // As a result, the CPU will automatically swap between these threads

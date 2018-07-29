@@ -13,6 +13,8 @@ See license.txt for more information
 ===========================================================================*/
 #include "mark3c.h"
 
+extern void DebugPrint(const char* szString_);
+
 /*===========================================================================
 
 Lab Example 7: Using Event Flags
@@ -59,6 +61,7 @@ int main(void)
 {
     // See the annotations in previous labs for details on init.
     Kernel_Init();
+    Kernel_SetDebugPrintFunction(DebugPrint);
 
     Thread_Init(hApp1Thread, awApp1Stack, APP1_STACK_SIZE, 1, App1Main, 0);
     Thread_Init(hApp2Thread, awApp2Stack, APP2_STACK_SIZE, 1, App2Main, 0);
@@ -96,22 +99,22 @@ void App1Main(void* unused_)
 
         // Print a message indicaating which bit was set this time.
         switch (usFlags) {
-            case 0x0001: KernelAware_Print("Event1\n"); break;
-            case 0x0002: KernelAware_Print("Event2\n"); break;
-            case 0x0004: KernelAware_Print("Event3\n"); break;
-            case 0x0008: KernelAware_Print("Event4\n"); break;
-            case 0x0010: KernelAware_Print("Event5\n"); break;
-            case 0x0020: KernelAware_Print("Event6\n"); break;
-            case 0x0040: KernelAware_Print("Event7\n"); break;
-            case 0x0080: KernelAware_Print("Event8\n"); break;
-            case 0x0100: KernelAware_Print("Event9\n"); break;
-            case 0x0200: KernelAware_Print("Event10\n"); break;
-            case 0x0400: KernelAware_Print("Event11\n"); break;
-            case 0x0800: KernelAware_Print("Event12\n"); break;
-            case 0x1000: KernelAware_Print("Event13\n"); break;
-            case 0x2000: KernelAware_Print("Event14\n"); break;
-            case 0x4000: KernelAware_Print("Event15\n"); break;
-            case 0x8000: KernelAware_Print("Event16\n"); break;
+            case 0x0001: Kernel_DebugPrint("Event1\n"); break;
+            case 0x0002: Kernel_DebugPrint("Event2\n"); break;
+            case 0x0004: Kernel_DebugPrint("Event3\n"); break;
+            case 0x0008: Kernel_DebugPrint("Event4\n"); break;
+            case 0x0010: Kernel_DebugPrint("Event5\n"); break;
+            case 0x0020: Kernel_DebugPrint("Event6\n"); break;
+            case 0x0040: Kernel_DebugPrint("Event7\n"); break;
+            case 0x0080: Kernel_DebugPrint("Event8\n"); break;
+            case 0x0100: Kernel_DebugPrint("Event9\n"); break;
+            case 0x0200: Kernel_DebugPrint("Event10\n"); break;
+            case 0x0400: Kernel_DebugPrint("Event11\n"); break;
+            case 0x0800: Kernel_DebugPrint("Event12\n"); break;
+            case 0x1000: Kernel_DebugPrint("Event13\n"); break;
+            case 0x2000: Kernel_DebugPrint("Event14\n"); break;
+            case 0x4000: Kernel_DebugPrint("Event15\n"); break;
+            case 0x8000: Kernel_DebugPrint("Event16\n"); break;
             default: break;
         }
 

@@ -13,6 +13,7 @@ See license.txt for more information
 ===========================================================================*/
 #include "mark3c.h"
 
+extern void DebugPrint(const char* szString_);
 /*===========================================================================
 
 Lab Example 1: Initializing the Mark3 RTOS kernel with two threads.
@@ -73,6 +74,7 @@ int main(void)
     // rely on hardware peripherals (timer, software interrupt, etc.) used by the
     // kernel.
     Kernel_Init();
+    Kernel_SetDebugPrintFunction(DebugPrint);
 
     // Once the kernel initialization has been complete, the user can add their
     // application thread(s) and idle thread.  Threads added before the kerel
@@ -125,7 +127,7 @@ void AppMain(void* unused_)
     // while before repeating the message.  Note that while the thread is
     // sleeping, CPU execution will transition to the Idle thread.
     while (1) {
-        KernelAware_Print("Hello World!\n");
+        Kernel_DebugPrint("Hello World!\n");
         Thread_Sleep(1000);
     }
 }

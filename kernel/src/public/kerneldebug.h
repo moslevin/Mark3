@@ -35,4 +35,7 @@ namespace Mark3
 #else
 # define KERNEL_ASSERT(x)
 #endif
+
+void DebugPrint(const char* szString_);
+
 } // namespace Mark3

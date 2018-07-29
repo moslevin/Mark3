@@ -13,6 +13,7 @@ See license.txt for more information
 ===========================================================================*/
 #include "mark3c.h"
 
+extern void DebugPrint(const char* szString_);
 /*===========================================================================
 
 Lab Example 3:  Using round-robin scheduling to time-slice the CPU.
@@ -53,6 +54,7 @@ int main(void)
 {
     // See the annotations in lab1.
     Kernel_Init();
+    Kernel_SetDebugPrintFunction(DebugPrint);
 
     // In this exercise, we create two threads at the same priority level.
     // As a result, the CPU will automatically swap between these threads
@@ -92,7 +94,7 @@ void App1Main(void* unused_)
         ulCounter++;
         if (ulCounter == 10000) {
             ulCounter = 0;
-            KernelAware_Print("Thread 1 - Did some work\n");
+            Kernel_DebugPrint("Thread 1 - Did some work\n");
         }
     }
 }
@@ -108,7 +110,7 @@ void App2Main(void* unused_)
         ulCounter++;
         if (ulCounter == 10000) {
             ulCounter = 0;
-            KernelAware_Print("Thread 2 - Did some work\n");
+            Kernel_DebugPrint("Thread 2 - Did some work\n");
         }
     }
 }

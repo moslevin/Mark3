@@ -62,7 +62,6 @@ void MsgTimed(void* /*unused*/)
 void MsgConsumer(void* /*unused_*/)
 {
     uint8_t  i;
-
     for (i = 0; i < 20; i++) {
         auto* pclMsg      = clMsgQ.Receive();
         u8PassCount = 0;
@@ -78,6 +77,7 @@ void MsgConsumer(void* /*unused_*/)
             case 0:
                 if (0 == pclMsg->GetCode()) {
                     u8PassCount++;
+
                 }
                 if (0 == pclMsg->GetData()) {
                     u8PassCount++;
@@ -141,7 +141,6 @@ TEST(ut_message_tx_rx)
     pclMsg->SetCode(0);
 
     clMsgQ.Send(pclMsg);
-
     EXPECT_EQUALS(u8PassCount, 3);
 
     pclMsg = s_clMessagePool.Pop();

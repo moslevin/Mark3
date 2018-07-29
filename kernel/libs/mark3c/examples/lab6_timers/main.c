@@ -13,6 +13,8 @@ See license.txt for more information
 ===========================================================================*/
 #include "mark3c.h"
 
+extern void DebugPrint(const char* szString_);
+
 /*===========================================================================
 
 Lab Example 6:  Using Periodic and One-shot timers.
@@ -41,6 +43,7 @@ int main(void)
 {
     // See the annotations in previous labs for details on init.
     Kernel_Init();
+    Kernel_SetDebugPrintFunction(DebugPrint);
 
     Thread_Init(hApp1Thread, awApp1Stack, APP1_STACK_SIZE, 1, App1Main, 0);
     Thread_Start(hApp1Thread);
@@ -62,7 +65,7 @@ void PeriodicCallback(Thread_t owner, void* pvData_)
 //---------------------------------------------------------------------------
 void OneShotCallback(Thread_t owner, void* pvData_)
 {
-    KernelAware_Print("One-shot timer expired.\n");
+    Kernel_DebugPrint("One-shot timer expired.\n");
 }
 
 //---------------------------------------------------------------------------
@@ -97,6 +100,6 @@ void App1Main(void* unused_)
 
         // Take some action after the timer posts the semaphore to wake this
         // thread.
-        KernelAware_Print("Thread Triggered.\n");
+        Kernel_DebugPrint("Thread Triggered.\n");
     }
 }

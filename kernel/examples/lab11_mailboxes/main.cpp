@@ -15,23 +15,22 @@ See license.txt for more information
 
 /*===========================================================================
 
-Lab Example 10:  Thread Notifications
+Lab Example 11:  Mailboxes
 
 Lessons covered in this example include:
-- Create a notification object, and use it to synchronize execution of Threads.
+- Initialize a mailbox for use as an IPC mechanism.
+- Create and use mailboxes to pass data between threads.
 
 Takeaway:
-- Notification objects are a lightweight mechanism to signal thread execution
-  in situations where even a semaphore would be a heavier-weigth option.
+- Mailboxes are a powerful IPC mechanism used to pass messages of a fixed-size
+  between threads.
 
 ===========================================================================*/
-#if !KERNEL_USE_IDLE_FUNC
-#error "This demo requires KERNEL_USE_IDLE_FUNC"
-#endif
 extern "C" {
 void __cxa_pure_virtual(void)
 {
 }
+void DebugPrint(const char* szString_);
 }
 
 namespace {
@@ -47,19 +46,29 @@ K_WORD awApp2Stack[PORT_KERNEL_DEFAULT_STACK_SIZE];
 void App2Main(void* unused_);
 
 //---------------------------------------------------------------------------
-// Notification object used in the example.
-Notify clNotify;
+// idle thread -- do nothing
+Thread clIdleThread;
+K_WORD awIdleStack[PORT_KERNEL_DEFAULT_STACK_SIZE];
+void IdleMain(void* /*unused_*/) {while (1) {} }
+
+//---------------------------------------------------------------------------
+Mailbox clMailbox;
+uint8_t au8MBData[100];
+
+typedef struct {
+    uint8_t au8Buffer[10];
+} MBType_t;
 
 //---------------------------------------------------------------------------
 void App1Main(void* unused_)
 {
     while (1) {
-        auto bNotified = false;
-        // Block the thread until the notification object is signalled from
-        // elsewhere.
-        clNotify.Wait(&bNotified);
+        MBType_t stMsg;
 
-        KernelAware::Print("T1: Notified\n");
+        // Wait until there is an envelope available in the shared mailbox, and
+        // then log a trace message.
+        clMailbox.Receive(&stMsg);
+        // KernelAware::Trace(0, __LINE__, stMsg.au8Buffer[0], stMsg.au8Buffer[9]);
     }
 }
 
@@ -67,13 +76,25 @@ void App1Main(void* unused_)
 void App2Main(void* unused_)
 {
     while (1) {
-        // Wait a while, then signal the notification object
+        MBType_t stMsg;
 
-        KernelAware::Print("T2: Wait 1s\n");
-        Thread::Sleep(1000);
+        // Place a bunch of envelopes in the mailbox, and then wait for a
+        // while.  Note that this thread has a higher priority than the other
+        // thread, so it will keep pushing envelopes to the other thread until
+        // it gets to the sleep, at which point the other thread will be allowed
+        // to execute.
 
-        KernelAware::Print("T2: Notify\n");
-        clNotify.Signal();
+        Kernel::DebugPrint("Messages Begin\n");
+
+        for (uint8_t i = 0; i < 10; i++) {
+            for (uint8_t j = 0; j < 10; j++) {
+                stMsg.au8Buffer[j] = (i * 10) + j;
+            }
+            clMailbox.Send(&stMsg);
+        }
+
+        Kernel::DebugPrint("Messages End\n");
+        Thread::Sleep(2000);
     }
 }
 } // anonymous namespace
@@ -84,16 +105,20 @@ int main(void)
 {
     // See the annotations in previous labs for details on init.
     Kernel::Init();
+    Kernel::SetDebugPrintFunction(DebugPrint);
 
-    // Initialize notifer and notify-ee threads
+    clIdleThread.Init(awIdleStack, sizeof(awIdleStack), 0, IdleMain, 0);
+    clIdleThread.Start();
+
+    // Initialize the threads used in this example
     clApp1Thread.Init(awApp1Stack, sizeof(awApp1Stack), 1, App1Main, 0);
     clApp1Thread.Start();
 
-    clApp2Thread.Init(awApp2Stack, sizeof(awApp2Stack), 1, App2Main, 0);
+    clApp2Thread.Init(awApp2Stack, sizeof(awApp2Stack), 2, App2Main, 0);
     clApp2Thread.Start();
 
-    // Initialize the Notify objects
-    clNotify.Init();
+    // Initialize the mailbox used in this example
+    clMailbox.Init(au8MBData, 100, sizeof(MBType_t));
 
     Kernel::Start();
 
