@@ -18,19 +18,14 @@ See license.txt for more information
     \brief  Implementation of base class for blocking objects
 */
 
-#include "kerneltypes.h"
-#include "mark3cfg.h"
-
-#include "blocking.h"
-#include "thread.h"
-#include "kerneldebug.h"
+#include "mark3.h"
 
 namespace Mark3
 {
 //---------------------------------------------------------------------------
 void BlockingObject::Block(Thread* pclThread_)
 {
-    KERNEL_ASSERT(pclThread_);
+    KERNEL_ASSERT(pclThread_ != nullptr);
 
     // Remove the thread from its current thread list (the "owner" list)
     // ... And add the thread to this object's block list
@@ -45,7 +40,7 @@ void BlockingObject::Block(Thread* pclThread_)
 //---------------------------------------------------------------------------
 void BlockingObject::BlockPriority(Thread* pclThread_)
 {
-    KERNEL_ASSERT(pclThread_);
+    KERNEL_ASSERT(pclThread_ != nullptr);
 
     // Remove the thread from its current thread list (the "owner" list)
     // ... And add the thread to this object's block list
@@ -60,7 +55,7 @@ void BlockingObject::BlockPriority(Thread* pclThread_)
 //---------------------------------------------------------------------------
 void BlockingObject::UnBlock(Thread* pclThread_)
 {
-    KERNEL_ASSERT(pclThread_);
+    KERNEL_ASSERT(pclThread_ != nullptr);
 
     // Remove the thread from its current thread list (the "owner" list)
     pclThread_->GetCurrent()->Remove(pclThread_);

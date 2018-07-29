@@ -20,7 +20,7 @@ See license.txt for more information
 */
 
 #include "mark3.h"
-#include "kerneldebug.h"
+
 namespace Mark3
 {
 namespace
@@ -38,6 +38,9 @@ namespace
  */
 void TimedSemaphore_Callback(Thread* pclOwner_, void* pvData_)
 {
+    KERNEL_ASSERT(pclOwner_ != nullptr);
+    KERNEL_ASSERT(pvData_ != nullptr);
+
     auto* pclSemaphore = static_cast<Semaphore*>(pvData_);
 
     // Indicate that the semaphore has expired on the thread
@@ -65,6 +68,7 @@ Semaphore::~Semaphore()
 //---------------------------------------------------------------------------
 void Semaphore::WakeMe(Thread* pclChosenOne_)
 {
+    KERNEL_ASSERT(pclChosenOne_);
     KERNEL_ASSERT(IsInitialized());
 
     // Remove from the semaphore waitlist and back to its ready list.
@@ -75,6 +79,7 @@ void Semaphore::WakeMe(Thread* pclChosenOne_)
 uint8_t Semaphore::WakeNext()
 {
     auto* pclChosenOne = m_clBlockList.HighestWaiter();
+    KERNEL_ASSERT(pclChosenOne);
 
     // Remove from the semaphore waitlist and back to its ready list.
     UnBlock(pclChosenOne);

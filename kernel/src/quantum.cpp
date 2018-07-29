@@ -19,14 +19,7 @@ See license.txt for more information
 
 */
 
-#include "kerneltypes.h"
-#include "mark3cfg.h"
-
-#include "thread.h"
-#include "timerlist.h"
-#include "quantum.h"
-#include "kerneldebug.h"
-
+#include "mark3.h"
 namespace Mark3
 {
 namespace
@@ -42,6 +35,8 @@ bool  Quantum::m_bInTimer;
 //---------------------------------------------------------------------------
 void Quantum::SetTimer(Thread* pclThread_)
 {
+    KERNEL_ASSERT(pclThread_ != nullptr);
+
     auto lQuantumCallback = [](Thread* pclThread_, void*  /*pvData_*/) {
         if (pclThread_->GetCurrent()->GetHead() != pclThread_->GetCurrent()->GetTail()) {
             bAddQuantumTimer = true;
@@ -59,6 +54,8 @@ void Quantum::SetTimer(Thread* pclThread_)
 //---------------------------------------------------------------------------
 void Quantum::AddThread(Thread* pclThread_)
 {
+    KERNEL_ASSERT(pclThread_ != nullptr);
+
     if (m_bActive) {
         return;
     }
@@ -106,6 +103,8 @@ void Quantum::UpdateTimer(void)
 //---------------------------------------------------------------------------
 void Quantum::SetTimerThread(Thread* pclThread_)
 {
+    KERNEL_ASSERT(pclThread_ != nullptr);
+
     m_pclTimerThread = pclThread_;
 }
 

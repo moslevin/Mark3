@@ -19,16 +19,7 @@ See license.txt for more information
 
 */
 
-#include "kerneltypes.h"
-#include "mark3cfg.h"
-
-#include "timer.h"
-#include "timerlist.h"
-#include "timerscheduler.h"
-#include "kerneltimer.h"
-#include "threadport.h"
-#include "quantum.h"
-#include "kerneldebug.h"
+#include "mark3.h"
 
 namespace Mark3
 {

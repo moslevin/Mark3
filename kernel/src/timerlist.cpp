@@ -20,16 +20,7 @@ See license.txt for more information
 
 */
 
-#include "kerneltypes.h"
-#include "mark3cfg.h"
-
-#include "timerlist.h"
-#include "kerneltimer.h"
-#include "threadport.h"
-#include "quantum.h"
-#include "mutex.h"
-#include "kerneldebug.h"
-
+#include "mark3.h"
 namespace Mark3
 {
 //---------------------------------------------------------------------------
@@ -47,6 +38,8 @@ void TimerList::Init(void)
 //---------------------------------------------------------------------------
 void TimerList::Add(Timer* pclListNode_)
 {
+    KERNEL_ASSERT(pclListNode_ != nullptr);
+
 #if KERNEL_TIMERS_TICKLESS
     bool    bStart = false;
     int32_t lDelta;
@@ -94,6 +87,8 @@ void TimerList::Add(Timer* pclListNode_)
 //---------------------------------------------------------------------------
 void TimerList::Remove(Timer* pclLinkListNode_)
 {
+    KERNEL_ASSERT(pclLinkListNode_ != nullptr);
+
     TIMERLIST_LOCK();
 
     DoubleLinkList::Remove(pclLinkListNode_);
@@ -196,7 +191,9 @@ void TimerList::Process(void)
                 }
 
                 // Run the callback. these callbacks must be very fast...
-                pclPrev->m_pfCallback(pclPrev->m_pclOwner, pclPrev->m_pvData);
+                if (pclPrev->m_pfCallback != nullptr) {
+                    pclPrev->m_pfCallback(pclPrev->m_pclOwner, pclPrev->m_pvData);
+                }
                 pclPrev->m_u8Flags &= ~TIMERLIST_FLAG_CALLBACK;
 
                 // Remove one-shot-timers

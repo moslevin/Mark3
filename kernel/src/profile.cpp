@@ -18,13 +18,7 @@ See license.txt for more information
     \brief  Code profiling utilities
 */
 
-#include "kerneltypes.h"
-#include "mark3cfg.h"
-#include "profile.h"
-#include "kernelprofile.h"
-#include "threadport.h"
-#include "kerneldebug.h"
-
+#include "mark3.h"
 namespace Mark3
 {
 //---------------------------------------------------------------------------

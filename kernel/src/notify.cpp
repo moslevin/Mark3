@@ -18,12 +18,7 @@ See license.txt for more information
     \brief  Lightweight thread notification - blocking object
 
 */
-
-#include "mark3cfg.h"
-#include "notify.h"
 #include "mark3.h"
-#include "kerneldebug.h"
-
 namespace Mark3
 {
 namespace
@@ -31,6 +26,9 @@ namespace
 //---------------------------------------------------------------------------
 void TimedNotify_Callback(Thread* pclOwner_, void* pvData_)
 {
+    KERNEL_ASSERT(pclOwner_ != nullptr);
+    KERNEL_ASSERT(pvData_ != nullptr);
+
     auto* pclNotify = static_cast<Notify*>(pvData_);
 
     // Indicate that the semaphore has expired on the thread
@@ -95,6 +93,7 @@ void Notify::Signal(void)
 //---------------------------------------------------------------------------
 void Notify::Wait(bool* pbFlag_)
 {
+    KERNEL_ASSERT(pbFlag_ != nullptr);
     KERNEL_ASSERT(IsInitialized());
 
     auto bEarlyExit = false;
@@ -123,6 +122,7 @@ void Notify::Wait(bool* pbFlag_)
 //---------------------------------------------------------------------------
 bool Notify::Wait(uint32_t u32WaitTimeMS_, bool* pbFlag_)
 {
+    KERNEL_ASSERT(pbFlag_ != nullptr);
     KERNEL_ASSERT(IsInitialized());
 
     auto  bUseTimer = false;
@@ -171,6 +171,7 @@ bool Notify::Wait(uint32_t u32WaitTimeMS_, bool* pbFlag_)
 //---------------------------------------------------------------------------
 void Notify::WakeMe(Thread* pclChosenOne_)
 {
+    KERNEL_ASSERT(pclChosenOne_ != nullptr);
     KERNEL_ASSERT(IsInitialized());
 
     UnBlock(pclChosenOne_);

@@ -18,8 +18,7 @@ See license.txt for more information
     \brief  Condition Variable implementation
 */
 
-#include "mark3cfg.h"
-#include "condvar.h"
+#include "mark3.h"
 
 namespace Mark3 {
 
@@ -34,6 +33,8 @@ void ConditionVariable::Init()
 //---------------------------------------------------------------------------
 void ConditionVariable::Wait(Mutex* pclMutex_)
 {
+    KERNEL_ASSERT(pclMutex_ != nullptr);
+
     m_clMutex.Claim();
 
     pclMutex_->Release();
@@ -48,6 +49,8 @@ void ConditionVariable::Wait(Mutex* pclMutex_)
 //---------------------------------------------------------------------------
 bool ConditionVariable::Wait(Mutex* pclMutex_, uint32_t u32WaitTimeMS_)
 {
+    KERNEL_ASSERT(pclMutex_ != nullptr);
+
     m_clMutex.Claim();
 
     pclMutex_->Release();

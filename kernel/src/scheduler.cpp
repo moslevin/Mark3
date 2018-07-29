@@ -19,13 +19,7 @@ See license.txt for more information
 
 */
 
-#include "kerneltypes.h"
-#include "ll.h"
-#include "scheduler.h"
-#include "thread.h"
-#include "threadport.h"
-#include "kernel.h"
-#include "kerneldebug.h"
+#include "mark3.h"
 
 volatile Mark3::Thread* g_pclNext;
 Mark3::Thread*          g_pclCurrent;
@@ -64,12 +58,16 @@ void Scheduler::Schedule()
 //---------------------------------------------------------------------------
 void Scheduler::Add(Thread* pclThread_)
 {
+    KERNEL_ASSERT(pclThread_ != nullptr);
+
     m_aclPriorities[pclThread_->GetPriority()].Add(pclThread_);
 }
 
 //---------------------------------------------------------------------------
 void Scheduler::Remove(Thread* pclThread_)
 {
+    KERNEL_ASSERT(pclThread_ != nullptr);
+
     m_aclPriorities[pclThread_->GetPriority()].Remove(pclThread_);
 }
 

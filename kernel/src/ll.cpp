@@ -19,10 +19,7 @@ See license.txt for more information
             are derived
 */
 
-#include "kerneltypes.h"
-#include "kernel.h"
-#include "ll.h"
-#include "kerneldebug.h"
+#include "mark3.h"
 
 namespace Mark3
 {
@@ -36,7 +33,7 @@ void LinkListNode::ClearNode()
 //---------------------------------------------------------------------------
 void DoubleLinkList::Add(LinkListNode* node_)
 {
-    KERNEL_ASSERT(node_);
+    KERNEL_ASSERT(node_ != nullptr);
 
     node_->prev = m_pclTail;
     node_->next = NULL;
@@ -57,7 +54,7 @@ void DoubleLinkList::Add(LinkListNode* node_)
 //---------------------------------------------------------------------------
 void DoubleLinkList::Remove(LinkListNode* node_)
 {
-    KERNEL_ASSERT(node_);
+    KERNEL_ASSERT(node_ != nullptr);
 
     if (node_->prev != nullptr) {
         if (node_->prev->next != node_) {
@@ -83,6 +80,8 @@ void DoubleLinkList::Remove(LinkListNode* node_)
 //---------------------------------------------------------------------------
 void CircularLinkList::Add(LinkListNode* node_)
 {
+    KERNEL_ASSERT(node_ != nullptr);
+
     if (m_pclHead == nullptr) {
         // If the list is empty, initilize the nodes
         m_pclHead = node_;
@@ -103,6 +102,8 @@ void CircularLinkList::Add(LinkListNode* node_)
 //---------------------------------------------------------------------------
 void CircularLinkList::Remove(LinkListNode* node_)
 {
+    KERNEL_ASSERT(node_ != nullptr);
+
     // Check to see if this is the head of the list...
     if ((node_ == m_pclHead) && (m_pclHead == m_pclTail)) {
         // Clear the head and tail pointers - nothing else left.
@@ -151,7 +152,8 @@ void CircularLinkList::PivotBackward()
 //---------------------------------------------------------------------------
 void CircularLinkList::InsertNodeBefore(LinkListNode* node_, LinkListNode* insert_)
 {
-    KERNEL_ASSERT(node_);
+    KERNEL_ASSERT(node_ != nullptr);
+    KERNEL_ASSERT(insert_ != nullptr);
 
     node_->next = insert_;
     node_->prev = insert_->prev;

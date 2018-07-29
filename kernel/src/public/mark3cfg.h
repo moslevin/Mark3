@@ -25,4 +25,6 @@ See license.txt for more information
 */
 #pragma once
 
+#define KERNEL_DEBUG (0)
+
 #include "portcfg.h"    //!< include CPU/Port specific configuration options

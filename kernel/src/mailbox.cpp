@@ -18,12 +18,7 @@ See license.txt for more information
     \brief  Mailbox + Envelope IPC mechanism
 */
 
-#include "mark3cfg.h"
-#include "kerneltypes.h"
-#include "ksemaphore.h"
-#include "mailbox.h"
-#include "kerneldebug.h"
-
+#include "mark3.h"
 namespace Mark3
 {
 //---------------------------------------------------------------------------
@@ -40,7 +35,7 @@ void Mailbox::Init(void* pvBuffer_, uint16_t u16BufferSize_, uint16_t u16Element
 {
     KERNEL_ASSERT(u16BufferSize_);
     KERNEL_ASSERT(u16ElementSize_);
-    KERNEL_ASSERT(pvBuffer_);
+    KERNEL_ASSERT(pvBuffer_ != nullptr);
 
     m_pvBuffer       = pvBuffer_;
     m_u16ElementSize = u16ElementSize_;
@@ -63,8 +58,23 @@ void Mailbox::Init(void* pvBuffer_, uint16_t u16BufferSize_, uint16_t u16Element
 //---------------------------------------------------------------------------
 Mailbox* Mailbox::Init(uint16_t u16BufferSize_, uint16_t u16ElementSize_)
 {
+    KERNEL_ASSERT(u16BufferSize_);
+    KERNEL_ASSERT(u16ElementSize_);
+
     auto* pclNew   = AutoAlloc::NewMailbox();
     auto* pvBuffer = AutoAlloc::NewRawData(u16BufferSize_);
+
+    KERNEL_ASSERT(pclNew != nullptr);
+    KERNEL_ASSERT(pvBuffer != nullptr);
+
+    if (!pclNew) {
+        return nullptr;
+    }
+    if (!pvBuffer) {
+        AutoAlloc::DestroyMailbox(pclNew);
+        return nullptr;
+    }
+
     pclNew->Init(pvBuffer, u16BufferSize_, u16ElementSize_);
     return pclNew;
 }
@@ -72,62 +82,64 @@ Mailbox* Mailbox::Init(uint16_t u16BufferSize_, uint16_t u16ElementSize_)
 //---------------------------------------------------------------------------
 void Mailbox::Receive(void* pvData_)
 {
-    KERNEL_ASSERT(pvData_);
+    KERNEL_ASSERT(pvData_ != nullptr);
     Receive_i(pvData_, false, 0);
 }
 
 //---------------------------------------------------------------------------
 bool Mailbox::Receive(void* pvData_, uint32_t u32TimeoutMS_)
 {
-    KERNEL_ASSERT(pvData_);
+    KERNEL_ASSERT(pvData_ != nullptr);
     return Receive_i(pvData_, false, u32TimeoutMS_);
 }
 
 //---------------------------------------------------------------------------
 void Mailbox::ReceiveTail(void* pvData_)
 {
-    KERNEL_ASSERT(pvData_);
+    KERNEL_ASSERT(pvData_ != nullptr);
     Receive_i(pvData_, true, 0);
 }
 
 //---------------------------------------------------------------------------
 bool Mailbox::ReceiveTail(void* pvData_, uint32_t u32TimeoutMS_)
 {
-    KERNEL_ASSERT(pvData_);
+    KERNEL_ASSERT(pvData_ != nullptr);
     return Receive_i(pvData_, true, u32TimeoutMS_);
 }
 
 //---------------------------------------------------------------------------
 bool Mailbox::Send(void* pvData_)
 {
-    KERNEL_ASSERT(pvData_);
+    KERNEL_ASSERT(pvData_ != nullptr);
     return Send_i(pvData_, false, 0);
 }
 
 //---------------------------------------------------------------------------
 bool Mailbox::SendTail(void* pvData_)
 {
-    KERNEL_ASSERT(pvData_);
+    KERNEL_ASSERT(pvData_ != nullptr);
     return Send_i(pvData_, true, 0);
 }
 
 //---------------------------------------------------------------------------
 bool Mailbox::Send(void* pvData_, uint32_t u32TimeoutMS_)
 {
-    KERNEL_ASSERT(pvData_);
+    KERNEL_ASSERT(pvData_ != nullptr);
     return Send_i(pvData_, false, u32TimeoutMS_);
 }
 
 //---------------------------------------------------------------------------
 bool Mailbox::SendTail(void* pvData_, uint32_t u32TimeoutMS_)
 {
-    KERNEL_ASSERT(pvData_);
+    KERNEL_ASSERT(pvData_ != nullptr);
     return Send_i(pvData_, true, u32TimeoutMS_);
 }
 
 //---------------------------------------------------------------------------
 bool Mailbox::Send_i(const void* pvData_, bool bTail_, uint32_t u32TimeoutMS_)
 {
+    KERNEL_ASSERT(pvData_ != nullptr);
+
     const void* pvDst = NULL;
 
     auto bRet        = false;
@@ -184,6 +196,7 @@ bool Mailbox::Send_i(const void* pvData_, bool bTail_, uint32_t u32TimeoutMS_)
 //---------------------------------------------------------------------------
 bool Mailbox::Receive_i(const void* pvData_, bool bTail_, uint32_t u32WaitTimeMS_)
 {
+    KERNEL_ASSERT(pvData_ != nullptr);
     const void* pvSrc;
 
     if (!m_clRecvSem.Pend(u32WaitTimeMS_)) {
@@ -212,6 +225,7 @@ bool Mailbox::Receive_i(const void* pvData_, bool bTail_, uint32_t u32WaitTimeMS
 
     CS_EXIT();
 
+    KERNEL_ASSERT(pvSrc);
     CopyData(pvSrc, pvData_, m_u16ElementSize);
 
     Scheduler::SetScheduler(bSchedState);

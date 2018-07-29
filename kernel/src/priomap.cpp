@@ -17,11 +17,6 @@ See license.txt for more information
 */
 
 #include "mark3.h"
-#include "priomap.h"
-#include "threadport.h"
-
-#include <stdint.h>
-#include <stdbool.h>
 namespace Mark3
 {
 //---------------------------------------------------------------------------

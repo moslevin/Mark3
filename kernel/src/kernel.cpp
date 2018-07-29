@@ -18,20 +18,7 @@ See license.txt for more information
     \brief  Kernel initialization and startup code
 */
 
-#include "kerneltypes.h"
-#include "mark3cfg.h"
-
-#include "kernel.h"
-#include "scheduler.h"
-#include "thread.h"
-#include "threadport.h"
-#include "timerlist.h"
-#include "message.h"
-#include "profile.h"
-#include "kernelprofile.h"
-#include "autoalloc.h"
-#include "kerneldebug.h"
-
+#include "mark3.h"
 namespace Mark3
 {
 
@@ -77,6 +64,7 @@ void Kernel::Panic(uint16_t u16Cause_)
 //---------------------------------------------------------------------------
 void Kernel::DebugPrint(const char* szString_)
 {
+    KERNEL_ASSERT(szString_ != nullptr);
     if (m_pfDebugPrintFunction != nullptr) {
         m_pfDebugPrintFunction(szString_);
     }

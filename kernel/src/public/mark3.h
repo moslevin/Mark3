@@ -21,6 +21,7 @@ See license.txt for more information
 
 #include "mark3cfg.h"
 #include "kerneltypes.h"
+#include "kerneldebug.h"
 
 #include "threadport.h"
 #include "kernelswi.h"
@@ -33,6 +34,7 @@ See license.txt for more information
 
 #include "ksemaphore.h"
 #include "mutex.h"
+#include "lockguard.h"
 #include "eventflag.h"
 #include "message.h"
 #include "notify.h"

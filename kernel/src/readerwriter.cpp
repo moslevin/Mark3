@@ -18,8 +18,6 @@ See license.txt for more information
 
 */
 #include "mark3.h"
-#include "kerneldebug.h"
-
 namespace Mark3 {
 
 //---------------------------------------------------------------------------

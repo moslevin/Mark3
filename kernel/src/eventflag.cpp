@@ -16,14 +16,8 @@ See license.txt for more information
     \brief Event Flag Blocking Object/IPC-Object implementation.
 */
 
-#include "mark3cfg.h"
-#include "blocking.h"
-#include "kernel.h"
-#include "thread.h"
-#include "eventflag.h"
-#include "kerneldebug.h"
+#include "mark3.h"
 
-#include "timerlist.h"
 namespace Mark3 {
 namespace {
 //---------------------------------------------------------------------------
@@ -40,6 +34,9 @@ namespace {
  */
 void TimedEventFlag_Callback(Thread* pclOwner_, void* pvData_)
 {
+    KERNEL_ASSERT(pclOwner_ != nullptr);
+    KERNEL_ASSERT(pvData_ != nullptr);
+
     auto* pclEventFlag = static_cast<EventFlag*>(pvData_);
 
     pclEventFlag->WakeMe(pclOwner_);
@@ -73,6 +70,7 @@ void EventFlag::Init()
 void EventFlag::WakeMe(Thread* pclChosenOne_)
 {
     KERNEL_ASSERT(IsInitialized());
+    KERNEL_ASSERT(pclChosenOne_ != nullptr);
 
     UnBlock(pclChosenOne_);
 }
@@ -80,6 +78,7 @@ void EventFlag::WakeMe(Thread* pclChosenOne_)
 //---------------------------------------------------------------------------
 uint16_t EventFlag::Wait_i(uint16_t u16Mask_, EventFlagOperation eMode_, uint32_t u32TimeMS_)
 {
+    KERNEL_ASSERT(eMode_ <= EventFlagOperation::Pending_Unblock);
     KERNEL_ASSERT(IsInitialized());
 
     auto bThreadYield = false;
@@ -157,12 +156,14 @@ uint16_t EventFlag::Wait_i(uint16_t u16Mask_, EventFlagOperation eMode_, uint32_
 //---------------------------------------------------------------------------
 uint16_t EventFlag::Wait(uint16_t u16Mask_, EventFlagOperation eMode_)
 {
+    KERNEL_ASSERT(eMode_ <= EventFlagOperation::Pending_Unblock);
     return Wait_i(u16Mask_, eMode_, 0);
 }
 
 //---------------------------------------------------------------------------
 uint16_t EventFlag::Wait(uint16_t u16Mask_, EventFlagOperation eMode_, uint32_t u32TimeMS_)
 {
+    KERNEL_ASSERT(eMode_ <= EventFlagOperation::Pending_Unblock);
     return Wait_i(u16Mask_, eMode_, u32TimeMS_);
 }
 

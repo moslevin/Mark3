@@ -17,13 +17,7 @@ See license.txt for more information
     \brief Mutual-exclusion object
 */
 
-#include "kerneltypes.h"
-#include "mark3cfg.h"
-
-#include "blocking.h"
-#include "mutex.h"
-#include "kerneldebug.h"
-
+#include "mark3.h"
 namespace Mark3
 {
 namespace
@@ -41,6 +35,9 @@ namespace
  */
 void TimedMutex_Callback(Thread* pclOwner_, void* pvData_)
 {
+    KERNEL_ASSERT(pclOwner_ != nullptr);
+    KERNEL_ASSERT(pvData_ != nullptr);
+
     auto* pclMutex = static_cast<Mutex*>(pvData_);
 
     // Indicate that the semaphore has expired on the thread
@@ -68,6 +65,7 @@ Mutex::~Mutex()
 //---------------------------------------------------------------------------
 void Mutex::WakeMe(Thread* pclOwner_)
 {
+    KERNEL_ASSERT(pclOwner_ != nullptr);
     // Remove from the semaphore waitlist and back to its ready list.
     UnBlock(pclOwner_);
 }
@@ -77,6 +75,7 @@ uint8_t Mutex::WakeNext()
 {
     // Get the highest priority waiter thread
     auto* pclChosenOne = m_clBlockList.HighestWaiter();
+    KERNEL_ASSERT(pclChosenOne);
 
     // Unblock the thread
     UnBlock(pclChosenOne);

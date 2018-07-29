@@ -79,6 +79,11 @@ namespace Mark3 {
 //---------------------------------------------------------------------------
 TEST(ut_timer_sanity_multi)
 {
+    clTimer.Init();
+    clTimer1.Init();
+    clTimer2.Init();
+    clTimer3.Init();
+
     s_clMessagePool.Init();
     for (int i = 0; i < MESSAGE_POOL_SIZE; i++) {
         s_clMessages[i].Init();
@@ -101,6 +106,7 @@ TEST(ut_timer_sanity_multi)
     Profiler::Start();
 
     // use prime numbers for extra random interaction.
+
     clTimer1.Start(true, 7, TCallbackMulti1, NULL);
     clProfiler1.Start();
     clTimer2.Start(true, 13, TCallbackMulti2, NULL);
@@ -165,6 +171,11 @@ volatile uint32_t u32Delta = 0;
 
 TEST(ut_timer_sanity_precision)
 {
+    clTimer.Init();
+    clTimer1.Init();
+    clTimer2.Init();
+    clTimer3.Init();
+
     s_clMessagePool.Init();
     for (int i = 0; i < MESSAGE_POOL_SIZE; i++) {
         s_clMessages[i].Init();

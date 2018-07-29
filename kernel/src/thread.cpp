@@ -22,15 +22,8 @@ See license.txt for more information
 #include "kerneltypes.h"
 #include "mark3cfg.h"
 
-#include "thread.h"
-#include "scheduler.h"
-#include "kernelswi.h"
-#include "timerlist.h"
-#include "ksemaphore.h"
-#include "quantum.h"
-#include "kernel.h"
-#include "priomap.h"
-#include "kerneldebug.h"
+#include "mark3.h"
+
 namespace Mark3
 {
 //---------------------------------------------------------------------------
@@ -407,11 +400,11 @@ void Thread::InheritPriority(PORT_PRIO_TYPE uXPriority_)
 void Thread::ContextSwitchSWI()
 {
     // Call the context switch interrupt if the scheduler is enabled.
-    if (static_cast<int>(Scheduler::IsEnabled()) == 1) {
+    if (Scheduler::IsEnabled()) {
         if (g_pclCurrent && (g_pclCurrent->GetStackSlack() <= Kernel::GetStackGuardThreshold())) {
             Kernel::Panic(PANIC_STACK_SLACK_VIOLATED);
         }
-        ThreadContextCallout pfCallout = Kernel::GetThreadContextSwitchCallout();
+        auto pfCallout = Kernel::GetThreadContextSwitchCallout();
         if (pfCallout != nullptr) {
             pfCallout(g_pclCurrent);
         }

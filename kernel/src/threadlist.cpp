@@ -19,12 +19,7 @@ See license.txt for more information
 
 */
 
-#include "kerneltypes.h"
-#include "ll.h"
-#include "threadlist.h"
-#include "thread.h"
-#include "kerneldebug.h"
-
+#include "mark3.h"
 namespace Mark3
 {
 //---------------------------------------------------------------------------
@@ -36,12 +31,14 @@ void ThreadList::SetPriority(PORT_PRIO_TYPE uXPriority_)
 //---------------------------------------------------------------------------
 void ThreadList::SetMapPointer(PriorityMap* pclMap_)
 {
+    KERNEL_ASSERT(pclMap_ != nullptr);
     m_pclMap = pclMap_;
 }
 
 //---------------------------------------------------------------------------
 void ThreadList::Add(LinkListNode* node_)
 {
+    KERNEL_ASSERT(node_ != nullptr);
     CircularLinkList::Add(node_);
     CircularLinkList::PivotForward();
 
@@ -55,6 +52,7 @@ void ThreadList::Add(LinkListNode* node_)
 //---------------------------------------------------------------------------
 void ThreadList::AddPriority(LinkListNode* node_)
 {
+    KERNEL_ASSERT(node_ != nullptr);
     auto* pclCurr = static_cast<Thread*>(GetHead());
     if (pclCurr == nullptr) {
         Add(node_);

@@ -17,11 +17,7 @@ See license.txt for more information
     \brief  Automatic memory allocation for kernel objects.
 */
 
-#include "mark3cfg.h"
 #include "mark3.h"
-#include "autoalloc.h"
-#include "threadport.h"
-#include "kernel.h"
 
 #include <stdint.h>
 

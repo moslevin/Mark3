@@ -14,7 +14,7 @@ See license.txt for more information
 /*!
     \file portcfg.h
 
-    \brief Mark3 Port Configuration
+    \brief Mark3 Port Configurationd
 
     This file is used to configure the kernel for your specific target CPU
     in order to provide the optimal set of features for a given use case.

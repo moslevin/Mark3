@@ -135,6 +135,7 @@ using namespace Mark3;
 int main(void)
 {
     Kernel::Init(); //!< MUST be before other kernel ops
+    Kernel::SetDebugPrintFunction(PrintString);
 
     AppThread.Init(aucAppStack,             //!< Pointer to the stack
                    sizeof(aucAppStack),          //!< Size of the stack
