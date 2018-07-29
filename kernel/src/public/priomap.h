@@ -36,7 +36,13 @@ See license.txt for more information
 // # of bits in an integer used to represent the number of bits in the map.
 // Used for bitshifting the bit index away from the map index.
 // i.e. 3 == 8 bits, 4 == 16 bits, 5 == 32 bits, etc...
-#define PRIO_MAP_WORD_SHIFT (2 + PORT_PRIO_MAP_WORD_SIZE)
+#if (PORT_PRIO_MAP_WORD_SIZE == 1)
+# define PRIO_MAP_WORD_SHIFT (3)
+#elif (PORT_PRIO_MAP_WORD_SIZE == 2)
+# define PRIO_MAP_WORD_SHIFT (4)
+#elif (PORT_PRIO_MAP_WORD_SIZE == 4)
+# define PRIO_MAP_WORD_SHIFT (5)
+#endif
 
 // Bitmask used to separate out the priorities first-level bitmap from its
 // second-level map index for a given priority
@@ -102,7 +108,11 @@ public:
     PORT_PRIO_TYPE HighestPriority(void);
 
 private:
+#if PRIO_MAP_MULTI_LEVEL
     PRIO_MAP_WORD_TYPE m_auXPriorityMap[PRIO_MAP_NUM_WORDS];
     PRIO_MAP_WORD_TYPE m_uXPriorityMapL2;
+#else
+    PRIO_MAP_WORD_TYPE m_uXPriorityMap;
+#endif
 };
 } //namespace Mark3

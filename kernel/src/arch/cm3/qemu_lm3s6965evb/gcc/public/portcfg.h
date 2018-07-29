@@ -35,7 +35,7 @@ See license.txt for more information
     In practice, systems rarely need more than 32 priority levels, with the
     most complex having the capacity for 256.
 */
-#define KERNEL_NUM_PRIORITIES (16)
+#define KERNEL_NUM_PRIORITIES (255)
 
 /*!
     If you've opted to use the kernel timers module, you have an option
