@@ -57,6 +57,10 @@ set(AVR_OBJCOPY_DBG_FLAGS
     --only-section=.logger -O binary --set-section-flags .logger=alloc --change-section-address .logger=0
     )
 
+set(AVR_BASE_LIBS
+    kernelaware
+    )
+
 #----------------------------------------------------------------------------
 set_property(GLOBAL PROPERTY global_cc "${AVR_CC}")
 set_property(GLOBAL PROPERTY global_cxx "${AVR_CXX}")
@@ -69,3 +73,4 @@ set_property(GLOBAL PROPERTY global_ln_flags "${AVR_LN_FLAGS}")
 set_property(GLOBAL PROPERTY global_ln_dbg_flags "${AVR_LN_DBG_FLAGS}")
 set_property(GLOBAL PROPERTY global_objcopy_flags "${AVR_OBJCOPY_FLAGS}")
 set_property(GLOBAL PROPERTY global_objcopy_dbg_flags "${AVR_OBJCOPY_DBG_FLAGS}")
+set_property(GLOBAL PROPERTY global_base_libs "${AVR_BASE_LIBS}")
