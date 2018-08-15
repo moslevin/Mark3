@@ -50,7 +50,7 @@ enum class AutoAllocType : uint8_t {
 
 //---------------------------------------------------------------------------
 using AutoAllocAllocator_t = void* (*)(AutoAllocType eType_, size_t sSize_);
-using AutoAllocFree_t = void* (*)(AutoAllocType eType_, void* pvObj_);
+using AutoAllocFree_t = void (*)(AutoAllocType eType_, void* pvObj_);
 
 //---------------------------------------------------------------------------
 // Forward declaration of kernel objects that can be auotomatically allocated.

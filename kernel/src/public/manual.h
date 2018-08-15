@@ -105,284 +105,7 @@ See license.txt for more information
 
     \section CONFIG_I Overview
 
-    The Mark3 Kernel features a large number of compile-time options that can
-    be set by the user.  In this way, the user can build a custom OS kernel that
-    provides only the necessary feature set required by the application, and
-    reduce the code and data requirements of the kernel.
-
-    Care has been taken to ensure that all valid combinations of features can be
-    enabled or disabled, barring direct dependencies.
-
-    When Mark3 is built, the various compile-time definitions are used to alter
-    how the kernel is compiled, and include or exclude various bits and pieces
-    in order to satisfy the requirements of the selected features.  As a result,
-    the kernel must be rebuilt whenever changes are made to the configuration
-    header.
-
-    Note that not all demos, libraries, and tests will build successfully if the
-    prerequisite features are not included.
-
-    Kernel options are set by modifying mark3cfg.h, located within the
-    /kernel/public folder.
-
-    In the following sections, we will discuss the various configuration options,
-    grouped by functionality.
-
-    \section CONFIG_T Timer Options
-
-    <b>KERNEL_USE_TIMERS</b>
-
-    This option is related to all kernel time-tracking:
-    - Timers provide a way for events to be periodically triggered in a
-     lightweight manner.  These can be periodic, or one-shot.
-    - Thread Quantum (usedd for round-robin scheduling) is dependent on this
-     module, as is Thread Sleep functionality.
-    .
-
-    Setting this option to 0 disables all timer-based functionality within the
-    kernel.
-
-    <b>KERNEL_TIMERS_TICKLESS</b>
-
-    If you've opted to use the kernel timers module, you have an option
-    as to which timer implementation to use:  Tick-based or Tick-less.
-
-    Tick-based timers provide a "traditional" RTOS timer implementation
-    based on a fixed-frequency timer interrupt.  While this provides
-    very accurate, reliable timing, it also means that the CPU is being
-    interrupted far more often than may be necessary (as not all timer
-    ticks result in "real work" being done).
-
-    Tick-less timerLs still rely on a hardware timer interrupt, but uses
-    a dynamic expiry interval to ensure that the interrupt is only
-    called when the next timer expires.  This increases the complexity
-    of the timer interrupt handler, but reduces the number and frequency.
-
-    Note that the CPU port (kerneltimer.cpp) must be implemented for the
-    particular timer variant desired.
-
-    Set this option to 1 to use the tickless timer implementation, 0 to use
-    the traditional tick-based approach.  Tickless timers are a bit more heavy
-    weight (larger code footprint), but can yield significant power savings as
-    the CPU does not need to wake up at a fixed, high frequency.
-
-    <b>KERNEL_USE_TIMEOUTS</b>
-
-    By default, if you opt to enable kernel timers, you also get timeout-
-    enabled versions of the blocking object APIs along with it.  This
-    support comes at a small cost to code size, but a slightly larger cost
-    to realtime performance - as checking for the use of timers in the
-    underlying internal code costs some cycles.
-
-    As a result, the option is given to the user here to manually disable
-    these timeout-based APIs if desired by the user for performance and
-    code-size reasons.
-
-    Set this option to 1 to enable timeout-based APIs for blocking calls.
-
-    <b>KERNEL_USE_QUANTUM</b>
-
-    Do you want to enable time quanta?  This is useful when you want to have
-    tasks in the same priority group share time in a controlled way.  This
-    allows equal tasks to use unequal amounts of the CPU, which is a great
-    way to set up CPU budgets per thread in a round-robin scheduling system.
-    If enabled, you can specify a number of ticks that serves as the default
-    time period (quantum).  Unless otherwise specified, every thread in a
-    priority will get the default quantum.
-
-    Set this option to 1 to enable round-robin scheduling.
-
-    <b>THREAD_QUANTUM_DEFAULT</b>
-
-    This value defines the default thread quantum when KERNEL_USE_QUANTUM is
-    enabled.  The value defined is a time in milliseconds.
-
-    <b>KERNEL_USE_SLEEP</b>
-
-    This define enables the Thread::Sleep() API, which allows a thread to
-    suspend its operation for a defined length of time, specified in ms.
-
-    \section CONFIG_BL Blocking Objects
-
-    <b>KERNEL_USE_NOTIFY</b>
-
-    This is a simple blocking object, where a thread (or threads) are guaranteed
-    to block until an asynchronous event signals the object.
-
-    <b>KERNEL_USE_SEMAPHORE</b>
-
-    Do you want the ability to use counting/binary semaphores for thread
-    synchronization?  Enabling this features provides fully-blocking semaphores
-    and enables all API functions declared in semaphore.h.  If you have to
-    pick one blocking mechanism, this is the one to choose.
-
-    Note that all IPC mechanisms (mailboxes, messages) rely on semaphores, so
-    keep in mind that this is a prerequisite for many other features in the
-    kernel.
-
-    <b>KERNEL_USE_MUTEX</b>
-
-    Do you want the ability to use mutual exclusion semaphores (mutex) for
-    resource/block protection?  Enabling this feature provides mutexes, with
-    priority inheritence, as declared in mutex.h.
-
-    <b>KERNEL_USE_EVENTFLAG</b>
-
-    Provides additional event-flag based blocking.  This relies on an
-    additional per-thread flag-mask to be allocated, which adds 2 bytes
-    to the size of each thread object.
-
-    <b>KERNEL_USE_READERWRITER</b>
-
-    Provides reader-writer locks.  Allows current read access, or single
-    write-access to a resource.  Readers wait for the writer to release the lock,
-    and writers wait for all readers to release the lock before acquiring the
-    resource.
-
-    <b>KERNEL_USE_CONDVAR</b>
-
-    Provides condition variables.  Allows a thread to wait for a specific condition
-    to be true before proceeding, with a mutual-exclusion lock held.
-
-    \section CONFIG_IPC Inter-process/thread Communication
-
-    <b>KERNEL_USE_MESSAGE</b>
-
-    Enable inter-thread messaging using message queues.  This is the preferred
-    mechanism for IPC for serious multi-threaded communications; generally
-    anywhere a semaphore or event-flag is insufficient.
-
-    <b>GLOBAL_MESSAGE_POOL_SIZE</b>
-
-    If Messages are enabled, define the size of the default kernel message
-    pool.  Messages can be manually added to the message pool, but this
-    mechansims is more convenient and automatic.   All message queues can
-    share their message objects from this global pool to maximize efficiency
-    and simplify data management.
-
-    <b>KERNEL_USE_MAILBOX</b>
-
-    Enable inter-thread messaging using mailboxes.  A mailbox manages a blob
-    of data provided by the user, that is partitioned into fixed-size blocks
-    called envelopes.  The size of an envelope is set by the user when the
-    mailbox is initialized.  Any number of threads can read-from and write-to
-    the mailbox.  Envelopes can be sent-to or received-from the mailbox at
-    the head or tail.  In this way, mailboxes essentially act as a circular
-    buffer that can be used as a blocking FIFO or LIFO queue.
-
-    \section CONFIG_DBG Debug Features
-
-    <b>KERNEL_USE_THREADNAME</b>
-
-    Provide Thread method to allow the user to set a name for each
-    thread in the system.  Adds a const char* pointer to the size
-    of the thread object.
-
-    <b>KERNEL_USE_DEBUG</b>
-
-    Provides extra logic for kernel debugging, and instruments the kernel
-    with extra asserts, and kernel trace functionality.
-
-    <b>KERNEL_ENABLE_LOGGING</b>
-
-    Set this to 1 to enable very chatty kernel logging.  Since most
-    important things in the kernel emit logs, a large log-buffer and
-    fast output are required in order to keep up.  This is a pretty
-    advanced power-user type feature, so it's disabled by default.
-
-    <b>KERNEL_ENABLE_USER_LOGGING</b>
-
-    This enables a set of logging macros similar to the kernel-logging
-    macros; however, these can be enabled or disabled independently.
-    This allows for user-code to benefit from the built-in kernel
-    logging macros without having to account for the super-high-volume
-    of logs generated by kernel code.
-
-    <b>KERNEL_EXTRA_CHECKS</b>
-
-    This option provides extra safety checks within the kernel APIs in
-    order to minimize the potential for unsafe operations.  This is
-    especially helpful during development, and can help catch problems
-    at development time, instead of in the field.
-
-    <b>KERNEL_USE_STACK_GUARD</b>
-
-    This feature, when enabled, tells the kernel to check whether any
-    Thread's stack has been exhausted (or slack falls below a certain
-    safety threshold) before executing each context switch.  Enabling
-    this is the most effective means to guard against stack corruption
-    and stack overflow in the kernel, at the cost of increased context
-
-
-    \section CONFIG_KRN Enhancements, Security, Miscellaneous
-
-    <b>KERNEL_USE_DRIVER</b>
-
-    Enabling device drivers provides a posix-like filesystem interface for
-    peripheral device drivers.
-
-    <b>KERNEL_USE_DYNAMIC_THREADS</b>
-
-    Provide extra Thread methods to allow the application to create
-    (and more importantly destroy) threads at runtime.  useful for
-    designs implementing worker threads, or threads that can be restarted
-    after encountering error conditions.
-
-    <b>KERNEL_USE_PROFILER</b>
-
-    Provides extra classes for profiling the performance of code.  useful
-    for debugging and development, but uses an additional hardware timer.
-
-    <b>KERNEL_USE_ATOMIC</b>
-
-    Provides support for atomic operations, including addition, subtraction,
-    set, and test-and-set.  Add/Sub/Set contain 8, 16, and 32-bit variants.
-
-    <b>SAFE_UNLINK</b>
-
-    "Safe unlinking" performs extra checks on data to make sure that there
-    are no consistencies when performing operations on linked lists.  This
-    goes beyond pointer checks, adding a layer of structural and metadata
-    validation to help detect system corruption early.
-
-    <b>KERNEL_AWARE_SIMULATION</b>
-
-    Include support for kernel-aware simulation.  Enabling this feature
-    adds advanced profiling, trace, and environment-aware debugging and
-    diagnostic functionality when Mark3-based applications are run on the
-    flAVR AVR simulator.
-
-    <b>KERNEL_USE_IDLE_FUNC</b>
-
-    Enabling this feature removes the necessity for the user to dedicate
-    a complete thread for idle functionality.  This saves a full thread
-    stack, but also requires a bit extra static data.  This also adds a
-    slight overhead to the context switch and scheduler, as a special case
-    has to be taken into account.
-
-    <b>KERNEL_USE_AUTO_ALLOC</b>
-
-    This feature enables an additional set of APIs that allow for objects
-    to be created on-the-fly out of a special heap, without having to
-    explicitly allocate them (from stack, heap, or static memory).
-
-    <b>AUTO_ALLOC_SIZE</b>
-
-    Size (in bytes) of the static pool of memory reserved from RAM for use by
-    the auto allocator (if enabled).
-
-    <b>KERNEL_USE_THREAD_CALLOUTS</b>
-
-    This feature provides additional kernel APIs to register callout
-    functions that are activated when threads are created or exited.
-    This is useful for implementing low-level instrumentation based on
-    information held in the threads.
-
-    <b>KERNEL_USE_EXTENDED_CONTEXT</b>
-
-    Allocate an extra pointer's worth of storage within a Thread object
-    (and corresponding accessor methods) to provide the user with a means
-    to implement arbitrary Thread-local storage.
+    Configuration is done through settings options in portcfg.h files for each target.
 
 */
 /*!
@@ -390,144 +113,9 @@ See license.txt for more information
 
     \section BUILDLAYOUT Source Layout
 
-    One key aspect of Mark3 is that system features are organized into
-    their own separate modules. These modules are further grouped
-    together into folders based on the type of features represented:
+    \section BUILDLAYOUT Configuring a build target
 
-    \verbatim
-    Root         Base folder, contains license info and build system configuration
-      arduino      Arduino-specific headers and API documentation files
-      bootloader   Mark3 Bootloader code for AVR microcontrollers
-      build        Device-specific toolchain configuraton files for various platforms
-      docs         Documentation (pdf + html)
-      drivers      Device driver code for various supported devices
-      example      Example applications
-      export       Platform specific output folder, used when running export.sh
-      fonts        Bitmap fonts converted from TTF, used by Mark3 graphics library
-      kbuild       Build output directory
-      kernel       Basic Mark3 Components (the focus of this manual)
-        cpu        CPU-specific porting code        
-      scripts      Scripts used to simplify build, documentation, and profiling
-      libs         Utility code and services, extended system features
-      tests        Unit tests, written as C/C++ applications
-      util         Host utilities - including a ttf font converter and device programmer
-    \endverbatim
-
-    \section TOOLCHAIN Toolchain Integration
-
-    Mark3 supports a variety of GCC ports out of the box - however, depending on your
-    host OS and target processor, there may be some effort required to tie the
-    toolchain into the build system.
-
-    After installing your toolchain of choice, you must make sure that the main
-    toolchain binary paths are set in your systems PATH environment variable, ensuring
-    that they are accessible directly from the command-line.  Without this step,
-    the build configuration step (cmake) will inevitably fail.
-
-    Depending on your toolchain, you may also be required to add toolchain-specific
-    include directories to the build flags.  These flags can be added to the cmake
-    variables defined in /build/<cpu>/<variant>/<toolchain>/platform.cmake for your
-    target architecture.
-
-    \section DEPENDS Installing Dependencies
-
-    The Mark3 build system uses CMake (3.4.2 or above) for configuration management,
-    and Ninja to execute the build steps.  The combination of these two tools results
-    in exceptionally fast builds - so fast that the previous makefile build system
-    was scrapped in its favor.
-
-    These tools are readily available for most common host operating systems.
-
-    CMake can be found here: https://cmake.org
-    Ninja can be found here: https://ninja-build.org
-
-    \section BUILDKERNEL Building Mark3 Kernel and Libraries
-
-    Once a sane environment has been created, the kernel, libraries,
-    examples and tests can be built by running ./scripts/build.sh from the root
-    directory.  By default, Mark3 builds for the atmega328p target, but the target
-    can be selected by manually configuring the above environment variables, or by
-    running the included ./scripts/set_target.sh script as follows:
-
-    \verbatim
-    ./scripts/set_target.sh <architecture> <variant> <toolchain>
-    \endverbatim
-
-    Where:
-    \verbatim
-     <architecture> is the target CPU architecture(i.e. avr, msp430, cm0, cm3, cm4f)
-     <variant>		is the part name (i.e. atmega328p, msp430f2274, generic)
-     <toolchain>	is the build toolchain (i.e. gcc)
-    \endverbatim
-
-    This script is a thin wrapper for the cmake configuration commands, and clears
-    the `kbuild` output directory before re-initializing cmake for the selected target.
-
-    To build the Mark3 kernel and middleware libraries for a generic ARM Cortex-M0
-    using a pre-configured arm-none-eabi-gcc toolchain, one would run the following commands:
-
-    \verbatim
-      ./scripts/set_target.sh cm0 generic gcc
-      ./scripts/build.sh
-    \endverbatim
-
-    To peform an incremental build, go into the cmake build directory (kbuild) and simply run 'ninja'.
-
-    Note that not all libraries/tests/examples will build in all kernel configurations.
-    The default kernel configuration may need adjustment/tweaking to support a specific
-    part.  See CMakeLists.txt and mark3cfg.h respectively for more information
-
-    \section EXPORTSRC Exporting the kernel source
-
-    While the build system is flexible enough to adapt to any toolchain, it may
-    be desireable to integrate the Mark3 kernel and associated drivers/libraries
-    into another build system.
-
-    Mark3 provides a script (the aptly-named export.sh) which allow for the source
-    for any supported port to be exported for this purpose.  This script will
-    also generate appropriate doxygen documentation, and package the whole of it
-    together in a zip file.  The files in the archive are placed in a "flat"
-    heirarchy, and do not require any specific path structure to be maintained
-    when imported into another build system.
-
-    As a special feature, if the "arduino" AVR target is specified, additional
-    pre-processing is done on the source to turn the standard Mark3 kernel into
-    a library that can be imported directly into Arudino IDE.  This is also how
-    the official Mark3 arduino-compatible releases are generated (hosted on
-    mark3os.com and sourceforge.net)
-
-    To exercise the build system, type the following from the main mark3 embedded
-    source directory:
-
-    \verbatim
-    > ./scripts/export.sh <target>
-    \endverbatim
-
-    Where:
-
-    Target is one of the following:
-    \verbatim
-        atmega328p
-        atmega644
-        atmega1280
-        atmega2560
-        atmega1284p
-        atxmega256a3
-        arduino
-        arduino2560
-        cortex_m0
-        cortex_m3
-        cortex_m4f
-        msp430f2274
-    \endverbatim
-
-    If successful, the generated artifacats will be placed in an output folder
-    under the ./export directory.
-
-    Additionally, if doxygen is found on the host system's PATH, a copy of the
-    manual (using the specific port's source code) will be generated and archived
-    with the source release.  If pdflatex is also found on the host's PATH, a
-    PDF copy of the manual will be generated, tailored to the selected target.
+    \section BUILDLAYOUT Running the build
 
 */
 /*!
@@ -2313,15 +1901,6 @@ See license.txt for more information
     threads, tickless timers, efficient message passing, and multiple types of
     synchronization primatives.
 
-    \subsection INSIDEOVERBHC Be highly configuration
-
-    Mark3 isn't a one-size-fits-all kernel – and as a result, it provides the
-    means to build a custom kernel to suit your needs.  By configuring the
-    kernel at compile-time, Mark3 can be built to contain the optimal feature
-    set for a given application.  And since features can be configured
-    individually, you only pay the code/RAM footprint for the features you
-    actually use.
-
     \subsection INSIDEOVERNED No external dependencies, no new language features
 
     To maximize portability and promote adoption to new platforms, Mark3 is
@@ -2525,8 +2104,6 @@ See license.txt for more information
     |                     | MessageQueue          |  message.cpp/.h                 |
     |                     | GlobalMessagePool     |  message.cpp/.h                 |
     |Debugging            | Miscellaneous Macros  |  kerneldebug.h                  |
-    |                     | KernelAware           |  kernelaware.cpp/.h             |
-    |                     | TraceBuffer           |  tracebuffer.cpp/.h             |
     |Atomic Operations    | Atomic                |  atomic.cpp/.h                  |
     |Kernel               | Kernel                |  kernel.cpp/.h                  |
 
@@ -4007,8 +3584,9 @@ See license.txt for more information
 /*!
     \page RELEASE Release Notes
 
-    \section RELR7 R7 Release
+    \section RELR7 R7 (Full Throttle) Release
     - Re-focusing project on kernel integrating with 3rd party code instead of 1st party middleware
+    - Re-focusing on atmega1284p and cortex-m as default targets
     - New: Refactored codebase to C++14 standard
     - New: Moved non-kernel code, drivers, libs, and BSPs to separate repos from kernel
     - New: Modular repository-based structure, managed via Android's Repo tool
@@ -4018,8 +3596,15 @@ See license.txt for more information
     - New: Bitmap object-allocator
     - New: AutoAlloc redirects to user-defined allocators
     - New: Global new() and delete() overrides redirect to AutoAlloc APIs
+    - New: RAII Mutex Locking APIs
     - Updated Mark3c for new APIs
     - Moved driver layer out of the kernel
+    - Removed fake idle-thread feature, since it doesn't support all targets
+    - Make all unit tests and examples run on all targets
+    - Moved AVR-specific code out of the kernel (kernelaware debugging support)
+    - Disable build-time configuration, and remove all associated #ifdefs throughout the code.
+    - Support qemu-system-arm's lm3s6965 evb target, with semihosting
+    - Various bugfixes and improvements
     .
 
     \section RELR6 R6 Release
@@ -4099,7 +3684,7 @@ See license.txt for more information
     \section RELR12 R1 - 2nd Release Candidate
 
     - New: Added support for ARM Cortex-M0 targets
-    - New: Added support for variuos AVR targets
+    - New: Added support for various AVR targets
     - New: Timers now support a "tolerance" parameter for grouping timers with close expiry times
     - Expanded scripts and auotmation used in build/test
     - Updated and expanded graphics APIs
@@ -4115,10 +3700,6 @@ See license.txt for more information
 /*!
     \example lab1_kernel_setup/main.cpp
     This example demonstrates basic kernel setup with two threads.
-
-    \example lab2_idle_function/main.cpp
-    This example demonstrates how to use the idle function, instead of an idle
-    thread to manage system inactivity.
 
     \example lab3_round_robin/main.cpp
     This example demonstrates how to use round-robin thread scheduling with
