@@ -28,6 +28,8 @@ volatile bool bAddQuantumTimer; // Indicates that a timer add is pending
 } // anonymous namespace
 
 Thread* Quantum::m_pclTimerThread;
+Thread* Quantum::m_pclActiveThread;
+
 Timer Quantum::m_clQuantumTimer;
 bool  Quantum::m_bActive;
 bool  Quantum::m_bInTimer;
@@ -44,6 +46,7 @@ void Quantum::SetTimer(Thread* pclThread_)
         }
     };
 
+    m_pclActiveThread = pclThread_;
     m_clQuantumTimer.SetIntervalMSeconds(pclThread_->GetQuantum());
     m_clQuantumTimer.SetFlags(TIMERLIST_FLAG_ONE_SHOT);
     m_clQuantumTimer.SetData(NULL);
@@ -60,7 +63,8 @@ void Quantum::AddThread(Thread* pclThread_)
         return;
     }
 
-    // If this is called from the timer callback, queue a timer add...
+    // If this is called from the timer callback, queue a timer add, and defer
+    // until later.
     if (m_bInTimer) {
         bAddQuantumTimer = true;
         return;
@@ -85,6 +89,7 @@ void Quantum::RemoveThread(void)
     // Cancel the current timer
     TimerScheduler::Remove(&m_clQuantumTimer);
     m_bActive = false;
+    m_pclActiveThread = nullptr;
 }
 
 //---------------------------------------------------------------------------
@@ -108,6 +113,7 @@ void Quantum::SetTimerThread(Thread* pclThread_)
     m_pclTimerThread = pclThread_;
 }
 
+//---------------------------------------------------------------------------
 Thread* Quantum::GetTimerThread()
 {
     return m_pclTimerThread;

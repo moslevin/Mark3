@@ -125,7 +125,7 @@ public:
      *
      *  Initialize a driver, must be called prior to use
      */
-    virtual void Init() = 0;
+    virtual int Init() = 0;
 
     /*!
      *  \brief Open
@@ -134,7 +134,7 @@ public:
      *
      *  \return Driver-specific return code, 0 = OK, non-0 = error
      */
-    virtual uint8_t Open() = 0;
+    virtual int Open() = 0;
 
     /*!
      *  \brief Close
@@ -143,7 +143,7 @@ public:
      *
      *  \return Driver-specific return code, 0 = OK, non-0 = error
      */
-    virtual uint8_t Close() = 0;
+    virtual int Close() = 0;
 
     /*!
      *  \brief Read
@@ -159,7 +159,7 @@ public:
      *
      *  \return Number of bytes actually read
      */
-    virtual uint16_t Read(uint16_t u16Bytes_, uint8_t* pu8Data_) = 0;
+    virtual size_t Read(void* pvData_, size_t uBytes_) = 0;
 
     /*!
      *  \brief Write
@@ -176,7 +176,7 @@ public:
      *
      *  \return Number of bytes actually written
      */
-    virtual uint16_t Write(uint16_t u16Bytes_, uint8_t* pu8Data_) = 0;
+    virtual size_t Write(const void* pvData_, size_t uBytes_) = 0;
 
     /*!
      *  \brief Control
@@ -196,8 +196,8 @@ public:
      *
      *  \return Driver-specific return code, 0 = OK, non-0 = error
      */
-    virtual uint16_t
-    Control(uint16_t u16Event_, void* pvDataIn_, uint16_t u16SizeIn_, void* pvDataOut_, uint16_t u16SizeOut_)
+    virtual int
+    Control(uint16_t u16Event_, void* pvDataIn_, size_t uSizeIn_, const void* pvDataOut_, size_t uSizeOut_)
         = 0;
 
     /*!

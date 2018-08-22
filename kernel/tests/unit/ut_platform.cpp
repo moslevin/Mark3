@@ -95,7 +95,7 @@ void PrintString(const char* szStr_)
     auto* pclDriver = DriverList::FindByPath("/dev/tty");
     auto* szTemp = szStr_;
     while (*szTemp) {
-        while (1 != pclDriver->Write(1, (uint8_t*)szTemp)) { /* Do nothing */
+        while (1 != pclDriver->Write(szTemp, 1)) { /* Do nothing */
         }
         szTemp++;
     }

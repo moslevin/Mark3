@@ -62,6 +62,7 @@ namespace Mark3 {
 static void KernelTimer_Task(void* unused)
 {
     (void)unused;
+    Scheduler::GetCurrentThread()->SetName("Timer");
     while(1) {
         s_clTimerSemaphore.Pend();
         TimerScheduler::Process();
@@ -100,32 +101,32 @@ void KernelTimer::Stop(void)
 }
 
 //---------------------------------------------------------------------------
-uint16_t KernelTimer::Read(void)
+PORT_TIMER_COUNT_TYPE KernelTimer::Read(void)
 {
     // Not implemented in this port
-    return (uint16_t)(SysTick->VAL);
+    return (PORT_TIMER_COUNT_TYPE)(SysTick->VAL);
 }
 
 //---------------------------------------------------------------------------
-uint32_t KernelTimer::SubtractExpiry(uint32_t u32Interval_)
+PORT_TIMER_COUNT_TYPE KernelTimer::SubtractExpiry(uint32_t u32Interval_)
 {
     return 0;
 }
 
 //---------------------------------------------------------------------------
-uint32_t KernelTimer::TimeToExpiry(void)
+PORT_TIMER_COUNT_TYPE KernelTimer::TimeToExpiry(void)
 {
     return 0;
 }
 
 //---------------------------------------------------------------------------
-uint32_t KernelTimer::GetOvertime(void)
+PORT_TIMER_COUNT_TYPE KernelTimer::GetOvertime(void)
 {
     return 0;
 }
 
 //---------------------------------------------------------------------------
-uint32_t KernelTimer::SetExpiry(uint32_t u32Interval_)
+PORT_TIMER_COUNT_TYPE KernelTimer::SetExpiry(uint32_t u32Interval_)
 {
     return 0;
 }

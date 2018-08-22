@@ -324,10 +324,12 @@ void Thread::Yield()
         // Only switch contexts if the new task is different than the old task
         if (Scheduler::GetCurrentThread() != Scheduler::GetNextThread()) {
             if (Quantum::GetTimerThread() != Scheduler::GetNextThread()) {
-                // new thread scheduled.  Stop current quantum timer (if it exists),
-                // and restart it for the new thread (if required).
-                Quantum::RemoveThread();
-                Quantum::AddThread((Thread*)Scheduler::GetNextThread());
+                if (Quantum::GetActiveThread() != Scheduler::GetNextThread()) {
+                    // new thread scheduled.  Stop current quantum timer (if it exists),
+                    // and restart it for the new thread (if required).
+                    Quantum::RemoveThread();
+                    Quantum::AddThread((Thread*)Scheduler::GetNextThread());
+                }
             }
             Thread::ContextSwitchSWI();
         }

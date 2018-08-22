@@ -86,6 +86,8 @@ public:
 
     static Thread* GetTimerThread();
 
+    static Thread* GetActiveThread() { return m_pclActiveThread; }
+
 private:
     /*!
      *  \brief SetTimer
@@ -101,6 +103,7 @@ private:
     static void SetTimer(Thread* pclThread_);
 
     static Thread* m_pclTimerThread;
+    static Thread* m_pclActiveThread;
     static Timer m_clQuantumTimer;
     static bool  m_bActive;
     static bool  m_bInTimer;

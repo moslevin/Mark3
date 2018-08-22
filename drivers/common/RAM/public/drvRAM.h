@@ -36,14 +36,14 @@ class RAMDriver;
 class RAMDriver : public Driver
 {
 public:
-    virtual void     Init();
-    virtual uint8_t  Open();
-    virtual uint8_t  Close();
-    virtual uint16_t Read(uint16_t u16Bytes_, uint8_t* pu8Data_);
+    virtual int  Init();
+    virtual int  Open();
+    virtual int  Close();
+    virtual size_t Read(void* pvData_, size_t uBytes_);
 
-    virtual uint16_t Write(uint16_t u16Bytes_, uint8_t* pu8Data_);
+    virtual size_t Write(const void* pvData_, size_t uBytes_);
 
-    virtual uint16_t Control(uint16_t u16Event_, void* pvIn_, uint16_t u16SizeIn_, void* pvOut_, uint16_t u16SizeOut_);
+    virtual int Control(uint16_t u16Event_, void* pvIn_, size_t uSizeIn_, const void* pvOut_, size_t uSizeOut_);
 
 private:
     uint16_t m_u16Address;

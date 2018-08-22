@@ -23,9 +23,6 @@ See license.txt for more information
 #include "mark3.h"
 namespace Mark3
 {
-//---------------------------------------------------------------------------
-#define TIMERLIST_LOCK()   (m_clMutex.Claim())
-#define TIMERLIST_UNLOCK() (m_clMutex.Release())
 
 //---------------------------------------------------------------------------
 void TimerList::Init(void)
@@ -44,8 +41,7 @@ void TimerList::Add(Timer* pclListNode_)
     bool    bStart = false;
     int32_t lDelta;
 #endif
-
-    TIMERLIST_LOCK();
+    auto lock = LockGuard{&m_clMutex};
 
 #if KERNEL_TIMERS_TICKLESS
     if (GetHead() == NULL) {
@@ -80,16 +76,13 @@ void TimerList::Add(Timer* pclListNode_)
 
     // Set the timer as active.
     pclListNode_->m_u8Flags |= TIMERLIST_FLAG_ACTIVE;
-
-    TIMERLIST_UNLOCK();
 }
 
 //---------------------------------------------------------------------------
 void TimerList::Remove(Timer* pclLinkListNode_)
 {
     KERNEL_ASSERT(pclLinkListNode_ != nullptr);
-
-    TIMERLIST_LOCK();
+    auto lock = LockGuard{&m_clMutex};
 
     DoubleLinkList::Remove(pclLinkListNode_);
     pclLinkListNode_->m_u8Flags &= ~TIMERLIST_FLAG_ACTIVE;
@@ -99,8 +92,6 @@ void TimerList::Remove(Timer* pclLinkListNode_)
         KernelTimer::Stop();
     }
 #endif
-
-    TIMERLIST_UNLOCK();
 }
 
 //---------------------------------------------------------------------------
@@ -115,7 +106,7 @@ void TimerList::Process(void)
     Timer* pclNode;
     Timer* pclPrev;
 
-    TIMERLIST_LOCK();
+    auto lock = LockGuard{&m_clMutex};
 
     Quantum::SetInTimer();
 
@@ -230,6 +221,5 @@ void TimerList::Process(void)
     }
 #endif
     Quantum::ClearInTimer();
-    TIMERLIST_UNLOCK();
 }
 } //namespace Mark3

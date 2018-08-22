@@ -312,7 +312,7 @@ void PrintWait(Driver* pclDriver_, uint16_t u16Size_, const char* data)
     uint16_t u16Written = 0;
 
     while (u16Written < u16Size_) {
-        u16Written += pclDriver_->Write((u16Size_ - u16Written), (uint8_t*)(&data[u16Written]));
+        u16Written += pclDriver_->Write(&data[u16Written], (u16Size_ - u16Written));
         if (u16Written != u16Size_) {
             Thread::Sleep(5);
         }
@@ -361,23 +361,23 @@ void AppMain(void* unused)
     UnitTestSupport::OnStart();
     auto* pclUART = DriverList::FindByPath("/dev/tty");
 
-    pclUART->Write(6, (uint8_t*)"START\n");
+    pclUART->Write("START\n", 6);
     ProfileInit();
     for (uint32_t i = 0; i < 100; i++) {
         //---[ API Profiling ]-----------------------------
         Profiler::Start();
         ProfileOverhead();
-        pclUART->Write(1, (uint8_t*)".");
+        pclUART->Write(".", 1);
         Semaphore_Profiling();
-        pclUART->Write(1, (uint8_t*)".");
+        pclUART->Write(".", 1);
         Mutex_Profiling();
-        pclUART->Write(1, (uint8_t*)".");
+        pclUART->Write(".", 1);
         Thread_Profiling();
-        pclUART->Write(1, (uint8_t*)".");
+        pclUART->Write(".", 1);
         Scheduler_Profiling();
-        pclUART->Write(1, (uint8_t*)".");
+        pclUART->Write(".", 1);
         Profiler::Stop();
-        pclUART->Write(2, (uint8_t*)"\r\n");
+        pclUART->Write("\r\n", 2);
     }
     ProfilePrintResults();
     Thread::Sleep(1000);

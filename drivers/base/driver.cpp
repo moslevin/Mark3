@@ -36,13 +36,13 @@ namespace
 class DevNull : public Driver
 {
 public:
-    virtual void     Init() { SetName("/dev/null"); }
-    virtual uint8_t  Open() { return 0; }
-    virtual uint8_t  Close() { return 0; }
-    virtual uint16_t Read(uint16_t  u16Bytes_, uint8_t*  /*pu8Data_*/) { return u16Bytes_; }
-    virtual uint16_t Write(uint16_t  u16Bytes_, uint8_t*  /*pu8Data_*/) { return u16Bytes_; }
-    virtual uint16_t
-    Control(uint16_t  /*u16Event_*/, void*  /*pvDataIn_*/, uint16_t  /*u16SizeIn_*/, void*  /*pvDataOut_*/, uint16_t  /*u16SizeOut_*/)
+    virtual int  Init() { SetName("/dev/null"); return 0; }
+    virtual int  Open() { return 0; }
+    virtual int  Close() { return 0; }
+    virtual size_t Read(void*  /*pu8Data_*/, size_t uBytes_) { return uBytes_; }
+    virtual size_t Write(const void*  /*pu8Data_*/, size_t uBytes_) { return uBytes_; }
+    virtual int
+    Control(uint16_t  /*u16EventID_*/, void*  /*pvDataIn_*/, size_t  /*uSizeIn_*/, const void*  /*pvDataOut_*/, size_t  /*uSizeOut_*/)
     {
         return 0;
     }

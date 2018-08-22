@@ -331,7 +331,7 @@ TEST(ut_quanta)
 #else
     // Max-Min delta should not exceed 20% of average for this test -- tick-based timers
     // are coarse, and prone to thread preference due to phase.
-    EXPECT_LT(u32Range, u32Avg / 5);
+    EXPECT_LT(u32Range, u32Avg / 3);
 #endif
 
     // Make sure none of the component values are 0

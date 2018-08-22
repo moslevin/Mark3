@@ -26,28 +26,29 @@ See license.txt for more information
 namespace Mark3
 {
 //---------------------------------------------------------------------------
-void RAMDriver::Init()
+int RAMDriver::Init()
 {
     m_u16Address = 0;
+    return 0;
 }
 
 //---------------------------------------------------------------------------
-uint8_t RAMDriver::Open()
+int RAMDriver::Open()
 {
     return 0;
 }
 
 //---------------------------------------------------------------------------
-uint8_t RAMDriver::Close()
+int RAMDriver::Close()
 {
     return 0;
 }
 
 //---------------------------------------------------------------------------
-uint16_t RAMDriver::Read(uint16_t u16Bytes_, uint8_t* pu8Data_)
+size_t RAMDriver::Read(void* pvData_, size_t uBytes_)
 {
-    auto u16NumBytes = u16Bytes_;
-    if ((m_u16Address + u16Bytes_) >= m_u16Size) {
+    auto u16NumBytes = uBytes_;
+    if ((m_u16Address + uBytes_) >= m_u16Size) {
         u16NumBytes = m_u16Size - m_u16Address;
     }
 
@@ -56,8 +57,9 @@ uint16_t RAMDriver::Read(uint16_t u16Bytes_, uint8_t* pu8Data_)
     }
 
     auto* pcTemp = &(m_pcData[m_u16Address]);
-    for (uint16_t i = 0; i < u16NumBytes; i++) {
-        pu8Data_[i] = pcTemp[i];
+    auto *pvOut = reinterpret_cast<uint8_t*>(pvData_);
+    for (size_t i = 0; i < u16NumBytes; i++) {
+        pvOut[i] = pcTemp[i];
     }
 
     m_u16Address += u16NumBytes;
@@ -65,10 +67,10 @@ uint16_t RAMDriver::Read(uint16_t u16Bytes_, uint8_t* pu8Data_)
 }
 
 //---------------------------------------------------------------------------
-uint16_t RAMDriver::Write(uint16_t u16Bytes_, uint8_t* pu8Data_)
+size_t RAMDriver::Write(const void* pvData_, size_t uBytes_)
 {
-    auto u16NumBytes = u16Bytes_;
-    if ((m_u16Address + u16Bytes_) >= m_u16Size) {
+    auto u16NumBytes = uBytes_;
+    if ((m_u16Address + uBytes_) >= m_u16Size) {
         u16NumBytes = m_u16Size - m_u16Address;
     }
 
@@ -77,8 +79,9 @@ uint16_t RAMDriver::Write(uint16_t u16Bytes_, uint8_t* pu8Data_)
     }
 
     auto* pcTemp = &(m_pcData[m_u16Address]);
-    for (uint16_t i = 0; i < u16NumBytes; i++) {
-        pcTemp[i] = pu8Data_[i];
+    auto* pvIn = reinterpret_cast<const uint8_t*>(pvData_);
+    for (size_t i = 0; i < u16NumBytes; i++) {
+        pcTemp[i] = pvIn[i];
     }
 
     m_u16Address += u16NumBytes;
@@ -86,18 +89,18 @@ uint16_t RAMDriver::Write(uint16_t u16Bytes_, uint8_t* pu8Data_)
 }
 
 //---------------------------------------------------------------------------
-uint16_t RAMDriver::Control(uint16_t u16Event_, void* pvIn_, uint16_t u16SizeIn_, void* pvOut_, uint16_t u16SizeOut_)
+int RAMDriver::Control(uint16_t u16Event_, void* pvIn_, size_t uSizeIn_, const void* pvOut_, size_t uSizeOut_)
 {
     switch (u16Event_) {
         case EEPROM_CMD_SEEK: {
-            if (u16SizeOut_ < m_u16Size) {
-                m_u16Address = u16SizeIn_;
+            if (uSizeOut_ < m_u16Size) {
+                m_u16Address = uSizeIn_;
             }
             return 1;
         }
         case EEPROM_CMD_SET_BUFFER: {
             m_pcData  = (uint8_t*)pvIn_;
-            m_u16Size = u16SizeIn_;
+            m_u16Size = uSizeIn_;
         }
     }
     return 0;
