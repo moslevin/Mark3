@@ -25,7 +25,8 @@ See license.txt for more information
 #include "driver.h"
 #include "memutil.h"
 
-namespace {
+namespace
+{
 using namespace Mark3;
 //===========================================================================
 // Local Defines
@@ -48,7 +49,8 @@ volatile uint32_t u32RR3;
 ProfileTimer clProfiler1;
 } // anonymous namespace
 
-namespace Mark3 {
+namespace Mark3
+{
 //===========================================================================
 // Define Test Cases Here
 //===========================================================================
@@ -179,9 +181,7 @@ TEST(ut_roundrobin)
 {
     auto lRREntryPoint = [](void* value_) {
         volatile uint32_t* pu32Value = (uint32_t*)value_;
-        while (1) {
-            (*pu32Value)++;
-        }
+        while (1) { (*pu32Value)++; }
     };
 
     uint32_t u32Avg;
@@ -252,9 +252,7 @@ TEST(ut_quanta)
 {
     auto lRREntryPoint = [](void* value_) {
         volatile uint32_t* pu32Value = (uint32_t*)value_;
-        while (1) {
-            (*pu32Value)++;
-        }
+        while (1) { (*pu32Value)++; }
     };
 
     uint32_t u32Avg;
@@ -348,4 +346,4 @@ TEST_CASE_START
 TEST_CASE(ut_threadcreate)
 , TEST_CASE(ut_threadstop), TEST_CASE(ut_threadexit), TEST_CASE(ut_threadsleep), TEST_CASE(ut_roundrobin),
     TEST_CASE(ut_quanta), TEST_CASE_END
-} //namespace Mark3
+} // namespace Mark3

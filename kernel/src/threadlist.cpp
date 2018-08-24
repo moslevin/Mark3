@@ -11,11 +11,11 @@
 Copyright (c) 2012 - 2018 m0slevin, all rights reserved.
 See license.txt for more information
 ===========================================================================*/
-/*!
+/**
 
-    \file   threadlist.cpp
+    @file   threadlist.cpp
 
-    \brief  Thread linked-list definitions
+    @brief  Thread linked-list definitions
 
 */
 
@@ -114,4 +114,4 @@ Thread* ThreadList::HighestWaiter()
 {
     return static_cast<Thread*>(GetHead());
 }
-} //namespace Mark3
+} // namespace Mark3

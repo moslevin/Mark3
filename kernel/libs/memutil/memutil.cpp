@@ -11,11 +11,11 @@
 Copyright (c) 2012 - 2018 m0slevin, all rights reserved.
 See license.txt for more information
 ===========================================================================*/
-/*!
+/**
 
-    \file   memutil.cpp
+    @file   memutil.cpp
 
-    \brief  Implementation of memory, string, and conversion routines
+    @brief  Implementation of memory, string, and conversion routines
 */
 
 #include "kerneltypes.h"
@@ -23,7 +23,8 @@ See license.txt for more information
 #include "memutil.h"
 #include "kerneldebug.h"
 
-namespace Mark3 {
+namespace Mark3
+{
 //---------------------------------------------------------------------------
 void MemUtil::DecimalToHex(uint8_t u8Data_, char* szText_)
 {
@@ -186,10 +187,9 @@ bool MemUtil::StringToDecimal8(const char* szText_, uint8_t* pu8Out_)
     for (uint8_t i = 0; i < u8Len; i++) {
         if ((szText_[i] < '0') || (szText_[i] > '9')) {
             return false;
-        } 
-            u8Tmp *= 10;
-            u8Tmp += szText_[i] - '0';
-        
+        }
+        u8Tmp *= 10;
+        u8Tmp += szText_[i] - '0';
     }
     *pu8Out_ = u8Tmp;
 
@@ -215,10 +215,9 @@ bool MemUtil::StringToDecimal16(const char* szText_, uint16_t* pu16Out_)
     for (uint8_t i = 0; i < u16Len; i++) {
         if ((szText_[i] < '0') || (szText_[i] > '9')) {
             return false;
-        } 
-            u16Tmp *= 10;
-            u16Tmp += szText_[i] - '0';
-        
+        }
+        u16Tmp *= 10;
+        u16Tmp += szText_[i] - '0';
     }
     *pu16Out_ = u16Tmp;
 
@@ -244,10 +243,9 @@ bool MemUtil::StringToDecimal32(const char* szText_, uint32_t* pu32Out_)
     for (uint8_t i = 0; i < u32Len; i++) {
         if ((szText_[i] < '0') || (szText_[i] > '9')) {
             return false;
-        } 
-            u32Tmp *= 10;
-            u32Tmp += szText_[i] - '0';
-        
+        }
+        u32Tmp *= 10;
+        u32Tmp += szText_[i] - '0';
     }
     *pu32Out_ = u32Tmp;
 
@@ -264,9 +262,7 @@ uint8_t MemUtil::Checksum8(const void* pvSrc_, uint16_t u16Len_)
     KERNEL_ASSERT(pvSrc_);
 
     // 8-bit CRC, computed byte at a time
-    while ((u16Len_--) != 0u) {
-        u8Ret += *pcData++;
-    }
+    while ((u16Len_--) != 0u) { u8Ret += *pcData++; }
     return u8Ret;
 }
 
@@ -279,9 +275,7 @@ uint16_t MemUtil::Checksum16(const void* pvSrc_, uint16_t u16Len_)
     KERNEL_ASSERT(pvSrc_);
 
     // 16-bit CRC, computed byte at a time
-    while ((u16Len_--) != 0u) {
-        u16Ret += *pcData++;
-    }
+    while ((u16Len_--) != 0u) { u16Ret += *pcData++; }
     return u16Ret;
 }
 
@@ -294,9 +288,7 @@ uint16_t MemUtil::StringLength(const char* szStr_)
 
     KERNEL_ASSERT(szStr_);
 
-    while (*pcData++ != 0u) {
-        u16Len++;
-    }
+    while (*pcData++ != 0u) { u16Len++; }
     return u16Len;
 }
 
@@ -318,7 +310,6 @@ bool MemUtil::CompareStrings(const char* szStr1_, const char* szStr2_)
     // Both terminate at the same length
     return ((*szTmp1) == 0) && ((*szTmp2) == 0);
 }
-
 
 //---------------------------------------------------------------------------
 bool MemUtil::CompareStrings(const char* szStr1_, const char* szStr2_, uint16_t u16Length_)
@@ -348,9 +339,7 @@ void MemUtil::CopyMemory(void* pvDst_, const void* pvSrc_, uint16_t u16Len_)
 
     // Run through the strings verifying that each character matches
     // and the lengths are the same.
-    while ((u16Len_--) != 0u) {
-        *szDst++ = *szSrc++;
-    }
+    while ((u16Len_--) != 0u) { *szDst++ = *szSrc++; }
 }
 
 //---------------------------------------------------------------------------
@@ -364,9 +353,7 @@ void MemUtil::CopyString(char* szDst_, const char* szSrc_)
 
     // Run through the strings verifying that each character matches
     // and the lengths are the same.
-    while (*szSrc != 0) {
-        *szDst++ = *szSrc++;
-    }
+    while (*szSrc != 0) { *szDst++ = *szSrc++; }
 }
 
 //---------------------------------------------------------------------------
@@ -426,9 +413,7 @@ void MemUtil::SetMemory(void* pvDst_, uint8_t u8Val_, uint16_t u16Len_)
 
     KERNEL_ASSERT(pvDst_);
 
-    while ((u16Len_--) != 0u) {
-        *szDst++ = u8Val_;
-    }
+    while ((u16Len_--) != 0u) { *szDst++ = u8Val_; }
 }
 
 //---------------------------------------------------------------------------
@@ -481,9 +466,7 @@ uint8_t MemUtil::Tokenize(const char* szBuffer_, Token_t* pastTokens_, uint8_t u
         }
 
         i++;
-        while (szBuffer_[i] == ' ') {
-            i++;
-        }
+        while (szBuffer_[i] == ' ') { i++; }
 
         u8LastArg = i;
     }
@@ -494,4 +477,4 @@ uint8_t MemUtil::Tokenize(const char* szBuffer_, Token_t* pastTokens_, uint8_t u
     }
     return u8CurrArg;
 }
-} //namespace Mark3
+} // namespace Mark3

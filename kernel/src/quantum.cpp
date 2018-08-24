@@ -11,11 +11,11 @@
 Copyright (c) 2012 - 2018 m0slevin, all rights reserved.
 See license.txt for more information
 ===========================================================================*/
-/*!
+/**
 
-    \file   quantum.cpp
+    @file   quantum.cpp
 
-    \brief  Thread Quantum Implementation for Round-Robin Scheduling
+    @brief  Thread Quantum Implementation for Round-Robin Scheduling
 
 */
 
@@ -24,7 +24,7 @@ namespace Mark3
 {
 namespace
 {
-volatile bool bAddQuantumTimer; // Indicates that a timer add is pending
+    volatile bool bAddQuantumTimer; // Indicates that a timer add is pending
 } // anonymous namespace
 
 Thread* Quantum::m_pclTimerThread;
@@ -39,7 +39,7 @@ void Quantum::SetTimer(Thread* pclThread_)
 {
     KERNEL_ASSERT(pclThread_ != nullptr);
 
-    auto lQuantumCallback = [](Thread* pclThread_, void*  /*pvData_*/) {
+    auto lQuantumCallback = [](Thread* pclThread_, void* /*pvData_*/) {
         if (pclThread_->GetCurrent()->GetHead() != pclThread_->GetCurrent()->GetTail()) {
             bAddQuantumTimer = true;
             pclThread_->GetCurrent()->PivotForward();
@@ -88,7 +88,7 @@ void Quantum::RemoveThread(void)
 
     // Cancel the current timer
     TimerScheduler::Remove(&m_clQuantumTimer);
-    m_bActive = false;
+    m_bActive         = false;
     m_pclActiveThread = nullptr;
 }
 
@@ -118,4 +118,4 @@ Thread* Quantum::GetTimerThread()
 {
     return m_pclTimerThread;
 }
-} //namespace Mark3
+} // namespace Mark3

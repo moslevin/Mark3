@@ -11,10 +11,10 @@
 Copyright (c) 2012 - 2018 m0slevin, all rights reserved.
 See license.txt for more information
 ===========================================================================*/
-/*!
-    \file kerneldebug.h
+/**
+    @file kerneldebug.h
 
-    \brief Macros and functions used for assertions, kernel traces, etc.
+    @brief Macros and functions used for assertions, kernel traces, etc.
 */
 #pragma once
 
@@ -26,14 +26,14 @@ See license.txt for more information
 namespace Mark3
 {
 #if KERNEL_DEBUG
-# define KERNEL_ASSERT(x) \
-    do { \
-        if ((x) == 0) { \
-            Kernel::Panic(PANIC_ASSERT_FAILED); \
-        } \
+#define KERNEL_ASSERT(x)                                                                                               \
+    do {                                                                                                               \
+        if ((x) == 0) {                                                                                                \
+            Kernel::Panic(PANIC_ASSERT_FAILED);                                                                        \
+        }                                                                                                              \
     } while (0);
 #else
-# define KERNEL_ASSERT(x)
+#define KERNEL_ASSERT(x)
 #endif
 
 } // namespace Mark3

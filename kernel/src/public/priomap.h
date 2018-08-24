@@ -11,9 +11,9 @@
 Copyright (c) 2012 - 2018 m0slevin, all rights reserved.
 See license.txt for more information
 ===========================================================================*/
-/*!
-    \file priomap.h
-    \brief Priority map data structure
+/**
+    @file priomap.h
+    @brief Priority map data structure
 */
 
 #pragma once
@@ -37,11 +37,11 @@ See license.txt for more information
 // Used for bitshifting the bit index away from the map index.
 // i.e. 3 == 8 bits, 4 == 16 bits, 5 == 32 bits, etc...
 #if (PORT_PRIO_MAP_WORD_SIZE == 1)
-# define PRIO_MAP_WORD_SHIFT (3)
+#define PRIO_MAP_WORD_SHIFT (3)
 #elif (PORT_PRIO_MAP_WORD_SIZE == 2)
-# define PRIO_MAP_WORD_SHIFT (4)
+#define PRIO_MAP_WORD_SHIFT (4)
 #elif (PORT_PRIO_MAP_WORD_SIZE == 4)
-# define PRIO_MAP_WORD_SHIFT (5)
+#define PRIO_MAP_WORD_SHIFT (5)
 #endif
 
 // Bitmask used to separate out the priorities first-level bitmap from its
@@ -70,40 +70,40 @@ See license.txt for more information
 namespace Mark3
 {
 //---------------------------------------------------------------------------
-/*!
- * \brief The PriorityMap class
+/**
+ * @brief The PriorityMap class
  */
 class PriorityMap
 {
 public:
-    /*!
-     * \brief PriorityMap
+    /**
+     * @brief PriorityMap
      *
      * Initialize the priority map object, clearing the bitamp data to all 0's.
      */
     PriorityMap();
 
-    /*!
-     * \brief Set       Set the priority map bitmap data, at all levels, for the
+    /**
+     * @brief Set       Set the priority map bitmap data, at all levels, for the
      *                  given priority
-     * \param uXPrio_   Priority level to set the bitmap data for.
+     * @param uXPrio_   Priority level to set the bitmap data for.
      */
     void Set(PORT_PRIO_TYPE uXPrio_);
 
-    /*!
-     * \brief Clear     Clear the priority map bitmap data, at all levels, for the
+    /**
+     * @brief Clear     Clear the priority map bitmap data, at all levels, for the
      *                  given priority.
-     * \param uXPrio_   Priority level to clear the bitmap data for.
+     * @param uXPrio_   Priority level to clear the bitmap data for.
      */
     void Clear(PORT_PRIO_TYPE uXPrio_);
 
-    /*!
-     * \brief HighestPriority
+    /**
+     * @brief HighestPriority
      *
      * Computes the numeric priority of the highest-priority thread represented in the
      * priority map.
      *
-     * \return Highest priority ready-thread's number.
+     * @return Highest priority ready-thread's number.
      */
     PORT_PRIO_TYPE HighestPriority(void);
 
@@ -115,4 +115,4 @@ private:
     PRIO_MAP_WORD_TYPE m_uXPriorityMap;
 #endif
 };
-} //namespace Mark3
+} // namespace Mark3

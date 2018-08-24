@@ -11,11 +11,11 @@
 Copyright (c) 2012 - 2018 m0slevin, all rights reserved.
 See license.txt for more information
 =========================================================================== */
-/*!
+/**
 
-    \file   mutex.h
+    @file   mutex.h
 
-    \brief  Mutual exclusion class declaration
+    @brief  Mutual exclusion class declaration
 
     Resource locks are implemented using mutual exclusion semaphores (Mutex_t).
     Protected blocks can be placed around any resource that may only be accessed
@@ -28,23 +28,23 @@ See license.txt for more information
     consistently, otherwise you may end up with a deadlock scenario that's
     hard to debug.
 
-    \section MInit Initializing
+    @section MInit Initializing
 
     Initializing a mutex object by calling:
 
-    \code
+    @code
     clMutex.Init();
-    \endcode
+    @endcode
 
-    \section MUsage Resource protection example
+    @section MUsage Resource protection example
 
-    \code
+    @code
     clMutex.Claim();
     ...
     <resource protected block>
     ...
     clMutex.Release();
-    \endcode
+    @endcode
 
  */
 #pragma once
@@ -57,7 +57,7 @@ See license.txt for more information
 namespace Mark3
 {
 //---------------------------------------------------------------------------
-/*!
+/**
  *  Mutual-exclusion locks, based on BlockingObject.
  */
 class Mutex : public BlockingObject
@@ -66,18 +66,18 @@ public:
     void* operator new(size_t sz, void* pv) { return (Mutex*)pv; };
     ~Mutex();
 
-    /*!
-     *  \brief Init
+    /**
+     *  @brief Init
      *
      *  Initialize a mutex object for use - must call this function before using
      *  the object.
      *
-     * \param bRecursieve Whether or not the mutex can be recursively locked.
+     * @param bRecursieve Whether or not the mutex can be recursively locked.
      */
     void Init(bool bRecursive_ = true);
 
-    /*!
-     *  \brief Claim
+    /**
+     *  @brief Claim
      *
      *  Claim the mutex.  When the mutex is claimed, no other thread can claim a
      *  region protected by the object.  If another Thread currently holds the
@@ -95,20 +95,20 @@ public:
      */
     void Claim();
 
-    /*!
-     *  \brief Claim
+    /**
+     *  @brief Claim
      *
      *  Claim a mutex, with timeout.
      *
-     *  \param u32WaitTimeMS_
+     *  @param u32WaitTimeMS_
      *
-     *  \return true - mutex was claimed within the time period specified
+     *  @return true - mutex was claimed within the time period specified
      *          false - mutex operation timed-out before the claim operation.
      */
     bool Claim(uint32_t u32WaitTimeMS_);
 
-    /*!
-     *  \brief WakeMe
+    /**
+     *  @brief WakeMe
      *
      *  Wake a thread blocked on the mutex.  This is an
      *  internal function used for implementing timed mutexes
@@ -117,12 +117,12 @@ public:
      *  classes, we have to wrap this as a public method - do not
      *  use this for any other purposes.
      *
-     *  \param pclOwner_ Thread to unblock from this object.
+     *  @param pclOwner_ Thread to unblock from this object.
      */
     void WakeMe(Thread* pclOwner_);
 
-    /*!
-     *  \brief Release
+    /**
+     *  @brief Release
      *
      *  Release the mutex.  When the mutex is released, another object can enter
      *  the mutex-protected region.
@@ -144,27 +144,27 @@ public:
     void Release();
 
 private:
-    /*!
-     *  \brief WakeNext
+    /**
+     *  @brief WakeNext
      *
      *  Wake the next thread waiting on the Mutex.
      */
     uint8_t WakeNext();
 
-    /*!
-     * \brief Claim_i
+    /**
+     * @brief Claim_i
      *
      * Abstracts out timed/non-timed mutex claim operations.
      *
-     * \param u32WaitTimeMS_ Time in MS to wait, 0 for infinite
-     * \return true on successful claim, false otherwise
-      */
+     * @param u32WaitTimeMS_ Time in MS to wait, 0 for infinite
+     * @return true on successful claim, false otherwise
+     */
     bool Claim_i(uint32_t u32WaitTimeMS_);
 
-    uint8_t m_u8Recurse; //!< The recursive lock-count when a mutex is claimed multiple times by the same owner
-    bool    m_bReady;    //!< State of the mutex - true = ready, false = claimed
+    uint8_t m_u8Recurse;  //!< The recursive lock-count when a mutex is claimed multiple times by the same owner
+    bool    m_bReady;     //!< State of the mutex - true = ready, false = claimed
     bool    m_bRecursive; //!< Whether or not the lock is recursive
-    uint8_t m_u8MaxPri;  //!< Maximum priority of thread in queue, used for priority inheritence
-    Thread* m_pclOwner;  //!< Pointer to the thread that owns the mutex (when claimed)
+    uint8_t m_u8MaxPri;   //!< Maximum priority of thread in queue, used for priority inheritence
+    Thread* m_pclOwner;   //!< Pointer to the thread that owns the mutex (when claimed)
 };
-} //namespace Mark3
+} // namespace Mark3

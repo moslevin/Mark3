@@ -11,11 +11,11 @@
 Copyright (c) 2012 - 2018 m0slevin, all rights reserved.
 See license.txt for more information
 ===========================================================================*/
-/*!
+/**
 
-    \file   kerneltimer.cpp
+    @file   kerneltimer.cpp
 
-    \brief  Kernel Timer Implementation for ATMega328p
+    @brief  Kernel Timer Implementation for ATMega328p
 */
 
 #include "kerneltypes.h"
@@ -33,21 +33,23 @@ See license.txt for more information
 #define TIMER_IMSK (1 << OCIE1A)
 #define TIMER_IFR (1 << OCF1A)
 
-namespace {
+namespace
+{
 using namespace Mark3;
 //---------------------------------------------------------------------------
 // Static objects implementing the timer thread and its synchronization objects
-Thread s_clTimerThread;
-K_WORD s_clTimerThreadStack[PORT_KERNEL_TIMERS_THREAD_STACK];
+Thread    s_clTimerThread;
+K_WORD    s_clTimerThreadStack[PORT_KERNEL_TIMERS_THREAD_STACK];
 Semaphore s_clTimerSemaphore;
 }
 
-namespace Mark3 {
+namespace Mark3
+{
 //---------------------------------------------------------------------------
 static void KernelTimer_Task(void* unused)
 {
     (void)unused;
-    while(1) {
+    while (1) {
         s_clTimerSemaphore.Pend();
         TimerScheduler::Process();
         Quantum::UpdateTimer();
@@ -60,10 +62,10 @@ void KernelTimer::Config(void)
     TCCR1B = TCCR1B_INIT;
     s_clTimerSemaphore.Init(0, 1);
     s_clTimerThread.Init(s_clTimerThreadStack,
-                        sizeof(s_clTimerThreadStack) / sizeof(K_WORD),
-                        KERNEL_TIMERS_THREAD_PRIORITY,
-                        KernelTimer_Task,
-                        0);
+                         sizeof(s_clTimerThreadStack) / sizeof(K_WORD),
+                         KERNEL_TIMERS_THREAD_PRIORITY,
+                         KernelTimer_Task,
+                         0);
     Quantum::SetTimerThread(&s_clTimerThread);
     s_clTimerThread.Start();
 }
@@ -203,11 +205,11 @@ void KernelTimer::RI(bool bEnable_)
     }
 #endif
 }
-} //namespace Mark3
+} // namespace Mark3
 
 //---------------------------------------------------------------------------
-/*!
- *   \brief ISR(TIMER1_COMPA_vect)
+/**
+ *   @brief ISR(TIMER1_COMPA_vect)
  *   Timer interrupt ISR - service the timer thread
  */
 //---------------------------------------------------------------------------

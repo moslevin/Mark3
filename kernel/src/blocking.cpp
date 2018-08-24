@@ -11,11 +11,11 @@
 Copyright (c) 2012 - 2018 m0slevin, all rights reserved.
 See license.txt for more information
 ===========================================================================*/
-/*!
+/**
 
-    \file   blocking.cpp
+    @file   blocking.cpp
 
-    \brief  Implementation of base class for blocking objects
+    @brief  Implementation of base class for blocking objects
 */
 
 #include "mark3.h"
@@ -68,4 +68,4 @@ void BlockingObject::UnBlock(Thread* pclThread_)
     pclThread_->SetCurrent(pclThread_->GetOwner());
     pclThread_->SetState(ThreadState::Ready);
 }
-} //namespace Mark3
+} // namespace Mark3

@@ -11,11 +11,11 @@
 Copyright (c) 2012 - 2018 m0slevin, all rights reserved.
 See license.txt for more information
 ===========================================================================*/
-/*!
+/**
 
-    \file   kernelswi.cpp
+    @file   kernelswi.cpp
 
-    \brief  Kernel Software interrupt implementation for ATMega328p
+    @brief  Kernel Software interrupt implementation for ATMega328p
 
 */
 
@@ -24,7 +24,6 @@ See license.txt for more information
 
 #include <avr/io.h>
 #include <avr/interrupt.h>
-
 
 namespace Mark3
 {
@@ -82,4 +81,4 @@ void KernelSWI::Trigger(void)
         PORTB |= 0x04;
     }
 }
-} //namespace Mark3
+} // namespace Mark3

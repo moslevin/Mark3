@@ -11,10 +11,10 @@
 Copyright (c) 2012 - 2018 m0slevin, all rights reserved.
 See license.txt for more information
 ===========================================================================*/
-/*!
-    \file joystick.cpp
+/**
+    @file joystick.cpp
 
-    \brief Joystick driver base-class implementation
+    @brief Joystick driver base-class implementation
 */
 #include "kerneltypes.h"
 #include "joystick.h"
@@ -51,4 +51,4 @@ void JoystickDriver::ReadPrevious(JoystickReport* pstReport_)
     pstReport_->u16AnalogX2 = m_stLastReport.u16AnalogX2;
     pstReport_->u16AnalogY2 = m_stLastReport.u16AnalogY2;
 }
-} //namespace Mark3
+} // namespace Mark3

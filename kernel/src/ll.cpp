@@ -11,11 +11,11 @@
 Copyright (c) 2012 - 2018 m0slevin, all rights reserved.
 See license.txt for more information
 ===========================================================================*/
-/*!
+/**
 
-    \file   ll.cpp
+    @file   ll.cpp
 
-    \brief  Core Linked-List implementation, from which all kernel objects
+    @brief  Core Linked-List implementation, from which all kernel objects
             are derived
 */
 
@@ -163,4 +163,4 @@ void CircularLinkList::InsertNodeBefore(LinkListNode* node_, LinkListNode* inser
     }
     insert_->prev = node_;
 }
-} //namespace Mark3
+} // namespace Mark3

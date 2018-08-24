@@ -11,10 +11,10 @@
 Copyright (c) 2012 - 2018 m0slevin, all rights reserved.
 See license.txt for more information
 =========================================================================== */
-/*!
-    \file   autoalloc.cpp
+/**
+    @file   autoalloc.cpp
 
-    \brief  Automatic memory allocation for kernel objects.
+    @brief  Automatic memory allocation for kernel objects.
 */
 
 #include "mark3.h"
@@ -37,13 +37,13 @@ void* operator new[](size_t n)
 }
 
 //---------------------------------------------------------------------------
-void operator delete(void * p)
+void operator delete(void* p)
 {
     AutoAlloc::DestroyRawData(p);
 }
 
 //---------------------------------------------------------------------------
-void operator delete[](void * p)
+void operator delete[](void* p)
 {
     AutoAlloc::DestroyRawData(p);
 }
@@ -51,14 +51,14 @@ void operator delete[](void * p)
 //---------------------------------------------------------------------------
 namespace Mark3
 {
-AutoAllocAllocator_t AutoAlloc::m_pfAllocator;    //!< Function used to allocate objects
-AutoAllocFree_t      AutoAlloc::m_pfFree;         //!< Funciton used to free objects
+AutoAllocAllocator_t AutoAlloc::m_pfAllocator; //!< Function used to allocate objects
+AutoAllocFree_t      AutoAlloc::m_pfFree;      //!< Funciton used to free objects
 
 //---------------------------------------------------------------------------
 void AutoAlloc::Init()
 {
     m_pfAllocator = NULL;
-    m_pfFree = NULL;
+    m_pfFree      = NULL;
 }
 
 //---------------------------------------------------------------------------
@@ -88,7 +88,7 @@ Semaphore* AutoAlloc::NewSemaphore(void)
     return 0;
 }
 //---------------------------------------------------------------------------
-void AutoAlloc::DestroySemaphore(Semaphore *pclSemaphore_)
+void AutoAlloc::DestroySemaphore(Semaphore* pclSemaphore_)
 {
     pclSemaphore_->~Semaphore();
     Free(AutoAllocType::Semaphore, pclSemaphore_);
@@ -103,7 +103,7 @@ Mutex* AutoAlloc::NewMutex(void)
     return 0;
 }
 //---------------------------------------------------------------------------
-void AutoAlloc::DestroyMutex(Mutex *pclMutex_)
+void AutoAlloc::DestroyMutex(Mutex* pclMutex_)
 {
     pclMutex_->~Mutex();
     Free(AutoAllocType::Mutex, pclMutex_);
@@ -118,7 +118,7 @@ EventFlag* AutoAlloc::NewEventFlag(void)
     return 0;
 }
 //---------------------------------------------------------------------------
-void AutoAlloc::DestroyEventFlag(EventFlag *pclEventFlag_)
+void AutoAlloc::DestroyEventFlag(EventFlag* pclEventFlag_)
 {
     pclEventFlag_->~EventFlag();
     Free(AutoAllocType::EventFlag, pclEventFlag_);
@@ -133,7 +133,7 @@ Message* AutoAlloc::NewMessage(void)
     return 0;
 }
 //---------------------------------------------------------------------------
-void AutoAlloc::DestroyMessage(Message *pclMessage_)
+void AutoAlloc::DestroyMessage(Message* pclMessage_)
 {
     pclMessage_->~Message();
     Free(AutoAllocType::Message, pclMessage_);
@@ -148,7 +148,7 @@ MessagePool* AutoAlloc::NewMessagePool(void)
     return 0;
 }
 //---------------------------------------------------------------------------
-void AutoAlloc::DestroyMessagePool(MessagePool *pclMessagePool_)
+void AutoAlloc::DestroyMessagePool(MessagePool* pclMessagePool_)
 {
     pclMessagePool_->~MessagePool();
     Free(AutoAllocType::MessagePool, pclMessagePool_);
@@ -164,7 +164,7 @@ MessageQueue* AutoAlloc::NewMessageQueue(void)
     return 0;
 }
 //---------------------------------------------------------------------------
-void AutoAlloc::DestroyMessageQueue(MessageQueue *pclMessageQ_)
+void AutoAlloc::DestroyMessageQueue(MessageQueue* pclMessageQ_)
 {
     pclMessageQ_->~MessageQueue();
     Free(AutoAllocType::MessageQueue, pclMessageQ_);
@@ -180,7 +180,7 @@ Notify* AutoAlloc::NewNotify(void)
     return 0;
 }
 //---------------------------------------------------------------------------
-void AutoAlloc::DestroyNotify(Notify *pclNotify_)
+void AutoAlloc::DestroyNotify(Notify* pclNotify_)
 {
     pclNotify_->~Notify();
     Free(AutoAllocType::Notify, pclNotify_);
@@ -196,7 +196,7 @@ Mailbox* AutoAlloc::NewMailbox(void)
     return 0;
 }
 //---------------------------------------------------------------------------
-void AutoAlloc::DestroyMailbox(Mailbox *pclMailbox_)
+void AutoAlloc::DestroyMailbox(Mailbox* pclMailbox_)
 {
     pclMailbox_->~Mailbox();
     Free(AutoAllocType::MailBox, pclMailbox_);
@@ -228,7 +228,7 @@ ReaderWriterLock* AutoAlloc::NewReaderWriterLock()
     return 0;
 }
 //---------------------------------------------------------------------------
-void AutoAlloc::DestroyReaderWriterLock(ReaderWriterLock *pclReaderWriterLock_)
+void AutoAlloc::DestroyReaderWriterLock(ReaderWriterLock* pclReaderWriterLock_)
 {
     pclReaderWriterLock_->~ReaderWriterLock();
     Free(AutoAllocType::ReaderWriterLock, pclReaderWriterLock_);
@@ -244,7 +244,7 @@ Thread* AutoAlloc::NewThread(void)
     return 0;
 }
 //---------------------------------------------------------------------------
-void AutoAlloc::DestroyThread(Thread *pclThread_)
+void AutoAlloc::DestroyThread(Thread* pclThread_)
 {
     pclThread_->~Thread();
     Free(AutoAllocType::Thread, pclThread_);
@@ -260,7 +260,7 @@ Timer* AutoAlloc::NewTimer(void)
     return 0;
 }
 //---------------------------------------------------------------------------
-void AutoAlloc::DestroyTimer(Timer *pclTimer_)
+void AutoAlloc::DestroyTimer(Timer* pclTimer_)
 {
     pclTimer_->~Timer();
     Free(AutoAllocType::Timer, pclTimer_);
@@ -272,7 +272,7 @@ void* AutoAlloc::NewUserTypeAllocation(uint8_t eType_)
     return Allocate(static_cast<AutoAllocType>(eType_), 0);
 }
 //---------------------------------------------------------------------------
-void AutoAlloc::DestroyUserTypeAllocation(uint8_t eUserType_, void *pvObj_)
+void AutoAlloc::DestroyUserTypeAllocation(uint8_t eUserType_, void* pvObj_)
 {
     Free(AutoAllocType::User, pvObj_);
 }
@@ -282,8 +282,8 @@ void* AutoAlloc::NewRawData(size_t sSize_)
     return Allocate(AutoAllocType::Raw, sSize_);
 }
 //---------------------------------------------------------------------------
-void AutoAlloc::DestroyRawData(void *pvData_)
+void AutoAlloc::DestroyRawData(void* pvData_)
 {
     Free(AutoAllocType::Raw, pvData_);
 }
-} //namespace Mark3
+} // namespace Mark3

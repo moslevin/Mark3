@@ -11,11 +11,11 @@
 Copyright (c) 2012 - 2018 m0slevin, all rights reserved.
 See license.txt for more information
 ===========================================================================*/
-/*!
+/**
 
-    \file   kernel++.cpp
+    @file   kernel++.cpp
 
-    \brief  Test harness
+    @brief  Test harness
 
 */
 
@@ -24,7 +24,8 @@ See license.txt for more information
 #include "../unit_test.h"
 #include "../ut_platform.h"
 
-namespace {
+namespace
+{
 using namespace Mark3;
 //---------------------------------------------------------------------------
 // Global objects
@@ -37,15 +38,15 @@ ProfileTimer clProfiler3;
 MessageQueue clMsgQ; //!< Message Queue for timers
 
 #define MESSAGE_POOL_SIZE (3)
-MessagePool  s_clMessagePool;
-Message s_clMessages[MESSAGE_POOL_SIZE];
+MessagePool s_clMessagePool;
+Message     s_clMessages[MESSAGE_POOL_SIZE];
 
-Timer     clTimer;
-Timer     clTimer1;
-Timer     clTimer2;
-Timer     clTimer3;
+Timer clTimer;
+Timer clTimer1;
+Timer clTimer2;
+Timer clTimer3;
 
-Semaphore clTimerSem;
+Semaphore         clTimerSem;
 volatile uint32_t aulDelta[3];
 
 //---------------------------------------------------------------------------
@@ -74,8 +75,8 @@ void TCallbackMulti3(Thread* pclOwner_, void* data_)
 }
 } // anonymous namespace
 
-namespace Mark3 {
-
+namespace Mark3
+{
 //---------------------------------------------------------------------------
 TEST(ut_timer_sanity_multi)
 {
@@ -199,9 +200,7 @@ TEST(ut_timer_sanity_precision)
     uint32_t i;
     auto     bPass = true;
     // 1ms repeated counter
-    auto lCallback = [](Thread* pclOwner_, void* data_) {
-        clTimerSem.Post();
-    };
+    auto lCallback = [](Thread* pclOwner_, void* data_) { clTimerSem.Post(); };
 
     clTimer.Start(true, 1, lCallback, NULL);
     for (i = 0; i < 10000; i++) {
@@ -260,4 +259,4 @@ TEST_END
 //===========================================================================
 TEST_CASE_START
 TEST_CASE(ut_timer_sanity_precision), TEST_CASE(ut_timer_sanity_multi), TEST_CASE_END
-} //namespace Mark3
+} // namespace Mark3

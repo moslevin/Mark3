@@ -11,11 +11,11 @@
 Copyright (c) 2012 - 2018 m0slevin, all rights reserved.
 See license.txt for more information
 =========================================================================== */
-/*!
+/**
 
-    \file   threadport.h
+    @file   threadport.h
 
-    \brief  Cortex M3 Multithreading support.
+    @brief  Cortex M3 Multithreading support.
  */
 #pragma once
 
@@ -77,7 +77,7 @@ do {                                    \
 namespace Mark3 {
 //------------------------------------------------------------------------
 class Thread;
-/*!
+/**
  *  Class defining the architecture specific functions required by the 
  *  kernel.  
  *  
@@ -87,8 +87,8 @@ class Thread;
 class ThreadPort
 {
 public:
-    /*!        
-     *  \brief StartThreads
+    /**        
+     *  @brief StartThreads
      *
      *  Function to start the scheduler, initial threads, etc.
      */
@@ -96,12 +96,12 @@ public:
     friend class Thread;
 private:
 
-    /*!
-     *  \brief InitStack
+    /**
+     *  @brief InitStack
      *
      *  Initialize the thread's stack.
      *  
-     *  \param pstThread_ Pointer to the thread to initialize
+     *  @param pstThread_ Pointer to the thread to initialize
      */
     static void InitStack(Thread *pstThread_);
 };

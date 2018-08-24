@@ -11,11 +11,11 @@
 Copyright (c) 2012 - 2018 m0slevin, all rights reserved.
 See license.txt for more information
 ===========================================================================*/
-/*!
+/**
 
-    \file   timerlist.cpp
+    @file   timerlist.cpp
 
-    \brief  Implements timer list processing algorithms, responsible for all
+    @brief  Implements timer list processing algorithms, responsible for all
             timer tick and expiry logic.
 
 */
@@ -23,7 +23,6 @@ See license.txt for more information
 #include "mark3.h"
 namespace Mark3
 {
-
 //---------------------------------------------------------------------------
 void TimerList::Init(void)
 {
@@ -41,7 +40,7 @@ void TimerList::Add(Timer* pclListNode_)
     bool    bStart = false;
     int32_t lDelta;
 #endif
-    auto lock = LockGuard{&m_clMutex};
+    auto lock = LockGuard{ &m_clMutex };
 
 #if KERNEL_TIMERS_TICKLESS
     if (GetHead() == NULL) {
@@ -82,7 +81,7 @@ void TimerList::Add(Timer* pclListNode_)
 void TimerList::Remove(Timer* pclLinkListNode_)
 {
     KERNEL_ASSERT(pclLinkListNode_ != nullptr);
-    auto lock = LockGuard{&m_clMutex};
+    auto lock = LockGuard{ &m_clMutex };
 
     DoubleLinkList::Remove(pclLinkListNode_);
     pclLinkListNode_->m_u8Flags &= ~TIMERLIST_FLAG_ACTIVE;
@@ -106,7 +105,7 @@ void TimerList::Process(void)
     Timer* pclNode;
     Timer* pclPrev;
 
-    auto lock = LockGuard{&m_clMutex};
+    auto lock = LockGuard{ &m_clMutex };
 
     Quantum::SetInTimer();
 
@@ -126,8 +125,8 @@ void TimerList::Process(void)
 #if KERNEL_TIMERS_TICKLESS
                 if (pclNode->m_u32TimeLeft <= m_u32NextWakeup)
 #else
-                pclNode->m_u32TimeLeft--;
-                if (0 == pclNode->m_u32TimeLeft)
+            pclNode->m_u32TimeLeft--;
+            if (0 == pclNode->m_u32TimeLeft)
 #endif
                 {
                     // Yes - set the "callback" flag - we'll execute the callbacks later
@@ -222,4 +221,4 @@ void TimerList::Process(void)
 #endif
     Quantum::ClearInTimer();
 }
-} //namespace Mark3
+} // namespace Mark3

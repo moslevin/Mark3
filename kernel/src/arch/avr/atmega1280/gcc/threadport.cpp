@@ -11,11 +11,11 @@
 Copyright (c) 2012 - 2018 m0slevin, all rights reserved.
 See license.txt for more information
 ===========================================================================*/
-/*!
+/**
 
-    \file   threadport.cpp
+    @file   threadport.cpp
 
-    \brief  ATMega328p Multithreading
+    @brief  ATMega328p Multithreading
 
 */
 
@@ -33,7 +33,8 @@ See license.txt for more information
 #include <avr/io.h>
 #include <avr/interrupt.h>
 
-namespace Mark3 {
+namespace Mark3
+{
 //---------------------------------------------------------------------------
 Thread* g_pclCurrentThread;
 
@@ -53,9 +54,7 @@ void ThreadPort::InitStack(Thread* pclThread_)
 
     // clear the stack, and initialize it to a known-default value (easier
     // to debug when things go sour with stack corruption or overflow)
-    for (i = 0; i < pclThread_->m_u16StackSize; i++) {
-        pclThread_->m_pwStack[i] = 0xFF;
-    }
+    for (i = 0; i < pclThread_->m_u16StackSize; i++) { pclThread_->m_pwStack[i] = 0xFF; }
 
     // Our context starts with the entry function
     PUSH_TO_STACK(pu8Stack, (uint8_t)(u16Addr & 0x00FF));
@@ -79,9 +78,7 @@ void ThreadPort::InitStack(Thread* pclThread_)
     PUSH_TO_STACK(pu8Stack, (uint8_t)((((uint16_t)(pclThread_->m_pvArg)) >> 8) & 0x00FF)); // R25
 
     // Push the rest of the registers in the context
-    for (i = 26; i <= 31; i++) {
-        PUSH_TO_STACK(pu8Stack, i);
-    }
+    for (i = 26; i <= 31; i++) { PUSH_TO_STACK(pu8Stack, i); }
 
     // Push the RAMPZ and EIND registers
     PUSH_TO_STACK(pu8Stack, 'z');
@@ -166,8 +163,8 @@ void ThreadPort::StartThreads()
 
 using namespace Mark3;
 //---------------------------------------------------------------------------
-/*!
- *  \brief ISR(INT0_vect)
+/**
+ *  @brief ISR(INT0_vect)
  *   SWI using INT0 - used to trigger a context switch
  */
 //---------------------------------------------------------------------------

@@ -21,7 +21,6 @@ See license.txt for more information
 
 namespace Mark3
 {
-
 //---------------------------------------------------------------------------
 class MyUnitTest : public UnitTest
 {
@@ -116,9 +115,9 @@ typedef struct {
 
 //---------------------------------------------------------------------------
 extern MyTestCase astTestCases[];
-void       run_tests();
+void              run_tests();
 
 //---------------------------------------------------------------------------
 void PrintString(const char* szStr_);
 
-} //namespace Mark3
+} // namespace Mark3

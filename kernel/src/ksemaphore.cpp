@@ -11,11 +11,11 @@
 Copyright (c) 2012 - 2018 m0slevin, all rights reserved.
 See license.txt for more information
 ===========================================================================*/
-/*!
+/**
 
-    \file   ksemaphore.cpp
+    @file   ksemaphore.cpp
 
-    \brief  Semaphore Blocking-Object Implemenation
+    @brief  Semaphore Blocking-Object Implemenation
 
 */
 
@@ -25,35 +25,35 @@ namespace Mark3
 {
 namespace
 {
-//---------------------------------------------------------------------------
-/*!
- * \brief TimedSemaphore_Callback
- *
- * This function is called from the timer-expired context to trigger a timeout
- * on this semphore.  This results in the waking of the thread that generated
- * the semaphore pend call that was not completed in time.
- *
- * \param pclOwner_ Pointer to the thread to wake
- * \param pvData_   Pointer to the semaphore object that the thread is blocked on
- */
-void TimedSemaphore_Callback(Thread* pclOwner_, void* pvData_)
-{
-    KERNEL_ASSERT(pclOwner_ != nullptr);
-    KERNEL_ASSERT(pvData_ != nullptr);
+    //---------------------------------------------------------------------------
+    /**
+     * @brief TimedSemaphore_Callback
+     *
+     * This function is called from the timer-expired context to trigger a timeout
+     * on this semphore.  This results in the waking of the thread that generated
+     * the semaphore pend call that was not completed in time.
+     *
+     * @param pclOwner_ Pointer to the thread to wake
+     * @param pvData_   Pointer to the semaphore object that the thread is blocked on
+     */
+    void TimedSemaphore_Callback(Thread* pclOwner_, void* pvData_)
+    {
+        KERNEL_ASSERT(pclOwner_ != nullptr);
+        KERNEL_ASSERT(pvData_ != nullptr);
 
-    auto* pclSemaphore = static_cast<Semaphore*>(pvData_);
+        auto* pclSemaphore = static_cast<Semaphore*>(pvData_);
 
-    // Indicate that the semaphore has expired on the thread
-    pclOwner_->SetExpired(true);
+        // Indicate that the semaphore has expired on the thread
+        pclOwner_->SetExpired(true);
 
-    // Wake up the thread that was blocked on this semaphore.
-    pclSemaphore->WakeMe(pclOwner_);
+        // Wake up the thread that was blocked on this semaphore.
+        pclSemaphore->WakeMe(pclOwner_);
 
-    if (pclOwner_->GetCurPriority() >= Scheduler::GetCurrentThread()->GetCurPriority()) {
-        Thread::Yield();
+        if (pclOwner_->GetCurPriority() >= Scheduler::GetCurrentThread()->GetCurPriority()) {
+            Thread::Yield();
+        }
     }
-}
-} //anonymous namespace
+} // anonymous namespace
 
 //---------------------------------------------------------------------------
 Semaphore::~Semaphore()
@@ -166,8 +166,8 @@ bool Semaphore::Pend_i(uint32_t u32WaitTimeMS_)
         // and go along our merry way.
         m_u16Value--;
     } else {
-// The semaphore count is zero - we need to block the current thread
-// and wait until the semaphore is posted from elsewhere.
+        // The semaphore count is zero - we need to block the current thread
+        // and wait until the semaphore is posted from elsewhere.
         if (u32WaitTimeMS_ != 0u) {
             g_pclCurrent->SetExpired(false);
             clSemTimer.Init();
@@ -213,4 +213,4 @@ uint16_t Semaphore::GetCount()
     CS_EXIT();
     return u16Ret;
 }
-} //namespace Mark3
+} // namespace Mark3

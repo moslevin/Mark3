@@ -19,12 +19,11 @@
 
 using namespace Mark3;
 
-extern "C" void __cxa_pure_virtual()
-{
-}
+extern "C" void __cxa_pure_virtual() {}
 //---------------------------------------------------------------------------
 
-namespace {
+namespace
+{
 //---------------------------------------------------------------------------
 volatile uint8_t u8TestVal;
 
@@ -65,9 +64,7 @@ void IdleMain(void* unused)
     }
 }
 //---------------------------------------------------------------------------
-void ProfileInit()
-{
-}
+void ProfileInit() {}
 
 //---------------------------------------------------------------------------
 void ProfileOverhead()
@@ -139,7 +136,7 @@ void Semaphore_Profiling()
 //---------------------------------------------------------------------------
 void Mutex_Profiling()
 {
-    Mutex    clMutex;
+    Mutex clMutex;
 
     CS_ENTER();
     KernelAware::ProfileInit("MutexInit");

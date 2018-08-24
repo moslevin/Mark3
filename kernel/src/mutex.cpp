@@ -11,10 +11,10 @@
 Copyright (c) 2012 - 2018 m0slevin, all rights reserved.
 See license.txt for more information
 ===========================================================================*/
-/*!
-    \file mutex.cpp
+/**
+    @file mutex.cpp
 
-    \brief Mutual-exclusion object
+    @brief Mutual-exclusion object
 */
 
 #include "mark3.h"
@@ -22,34 +22,34 @@ namespace Mark3
 {
 namespace
 {
-//---------------------------------------------------------------------------
-/*!
- * \brief TimedMutex_Calback
- *
- * This function is called from the timer-expired context to trigger a timeout
- * on this mutex.  This results in the waking of the thread that generated
- * the mutex claim call that was not completed in time.
- *
- * \param pclOwner_ Pointer to the thread to wake
- * \param pvData_   Pointer to the mutex object that the thread is blocked on
- */
-void TimedMutex_Callback(Thread* pclOwner_, void* pvData_)
-{
-    KERNEL_ASSERT(pclOwner_ != nullptr);
-    KERNEL_ASSERT(pvData_ != nullptr);
+    //---------------------------------------------------------------------------
+    /**
+     * @brief TimedMutex_Calback
+     *
+     * This function is called from the timer-expired context to trigger a timeout
+     * on this mutex.  This results in the waking of the thread that generated
+     * the mutex claim call that was not completed in time.
+     *
+     * @param pclOwner_ Pointer to the thread to wake
+     * @param pvData_   Pointer to the mutex object that the thread is blocked on
+     */
+    void TimedMutex_Callback(Thread* pclOwner_, void* pvData_)
+    {
+        KERNEL_ASSERT(pclOwner_ != nullptr);
+        KERNEL_ASSERT(pvData_ != nullptr);
 
-    auto* pclMutex = static_cast<Mutex*>(pvData_);
+        auto* pclMutex = static_cast<Mutex*>(pvData_);
 
-    // Indicate that the semaphore has expired on the thread
-    pclOwner_->SetExpired(true);
+        // Indicate that the semaphore has expired on the thread
+        pclOwner_->SetExpired(true);
 
-    // Wake up the thread that was blocked on this semaphore.
-    pclMutex->WakeMe(pclOwner_);
+        // Wake up the thread that was blocked on this semaphore.
+        pclMutex->WakeMe(pclOwner_);
 
-    if (pclOwner_->GetCurPriority() >= Scheduler::GetCurrentThread()->GetCurPriority()) {
-        Thread::Yield();
+        if (pclOwner_->GetCurPriority() >= Scheduler::GetCurrentThread()->GetCurPriority()) {
+            Thread::Yield();
+        }
     }
-}
 } // anonymous namespace
 
 //---------------------------------------------------------------------------
@@ -97,10 +97,10 @@ void Mutex::Init(bool bRecursive_)
     KERNEL_ASSERT(!m_clBlockList.GetHead());
 
     // Reset the data in the mutex
-    m_bReady    = true;    // The mutex is free.
-    m_u8MaxPri  = 0;    // Set the maximum priority inheritence state
-    m_pclOwner  = NULL; // Clear the mutex owner
-    m_u8Recurse = 0;    // Reset recurse count
+    m_bReady     = true; // The mutex is free.
+    m_u8MaxPri   = 0;    // Set the maximum priority inheritence state
+    m_pclOwner   = NULL; // Clear the mutex owner
+    m_u8Recurse  = 0;    // Reset recurse count
     m_bRecursive = bRecursive_;
     SetInitialized();
 }
@@ -142,8 +142,8 @@ bool Mutex::Claim_i(uint32_t u32WaitTimeMS_)
         return true;
     }
 
-// The mutex is claimed already - we have to block now.  Move the
-// current thread to the list of threads waiting on the mutex.
+    // The mutex is claimed already - we have to block now.  Move the
+    // current thread to the list of threads waiting on the mutex.
     if (u32WaitTimeMS_ != 0u) {
         g_pclCurrent->SetExpired(false);
         clTimer.Init();
@@ -244,4 +244,4 @@ void Mutex::Release()
         Thread::Yield();
     }
 }
-} //namespace Mark3
+} // namespace Mark3

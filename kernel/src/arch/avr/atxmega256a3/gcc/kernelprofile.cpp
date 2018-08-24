@@ -11,10 +11,10 @@
 Copyright (c) 2012 - 2018 m0slevin, all rights reserved.
 See license.txt for more information
 ===========================================================================*/
-/*!
-    \file kernelprofile.cpp
+/**
+    @file kernelprofile.cpp
 
-    \brief ATMega328p Profiling timer implementation
+    @brief ATMega328p Profiling timer implementation
 */
 
 #include "kerneltypes.h"
@@ -29,28 +29,18 @@ See license.txt for more information
 uint32_t Profiler::m_u32Epoch;
 
 //---------------------------------------------------------------------------
-void Profiler::Init()
-{
-}
+void Profiler::Init() {}
 
 //---------------------------------------------------------------------------
-void Profiler::Start()
-{
-}
+void Profiler::Start() {}
 
 //---------------------------------------------------------------------------
-void Profiler::Stop()
-{
-}
+void Profiler::Stop() {}
 //---------------------------------------------------------------------------
-uint16_t Profiler::Read()
-{
-}
+uint16_t Profiler::Read() {}
 
 //---------------------------------------------------------------------------
-void Profiler::Process()
-{
-}
+void Profiler::Process() {}
 
 //---------------------------------------------------------------------------
 // ISR(TIMER0_OVF_vect)

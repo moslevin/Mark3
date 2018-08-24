@@ -11,11 +11,11 @@
 Copyright (c) 2012 - 2018 m0slevin, all rights reserved.
 See license.txt for more information
 =========================================================================== */
-/*!
+/**
 
-    \file   ksemaphore.h
+    @file   ksemaphore.h
 
-    \brief  Semaphore Blocking Object class declarations
+    @brief  Semaphore Blocking Object class declarations
 
  */
 #pragma once
@@ -29,7 +29,7 @@ See license.txt for more information
 namespace Mark3
 {
 //---------------------------------------------------------------------------
-/*!
+/**
  *  Binary & Counting semaphores, based on BlockingObject base class.
  */
 class Semaphore : public BlockingObject
@@ -38,8 +38,8 @@ public:
     void* operator new(size_t sz, void* pv) { return (Semaphore*)pv; };
     ~Semaphore();
 
-    /*!
-     *  \brief
+    /**
+     *  @brief
      *
      *  Initialize a semaphore before use.  Must be called before attempting
      *  post/pend operations on the object.
@@ -56,13 +56,13 @@ public:
      *  Any other combination of values can be used to implement a counting
      *  semaphore.
      *
-     *  \param u16InitVal_ Initial value held by the semaphore
-     *  \param u16MaxVal_ Maximum value for the semaphore.  Must be nonzero.
+     *  @param u16InitVal_ Initial value held by the semaphore
+     *  @param u16MaxVal_ Maximum value for the semaphore.  Must be nonzero.
      */
     void Init(uint16_t u16InitVal_, uint16_t u16MaxVal_);
 
-    /*!
-     *  \brief
+    /**
+     *  @brief
      *
      *  Increment the semaphore count.  If the semaphore count is zero at the
      *  time this is called, and there are threads blocked on the object, this
@@ -72,13 +72,13 @@ public:
      *  thread's priority, a context switch will occur and control will be
      *  relinquished to that Thread.
      *
-     *  \return true if the semaphore was posted, false if the count
+     *  @return true if the semaphore was posted, false if the count
      *          is already maxed out.
      */
     bool Post();
 
-    /*!
-     *  \brief
+    /**
+     *  @brief
      *
      *  Decrement the semaphore count.  If the count is zero, the calling
      *  Thread will block until the semaphore is posted, and the Thread's
@@ -86,8 +86,8 @@ public:
      */
     void Pend();
 
-    /*!
-     *  \brief
+    /**
+     *  @brief
      *
      *  Return the current semaphore counter. This can be
      *  usedd by a thread to bypass blocking on a semaphore -
@@ -95,25 +95,25 @@ public:
      *  is returned, instead of blocking until the semaphore
      *  is posted.
      *
-     *  \return The current semaphore counter value.
+     *  @return The current semaphore counter value.
      */
     uint16_t GetCount();
 
-    /*!
-     *  \brief
+    /**
+     *  @brief
      *
      *  Decrement the semaphore count.  If the count is zero,
      *  the thread will block until the semaphore is pended.
      *  If the specified interval expires before the thread is
      *  unblocked, then the status is returned back to the user.
      *
-     *  \return true - semaphore was acquired before the timeout
+     *  @return true - semaphore was acquired before the timeout
      *          false - timeout occurred before the semaphore was claimed.
      */
     bool Pend(uint32_t u32WaitTimeMS_);
 
-    /*!
-     *  \brief
+    /**
+     *  @brief
      *
      *  Wake a thread blocked on the semaphore.  This is an
      *  internal function used for implementing timed semaphores
@@ -125,24 +125,24 @@ public:
     void WakeMe(Thread* pclChosenOne_);
 
 private:
-    /*!
-     *  \brief
+    /**
+     *  @brief
      *
      *  Wake the next thread waiting on the semaphore.  Used internally.
      */
     uint8_t WakeNext();
 
-    /*!
-     * \brief Pend_i
+    /**
+     * @brief Pend_i
      *
      * Internal function used to abstract timed and untimed semaphore pend operations.
      *
-     * \param u32WaitTimeMS_ Time in MS to wait
-     * \return true on success, false on failure.
+     * @param u32WaitTimeMS_ Time in MS to wait
+     * @return true on success, false on failure.
      */
     bool Pend_i(uint32_t u32WaitTimeMS_);
 
     uint16_t m_u16Value;    //!< Current count held by the semaphore
     uint16_t m_u16MaxValue; //!< Maximum count that can be held by this semaphore
 };
-} //namespace Mark3
+} // namespace Mark3

@@ -11,9 +11,9 @@
 Copyright (c) 2012 - 2018 m0slevin, all rights reserved.
 See license.txt for more information
 ===========================================================================*/
-/*!
-    \file eventflag.h
-    \brief Event Flag Blocking Object/IPC-Object definition.
+/**
+    @file eventflag.h
+    @brief Event Flag Blocking Object/IPC-Object definition.
 */
 #pragma once
 
@@ -26,8 +26,8 @@ See license.txt for more information
 namespace Mark3
 {
 //---------------------------------------------------------------------------
-/*!
- * \brief The EventFlag class is a blocking object, similar to a semaphore or
+/**
+ * @brief The EventFlag class is a blocking object, similar to a semaphore or
  * mutex, commonly used for synchronizing thread execution based on events
  * occurring within the system.
  *
@@ -47,73 +47,73 @@ public:
     void* operator new(size_t sz, void* pv) { return (EventFlag*)pv; };
     ~EventFlag();
 
-    /*!
-     * \brief Init Initializes the EventFlag object prior to use.
+    /**
+     * @brief Init Initializes the EventFlag object prior to use.
      */
     void Init();
 
-    /*!
-     * \brief Wait - Block a thread on the specific flags in this event flag group
-     * \param u16Mask_ - 16-bit bitmask to block on
-     * \param eMode_ - EventFlagOperation::Any_Set:  Thread will block on any of the bits in the mask
+    /**
+     * @brief Wait - Block a thread on the specific flags in this event flag group
+     * @param u16Mask_ - 16-bit bitmask to block on
+     * @param eMode_ - EventFlagOperation::Any_Set:  Thread will block on any of the bits in the mask
      *               - EventFlagOperation::All_Set:  Thread will block on all of the bits in the mask
-     * \return Bitmask condition that caused the thread to unblock, or 0 on error or timeout
+     * @return Bitmask condition that caused the thread to unblock, or 0 on error or timeout
      */
     uint16_t Wait(uint16_t u16Mask_, EventFlagOperation eMode_);
 
-    /*!
-     * \brief Wait - Block a thread on the specific flags in this event flag group
-     * \param u16Mask_ - 16-bit bitmask to block on
-     * \param eMode_ - EventFlagOperation::Any_Set:  Thread will block on any of the bits in the mask
+    /**
+     * @brief Wait - Block a thread on the specific flags in this event flag group
+     * @param u16Mask_ - 16-bit bitmask to block on
+     * @param eMode_ - EventFlagOperation::Any_Set:  Thread will block on any of the bits in the mask
      *               - EventFlagOperation::All_Set:  Thread will block on all of the bits in the mask
-     * \param u32TimeMS_ - Time to block (in ms)
-     * \return Bitmask condition that caused the thread to unblock, or 0 on error or timeout
+     * @param u32TimeMS_ - Time to block (in ms)
+     * @return Bitmask condition that caused the thread to unblock, or 0 on error or timeout
      */
     uint16_t Wait(uint16_t u16Mask_, EventFlagOperation eMode_, uint32_t u32TimeMS_);
 
-    /*!
-     * \brief WakeMe
+    /**
+     * @brief WakeMe
      *
      * Wake the given thread, currently blocking on this object
      *
-     * \param pclOwner_ Pointer to the owner thread to unblock.
+     * @param pclOwner_ Pointer to the owner thread to unblock.
      */
     void WakeMe(Thread* pclChosenOne_);
 
-    /*!
-     * \brief Set - Set additional flags in this object (logical OR).  This API can potentially
+    /**
+     * @brief Set - Set additional flags in this object (logical OR).  This API can potentially
      *              result in threads blocked on Wait() to be unblocked.
-     * \param u16Mask_ - Bitmask of flags to set.
+     * @param u16Mask_ - Bitmask of flags to set.
      */
     void Set(uint16_t u16Mask_);
 
-    /*!
-     * \brief ClearFlags - Clear a specific set of flags within this object, specific by bitmask
-     * \param u16Mask_ - Bitmask of flags to clear
+    /**
+     * @brief ClearFlags - Clear a specific set of flags within this object, specific by bitmask
+     * @param u16Mask_ - Bitmask of flags to clear
      */
     void Clear(uint16_t u16Mask_);
 
-    /*!
-     * \brief GetMask Returns the state of the 16-bit bitmask within this object
-     * \return The state of the 16-bit bitmask
+    /**
+     * @brief GetMask Returns the state of the 16-bit bitmask within this object
+     * @return The state of the 16-bit bitmask
      */
     uint16_t GetMask();
 
 private:
-    /*!
-     * \brief Wait_i
+    /**
+     * @brief Wait_i
      *
      * Interal abstraction used to manage both timed and untimed wait operations
      *
-     * \param u16Mask_ - 16-bit bitmask to block on
-     * \param eMode_ - EventFlagOperation::Any_Set:  Thread will block on any of the bits in the mask
+     * @param u16Mask_ - 16-bit bitmask to block on
+     * @param eMode_ - EventFlagOperation::Any_Set:  Thread will block on any of the bits in the mask
      *               - EventFlagOperation::All_Set:  Thread will block on all of the bits in the mask
-     * \param u32TimeMS_ - Time to block (in ms)
+     * @param u32TimeMS_ - Time to block (in ms)
      *
-     * \return Bitmask condition that caused the thread to unblock, or 0 on error or timeout
+     * @return Bitmask condition that caused the thread to unblock, or 0 on error or timeout
      */
     uint16_t Wait_i(uint16_t u16Mask_, EventFlagOperation eMode_, uint32_t u32TimeMS_);
 
     uint16_t m_u16SetMask; //!< Event flags currently set in this object
 };
-} //namespace Mark3
+} // namespace Mark3

@@ -32,13 +32,12 @@ of the application.
 ===========================================================================*/
 
 extern "C" {
-void __cxa_pure_virtual(void)
-{
-}
+void __cxa_pure_virtual(void) {}
 void DebugPrint(const char* szString_);
 }
 
-namespace {
+namespace
+{
 using namespace Mark3;
 
 //---------------------------------------------------------------------------
@@ -47,7 +46,7 @@ using namespace Mark3;
 // function used by the application thread.
 Thread clApp1Thread;
 K_WORD awApp1Stack[PORT_KERNEL_DEFAULT_STACK_SIZE];
-void App1Main(void* unused_);
+void   App1Main(void* unused_);
 
 //---------------------------------------------------------------------------
 // This block declares the thread stack data for a thread that we'll create
@@ -58,7 +57,10 @@ K_WORD awApp2Stack[PORT_KERNEL_DEFAULT_STACK_SIZE];
 // idle thread -- do nothing
 Thread clIdleThread;
 K_WORD awIdleStack[PORT_KERNEL_DEFAULT_STACK_SIZE];
-void IdleMain(void* /*unused_*/) {while (1) {} }
+void   IdleMain(void* /*unused_*/)
+{
+    while (1) {}
+}
 
 #define MAX_THREADS (10)
 Thread*  apclActiveThreads[10];
@@ -87,7 +89,7 @@ void PrintCPUUsage(void)
     Kernel::DebugPrint("Cpu usage\n");
     for (int i = 0; i < MAX_THREADS; i++) {
         if (apclActiveThreads[i] != 0) {
-            //KernelAware::Trace(0, __LINE__, (K_ADDR)apclActiveThreads[i], au16ActiveTime[i]);
+            // KernelAware::Trace(0, __LINE__, (K_ADDR)apclActiveThreads[i], au16ActiveTime[i]);
         }
     }
 }
@@ -129,7 +131,7 @@ void ThreadContextSwitch(Thread* pclThread_)
 {
     Kernel::DebugPrint("CS\n");
     static uint16_t u16LastTick = 0;
-    auto u16Ticks    = KernelTimer::Read();
+    auto            u16Ticks    = KernelTimer::Read();
 
     CS_ENTER();
     for (uint8_t i = 0; i < MAX_THREADS; i++) {
@@ -146,29 +148,24 @@ void ThreadContextSwitch(Thread* pclThread_)
 //---------------------------------------------------------------------------
 void WorkerMain1(void* arg_)
 {
-    auto* pclSem   = static_cast<Semaphore*>(arg_);
-    uint32_t   u32Count = 0;
+    auto*    pclSem   = static_cast<Semaphore*>(arg_);
+    uint32_t u32Count = 0;
 
     // Do some work.  Post a semaphore to notify the other thread that the
     // work has been completed.
-    while (u32Count < 1000000) {
-        u32Count++;
-    }
+    while (u32Count < 1000000) { u32Count++; }
 
     Kernel::DebugPrint("Worker1 -- Done Work\n");
     pclSem->Post();
 
     // Work is completed, just spin now.  Let another thread destory u16.
-    while (1) {
-    }
+    while (1) {}
 }
 //---------------------------------------------------------------------------
 void WorkerMain2(void* arg_)
 {
     uint32_t u32Count = 0;
-    while (u32Count < 1000000) {
-        u32Count++;
-    }
+    while (u32Count < 1000000) { u32Count++; }
 
     Kernel::DebugPrint("Worker2 -- Done Work\n");
 
@@ -191,9 +188,7 @@ void App1Main(void* unused_)
 
         // Do some work of our own in parallel, while the other thread works on its project.
         uint32_t u32Count = 0;
-        while (u32Count < 100000) {
-            u32Count++;
-        }
+        while (u32Count < 100000) { u32Count++; }
 
         Kernel::DebugPrint("Thread -- Done Work\n");
 
@@ -212,16 +207,13 @@ void App1Main(void* unused_)
         clMyThread.Start();
 
         u32Count = 0;
-        while (u32Count < 1000000) {
-            u32Count++;
-        }
+        while (u32Count < 1000000) { u32Count++; }
 
         Kernel::DebugPrint("Thread -- Done Work\n");
 
         // Check that we're sure the worker thread has terminated before we try running the
         // test loop again.
-        while (clMyThread.GetState() != ThreadState::Exit) {
-        }
+        while (clMyThread.GetState() != ThreadState::Exit) {}
 
         Kernel::DebugPrint("  Test Done\n");
         Thread::Sleep(1000);

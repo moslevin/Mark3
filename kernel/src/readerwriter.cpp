@@ -11,15 +11,15 @@
 Copyright (c) 2012 - 2018 m0slevin, all rights reserved.
 See license.txt for more information
 ===========================================================================*/
-/*!
-    \file   readerwriter.cpp
+/**
+    @file   readerwriter.cpp
 
-    \brief  Reader-writer lock implementation
+    @brief  Reader-writer lock implementation
 
 */
 #include "mark3.h"
-namespace Mark3 {
-
+namespace Mark3
+{
 //---------------------------------------------------------------------------
 void ReaderWriterLock::Init()
 {

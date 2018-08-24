@@ -18,19 +18,18 @@
 #include <avr/sleep.h>
 #endif
 
-extern "C" void __cxa_pure_virtual()
-{
-}
+extern "C" void __cxa_pure_virtual() {}
 
-namespace {
+namespace
+{
 using namespace Mark3;
 
 class UnitTest
 {
 public:
     void SetName(const char* szName_) { m_szName = szName_; }
-    void                     Start() { m_bIsActive = 1; }
-    void                     Pass()
+    void Start() { m_bIsActive = 1; }
+    void Pass()
     {
         if (m_bComplete) {
             return;
@@ -59,6 +58,7 @@ public:
     void        Complete() { m_bComplete = 1; }
     const char* GetName() { return m_szName; }
     uint8_t     GetResult() { return m_bStatus; }
+
 private:
     const char* m_szName;
     bool        m_bIsActive;
@@ -107,8 +107,7 @@ K_WORD awTestStack1[PORT_KERNEL_DEFAULT_STACK_SIZE];
 //---------------------------------------------------------------------------
 void IdleMain(void* unused)
 {
-    while (1) {
-    }
+    while (1) {}
 }
 
 //---------------------------------------------------------------------------
@@ -118,9 +117,7 @@ uint16_t KUtil_Strlen(const char* szStr_)
     char*    pcData = (char*)szStr_;
     uint16_t u16Len = 0;
 
-    while (*pcData++) {
-        u16Len++;
-    }
+    while (*pcData++) { u16Len++; }
     return u16Len;
 }
 
@@ -196,21 +193,15 @@ void Semaphore_Profiling()
     uint16_t i;
 
     clSemInitTimer.Start();
-    for (i = 0; i < 1000; i++) {
-        clSem.Init(0, 1000);
-    }
+    for (i = 0; i < 1000; i++) { clSem.Init(0, 1000); }
     clSemInitTimer.Stop();
 
     clSemPostTimer.Start();
-    for (i = 0; i < 1000; i++) {
-        clSem.Post();
-    }
+    for (i = 0; i < 1000; i++) { clSem.Post(); }
     clSemPostTimer.Stop();
 
     clSemPendTimer.Start();
-    for (i = 0; i < 1000; i++) {
-        clSem.Pend();
-    }
+    for (i = 0; i < 1000; i++) { clSem.Pend(); }
     clSemPendTimer.Stop();
 
     clSem.Init(0, 1);
@@ -231,9 +222,7 @@ void Mutex_Profiling()
     Mutex    clMutex;
 
     clMutexInitTimer.Start();
-    for (i = 0; i < 1000; i++) {
-        clMutex.Init();
-    }
+    for (i = 0; i < 1000; i++) { clMutex.Init(); }
     clMutexInitTimer.Stop();
 
     clMutexClaimTimer.Start();
@@ -326,9 +315,7 @@ void ProfilePrint(ProfileTimer* pclProfile, const char* szName_)
     char     szBuf[16];
     uint32_t u32Val = pclProfile->GetAverage() - clProfileOverhead.GetAverage();
     u32Val *= 8;
-    for (int i = 0; i < 16; i++) {
-        szBuf[i] = 0;
-    }
+    for (int i = 0; i < 16; i++) { szBuf[i] = 0; }
     szBuf[0] = '0';
 
     PrintWait(pclUART, KUtil_Strlen(szName_), szName_);

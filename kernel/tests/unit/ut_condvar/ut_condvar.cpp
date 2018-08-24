@@ -19,7 +19,8 @@ See license.txt for more information
 #include "../ut_platform.h"
 #include "mark3.h"
 
-namespace {
+namespace
+{
 using namespace Mark3;
 
 Thread clTestThread1;
@@ -31,15 +32,15 @@ K_WORD awThreadStack2[PORT_KERNEL_DEFAULT_STACK_SIZE];
 Thread clTestThread3;
 K_WORD awThreadStack3[PORT_KERNEL_DEFAULT_STACK_SIZE];
 
-volatile bool isSignalled = false;
-volatile bool isTimeout = false;
-volatile int iSignalCount = 0;
-Mutex clMutex;
+volatile bool isSignalled  = false;
+volatile bool isTimeout    = false;
+volatile int  iSignalCount = 0;
+Mutex         clMutex;
 
 } // anonymous namespace
 
-namespace Mark3 {
-
+namespace Mark3
+{
 //===========================================================================
 // Local Defines
 //===========================================================================
@@ -55,10 +56,10 @@ TEST(ut_condvar_wait_signal)
     clCondVar.Init();
     clMutex.Init();
     isSignalled = false;
-    isTimeout = false;
+    isTimeout   = false;
 
     auto lWaiter = [](void* cv) {
-        auto *pclCondVar = static_cast<ConditionVariable*>(cv);
+        auto* pclCondVar = static_cast<ConditionVariable*>(cv);
 
         pclCondVar->Wait(&clMutex);
         isSignalled = true;
@@ -71,7 +72,8 @@ TEST(ut_condvar_wait_signal)
     clTestThread1.Init(awThreadStack1,
                        sizeof(awThreadStack1),
                        Scheduler::GetCurrentThread()->GetCurPriority() + 1,
-                       lWaiter, &clCondVar);
+                       lWaiter,
+                       &clCondVar);
 
     clTestThread1.Start();
 
@@ -92,12 +94,12 @@ TEST(ut_condvar_wait_broadcast)
     clMutex.Init();
     clCondVar.Init();
 
-    isSignalled = false;
-    isTimeout = false;
+    isSignalled  = false;
+    isTimeout    = false;
     iSignalCount = 0;
 
     auto lWaiter = [](void* cv) {
-        auto *pclCondVar = static_cast<ConditionVariable*>(cv);
+        auto* pclCondVar = static_cast<ConditionVariable*>(cv);
 
         pclCondVar->Wait(&clMutex);
         iSignalCount++;
@@ -110,21 +112,24 @@ TEST(ut_condvar_wait_broadcast)
     clTestThread1.Init(awThreadStack1,
                        sizeof(awThreadStack1),
                        Scheduler::GetCurrentThread()->GetCurPriority() + 1,
-                       lWaiter, &clCondVar);
+                       lWaiter,
+                       &clCondVar);
 
     clTestThread1.Start();
 
     clTestThread2.Init(awThreadStack2,
                        sizeof(awThreadStack2),
                        Scheduler::GetCurrentThread()->GetCurPriority() + 1,
-                       lWaiter, &clCondVar);
+                       lWaiter,
+                       &clCondVar);
 
     clTestThread2.Start();
 
     clTestThread3.Init(awThreadStack3,
                        sizeof(awThreadStack3),
                        Scheduler::GetCurrentThread()->GetCurPriority() + 1,
-                       lWaiter, &clCondVar);
+                       lWaiter,
+                       &clCondVar);
 
     clTestThread3.Start();
 
@@ -145,12 +150,12 @@ TEST(ut_condvar_wait_multi_signal)
     clMutex.Init();
     clCondVar.Init();
 
-    isSignalled = false;
-    isTimeout = false;
+    isSignalled  = false;
+    isTimeout    = false;
     iSignalCount = 0;
 
     auto lWaiter = [](void* cv) {
-        auto *pclCondVar = static_cast<ConditionVariable*>(cv);
+        auto* pclCondVar = static_cast<ConditionVariable*>(cv);
 
         pclCondVar->Wait(&clMutex);
         iSignalCount++;
@@ -163,21 +168,24 @@ TEST(ut_condvar_wait_multi_signal)
     clTestThread1.Init(awThreadStack1,
                        sizeof(awThreadStack1),
                        Scheduler::GetCurrentThread()->GetCurPriority() + 1,
-                       lWaiter, &clCondVar);
+                       lWaiter,
+                       &clCondVar);
 
     clTestThread1.Start();
 
     clTestThread2.Init(awThreadStack2,
                        sizeof(awThreadStack2),
                        Scheduler::GetCurrentThread()->GetCurPriority() + 1,
-                       lWaiter, &clCondVar);
+                       lWaiter,
+                       &clCondVar);
 
     clTestThread2.Start();
 
     clTestThread3.Init(awThreadStack3,
                        sizeof(awThreadStack3),
                        Scheduler::GetCurrentThread()->GetCurPriority() + 1,
-                       lWaiter, &clCondVar);
+                       lWaiter,
+                       &clCondVar);
 
     clTestThread3.Start();
 
@@ -208,12 +216,12 @@ TEST(ut_condvar_wait_multi_broadcast)
     clMutex.Init();
     clCondVar.Init();
 
-    isSignalled = false;
-    isTimeout = false;
+    isSignalled  = false;
+    isTimeout    = false;
     iSignalCount = 0;
 
     auto lWaiter = [](void* cv) {
-        auto *pclCondVar = static_cast<ConditionVariable*>(cv);
+        auto* pclCondVar = static_cast<ConditionVariable*>(cv);
 
         pclCondVar->Wait(&clMutex);
         iSignalCount++;
@@ -226,21 +234,24 @@ TEST(ut_condvar_wait_multi_broadcast)
     clTestThread1.Init(awThreadStack1,
                        sizeof(awThreadStack1),
                        Scheduler::GetCurrentThread()->GetCurPriority() + 1,
-                       lWaiter, &clCondVar);
+                       lWaiter,
+                       &clCondVar);
 
     clTestThread1.Start();
 
     clTestThread2.Init(awThreadStack2,
                        sizeof(awThreadStack2),
                        Scheduler::GetCurrentThread()->GetCurPriority() + 1,
-                       lWaiter, &clCondVar);
+                       lWaiter,
+                       &clCondVar);
 
     clTestThread2.Start();
 
     clTestThread3.Init(awThreadStack3,
                        sizeof(awThreadStack3),
                        Scheduler::GetCurrentThread()->GetCurPriority() + 1,
-                       lWaiter, &clCondVar);
+                       lWaiter,
+                       &clCondVar);
 
     clTestThread3.Start();
 
@@ -261,12 +272,12 @@ TEST(ut_condvar_wait_timeout)
     clMutex.Init();
     clCondVar.Init();
 
-    isSignalled = false;
-    isTimeout = false;
+    isSignalled  = false;
+    isTimeout    = false;
     iSignalCount = 0;
 
     auto lWaiter = [](void* cv) {
-        auto *pclCondVar = static_cast<ConditionVariable*>(cv);
+        auto* pclCondVar = static_cast<ConditionVariable*>(cv);
 
         if (!pclCondVar->Wait(&clMutex, 30)) {
             isTimeout = true;
@@ -278,7 +289,8 @@ TEST(ut_condvar_wait_timeout)
     clTestThread1.Init(awThreadStack1,
                        sizeof(awThreadStack1),
                        Scheduler::GetCurrentThread()->GetCurPriority() + 1,
-                       lWaiter, &clCondVar);
+                       lWaiter,
+                       &clCondVar);
 
     clTestThread1.Start();
 
@@ -297,12 +309,12 @@ TEST(ut_condvar_timedwait_success)
     clMutex.Init();
     clCondVar.Init();
 
-    isSignalled = false;
-    isTimeout = false;
+    isSignalled  = false;
+    isTimeout    = false;
     iSignalCount = 0;
 
     auto lWaiter = [](void* cv) {
-        auto *pclCondVar = static_cast<ConditionVariable*>(cv);
+        auto* pclCondVar = static_cast<ConditionVariable*>(cv);
 
         if (!pclCondVar->Wait(&clMutex, 30)) {
             isTimeout = true;
@@ -316,7 +328,8 @@ TEST(ut_condvar_timedwait_success)
     clTestThread1.Init(awThreadStack1,
                        sizeof(awThreadStack1),
                        Scheduler::GetCurrentThread()->GetCurPriority() + 1,
-                       lWaiter, &clCondVar);
+                       lWaiter,
+                       &clCondVar);
 
     clTestThread1.Start();
 
@@ -333,12 +346,7 @@ TEST_END
 // Test Whitelist Goes Here
 //===========================================================================
 TEST_CASE_START
- TEST_CASE(ut_condvar_wait_signal),
- TEST_CASE(ut_condvar_wait_broadcast),
- TEST_CASE(ut_condvar_wait_multi_signal),
- TEST_CASE(ut_condvar_wait_multi_broadcast),
- TEST_CASE(ut_condvar_wait_timeout),
- TEST_CASE(ut_condvar_timedwait_success),
-TEST_CASE_END
-} //namespace Mark3
-
+TEST_CASE(ut_condvar_wait_signal), TEST_CASE(ut_condvar_wait_broadcast), TEST_CASE(ut_condvar_wait_multi_signal),
+    TEST_CASE(ut_condvar_wait_multi_broadcast), TEST_CASE(ut_condvar_wait_timeout),
+    TEST_CASE(ut_condvar_timedwait_success), TEST_CASE_END
+} // namespace Mark3

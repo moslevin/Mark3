@@ -11,10 +11,10 @@
 Copyright (c) 2012 - 2018 m0slevin, all rights reserved.
 See license.txt for more information
 ===========================================================================*/
-/*!
-    \file mark3cfg.h
+/**
+    @file mark3cfg.h
 
-    \brief Mark3 Kernel Configuration
+    @brief Mark3 Kernel Configuration
 
     This file is used to configure the kernel for your specific application
     in order to provide the optimal set of features for a given use case.
@@ -27,4 +27,4 @@ See license.txt for more information
 
 #define KERNEL_DEBUG (0)
 
-#include "portcfg.h"    //!< include CPU/Port specific configuration options
+#include "portcfg.h" //!< include CPU/Port specific configuration options

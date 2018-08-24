@@ -19,7 +19,8 @@ See license.txt for more information
 #include "../ut_platform.h"
 #include "mark3.h"
 
-namespace {
+namespace
+{
 using namespace Mark3;
 
 Thread clTestThread1;
@@ -55,7 +56,8 @@ void ReaderTask(void* param)
 }
 } // anonymous namespace
 
-namespace Mark3 {
+namespace Mark3
+{
 //===========================================================================
 // Local Defines
 //===========================================================================
@@ -68,13 +70,14 @@ TEST(ut_rw_single_reader)
 {
     ReaderWriterLock clRWLock;
     clRWLock.Init();
-    iNumReads = 0;
+    iNumReads  = 0;
     iNumWrites = 0;
 
     clTestThread1.Init(awThreadStack1,
                        sizeof(awThreadStack1),
                        Scheduler::GetCurrentThread()->GetCurPriority() + 1,
-                       ReaderTask, &clRWLock);
+                       ReaderTask,
+                       &clRWLock);
 
     clTestThread1.Start();
 
@@ -90,13 +93,14 @@ TEST(ut_rw_single_writer)
 {
     ReaderWriterLock clRWLock;
     clRWLock.Init();
-    iNumReads = 0;
+    iNumReads  = 0;
     iNumWrites = 0;
 
     clTestThread1.Init(awThreadStack1,
                        sizeof(awThreadStack1),
                        Scheduler::GetCurrentThread()->GetCurPriority() + 1,
-                       WriterTask, &clRWLock);
+                       WriterTask,
+                       &clRWLock);
 
     clTestThread1.Start();
 
@@ -112,27 +116,30 @@ TEST(ut_rw_multiple_writers_block)
 {
     ReaderWriterLock clRWLock;
     clRWLock.Init();
-    iNumReads = 0;
+    iNumReads  = 0;
     iNumWrites = 0;
 
     clTestThread1.Init(awThreadStack1,
                        sizeof(awThreadStack1),
                        Scheduler::GetCurrentThread()->GetCurPriority() + 1,
-                       WriterTask, &clRWLock);
+                       WriterTask,
+                       &clRWLock);
 
     clTestThread1.Start();
 
     clTestThread2.Init(awThreadStack2,
                        sizeof(awThreadStack2),
                        Scheduler::GetCurrentThread()->GetCurPriority() + 1,
-                       WriterTask, &clRWLock);
+                       WriterTask,
+                       &clRWLock);
 
     clTestThread2.Start();
 
     clTestThread3.Init(awThreadStack3,
                        sizeof(awThreadStack3),
                        Scheduler::GetCurrentThread()->GetCurPriority() + 1,
-                       WriterTask, &clRWLock);
+                       WriterTask,
+                       &clRWLock);
 
     clTestThread3.Start();
 
@@ -154,27 +161,30 @@ TEST(ut_rw_multiple_readers_no_block)
 {
     ReaderWriterLock clRWLock;
     clRWLock.Init();
-    iNumReads = 0;
+    iNumReads  = 0;
     iNumWrites = 0;
 
     clTestThread1.Init(awThreadStack1,
                        sizeof(awThreadStack1),
                        Scheduler::GetCurrentThread()->GetCurPriority() + 1,
-                       ReaderTask, &clRWLock);
+                       ReaderTask,
+                       &clRWLock);
 
     clTestThread1.Start();
 
     clTestThread2.Init(awThreadStack2,
                        sizeof(awThreadStack2),
                        Scheduler::GetCurrentThread()->GetCurPriority() + 1,
-                       ReaderTask, &clRWLock);
+                       ReaderTask,
+                       &clRWLock);
 
     clTestThread2.Start();
 
     clTestThread3.Init(awThreadStack3,
                        sizeof(awThreadStack3),
                        Scheduler::GetCurrentThread()->GetCurPriority() + 1,
-                       ReaderTask, &clRWLock);
+                       ReaderTask,
+                       &clRWLock);
 
     clTestThread3.Start();
 
@@ -190,25 +200,28 @@ TEST(ut_rw_reader_blocks_writer)
 {
     ReaderWriterLock clRWLock;
     clRWLock.Init();
-    iNumReads = 0;
+    iNumReads  = 0;
     iNumWrites = 0;
 
     // 2x reader threads
     clTestThread1.Init(awThreadStack1,
                        sizeof(awThreadStack1),
                        Scheduler::GetCurrentThread()->GetCurPriority() + 1,
-                       ReaderTask, &clRWLock);
+                       ReaderTask,
+                       &clRWLock);
 
     clTestThread3.Init(awThreadStack3,
                        sizeof(awThreadStack1),
                        Scheduler::GetCurrentThread()->GetCurPriority() + 1,
-                       ReaderTask, &clRWLock);
+                       ReaderTask,
+                       &clRWLock);
 
     // 1x writer thread
     clTestThread2.Init(awThreadStack2,
                        sizeof(awThreadStack2),
                        Scheduler::GetCurrentThread()->GetCurPriority() + 1,
-                       WriterTask, &clRWLock);
+                       WriterTask,
+                       &clRWLock);
 
     // Verify that reader blocks pending writer
     clTestThread1.Start();
@@ -235,25 +248,28 @@ TEST(ut_rw_writer_blocks_reader)
 {
     ReaderWriterLock clRWLock;
     clRWLock.Init();
-    iNumReads = 0;
+    iNumReads  = 0;
     iNumWrites = 0;
 
     // 2x writer threads
     clTestThread1.Init(awThreadStack1,
                        sizeof(awThreadStack1),
                        Scheduler::GetCurrentThread()->GetCurPriority() + 1,
-                       WriterTask, &clRWLock);
+                       WriterTask,
+                       &clRWLock);
 
     clTestThread3.Init(awThreadStack3,
                        sizeof(awThreadStack1),
                        Scheduler::GetCurrentThread()->GetCurPriority() + 1,
-                       WriterTask, &clRWLock);
+                       WriterTask,
+                       &clRWLock);
 
     // 1x writer thread
     clTestThread2.Init(awThreadStack2,
                        sizeof(awThreadStack2),
                        Scheduler::GetCurrentThread()->GetCurPriority() + 1,
-                       ReaderTask, &clRWLock);
+                       ReaderTask,
+                       &clRWLock);
 
     // Verify that writer blocks pending writer
     clTestThread1.Start();
@@ -285,13 +301,14 @@ TEST(ut_rw_writer_timeout)
 {
     ReaderWriterLock clRWLock;
     clRWLock.Init();
-    iNumReads = 0;
+    iNumReads  = 0;
     iNumWrites = 0;
 
     clTestThread1.Init(awThreadStack1,
                        sizeof(awThreadStack1),
                        Scheduler::GetCurrentThread()->GetCurPriority() + 1,
-                       ReaderTask, &clRWLock);
+                       ReaderTask,
+                       &clRWLock);
     clTestThread1.Start();
 
     Thread::Sleep(10);
@@ -309,13 +326,14 @@ TEST(ut_rw_reader_timeout)
 {
     ReaderWriterLock clRWLock;
     clRWLock.Init();
-    iNumReads = 0;
+    iNumReads  = 0;
     iNumWrites = 0;
 
     clTestThread1.Init(awThreadStack1,
                        sizeof(awThreadStack1),
                        Scheduler::GetCurrentThread()->GetCurPriority() + 1,
-                       WriterTask, &clRWLock);
+                       WriterTask,
+                       &clRWLock);
     clTestThread1.Start();
 
     Thread::Sleep(10);
@@ -333,13 +351,14 @@ TEST(ut_rw_timed_read_success)
 {
     ReaderWriterLock clRWLock;
     clRWLock.Init();
-    iNumReads = 0;
+    iNumReads  = 0;
     iNumWrites = 0;
 
     clTestThread1.Init(awThreadStack1,
                        sizeof(awThreadStack1),
                        Scheduler::GetCurrentThread()->GetCurPriority() + 1,
-                       WriterTask, &clRWLock);
+                       WriterTask,
+                       &clRWLock);
     clTestThread1.Start();
 
     Thread::Sleep(10);
@@ -348,7 +367,6 @@ TEST(ut_rw_timed_read_success)
     auto success = clRWLock.AcquireReader(50);
     EXPECT_EQUALS(iNumWrites, 1);
     EXPECT_TRUE(success);
-
 }
 TEST_END
 
@@ -356,13 +374,14 @@ TEST(ut_rw_timed_write_success)
 {
     ReaderWriterLock clRWLock;
     clRWLock.Init();
-    iNumReads = 0;
+    iNumReads  = 0;
     iNumWrites = 0;
 
     clTestThread1.Init(awThreadStack1,
                        sizeof(awThreadStack1),
                        Scheduler::GetCurrentThread()->GetCurPriority() + 1,
-                       ReaderTask, &clRWLock);
+                       ReaderTask,
+                       &clRWLock);
     clTestThread1.Start();
 
     Thread::Sleep(10);
@@ -378,15 +397,8 @@ TEST_END
 // Test Whitelist Goes Here
 //===========================================================================
 TEST_CASE_START
- TEST_CASE(ut_rw_single_reader),
- TEST_CASE(ut_rw_single_writer),
- TEST_CASE(ut_rw_multiple_writers_block),
- TEST_CASE(ut_rw_multiple_readers_no_block),
- TEST_CASE(ut_rw_reader_blocks_writer),
- TEST_CASE(ut_rw_writer_blocks_reader),
- TEST_CASE(ut_rw_writer_timeout),
- TEST_CASE(ut_rw_reader_timeout),
- TEST_CASE(ut_rw_timed_read_success),
- TEST_CASE(ut_rw_timed_write_success),
-TEST_CASE_END
-} //namespace Mark3
+TEST_CASE(ut_rw_single_reader), TEST_CASE(ut_rw_single_writer), TEST_CASE(ut_rw_multiple_writers_block),
+    TEST_CASE(ut_rw_multiple_readers_no_block), TEST_CASE(ut_rw_reader_blocks_writer),
+    TEST_CASE(ut_rw_writer_blocks_reader), TEST_CASE(ut_rw_writer_timeout), TEST_CASE(ut_rw_reader_timeout),
+    TEST_CASE(ut_rw_timed_read_success), TEST_CASE(ut_rw_timed_write_success), TEST_CASE_END
+} // namespace Mark3

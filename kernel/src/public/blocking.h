@@ -11,11 +11,11 @@
 Copyright (c) 2012 - 2018 m0slevin, all rights reserved.
 See license.txt for more information
 =========================================================================== */
-/*!
+/**
 
-    \file   blocking.h
+    @file   blocking.h
 
-    \brief  Blocking object base class declarations
+    @brief  Blocking object base class declarations
 
     A Blocking object in Mark3 is essentially a thread list.  Any blocking
     object implementation (being a semaphore, mutex, event flag, etc.) can
@@ -55,13 +55,13 @@ namespace Mark3
 {
 //---------------------------------------------------------------------------
 // Cookies used to determine whether or not an object has been initialized
-#define BLOCKING_INVALID_COOKIE         (0x3C)
-#define BLOCKING_INIT_COOKIE            (0xC3)
+#define BLOCKING_INVALID_COOKIE (0x3C)
+#define BLOCKING_INIT_COOKIE (0xC3)
 
 class Thread;
 
 //---------------------------------------------------------------------------
-/*!
+/**
  *  Class implementing thread-blocking primatives.  used for implementing
  *  things like semaphores, mutexes, message queues, or anything else that
  *  could cause a thread to suspend execution on some external stimulus.
@@ -73,8 +73,8 @@ public:
     ~BlockingObject() { m_u8Initialized = BLOCKING_INVALID_COOKIE; }
 
 protected:
-    /*!
-     *  \brief Block
+    /**
+     *  @brief Block
      *
      *  Blocks a thread on this object.  This is the fundamental operation
      *  performed by any sort of blocking operation in the operating system.
@@ -91,54 +91,54 @@ protected:
      *  3)  Setting the thread's "current thread-list" point to reference this
      *      object's threadlist.
      *
-     *  \param pclThread_ Pointer to the thread object that will be blocked.
+     *  @param pclThread_ Pointer to the thread object that will be blocked.
      */
     void Block(Thread* pclThread_);
 
-    /*!
-     * \brief BlockPriority
+    /**
+     * @brief BlockPriority
      *
      * Same as Block(), but ensures that threads are added to the block-list
      * in priority-order, which optimizes the unblock procedure.
      *
-     * \param pclThread_ Pointer to the Thread to Block.
+     * @param pclThread_ Pointer to the Thread to Block.
      */
     void BlockPriority(Thread* pclThread_);
 
-    /*!
-     *  \brief UnBlock
+    /**
+     *  @brief UnBlock
      *
      *  Unblock a thread that is already blocked on this object, returning it
      *  to the "ready" state by performing the following steps:
      *
-     *  \param pclThread_ Pointer to the thread to unblock.
+     *  @param pclThread_ Pointer to the thread to unblock.
      *
      *  1)  Removing the thread from this object's threadlist
      *  2)  Restoring the thread to its "original" owner's list
      */
     void UnBlock(Thread* pclThread_);
 
-    /*!
+    /**
      *  ThreadList which is used to hold the list of threads blocked
      *  on a given object.
      */
     ThreadList m_clBlockList;
 
-    /*!
+    /**
      * Token used to check whether or not the object has been initialized
      * prior to use.
      */
     uint8_t m_u8Initialized;
 
-    /*!
-     * \brief SetInitialized
+    /**
+     * @brief SetInitialized
      */
     void SetInitialized(void) { m_u8Initialized = BLOCKING_INIT_COOKIE; }
 
-    /*!
-     * \brief IsInitialized
-     * \return
+    /**
+     * @brief IsInitialized
+     * @return
      */
     bool IsInitialized(void) { return (m_u8Initialized == BLOCKING_INIT_COOKIE); }
 };
-} //namespace Mark3
+} // namespace Mark3

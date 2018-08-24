@@ -11,11 +11,11 @@
 Copyright (c) 2012 - 2018 m0slevin, all rights reserved.
 See license.txt for more information
 ===========================================================================*/
-/*!
+/**
 
-    \file   kernelswi.cpp
+    @file   kernelswi.cpp
 
-    \brief  Kernel Software interrupt implementation for ARM Cortex-M0
+    @brief  Kernel Software interrupt implementation for ARM Cortex-M0
 
 */
 
@@ -24,7 +24,8 @@ See license.txt for more information
 #include "threadport.h"
 #include "m3_core_cm0.h"
 
-namespace Mark3 {
+namespace Mark3
+{
 //---------------------------------------------------------------------------
 void KernelSWI::Config(void)
 {

@@ -11,10 +11,10 @@
 Copyright (c) 2012 - 2018 m0slevin, all rights reserved.
 See license.txt for more information
 =========================================================================== */
-/*!
-    \file kernelprofile.h
+/**
+    @file kernelprofile.h
 
-    \brief Profiling timer hardware interface
+    @brief Profiling timer hardware interface
  */
 #pragma once
 
@@ -28,56 +28,58 @@ See license.txt for more information
 #define TICKS_PER_OVERFLOW (256)
 #define CLOCK_DIVIDE (8)
 
-namespace Mark3 {
+namespace Mark3
+{
 //---------------------------------------------------------------------------
-/*!
+/**
  *   System profiling timer interface
  */
 class Profiler
 {
 public:
-    /*!
-     *  \brief Init
+    /**
+     *  @brief Init
      *
      *  Initialize the global system profiler.  Must be
      *  called prior to use.
      */
     static void Init();
 
-    /*!
-     *  \brief Start
+    /**
+     *  @brief Start
      *
      *  Start the global profiling timer service.
      */
     static void Start();
 
-    /*!
-     *  \brief Stop
+    /**
+     *  @brief Stop
      *
      *  Stop the global profiling timer service
      */
     static void Stop();
 
-    /*!
-     *  \brief Read
+    /**
+     *  @brief Read
      *
      *  Read the current tick count in the timer.
      */
     static uint16_t Read();
 
-    /*!
-     *  \brief Process
+    /**
+     *  @brief Process
      *
      *  Process the profiling counters from ISR.
      */
     static void Process();
 
-    /*!
-     *  \brief GetEpoch
+    /**
+     *  @brief GetEpoch
      *
      *  Return the current timer epoch
      */
     static uint32_t GetEpoch() { return m_u32Epoch; }
+
 private:
     static uint32_t m_u32Epoch;
 };

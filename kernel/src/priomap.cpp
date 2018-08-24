@@ -11,38 +11,39 @@
 Copyright (c) 2012 - 2018 m0slevin, all rights reserved.
 See license.txt for more information
 ===========================================================================*/
-/*!
-    \file priomap.cpp
-    \brief Priority map data structure
+/**
+    @file priomap.cpp
+    @brief Priority map data structure
 */
 
 #include "mark3.h"
 namespace Mark3
 {
 //---------------------------------------------------------------------------
-namespace {
-inline uint8_t priority_from_bitmap(PORT_PRIO_TYPE uXPrio_)
+namespace
 {
+    inline uint8_t priority_from_bitmap(PORT_PRIO_TYPE uXPrio_)
+    {
 #if HW_CLZ
-    // Support hardware-accelerated Count-leading-zeros instruction
-    uint8_t rc = PRIO_MAP_BITS - CLZ(uXPrio_);
-    return rc;
+        // Support hardware-accelerated Count-leading-zeros instruction
+        uint8_t rc = PRIO_MAP_BITS - CLZ(uXPrio_);
+        return rc;
 #else
-    // Default un-optimized count-leading zeros operation
-    PORT_PRIO_TYPE uXMask  = (1 << (PRIO_MAP_BITS - 1));
-    uint8_t   u8Zeros = 0;
+        // Default un-optimized count-leading zeros operation
+        PORT_PRIO_TYPE uXMask  = (1 << (PRIO_MAP_BITS - 1));
+        uint8_t        u8Zeros = 0;
 
-    while (uXMask) {
-        if (uXMask & uXPrio_) {
-            return (PRIO_MAP_BITS - u8Zeros);
+        while (uXMask) {
+            if (uXMask & uXPrio_) {
+                return (PRIO_MAP_BITS - u8Zeros);
+            }
+
+            uXMask >>= 1;
+            u8Zeros++;
         }
-
-        uXMask >>= 1;
-        u8Zeros++;
-    }
-    return 0;
+        return 0;
 #endif
-}
+    }
 } // anonymous namespace
 
 //---------------------------------------------------------------------------
@@ -50,9 +51,7 @@ PriorityMap::PriorityMap()
 {
 #if PRIO_MAP_MULTI_LEVEL
     m_uXPriorityMapL2 = 0;
-    for (int i = 0; i < PRIO_MAP_NUM_WORDS; i++) {
-        m_auXPriorityMap[i] = 0;
-    }
+    for (int i = 0; i < PRIO_MAP_NUM_WORDS; i++) { m_auXPriorityMap[i] = 0; }
 #else
     m_uXPriorityMap = 0;
 #endif
@@ -104,4 +103,4 @@ PORT_PRIO_TYPE PriorityMap::HighestPriority(void)
 #endif
     return uXPrio;
 }
-} //namespace Mark3
+} // namespace Mark3

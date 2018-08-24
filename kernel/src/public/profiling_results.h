@@ -1,14 +1,14 @@
-/*!
-\page PROFILERES Profiling Results
+/**
+@page PROFILERES Profiling Results
 The following profiling results were obtained using an ATMega328p @ 16MHz.
 The test cases are designed to make use of the kernel profiler, which accurately
 measures the performance of the fundamental system APIs, in order to provide 
 information for user comparison, as well as to ensure that regressions are not
 being introduced into the system.
 
-\section PROFILEATE Date Performed 
+@section PROFILEATE Date Performed 
 Fri Feb 16 23:56:23 STD 2018
-\section COMPVER Compiler Information 
+@section COMPVER Compiler Information 
 The kernel and test code used in these results were built using the following compiler:
 @code
 
@@ -22,7 +22,7 @@ Thread model: single
 gcc version 4.9.2 (GCC) 
 @endcode
 
-\section PROFRES Profiling Results
+@section PROFRES Profiling Results
 @code
     - Semaphore Initialization:  cycles (averaged over 100 iterations)
     - Semaphore Post (uncontested):  cycles (averaged over 100 iterations)

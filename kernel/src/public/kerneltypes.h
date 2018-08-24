@@ -11,9 +11,9 @@
 Copyright (c) 2012 - 2018 m0slevin, all rights reserved.
 See license.txt for more information
 ===========================================================================*/
-/*!
-    \file kerneltypes.h
-    \brief Basic data type primatives used throughout the OS
+/**
+    @file kerneltypes.h
+    @brief Basic data type primatives used throughout the OS
 */
 
 #include <stdint.h>
@@ -24,26 +24,26 @@ See license.txt for more information
 namespace Mark3
 {
 //---------------------------------------------------------------------------
-/*!
+/**
  * Function pointer type used to implement kernel-panic handlers.
  */
 using PanicFunc = void (*)(uint16_t u16PanicCode_);
 
 //---------------------------------------------------------------------------
-/*!
+/**
  * Function pointer type used to implement the idle function, where support
  * for an idle function (as opposed to an idle thread) exists.
  */
 using IdleFunc = void (*)();
 
 //---------------------------------------------------------------------------
-/*!
+/**
  *  Function pointer type used for thread entrypoint functions
  */
 using ThreadEntryFunc = void (*)(void* pvArg_);
 
 //---------------------------------------------------------------------------
-/*!
+/**
  * This enumeration describes the different operations supported by the
  * event flag blocking object.
  */
@@ -56,15 +56,9 @@ enum class EventFlagOperation : uint8_t {
 };
 
 //---------------------------------------------------------------------------
-/*!
+/**
  *   Enumeration representing the different states a thread can exist in
  */
-enum class ThreadState : uint8_t {
-    Exit = 0,
-    Ready,
-    Blocked,
-    Stop,
-    Invalid
-};
+enum class ThreadState : uint8_t { Exit = 0, Ready, Blocked, Stop, Invalid };
 
-} //namespace Mark3
+} // namespace Mark3

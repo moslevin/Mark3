@@ -11,11 +11,11 @@
 Copyright (c) 2012 - 2018 m0slevin, all rights reserved.
 See license.txt for more information
 ===========================================================================*/
-/*!
+/**
 
-    \file   profile.cpp
+    @file   profile.cpp
 
-    \brief  Code profiling utilities
+    @brief  Code profiling utilities
 */
 
 #include "mark3.h"
@@ -109,4 +109,4 @@ uint32_t ProfileTimer::ComputeCurrentTicks(uint16_t u16Current_, uint32_t u32Epo
 
     return u32Total;
 }
-} //namespace Mark3
+} // namespace Mark3

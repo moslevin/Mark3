@@ -25,17 +25,19 @@ See license.txt for more information
 //===========================================================================
 // Local Defines
 //===========================================================================
-namespace {
+namespace
+{
 using namespace Mark3;
 
-Thread clThread;
+Thread           clThread;
 K_WORD           aucStack[PORT_KERNEL_DEFAULT_STACK_SIZE];
 Semaphore        clSem1;
 Semaphore        clSem2;
 volatile uint8_t u8Counter = 0;
 } // anonymous namespace
 
-namespace Mark3 {
+namespace Mark3
+{
 //===========================================================================
 // Define Test Cases Here
 //===========================================================================
@@ -51,9 +53,7 @@ TEST(ut_semaphore_count)
     Semaphore clTestSem;
     clTestSem.Init(0, 10);
 
-    for (int i = 0; i < 10; i++) {
-        EXPECT_TRUE(clTestSem.Post());
-    }
+    for (int i = 0; i < 10; i++) { EXPECT_TRUE(clTestSem.Post()); }
     EXPECT_FALSE(clTestSem.Post());
 }
 TEST_END
@@ -77,9 +77,7 @@ TEST(ut_semaphore_post_pend)
 
     clThread.Init(aucStack, sizeof(aucStack), 7, lPostPend, (void*)&clSem1);
     clThread.Start();
-    for (int i = 0; i < 10; i++) {
-        clSem1.Post();
-    }
+    for (int i = 0; i < 10; i++) { clSem1.Post(); }
 
     // Verify all 10 posts have been acknowledged by the high-priority thread
     EXPECT_EQUALS(u8Counter, 10);
@@ -143,4 +141,4 @@ TEST_END
 //===========================================================================
 TEST_CASE_START
 TEST_CASE(ut_semaphore_count), TEST_CASE(ut_semaphore_post_pend), TEST_CASE(ut_semaphore_timed), TEST_CASE_END
-} //namespace Mark3
+} // namespace Mark3

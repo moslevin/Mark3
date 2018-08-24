@@ -11,11 +11,11 @@
 Copyright (c) 2012 - 2018 m0slevin, all rights reserved.
 See license.txt for more information
 =========================================================================== */
-/*!
+/**
 
-    \file   threadport.h
+    @file   threadport.h
 
-    \brief  ATMega328p Multithreading support.
+    @brief  ATMega328p Multithreading support.
  */
 #pragma once
 
@@ -25,8 +25,8 @@ See license.txt for more information
 #include <avr/io.h>
 #include <avr/interrupt.h>
 
-namespace Mark3 {
-
+namespace Mark3
+{
 // clang-format off
 //---------------------------------------------------------------------------
 //! ASM Macro - simplify the use of ASM directive in C
@@ -182,7 +182,7 @@ _SFR_IO8(SR_) = __x;\
 
 //------------------------------------------------------------------------
 class Thread;
-/*!
+/**
  *  Class defining the architecture specific functions required by the 
  *  kernel.  
  *  
@@ -192,8 +192,8 @@ class Thread;
 class ThreadPort
 {
 public:
-    /*!        
-     *  \brief StartThreads
+    /**        
+     *  @brief StartThreads
      *
      *  Function to start the scheduler, initial threads, etc.
      */
@@ -201,12 +201,12 @@ public:
     friend class Thread;
 private:
 
-    /*!
-     *  \brief InitStack
+    /**
+     *  @brief InitStack
      *
      *  Initialize the thread's stack.
      *  
-     *  \param pstThread_ Pointer to the thread to initialize
+     *  @param pstThread_ Pointer to the thread to initialize
      */
     static void InitStack(Thread *pstThread_);
 };

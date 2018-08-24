@@ -11,11 +11,11 @@
 Copyright (c) 2012 - 2018 m0slevin, all rights reserved.
 See license.txt for more information
 ===========================================================================*/
-/*!
+/**
 
-    \file   kernel.h
+    @file   kernel.h
 
-    \brief  Kernel initialization and startup class
+    @brief  Kernel initialization and startup class
 
     The Kernel namespace provides functions related to initializing and
     starting up the kernel.
@@ -41,15 +41,14 @@ using DebugPrintFunction = void (*)(const char* szString_);
 namespace Mark3
 {
 //---------------------------------------------------------------------------
-/*!
+/**
  *    Class that encapsulates all of the kernel startup functions.
  */
 class Kernel
 {
 public:
-
-    /*!
-     *  \brief
+    /**
+     *  @brief
      *
      *  Kernel Initialization Function, call before any other OS function
      *
@@ -58,8 +57,8 @@ public:
      */
     static void Init(void);
 
-    /*!
-     *  \brief
+    /**
+     *  @brief
      *
      *  Start the operating system kernel - the current execution context is
      *  cancelled, all kernel services are started, and the processor resumes
@@ -72,45 +71,45 @@ public:
      */
     static void Start(void);
 
-    /*!
-     * \brief IsStarted
+    /**
+     * @brief IsStarted
      *
-     * \return Whether or not the kernel has started - true = running, false =
+     * @return Whether or not the kernel has started - true = running, false =
      *        not started
      */
     static bool IsStarted() { return m_bIsStarted; }
-    /*!
-     * \brief SetPanic Set a function to be called when a kernel panic occurs,
+    /**
+     * @brief SetPanic Set a function to be called when a kernel panic occurs,
      *        giving the user to determine the behavior when a catastrophic
      *        failure is observed.
      *
-     * \param pfPanic_ Panic function pointer
+     * @param pfPanic_ Panic function pointer
      */
     static void SetPanic(PanicFunc pfPanic_) { m_pfPanic = pfPanic_; }
-    /*!
-     * \brief IsPanic Returns whether or not the kernel is in a panic state
-     * \return Whether or not the kernel is in a panic state
+    /**
+     * @brief IsPanic Returns whether or not the kernel is in a panic state
+     * @return Whether or not the kernel is in a panic state
      */
     static bool IsPanic() { return m_bIsPanic; }
-    /*!
-     * \brief Panic Cause the kernel to enter its panic state
-     * \param u16Cause_ Reason for the kernel panic
+    /**
+     * @brief Panic Cause the kernel to enter its panic state
+     * @param u16Cause_ Reason for the kernel panic
      */
     static void Panic(uint16_t u16Cause_);
 
-    /*!
-     * \brief SetThreadCreateCallout
+    /**
+     * @brief SetThreadCreateCallout
      *
      * Set a function to be called on creation of a new thread.  This
      * callout is executed on the successful completion of a Thread::Init()
      * call.  A callout is only executed if this method has been called
      * to set a valid handler function.
      *
-     * \param pfCreate_ Pointer to a function to call on thread creation
+     * @param pfCreate_ Pointer to a function to call on thread creation
      */
     static void SetThreadCreateCallout(ThreadCreateCallout pfCreate_) { m_pfThreadCreateCallout = pfCreate_; }
-    /*!
-     * \brief SetThreadExitCallout
+    /**
+     * @brief SetThreadExitCallout
      *
      * Set a function to be called on thread exit.  This callout is executed
      * from the beginning of Thread::Exit().
@@ -118,88 +117,88 @@ public:
      * A callout is only executed if this method has been called to set a
      * valid handler function.
      *
-     * \param pfCreate_ Pointer to a function to call on thread exit
+     * @param pfCreate_ Pointer to a function to call on thread exit
      */
     static void SetThreadExitCallout(ThreadExitCallout pfExit_) { m_pfThreadExitCallout = pfExit_; }
-    /*!
-     * \brief SetThreadContextSwitchCallout
+    /**
+     * @brief SetThreadContextSwitchCallout
      *
      * Set a function to be called on each context switch.
      *
      * A callout is only executed if this method has been called to set a
      * valid handler function.
      *
-     * \param pfContext_ Pointer to a function to call on context switch
+     * @param pfContext_ Pointer to a function to call on context switch
      */
     static void SetThreadContextSwitchCallout(ThreadContextCallout pfContext_)
     {
         m_pfThreadContextCallout = pfContext_;
     }
 
-    /*!
-     * \brief SetDebugPrintFunction
+    /**
+     * @brief SetDebugPrintFunction
      *
      * Set the function to be used when printing kernel debug information
      *
-     * \param pfPrintFunction_
+     * @param pfPrintFunction_
      */
     static void SetDebugPrintFunction(DebugPrintFunction pfPrintFunction_)
     {
         m_pfDebugPrintFunction = pfPrintFunction_;
     }
 
-    /*!
-     * \brief DebugPrint
+    /**
+     * @brief DebugPrint
      *
      * Print a string to the configured output interface.  Has no effect
      * if Kernel::SetDebugPrintFunction() has not been called with a valid
      * print handler.
      *
-     * \param szString_ string to print
+     * @param szString_ string to print
      */
     static void DebugPrint(const char* szString_);
 
-    /*!
-     * \brief GetThreadCreateCallout
+    /**
+     * @brief GetThreadCreateCallout
      *
      * Return the current function called on every Thread::Init();
      *
-     * \return Pointer to the currently-installed callout function,
+     * @return Pointer to the currently-installed callout function,
      *         or NULL if not set.
      */
     static ThreadCreateCallout GetThreadCreateCallout(void) { return m_pfThreadCreateCallout; }
-    /*!
-     * \brief GetThreadExitCallout
+    /**
+     * @brief GetThreadExitCallout
      *
      * Return the current function called on every Thread::Exit();
      *
-     * \return Pointer to the currently-installed callout function,
+     * @return Pointer to the currently-installed callout function,
      *         or NULL if not set.
      */
     static ThreadExitCallout GetThreadExitCallout(void) { return m_pfThreadExitCallout; }
-    /*!
-     * \brief GetThreadContextSwitchCallout
+    /**
+     * @brief GetThreadContextSwitchCallout
      *
      * Return the current function called on every Thread::ContextSwitchSWI()
      *
-     * \return Pointer to the currently-installed callout function,
+     * @return Pointer to the currently-installed callout function,
      *         or NULL if not set.
      */
     static ThreadContextCallout GetThreadContextSwitchCallout(void) { return m_pfThreadContextCallout; }
 
-    static void SetStackGuardThreshold(uint16_t u16Threshold_) { m_u16GuardThreshold = u16Threshold_; }
-    static uint16_t                             GetStackGuardThreshold(void) { return m_u16GuardThreshold; }
+    static void     SetStackGuardThreshold(uint16_t u16Threshold_) { m_u16GuardThreshold = u16Threshold_; }
+    static uint16_t GetStackGuardThreshold(void) { return m_u16GuardThreshold; }
 
 private:
-    static bool        m_bIsStarted; //!< true if kernel is running, false otherwise
-    static bool        m_bIsPanic;   //!< true if kernel is in panic state, false otherwise
+    static bool      m_bIsStarted; //!< true if kernel is running, false otherwise
+    static bool      m_bIsPanic;   //!< true if kernel is in panic state, false otherwise
     static PanicFunc m_pfPanic;    //!< set panic function
 
     static ThreadCreateCallout  m_pfThreadCreateCallout;  //!< Function to call on thread creation
     static ThreadExitCallout    m_pfThreadExitCallout;    //!< Function to call on thread exit
     static ThreadContextCallout m_pfThreadContextCallout; //!< Function to call on context switch
-    static DebugPrintFunction m_pfDebugPrintFunction; //!< Function to call to print debug info
-    static uint16_t m_u16GuardThreshold;
+    static DebugPrintFunction   m_pfDebugPrintFunction;   //!< Function to call to print debug info
+    static uint16_t             m_u16GuardThreshold;
 };
 
-} //namespace Mark3
+} // namespace Mark3

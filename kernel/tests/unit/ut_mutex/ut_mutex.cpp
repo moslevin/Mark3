@@ -21,7 +21,8 @@ See license.txt for more information
 #include "mutex.h"
 #include "lockguard.h"
 
-namespace {
+namespace
+{
 using namespace Mark3;
 K_WORD aucTestStack[PORT_KERNEL_DEFAULT_STACK_SIZE];
 Thread clMutexThread;
@@ -31,7 +32,8 @@ Thread           clTestThread2;
 volatile uint8_t u8Token;
 } // anonymous namespace
 
-namespace Mark3 {
+namespace Mark3
+{
 //===========================================================================
 // Local Defines
 //===========================================================================
@@ -121,9 +123,7 @@ TEST(ut_priority_mutex)
         pclMutex->Claim();
         Thread::Sleep(100);
         pclMutex->Release();
-        while (1) {
-            Thread::Sleep(1000);
-        }
+        while (1) { Thread::Sleep(1000); }
     };
 
     // Test - Priority inheritence protocol.  Ensure that the priority
@@ -173,10 +173,10 @@ TEST(ut_raii)
     clMutex.Init();
 
     auto lRAIIThread = [](void* mutex_) {
-        u8Token = 0;
+        u8Token        = 0;
         auto* pclMutex = static_cast<Mutex*>(mutex_);
         {
-            LockGuard lockGuard{pclMutex};
+            LockGuard lockGuard{ pclMutex };
             Thread::Sleep(100);
             u8Token = 1;
         }
@@ -190,7 +190,7 @@ TEST(ut_raii)
     Thread::Sleep(50);
     EXPECT_EQUALS(u8Token, 0);
     {
-        LockGuard lockGuard{&clMutex};
+        LockGuard lockGuard{ &clMutex };
         EXPECT_EQUALS(u8Token, 1);
     }
 }
@@ -199,11 +199,11 @@ TEST_END
 //===========================================================================
 TEST(ut_raii_timeout)
 {
-    u8Token = 0;
+    u8Token          = 0;
     auto lRAIIThread = [](void* mutex_) {
         auto* pclMutex = static_cast<Mutex*>(mutex_);
         {
-            LockGuard lockGuard{pclMutex, 50};
+            LockGuard lockGuard{ pclMutex, 50 };
             if (lockGuard.isAcquired()) {
                 u8Token = 1;
             } else {
@@ -243,5 +243,5 @@ TEST_END
 //===========================================================================
 TEST_CASE_START
 TEST_CASE(ut_typical_mutex), TEST_CASE(ut_timed_mutex), TEST_CASE(ut_priority_mutex), TEST_CASE(ut_raii),
-TEST_CASE(ut_raii_timeout), TEST_CASE_END
-} //namespace Mark3
+    TEST_CASE(ut_raii_timeout), TEST_CASE_END
+} // namespace Mark3

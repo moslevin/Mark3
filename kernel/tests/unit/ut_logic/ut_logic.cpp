@@ -17,7 +17,8 @@ See license.txt for more information
 #include "kerneltypes.h"
 #include "kernel.h"
 #include "../ut_platform.h"
-namespace Mark3 {
+namespace Mark3
+{
 //===========================================================================
 // Local Defines
 //===========================================================================
@@ -97,4 +98,4 @@ TEST_END
 //===========================================================================
 TEST_CASE_START
 TEST_CASE(ut_logic), TEST_CASE_END
-} //namespace Mark3
+} // namespace Mark3

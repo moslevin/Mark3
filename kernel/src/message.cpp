@@ -11,11 +11,11 @@
 Copyright (c) 2012 - 2018 m0slevin, all rights reserved.
 See license.txt for more information
 ===========================================================================*/
-/*!
+/**
 
-    \file   message.cpp
+    @file   message.cpp
 
-    \brief  Inter-thread communications via message passing
+    @brief  Inter-thread communications via message passing
 
 */
 
@@ -121,4 +121,4 @@ uint16_t MessageQueue::GetCount()
 {
     return m_clSemaphore.GetCount();
 }
-} //namespace Mark3
+} // namespace Mark3

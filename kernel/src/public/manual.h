@@ -11,16 +11,16 @@
 Copyright (c) 2012 - 2018 m0slevin, all rights reserved.
 See license.txt for more information
 ===========================================================================*/
-/*!
-    \file manual.h
+/**
+    @file manual.h
 
     /brief Ascii-format documentation, used by doxygen to create various
            printable and viewable forms.
 */
-/*!
-    \mainpage The Mark3 Realtime Kernel
+/**
+    @mainpage The Mark3 Realtime Kernel
 
-    \verbatim
+    @verbatim
          _____        _____        _____        _____
      ___|    _|__  __|_    |__  __|__   |__  __| __  |__  ______
     |    \  /  | ||    \      ||     |     ||  |/ /     ||___   |
@@ -33,7 +33,7 @@ See license.txt for more information
     Copyright (c) 2012 - 2018 m0slevin, all rights reserved.
     See license for more information
 
-    \endverbatim
+    @endverbatim
 
     The Mark3 Realtime Kernel is a completely free, open-source, real-time operating
     system aimed at bringing powerful, easy-to-use multitasking to microcontroller
@@ -65,12 +65,12 @@ See license.txt for more information
       Support for kernel-aware simulators, incluing Funkenstein's own flAVR.
     .
 */
-/*!
-    \page LICENSE License
+/**
+    @page LICENSE License
 
-    \section LIC0 License
+    @section LIC0 License
 
-    \verbatim
+    @verbatim
 
     Copyright (c) 2012 - 2018, m0slevin
     All rights reserved.
@@ -98,30 +98,30 @@ See license.txt for more information
     (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
     SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-    \endverbatim
+    @endverbatim
 */
-/*!
-    \page CONFIG0 Configuring The Mark3 Kernel
+/**
+    @page CONFIG0 Configuring The Mark3 Kernel
 
-    \section CONFIG_I Overview
+    @section CONFIG_I Overview
 
     Configuration is done through settings options in portcfg.h files for each target.
 
 */
-/*!
-    \page BUILD0 Building Mark3
+/**
+    @page BUILD0 Building Mark3
 
-    \section BUILDLAYOUT Source Layout
+    @section BUILDLAYOUT Source Layout
 
-    \section BUILDLAYOUT Configuring a build target
+    @section BUILDLAYOUT Configuring a build target
 
-    \section BUILDLAYOUT Running the build
+    @section BUILDLAYOUT Running the build
 
 */
-/*!
-    \page START Getting Started With The Mark3 API
+/**
+    @page START Getting Started With The Mark3 API
 
-    \section START0 Kernel Setup
+    @section START0 Kernel Setup
 
     This section details the process of defining threads, initializing the
     kernel, and adding threads to the scheduler.
@@ -142,7 +142,7 @@ See license.txt for more information
 
     This is shown in the example code below:
 
-    \code
+    @code
     //---------------------------------------------------------------------------
     #include "thread.h"
     #include "kernel.h"
@@ -162,7 +162,7 @@ See license.txt for more information
     void AppThread(void);
     void IdleThread(void);
 
-    \endcode
+    @endcode
 
     Next, we'll need to add the required kernel initialization code to main.
     This consists of running the Kernel's init routine, initializing all of
@@ -172,7 +172,7 @@ See license.txt for more information
 
     These steps are illustrated in the following example.
 
-    \code
+    @code
 
     int main(void)
     {
@@ -199,7 +199,7 @@ See license.txt for more information
         //4) Give control of the system to the kernel
         Kernel::Start();			// Start the kernel!
     }
-    \endcode
+    @endcode
 
     Not much to it, is there?
     There are a few noteworthy points in this code, though.
@@ -225,7 +225,7 @@ See license.txt for more information
     unexplained behavior in your code, chances are good that one of your
     threads is blowing its stack.
 
-    \section THREADS Threads
+    @section THREADS Threads
 
     Mark3 Threads act as independent tasks in the system.  While they share
     the same address-space, global data, device-drivers, and system
@@ -235,7 +235,7 @@ See license.txt for more information
     at a high rate, giving the illusion that multiple things are happening
     in a system, when really, only one thread is executing at a time.
 
-    \subsection TH_SETUP Thread Setup
+    @subsection TH_SETUP Thread Setup
 
     Each instance of the Thread class represents a thread, its stack,
     its CPU context, and all of the state and metadata maintained by the
@@ -271,7 +271,7 @@ See license.txt for more information
 
     An example thread initailization is shown below:
 
-    \code
+    @code
     Thread clMyThread;
     uint8_t aucStack[192];
 
@@ -293,20 +293,20 @@ See license.txt for more information
 
     }
 
-    \endcode
+    @endcode
 
     Once a thread has been initialized, it can be added to the scheduler by calling:
 
-    \code
+    @code
 
     clMyThread.Start();
 
-    \endcode
+    @endcode
 
     The thread will be placed into the Scheduler's queue at the designated
     priority, where it will wait its turn for execution.
 
-    \subsection TH_ENTRY Entry Functions
+    @subsection TH_ENTRY Entry Functions
 
     Mark3 Threads should not run-to-completion - they should execute as
     infinite loops that perform a series of tasks, appropriately partitioned
@@ -314,7 +314,7 @@ See license.txt for more information
 
     The most basic Thread loop is shown below:
 
-    \code
+    @code
 
     void Thread( void *param )
     {
@@ -324,7 +324,7 @@ See license.txt for more information
         }
     }
 
-    \endcode
+    @endcode
 
     Threads can interact with eachother in the system by means of
     synchronization objects (Semaphore), mutual-exclusion objects (Mutex),
@@ -336,7 +336,7 @@ See license.txt for more information
     ellapsed.  Upon expiry, the thread will be placed back into the ready
     queue for its priority level, where it awaits its next turn to run.
 
-    \section TIMERS Timers
+    @section TIMERS Timers
 
     Timer objects are used to trigger callback events periodic or on a one-shot
     (alarm) basis.
@@ -354,7 +354,7 @@ See license.txt for more information
     Below is an example showing how to start a periodic system timer
     which will trigger every second:
 
-    \code
+    @code
     {
         Timer clTimer;
         clTimer.Init();
@@ -373,9 +373,9 @@ See license.txt for more information
         LED.Flash(); // Flash an LED.
     }
 
-    \endcode
+    @endcode
 
-    \section SEM Semaphores
+    @section SEM Semaphores
 
     Semaphores are used to synchronized execution of threads based on the
     availability (and quantity) of application-specific resources in the
@@ -388,7 +388,7 @@ See license.txt for more information
     The following is an example of the producer-consumer usage of a binary
     semaphore:
 
-    \code
+    @code
 
     Semaphore clSemaphore; // Declare a semaphore shared between a producer and a consumer thread.
 
@@ -415,12 +415,12 @@ See license.txt for more information
             // Consume the data!
         }
     }
-    \endcode
+    @endcode
 
     And an example of using semaphores from the ISR context to perform event-
     driven processing.
 
-    \code
+    @code
 
     Semaphore clSemaphore;
 
@@ -442,9 +442,9 @@ See license.txt for more information
         }
     }
 
-    \endcode
+    @endcode
 
-    \section MUT Mutexes
+    @section MUT Mutexes
 
     Mutexes (Mutual exclusion objects) are provided as a means of creating
     "protected sections" around a particular resource, allowing for access
@@ -468,7 +468,7 @@ See license.txt for more information
     Mutex objects are very easy to use, as there are only three operations
     supported: Initialize, Claim and Release. An example is shown below.
 
-    \code
+    @code
 
     Mutex clMutex;	// Create a mutex globally.
 
@@ -506,9 +506,9 @@ See license.txt for more information
         clMutex.Release();
     }
 
-    \endcode
+    @endcode
 
-    \section EVF Event Flags
+    @section EVF Event Flags
 
     Event Flags are another synchronization object, conceptually similar
     to a semaphore.
@@ -533,7 +533,7 @@ See license.txt for more information
 
     Examples demonstrating the use of event flags are shown below.
 
-    \code
+    @code
 
         // Simple example showing a thread blocking on a multiple bits in the
         // fields within an event flag.
@@ -572,9 +572,9 @@ See license.txt for more information
             }
         }
 
-    \endcode
+    @endcode
 
-    \section MSG Messages
+    @section MSG Messages
 
     Sending messages between threads is the key means of synchronizing
     access to data, and the primary mechanism to perform asynchronous data
@@ -597,7 +597,7 @@ See license.txt for more information
     These operations, and the various data objects involved are discussed in
     more detail in the following section.
 
-    \subsection MSGO Message Objects
+    @subsection MSGO Message Objects
 
     Message objects are used to communicate arbitrary data between threads
     in a safe and synchronous way.
@@ -624,7 +624,7 @@ See license.txt for more information
     APIs can be used to provide event-driven programming facilities
     throughout the whole of the OS.
 
-    \subsection MSGP Global Message Pool
+    @subsection MSGP Global Message Pool
 
     To maintain efficiency in the messaging system (and to prevent
     over-allocation of data), a global pool of message objects is provided.
@@ -642,7 +642,7 @@ See license.txt for more information
     returned to the pool, otherwise a resource leak can occur, which may
     cripple the operating system's ability to pass data between threads.
 
-    \subsection MSGQ Message Queues
+    @subsection MSGQ Message Queues
 
     Message objects specify data with context, but do not specify where the
     messages will be sent. For this purpose we have a MessageQueue object.
@@ -657,9 +657,9 @@ See license.txt for more information
     It's worth noting that multiple threads can block on the same message
     queue, providing a means for multiple threads to share work in parallel.
 
-    \subsection MSGQS Messaging Example
+    @subsection MSGQS Messaging Example
 
-    \code
+    @code
 
     // Message queue object shared between threads
     MessageQueue clMsgQ;
@@ -699,9 +699,9 @@ See license.txt for more information
         // Free the message once we're done with it.
         GlobalMessagePool::Push(pclMesg);
     }
-    \endcode
+    @endcode
 
-    \section MBX Mailboxes
+    @section MBX Mailboxes
 
     Another form of IPC is provided by Mark3, in the form of Mailboxes and Envelopes.
 
@@ -721,9 +721,9 @@ See license.txt for more information
     All send/receive APIs support an optional timeout parameter if the KERNEL_USE_TIMEOUTS
     option has been configured in mark3cfg.h
 
-    \subsection MBXE Mailbox Example
+    @subsection MBXE Mailbox Example
 
-    \code
+    @code
 
     // Create a mailbox object, and define a buffer that will be used to store the
     // mailbox' envelopes.
@@ -777,9 +777,9 @@ See license.txt for more information
         }
     }
 
-    \endcode
+    @endcode
 
-    \section NTF Notification Objects
+    @section NTF Notification Objects
 
     Notification objects are the most lightweight of all blocking objects supplied
     by Mark3.
@@ -789,9 +789,9 @@ See license.txt for more information
     thread or interrupt).  Once the the notification has been signalled, all
     threads currently blocked on the object become unblocked.
 
-    \subsection NTFE Notification Example
+    @subsection NTFE Notification Example
 
-    \code
+    @code
 
     static Notify clNotifier;
 
@@ -825,9 +825,9 @@ See license.txt for more information
         clNotify.Signal();
     }
 
-    \endcode
+    @endcode
 
-    \section CONDVAR Condition Variables
+    @section CONDVAR Condition Variables
 
     Condition Variables, implemented in Mark3 with the ConditionVariable class,
     provide an implementation of the classic Monitor pattern.  This object allows
@@ -836,9 +836,9 @@ See license.txt for more information
     thread to indicate a condition has changed, or broadcast condition changes to
     all waiting threads.
 
-    \subsection CONDVAREX Condition Variable Example
+    @subsection CONDVAREX Condition Variable Example
 
-    \code
+    @code
 
     // Define a condition variable object, a shared lock, and
     // a piece of common data shared between threads to represent
@@ -913,9 +913,9 @@ See license.txt for more information
         }
     }
 
-    \endcode
+    @endcode
 
-    \section RWLOCKS Reader-Write Locks
+    @section RWLOCKS Reader-Write Locks
 
     Reader-Writer locks are provided in Mark3 to provide an efficient way for
     multiple threads to share concurrent, non-destructive access to a resource,
@@ -925,9 +925,9 @@ See license.txt for more information
     relinquished their access to the resource.  In the case that a writer holds the
     lock, all other readers and writers must wait until the lock is relinquished.
 
-    \subsection RWLOCKEX Reader-Write Lock Example
+    @subsection RWLOCKEX Reader-Write Lock Example
 
-    \code
+    @code
 
     void WriterTask(void* param)
     {
@@ -955,9 +955,9 @@ See license.txt for more information
         pclRWLock->ReleaseReader();
     }
 
-    \endcode
+    @endcode
 
-    \section SLP Sleep
+    @section SLP Sleep
 
     There are instances where it may be necessary for a thread to poll a
     resource, or wait a specific amount of time before proceeding to operate
@@ -972,7 +972,7 @@ See license.txt for more information
     Note that when a thread is sleeping it is blocked, during which other
     threads can operate, or the system can enter its idle state.
 
-    \code
+    @code
     int GetPeripheralData();
     {
         int value;
@@ -986,9 +986,9 @@ See license.txt for more information
         value = peripheral.bar();
         return value;
     }
-    \endcode
+    @endcode
 
-    \section RR Round-Robin Quantum
+    @section RR Round-Robin Quantum
 
     Threads at the same thread priority are scheduled using a round-robin
     scheme.  Each thread is given a timeslice (which can be configured)
@@ -1002,8 +1002,8 @@ See license.txt for more information
     This value can be overridden by calling the thread's SetQuantum()
     with a new interval specified in milliseconds.
 */
-/*!
-    \page WHYMARK3 Why Mark3?
+/**
+    @page WHYMARK3 Why Mark3?
 
     My first job after graduating from university in 2005 was with a small company
     that had a very old-school, low-budget philosophy when it came to software
@@ -1112,10 +1112,10 @@ See license.txt for more information
     handle-passing, type casting, and other operations that are typically
     considered "unsafe" or "advaned" topics in C.
 */
-/*!
-    \page WHENRTOS When should you use an RTOS?
+/**
+    @page WHENRTOS When should you use an RTOS?
 
-    \section WHENREAL The reality of system code
+    @section WHENREAL The reality of system code
 
     System code can be defined as the program logic required to manage, synchronize,
     and schedule all of the resources (CPU time, memory, peripherals, etc.) used
@@ -1184,9 +1184,9 @@ See license.txt for more information
     - How many units do we plan to sell?
     .
 
-    \section WHENSUPER Superloops, and their limitations
+    @section WHENSUPER Superloops, and their limitations
 
-    \subsection WHENSUPERINTRO Intro to Superloops
+    @subsection WHENSUPERINTRO Intro to Superloops
 
     Before we start taking a look at designing a real-time operating system, it's
     worthwhile taking a look through one of the most-common design patterns that
@@ -1206,12 +1206,12 @@ See license.txt for more information
     which are examples are representative of real-world systems that I've either
     written the firmware for, or have seen in my experience.
 
-    \subsection WHENSUPERSIMPLE The simplest loop
+    @subsection WHENSUPERSIMPLE The simplest loop
 
     Let's start with the simplest embedded system design possible - an infinite
     loop that performs a single task repeatedly:
 
-    \code{.cpp}
+    @code{.cpp}
     int main()
     {
         while(1)
@@ -1219,7 +1219,7 @@ See license.txt for more information
             Do_Something();
         }
     }
-    \endcode
+    @endcode
 
     Here, the code inside the loop will run a single function forever and ever.
     Not much to it, is there? But you might be surprised at just how much embedded
@@ -1250,7 +1250,7 @@ See license.txt for more information
     an indivisible unit; and specialized to perform its given function relying
     solely on instinct.
 
-    \subsection WHENSUPERINTER Interrupt-Driven Super-loop
+    @subsection WHENSUPERINTER Interrupt-Driven Super-loop
 
     In the previous example, we had a system without any way to control the
     execution of the task- it just runs forever. There's no way to control when
@@ -1279,7 +1279,7 @@ See license.txt for more information
 
     The following concepts are shown in the example below:
 
-    \code{.cpp}
+    @code{.cpp}
     volatile K_BOOL something_to_do = false;
 
     __interrupt__ My_Interrupt_Source(void)
@@ -1302,7 +1302,7 @@ See license.txt for more information
             }
         }
     }
-    \endcode
+    @endcode
 
     So there you have it - an event driven system which uses a global variable
     to synchronize the execution of our task based on the occurrence of an
@@ -1356,12 +1356,12 @@ See license.txt for more information
     state before the interrupt, and resumes processing. We'll come back to
     preemption frequently, since the concept comes up frequently in RTOS-based systems.
 
-    \subsection WHENSUPERCOOP Cooperative multi-tasking
+    @subsection WHENSUPERCOOP Cooperative multi-tasking
 
     Our next example takes the previous example one step further by introducing
     cooperative multi-tasking:
 
-    \code{.cpp}
+    @code{.cpp}
     // Bitfield values used to represent three distinct tasks
     #define TASK_1_EVENT (0x01)
     #define TASK_2_EVENT (0x02)
@@ -1408,7 +1408,7 @@ See license.txt for more information
             Idle();
         }
     }
-    \endcode
+    @endcode
 
     This system is very similar to what we had before - however the differences
     are worth discussing. First, we have stimulus from multiple interrupt sources:
@@ -1435,13 +1435,13 @@ See license.txt for more information
     This is one of the more popular Os-baked-into-the-application approaches, and
     is widely used in a variety of real-time embedded systems.
 
-    \subsection WHENSUPERHYBRID Hybrid cooperative/preemptive multi-tasking
+    @subsection WHENSUPERHYBRID Hybrid cooperative/preemptive multi-tasking
 
     The final variation on the superloop design utilizes software-triggered
     interrupts to simulate a hybrid cooperative/preemptive multitasking system.
     Consider the example code below.
 
-    \code{.cpp}
+    @code{.cpp}
     // Bitfields used to represent high-priority tasks.  Tasks in this group
     // can preempt tasks in the group below - but not eachother.
     #define HP_TASK_1(0x01)
@@ -1518,7 +1518,7 @@ See license.txt for more information
             Idle();
         }
     }
-    \endcode
+    @endcode
 
     In this example, High_Priority_Tasks() can be triggered at any time as a
     result of a software interrupt (SWI),. When a high-priority event is set, the
@@ -1537,13 +1537,13 @@ See license.txt for more information
     a very basic preemptive multitasking scenario, approximating a "real" RTOS
     system with two threads of different priorities.
 
-    \section WHENPROB Problems with superloops
+    @section WHENPROB Problems with superloops
 
     As mentioned earlier, a lot of real-world systems are implemented using a
     superloop design; and while they are simple to understand due to the limited
     and obvious control logic involved, they are not without their problems.
 
-    \subsection WHENPROBHIDDEN Hidden Costs
+    @subsection WHENPROBHIDDEN Hidden Costs
 
     It's difficult to calculate the overhead of the superloop and the code
     required to implement workarounds for blocking calls, scheduling, and
@@ -1555,7 +1555,7 @@ See license.txt for more information
     maintainability is something that is measurable in terms of lost
     productivity through debugging and profiling.
 
-    \subsection WHENPROBTIGHTLY Tightly-coupled code
+    @subsection WHENPROBTIGHTLY Tightly-coupled code
 
     Because the control logic is integrated so closely with the application
     logic, a lot of care must be taken not to compromise the separation between
@@ -1567,7 +1567,7 @@ See license.txt for more information
     Abstraction layers can mitigate the risks, but a lot of care should be taken
     to fully decouple the application code from the system code.
 
-    \subsection WHENPROBBLOCK No blocking Calls
+    @subsection WHENPROBBLOCK No blocking Calls
 
     In a super-loop environment, there's no such thing as a blocking call or
     blocking objects. Tasks cannot stop mid-execution for event-driven I/O from
@@ -1578,7 +1578,7 @@ See license.txt for more information
     machines. In a large enough system, the added overhead in code size and
     cycles can add up.
 
-    \subsection WHENPROBDIFF Difficult to guarantee responsiveness
+    @subsection WHENPROBDIFF Difficult to guarantee responsiveness
 
     Without multiple levels of priority, it may be difficult to guarantee a
     certain degree of real-time responsiveness without added profiling and
@@ -1590,7 +1590,7 @@ See license.txt for more information
     complexity that makes code larger, more difficult to understand and maintain
     due to the artificial subdivision of tasks into time-based components.
 
-    \subsection WHENPROBLIM Limited preemption capability
+    @subsection WHENPROBLIM Limited preemption capability
 
     As shown in the example code, the way to gain preemption in a superloop is
     through the use of nested interrupts. While this isn't unwiedly for two
@@ -1599,10 +1599,10 @@ See license.txt for more information
     separate sets of tasks that can run within given priority loops - and
     deadlock becomes more difficult to avoid.
 */
-/*!
-    \page CANRTOS Can you afford an RTOS?
+/**
+    @page CANRTOS Can you afford an RTOS?
 
-    \section CANRTOSINTRO Intro
+    @section CANRTOSINTRO Intro
 
     Of course, since you're reading the manual for an RTOS that I've been
     developing over the course of the several years, you can guess that the
@@ -1667,7 +1667,7 @@ See license.txt for more information
     among others), these are not considered in this discussion - as they are
     difficult to consider for the scope of our "canned" application.
 
-    \section CANRTOSAPP Application description
+    @section CANRTOSAPP Application description
 
     For the purpose of this comparison, we first create an application using the
     standard preemptive Mark3 kernel with 2 system threads running: A foreground
@@ -1692,10 +1692,10 @@ See license.txt for more information
     GCC compiler with -Os level optimizations, an executable is produced with the
     following code/RAM utilization:
 
-    \verbatim
+    @verbatim
     Program:   27914 bytes
     Data:       1313 bytes
-    \endverbatim
+    @endverbatim
 
     An alternate version of this project is created using a custom "super-loop"
     kernel, which uses a single application thread and provides 2 levels of
@@ -1706,10 +1706,10 @@ See license.txt for more information
     This approach leaves the application itself largely unchanged. Using the same
     optimization levels as the preemptive kernel, the code compiles as follows:
 
-    \verbatim
+    @verbatim
     Program:   24886 bytes
     Data:        750 bytes
-    \endverbatim
+    @endverbatim
 
     At first glance, the difference in RAM utilization seems quite a lot higher
     for the preemptive mode version of the application, but the raw numbers don't
@@ -1747,16 +1747,16 @@ See license.txt for more information
     used to manage the kernel in preemptive mode, and the kernel data itself.
 
     Fixed kernel data costs:
-    \verbatim
+    @verbatim
     --- 134 Bytes Kernel data
     --- 26 Bytes Kernel Vtables
-    \endverbatim
+    @endverbatim
 
     Application (Variable) data costs:
-    \verbatim
+    @verbatim
     --- 24 Bytes Driver Vtables
     --- 123 Bytes – statically-allocated kernel objects (semaphores, timers, etc.)
-    \endverbatim
+    @endverbatim
 
     With this taken into account, the true memory cost of a 2-thread system ends
     up being around 428 bytes of RAM - which is about 20% of the total memory
@@ -1777,12 +1777,12 @@ See license.txt for more information
     use. In this way, we can measure the overhead on a feature-by-feature basis,
     which is shown below for the kernel as configured for this application:
 
-    \verbatim
+    @verbatim
     Kernel ................. 2563 Bytes
     Synchronization Objects.  644 Bytes
     Port ...................  974 Bytes
     Features ...............  871 Bytes
-    \endverbatim
+    @endverbatim
 
     The configuration tested in this comparison uses the thread/port module with
     timers, drivers, and semaphores, and mutexes, for a total kernel size of
@@ -1796,7 +1796,7 @@ See license.txt for more information
     frameworks.  This also demonstrates that the system-software code size in the
     cooperative case is about 2024 bytes.
 
-    \section CANRTOSOVERHEAD Runtime Overhead
+    @section CANRTOSOVERHEAD Runtime Overhead
 
     On the cooperative kernel, the overhead associated with running the thread
     is the time it takes the kernel to notice a pending event flag and launch the
@@ -1833,7 +1833,7 @@ See license.txt for more information
     CPU frequencies, but for this typical application we find the difference in
     runtime overhead to be neglible for a preemptive system.
 
-    \section CANRTOSANALYSIS Analysis
+    @section CANRTOSANALYSIS Analysis
 
     For the selected test application and platform, including a preemptive RTOS
     is entirely reasonable, as the costs are low relative to a non-preemptive
@@ -1862,12 +1862,12 @@ See license.txt for more information
     with a microprocessor with external memory, there should be no reason to
     avoid using an RTOS at all.
 */
-/*!
-    \page INSIDEMARK3 Mark3 Design Goals
+/**
+    @page INSIDEMARK3 Mark3 Design Goals
 
-    \section INSIDEOVERVIEW Overview
+    @section INSIDEOVERVIEW Overview
 
-    \subsection INSIDEOVERSERVICES Services Provided by an RTOS Kernel
+    @subsection INSIDEOVERSERVICES Services Provided by an RTOS Kernel
 
     At its lowest-levels, an operating system kernel is responsible for managing
     and scheduling resources within a system according to the application.  In a
@@ -1879,7 +1879,7 @@ See license.txt for more information
     its features, and a thorough discussion of how the pieces all work together
     to make an awesome RTOS kernel.
 
-    \subsection INSIDEOVERPRINCIPLES Guiding Principles of Mark3
+    @subsection INSIDEOVERPRINCIPLES Guiding Principles of Mark3
 
     Mark3 was designed with a number of over-arching principles, coming from
     years of experience designing, implementing, refining, and experimenting with
@@ -1889,7 +1889,7 @@ See license.txt for more information
     began designing a new RTOS.  Mark3 is the result of that process, and its
     design goals can be summarized in the following guiding principles.
 
-    \subsection INSIDEOVERBFC Be feature competitive
+    @subsection INSIDEOVERBFC Be feature competitive
 
     To truly be taken seriously as more than just a toy or educational tool, an
     RTOS needs to have a certain feature suite.  While Mark3 isn't a clone of any
@@ -1901,7 +1901,7 @@ See license.txt for more information
     threads, tickless timers, efficient message passing, and multiple types of
     synchronization primatives.
 
-    \subsection INSIDEOVERNED No external dependencies, no new language features
+    @subsection INSIDEOVERNED No external dependencies, no new language features
 
     To maximize portability and promote adoption to new platforms, Mark3 is
     written in a widely supported subset of C++ that lends itself to embedded
@@ -1910,7 +1910,7 @@ See license.txt for more information
     implemented completely for use by the kernel.  As a result, the portable
     parts of Mark3 should compile for any capable C++ toolchain.
 
-    \subsection INSIDEOVERHPA Target the most popular hobbyist platforms available
+    @subsection INSIDEOVERHPA Target the most popular hobbyist platforms available
 
     Realistically, this means supporting the various Arduino-compatible target
     CPUs, including AVR and ARM Cortex-M series microcontrollers.  As a result,
@@ -1922,7 +1922,7 @@ See license.txt for more information
     atmega328-based targets.  Other AVR and Cortex-M targets can be supported
     using the port code provided in the source package.
 
-    \subsection INSIDEOVERMAXDET Maximize determinism – but be pragmatic
+    @subsection INSIDEOVERMAXDET Maximize determinism – but be pragmatic
 
     Guaranteeing deterministic and predictable behavior is tough to do in an
     embedded system, and often comes with a heavy price tag in either RAM or
@@ -1943,7 +1943,7 @@ See license.txt for more information
     critical sections, that has to be balanced against increases in code size,
     and uncontested-case performance.
 
-    \subsection INSIDEOVERENG Apply engineering principles – and that means discipline, measurement and verification
+    @subsection INSIDEOVERENG Apply engineering principles – and that means discipline, measurement and verification
 
     My previous RTOS, FunkOS, was designed to be very ad-hoc.  The usage
     instructions were along the lines of “drag and drop the source files into
@@ -1969,7 +1969,7 @@ See license.txt for more information
     by scripting to ensure reliable, reproducible results without the possibility
     for human-error.
 
-    \subsection INSIDEOVERFLAVR Use Virtualization For Verification
+    @subsection INSIDEOVERFLAVR Use Virtualization For Verification
 
     Mark3 was designed to work with automated simulation tools as the primary
     means to validate changes to the kernel, due to the power and flexibility
@@ -2000,10 +2000,10 @@ See license.txt for more information
     .
 
 */
-/*!
-    \page MARK3KA Mark3 Kernel Architecture
+/**
+    @page MARK3KA Mark3 Kernel Architecture
 
-    \section MARK3KAOVER Overview
+    @section MARK3KAOVER Overview
 
     At a high level, the Mark3 RTOS is organized into the following features, and
     layered as shown below:
@@ -2107,12 +2107,12 @@ See license.txt for more information
     |Atomic Operations    | Atomic                |  atomic.cpp/.h                  |
     |Kernel               | Kernel                |  kernel.cpp/.h                  |
 
-    \verbatim
+    @verbatim
     ** implementation is platform-dependent, and located under the kernel's
     ** /cpu/<arch>/<variant>/<toolchain> folder in the source tree
-    \endverbatim
+    @endverbatim
 
-    \section THREADSCHED Threads and Scheduling
+    @section THREADSCHED Threads and Scheduling
 
     The classes involved in threading and scheudling in Mark3 are highlighted
     in the following diagram, and are discussed in detail in this chapter:
@@ -2120,7 +2120,7 @@ See license.txt for more information
     \image html Mark3_arch24.png
     \image latex Mark3_arch24.png "Threads and Scheduling" width=10cm
 
-    \subsection BITTHREAD A Bit About Threads
+    @subsection BITTHREAD A Bit About Threads
 
     Before we get started talking about the internals of the Mark3 scheduler,
     it's necessary to go over some background material - starting with:  what is
@@ -2154,7 +2154,7 @@ See license.txt for more information
     existence - the implementation details, including the scheduler rules, are
     all part of what differentiates one RTOS from another.
 
-    \subsection THREADLISTS Thread States and ThreadLists
+    @subsection THREADLISTS Thread States and ThreadLists
 
     Since only one thread can run on a CPU at a time, the scheduler relies on
     thread information to make its decisions.  Mark3's scheduler relies on a
@@ -2188,7 +2188,7 @@ See license.txt for more information
     As a result, Threads may be effortlessly moved from one state to another
     using efficient linked-list operations built into the ThreadList class.
 
-    \subsection BLOCKUNBLOCK Blocking and Unblocking
+    @subsection BLOCKUNBLOCK Blocking and Unblocking
 
     While many developers new to the concept of an RTOS assume that all threads
     in a system are entirely separate from eachother, the reality is that
@@ -2200,7 +2200,7 @@ See license.txt for more information
     specific condition is met is fundamental to understanding RTOS applications
     design, as well as any highly-multithreaded applications.
 
-    \subsection BLOCKOBJ Blocking Objects
+    @subsection BLOCKOBJ Blocking Objects
 
     Blocking objects and primatives provided by Mark3 include:
 
@@ -2231,7 +2231,7 @@ See license.txt for more information
     while a message queue is a linked-list of message objects combined with a
     semaphore.
 
-    \section INSIDESCHED Inside the Mark3 Scheduler
+    @section INSIDESCHED Inside the Mark3 Scheduler
 
     At this point we've covered the following concepts:
 
@@ -2246,12 +2246,12 @@ See license.txt for more information
     In plain English, this boils down to a scheduler which follows a few simple
     rules:
 
-    \verbatim
+    @verbatim
         Find the highest-priority "Ready" list that has at least one Threads.
         If the first thread in that bucket is not the current thread, select it
         to run next. Otherwise, rotate the linked list, and choose the next
         thread in the list to run
-    \endverbatim
+    @endverbatim
 
     Since context switching is one of the most common and frequent operation
     performed by an RTOS, this needs to be as fast and deterministic as possible.
@@ -2264,7 +2264,7 @@ See license.txt for more information
     ThreadLists from highest to lowest, stopping when the first non-empty list
     is found, such as in the following block of code:
 
-    \code{.cpp}
+    @code{.cpp}
     for (prio = num_prio - 1; prio >= 0; prio--)
     {
         if (thread_list[prio].get_head() != NULL)
@@ -2272,7 +2272,7 @@ See license.txt for more information
             break;
         }
     }
-    \endcode
+    @endcode
 
     While that would certainly work and be sufficient for a variety of systems,
     it's a non-deterministic approach (complexity O(n)) whose cost varies
@@ -2308,7 +2308,7 @@ See license.txt for more information
     With a 4-bit lookup table and an 8-bit priority-level bitmap, the priority
     check algorithm looks something like this:
 
-    \code{.cpp}
+    @code{.cpp}
     // Check the highest 4 priority levels, represented in the
     // upper 4 bits in the bitmap
     priority = priority_lookup_table[(priority_bitmap >> 4)];
@@ -2325,7 +2325,7 @@ See license.txt for more information
         // represented by the lowest 4 bits in the bitmap
         priority = priority_lookup_table[priority_bitmap & 0x0F];
     }
-    \endcode
+    @endcode
 
     Deconstructing this algorithm, you can see that the priority lookup will have
     on O(1) complexity - and is extremely low-cost.
@@ -2351,7 +2351,7 @@ See license.txt for more information
     scheduler simply produces new "next thread" values that are consumed from
     within the context switch code.
 
-    \subsection RRSCHED Considerations for Round-Robin Scheduling
+    @subsection RRSCHED Considerations for Round-Robin Scheduling
 
     One thing that isn't considered directly from the scheduler algorithm is the
     problem of dealing with multiple threads within a single priority group; all
@@ -2392,7 +2392,7 @@ See license.txt for more information
     round-robin scheduling is also fixed - no matter how many threads there are,
     and the cost is identical to any other one-shot software timer in the system.
 
-    \subsection CONSWITCH Context Switching
+    @subsection CONSWITCH Context Switching
 
     There's really not much to say about the actual context switch operation at
     a high level.  Context switches are triggered whenever it has been determined
@@ -2415,7 +2415,7 @@ See license.txt for more information
     is highly-optimized for speed.  We dive into an example implementation for
     the ARM Cortex-M0 microcontroller in a later section of this book.
 
-    \subsection ALLTOGETHER Putting It All Together
+    @subsection ALLTOGETHER Putting It All Together
 
     In short, we can say that the Mark3 scheduler works as follows:
 
@@ -2435,7 +2435,7 @@ See license.txt for more information
     practice, I suggest reading through the Mark3 source code (which is heavily
     annotated), and stepping through the code with a simulator/emulator.
 
-    \section ARCHTIMERS Timers
+    @section ARCHTIMERS Timers
 
     Mark3 implements one-shot and periodic software-timers via the Timer class.
     The user configures the timer for duration, repetition, and action, at which
@@ -2491,7 +2491,7 @@ See license.txt for more information
     Mark3 also contains two different timer implementations that can be
     configured at build-time, each with their own advantages.
 
-    \subsection TICKBASEDTIMERS Tick-based Timers
+    @subsection TICKBASEDTIMERS Tick-based Timers
 
     In a tick-based timing scheme, the kernel relies on a system-timer interrupt
     to fire at a relatively-high frequency, on which all kernel timer events are
@@ -2511,7 +2511,7 @@ See license.txt for more information
     Unfortunately, that simplicity comes at a cost of increased interrupt count,
     which cause frequent CPU wakeups and utilization, and power consumption.
 
-    \subsection TICKLESSTIMERS Tickless Timers
+    @subsection TICKLESSTIMERS Tickless Timers
 
     In a tickless system, the kernel timer only runs when there are active
     timers pending expiry, and even then, the timer module only generates
@@ -2531,7 +2531,7 @@ See license.txt for more information
     timer code, requiring more code space, and slightly longer execution of the
     timer routines when the timer interrupt is executed.
 
-    \subsection TIMERPA Timer Processing Algorithm
+    @subsection TIMERPA Timer Processing Algorithm
 
     Timer interrupts occur at either a fixed-frequency (tick-based), or at the
     next timer expiry interval (tickless), at which point the timer processing
@@ -2577,12 +2577,12 @@ See license.txt for more information
     taken during a timer callback, a context switch takes place on return from
     the timer interrupt.
 
-    \section SYNCHIPC Synchronization and IPC
+    @section SYNCHIPC Synchronization and IPC
 
     \image html Mark3_arch21.png
     \image latex Mark3_arch21.png "Synchronization and IPC" width=10cm
 
-    \section BLOCKINGOBJECTS Blocking Objects
+    @section BLOCKINGOBJECTS Blocking Objects
 
     A Blocking object in Mark3 is essentially a thread list.  Any blocking object
     implementation (being a semaphore, mutex, event flag, etc.) canbe built on
@@ -2614,7 +2614,7 @@ See license.txt for more information
     class found in blocking.h/cpp, ensuring consistency and a high degree of
     code-reuse between components.
 
-    \subsection SEMAPHORES Semaphores
+    @subsection SEMAPHORES Semaphores
 
     Semaphores are used to synchronized execution of threads based on the
     availability (and quantity) of application-specific resources in the system.
@@ -2624,7 +2624,7 @@ See license.txt for more information
     threads.  Semaphores can also be posted (but not pended) from within the
     interrupt context.
 
-    \subsection MUTEX Mutex
+    @subsection MUTEX Mutex
 
     Mutexes (Mutual exclusion objects) are provided as a means of creating
     "protected sections" around a particular resource, allowing for access of
@@ -2646,7 +2646,7 @@ See license.txt for more information
     highest-priority waiter to ensure that other tasks at intermediate priorities
     cannot artificically prevent progress from being made.
 
-    \subsection EVENTFLAG Event Flags
+    @subsection EVENTFLAG Event Flags
 
     Event Flags are another synchronization object, conceptually similar to a
     semaphore.
@@ -2669,7 +2669,7 @@ See license.txt for more information
     Note that Event Flags can be set from interrupts, but you cannot wait on an
     event flag from within an interrupt.
 
-    \subsection NOTIFICATION Notification Objects
+    @subsection NOTIFICATION Notification Objects
 
     Notification objects are the most lightweight of all blocking objects
     supplied by Mark3.
@@ -2682,9 +2682,9 @@ See license.txt for more information
     Signalling a notification object that has no actively-waiting threads has no
     effect.
 
-    \section MSGMSGQ Messages and Global Message Queue
+    @section MSGMSGQ Messages and Global Message Queue
 
-    \subsection MESSAGES Messages
+    @subsection MESSAGES Messages
 
     Sending messages between threads is the key means of synchronizing access to
     data, and the primary mechanism to perform asynchronous data processing
@@ -2707,7 +2707,7 @@ See license.txt for more information
     These operations, and the various data objects involved are discussed in
     more detail in the following section.
 
-    \subsection MESSAGEOBJ Message Objects
+    @subsection MESSAGEOBJ Message Objects
 
     Message objects are used to communicate arbitrary data between threads in a
     safe and synchronous way.
@@ -2733,7 +2733,7 @@ See license.txt for more information
     used to provide event-driven programming facilities throughout the whole of
     the OS.
 
-    \subsection MESSAGEPOOL Global Message Pool
+    @subsection MESSAGEPOOL Global Message Pool
 
     To maintain efficiency in the messaging system (and to prevent over-allocation
     of data), a global pool of message objects is provided. The size of this
@@ -2752,7 +2752,7 @@ See license.txt for more information
     the pool, otherwise a resource leak will occur, which may cripple the
     operating system's ability to pass data between threads.
 
-    \subsection MESSAGEQUEUES Message Queues
+    @subsection MESSAGEQUEUES Message Queues
 
     Message objects specify data with context, but do not specify where the
     messages will be sent. For this purpose we have a MessageQueue object.
@@ -2766,7 +2766,7 @@ See license.txt for more information
     It's worth noting that multiple threads can block on the same message queue,
     providing a means for multiple threads to share work in parallel.
 
-    \subsection MAILBOXES Mailboxes
+    @subsection MAILBOXES Mailboxes
 
     Another form of IPC is provided by Mark3, in the form of Mailboxes and Envelopes.
     Mailboxes are similar to message queues in that they provide a synchronized
@@ -2786,7 +2786,7 @@ See license.txt for more information
     All send/receive APIs support an optional timeout parameter if the
     KERNEL_USE_TIMEOUTS option has been configured in mark3cfg.h
 
-    \subsection ATOMICOPS Atomic Operations
+    @subsection ATOMICOPS Atomic Operations
 
     \image html Mark3_arch25.png
     \image latex Mark3_arch25.png "Atomic operations" width=10cm
@@ -2796,9 +2796,9 @@ See license.txt for more information
     primatives provided here include Set/Add/Delete for 8, 16, and 32-bit integer
     types, as well as an atomic test-and-set.
 
-    \subsection
+    @subsection
 
-    \subsection DRIVERS Drivers
+    @subsection DRIVERS Drivers
 
     \image html Mark3_arch18.png
     \image latex Mark3_arch18.png "Drivers" width=10cm
@@ -2852,10 +2852,10 @@ See license.txt for more information
 
     To add and remove device drivers from the global table, we use the following
     methods:
-    \code
+    @code
         void DriverList::Add( Driver *pclDriver_ );
         void DriverList::Remove( Driver *pclDriver_ );
-    \endcode
+    @endcode
 
     DriverList::Add()/Remove() takes a single argument - the pointer to the object
     to operate on.
@@ -2876,7 +2876,7 @@ See license.txt for more information
     our driver framework, an application can initialize these peripherals and
     write a greeting to each using the same simple API functions for all drivers:
 
-    \code{.cpp}
+    @code{.cpp}
         pclI2C  = DriverList::FindByName("/dev/i2c");
         pclUART = DriverList::FindByName("/dev/tty0");
         pclSPI  = DriverList::FindByName("/dev/spi");
@@ -2884,9 +2884,9 @@ See license.txt for more information
         pclI2C->Write(12,"Hello World!");
         pclUART->Write(12, "Hello World!");
         pclSPI->Write(12, "Hello World!");
-    \endcode
+    @endcode
 
-    \section KRNLPROPER Kernel Proper and Porting
+    @section KRNLPROPER Kernel Proper and Porting
 
     \image html Mark3_arch26.png
     \image latex Mark3_arch26.png "Kernel Proper and Porting" width=10cm
@@ -3003,7 +3003,7 @@ See license.txt for more information
     the stack when entering an exception.  The following registers are included
     (in stack'd order):
 
-    \verbatim
+    @verbatim
         [ XPSR ] <-- Highest address in context
         [ PC   ]
         [ LR   ]
@@ -3012,7 +3012,7 @@ See license.txt for more information
         [ R2   ]
         [ R1   ]
         [ R0   ]
-    \endverbatim
+    @endverbatim
 
     XPSR – This is the CPU's status register. We need to set this to 0x01000000
     (the "T" bit), which indicates that the CPU is executing in “thumb” mode.
@@ -3033,11 +3033,11 @@ See license.txt for more information
 
     b) Complimentary CPU Register Context
 
-    \verbatim
+    @verbatim
         [ R11   ]
         ...
         [ R4    ] <-- Lowest address in context
-    \endverbatim
+    @endverbatim
 
     These are the other general-purpose CPU registers that need to be backed up/
     restored on a context switch, but aren't stacked by default on a Cortex-M0
@@ -3051,7 +3051,7 @@ See license.txt for more information
     With this default exception state in mind, the following code is used to
     initialize a thread's stack for a Cortex-M0.
 
-    \code{.cpp}
+    @code{.cpp}
     void ThreadPort::InitStack(Thread *pclThread_)
     {
         K_ULONG *pulStack;
@@ -3097,7 +3097,7 @@ See license.txt for more information
 
         pclThread_->m_pwStackTop = pulStack;
     }
-    \endcode
+    @endcode
 
     <b>Kernel Startup</b>
 
@@ -3139,7 +3139,7 @@ See license.txt for more information
     Note, the default stack pointer location is stored at address 0x00000000 on
     all ARM Cortex M0 parts.  That explains the code below...
 
-    \code{.cpp}
+    @code{.cpp}
     void ThreadPort_StartFirstThread( void )
     {
         asm(
@@ -3149,7 +3149,7 @@ See license.txt for more information
             " svc 0 \n"        // Jump to SVC Call
             );
     }
-    \endcode
+    @endcode
 
     <b>First Thread Entry</b>
 
@@ -3166,7 +3166,7 @@ See license.txt for more information
     The following assembly code shows how the SVC call is implemented in Mark3
     for the purpose of starting the first thread.
 
-    \code
+    @code
     get_thread_stack:
         ; Get the stack pointer for the current thread
         ldr r0, g_pstCurrent
@@ -3219,7 +3219,7 @@ See license.txt for more information
         ; for us.  If all goes well, our thread will start execution at the
         ; entrypoint, with the us-specified argument.
         bx r0
-    \endcode
+    @endcode
 
     On ARM Cortex parts, there's dedicated hardware that's used primarily to
     support RTOS (or RTOS-like) funcationlity.  This functionality includes the
@@ -3249,7 +3249,7 @@ See license.txt for more information
 
     The code used to implement these steps on Cortex-M0 is presented below:
 
-    \code{.cpp}
+    @code{.cpp}
     void PendSV_Handler(void)
     {
         ASM(
@@ -3316,7 +3316,7 @@ See license.txt for more information
         " CURR_: .word g_pstCurrent \n"
         );
     }
-    \endcode
+    @endcode
 
     <b>Kernel Timers</b>
 
@@ -3338,7 +3338,7 @@ See license.txt for more information
     Setting up a tick-based KernelTimer class to use the SysTick timer is,
     however, extremely easy, as is illustrated below:
 
-    \code{.cpp}
+    @code{.cpp}
     void KernelTimer::Start(void)
     {
         SysTick_Config(PORT_SYSTEM_FREQ / 1000); // 1KHz fixed clock...
@@ -3361,7 +3361,7 @@ See license.txt for more information
     "exception pending" bit before returning.  This is implemented in the
     following code:
 
-    \code{.cpp}
+    @code{.cpp}
     void SysTick_Handler(void)
     {
     #if KERNEL_USE_TIMERS
@@ -3374,7 +3374,7 @@ See license.txt for more information
         // Clear the systick interrupt pending bit.
         SCB->ICSR |= SCB_ICSR_PENDSTCLR_Msk;
     }
-    \endcode
+    @endcode
 
     <b>Critical Sections</b>
 
@@ -3411,7 +3411,7 @@ See license.txt for more information
     - cpsid (disable interrupts) and cpsie (enable interrupts).  Mark3 Implements
     these steps according to the following code:
 
-    \code{.cpp}
+    @code{.cpp}
     //------------------------------------------------------------------------
     //! Enter critical section (copy current PRIMASK register value, disable interrupts)
     #define CS_ENTER()    \
@@ -3434,7 +3434,7 @@ See license.txt for more information
         : [STATUS] "r" (__ulRegState) \
         ); \
     }
-    \endcode
+    @endcode
 
     <b>Summary</b>
 
@@ -3458,8 +3458,8 @@ See license.txt for more information
     be possible for an experienced developers to create a port Mark3 to other
     microcontroller targets.
 */
-/*!
-    \page MARK3C Mark3C - C-language API bindings for the Mark3 Kernel.
+/**
+    @page MARK3C Mark3C - C-language API bindings for the Mark3 Kernel.
 
     Mark3 now includes an optional additional library with C language bindings
     for all core kernel APIs, known as Mark3C.  This library alllows applications
@@ -3471,14 +3471,14 @@ See license.txt for more information
     documentation for Mark3C is not necessary, as the functions map 1-1 to their
     C++ counterparts.
 
-    \section MARK3CAPI API Conventions
+    @section MARK3CAPI API Conventions
 
     1) Static Methods:
 
-    \verbatim
+    @verbatim
     <ClassName>::<MethodName>()   Becomes    <ClassName>_<MethodName>()
     i.e. Kernel::Start()          Becomes    Kernel_Start()
-    \endverbatim
+    @endverbatim
 
     2) Kernel Object Methods:
 
@@ -3487,24 +3487,24 @@ See license.txt for more information
     method that returns a pointer to an object in the C++ implementation now
     returns a handle to that object.
 
-    \verbatim
+    @verbatim
     <Object>.<MethodName>(<args>) Becomes    <ClassName>_<MethoodName>(<ObjectHandle>, <args>)
 
     i.e. clAppThread.Start()      Becomes    Thread_Start(hAppThread)
-    \endverbatim
+    @endverbatim
 
     3) Overloaded Methods:
 
     a) Methods overloaded with a Timeout parameter:
 
-    \verbatim
+    @verbatim
     <Object>.<MethodName>(<args>) Becomes    <ClassName>_Timed<MethodName>(<ObjectHandle>, <args>)
 
     i.e. clSemaphore.Wait(1000)   Becomes    Semaphore_Wait(hSemaphore, 1000)
-    \endverbatim
+    @endverbatim
     b) Methods overloaded based on number of arguments:
 
-    \verbatim
+    @verbatim
     <Object>.<MethodName>()                   Becomes     <ClassName>_<MethodName>(<ObjectHandle>)
     <Object>.<MethodName>(<arg1>)             Becomes     <ClassName>_<MethodName>1(<ObjectHandle>, <arg1>)
     <Object>.<MethodName>(<arg1>, <arg2>)     Becomes     <ClassName>_<MethodName>2(<ObjectHandle>, <arg1>, <arg2>)
@@ -3512,25 +3512,25 @@ See license.txt for more information
     <ClassName>::<MethodName>()               Becomes     <ClassName>_<MethodName>(<ObjectHandle>)
     <ClassName>::<MethodName>(<arg1>)         Becomes     <ClassName>_<MethodName>1(<ObjectHandle>, <arg1>)
     <ClassName>::<MethodName>(<arg1>, <arg2>) Becomes     <ClassName>_<MethodName>2(<ObjectHandle>, <arg1>, <arg2>)
-    \endverbatim
+    @endverbatim
 
     c) Methods overloaded base on parameter types:
 
-    \verbatim
+    @verbatim
     <Object>.<MethodName>(<arg type_a>)       Becomes     <ClassName>_<MethodName><type_a>(<ObjectHandle>, <arg type a>)
     <Object>.<MethodName>(<arg type_b>)       Becomes     <ClassName>_<MethodName><type_b>(<ObjectHandle>, <arg type b>)
     <ClassName>::<MethodName>(<arg type_a>)   Becomes     <ClassName>_<MethodName><type_a>(<arg type a>)
     <ClassName>::<MethodName>(<arg type_b>)   Becomes     <ClassName>_<MethodName><type_b>(<arg type b>)
-    \endverbatim
+    @endverbatim
 
     d) Allocate-once memory allocation APIs
 
-    \verbatim
+    @verbatim
     AutoAlloc::New<ObjectName>                Becomes      Alloc_<ObjectName>
     AutoAlloc::Allocate(uint16_t u16Size_)    Becomes      AutoAlloc(uint16_t u16Size_)
-    \endverbatim
+    @endverbatim
 
-    \section MARK3CALLOC Allocating Objects
+    @section MARK3CALLOC Allocating Objects
 
     Aside from the API name translations, the object allocation scheme is the
     major different between Mark3C and Mark3.  Instead of instantiating objects
@@ -3541,7 +3541,7 @@ See license.txt for more information
 
     Example: Declaring a thread
 
-    \verbatim
+    @verbatim
 
     #include "mark3c.h"
 
@@ -3556,7 +3556,7 @@ See license.txt for more information
         ...
     }
 
-    \endverbatim
+    @endverbatim
 
 
     Where:
@@ -3567,7 +3567,7 @@ See license.txt for more information
     Alternatively, the AutoAlloc APIs can be used to dynamically allocate objects,
     as demonstrated in the following example.
 
-    \verbatim
+    @verbatim
 
     void Allocate_Example(void)
     {
@@ -3576,15 +3576,15 @@ See license.txt for more information
         Thread_Init(hMyThread, awMyStack, sizeof(awMyStack), 1, MyFunction, 0);
     }
 
-    \endverbatim
+    @endverbatim
 
     Note that the relevant kernel-object Init() function *must* be called prior to using
     any kernel object, whether or not they have been allocated statically, or dynamically.
 */
-/*!
-    \page RELEASE Release Notes
+/**
+    @page RELEASE Release Notes
 
-    \section RELR7 R7 (Full Throttle) Release
+    @section RELR7 R7 (Full Throttle) Release
     - Re-focusing project on kernel integrating with 3rd party code instead of 1st party middleware
     - Re-focusing on atmega1284p and cortex-m as default targets
     - New: Refactored codebase to C++14 standard
@@ -3607,7 +3607,7 @@ See license.txt for more information
     - Various bugfixes and improvements
     .
 
-    \section RELR6 R6 Release
+    @section RELR6 R6 Release
     - New: Replace recursive-make build system with CMake and Ninja
     - New: Transitioned version control to Git from Subversion.
     - New: Socket library, implementing named "domain-socket" style IPC
@@ -3622,7 +3622,7 @@ See license.txt for more information
     - Various Script changes related to automating the build + release process
     .
 
-    \section RELR5 R5 Release
+    @section RELR5 R5 Release
     - New: Shell library for creating responsive CLIs for embedded applications (M3Shell)
     - New: Stream library for creating thread-safe buffered streams (streamer)
     - New: Blocking UART implementation for AVR (drvUARTplus)
@@ -3644,7 +3644,7 @@ See license.txt for more information
     - The usual minor bugfixes and "gentle refactoring"
     .
 
-    \section RELR4 R4 Release
+    @section RELR4 R4 Release
 
     - New: C-language bindings for Mark3 kernel (mark3c library)
     - New: Support for ARM Cortex-M3 and Cortex-M4 (floating point) targets
@@ -3665,7 +3665,7 @@ See license.txt for more information
     - Updated builds to only attempt to build tests for supported platforms
     .
 
-    \section RELR3 R3 Release
+    @section RELR3 R3 Release
 
     - New: Added support for MSP430 microcontrollers
     - New: Added Kernel Idle-Function hook to eliminate the need for a dedicated idle-thread (where supported)
@@ -3675,13 +3675,13 @@ See license.txt for more information
     - Expanded documentation and test coverage
     .
 
-    \section RELR2  R2
+    @section RELR2  R2
 
     - Experimental release, using a "kernel transaction queue" for serializing kernel calls
     - Works as a proof-of-concept, but abandoned due to overhead of the transaction mechanism in the general case.
     .
 
-    \section RELR12 R1 - 2nd Release Candidate
+    @section RELR12 R1 - 2nd Release Candidate
 
     - New: Added support for ARM Cortex-M0 targets
     - New: Added support for various AVR targets
@@ -3691,13 +3691,13 @@ See license.txt for more information
     - Large number of bugfixes
     .
 
-    \section RELR1 R1 - 1st Release Candidate
+    @section RELR1 R1 - 1st Release Candidate
 
     - Initial release, with support for AVR microcontrollers
     .
 
  */
-/*!
+/**
     \example lab1_kernel_setup/main.cpp
     This example demonstrates basic kernel setup with two threads.
 

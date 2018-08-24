@@ -11,10 +11,10 @@
 Copyright (c) 2012 - 2018 m0slevin, all rights reserved.
 See license.txt for more information
 =========================================================================== */
-/*!
-    \file joystick.h
+/**
+    @file joystick.h
 
-    \brief Joystick driver interface
+    @brief Joystick driver interface
 
     This module provides the basic interface on which any sort of joystick
     driver can be implemented.  By using this abstraction, the underlying
@@ -47,9 +47,8 @@ See license.txt for more information
 
 namespace Mark3
 {
-
 //---------------------------------------------------------------------------
-/*!
+/**
  *  Structure defining a generic joystick report structure.  In this case,
  *  composed of the following items:
  *  - Digital input, including a D-pad and up to 12 additional buttons.
@@ -85,7 +84,7 @@ typedef struct {
 } JoystickReport;
 
 //---------------------------------------------------------------------------
-/*!
+/**
  *  Generic joystick driver events/commands
  */
 typedef enum {
@@ -94,7 +93,7 @@ typedef enum {
 } JoystickCommands;
 
 //---------------------------------------------------------------------------
-/*!
+/**
  *  Joystick driver base class.  This class implements the API methods required
  *  for a generic joystick driver - including calls to scan the joystick
  *  hardware, read the current joystick value, and read the previously-read
@@ -103,8 +102,8 @@ typedef enum {
 class JoystickDriver : public Driver
 {
 public:
-    /*!
-     *  \brief Scan
+    /**
+     *  @brief Scan
      *
      *  Read the current joystick values from hardware.  This calls the
      *  underlying driver's Control() function with the JOYSTICK_SCAN event,
@@ -114,24 +113,24 @@ public:
      */
     void Scan();
 
-    /*!
-     *  \brief ReadCurrent
+    /**
+     *  @brief ReadCurrent
      *
      *  Copy out the current joystick report data.  This does not trigger a
      *  hardware re-scan of the joystick hardware.
      *
-     *  \param pstReport_ Pointer to the JoystickReport object that will
+     *  @param pstReport_ Pointer to the JoystickReport object that will
      *         hold the read data.
      */
     void ReadCurrent(JoystickReport* pstReport_);
 
-    /*!
-     *  \brief ReadPrevious
+    /**
+     *  @brief ReadPrevious
      *
      *  Copy out the previous joystick report data.  This does not trigger a
      *  hardware re-scan of the joystick hardware.
      *
-     *  \param pstReport_ Pointer to the JoystickReport object that will
+     *  @param pstReport_ Pointer to the JoystickReport object that will
      *         hold the read data.
      */
     void ReadPrevious(JoystickReport* pstReport_);
@@ -142,4 +141,4 @@ protected:
 };
 
 //---------------------------------------------------------------------------
-} //namespace Mark3
+} // namespace Mark3

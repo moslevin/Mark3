@@ -11,7 +11,7 @@
 Copyright (c) 2012 - 2018 m0slevin, all rights reserved.
 See license.txt for more information
 ===========================================================================*/
-/*!
+/**
     @brief UART abstraction interface
 */
 #pragma once
@@ -21,7 +21,6 @@ See license.txt for more information
 
 namespace Mark3
 {
-
 //---------------------------------------------------------------------------
 typedef enum {
     UART_OPCODE_SET_BAUDRATE = 0x80,
@@ -45,7 +44,6 @@ typedef enum {
 class UartDriver : public Driver
 {
 public:
-
     /**
      * @brief SetBaudRate
      * Set the baudrate for a given UART, invalidating any other previous
@@ -65,8 +63,7 @@ public:
      * @param u32TxBufferSize_ Size of the transmit buffer in bytes
      * @return true on success, false on error or not supported
      */
-    bool SetBuffers(uint8_t* pu8RxBuffer_, uint32_t u32RxBufferSize_,
-                    uint8_t* pu8TxBuffer_, uint32_t u32TxBufferSize_);
+    bool SetBuffers(uint8_t* pu8RxBuffer_, uint32_t u32RxBufferSize_, uint8_t* pu8TxBuffer_, uint32_t u32TxBufferSize_);
 
     /**
      * @brief EnableRx
@@ -91,8 +88,8 @@ public:
      * @return true on success, false on error or unsupported
      */
     bool SetPortBlocking(bool bBlocking_);
-   
+
 private:
 };
 
-} //namespace Mark3
+} // namespace Mark3

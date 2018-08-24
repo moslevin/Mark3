@@ -11,11 +11,11 @@
 Copyright (c) 2012 - 2018 m0slevin, all rights reserved.
 See license.txt for more information
 ===========================================================================*/
-/*!
+/**
 
-    \file   mailbox.cpp
+    @file   mailbox.cpp
 
-    \brief  Mailbox + Envelope IPC mechanism
+    @brief  Mailbox + Envelope IPC mechanism
 */
 
 #include "mark3.h"
@@ -144,8 +144,8 @@ bool Mailbox::Send_i(const void* pvData_, bool bTail_, uint32_t u32TimeoutMS_)
 
     auto bRet        = false;
     auto bSchedState = Scheduler::SetScheduler(false);
-    auto bBlock = false;
-    auto bDone  = false;
+    auto bBlock      = false;
+    auto bDone       = false;
 
     while (!bDone) {
         // Try to claim a slot first before resorting to blocking.
@@ -168,7 +168,7 @@ bool Mailbox::Send_i(const void* pvData_, bool bTail_, uint32_t u32TimeoutMS_)
                 MoveHeadForward();
                 pvDst = GetHeadPointer();
             }
-            bRet = true;
+            bRet  = true;
             bDone = true;
         } else if (u32TimeoutMS_ != 0u) {
             bBlock = true;
@@ -235,4 +235,4 @@ bool Mailbox::Receive_i(const void* pvData_, bool bTail_, uint32_t u32WaitTimeMS
 
     return true;
 }
-} //namespace Mark3
+} // namespace Mark3

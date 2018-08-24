@@ -11,11 +11,11 @@
 Copyright (c) 2012 - 2018 m0slevin, all rights reserved.
 See license.txt for more information
 ===========================================================================*/
-/*!
+/**
 
-    \file   atomic.cpp
+    @file   atomic.cpp
 
-    \brief  Basic Atomic Operations
+    @brief  Basic Atomic Operations
 */
 
 #include "mark3.h"
@@ -150,4 +150,4 @@ bool Atomic::TestAndSet(bool* pbLock_)
     CS_EXIT();
     return u8Ret;
 }
-} //namespace Mark3
+} // namespace Mark3

@@ -11,17 +11,18 @@
 Copyright (c) 2012 - 2018 m0slevin, all rights reserved.
 See license.txt for more information
 =========================================================================== */
-/*!
-    \file streamer.cpp
+/**
+    @file streamer.cpp
 
-    \brief Thread/Interrupt-safe byte-based data streaming.
+    @brief Thread/Interrupt-safe byte-based data streaming.
  */
 
 #include "kerneltypes.h"
 #include "mark3.h"
 #include "streamer.h"
 
-namespace Mark3 {
+namespace Mark3
+{
 //---------------------------------------------------------------------------
 void Streamer::Init(uint8_t* pau8Buffer_, uint16_t u16Size_)
 {
@@ -93,19 +94,12 @@ uint16_t Streamer::Read(uint8_t* pu8Data_, uint16_t u16Len_)
     CS_EXIT();
 
     if (u16Allocated != 0u) {
-
         if (u16PreWrap >= u16ToRead) {
-            for (uint16_t i = 0; i < u16ToRead; i++) {
-                *pu8Dst++ = *pu8Src++;
-            }
+            for (uint16_t i = 0; i < u16ToRead; i++) { *pu8Dst++ = *pu8Src++; }
         } else {
-            for (uint16_t i = 0; i < u16PreWrap; i++) {
-                *pu8Dst++ = *pu8Src++;
-            }
+            for (uint16_t i = 0; i < u16PreWrap; i++) { *pu8Dst++ = *pu8Src++; }
             pu8Src = m_pau8Buffer;
-            for (uint16_t i = u16PreWrap; i < u16ToRead; i++) {
-                *pu8Dst++ = *pu8Src++;
-            }
+            for (uint16_t i = u16PreWrap; i < u16ToRead; i++) { *pu8Dst++ = *pu8Src++; }
         }
     }
 
@@ -192,17 +186,11 @@ uint16_t Streamer::Write(uint8_t* pu8Data_, uint16_t u16Len_)
     // Perform the buffer writes with interrupts enabled, buffers locked.
     if (u16ToWrite != 0u) {
         if (u16PreWrap >= u16ToWrite) {
-            for (uint16_t i = 0; i < u16ToWrite; i++) {
-                *pu8Dst++ = *pu8Src++;
-            }
+            for (uint16_t i = 0; i < u16ToWrite; i++) { *pu8Dst++ = *pu8Src++; }
         } else {
-            for (uint16_t i = 0; i < u16PreWrap; i++) {
-                *pu8Dst++ = *pu8Src++;
-            }
+            for (uint16_t i = 0; i < u16PreWrap; i++) { *pu8Dst++ = *pu8Src++; }
             pu8Dst = m_pau8Buffer;
-            for (uint16_t i = u16PreWrap; i < u16ToWrite; i++) {
-                *pu8Dst++ = *pu8Src++;
-            }
+            for (uint16_t i = u16PreWrap; i < u16ToWrite; i++) { *pu8Dst++ = *pu8Src++; }
         }
     }
 
@@ -215,8 +203,7 @@ bool Streamer::CanRead(void)
 {
     auto bRc = true;
     CS_ENTER();
-    if (m_u16Avail == m_u16Size)
-    {
+    if (m_u16Avail == m_u16Size) {
         bRc = false;
     }
     CS_EXIT();
@@ -229,8 +216,7 @@ bool Streamer::CanWrite(void)
     auto bRc = false;
 
     CS_ENTER();
-    if (m_u16Avail != 0u)
-    {
+    if (m_u16Avail != 0u) {
         bRc = true;
     }
     CS_EXIT();
@@ -292,4 +278,4 @@ bool Streamer::IsEmpty(void)
     CS_EXIT();
     return rc;
 }
-} //namespace Mark3
+} // namespace Mark3

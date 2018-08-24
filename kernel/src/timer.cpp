@@ -11,11 +11,11 @@
 Copyright (c) 2012 - 2018 m0slevin, all rights reserved.
 See license.txt for more information
 ===========================================================================*/
-/*!
+/**
 
-    \file   timer.cpp
+    @file   timer.cpp
 
-    \brief  Timer implementations
+    @brief  Timer implementations
 
 */
 
@@ -29,7 +29,7 @@ TimerList TimerScheduler::m_clTimerList;
 Timer::Timer()
 {
     m_u8Initialized = TIMER_INVALID_COOKIE;
-    m_u8Flags = 0;
+    m_u8Flags       = 0;
 }
 
 //---------------------------------------------------------------------------
@@ -104,7 +104,7 @@ void Timer::Stop()
     KERNEL_ASSERT(IsInitialized());
 
     if ((m_u8Flags & TIMERLIST_FLAG_ACTIVE) == 0) {
-            return;
+        return;
     }
     TimerScheduler::Remove(this);
 }
@@ -152,4 +152,4 @@ void Timer::SetTolerance(uint32_t u32Ticks_)
     KERNEL_ASSERT(IsInitialized());
     m_u32TimerTolerance = u32Ticks_;
 }
-} //namespace Mark3
+} // namespace Mark3

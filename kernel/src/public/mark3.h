@@ -11,10 +11,10 @@
 Copyright (c) 2012 - 2018 m0slevin, all rights reserved.
 See license.txt for more information
 ===========================================================================*/
-/*!
-    \file mark3.h
+/**
+    @file mark3.h
 
-    \brief Single include file given to users of the Mark3 Kernel API
+    @brief Single include file given to users of the Mark3 Kernel API
 
 */
 #pragma once

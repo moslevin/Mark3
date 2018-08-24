@@ -11,11 +11,11 @@
 Copyright (c) 2012 - 2018 m0slevin, all rights reserved.
 See license.txt for more information
 ===========================================================================*/
-/*!
+/**
 
-    \file   mark3c.h
+    @file   mark3c.h
 
-    \brief  Implementation of C-language wrappers for the Mark3 kernel.
+    @brief  Implementation of C-language wrappers for the Mark3 kernel.
 */
 
 #include "mark3c.h"
@@ -295,12 +295,12 @@ Thread_t Scheduler_GetCurrentThread(void)
 // Thread APIs
 //---------------------------------------------------------------------------
 
-void Thread_Init(Thread_t      handle,
-                 K_WORD*       pwStack_,
-                 uint16_t      u16StackSize_,
-                 PORT_PRIO_TYPE     uXPriority_,
+void Thread_Init(Thread_t        handle,
+                 K_WORD*         pwStack_,
+                 uint16_t        u16StackSize_,
+                 PORT_PRIO_TYPE  uXPriority_,
                  ThreadEntryFunc pfEntryPoint_,
-                 void*         pvArg_)
+                 void*           pvArg_)
 {
     Thread* pclThread = new ((void*)handle) Thread();
     pclThread->Init(pwStack_, u16StackSize_, uXPriority_, pfEntryPoint_, pvArg_);
@@ -851,7 +851,7 @@ void ConditionVariable_Init(ConditionVariable_t handle)
 void ConditionVariable_Wait(ConditionVariable_t handle, Mutex_t hMutex_)
 {
     ConditionVariable* pclCondvar = (ConditionVariable*)handle;
-    Mutex* pclMutex = (Mutex*)hMutex_;
+    Mutex*             pclMutex   = (Mutex*)hMutex_;
     pclCondvar->Wait(pclMutex);
 }
 //---------------------------------------------------------------------------
@@ -870,7 +870,7 @@ void ConditionVariable_Broadcast(ConditionVariable_t handle)
 bool ConditionVariable_TimedWait(ConditionVariable_t handle, Mutex_t hMutex_, uint32_t u32WaitTimeMS_)
 {
     ConditionVariable* pclCondvar = (ConditionVariable*)handle;
-    Mutex* pclMutex = (Mutex*)hMutex_;
+    Mutex*             pclMutex   = (Mutex*)hMutex_;
     return pclCondvar->Wait(pclMutex, u32WaitTimeMS_);
 }
 

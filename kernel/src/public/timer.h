@@ -11,11 +11,11 @@
 Copyright (c) 2012 - 2018 m0slevin, all rights reserved.
 See license.txt for more information
 =========================================================================== */
-/*!
+/**
 
-    \file   timer.h
+    @file   timer.h
 
-    \brief  Timer object declarations
+    @brief  Timer object declarations
  */
 
 #pragma once
@@ -35,8 +35,8 @@ class Thread;
 #define TIMERLIST_FLAG_EXPIRED (0x08)  //!< Timer is actually expired.
 
 //---------------------------------------------------------------------------
-#define TIMER_INVALID_COOKIE    (0x3C)
-#define TIMER_INIT_COOKIE       (0xC3)
+#define TIMER_INVALID_COOKIE (0x3C)
+#define TIMER_INIT_COOKIE (0xC3)
 
 //---------------------------------------------------------------------------
 #define MAX_TIMER_TICKS (0x7FFFFFFF) //!< Maximum value to set
@@ -80,7 +80,7 @@ class Thread;
 
 #endif // KERNEL_TIMERS_TICKLESS
 //---------------------------------------------------------------------------
-/*!
+/**
  * This type defines the callback function type for timer events.  Since these
  * are called from an interrupt context, they do not operate from within a
  * thread or object context directly -- as a result, the context must be
@@ -89,7 +89,7 @@ class Thread;
  * pclOwner_ is a pointer to the thread that owns the timer
  * pvData_ is a pointer to some data or object that needs to know about the
  *         timer's expiry from within the timer interrupt context.
-  */
+ */
 using TimerCallback = void (*)(Thread* pclOwner_, void* pvData_);
 
 //---------------------------------------------------------------------------
@@ -98,8 +98,8 @@ class TimerScheduler;
 class Quantum;
 
 //---------------------------------------------------------------------------
-/*!
- * \brief Kernel-managed software timers.
+/**
+ * @brief Kernel-managed software timers.
  *
  * Kernel-managed timers, used to provide high-precision high-resolution
  * delays.  Functionality is useful to both user-code, and is used extensively
@@ -113,52 +113,52 @@ public:
     void* operator new(size_t sz, void* pv) { return (Timer*)pv; }
     ~Timer() {}
 
-    /*!
-     *  \brief Timer
+    /**
+     *  @brief Timer
      *
      *  Default Constructor - Do nothing.  Allow the init call to perform
      *  the necessary object initialization prior to use.
      */
-    Timer();   
+    Timer();
 
-    /*!
-     *  \brief Init
+    /**
+     *  @brief Init
      *
      * Re-initialize the Timer to default values.
      */
     void Init();
 
-    /*!
-     *  \brief Start
+    /**
+     *  @brief Start
      *
      *  Start a timer using default ownership, using repeats as an option, and
      *  millisecond resolution.
      *
-     *  \param bRepeat_ 0 - timer is one-shot.  1 - timer is repeating.
-     *  \param u32IntervalMs_ - Interval of the timer in miliseconds
-     *  \param pfCallback_ - Function to call on timer expiry
-     *  \param pvData_ - Data to pass into the callback function
+     *  @param bRepeat_ 0 - timer is one-shot.  1 - timer is repeating.
+     *  @param u32IntervalMs_ - Interval of the timer in miliseconds
+     *  @param pfCallback_ - Function to call on timer expiry
+     *  @param pvData_ - Data to pass into the callback function
      */
     void Start(bool bRepeat_, uint32_t u32IntervalMs_, TimerCallback pfCallback_, void* pvData_);
 
-    /*!
-     *  \brief Start
+    /**
+     *  @brief Start
      *
      *  Start a timer using default ownership, using repeats as an option, and
      *  millisecond resolution.
      *
-     *  \param bRepeat_ 0 - timer is one-shot.  1 - timer is repeating.
-     *  \param u32IntervalMs_ - Interval of the timer in miliseconds
-     *  \param u32ToleranceMs_ - Allow the timer expiry to be delayed by an additional maximum time, in
+     *  @param bRepeat_ 0 - timer is one-shot.  1 - timer is repeating.
+     *  @param u32IntervalMs_ - Interval of the timer in miliseconds
+     *  @param u32ToleranceMs_ - Allow the timer expiry to be delayed by an additional maximum time, in
      *                         order to have as many timers expire at the same time as possible.
-     *  \param pfCallback_ - Function to call on timer expiry
-     *  \param pvData_ - Data to pass into the callback function
+     *  @param pfCallback_ - Function to call on timer expiry
+     *  @param pvData_ - Data to pass into the callback function
      */
     void
     Start(bool bRepeat_, uint32_t u32IntervalMs_, uint32_t u32ToleranceMs_, TimerCallback pfCallback_, void* pvData_);
 
-    /*!
-     * \brief Start
+    /**
+     * @brief Start
      *
      * Start or restart a timer using parameters previously configured via
      * calls to Start(<with args>), or via the a-la-carte parameter setter
@@ -167,114 +167,114 @@ public:
      */
     void Start();
 
-    /*!
-     *  \brief Stop
+    /**
+     *  @brief Stop
      *
      *  Stop a timer already in progress.   Has no effect on timers that have
      *  already been stopped.
      */
     void Stop();
 
-    /*!
-     *  \brief SetFlags
+    /**
+     *  @brief SetFlags
      *
      * Set the timer's flags based on the bits in the u8Flags_ argument
      *
-     * \param u8Flags_ Flags to assign to the timer object.
+     * @param u8Flags_ Flags to assign to the timer object.
      *             TIMERLIST_FLAG_ONE_SHOT for a one-shot timer,
      *             0 for a continuous timer.
      */
     void SetFlags(uint8_t u8Flags_) { m_u8Flags = u8Flags_; }
-    /*!
-     *  \brief SetCallback
+    /**
+     *  @brief SetCallback
      *
      *  Define the callback function to be executed on expiry of the timer
      *
-     *  \param pfCallback_ Pointer to the callback function to call
+     *  @param pfCallback_ Pointer to the callback function to call
      */
     void SetCallback(TimerCallback pfCallback_) { m_pfCallback = pfCallback_; }
-    /*!
-     *  \brief SetData
+    /**
+     *  @brief SetData
      *
      *  Define a pointer to be sent to the timer callbcak on timer expiry
      *
-     *  \param pvData_ Pointer to data to pass as argument into the callback
+     *  @param pvData_ Pointer to data to pass as argument into the callback
      */
     void SetData(void* pvData_) { m_pvData = pvData_; }
-    /*!
-     *  \brief SetOwner
+    /**
+     *  @brief SetOwner
      *
      *  Set the owner-thread of this timer object (all timers must be owned by
      *  a thread).
      *
-     *  \param pclOwner_ Owner thread of this timer object
+     *  @param pclOwner_ Owner thread of this timer object
      */
     void SetOwner(Thread* pclOwner_) { m_pclOwner = pclOwner_; }
-    /*!
-     *  \brief SetIntervalTicks
+    /**
+     *  @brief SetIntervalTicks
      *
      *  Set the timer expiry in system-ticks (platform specific!)
      *
-     *  \param u32Ticks_ Time in ticks
+     *  @param u32Ticks_ Time in ticks
      */
     void SetIntervalTicks(uint32_t u32Ticks_);
 
-    /*!
-     *  \brief SetIntervalSeconds
+    /**
+     *  @brief SetIntervalSeconds
      *
      *  Set the timer expiry interval in seconds (platform agnostic)
      *
-     *  \param u32Seconds_ Time in seconds
+     *  @param u32Seconds_ Time in seconds
      */
     void SetIntervalSeconds(uint32_t u32Seconds_);
 
-    /*!
-     * \brief GetInterval
+    /**
+     * @brief GetInterval
      *
      * Return the timer's configured interval in ticks
      *
-     * \return Timer interval in ticks.
+     * @return Timer interval in ticks.
      */
     uint32_t GetInterval() { return m_u32Interval; }
-    /*!
-     *  \brief SetIntervalMSeconds
+    /**
+     *  @brief SetIntervalMSeconds
      *
      *  Set the timer expiry interval in milliseconds (platform agnostic)
      *
-     *  \param u32MSeconds_ Time in milliseconds
+     *  @param u32MSeconds_ Time in milliseconds
      */
     void SetIntervalMSeconds(uint32_t u32MSeconds_);
 
-    /*!
-     *  \brief SetIntervalUSeconds
+    /**
+     *  @brief SetIntervalUSeconds
      *
      *  Set the timer expiry interval in microseconds (platform agnostic)
      *
-     *  \param u32USeconds_ Time in microseconds
+     *  @param u32USeconds_ Time in microseconds
      */
     void SetIntervalUSeconds(uint32_t u32USeconds_);
 
-    /*!
-     *  \brief SetTolerance
+    /**
+     *  @brief SetTolerance
      *
      *  Set the timer's maximum tolerance in order to synchronize timer
      *  processing with other timers in the system.
      *
-     *  \param u32Ticks_ Maximum tolerance in ticks
+     *  @param u32Ticks_ Maximum tolerance in ticks
      */
     void SetTolerance(uint32_t u32Ticks_);
 
-private:    
+private:
     friend class TimerList;
 
-    /*!
-     * \brief SetInitialized
+    /**
+     * @brief SetInitialized
      */
-    void SetInitialized()   { m_u8Initialized = TIMER_INIT_COOKIE; }
+    void SetInitialized() { m_u8Initialized = TIMER_INIT_COOKIE; }
 
-    /*!
-     * \brief IsInitialized
-     * \return
+    /**
+     * @brief IsInitialized
+     * @return
      */
     bool IsInitialized(void) { return (m_u8Initialized == TIMER_INIT_COOKIE); }
 
@@ -302,5 +302,4 @@ private:
     //! Pointer to the callback data
     void* m_pvData;
 };
-} //namespace Mark3
-
+} // namespace Mark3

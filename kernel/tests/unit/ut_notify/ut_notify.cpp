@@ -19,7 +19,8 @@ See license.txt for more information
 #include "../ut_platform.h"
 #include "mark3.h"
 
-namespace {
+namespace
+{
 using namespace Mark3;
 //===========================================================================
 // Local Defines
@@ -30,7 +31,8 @@ K_WORD           awStack[PORT_KERNEL_DEFAULT_STACK_SIZE];
 volatile uint8_t u8Count = 0;
 }
 
-namespace Mark3 {
+namespace Mark3
+{
 //===========================================================================
 // Define Test Cases Here
 //===========================================================================
@@ -48,9 +50,7 @@ TEST(ut_notify)
 
     clThread.Init(awStack, PORT_KERNEL_DEFAULT_STACK_SIZE, 2, lNotifyFunc, NULL);
     clThread.Start();
-    for (int i = 0; i < 10; i++) {
-        clNotify.Wait(0);
-    }
+    for (int i = 0; i < 10; i++) { clNotify.Wait(0); }
     clThread.Stop();
     EXPECT_EQUALS(u8Count, 10);
 }
@@ -65,17 +65,13 @@ TEST(ut_notify_timeout)
 
     u8Count = 0;
     clThread.Start();
-    for (int i = 0; i < 10; i++) {
-        clNotify.Wait(100, 0);
-    }
+    for (int i = 0; i < 10; i++) { clNotify.Wait(100, 0); }
     clThread.Stop();
     EXPECT_EQUALS(u8Count, 10);
 
     clThread.Start();
     u8Count = 0;
-    for (int i = 0; i < 10; i++) {
-        clNotify.Wait(3, 0);
-    }
+    for (int i = 0; i < 10; i++) { clNotify.Wait(3, 0); }
     clThread.Stop();
     EXPECT_EQUALS(u8Count, 0);
 }
@@ -86,4 +82,4 @@ TEST_END
 //===========================================================================
 TEST_CASE_START
 TEST_CASE(ut_notify), TEST_CASE(ut_notify_timeout), TEST_CASE_END
-} //namespace Mark3
+} // namespace Mark3

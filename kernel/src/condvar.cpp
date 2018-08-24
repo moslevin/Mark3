@@ -12,16 +12,16 @@
 Copyright (c) 2012 - 2018 m0slevin, all rights reserved.
 See license.txt for more information
 ===========================================================================*/
-/*!
-    \file   condvar.cpp
+/**
+    @file   condvar.cpp
 
-    \brief  Condition Variable implementation
+    @brief  Condition Variable implementation
 */
 
 #include "mark3.h"
 
-namespace Mark3 {
-
+namespace Mark3
+{
 //---------------------------------------------------------------------------
 void ConditionVariable::Init()
 

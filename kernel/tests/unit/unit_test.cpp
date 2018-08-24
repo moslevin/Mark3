@@ -11,9 +11,9 @@
 Copyright (c) 2012 - 2018 m0slevin, all rights reserved.
 See license.txt for more information
 ===========================================================================*/
-/*!
-    \file unit_test.cpp
-    \brief Unit test class definition
+/**
+    @file unit_test.cpp
+    @brief Unit test class definition
 */
 
 #include "kerneltypes.h"
@@ -58,4 +58,4 @@ void UnitTest::Fail()
         m_bStatus = false;
     }
 }
-} //namespace Mark3
+} // namespace Mark3

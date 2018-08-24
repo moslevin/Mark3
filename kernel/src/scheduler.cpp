@@ -11,11 +11,11 @@
 Copyright (c) 2012 - 2018 m0slevin, all rights reserved.
 See license.txt for more information
 ===========================================================================*/
-/*!
+/**
 
-    \file   scheduler.cpp
+    @file   scheduler.cpp
 
-    \brief  Strict-Priority + Round-Robin thread scheduler implementation
+    @brief  Strict-Priority + Round-Robin thread scheduler implementation
 
 */
 
@@ -24,12 +24,12 @@ See license.txt for more information
 volatile Mark3::Thread* g_pclNext;
 Mark3::Thread*          g_pclCurrent;
 
-namespace Mark3 {
-
-bool Scheduler::m_bEnabled;
-bool Scheduler::m_bQueuedSchedule;
-ThreadList Scheduler::m_clStopList;
-ThreadList Scheduler::m_aclPriorities[KERNEL_NUM_PRIORITIES];
+namespace Mark3
+{
+bool        Scheduler::m_bEnabled;
+bool        Scheduler::m_bQueuedSchedule;
+ThreadList  Scheduler::m_clStopList;
+ThreadList  Scheduler::m_aclPriorities[KERNEL_NUM_PRIORITIES];
 PriorityMap Scheduler::m_clPrioMap;
 
 //---------------------------------------------------------------------------
@@ -87,4 +87,4 @@ bool Scheduler::SetScheduler(bool bEnable_)
     CS_EXIT();
     return bRet;
 }
-} //namespace Mark3
+} // namespace Mark3

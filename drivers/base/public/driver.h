@@ -11,13 +11,13 @@
 Copyright (c) 2012 - 2018 m0slevin, all rights reserved.
 See license.txt for more information
 =========================================================================== */
-/*!
+/**
 
-    \file   driver.h
+    @file   driver.h
 
-    \brief  Driver abstraction framework
+    @brief  Driver abstraction framework
 
-    \section DrvIntro Intro
+    @section DrvIntro Intro
 
     This is the basis of the driver framework.  In the context of Mark3, drivers
     don't necessarily have to be based on physical hardware peripherals.  They
@@ -33,7 +33,7 @@ See license.txt for more information
     A global driver list is provided as a convenient and minimal
     "filesystem" structure, in which devices can be accessed by name.
 
-    \section DrvDesign Driver Design
+    @section DrvDesign Driver Design
 
     A device driver needs to be able to perform the following operations:
         -Initialize a peripheral
@@ -56,7 +56,7 @@ See license.txt for more information
     calls - that's it! You could even reduce that further by handling the initialize,
     start, and stop operations inside the "control" operation.
 
-    \section DrvAPI Driver API
+    @section DrvAPI Driver API
 
     In C++, we can implement this as a class to abstract these event handlers, with
     virtual void functions in the base class overridden by the inherited
@@ -65,10 +65,10 @@ See license.txt for more information
     To add and remove device drivers from the global table, we use the
     following methods:
 
-    \code
+    @code
     void DriverList::Add( Driver *pclDriver_ );
     void DriverList::Remove( Driver *pclDriver_ );
-    \endcode
+    @endcode
 
     DriverList::Add()/Remove() takes a single arguments � the pointer to he
     object to operate on.
@@ -90,7 +90,7 @@ See license.txt for more information
     and write a greeting to each using the same simple API functions for all
     drivers:
 
-    \code
+    @code
     pclI2C  = DriverList::FindByName("/dev/i2c");
     pclUART = DriverList::FindByName("/dev/tty0");
     pclSPI  = DriverList::FindByName("/dev/spi");
@@ -98,7 +98,7 @@ See license.txt for more information
     pclI2C->Write(12,"Hello World!");
     pclUART->Write(12, "Hello World!");
     pclSPI->Write(12, "Hello World!");
-    \endcode
+    @endcode
 
  */
 #pragma once
@@ -112,7 +112,7 @@ namespace Mark3
 {
 class DriverList;
 //---------------------------------------------------------------------------
-/*!
+/**
  *  Base device-driver class used in hardware abstraction.  All other device
  *  drivers inherit from this class
  */
@@ -120,33 +120,33 @@ class Driver : public LinkListNode
 {
 public:
     void* operator new(size_t sz, void* pv) { return (Driver*)pv; };
-    /*!
-     *  \brief Init
+    /**
+     *  @brief Init
      *
      *  Initialize a driver, must be called prior to use
      */
     virtual int Init() = 0;
 
-    /*!
-     *  \brief Open
+    /**
+     *  @brief Open
      *
      *  Open a device driver prior to use.
      *
-     *  \return Driver-specific return code, 0 = OK, non-0 = error
+     *  @return Driver-specific return code, 0 = OK, non-0 = error
      */
     virtual int Open() = 0;
 
-    /*!
-     *  \brief Close
+    /**
+     *  @brief Close
      *
      *  Close a previously-opened device driver.
      *
-     *  \return Driver-specific return code, 0 = OK, non-0 = error
+     *  @return Driver-specific return code, 0 = OK, non-0 = error
      */
     virtual int Close() = 0;
 
-    /*!
-     *  \brief Read
+    /**
+     *  @brief Read
      *
      *  Read a specified number of bytes from the device into a specific buffer.
      *  Depending on the driver-specific implementation, this may be a number
@@ -154,15 +154,15 @@ public:
      *  there was less input than desired, or that as a result of buffering,
      *  the data may not be available.
      *
-     *  \param u16Bytes_ Number of bytes to read (<= size of the buffer)
-     *  \param pu8Data_ Pointer to a data buffer receiving the read data
+     *  @param u16Bytes_ Number of bytes to read (<= size of the buffer)
+     *  @param pu8Data_ Pointer to a data buffer receiving the read data
      *
-     *  \return Number of bytes actually read
+     *  @return Number of bytes actually read
      */
     virtual size_t Read(void* pvData_, size_t uBytes_) = 0;
 
-    /*!
-     *  \brief Write
+    /**
+     *  @brief Write
      *
      *  Write a payload of data of a given length to the device.
      *  Depending on the implementation of the driver, the amount of data
@@ -171,15 +171,15 @@ public:
      *  the device buffer is full, indicating that the user must retry
      *  the write at a later point with the remaining data.
      *
-     *  \param u16Bytes_ Number of bytes to write (<= size of the buffer)
-     *  \param pu8Data_ Pointer to a data buffer containing the data to write
+     *  @param uBytes_ Number of bytes to write (<= size of the buffer)
+     *  @param pvData_ Pointer to a data buffer containing the data to write
      *
-     *  \return Number of bytes actually written
+     *  @return Number of bytes actually written
      */
     virtual size_t Write(const void* pvData_, size_t uBytes_) = 0;
 
-    /*!
-     *  \brief Control
+    /**
+     *  @brief Control
      *
      *  This is the main entry-point for device-specific io and control
      *  operations.  This is used for implementing all "side-channel"
@@ -188,76 +188,76 @@ public:
      *  read/write paradigm.  use of this funciton is analagous to
      *  the non-POSIX (yet still common) devctl() or ioctl().
      *
-     *  \param u16Event_ Code defining the io event (driver-specific)
-     *  \param pvDataIn_ Pointer to the intput data
-     *  \param u16SizeIn_ Size of the input data (in bytes)
-     *  \param pvDataOut_ Pointer to the output data
-     *  \param u16SizeOut_ Size of the output data (in bytes)
+     *  @param u16Event_ Code defining the io event (driver-specific)
+     *  @param pvDataIn_ Pointer to the intput data
+     *  @param uSizeIn_ Size of the input data (in bytes)
+     *  @param pvDataOut_ Pointer to the output data
+     *  @param uSizeOut_ Size of the output data (in bytes)
      *
-     *  \return Driver-specific return code, 0 = OK, non-0 = error
+     *  @return Driver-specific return code, 0 = OK, non-0 = error
      */
-    virtual int
-    Control(uint16_t u16Event_, void* pvDataIn_, size_t uSizeIn_, const void* pvDataOut_, size_t uSizeOut_)
+    virtual int Control(uint16_t u16Event_, void* pvDataIn_, size_t uSizeIn_, const void* pvDataOut_, size_t uSizeOut_)
         = 0;
 
-    /*!
-     *  \brief SetName
+    /**
+     *  @brief SetName
      *
      *  Set the path for the driver.  Name must be set prior to
      *  access (since driver access is name-based).
      *
-     *  \param pcName_ String constant containing the device path
+     *  @param pcName_ String constant containing the device path
      */
     void SetName(const char* pcName_) { m_pcPath = pcName_; }
-    /*!
-     *  \brief GetPath
+    /**
+     *  @brief GetPath
      *
      *  Returns a string containing the device path.
      *
-     *  \return pcName_ Return the string constant representing the device path
+     *  @return pcName_ Return the string constant representing the device path
      */
     const char* GetPath() { return m_pcPath; }
+
 private:
     //! string pointer that holds the driver path (name)
     const char* m_pcPath;
 };
 
 //---------------------------------------------------------------------------
-/*!
+/**
  *  List of Driver objects used to keep track of all device drivers in the
  *  system.  By default, the list contains a single entity, "/dev/null".
  */
 class DriverList
 {
 public:
-    /*!
-     *  \brief Init
+    /**
+     *  @brief Init
      *
      *  Initialize the list of drivers.  Must be called prior to using the
      *  device driver library.
      */
     static void Init();
 
-    /*!
-     *  \brief Add
+    /**
+     *  @brief Add
      *
      *  Add a Driver object to the managed global driver-list.
      *
-     *  \param pclDriver_ pointer to the driver object to add to the global
+     *  @param pclDriver_ pointer to the driver object to add to the global
      *         driver list.
      */
     static void Add(Driver* pclDriver_) { m_clDriverList.Add(pclDriver_); }
-    /*!
-     *  \brief Remove
+    /**
+     *  @brief Remove
      *
      *  Remove a driver from the global driver list.
      *
-     *  \param pclDriver_ Pointer to the driver object to remove from the
+     *  @param pclDriver_ Pointer to the driver object to remove from the
      *         global table
      */
     static void Remove(Driver* pclDriver_) { m_clDriverList.Remove(pclDriver_); }
-    /*!
-     *  \brief FindByPath
+    /**
+     *  @brief FindByPath
      *
      *  Look-up a driver in the global driver-list based on its path.  In the
      *  event that the driver is not found in the list, a pointer to the
@@ -270,4 +270,4 @@ private:
     //! LinkedList object used to implementing the driver object management
     static DoubleLinkList m_clDriverList;
 };
-} //namespace Mark3
+} // namespace Mark3

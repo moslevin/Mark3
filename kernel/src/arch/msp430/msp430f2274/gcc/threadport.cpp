@@ -11,11 +11,11 @@
 Copyright (c) 2012 - 2018 m0slevin, all rights reserved.
 See license.txt for more information
 ===========================================================================*/
-/*!
+/**
 
-    \file   threadport.cpp
+    @file   threadport.cpp
 
-    \brief  MSP430 Multithreading
+    @brief  MSP430 Multithreading
 
 */
 
@@ -33,8 +33,8 @@ See license.txt for more information
 #include <msp430.h>
 #include <in430.h>
 
-namespace Mark3 {
-
+namespace Mark3
+{
 //---------------------------------------------------------------------------
 volatile uint8_t  g_u8CSCount;
 volatile uint16_t g_u16SR;
@@ -54,9 +54,7 @@ void ThreadPort::InitStack(Thread* pclThread_)
 
     // clear the stack, and initialize it to a known-default value (easier
     // to debug when things go sour with stack corruption or overflow)
-    for (i = 0; i < pclThread_->m_u16StackSize / sizeof(uint16_t); i++) {
-        pclThread_->m_pwStack[i] = 0xFFFF;
-    }
+    for (i = 0; i < pclThread_->m_u16StackSize / sizeof(uint16_t); i++) { pclThread_->m_pwStack[i] = 0xFFFF; }
 
     // 1st - push start address... (R0/PC)
     PUSH_TO_STACK(pu16Stack, u16Addr);
@@ -69,17 +67,13 @@ void ThreadPort::InitStack(Thread* pclThread_)
     //!! Note - R3 is a zero register (not in context)
 
     // Push other registers  (R4-R11)
-    for (i = 4; i < 12; i++) {
-        PUSH_TO_STACK(pu16Stack, i);
-    }
+    for (i = 4; i < 12; i++) { PUSH_TO_STACK(pu16Stack, i); }
 
     // Function parameter (R12)
     PUSH_TO_STACK(pu16Stack, (uint16_t)pclThread_->m_pvArg);
 
     // Push other registers (R13-R15)
-    for (i = 13; i < 16; i++) {
-        PUSH_TO_STACK(pu16Stack, i);
-    }
+    for (i = 13; i < 16; i++) { PUSH_TO_STACK(pu16Stack, i); }
 
     // Set the top o' the stack.
     pclThread_->m_pwStackTop = (uint16_t*)(pu16Stack + 1);
@@ -149,7 +143,7 @@ void ThreadPort::StartThreads()
 } // namespace Mark3
 
 //---------------------------------------------------------------------------
-/*!
+/**
  * Kernel Context-switch SWI
  */
 //---------------------------------------------------------------------------

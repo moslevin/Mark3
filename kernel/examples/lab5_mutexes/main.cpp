@@ -24,12 +24,11 @@ Takeaway:
 
 ===========================================================================*/
 extern "C" {
-void __cxa_pure_virtual(void)
-{
-}
+void __cxa_pure_virtual(void) {}
 void DebugPrint(const char* szString_);
 }
-namespace {
+namespace
+{
 using namespace Mark3;
 
 //---------------------------------------------------------------------------
@@ -39,7 +38,7 @@ using namespace Mark3;
 #define APP1_STACK_SIZE (PORT_KERNEL_DEFAULT_STACK_SIZE)
 Thread clApp1Thread;
 K_WORD awApp1Stack[APP1_STACK_SIZE];
-void App1Main(void* unused_);
+void   App1Main(void* unused_);
 
 //---------------------------------------------------------------------------
 // This block declares the thread data for one main application thread.  It
@@ -48,13 +47,16 @@ void App1Main(void* unused_);
 #define APP2_STACK_SIZE (PORT_KERNEL_DEFAULT_STACK_SIZE)
 Thread clApp2Thread;
 K_WORD awApp2Stack[APP2_STACK_SIZE];
-void App2Main(void* unused_);
+void   App2Main(void* unused_);
 
 //---------------------------------------------------------------------------
 // idle thread -- do nothing
 Thread clIdleThread;
 K_WORD awIdleStack[PORT_KERNEL_DEFAULT_STACK_SIZE];
-void IdleMain(void* /*unused_*/) {while (1) {} }
+void   IdleMain(void* /*unused_*/)
+{
+    while (1) {}
+}
 
 //---------------------------------------------------------------------------
 // This is the mutex that we'll use to synchronize two threads in this
@@ -83,9 +85,7 @@ void App1Main(void* unused_)
 
         Kernel::DebugPrint("Thread1: Start\n");
         u32Counter++;
-        while (u32Counter <= 1000000) {
-            u32Counter++;
-        }
+        while (u32Counter <= 1000000) { u32Counter++; }
         u32Counter = 0;
         Kernel::DebugPrint("Thread1: Done\n");
 
@@ -111,9 +111,7 @@ void App2Main(void* unused_)
 
         Kernel::DebugPrint("Thread2: Start\n");
         u32Counter++;
-        while (u32Counter <= 1000000) {
-            u32Counter++;
-        }
+        while (u32Counter <= 1000000) { u32Counter++; }
         u32Counter = 0;
         Kernel::DebugPrint("Thread2: Done\n");
 

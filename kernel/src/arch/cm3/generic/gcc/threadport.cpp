@@ -11,11 +11,11 @@
 Copyright (c) 2012 - 2018 m0slevin, all rights reserved.
 See license.txt for more information
 ===========================================================================*/
-/*!
+/**
 
-    \file   threadport.cpp
+    @file   threadport.cpp
 
-    \brief  ARM Cortex-M3 Multithreading
+    @brief  ARM Cortex-M3 Multithreading
 
 */
 
@@ -29,7 +29,6 @@ See license.txt for more information
 #include "timerlist.h"
 #include "quantum.h"
 #include "m3_core_cm3.h"
-
 
 //---------------------------------------------------------------------------
 #if KERNEL_USE_IDLE_FUNC
@@ -230,7 +229,8 @@ void PendSV_Handler(void)
         " CURR_: .word g_pclCurrent \n");
 }
 
-namespace Mark3 {
+namespace Mark3
+{
 static void ThreadPort_StartFirstThread(void) __attribute__((naked));
 //---------------------------------------------------------------------------
 volatile uint32_t g_ulCriticalCount;
@@ -293,9 +293,7 @@ void ThreadPort::InitStack(Thread* pclThread_)
 
     // Initialize the stack to all FF's to aid in stack depth checking
     pu32Temp = (uint32_t*)pclThread_->m_pwStack;
-    for (i = 0; i < pclThread_->m_u16StackSize / sizeof(uint32_t); i++) {
-        pu32Temp[i] = 0xFFFFFFFF;
-    }
+    for (i = 0; i < pclThread_->m_u16StackSize / sizeof(uint32_t); i++) { pu32Temp[i] = 0xFFFFFFFF; }
 
     PUSH_TO_STACK(pu32Stack, 0); // We need one word of padding, apparently...
 
@@ -399,4 +397,3 @@ void ThreadPort_StartFirstThread(void)
 }
 
 } // namespace Mark3
-

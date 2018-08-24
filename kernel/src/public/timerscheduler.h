@@ -11,11 +11,11 @@
 Copyright (c) 2012 - 2018 m0slevin, all rights reserved.
 See license.txt for more information
 =========================================================================== */
-/*!
+/**
 
-    \file   timerscheduler.h
+    @file   timerscheduler.h
 
-    \brief  Timer scheduler declarations
+    @brief  Timer scheduler declarations
  */
 
 #pragma once
@@ -30,40 +30,40 @@ See license.txt for more information
 namespace Mark3
 {
 //---------------------------------------------------------------------------
-/*!
+/**
  *  "Static" Class used to interface a global TimerList with the rest of the
  *  kernel.
  */
 class TimerScheduler
 {
 public:
-    /*!
-     *  \brief Init
+    /**
+     *  @brief Init
      *
      *  Initialize the timer scheduler.  Must be called before any timer, or
      *  timer-derived functions are used.
      */
     static void Init() { m_clTimerList.Init(); }
-    /*!
-     *  \brief Add
+    /**
+     *  @brief Add
      *
      *  Add a timer to the timer scheduler.  Adding a timer implicitly starts
      *  the timer as well.
      *
-     *  \param pclListNode_ Pointer to the timer list node to add
+     *  @param pclListNode_ Pointer to the timer list node to add
      */
     static void Add(Timer* pclListNode_) { m_clTimerList.Add(pclListNode_); }
-    /*!
-     *  \brief Remove
+    /**
+     *  @brief Remove
      *
      *  Remove a timer from the timer scheduler.  May implicitly stop the
      *  timer if this is the only active timer scheduled.
      *
-     *  \param pclListNode_ Pointer to the timer list node to remove
+     *  @param pclListNode_ Pointer to the timer list node to remove
      */
     static void Remove(Timer* pclListNode_) { m_clTimerList.Remove(pclListNode_); }
-    /*!
-     *  \brief Process
+    /**
+     *  @brief Process
      *
      *  This function must be called on timer expiry (from the timer's ISR
      *  context).  This will result in all timers being updated based on
@@ -71,9 +71,9 @@ public:
      *  next Timer object to expire.
      */
     static void Process() { m_clTimerList.Process(); }
+
 private:
     //! TimerList object manipu32ated by the Timer Scheduler
     static TimerList m_clTimerList;
 };
-} //namespace Mark3
-
+} // namespace Mark3

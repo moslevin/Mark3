@@ -11,23 +11,24 @@
 Copyright (c) 2018 m0slevin, all rights reserved.
 See license.txt for more information
 ===========================================================================*/
-/*!
+/**
 
-    \file   lockguard.h
+    @file   lockguard.h
 
-    \brief  Mutex RAII helper class
+    @brief  Mutex RAII helper class
 */
 #pragma once
 
 #include "mark3.h"
 
-namespace Mark3 {
-
+namespace Mark3
+{
 /**
  * Implement RAII-style locks based on Mark3's kernel Mutex object.  Note that
  * Mark3 does not support exceptions, so
  */
-class LockGuard {
+class LockGuard
+{
 public:
     /**
      * @param pclMutex mutex to lock during construction
@@ -51,7 +52,7 @@ public:
     bool isAcquired() { return m_bIsAcquired; }
 
 private:
-    bool m_bIsAcquired;
+    bool   m_bIsAcquired;
     Mutex* m_pclMutex;
 };
 } // namespace Mark3

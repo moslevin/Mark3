@@ -11,10 +11,10 @@
 Copyright (c) 2012 - 2018 m0slevin, all rights reserved.
 See license.txt for more information
 ===========================================================================*/
-/*!
-    \file kernelprofile.cpp
+/**
+    @file kernelprofile.cpp
 
-    \brief Profiling timer implementation
+    @brief Profiling timer implementation
 */
 
 #include "kerneltypes.h"
@@ -26,15 +26,16 @@ See license.txt for more information
 
 #include "m3_core_cm3.h"
 
-namespace Mark3 {
+namespace Mark3
+{
 uint32_t Profiler::m_u32Epoch;
-bool Profiler::m_bActive;
+bool     Profiler::m_bActive;
 
 //---------------------------------------------------------------------------
 void Profiler::Init()
 {
     m_u32Epoch = 0;
-    m_bActive = false;
+    m_bActive  = false;
 }
 
 //---------------------------------------------------------------------------

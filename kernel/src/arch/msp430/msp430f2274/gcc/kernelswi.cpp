@@ -11,11 +11,11 @@
 Copyright (c) 2012 - 2018 m0slevin, all rights reserved.
 See license.txt for more information
 ===========================================================================*/
-/*!
+/**
 
-    \file   kernelswi.cpp
+    @file   kernelswi.cpp
 
-    \brief  Kernel Software interrupt implementation for ATMega328p
+    @brief  Kernel Software interrupt implementation for ATMega328p
 
 */
 
@@ -23,7 +23,8 @@ See license.txt for more information
 #include "kernelswi.h"
 #include <msp430.h>
 
-namespace Mark3 {
+namespace Mark3
+{
 //---------------------------------------------------------------------------
 void KernelSWI::Config(void)
 {

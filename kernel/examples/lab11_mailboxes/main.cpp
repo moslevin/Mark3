@@ -27,29 +27,31 @@ Takeaway:
 
 ===========================================================================*/
 extern "C" {
-void __cxa_pure_virtual(void)
-{
-}
+void __cxa_pure_virtual(void) {}
 void DebugPrint(const char* szString_);
 }
 
-namespace {
+namespace
+{
 using namespace Mark3;
 //---------------------------------------------------------------------------
 Thread clApp1Thread;
 K_WORD awApp1Stack[PORT_KERNEL_DEFAULT_STACK_SIZE];
-void App1Main(void* unused_);
+void   App1Main(void* unused_);
 
 //---------------------------------------------------------------------------
 Thread clApp2Thread;
 K_WORD awApp2Stack[PORT_KERNEL_DEFAULT_STACK_SIZE];
-void App2Main(void* unused_);
+void   App2Main(void* unused_);
 
 //---------------------------------------------------------------------------
 // idle thread -- do nothing
 Thread clIdleThread;
 K_WORD awIdleStack[PORT_KERNEL_DEFAULT_STACK_SIZE];
-void IdleMain(void* /*unused_*/) {while (1) {} }
+void   IdleMain(void* /*unused_*/)
+{
+    while (1) {}
+}
 
 //---------------------------------------------------------------------------
 Mailbox clMailbox;
@@ -87,9 +89,7 @@ void App2Main(void* unused_)
         Kernel::DebugPrint("Messages Begin\n");
 
         for (uint8_t i = 0; i < 10; i++) {
-            for (uint8_t j = 0; j < 10; j++) {
-                stMsg.au8Buffer[j] = (i * 10) + j;
-            }
+            for (uint8_t j = 0; j < 10; j++) { stMsg.au8Buffer[j] = (i * 10) + j; }
             clMailbox.Send(&stMsg);
         }
 

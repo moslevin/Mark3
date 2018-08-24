@@ -11,11 +11,11 @@
 Copyright (c) 2012 - 2018 m0slevin, all rights reserved.
 See license.txt for more information
 =========================================================================== */
-/*!
+/**
 
-    \file   quantum.h
+    @file   quantum.h
 
-    \brief  Thread Quantum declarations for Round-Robin Scheduling
+    @brief  Thread Quantum declarations for Round-Robin Scheduling
 
  */
 
@@ -33,7 +33,7 @@ namespace Mark3
 {
 class Timer;
 
-/*!
+/**
  *  Static-class used to implement Thread quantum functionality, which is
  *  a key part of round-robin scheduling.
  */
@@ -41,8 +41,8 @@ class Timer;
 class Quantum
 {
 public:
-    /*!
-     *  \brief UpdateTimer
+    /**
+     *  @brief UpdateTimer
      *
      *  This function is called to update the thread quantum timer whenever
      *  something in the scheduler has changed.  This can result in the timer
@@ -51,23 +51,23 @@ public:
      */
     static void UpdateTimer();
 
-    /*!
-     *  \brief AddThread
+    /**
+     *  @brief AddThread
      *
      *  Add the thread to the quantum timer.  Only one thread can own the quantum,
      *  since only one thread can be running on a core at a time.
      */
     static void AddThread(Thread* pclThread_);
 
-    /*!
-     *  \brief RemoveThread
+    /**
+     *  @brief RemoveThread
      *
      *  Remove the thread from the quantum timer.  This will cancel the timer.
      */
     static void RemoveThread();
 
-    /*!
-     *  \brief SetInTimer
+    /**
+     *  @brief SetInTimer
      *
      *  Set a flag to indicate that the CPU is currently running within the
      *  timer-callback routine.  This prevents the Quantum timer from being
@@ -75,8 +75,8 @@ public:
      *  the kernel timer becoming disabled.
      */
     static void SetInTimer(void) { m_bInTimer = true; }
-    /*!
-     * \brief ClearInTimer
+    /**
+     * @brief ClearInTimer
      *
      *  Clear the flag once the timer callback function has been completed.
      */
@@ -89,8 +89,8 @@ public:
     static Thread* GetActiveThread() { return m_pclActiveThread; }
 
 private:
-    /*!
-     *  \brief SetTimer
+    /**
+     *  @brief SetTimer
      *
      *  Set up the quantum timer in the timer scheduler.  This creates a
      *  one-shot timer, which calls a static callback in quantum.cpp that
@@ -98,14 +98,14 @@ private:
      *  priority.  This is the mechanism that provides round-robin
      *  scheduling in the system.
      *
-     *  \param pclThread_ Pointer to the thread to set the Quantum timer on
+     *  @param pclThread_ Pointer to the thread to set the Quantum timer on
      */
     static void SetTimer(Thread* pclThread_);
 
     static Thread* m_pclTimerThread;
     static Thread* m_pclActiveThread;
-    static Timer m_clQuantumTimer;
-    static bool  m_bActive;
-    static bool  m_bInTimer;
+    static Timer   m_clQuantumTimer;
+    static bool    m_bActive;
+    static bool    m_bInTimer;
 };
-} //namespace Mark3
+} // namespace Mark3

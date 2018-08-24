@@ -11,10 +11,10 @@
 Copyright (c) 2012 - 2018 m0slevin, all rights reserved.
 See license.txt for more information
 ===========================================================================*/
-/*!
-    \file   readerwriter.h
+/**
+    @file   readerwriter.h
 
-    \brief  Reader-Writer lock implementation
+    @brief  Reader-Writer lock implementation
 
 */
 
@@ -24,9 +24,9 @@ See license.txt for more information
 #include "blocking.h"
 #include "mutex.h"
 
-namespace Mark3 {
-
-/*!
+namespace Mark3
+{
+/**
  * @brief The ReaderWriterLock class
  * This class implements an object that marshalls access to a resource based on
  * the intended usage of the resource.  A reader-writer lock permits multiple
@@ -37,18 +37,19 @@ namespace Mark3 {
  * resource.  This is based upon lower-level synchronization primatives, and is
  * somewhat more heavyweight than primative synchronization types.
  */
-class ReaderWriterLock {
+class ReaderWriterLock
+{
 public:
     void* operator new(size_t sz, void* pv) { return (ReaderWriterLock*)pv; }
 
-    /*!
+    /**
      * @brief Init
      * Initialize the reader-writer lock before use.  Must be called before attempting
      * any other operations on the object.
      */
     void Init();
 
-    /*!
+    /**
      * @brief AcquireReader
      * Acquire the object's reader lock.  Multiple concurrent readers are allowed.
      * If the writer lock is currently held, the calling thread will wait until the
@@ -56,7 +57,7 @@ public:
      */
     void AcquireReader();
 
-    /*!
+    /**
      * @brief AcquireReader
      * Acquire the object's reader lock.  Multiple concurrent readers are allowed.
      * If the writer lock is currently held, the calling thread will wait until the
@@ -65,14 +66,14 @@ public:
      * @return true on success, false on timeout
      */
     bool AcquireReader(uint32_t u32TimeoutMs_);
-    
-    /*!
+
+    /**
      * @brief ReleaseReader
      * Release a previously-held reader lock.
      */
     void ReleaseReader();
 
-    /*!
+    /**
      * @brief AcquireWriter
      * Acquire the writer lock.  Only a single writer is allowed to access the object
      * at a time.  This will block the currently-runnign thread until all other readers/writers
@@ -80,7 +81,7 @@ public:
      */
     void AcquireWriter();
 
-    /*!
+    /**
      * @brief AcquireWriter
      * Acquire the writer lock.  Only a single writer is allowed to access the object
      * at a time.  This will block the currently-runnign thread until all other readers/writers
@@ -90,21 +91,21 @@ public:
      */
     bool AcquireWriter(uint32_t u32TimeoutMs_);
 
-    /*!
+    /**
      * @brief ReleaseWriter
      * Release the currently held writer, allowing other readers/writers to access the object
      */
     void ReleaseWriter();
 
 private:
-    /*!
+    /**
      * @brief AcquireReader_i
      * Internal helper function for AcquireReaer
      * @param u32TimeoutMs_ Maximum time to wait (in ms) before the operation is aborted
      * @return true on success, false on timeout
      */
     bool AcquireReader_i(uint32_t u32TimeoutMs_);
-    /*!
+    /**
      * @brief AcquireWriter_i
      * Internal helper function for AcquireWriter
      * @param u32TimeoutMs_ Maximum time to wait (in ms) before the operation is aborted
@@ -112,9 +113,9 @@ private:
      */
     bool AcquireWriter_i(uint32_t u32TimeoutMs_);
 
-    Mutex m_clGlobalMutex;  //!< Mutex used to lock the object against concurrent read + write
-    Mutex m_clReaderMutex;  //!< Mutex used to lock object for readers
-    uint8_t m_u8ReadCount;  //!< Number of concurrent readers
+    Mutex   m_clGlobalMutex; //!< Mutex used to lock the object against concurrent read + write
+    Mutex   m_clReaderMutex; //!< Mutex used to lock object for readers
+    uint8_t m_u8ReadCount;   //!< Number of concurrent readers
 };
 
 } // namespace Mark3

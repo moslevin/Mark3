@@ -11,42 +11,44 @@
 Copyright (c) 2012 - 2018 m0slevin, all rights reserved.
 See license.txt for more information
 ===========================================================================*/
-/*!
-    \file eventflag.cpp
-    \brief Event Flag Blocking Object/IPC-Object implementation.
+/**
+    @file eventflag.cpp
+    @brief Event Flag Blocking Object/IPC-Object implementation.
 */
 
 #include "mark3.h"
 
-namespace Mark3 {
-namespace {
-//---------------------------------------------------------------------------
-/*!
- * \brief TimedEventFlag_Callback
- *
- * This funciton is called whenever a timed event flag wait operation fails
- * in the time provided.  This function wakes the thread for which the timeout
- * was requested on the blocking call, sets the thread's expiry flags, and
- * reschedules if necessary.
- *
- * \param pclOwner_ Thread to wake
- * \param pvData_ Pointer to the event-flag object
- */
-void TimedEventFlag_Callback(Thread* pclOwner_, void* pvData_)
+namespace Mark3
 {
-    KERNEL_ASSERT(pclOwner_ != nullptr);
-    KERNEL_ASSERT(pvData_ != nullptr);
+namespace
+{
+    //---------------------------------------------------------------------------
+    /**
+     * @brief TimedEventFlag_Callback
+     *
+     * This funciton is called whenever a timed event flag wait operation fails
+     * in the time provided.  This function wakes the thread for which the timeout
+     * was requested on the blocking call, sets the thread's expiry flags, and
+     * reschedules if necessary.
+     *
+     * @param pclOwner_ Thread to wake
+     * @param pvData_ Pointer to the event-flag object
+     */
+    void TimedEventFlag_Callback(Thread* pclOwner_, void* pvData_)
+    {
+        KERNEL_ASSERT(pclOwner_ != nullptr);
+        KERNEL_ASSERT(pvData_ != nullptr);
 
-    auto* pclEventFlag = static_cast<EventFlag*>(pvData_);
+        auto* pclEventFlag = static_cast<EventFlag*>(pvData_);
 
-    pclEventFlag->WakeMe(pclOwner_);
-    pclOwner_->SetExpired(true);
-    pclOwner_->SetEventFlagMask(0);
+        pclEventFlag->WakeMe(pclOwner_);
+        pclOwner_->SetExpired(true);
+        pclOwner_->SetEventFlagMask(0);
 
-    if (pclOwner_->GetCurPriority() >= Scheduler::GetCurrentThread()->GetCurPriority()) {
-        Thread::Yield();
+        if (pclOwner_->GetCurPriority() >= Scheduler::GetCurrentThread()->GetCurPriority()) {
+            Thread::Yield();
+        }
     }
-}
 } // anonymous namespace
 //---------------------------------------------------------------------------
 EventFlag::~EventFlag()
@@ -142,10 +144,10 @@ uint16_t EventFlag::Wait_i(uint16_t u16Mask_, EventFlagOperation eMode_, uint32_
     // Exit the critical section and return back to normal execution
     CS_EXIT();
 
-//!! If the Yield operation causes a new thread to be chosen, there will
-//!! Be a context switch at the above CS_EXIT().  The original calling
-//!! thread will not return back until a matching SetFlags call is made
-//!! or a timeout occurs.
+    //!! If the Yield operation causes a new thread to be chosen, there will
+    //!! Be a context switch at the above CS_EXIT().  The original calling
+    //!! thread will not return back until a matching SetFlags call is made
+    //!! or a timeout occurs.
     if (bUseTimer && bThreadYield) {
         clEventTimer.Stop();
     }
@@ -202,8 +204,8 @@ void EventFlag::Set(uint16_t u16Mask_)
             pclCurrent = static_cast<Thread*>(pclCurrent->GetNext());
 
             // Read the thread's event mask/mode
-            uint16_t             u16ThreadMask = pclPrev->GetEventFlagMask();
-            auto eThreadMode   = pclPrev->GetEventFlagMode();
+            uint16_t u16ThreadMask = pclPrev->GetEventFlagMask();
+            auto     eThreadMode   = pclPrev->GetEventFlagMode();
 
             // For the "any" mode - unblock the blocked threads if one or more bits
             // in the thread's bitmask match the object's bitmask

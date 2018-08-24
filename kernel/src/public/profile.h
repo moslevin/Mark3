@@ -11,11 +11,11 @@
 Copyright (c) 2012 - 2018 m0slevin, all rights reserved.
 See license.txt for more information
 =========================================================================== */
-/*!
+/**
 
-    \file   profile.h
+    @file   profile.h
 
-    \brief  High-precision profiling timers
+    @brief  High-precision profiling timers
 
     Enables the profiling and instrumentation of performance-critical code.
     Multiple timers can be used simultaneously to enable system-wide
@@ -23,7 +23,7 @@ See license.txt for more information
 
     Usage:
 
-    \code
+    @code
 
     ProfileTimer clMyTimer;
     int i;
@@ -46,7 +46,7 @@ See license.txt for more information
     // Get the execution time from the last iteration
     u32LastTimer = clMyTimer.GetCurrent();
 
-    \endcode
+    @endcode
  */
 
 #pragma once
@@ -57,8 +57,8 @@ See license.txt for more information
 
 namespace Mark3
 {
-/*!
- *  \brief
+/**
+ *  @brief
  *  Profiling timer.
  *  This class is used to perform high-performance profiling of
  *  code to see how int32_t certain operations take.  useful in instrumenting
@@ -68,59 +68,59 @@ namespace Mark3
 class ProfileTimer
 {
 public:
-    /*!
-     *  \brief Init
+    /**
+     *  @brief Init
      *
      *  Initialize the profiling timer prior to use.  Can also
      *  be used to reset a timer that's been used previously.
      */
     void Init();
 
-    /*!
-     *  \brief Start
+    /**
+     *  @brief Start
      *
      *  Start a profiling session, if the timer is not already active.
      *  Has no effect if the timer is already active.
      */
     void Start();
 
-    /*!
-     *  \brief Stop
+    /**
+     *  @brief Stop
      *
      *  Stop the current profiling session, adding to the
      *  cumulative time for this timer, and the total iteration count.
      */
     void Stop();
 
-    /*!
-     *  \brief GetAverage
+    /**
+     *  @brief GetAverage
      *
      *  Get the average time associated with this operation.
      *
-     *  \return Average tick count normalized over all iterations
+     *  @return Average tick count normalized over all iterations
      */
     uint32_t GetAverage();
 
-    /*!
-     *  \brief GetCurrent
+    /**
+     *  @brief GetCurrent
      *
      *  Return the current tick count held by the profiler.  Valid
      *  for both active and stopped timers.
      *
-     *  \return The currently held tick count.
+     *  @return The currently held tick count.
      */
     uint32_t GetCurrent();
 
 private:
-    /*!
-     *  \brief ComputeCurrentTicks
+    /**
+     *  @brief ComputeCurrentTicks
      *
      *  Figure out how many ticks have elapsed in this iteration
      *
-     *  \param u16Count_ Current timer count
-     *  \param u32Epoch_ Current timer epoch
+     *  @param u16Count_ Current timer count
+     *  @param u32Epoch_ Current timer epoch
      *
-     *  \return Current tick count
+     *  @return Current tick count
      */
     uint32_t ComputeCurrentTicks(uint16_t u16Current_, uint32_t u32Epoch_);
 
@@ -131,4 +131,4 @@ private:
     uint16_t m_u16Iterations;       //!< Number of iterations executed for this profiling timer
     bool     m_bActive;             //!< Wheter or not the timer is active or stopped
 };
-} //namespace Mark3
+} // namespace Mark3

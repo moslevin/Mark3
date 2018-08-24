@@ -11,11 +11,11 @@
 Copyright (c) 2012 - 2018 m0slevin, all rights reserved.
 See license.txt for more information
 =========================================================================== */
-/*!
+/**
 
-    \file   timerlist.h
+    @file   timerlist.h
 
-    \brief  Timer list declarations
+    @brief  Timer list declarations
 
     These classes implements a linked list of timer objects attached to the
     global kernel timer scheduler.
@@ -33,40 +33,40 @@ namespace Mark3
 class Timer;
 
 //---------------------------------------------------------------------------
-/*!
+/**
  *   TimerList class - a doubly-linked-list of timer objects.
  */
 class TimerList : public DoubleLinkList
 {
 public:
-    /*!
-     *  \brief Init
+    /**
+     *  @brief Init
      *
      *  Initialize the TimerList object.  Must be called before
      *  using the object.
      */
     void Init();
 
-    /*!
-     *  \brief Add
+    /**
+     *  @brief Add
      *
      *  Add a timer to the TimerList.
      *
-     *  \param pclListNode_ Pointer to the Timer to Add
+     *  @param pclListNode_ Pointer to the Timer to Add
      */
     void Add(Timer* pclListNode_);
 
-    /*!
-     *  \brief Remove
+    /**
+     *  @brief Remove
      *
      *  Remove a timer from the TimerList, cancelling its expiry.
      *
-     *  \param pclListNode_ Pointer to the Timer to remove
+     *  @param pclListNode_ Pointer to the Timer to remove
      */
     void Remove(Timer* pclLinkListNode_);
 
-    /*!
-     *  \brief Process
+    /**
+     *  @brief Process
      *
      *  Process all timers in the timerlist as a result of the timer expiring.
      *  This will select a new timer epoch based on the next timer to expire.
@@ -83,4 +83,4 @@ private:
     //! Guards against concurrent access to the timer list - Only needed when running threaded.
     Mutex m_clMutex;
 };
-} //namespace Mark3
+} // namespace Mark3

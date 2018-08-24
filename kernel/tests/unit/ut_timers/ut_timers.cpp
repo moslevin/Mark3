@@ -30,7 +30,8 @@ See license.txt for more information
 #include <string.h>
 #include <stdlib.h>
 
-namespace {
+namespace
+{
 using namespace Mark3;
 //===========================================================================
 // Local Defines
@@ -53,7 +54,8 @@ void TimerExpired(Thread* pclOwner_, void* pvVal_)
 }
 } // anonymous namespace
 
-namespace Mark3 {
+namespace Mark3
+{
 //===========================================================================
 // Define Test Cases Here
 //===========================================================================
@@ -188,9 +190,7 @@ TEST(ut_timer_repeat)
 
     clTimer1.Start(true, 10, TimerExpired, 0);
 
-    while (u32CallbackCount < 100) {
-        clTimerSem.Pend();
-    }
+    while (u32CallbackCount < 100) { clTimerSem.Pend(); }
 
     clProfileTimer.Stop();
     clTimer1.Stop();
@@ -282,4 +282,4 @@ TEST_END
 TEST_CASE_START
 TEST_CASE(ut_timer_tolerance)
 , TEST_CASE(ut_timer_longrun), TEST_CASE(ut_timer_repeat), TEST_CASE(ut_timer_multi), TEST_CASE_END
-} //namespace Mark3
+} // namespace Mark3

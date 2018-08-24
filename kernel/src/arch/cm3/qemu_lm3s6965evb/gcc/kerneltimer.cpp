@@ -11,11 +11,11 @@
 Copyright (c) 2012 - 2018 m0slevin, all rights reserved.
 See license.txt for more information
 ===========================================================================*/
-/*!
+/**
 
-    \file   kerneltimer.cpp
+    @file   kerneltimer.cpp
 
-    \brief  Kernel Timer Implementation for ARM Cortex-M3
+    @brief  Kernel Timer Implementation for ARM Cortex-M3
 */
 
 #include "kerneltypes.h"
@@ -29,15 +29,15 @@ See license.txt for more information
 #include "quantum.h"
 
 using namespace Mark3;
-namespace {
+namespace
+{
 //---------------------------------------------------------------------------
 // Static objects implementing the timer thread and its synchronization objects
-Thread s_clTimerThread;
-K_WORD s_clTimerThreadStack[PORT_KERNEL_TIMERS_THREAD_STACK];
+Thread    s_clTimerThread;
+K_WORD    s_clTimerThreadStack[PORT_KERNEL_TIMERS_THREAD_STACK];
 Semaphore s_clTimerSemaphore;
 
 } // anonymous namespace
-
 
 //---------------------------------------------------------------------------
 extern "C" {
@@ -56,14 +56,14 @@ void SysTick_Handler(void)
 }
 }
 
-namespace Mark3 {
-
+namespace Mark3
+{
 //---------------------------------------------------------------------------
 static void KernelTimer_Task(void* unused)
 {
     (void)unused;
     Scheduler::GetCurrentThread()->SetName("Timer");
-    while(1) {
+    while (1) {
         s_clTimerSemaphore.Pend();
         TimerScheduler::Process();
         Quantum::UpdateTimer();
@@ -75,10 +75,10 @@ void KernelTimer::Config(void)
 {
     s_clTimerSemaphore.Init(0, 1);
     s_clTimerThread.Init(s_clTimerThreadStack,
-                        sizeof(s_clTimerThreadStack) / sizeof(K_WORD),
-                        KERNEL_TIMERS_THREAD_PRIORITY,
-                        KernelTimer_Task,
-                        0);
+                         sizeof(s_clTimerThreadStack) / sizeof(K_WORD),
+                         KERNEL_TIMERS_THREAD_PRIORITY,
+                         KernelTimer_Task,
+                         0);
     Quantum::SetTimerThread(&s_clTimerThread);
     s_clTimerThread.Start();
 }
@@ -132,9 +132,7 @@ PORT_TIMER_COUNT_TYPE KernelTimer::SetExpiry(uint32_t u32Interval_)
 }
 
 //---------------------------------------------------------------------------
-void KernelTimer::ClearExpiry(void)
-{
-}
+void KernelTimer::ClearExpiry(void) {}
 
 //-------------------------------------------------------------------------
 uint8_t KernelTimer::DI(void)
@@ -149,9 +147,7 @@ void KernelTimer::EI(void)
 }
 
 //---------------------------------------------------------------------------
-void KernelTimer::RI(bool bEnable_)
-{
-}
+void KernelTimer::RI(bool bEnable_) {}
 
 //---------------------------------------------------------------------------
 } // namespace Mark3

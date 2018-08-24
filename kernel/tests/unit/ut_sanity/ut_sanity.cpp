@@ -12,7 +12,8 @@
 #include "../unit_test.h"
 #include "../ut_platform.h"
 
-namespace {
+namespace
+{
 using namespace Mark3;
 //---------------------------------------------------------------------------
 volatile uint8_t u8TestVal;
@@ -38,13 +39,12 @@ K_WORD aucTestStack3[TEST_STACK3_SIZE];
 
 #define MESSAGE_POOL_SIZE (3)
 MessagePool s_clMessagePool;
-Message s_clMessages[MESSAGE_POOL_SIZE];
-
+Message     s_clMessages[MESSAGE_POOL_SIZE];
 
 //---------------------------------------------------------------------------
 void TestMessageTest(void* pvArg)
 {
-    auto bPass = true;
+    auto  bPass   = true;
     auto* pclMesg = clMsgQ2.Receive();
 
     if (pclMesg->GetCode() != 0x11) {
@@ -111,8 +111,8 @@ void TestMessageTest(void* pvArg)
 }
 } // anonymous namespace
 
-namespace Mark3 {
-
+namespace Mark3
+{
 //---------------------------------------------------------------------------
 // Binary semaphore test:
 //  Create a worker thread at a higher priority, which pends on a semaphore
@@ -122,8 +122,7 @@ namespace Mark3 {
 // void UT_SemaphoreTest(void)
 TEST(ut_sanity_sem)
 {
-    auto lBinaryTest = [](void* param_)
-    {
+    auto lBinaryTest = [](void* param_) {
         auto* pstSem = static_cast<Semaphore*>(param_);
         pstSem->Pend();
         if (u8TestVal != 0x12) {
@@ -195,7 +194,7 @@ TEST(ut_sanity_timed_sem)
         Scheduler::GetCurrentThread()->Exit();
     };
 
-    auto lLongTime  = [](void* param_) {
+    auto lLongTime = [](void* param_) {
         auto pstSem = static_cast<Semaphore*>(param_);
         Scheduler::GetCurrentThread()->Sleep(20);
         pstSem->Post();
@@ -238,9 +237,7 @@ TEST_END
 TEST(ut_sanity_sleep)
 {
     auto lSleepFunc = [](void* /*unused_*/) {
-        while (1) {
-            u8TestVal = 0xAA;
-        }
+        while (1) { u8TestVal = 0xAA; }
     };
 
     Scheduler::GetCurrentThread()->SetPriority(3);
@@ -355,7 +352,6 @@ TEST(ut_sanity_mutex)
     EXPECT_FALSE(clMutex.Claim(15));
 
     clTestThread1.Exit();
-
 }
 TEST_END
 
@@ -365,7 +361,7 @@ TEST(ut_sanity_timed_msg)
 {
     auto lTimedMessage = [](void* param_) {
         auto* pclMsgQ = static_cast<MessageQueue*>(param_);
-        auto* pclMsg = s_clMessagePool.Pop();
+        auto* pclMsg  = s_clMessagePool.Pop();
 
         pclMsg->SetData(0);
         pclMsg->SetCode(0);
@@ -399,7 +395,6 @@ TEST(ut_sanity_timed_msg)
     }
 
     clTestThread1.Exit();
-
 }
 TEST_END
 
@@ -475,9 +470,7 @@ TEST(ut_sanity_rr)
 {
     auto lRRFunc = [](void* param_) {
         auto* pu32Counter = static_cast<uint32_t*>(param_);
-        while (1) {
-            (*pu32Counter)++;
-        }
+        while (1) { (*pu32Counter)++; }
     };
 
     volatile uint32_t u32Counter1 = 0;
@@ -530,9 +523,7 @@ TEST(ut_sanity_quantum)
 {
     auto lRRFunc = [](void* param_) {
         auto* pu32Counter = static_cast<uint32_t*>(param_);
-        while (1) {
-            (*pu32Counter)++;
-        }
+        while (1) { (*pu32Counter)++; }
     };
 
     volatile uint32_t u32Counter1 = 0;
@@ -587,7 +578,6 @@ TEST(ut_sanity_quantum)
 }
 TEST_END
 
-
 // void UT_TimerTest(void)
 TEST(ut_sanity_timer)
 {
@@ -595,9 +585,7 @@ TEST(ut_sanity_timer)
 
     u8TestVal = 0;
 
-    auto lTimerCallback = [](Thread* /*pclOwner_*/, void* /*pvData_*/) {
-        u8TestVal++;
-    };
+    auto lTimerCallback = [](Thread* /*pclOwner_*/, void* /*pvData_*/) { u8TestVal++; };
 
     clTimer.Init();
     //! Callback should fire just once in 3ms.
@@ -627,6 +615,6 @@ TEST_END
 TEST_CASE_START
 TEST_CASE(ut_sanity_sem)
 , TEST_CASE(ut_sanity_timed_sem), TEST_CASE(ut_sanity_sleep), TEST_CASE(ut_sanity_mutex), TEST_CASE(ut_sanity_msg),
-    TEST_CASE(ut_sanity_timed_msg), TEST_CASE(ut_sanity_rr), TEST_CASE(ut_sanity_quantum), TEST_CASE(ut_sanity_timer),
-    TEST_CASE_END
-} //namespace Mark3
+    TEST_CASE(ut_sanity_timed_msg), TEST_CASE(ut_sanity_rr), TEST_CASE(ut_sanity_quantum),
+    TEST_CASE(ut_sanity_timer), TEST_CASE_END
+} // namespace Mark3

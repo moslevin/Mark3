@@ -11,11 +11,11 @@
 Copyright (c) 2012 - 2018 m0slevin, all rights reserved.
 See license.txt for more information
 ===========================================================================*/
-/*!
+/**
 
-    \file   mailbox.h
+    @file   mailbox.h
 
-    \brief  Mailbox + Envelope IPC Mechanism
+    @brief  Mailbox + Envelope IPC Mechanism
 */
 #pragma once
 
@@ -26,8 +26,8 @@ See license.txt for more information
 
 namespace Mark3
 {
-/*!
- * \brief The Mailbox class implements an IPC mechnism based on envelopes
+/**
+ * @brief The Mailbox class implements an IPC mechnism based on envelopes
  * containing data of a fixed size (configured at initialization) that reside
  * within a buffer of memory provided by the user.
  */
@@ -37,20 +37,20 @@ public:
     void* operator new(size_t sz, void* pv) { return (Mailbox*)pv; }
     ~Mailbox();
 
-    /*!
-     * \brief Init
+    /**
+     * @brief Init
      *
      * Initialize the mailbox object prior to its use.  This must be called before
      * any calls can be made to the object.
      *
-     * \param pvBuffer_         Pointer to the static buffer to use for the mailbox
-     * \param u16BufferSize_    Size of the mailbox buffer, in bytes
-     * \param u16ElementSize_   Size of each envelope, in bytes
+     * @param pvBuffer_         Pointer to the static buffer to use for the mailbox
+     * @param u16BufferSize_    Size of the mailbox buffer, in bytes
+     * @param u16ElementSize_   Size of each envelope, in bytes
      */
     void Init(void* pvBuffer_, uint16_t u16BufferSize_, uint16_t u16ElementSize_);
 
-    /*!
-     * \brief Init
+    /**
+     * @brief Init
      *
      * Create and initialize the mailbox object prior to its use.  This must be
      * called before any calls can be made to the object.  This version of the API
@@ -59,13 +59,13 @@ public:
      * mailbox will be created once on startup, and persist for the duration of the
      * system.
      *
-     * \param u16BufferSize_    Size of the mailbox buffer, in bytes
-     * \param u16ElementSize_   Size of each envelope, in bytes
+     * @param u16BufferSize_    Size of the mailbox buffer, in bytes
+     * @param u16ElementSize_   Size of each envelope, in bytes
      */
     static Mailbox* Init(uint16_t u16BufferSize_, uint16_t u16ElementSize_);
 
-    /*!
-     * \brief Send
+    /**
+     * @brief Send
      *
      * Send an envelope to the mailbox.  This safely copies the data contents of the
      * datastructure to the previously-initialized mailbox buffer.  If there is a
@@ -74,13 +74,13 @@ public:
      *
      * This method delivers the envelope at the head of the mailbox.
      *
-     * \param pvData_           Pointer to the data object to send to the mailbox.
-     * \return                  true - envelope was delivered, false - mailbox is full.
+     * @param pvData_           Pointer to the data object to send to the mailbox.
+     * @return                  true - envelope was delivered, false - mailbox is full.
      */
     bool Send(void* pvData_);
 
-    /*!
-     * \brief SendTail
+    /**
+     * @brief SendTail
      *
      * Send an envelope to the mailbox.  This safely copies the data contents of the
      * datastructure to the previously-initialized mailbox buffer.  If there is a
@@ -89,13 +89,13 @@ public:
      *
      * This method delivers the envelope at the tail of the mailbox.
      *
-     * \param pvData_           Pointer to the data object to send to the mailbox.
-     * \return                  true - envelope was delivered, false - mailbox is full.
+     * @param pvData_           Pointer to the data object to send to the mailbox.
+     * @return                  true - envelope was delivered, false - mailbox is full.
      */
     bool SendTail(void* pvData_);
 
-    /*!
-     * \brief Send
+    /**
+     * @brief Send
      *
      * Send an envelope to the mailbox.  This safely copies the data contents of the
      * datastructure to the previously-initialized mailbox buffer.  If there is a
@@ -104,14 +104,14 @@ public:
      *
      * This method delivers the envelope at the head of the mailbox.
      *
-     * \param pvData_           Pointer to the data object to send to the mailbox.
-     * \param u32TimeoutMS_      Maximum time to wait for a free transmit slot
-     * \return                  true - envelope was delivered, false - mailbox is full.
+     * @param pvData_           Pointer to the data object to send to the mailbox.
+     * @param u32TimeoutMS_      Maximum time to wait for a free transmit slot
+     * @return                  true - envelope was delivered, false - mailbox is full.
      */
     bool Send(void* pvData_, uint32_t u32TimeoutMS_);
 
-    /*!
-     * \brief SendTail
+    /**
+     * @brief SendTail
      *
      * Send an envelope to the mailbox.  This safely copies the data contents of the
      * datastructure to the previously-initialized mailbox buffer.  If there is a
@@ -120,59 +120,59 @@ public:
      *
      * This method delivers the envelope at the tail of the mailbox.
      *
-     * \param pvData_           Pointer to the data object to send to the mailbox.
-     * \param u32TimeoutMS_      Maximum time to wait for a free transmit slot
-     * \return                  true - envelope was delivered, false - mailbox is full.
+     * @param pvData_           Pointer to the data object to send to the mailbox.
+     * @param u32TimeoutMS_      Maximum time to wait for a free transmit slot
+     * @return                  true - envelope was delivered, false - mailbox is full.
      */
     bool SendTail(void* pvData_, uint32_t u32TimeoutMS_);
 
-    /*!
-     * \brief Receive
+    /**
+     * @brief Receive
      *
      * Read one envelope from the head of the mailbox.  If the mailbox is currently
      * empty, the calling thread will block until an envelope is delivered.
      *
-     * \param pvData_ Pointer to a buffer that will have the envelope's contents
+     * @param pvData_ Pointer to a buffer that will have the envelope's contents
      *                copied into upon delivery.
      */
     void Receive(void* pvData_);
 
-    /*!
-     * \brief ReceiveTail
+    /**
+     * @brief ReceiveTail
      *
      * Read one envelope from the tail of the mailbox.  If the mailbox is currently
      * empty, the calling thread will block until an envelope is delivered.
      *
-     * \param pvData_ Pointer to a buffer that will have the envelope's contents
+     * @param pvData_ Pointer to a buffer that will have the envelope's contents
      *                copied into upon delivery.
      */
     void ReceiveTail(void* pvData_);
 
-    /*!
-     * \brief Receive
+    /**
+     * @brief Receive
      *
      * Read one envelope from the head of the mailbox.  If the mailbox is currently
      * empty, the calling thread will block until an envelope is delivered, or the
      * specified time has elapsed without delivery.
      *
-     * \param pvData_ Pointer to a buffer that will have the envelope's contents
+     * @param pvData_ Pointer to a buffer that will have the envelope's contents
      *                copied into upon delivery.
-     * \param u32TimeoutMS_ Maximum time to wait for delivery.
-     * \return true - envelope was delivered, false - delivery timed out.
+     * @param u32TimeoutMS_ Maximum time to wait for delivery.
+     * @return true - envelope was delivered, false - delivery timed out.
      */
     bool Receive(void* pvData_, uint32_t u32TimeoutMS_);
 
-    /*!
-     * \brief ReceiveTail
+    /**
+     * @brief ReceiveTail
      *
      * Read one envelope from the tail of the mailbox.  If the mailbox is currently
      * empty, the calling thread will block until an envelope is delivered, or the
      * specified time has elapsed without delivery.
      *
-     * \param pvData_ Pointer to a buffer that will have the envelope's contents
+     * @param pvData_ Pointer to a buffer that will have the envelope's contents
      *                copied into upon delivery.
-     * \param u32TimeoutMS_ Maximum time to wait for delivery.
-     * \return true - envelope was delivered, false - delivery timed out.
+     * @param u32TimeoutMS_ Maximum time to wait for delivery.
+     * @return true - envelope was delivered, false - delivery timed out.
      */
     bool ReceiveTail(void* pvData_, uint32_t u32TimeoutMS_);
 
@@ -187,14 +187,15 @@ public:
 
     bool IsFull(void) { return (GetFreeSlots() == 0); }
     bool IsEmpty(void) { return (GetFreeSlots() == m_u16Count); }
+
 private:
-    /*!
-     * \brief GetHeadPointer
+    /**
+     * @brief GetHeadPointer
      *
      * Return a pointer to the current head of the mailbox's internal
      * circular buffer.
      *
-     * \return pointer to the head element in the mailbox
+     * @return pointer to the head element in the mailbox
      */
     void* GetHeadPointer(void)
     {
@@ -203,13 +204,13 @@ private:
         return (void*)uAddr;
     }
 
-    /*!
-     * \brief GetTailPointer
+    /**
+     * @brief GetTailPointer
      *
      * Return a pointer to the current tail of the mailbox's internal
      * circular buffer.
      *
-     * \return pointer to the tail element in the mailbox
+     * @return pointer to the tail element in the mailbox
      */
     void* GetTailPointer(void)
     {
@@ -218,26 +219,24 @@ private:
         return (void*)uAddr;
     }
 
-    /*!
-     * \brief CopyData
+    /**
+     * @brief CopyData
      *
      * Perform a direct byte-copy from a source to a destination object.
      *
-     * \param src_  Pointer to an object to read from
-     * \param dst_  Pointer to an object to write to
-     * \param len_  Length to copy (in bytes)
+     * @param src_  Pointer to an object to read from
+     * @param dst_  Pointer to an object to write to
+     * @param len_  Length to copy (in bytes)
      */
     void CopyData(const void* src_, const void* dst_, uint16_t len_)
     {
         uint8_t* u8Src = (uint8_t*)src_;
         uint8_t* u8Dst = (uint8_t*)dst_;
-        while (len_--) {
-            *u8Dst++ = *u8Src++;
-        }
+        while (len_--) { *u8Dst++ = *u8Src++; }
     }
 
-    /*!
-     * \brief MoveTailForward
+    /**
+     * @brief MoveTailForward
      *
      * Move the tail index forward one element
      */
@@ -249,8 +248,8 @@ private:
         }
     }
 
-    /*!
-     * \brief MoveHeadForward
+    /**
+     * @brief MoveHeadForward
      *
      * Move the head index forward one element
      */
@@ -262,8 +261,8 @@ private:
         }
     }
 
-    /*!
-     * \brief MoveTailBackward
+    /**
+     * @brief MoveTailBackward
      *
      * Move the tail index backward one element
      */
@@ -275,8 +274,8 @@ private:
         m_u16Tail--;
     }
 
-    /*!
-     * \brief MoveHeadBackward
+    /**
+     * @brief MoveHeadBackward
      *
      * Move the head index backward one element
      */
@@ -288,27 +287,27 @@ private:
         m_u16Head--;
     }
 
-    /*!
-     * \brief Send_i
+    /**
+     * @brief Send_i
      *
      * Internal method which implements all Send() methods in the class.
      *
-     * \param pvData_   Pointer to the envelope data
-     * \param bTail_    true - write to tail, false - write to head
-     * \param u32WaitTimeMS_ Time to wait before timeout (in ms).
-     * \return          true - data successfully written, false - buffer full
+     * @param pvData_   Pointer to the envelope data
+     * @param bTail_    true - write to tail, false - write to head
+     * @param u32WaitTimeMS_ Time to wait before timeout (in ms).
+     * @return          true - data successfully written, false - buffer full
      */
     bool Send_i(const void* pvData_, bool bTail_, uint32_t u32TimeoutMS_);
 
-    /*!
-     * \brief Receive_i
+    /**
+     * @brief Receive_i
      *
      * Internal method which implements all Read() methods in the class.
      *
-     * \param pvData_       Pointer to the envelope data
-     * \param bTail_        true - read from tail, false - read from head
-     * \param u32WaitTimeMS_ Time to wait before timeout (in ms).
-     * \return              true - read successfully, false - timeout.
+     * @param pvData_       Pointer to the envelope data
+     * @param bTail_        true - read from tail, false - read from head
+     * @param u32WaitTimeMS_ Time to wait before timeout (in ms).
+     * @return              true - read successfully, false - timeout.
      */
     bool Receive_i(const void* pvData_, bool bTail_, uint32_t u32WaitTimeMS_);
 
@@ -324,4 +323,4 @@ private:
     Semaphore m_clRecvSem; //!< Counting semaphore used to synchronize threads on the object
     Semaphore m_clSendSem; //!< Binary semaphore for send-blocked threads.
 };
-} //namespace Mark3
+} // namespace Mark3

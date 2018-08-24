@@ -20,26 +20,27 @@ See license.txt for more information
 #include "message.h"
 #include "thread.h"
 
-namespace {
+namespace
+{
 //===========================================================================
 // Local Defines
 //===========================================================================
 
 using namespace Mark3;
-Thread clMsgThread;
-K_WORD aucMsgStack[PORT_KERNEL_DEFAULT_STACK_SIZE];
+Thread           clMsgThread;
+K_WORD           aucMsgStack[PORT_KERNEL_DEFAULT_STACK_SIZE];
 MessageQueue     clMsgQ;
 volatile uint8_t u8PassCount = 0;
 #define MESSAGE_POOL_SIZE (3)
-MessagePool s_clMessagePool;
-Message s_clMessages[MESSAGE_POOL_SIZE];
+MessagePool   s_clMessagePool;
+Message       s_clMessages[MESSAGE_POOL_SIZE];
 volatile bool bTimedOut = false;
 
 //===========================================================================
 void MsgTimed(void* /*unused*/)
 {
-    u8PassCount = 0;
-    auto* pclRet      = clMsgQ.Receive(10);
+    u8PassCount  = 0;
+    auto* pclRet = clMsgQ.Receive(10);
     if (0 == pclRet) {
         u8PassCount++;
     } else {
@@ -61,10 +62,10 @@ void MsgTimed(void* /*unused*/)
 
 void MsgConsumer(void* /*unused_*/)
 {
-    uint8_t  i;
+    uint8_t i;
     for (i = 0; i < 20; i++) {
-        auto* pclMsg      = clMsgQ.Receive();
-        u8PassCount = 0;
+        auto* pclMsg = clMsgQ.Receive();
+        u8PassCount  = 0;
 
         if (pclMsg) {
             u8PassCount++;
@@ -77,7 +78,6 @@ void MsgConsumer(void* /*unused_*/)
             case 0:
                 if (0 == pclMsg->GetCode()) {
                     u8PassCount++;
-
                 }
                 if (0 == pclMsg->GetData()) {
                     u8PassCount++;
@@ -109,7 +109,8 @@ void MsgConsumer(void* /*unused_*/)
 
 } // anonymous namespace
 
-namespace Mark3 {
+namespace Mark3
+{
 //===========================================================================
 // Define Test Cases Here
 //===========================================================================
@@ -181,9 +182,7 @@ TEST(ut_message_exhaust)
     // Test - exhaust the global message pool and ensure that we eventually
     // get "NULL" returned when the pool is depleted, and not some other
     // unexpected condition/system failure.
-    for (int i = 0; i < MESSAGE_POOL_SIZE; i++) {
-        EXPECT_FAIL_FALSE(s_clMessagePool.Pop());
-    }
+    for (int i = 0; i < MESSAGE_POOL_SIZE; i++) { EXPECT_FAIL_FALSE(s_clMessagePool.Pop()); }
     EXPECT_FALSE(s_clMessagePool.Pop());
 
     // Test is over - re-init the pool..
@@ -234,8 +233,5 @@ TEST_END
 // Test Whitelist Goes Here
 //===========================================================================
 TEST_CASE_START
-TEST_CASE(ut_message_tx_rx),
-TEST_CASE(ut_message_exhaust),
-TEST_CASE(ut_message_timed_rx),
-TEST_CASE_END
-} //namespace Mark3
+TEST_CASE(ut_message_tx_rx), TEST_CASE(ut_message_exhaust), TEST_CASE(ut_message_timed_rx), TEST_CASE_END
+} // namespace Mark3

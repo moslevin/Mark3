@@ -11,78 +11,79 @@
 Copyright (c) 2012 - 2018 m0slevin, all rights reserved.
 See license.txt for more information
 =========================================================================== */
-/*!
+/**
 
-    \file   kernelswi.h
+    @file   kernelswi.h
 
-    \brief  Kernel Software interrupt declarations
+    @brief  Kernel Software interrupt declarations
 
  */
 #pragma once
 
 #include "kerneltypes.h"
 
-namespace Mark3 {
+namespace Mark3
+{
 //---------------------------------------------------------------------------
-/*!
+/**
     Class providing the software-interrupt required for context-switching in
     the kernel.
  */
 class KernelSWI
 {
 public:
-    /*!
-     *  \brief Config
+    /**
+     *  @brief Config
      *
      *  Configure the software interrupt - must be called before any other
      *  software interrupt functions are called.
      */
     static void Config(void);
 
-    /*!
-     *  \brief Start
+    /**
+     *  @brief Start
      *
      *  Enable ("Start") the software interrupt functionality
      */
     static void Start(void);
 
-    /*!
-     *  \brief Stop
+    /**
+     *  @brief Stop
      *
      *  Disable the software interrupt functionality
      */
     static void Stop(void);
 
-    /*!
-     *  \brief Clear
+    /**
+     *  @brief Clear
      *
      *  Clear the software interrupt
      */
     static void Clear(void);
 
-    /*!
-     *  \brief Trigger
+    /**
+     *  @brief Trigger
      *
      *  Call the software interrupt
      *
      */
     static void Trigger(void);
 
-    /*!
-     *  \brief DI
+    /**
+     *  @brief DI
      *
      *  Disable the SWI flag itself
      *
-     *  \return previous status of the SWI, prior to the DI call
+     *  @return previous status of the SWI, prior to the DI call
      */
     static uint8_t DI();
 
-    /*!
-     *  \brief RI
+    /**
+     *  @brief RI
      *
      *  Restore the state of the SWI to the value specified
      *
-     *  \param bEnable_ true - enable the SWI, false - disable SWI
+     *  @param bEnable_ true - enable the SWI, false - disable SWI
      */
     static void RI(bool bEnable_);
 };

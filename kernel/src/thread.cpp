@@ -11,11 +11,11 @@
 Copyright (c) 2012 - 2018 m0slevin, all rights reserved.
 See license.txt for more information
 ===========================================================================*/
-/*!
+/**
 
-    \file   thread.cpp
+    @file   thread.cpp
 
-    \brief  Platform-Independent thread class Definition
+    @brief  Platform-Independent thread class Definition
 
 */
 
@@ -63,13 +63,13 @@ void Thread::Init(
     m_pwStack    = pwStack_;
     m_pwStackTop = TOP_OF_STACK(pwStack_, u16StackSize_);
 
-    m_u16StackSize = u16StackSize_;
-    m_u16Quantum = THREAD_QUANTUM_DEFAULT;
+    m_u16StackSize  = u16StackSize_;
+    m_u16Quantum    = THREAD_QUANTUM_DEFAULT;
     m_uXPriority    = uXPriority_;
     m_uXCurPriority = m_uXPriority;
     m_pfEntryPoint  = pfEntryPoint_;
     m_pvArg         = pvArg_;
-    m_szName = NULL;
+    m_szName        = NULL;
 
     m_clTimer.Init();
 
@@ -94,7 +94,7 @@ void Thread::Init(
 Thread* Thread::Init(uint16_t u16StackSize_, PORT_PRIO_TYPE uXPriority_, ThreadEntryFunc pfEntryPoint_, void* pvArg_)
 {
     auto* pclNew  = AutoAlloc::NewThread();
-    auto* pwStack = static_cast<K_WORD*>(AutoAlloc::NewRawData(u16StackSize_)) ;
+    auto* pwStack = static_cast<K_WORD*>(AutoAlloc::NewRawData(u16StackSize_));
     pclNew->Init(pwStack, u16StackSize_, uXPriority_, pfEntryPoint_, pvArg_);
     return pclNew;
 }
@@ -232,8 +232,8 @@ void Thread::Exit()
 void Thread::Sleep(uint32_t u32TimeMs_)
 {
     Semaphore clSemaphore;
-    auto*    pclTimer = g_pclCurrent->GetTimer();
-    auto lTimerCallback = [](Thread* /*pclOwner*/, void* pvData_) {
+    auto*     pclTimer       = g_pclCurrent->GetTimer();
+    auto      lTimerCallback = [](Thread* /*pclOwner*/, void* pvData_) {
         auto* pclSemaphore = static_cast<Semaphore*>(pvData_);
         pclSemaphore->Post();
     };
@@ -258,8 +258,8 @@ void Thread::Sleep(uint32_t u32TimeMs_)
 void Thread::USleep(uint32_t u32TimeUs_)
 {
     Semaphore clSemaphore;
-    auto*    pclTimer = g_pclCurrent->GetTimer();
-    auto lTimerCallback = [](Thread* /*pclOwner*/, void* pvData_) {
+    auto*     pclTimer       = g_pclCurrent->GetTimer();
+    auto      lTimerCallback = [](Thread* /*pclOwner*/, void* pvData_) {
         auto* pclSemaphore = static_cast<Semaphore*>(pvData_);
         pclSemaphore->Post();
     };
@@ -286,8 +286,8 @@ uint16_t Thread::GetStackSlack()
     KERNEL_ASSERT(IsInitialized());
 
     K_ADDR wBottom = 0;
-    auto wTop    = static_cast<K_ADDR>(m_u16StackSize - 1);
-    auto wMid    = ((wTop + wBottom) + 1) / 2;
+    auto   wTop    = static_cast<K_ADDR>(m_u16StackSize - 1);
+    auto   wMid    = ((wTop + wBottom) + 1) / 2;
 
     CS_ENTER();
 
@@ -340,7 +340,7 @@ void Thread::Yield()
 }
 
 //---------------------------------------------------------------------------
-void Thread::SetPriorityBase(PORT_PRIO_TYPE  /*uXPriority_*/)
+void Thread::SetPriorityBase(PORT_PRIO_TYPE /*uXPriority_*/)
 {
     KERNEL_ASSERT(IsInitialized());
 
@@ -433,5 +433,4 @@ bool Thread::GetExpired()
     KERNEL_ASSERT(IsInitialized());
     return m_bExpired;
 }
-} //namespace Mark3
-
+} // namespace Mark3

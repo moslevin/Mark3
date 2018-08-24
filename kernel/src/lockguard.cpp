@@ -11,25 +11,26 @@
 Copyright (c) 2018 m0slevin, all rights reserved.
 See license.txt for more information
 ===========================================================================*/
-/*!
+/**
 
-    \file   lockguard.cpp
+    @file   lockguard.cpp
 
-    \brief  Mutex RAII helper class
+    @brief  Mutex RAII helper class
 */
 #include "mark3.h"
 
-namespace Mark3 {
-LockGuard::LockGuard(Mutex *pclMutex_)
-: m_bIsAcquired{true}
-, m_pclMutex{pclMutex_}
+namespace Mark3
+{
+LockGuard::LockGuard(Mutex* pclMutex_)
+    : m_bIsAcquired{ true }
+    , m_pclMutex{ pclMutex_ }
 {
     KERNEL_ASSERT(m_pclMutex != nullptr);
     m_pclMutex->Claim();
 }
 
 LockGuard::LockGuard(Mutex* pclMutex_, uint32_t u32TimeoutMs_)
-: m_pclMutex{pclMutex_}
+    : m_pclMutex{ pclMutex_ }
 {
     KERNEL_ASSERT(pclMutex_ != nullptr);
     m_bIsAcquired = m_pclMutex->Claim(u32TimeoutMs_);

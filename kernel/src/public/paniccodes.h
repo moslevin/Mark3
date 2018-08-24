@@ -11,10 +11,10 @@
 Copyright (c) 2012 - 2018 m0slevin, all rights reserved.
 See license.txt for more information
 ===========================================================================*/
-/*!
-    \file paniccodes.h
+/**
+    @file paniccodes.h
 
-    \brief Defines the reason codes thrown when a kernel panic occurs
+    @brief Defines the reason codes thrown when a kernel panic occurs
 */
 
 #pragma once

@@ -11,11 +11,11 @@
 Copyright (c) 2012 - 2018 m0slevin, all rights reserved.
 See license.txt for more information
 ===========================================================================*/
-/*!
+/**
 
-    \file   kerneltimer.cpp
+    @file   kerneltimer.cpp
 
-    \brief  Kernel Timer Implementation for ATMega328p
+    @brief  Kernel Timer Implementation for ATMega328p
 */
 
 #include "kerneltypes.h"
@@ -29,24 +29,26 @@ See license.txt for more information
 #define TIMER_IMSK (1 << OCIE1A)
 #define TIMER_IFR (1 << OCF1A)
 
-namespace {
+namespace
+{
 using namespace Mark3;
 //---------------------------------------------------------------------------
 // Static objects implementing the timer thread and its synchronization objects
 #if KERNEL_TIMERS_THREADED
-Thread s_clTimerThread;
-K_WORD s_clTimerThreadStack[PORT_KERNEL_TIMERS_THREAD_STACK];
+Thread    s_clTimerThread;
+K_WORD    s_clTimerThreadStack[PORT_KERNEL_TIMERS_THREAD_STACK];
 Semaphore s_clTimerSemaphore;
 #endif
 }
 
-namespace Mark3 {
+namespace Mark3
+{
 //---------------------------------------------------------------------------
 #if KERNEL_TIMERS_THREADED
 static void KernelTimer_Task(void* unused)
 {
     (void)unused;
-    while(1) {
+    while (1) {
         s_clTimerSemaphore.Pend();
 #if KERNEL_USE_TIMERS
         TimerScheduler::Process();
@@ -65,10 +67,10 @@ void KernelTimer::Config(void)
 #if KERNEL_TIMERS_THREADED
     s_clTimerSemaphore.Init(0, 1);
     s_clTimerThread.Init(s_clTimerThreadStack,
-                        sizeof(s_clTimerThreadStack) / sizeof(K_WORD),
-                        KERNEL_TIMERS_THREAD_PRIORITY,
-                        KernelTimer_Task,
-                        0);
+                         sizeof(s_clTimerThreadStack) / sizeof(K_WORD),
+                         KERNEL_TIMERS_THREAD_PRIORITY,
+                         KernelTimer_Task,
+                         0);
     Quantum::SetTimerThread(&s_clTimerThread);
     s_clTimerThread.Start();
 #endif
@@ -153,7 +155,6 @@ PORT_TIMER_COUNT_TYPE KernelTimer::GetOvertime(void)
     return KernelTimer::Read();
 }
 
-
 //---------------------------------------------------------------------------
 uint32_t KernelTimer::SetExpiry(uint32_t u32Interval_)
 {
@@ -213,8 +214,8 @@ void KernelTimer::RI(bool bEnable_)
 } // namespace Mark3
 
 //---------------------------------------------------------------------------
-/*!
- *   \brief ISR(TIMER1_COMPA_vect)
+/**
+ *   @brief ISR(TIMER1_COMPA_vect)
  *   Timer interrupt ISR - service the timer thread
  */
 //---------------------------------------------------------------------------
@@ -225,11 +226,11 @@ ISR(TIMER1_COMPA_vect)
     KernelTimer::ClearExpiry();
     s_clTimerSemaphore.Post();
 #else
-    #if KERNEL_USE_TIMERS
-        TimerScheduler::Process();
-    #endif
-    #if KERNEL_USE_QUANTUM
-        Quantum::UpdateTimer();
-    #endif
+#if KERNEL_USE_TIMERS
+    TimerScheduler::Process();
+#endif
+#if KERNEL_USE_QUANTUM
+    Quantum::UpdateTimer();
+#endif
 #endif
 }

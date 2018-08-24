@@ -11,11 +11,11 @@
 Copyright (c) 2012 - 2018 m0slevin, all rights reserved.
 See license.txt for more information
 =========================================================================== */
-/*!
+/**
 
-    \file   message.h
+    @file   message.h
 
-    \brief  Inter-thread communication via message-passing
+    @brief  Inter-thread communication via message-passing
 
     Embedded systems guru Jack Ganssle once said that without a robust form of
     interprocess communications (IPC), an RTOS is just a toy.  Mark3 implements
@@ -28,9 +28,9 @@ See license.txt for more information
     another and minimizes global data, preventing careless and hard-to-debug
     errors.
 
-    \section MBCreate using Messages, Queues, and the Global Message Pool
+    @section MBCreate using Messages, Queues, and the Global Message Pool
 
-    \code
+    @code
 
         // Declare a message queue shared between two threads
         MessageQueue my_queue;
@@ -74,7 +74,7 @@ See license.txt for more information
                 GlobalMessagePool::Push(rx_message);
             }
         }
-    \endcode
+    @endcode
  */
 #pragma once
 
@@ -88,15 +88,15 @@ See license.txt for more information
 namespace Mark3
 {
 //---------------------------------------------------------------------------
-/*!
+/**
  *  Class to provide message-based IPC services in the kernel.
  */
 class Message : public LinkListNode
 {
 public:
     void* operator new(size_t sz, void* pv) { return (Message*)pv; }
-    /*!
-     *  \brief Init
+    /**
+     *  @brief Init
      *
      *  Initialize the data and code in the message.
      */
@@ -107,38 +107,39 @@ public:
         m_u16Code = 0;
     }
 
-    /*!
-     *  \brief SetData
+    /**
+     *  @brief SetData
      *
      *  Set the data pointer for the message before transmission.
      *
-     *  \param pvData_ Pointer to the data object to send in the message
+     *  @param pvData_ Pointer to the data object to send in the message
      */
     void SetData(void* pvData_) { m_pvData = pvData_; }
-    /*!
-     *  \brief GetData
+    /**
+     *  @brief GetData
      *
      *  Get the data pointer stored in the message upon receipt
      *
-     *  \return Pointer to the data set in the message object
+     *  @return Pointer to the data set in the message object
      */
     void* GetData() { return m_pvData; }
-    /*!
-     *  \brief SetCode
+    /**
+     *  @brief SetCode
      *
      *  Set the code in the message before transmission
      *
-     *  \param u16Code_ Data code to set in the object
+     *  @param u16Code_ Data code to set in the object
      */
     void SetCode(uint16_t u16Code_) { m_u16Code = u16Code_; }
-    /*!
-     *  \brief GetCode
+    /**
+     *  @brief GetCode
      *
      *  Return the code set in the message upon receipt
      *
-     *  \return user code set in the object
+     *  @return user code set in the object
      */
     uint16_t GetCode() { return m_u16Code; }
+
 private:
     //! Pointer to the message data
     void* m_pvData;
@@ -148,48 +149,48 @@ private:
 };
 
 //---------------------------------------------------------------------------
-/*!
+/**
  *  Implements a list of message objects
  */
 class MessagePool
 {
 public:
     void* operator new(size_t sz, void* pv) { return (MessagePool*)pv; }
-    ~MessagePool(){}
-    /*!
-     *  \brief Init
+    ~MessagePool() {}
+    /**
+     *  @brief Init
      *
      *  Initialize the message queue prior to use
      */
     void Init();
 
-    /*!
-     *  \brief Push
+    /**
+     *  @brief Push
      *
      *  Return a previously-claimed message object back to the queue.
      *  used once the message has been processed by a receiver.
      *
-     *  \param pclMessage_ Pointer to the Message object to return back to
+     *  @param pclMessage_ Pointer to the Message object to return back to
      *         the queue
      */
     void Push(Message* pclMessage_);
 
-    /*!
-     *  \brief Pop
+    /**
+     *  @brief Pop
      *
      *  Pop a message from the queue, returning it to the user to be
      *  popu32ated before sending by a transmitter.
      *
-     *  \return Pointer to a Message object
+     *  @return Pointer to a Message object
      */
     Message* Pop();
 
-    /*!
-     * \brief GetHead
+    /**
+     * @brief GetHead
      *
      * Return a pointer to the first element in the message list
      *
-     * \return
+     * @return
      */
     Message* GetHead();
 
@@ -199,7 +200,7 @@ private:
 };
 
 //---------------------------------------------------------------------------
-/*!
+/**
  *  List of messages, used as the channel for sending and receiving messages
  *  between threads.
  */
@@ -209,67 +210,67 @@ public:
     void* operator new(size_t sz, void* pv) { return (MessageQueue*)pv; }
     ~MessageQueue() {}
 
-    /*!
-     *  \brief Init
+    /**
+     *  @brief Init
      *
      *  Initialize the message queue prior to use.
      */
     void Init();
 
-    /*!
-     *  \brief Receive
+    /**
+     *  @brief Receive
      *
      *  Receive a message from the message queue.  If the message queue
      *  is empty, the thread will block until a message is available.
      *
-     *  \return Pointer to a message object at the head of the queue
+     *  @return Pointer to a message object at the head of the queue
      */
     Message* Receive();
 
-    /*!
-     *  \brief Receive
+    /**
+     *  @brief Receive
      *
      *  Receive a message from the message queue.  If the message queue
      *  is empty, the thread will block until a message is available for
      *  the duration specified.  If no message arrives within that
      *  duration, the call will return with NULL.
      *
-     *  \param u32TimeWaitMS_ The amount of time in ms to wait for a
+     *  @param u32TimeWaitMS_ The amount of time in ms to wait for a
      *          message before timing out and unblocking the waiting thread.
      *
-     *  \return Pointer to a message object at the head of the queue or
+     *  @return Pointer to a message object at the head of the queue or
      *          NULL on timeout.
      */
     Message* Receive(uint32_t u32TimeWaitMS_);
 
-    /*!
-     *  \brief Send
+    /**
+     *  @brief Send
      *
      *  Send a message object into this message queue.  Will un-block the
      *  first waiting thread blocked on this queue if that occurs.
      *
-     *  \param pclSrc_ Pointer to the message object to add to the queue
+     *  @param pclSrc_ Pointer to the message object to add to the queue
      */
     void Send(Message* pclSrc_);
 
-    /*!
-     *  \brief GetCount
+    /**
+     *  @brief GetCount
      *
      *  Return the number of messages pending in the "receive" queue.
      *
-     *  \return Count of pending messages in the queue.
+     *  @return Count of pending messages in the queue.
      */
     uint16_t GetCount();
 
 private:
-    /*!
-     * \brief Receive_i
+    /**
+     * @brief Receive_i
      *
      * Internal function used to abstract timed and un-timed Receive calls.
      *
-     * \param u32TimeWaitMS_ Time (in ms) to block, 0 for un-timed call.
+     * @param u32TimeWaitMS_ Time (in ms) to block, 0 for un-timed call.
      *
-     * \return Pointer to a message, or 0 on timeout.
+     * @return Pointer to a message, or 0 on timeout.
      */
     Message* Receive_i(uint32_t u32TimeWaitMS_);
 
@@ -279,4 +280,4 @@ private:
     //! List object used to store messages
     DoubleLinkList m_clLinkList;
 };
-} //namespace Mark3
+} // namespace Mark3

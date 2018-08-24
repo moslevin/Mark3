@@ -11,10 +11,10 @@
 Copyright (c) 2012 - 2018 m0slevin, all rights reserved.
 See license.txt for more information
 ===========================================================================*/
-/*!
-    \file kernelprofile.cpp
+/**
+    @file kernelprofile.cpp
 
-    \brief ATMega328p Profiling timer implementation
+    @brief ATMega328p Profiling timer implementation
 */
 
 #include "kerneltypes.h"
@@ -81,5 +81,5 @@ ISR(TIMER0_OVF_vect)
 {
     Profiler::Process();
 }
-} //namespace Mark3
+} // namespace Mark3
 #endif

@@ -45,13 +45,12 @@ of static threads.
 
 ===========================================================================*/
 extern "C" {
-void __cxa_pure_virtual(void)
-{
-}
+void __cxa_pure_virtual(void) {}
 void DebugPrint(const char* szString_);
 }
 
-namespace {
+namespace
+{
 using namespace Mark3;
 //---------------------------------------------------------------------------
 // This block declares the thread data for the main application thread.  It
@@ -59,7 +58,7 @@ using namespace Mark3;
 // function used by the application thread.
 Thread clAppThread;
 K_WORD awAppStack[PORT_KERNEL_DEFAULT_STACK_SIZE];
-void AppMain(void* unused_);
+void   AppMain(void* unused_);
 
 //---------------------------------------------------------------------------
 // This block declares the thread data for the idle thread.  It defines a
@@ -67,7 +66,7 @@ void AppMain(void* unused_);
 // used by the idle thread.
 Thread clIdleThread;
 K_WORD awIdleStack[PORT_KERNEL_DEFAULT_STACK_SIZE];
-void IdleMain(void* unused_);
+void   IdleMain(void* unused_);
 
 //---------------------------------------------------------------------------
 void AppMain(void* unused_)

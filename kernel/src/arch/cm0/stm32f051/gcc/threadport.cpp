@@ -11,11 +11,11 @@
 Copyright (c) 2012 - 2018 m0slevin, all rights reserved.
 See license.txt for more information
 ===========================================================================*/
-/*!
+/**
 
-    \file   threadport.cpp
+    @file   threadport.cpp
 
-    \brief  ARM Cortex-M0 Multithreading
+    @brief  ARM Cortex-M0 Multithreading
 
 */
 
@@ -103,9 +103,7 @@ void ThreadPort::InitStack(Thread* pclThread_)
 
     // Initialize the stack to all FF's to aid in stack depth checking
     pu32Temp = (uint32_t*)pclThread_->m_pwStack;
-    for (i = 0; i < pclThread_->m_u16StackSize / sizeof(uint32_t); i++) {
-        pu32Temp[i] = 0xFFFFFFFF;
-    }
+    for (i = 0; i < pclThread_->m_u16StackSize / sizeof(uint32_t); i++) { pu32Temp[i] = 0xFFFFFFFF; }
 
     PUSH_TO_STACK(pu32Stack, 0); // We need one word of padding, apparently...
 

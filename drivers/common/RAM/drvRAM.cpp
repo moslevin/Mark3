@@ -11,11 +11,11 @@
 Copyright (c) 2012 - 2018 m0slevin, all rights reserved.
 See license.txt for more information
 ===========================================================================*/
-/*!
+/**
 
-    \file   drvRAM.cpp
+    @file   drvRAM.cpp
 
-    \brief  Generic RAM-buffer driver
+    @brief  Generic RAM-buffer driver
 
 */
 
@@ -57,10 +57,8 @@ size_t RAMDriver::Read(void* pvData_, size_t uBytes_)
     }
 
     auto* pcTemp = &(m_pcData[m_u16Address]);
-    auto *pvOut = reinterpret_cast<uint8_t*>(pvData_);
-    for (size_t i = 0; i < u16NumBytes; i++) {
-        pvOut[i] = pcTemp[i];
-    }
+    auto* pvOut  = reinterpret_cast<uint8_t*>(pvData_);
+    for (size_t i = 0; i < u16NumBytes; i++) { pvOut[i] = pcTemp[i]; }
 
     m_u16Address += u16NumBytes;
     return u16NumBytes;
@@ -79,10 +77,8 @@ size_t RAMDriver::Write(const void* pvData_, size_t uBytes_)
     }
 
     auto* pcTemp = &(m_pcData[m_u16Address]);
-    auto* pvIn = reinterpret_cast<const uint8_t*>(pvData_);
-    for (size_t i = 0; i < u16NumBytes; i++) {
-        pcTemp[i] = pvIn[i];
-    }
+    auto* pvIn   = reinterpret_cast<const uint8_t*>(pvData_);
+    for (size_t i = 0; i < u16NumBytes; i++) { pcTemp[i] = pvIn[i]; }
 
     m_u16Address += u16NumBytes;
     return u16NumBytes;
@@ -105,4 +101,4 @@ int RAMDriver::Control(uint16_t u16Event_, void* pvIn_, size_t uSizeIn_, const v
     }
     return 0;
 }
-} //namespace Mark3
+} // namespace Mark3

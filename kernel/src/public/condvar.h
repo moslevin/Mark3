@@ -13,19 +13,19 @@
 Copyright (c) 2012 - 2018 m0slevin, all rights reserved.
 See license.txt for more information
 ===========================================================================*/
-/*!
-    \file   condvar.h
+/**
+    @file   condvar.h
 
-    \brief  Condition Variable implementation
+    @brief  Condition Variable implementation
 */
 
 #include "mark3cfg.h"
 #include "ksemaphore.h"
 #include "mutex.h"
 
-namespace Mark3 {
-
-/*!
+namespace Mark3
+{
+/**
  * @brief The ConditionVariable class
  * This class implements a condition variable.  This is a synchronization object that
  * allows multiple threads to block, each waiting for specific signals unique to them.
@@ -35,18 +35,19 @@ namespace Mark3 {
  * lower-level primatives, and is somewhat more heavyweight than the primative types
  * supplied by the kernel.
  */
-class ConditionVariable {
+class ConditionVariable
+{
 public:
-    void* operator new(size_t sz, void*pv) { return (ConditionVariable*)pv; }
+    void* operator new(size_t sz, void* pv) { return (ConditionVariable*)pv; }
 
-    /*!
+    /**
      * @brief Init
      * Initialize the condition variable prior to use.  Must be called before the
      * object can be used
      */
     void Init();
 
-    /*!
+    /**
      * @brief Wait
      * Block the current thread, and wait for the object to be signalled.  The specified
      * mutex will be locked when the thread returns.
@@ -54,7 +55,7 @@ public:
      */
     void Wait(Mutex* pclMutex_);
 
-    /*!
+    /**
      * @brief Wait
      * Block the current thread, and wait for the object to be signalled.  The specified
      * mutex will be locked when the thread returns.
@@ -64,21 +65,21 @@ public:
      */
     bool Wait(Mutex* pclMutex_, uint32_t u32WaitTimeMS_);
 
-    /*!
+    /**
      * @brief Signal
      * Signal/Unblock the next thread currently blocked on this condition variable
      */
     void Signal();
 
-    /*!
+    /**
      * @brief Broadcast
      * Unblock all threads currently blocked on this condition variable
      */
     void Broadcast();
 
 private:
-    Mutex m_clMutex;
+    Mutex     m_clMutex;
     Semaphore m_clSemaphore;
-    uint8_t m_u8Waiters;
+    uint8_t   m_u8Waiters;
 };
 } // namespace Mark3

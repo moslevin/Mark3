@@ -11,11 +11,11 @@
 Copyright (c) 2012 - 2018 m0slevin, all rights reserved.
 See license.txt for more information
 ===========================================================================*/
-/*!
+/**
 
-    \file   notify.cpp
+    @file   notify.cpp
 
-    \brief  Lightweight thread notification - blocking object
+    @brief  Lightweight thread notification - blocking object
 
 */
 #include "mark3.h"
@@ -23,24 +23,24 @@ namespace Mark3
 {
 namespace
 {
-//---------------------------------------------------------------------------
-void TimedNotify_Callback(Thread* pclOwner_, void* pvData_)
-{
-    KERNEL_ASSERT(pclOwner_ != nullptr);
-    KERNEL_ASSERT(pvData_ != nullptr);
+    //---------------------------------------------------------------------------
+    void TimedNotify_Callback(Thread* pclOwner_, void* pvData_)
+    {
+        KERNEL_ASSERT(pclOwner_ != nullptr);
+        KERNEL_ASSERT(pvData_ != nullptr);
 
-    auto* pclNotify = static_cast<Notify*>(pvData_);
+        auto* pclNotify = static_cast<Notify*>(pvData_);
 
-    // Indicate that the semaphore has expired on the thread
-    pclOwner_->SetExpired(true);
+        // Indicate that the semaphore has expired on the thread
+        pclOwner_->SetExpired(true);
 
-    // Wake up the thread that was blocked on this semaphore.
-    pclNotify->WakeMe(pclOwner_);
+        // Wake up the thread that was blocked on this semaphore.
+        pclNotify->WakeMe(pclOwner_);
 
-    if (pclOwner_->GetCurPriority() >= Scheduler::GetCurrentThread()->GetCurPriority()) {
-        Thread::Yield();
+        if (pclOwner_->GetCurPriority() >= Scheduler::GetCurrentThread()->GetCurPriority()) {
+            Thread::Yield();
+        }
     }
-}
 } // anonymous namespace
 
 //---------------------------------------------------------------------------
@@ -125,7 +125,7 @@ bool Notify::Wait(uint32_t u32WaitTimeMS_, bool* pbFlag_)
     KERNEL_ASSERT(pbFlag_ != nullptr);
     KERNEL_ASSERT(IsInitialized());
 
-    auto  bUseTimer = false;
+    auto  bUseTimer  = false;
     auto  bEarlyExit = false;
     Timer clNotifyTimer;
 
@@ -176,4 +176,4 @@ void Notify::WakeMe(Thread* pclChosenOne_)
 
     UnBlock(pclChosenOne_);
 }
-} //namespace Mark3
+} // namespace Mark3

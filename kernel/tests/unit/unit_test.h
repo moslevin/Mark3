@@ -11,9 +11,9 @@
 Copyright (c) 2012 - 2018 m0slevin, all rights reserved.
 See license.txt for more information
 =========================================================================== */
-/*!
- *  \file unit_test.h
- *  \brief Unit test class declarations
+/**
+ *  @file unit_test.h
+ *  @brief Unit test class declarations
  */
 #pragma once
 
@@ -21,9 +21,8 @@ See license.txt for more information
 
 namespace Mark3
 {
-
 //---------------------------------------------------------------------------
-/*!
+/**
  *  Class used to implement a simple unit-testing framework
  */
 class UnitTest
@@ -31,31 +30,31 @@ class UnitTest
 public:
     UnitTest();
 
-    /*!
-     *  \brief SetName
+    /**
+     *  @brief SetName
      *
      *  Set the name of the test object
      *
-     *  \param szName_ Name of the tests associated with this object
+     *  @param szName_ Name of the tests associated with this object
      *
      */
     void SetName(const char* szName_) { m_szName = szName_; }
-    /*!
-     *  \brief Start
+    /**
+     *  @brief Start
      *
      *  Start a new test iteration.
      */
     void Start() { m_bIsActive = 1; }
-    /*!
-     *  \brief Pass
+    /**
+     *  @brief Pass
      *
      *  Stop the current iteration (if started), and register that the test
      *  was successful.
      */
     void Pass();
 
-    /*!
-     *  \brief Fail
+    /**
+     *  @brief Fail
      *
      *  Stop the current iterations (if started), and register that the
      *  current test failed.
@@ -90,53 +89,54 @@ public:
     void ExpectFailLessThan(int32_t lVal_, int32_t lExpression_) { (lVal_ < lExpression_) ? Fail() : Pass(); }
     void ExpectFailGreaterThanEquals(int32_t lVal_, int32_t lExpression_) { (lVal_ >= lExpression_) ? Fail() : Pass(); }
     void ExpectFailLessThanEquals(int32_t lVal_, int32_t lExpression_) { (lVal_ <= lExpression_) ? Fail() : Pass(); }
-    /*!
-     *  \brief Complete
+    /**
+     *  @brief Complete
      *
      *  Complete the test.  Once a test has been completed, no new iterations
      *  can be started (i.e Start()/Pass()/Fail() will have no effect).
      */
     void Complete() { m_bComplete = 1; }
-    /*!
-     *  \brief GetName
+    /**
+     *  @brief GetName
      *
      *  Get the name of the tests associated with this object
      *
-     *  \return Name of the test
+     *  @return Name of the test
      */
     const char* GetName() { return m_szName; }
-    /*!
-     *  \brief GetResult
+    /**
+     *  @brief GetResult
      *
      *  Return the result of the last test
      *
-     *  \return Status of the last run test (false = fail, true = pass)
+     *  @return Status of the last run test (false = fail, true = pass)
      */
     bool GetResult() { return m_bStatus; }
-    /*!
-     *  \brief GetPassed
+    /**
+     *  @brief GetPassed
      *
      *  Return the total number of test points/iterations passed
      *
-     *  \return Count of all successful test points/iterations
+     *  @return Count of all successful test points/iterations
      */
     uint16_t GetPassed() { return m_u16Passed; }
-    /*!
-     *  \brief GetFailed
+    /**
+     *  @brief GetFailed
      *
      *  Return the number of failed test points/iterations
      *
-     *  \return Failed test point/iteration count
+     *  @return Failed test point/iteration count
      */
     uint16_t GetFailed() { return m_u16Iterations - m_u16Passed; }
-    /*!
-     *  \brief GetTotal
+    /**
+     *  @brief GetTotal
      *
      *  Return the total number of iterations/test-points executed
      *
-     *  \return Total number of ierations/test-points executed
+     *  @return Total number of ierations/test-points executed
      */
     uint16_t GetTotal() { return m_u16Iterations; }
+
 private:
     const char* m_szName;        //!< Name of the tests performed
     bool        m_bIsActive;     //!< Whether or not the test is active
@@ -146,4 +146,4 @@ private:
     uint16_t    m_u16Passed;     //!< Number of iterations that have passed
 };
 
-} //namespace Mark3
+} // namespace Mark3

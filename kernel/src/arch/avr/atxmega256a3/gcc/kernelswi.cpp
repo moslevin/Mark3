@@ -11,11 +11,11 @@
 Copyright (c) 2012 - 2018 m0slevin, all rights reserved.
 See license.txt for more information
 ===========================================================================*/
-/*!
+/**
 
-    \file   kernelswi.cpp
+    @file   kernelswi.cpp
 
-    \brief  Kernel Software interrupt implementation for ATMega328p
+    @brief  Kernel Software interrupt implementation for ATMega328p
 
 */
 
@@ -28,7 +28,8 @@ See license.txt for more information
 #define TIMER_SWI_EVENT_CHANNEL (0x00)
 #define TIMER_SWI_EVENT_FLAG (0x08)
 
-namespace Mark3 {
+namespace Mark3
+{
 //---------------------------------------------------------------------------
 void KernelSWI::Config(void)
 {

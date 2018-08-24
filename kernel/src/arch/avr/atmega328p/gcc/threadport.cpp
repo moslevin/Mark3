@@ -11,11 +11,11 @@
 Copyright (c) 2012 - 2018 m0slevin, all rights reserved.
 See license.txt for more information
 ===========================================================================*/
-/*!
+/**
 
-    \file   threadport.cpp
+    @file   threadport.cpp
 
-    \brief  ATMega328p Multithreading
+    @brief  ATMega328p Multithreading
 
 */
 
@@ -50,9 +50,7 @@ void ThreadPort::InitStack(Thread* pclThread_)
 
     // clear the stack, and initialize it to a known-default value (easier
     // to debug when things go sour with stack corruption or overflow)
-    for (i = 0; i < pclThread_->m_u16StackSize; i++) {
-        pclThread_->m_pwStack[i] = 0xFF;
-    }
+    for (i = 0; i < pclThread_->m_u16StackSize; i++) { pclThread_->m_pwStack[i] = 0xFF; }
 
     // Our context starts with the entry function
     PUSH_TO_STACK(pu8Stack, static_cast<uint8_t>(u16Addr & 0x00FF));
@@ -72,13 +70,12 @@ void ThreadPort::InitStack(Thread* pclThread_)
     }
 
     // Assume that the argument is the only stack variable
-    PUSH_TO_STACK(pu8Stack, static_cast<uint8_t>((reinterpret_cast<K_ADDR>(pclThread_->m_pvArg)) & 0x00FF));        // R24
-    PUSH_TO_STACK(pu8Stack, static_cast<uint8_t>(((reinterpret_cast<K_ADDR>(pclThread_->m_pvArg)) >> 8) & 0x00FF)); // R25
+    PUSH_TO_STACK(pu8Stack, static_cast<uint8_t>((reinterpret_cast<K_ADDR>(pclThread_->m_pvArg)) & 0x00FF)); // R24
+    PUSH_TO_STACK(pu8Stack,
+                  static_cast<uint8_t>(((reinterpret_cast<K_ADDR>(pclThread_->m_pvArg)) >> 8) & 0x00FF)); // R25
 
     // Push the rest of the registers in the context
-    for (i = 26; i <= 31; i++) {
-        PUSH_TO_STACK(pu8Stack, i);
-    }
+    for (i = 26; i <= 31; i++) { PUSH_TO_STACK(pu8Stack, i); }
 
     // Set the top o' the stack.
     pclThread_->m_pwStackTop = (uint8_t*)pu8Stack;
@@ -156,8 +153,8 @@ void ThreadPort::StartThreads()
 }
 
 //---------------------------------------------------------------------------
-/*!
- *  \brief ISR(INT0_vect)
+/**
+ *  @brief ISR(INT0_vect)
  *   SWI using INT0 - used to trigger a context switch
  */
 //---------------------------------------------------------------------------
@@ -169,4 +166,4 @@ ISR(INT0_vect)
     Thread_RestoreContext(); // Pop the context (registers) of the next task
     ASM("reti");             // Return to the next task
 }
-} //namespace Mark3
+} // namespace Mark3

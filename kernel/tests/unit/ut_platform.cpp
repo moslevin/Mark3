@@ -22,9 +22,7 @@ See license.txt for more information
 #include "ut_support.h"
 
 extern "C" {
-void __cxa_pure_virtual(void)
-{
-}
+void __cxa_pure_virtual(void) {}
 }
 
 namespace Mark3
@@ -32,9 +30,8 @@ namespace Mark3
 Thread AppThread; //!< Main "application" thread
 K_WORD aucAppStack[(PORT_KERNEL_DEFAULT_STACK_SIZE * 3) / 2];
 
-
 //---------------------------------------------------------------------------
-Thread  IdleThread; //!< Idle thread - runs when app can't
+Thread IdleThread; //!< Idle thread - runs when app can't
 K_WORD aucIdleStack[PORT_KERNEL_DEFAULT_STACK_SIZE];
 
 using FuncPtr = void (*)(void);
@@ -76,24 +73,20 @@ void AppEntry(void* /*unused*/)
         init_tests();
     }
 
-    while (1) {
-        run_tests();
-    }
+    while (1) { run_tests(); }
 }
 
 //---------------------------------------------------------------------------
 void IdleEntry(void* args)
 {
-    while (1) {
-        UnitTestSupport::OnIdle();
-    }
+    while (1) { UnitTestSupport::OnIdle(); }
 }
 
 //---------------------------------------------------------------------------
 void PrintString(const char* szStr_)
 {
     auto* pclDriver = DriverList::FindByPath("/dev/tty");
-    auto* szTemp = szStr_;
+    auto* szTemp    = szStr_;
     while (*szTemp) {
         while (1 != pclDriver->Write(szTemp, 1)) { /* Do nothing */
         }
@@ -113,9 +106,7 @@ void MyUnitTest::PrintTestResult()
     if (iLen >= 32) {
         iLen = 32;
     }
-    for (uint16_t i = 0; i < 32 - iLen; i++) {
-        PrintString(".");
-    }
+    for (uint16_t i = 0; i < 32 - iLen; i++) { PrintString("."); }
     if (GetPassed() == GetTotal()) {
         PrintString("(PASS)[");
     } else {
@@ -128,7 +119,7 @@ void MyUnitTest::PrintTestResult()
     PrintString((const char*)acTemp);
     PrintString("]\n");
 }
-} //namespace Mark3
+} // namespace Mark3
 
 using namespace Mark3;
 //---------------------------------------------------------------------------
@@ -137,19 +128,19 @@ int main(void)
     Kernel::Init(); //!< MUST be before other kernel ops
     Kernel::SetDebugPrintFunction(PrintString);
 
-    AppThread.Init(aucAppStack,             //!< Pointer to the stack
-                   sizeof(aucAppStack),          //!< Size of the stack
-                   1,                       //!< Thread priority
-                   AppEntry, //!< Entry function
-                   &AppThread);      //!< Entry function argument
+    AppThread.Init(aucAppStack,         //!< Pointer to the stack
+                   sizeof(aucAppStack), //!< Size of the stack
+                   1,                   //!< Thread priority
+                   AppEntry,            //!< Entry function
+                   &AppThread);         //!< Entry function argument
 
     AppThread.Start(); //!< Schedule the threads
 
-    IdleThread.Init(aucIdleStack,             //!< Pointer to the stack
-                    sizeof(aucIdleStack),          //!< Size of the stack
-                    0,                        //!< Thread priority
+    IdleThread.Init(aucIdleStack,               //!< Pointer to the stack
+                    sizeof(aucIdleStack),       //!< Size of the stack
+                    0,                          //!< Thread priority
                     (ThreadEntryFunc)IdleEntry, //!< Entry function
-                    NULL);                    //!< Entry function argument
+                    NULL);                      //!< Entry function argument
 
     IdleThread.Start();
 

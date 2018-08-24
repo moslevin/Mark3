@@ -11,26 +11,25 @@
 Copyright (c) 2012 - 2018 m0slevin, all rights reserved.
 See license.txt for more information
 ===========================================================================*/
-/*!
+/**
 
-    \file   kernel.cpp
+    @file   kernel.cpp
 
-    \brief  Kernel initialization and startup code
+    @brief  Kernel initialization and startup code
 */
 
 #include "mark3.h"
 namespace Mark3
 {
-
-bool Kernel::m_bIsStarted; //!< true if kernel is running, false otherwise
-bool Kernel::m_bIsPanic;   //!< true if kernel is in panic state, false otherwise
+bool      Kernel::m_bIsStarted; //!< true if kernel is running, false otherwise
+bool      Kernel::m_bIsPanic;   //!< true if kernel is in panic state, false otherwise
 PanicFunc Kernel::m_pfPanic;    //!< set panic function
 
 ThreadCreateCallout  Kernel::m_pfThreadCreateCallout;  //!< Function to call on thread creation
 ThreadExitCallout    Kernel::m_pfThreadExitCallout;    //!< Function to call on thread exit
 ThreadContextCallout Kernel::m_pfThreadContextCallout; //!< Function to call on context switch
 DebugPrintFunction   Kernel::m_pfDebugPrintFunction;   //!< Function to call when printing debug info
-uint16_t Kernel::m_u16GuardThreshold;
+uint16_t             Kernel::m_u16GuardThreshold;
 
 //---------------------------------------------------------------------------
 void Kernel::Init(void)
@@ -57,7 +56,7 @@ void Kernel::Panic(uint16_t u16Cause_)
     if (m_pfPanic != nullptr) {
         m_pfPanic(u16Cause_);
     } else {
-        while (true) { }
+        while (true) {}
     }
 }
 
@@ -70,4 +69,4 @@ void Kernel::DebugPrint(const char* szString_)
     }
 }
 
-} //namespace Mark3
+} // namespace Mark3

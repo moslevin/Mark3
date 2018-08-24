@@ -22,7 +22,8 @@ See license.txt for more information
 #include "memutil.h"
 #include "driver.h"
 
-namespace {
+namespace
+{
 using namespace Mark3;
 //===========================================================================
 // Local Defines
@@ -121,7 +122,8 @@ void TimedWaitAll(void* time_)
 }
 } // anonymous namespace
 
-namespace Mark3 {
+namespace Mark3
+{
 //===========================================================================
 // Define Test Cases Here
 //===========================================================================
@@ -508,4 +510,4 @@ TEST_END
 //===========================================================================
 TEST_CASE_START
 TEST_CASE(ut_waitany), TEST_CASE(ut_waitall), TEST_CASE(ut_flag_multiwait), TEST_CASE(ut_timedwait), TEST_CASE_END
-} //namespace Mark3
+} // namespace Mark3
