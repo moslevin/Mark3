@@ -22,7 +22,8 @@ set(CM4_CC_FLAGS "\
     -D__CHECK_DEVICE_DEFINES \
     -DUSE_FULL_ASSERT \
     -fmessage-length=0 \
-    -mfloat-abi=soft \
+    -mfloat-abi=hard \
+    -mthumb-interwork \
     -DSTM32F429xx \
     ")
 
@@ -45,42 +46,50 @@ set(CM4_CXX_FLAGS "\
     -D__CHECK_DEVICE_DEFINES \
     -DUSE_FULL_ASSERT \
     -fmessage-length=0 \
-    -mfloat-abi=soft \
+    -mfloat-abi=hard \
+    -mthumb-interwork \
     -DSTM32F429xx \
     ")
 
 set(CM4_LN_FLAGS "\
-    --specs=nosys.specs \
+    --specs=nano.specs \
     --disable-newlib-supplied-syscalls \
     -Wl,--start-group \
     -Wl,-lm \
-    -Wl,--default-script=${CMAKE_CURRENT_LIST_DIR}/STM32F429I-Discovery.ld \
+    -Wl,--default-script=${CMAKE_CURRENT_LIST_DIR}/standalone.ld \
     -Wl,--end-group \
     -Wl,--gc-sections \
     -mthumb \
     -mcpu=cortex-m4 \
-    -mfloat-abi=soft \
+    -mfloat-abi=hard \
+    -mthumb-interwork \
     ")
-    
+
 set(CM4_LN_DBG_FLAGS "\
-    --specs=nosys.specs \
+    --specs=nano.specs \
     --disable-newlib-supplied-syscalls \
     -Wl,--start-group \
     -Wl,-lm \
-    -Wl,--default-script=${CMAKE_CURRENT_LIST_DIR}/STM32F429I-Discovery.ld \
+    -Wl,--default-script=${CMAKE_CURRENT_LIST_DIR}/standalone.ld \
     -Wl,--end-group \
     -mthumb \
     -mcpu=cortex-m4 \
-    -mfloat-abi=soft \
+    -mfloat-abi=hard \
+    -mthumb-interwork \
     ")
-    
+
 set(CM4_OBJCOPY_FLAGS
     -O ihex -R .eeprom -R .fuse -R .lock -R .signature
     )
-    
+
 set(CM4_OBJCOPY_DBG_FLAGS
     --only-section=.logger -O binary --set-section-flags .logger=alloc --change-section-address .logger=0
     )
+
+set(CM4_BASE_LIBS
+    bsp hal cmsis device stm_font startup ut_support
+    )
+
 
 #----------------------------------------------------------------------------
 set_property(GLOBAL PROPERTY global_cc "${CM4_CC}")
@@ -94,3 +103,5 @@ set_property(GLOBAL PROPERTY global_ln_flags "${CM4_LN_FLAGS}")
 set_property(GLOBAL PROPERTY global_ln_dbg_flags "${CM4_LN_DBG_FLAGS}")
 set_property(GLOBAL PROPERTY global_objcopy_flags "${CM4_OBJCOPY_FLAGS}")
 set_property(GLOBAL PROPERTY global_objcopy_dbg_flags "${CM4_OBJCOPY_DBG_FLAGS}")
+set_property(GLOBAL PROPERTY global_base_libs "${CM4_BASE_LIBS}")
+set_property(GLOBAL PROPERTY global_mark3_extra_libs "${CM4_BASE_LIBS}")

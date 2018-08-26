@@ -17,7 +17,7 @@ set(arm_extra_headers
     )
 
 set(arm_extra_libs
-    stm32f429-startup
+    cmsis device
 )
 
 set_property(GLOBAL PROPERTY global_mark3_extra_cxx "${arm_extra_cxx}")

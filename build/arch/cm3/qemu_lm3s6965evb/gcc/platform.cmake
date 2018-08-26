@@ -20,12 +20,15 @@ set(CM3_CC_FLAGS "\
     -DARM \
     -D__CM3_REV=0x0202 \
     -D__MPU_PRESENT=1 \
+    -D__FPU_PRESENT=0 \
     -D__NVIC_PRIO_BITS=3 \
     -D__Vendor_SysTickConfig=0 \
     -DUSE_STDPERIPH_DRIVER \
     -D__CHECK_DEVICE_DEFINES \
     -DUSE_FULL_ASSERT \
     -fmessage-length=0
+    -mfloat-abi=soft \
+    -mthumb-interwork \
     ")
 
 set(CM3_CXX_FLAGS "\
@@ -45,11 +48,14 @@ set(CM3_CXX_FLAGS "\
     -DARM \
     -D__CM3_REV=0x0202 \
     -D__MPU_PRESENT=1 \
+    -D__FPU_PRESENT=0 \
     -D__NVIC_PRIO_BITS=3 \
     -D__Vendor_SysTickConfig=0 \
     -DUSE_STDPERIPH_DRIVER \
     -D__CHECK_DEVICE_DEFINES \
     -DUSE_FULL_ASSERT \
+    -mfloat-abi=soft \
+    -mthumb-interwork \
     -fmessage-length=0
     ")
 
@@ -62,6 +68,8 @@ set(CM3_LN_FLAGS "\
     -Wl,--end-group \
     -Wl,--gc-sections \
     -mthumb \
+    -mfloat-abi=soft \
+    -mthumb-interwork \
     -mcpu=cortex-m3 \
     ")
 
@@ -73,6 +81,8 @@ set(CM3_LN_DBG_FLAGS "\
     -Wl,-lm \
     -Wl,--end-group \
     -mthumb \
+    -mfloat-abi=soft \
+    -mthumb-interwork \
     -mcpu=cortex-m3 \
     ")
 

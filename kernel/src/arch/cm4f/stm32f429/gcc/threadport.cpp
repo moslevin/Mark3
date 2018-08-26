@@ -32,11 +32,6 @@ See license.txt for more information
 #include "stm32f4xx.h"
 
 //---------------------------------------------------------------------------
-#if KERNEL_USE_IDLE_FUNC
-#error "KERNEL_USE_IDLE_FUNC not supported in this port"
-#endif
-
-//---------------------------------------------------------------------------
 extern "C" {
 void SVC_Handler(void) __attribute__((naked));
 void PendSV_Handler(void) __attribute__((naked));
@@ -312,9 +307,9 @@ void ThreadPort::StartThreads()
 {
     KernelSWI::Config();   // configure the task switch SWI
     KernelTimer::Config(); // configure the kernel timer
-#if KERNEL_USE_PROFILER
+
     Profiler::Init();
-#endif
+
     Scheduler::SetScheduler(1); // enable the scheduler
     Scheduler::Schedule();      // run the scheduler - determine the first thread to run
 
@@ -323,10 +318,8 @@ void ThreadPort::StartThreads()
     KernelTimer::Start(); // enable the kernel timer
     KernelSWI::Start();   // enable the task switch SWI
 
-#if KERNEL_USE_QUANTUM
     Quantum::RemoveThread();
     Quantum::AddThread(g_pclCurrent);
-#endif
 
     SCB->CPACR |= 0x00F00000; // Enable floating-point
 

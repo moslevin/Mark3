@@ -87,8 +87,8 @@ elif [ "${FORMAT}" = "doxygen" ]; then
     echo    "#ifndef __SIZE_REPORT_H__"
     echo    "#define __SIZE_REPORT_H__"
     echo    ""
-    echo    "/*!"
-    echo    "\page SIZEPROFILE  Code Size Profiling"
+    echo    "/**"
+    echo    "@page SIZEPROFILE  Code Size Profiling"
     echo    "The following report details the size of each module compiled into the"
     echo    "kernel. The size of each component is dependent on the flags specified"
     echo    "in mark3cfg.h at compile time.  Note that these sizes represent the"
@@ -99,17 +99,17 @@ elif [ "${FORMAT}" = "doxygen" ]; then
     echo    "The results below are for profiling on ${ARCH_STRING} ${VARIANT}-based targets using ${TOOLCHAIN}. "
     echo    "Results are not necessarily indicative of relative or absolute performance"
     echo    "on other platforms or toolchains."
-    echo    "\section SIZEPROFILEINFO Information"
+    echo    "@section SIZEPROFILEINFO Information"
     echo    ""
     echo    "Date Profiled:"
     DATEINFO=$(date)
     echo    ${DATEINFO}
     echo    ""
-    echo    "\section SIZEPROFILEVER  Compiler Version"
+    echo    "@section SIZEPROFILEVER  Compiler Version"
     GCCINFO=$(${COMPILER_BIN} --version)
     echo    ${GCCINFO}
     echo    ""
-    echo    "\section SIZEPROFILERES  Profiling Results"
+    echo    "@section SIZEPROFILERES  Profiling Results"
 
     echo    "Mark3 Module Size Report:"
     echo    "@code"

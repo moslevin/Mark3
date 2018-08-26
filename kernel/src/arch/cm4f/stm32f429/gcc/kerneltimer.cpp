@@ -18,26 +18,25 @@ See license.txt for more information
     @brief  Kernel Timer Implementation for ARM Cortex-M4
 */
 
-#include "mark3.h"
 #include "kerneltypes.h"
 #include "kerneltimer.h"
 #include "threadport.h"
+#include "kernel.h"
+#include "ksemaphore.h"
+#include "kernelprofile.h"
+#include "thread.h"
+#include "quantum.h"
 
 #include "stm32f4xx.h"
 
-#include "ksemaphore.h"
-#include "thread.h"
-
+using namespace Mark3;
 namespace
 {
 //---------------------------------------------------------------------------
 // Static objects implementing the timer thread and its synchronization objects
-#if KERNEL_TIMERS_THREADED
 Thread    s_clTimerThread;
 K_WORD    s_clTimerThreadStack[PORT_KERNEL_TIMERS_THREAD_STACK];
 Semaphore s_clTimerSemaphore;
-#endif
-
 } // anonymous namespace
 
 using namespace Mark3;
@@ -49,18 +48,12 @@ void SysTick_Handler(void)
     if (!Kernel::IsStarted()) {
         return;
     }
-#if KERNEL_TIMERS_THREADED
     KernelTimer::ClearExpiry();
-    s_clTimerSemaphore.Post();
-#else
-#if KERNEL_USE_TIMERS
-    TimerScheduler::Process();
-#endif
-#if KERNEL_USE_QUANTUM
-    Quantum::UpdateTimer();
-#endif
-#endif
 
+    s_clTimerSemaphore.Post();
+    TimerScheduler::Process();
+
+    Quantum::UpdateTimer();
     // Clear the systick interrupt pending bit.
     SCB->ICSR = SCB_ICSR_PENDSTCLR_Msk;
 }
@@ -69,27 +62,20 @@ void SysTick_Handler(void)
 namespace Mark3
 {
 //---------------------------------------------------------------------------
-#if KERNEL_TIMERS_THREADED
 static void KernelTimer_Task(void* unused)
 {
     (void)unused;
     while (1) {
         s_clTimerSemaphore.Pend();
-#if KERNEL_USE_TIMERS
         TimerScheduler::Process();
-#endif
-#if KERNEL_USE_QUANTUM
         Quantum::UpdateTimer();
-#endif
     }
 }
-#endif
 
 //---------------------------------------------------------------------------
 void KernelTimer::Config(void)
 {
-#if KERNEL_TIMERS_THREADED
-    s_clTimersSemaphore.Init(0, 1);
+    s_clTimerSemaphore.Init(0, 1);
     s_clTimerThread.Init(s_clTimerThreadStack,
                          sizeof(s_clTimerThreadStack) / sizeof(K_WORD),
                          KERNEL_TIMERS_THREAD_PRIORITY,
@@ -97,7 +83,6 @@ void KernelTimer::Config(void)
                          0);
     Quantum::SetTimerThread(&s_clTimerThread);
     s_clTimerThread.Start();
-#endif
 }
 
 //---------------------------------------------------------------------------
