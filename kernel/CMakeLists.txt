@@ -1,4 +1,4 @@
-add_subdirectory(examples)
-add_subdirectory(libs)
+add_subdirectory(example)
+add_subdirectory(lib)
 add_subdirectory(src)
-add_subdirectory(tests)
+add_subdirectory(test)
