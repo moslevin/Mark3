@@ -56,7 +56,7 @@ TEST(ut_semaphore_count)
     for (int i = 0; i < 10; i++) { EXPECT_TRUE(clTestSem.Post()); }
     EXPECT_FALSE(clTestSem.Post());
 }
-TEST_END
+
 
 //===========================================================================
 TEST(ut_semaphore_post_pend)
@@ -100,7 +100,7 @@ TEST(ut_semaphore_post_pend)
     // semaphore should have pended 10 times before returning.
     EXPECT_EQUALS(u8Counter, 10);
 }
-TEST_END
+
 
 //===========================================================================
 TEST(ut_semaphore_timed)
@@ -134,7 +134,7 @@ TEST(ut_semaphore_timed)
     EXPECT_TRUE(clTestSem2.Pend(30));
 }
 
-TEST_END
+
 
 //===========================================================================
 // Test Whitelist Goes Here

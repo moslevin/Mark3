@@ -58,7 +58,7 @@ TEST(mailbox_blocking_receive)
     }
     clMBoxThread.Exit();
 }
-TEST_END
+
 
 volatile uint16_t u16Timeouts = 0;
 void              mbox_timed_test(void* param)
@@ -96,7 +96,7 @@ TEST(mailbox_blocking_timed)
     exit_flag = true;
     Thread::Sleep(100);
 }
-TEST_END
+
 
 TEST(mailbox_send_recv)
 {
@@ -114,7 +114,7 @@ TEST(mailbox_send_recv)
     }
     EXPECT_FALSE(clMbox.Receive((void*)aucRxBuf, 10));
 }
-TEST_END
+
 
 void mbox_recv_test(void* unused)
 {
@@ -141,7 +141,7 @@ TEST(mailbox_send_blocking)
     exit_flag = true;
     Thread::Sleep(100);
 }
-TEST_END
+
 
 //===========================================================================
 // Test Whitelist Goes Here

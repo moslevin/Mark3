@@ -166,7 +166,7 @@ TEST(ut_timer_sanity_multi)
     clProfiler2.Stop();
     clProfiler3.Stop();
 }
-TEST_END
+
 //---------------------------------------------------------------------------
 volatile uint32_t u32Delta = 0;
 
@@ -252,7 +252,7 @@ TEST(ut_timer_sanity_precision)
     clTimer.Stop();
     EXPECT_TRUE(bPass);
 }
-TEST_END
+
 
 //===========================================================================
 // Test Whitelist Goes Here

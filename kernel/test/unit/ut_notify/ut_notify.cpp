@@ -54,7 +54,7 @@ TEST(ut_notify)
     clThread.Stop();
     EXPECT_EQUALS(u8Count, 10);
 }
-TEST_END
+
 
 //===========================================================================
 // Define Test Cases Here
@@ -75,7 +75,7 @@ TEST(ut_notify_timeout)
     clThread.Stop();
     EXPECT_EQUALS(u8Count, 0);
 }
-TEST_END
+
 
 //===========================================================================
 // Test Whitelist Goes Here

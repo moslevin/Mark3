@@ -130,7 +130,6 @@ TEST(ut_timer_tolerance)
 
     Profiler::Stop();
 }
-TEST_END
 
 TEST(ut_timer_longrun)
 {
@@ -170,7 +169,6 @@ TEST(ut_timer_longrun)
 
     Profiler::Stop();
 }
-TEST_END
 
 TEST(ut_timer_repeat)
 {
@@ -212,7 +210,6 @@ TEST(ut_timer_repeat)
 
     Profiler::Stop();
 }
-TEST_END
 
 TEST(ut_timer_multi)
 {
@@ -274,7 +271,6 @@ TEST(ut_timer_multi)
 
     Profiler::Stop();
 }
-TEST_END
 
 //===========================================================================
 // Test Whitelist Goes Here

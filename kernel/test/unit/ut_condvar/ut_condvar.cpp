@@ -85,7 +85,7 @@ TEST(ut_condvar_wait_signal)
     Thread::Sleep(10);
     EXPECT_TRUE(isSignalled);
 }
-TEST_END
+
 
 //===========================================================================
 TEST(ut_condvar_wait_broadcast)
@@ -141,7 +141,7 @@ TEST(ut_condvar_wait_broadcast)
     Thread::Sleep(10);
     EXPECT_EQUALS(iSignalCount, 3);
 }
-TEST_END
+
 
 //===========================================================================
 TEST(ut_condvar_wait_multi_signal)
@@ -207,7 +207,7 @@ TEST(ut_condvar_wait_multi_signal)
     Thread::Sleep(10);
     EXPECT_EQUALS(iSignalCount, 3);
 }
-TEST_END
+
 
 //===========================================================================
 TEST(ut_condvar_wait_multi_broadcast)
@@ -263,7 +263,7 @@ TEST(ut_condvar_wait_multi_broadcast)
     Thread::Sleep(10);
     EXPECT_EQUALS(iSignalCount, 3);
 }
-TEST_END
+
 
 //===========================================================================
 TEST(ut_condvar_wait_timeout)
@@ -300,7 +300,7 @@ TEST(ut_condvar_wait_timeout)
     Thread::Sleep(50);
     EXPECT_TRUE(isTimeout);
 }
-TEST_END
+
 
 //===========================================================================
 TEST(ut_condvar_timedwait_success)
@@ -341,7 +341,7 @@ TEST(ut_condvar_timedwait_success)
     EXPECT_FALSE(isTimeout);
     EXPECT_TRUE(isSignalled);
 }
-TEST_END
+
 //===========================================================================
 // Test Whitelist Goes Here
 //===========================================================================

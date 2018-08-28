@@ -83,7 +83,7 @@ TEST(ut_typical_mutex)
     // token value to its value.  Check the new token value here.
     EXPECT_EQUALS(u8Token, 0x69);
 }
-TEST_END
+
 
 //===========================================================================
 TEST(ut_timed_mutex)
@@ -113,7 +113,7 @@ TEST(ut_timed_mutex)
 
     EXPECT_TRUE(clMutex.Claim(30));
 }
-TEST_END
+
 
 //===========================================================================
 TEST(ut_priority_mutex)
@@ -164,7 +164,7 @@ TEST(ut_priority_mutex)
     clMutexThread.Exit();
     clTestThread2.Exit();
 }
-TEST_END
+
 
 //===========================================================================
 TEST(ut_raii)
@@ -194,7 +194,7 @@ TEST(ut_raii)
         EXPECT_EQUALS(u8Token, 1);
     }
 }
-TEST_END
+
 
 //===========================================================================
 TEST(ut_raii_timeout)
@@ -236,7 +236,7 @@ TEST(ut_raii_timeout)
 
     Thread::Sleep(100);
 }
-TEST_END
+
 
 //===========================================================================
 // Test Whitelist Goes Here

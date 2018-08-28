@@ -50,11 +50,13 @@ void init_tests()
 //---------------------------------------------------------------------------
 void run_tests()
 {
-    auto* pstTestCase = astTestCases;
+    auto* pstCase = astTestCases;
 
-    while (pstTestCase->pclTestCase) {
-        pstTestCase->pfTestFunc();
-        pstTestCase++;
+    while (pstCase->pclTestCase) {
+        pstCase->pfTestFunc(pstCase->pclTestCase);
+        pstCase->pclTestCase->Complete();
+        pstCase->pclTestCase->PrintTestResult();
+        pstCase++;
     }
     PrintString("--DONE--\n");
     Thread::Sleep(100);

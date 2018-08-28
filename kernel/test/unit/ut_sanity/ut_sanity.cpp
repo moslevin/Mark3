@@ -181,7 +181,7 @@ TEST(ut_sanity_sem)
 
     clSemaphore.Init(0, 1);
 }
-TEST_END
+
 
 //---------------------------------------------------------------------------
 // void UT_TimedSemaphoreTest(void)
@@ -225,7 +225,7 @@ TEST(ut_sanity_timed_sem)
 
     Scheduler::GetCurrentThread()->SetPriority(1);
 }
-TEST_END
+
 
 //---------------------------------------------------------------------------
 // Sleep Test
@@ -258,7 +258,7 @@ TEST(ut_sanity_sleep)
 
     Scheduler::GetCurrentThread()->SetPriority(1);
 }
-TEST_END
+
 
 //---------------------------------------------------------------------------
 void TestMutexThread(Mutex* pclMutex_)
@@ -353,7 +353,7 @@ TEST(ut_sanity_mutex)
 
     clTestThread1.Exit();
 }
-TEST_END
+
 
 //---------------------------------------------------------------------------
 // void UT_TimedMessageTest(void)
@@ -396,7 +396,7 @@ TEST(ut_sanity_timed_msg)
 
     clTestThread1.Exit();
 }
-TEST_END
+
 
 //---------------------------------------------------------------------------
 // Message test
@@ -456,7 +456,7 @@ TEST(ut_sanity_msg)
 
     clTestThread1.Exit();
 }
-TEST_END
+
 
 //---------------------------------------------------------------------------
 // Round-Robin Thread
@@ -515,7 +515,7 @@ TEST(ut_sanity_rr)
 
     Scheduler::GetCurrentThread()->SetPriority(1);
 }
-TEST_END
+
 
 //---------------------------------------------------------------------------
 // void UT_QuantumTest(void)
@@ -576,7 +576,7 @@ TEST(ut_sanity_quantum)
 
     Scheduler::GetCurrentThread()->SetPriority(1);
 }
-TEST_END
+
 
 // void UT_TimerTest(void)
 TEST(ut_sanity_timer)
@@ -607,7 +607,7 @@ TEST(ut_sanity_timer)
 
     clTimer.Stop();
 }
-TEST_END
+
 
 //===========================================================================
 // Test Whitelist Goes Here

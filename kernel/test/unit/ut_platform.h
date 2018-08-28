@@ -29,7 +29,7 @@ public:
 };
 
 //---------------------------------------------------------------------------
-typedef void (*TestFunc)(void);
+typedef void (*TestFunc)(MyUnitTest* pclCurrent);
 
 //---------------------------------------------------------------------------
 typedef struct {
@@ -41,14 +41,7 @@ typedef struct {
 //---------------------------------------------------------------------------
 #define TEST(x)                                                                                                        \
     static MyUnitTest TestObj_##x;                                                                                     \
-    static void       TestFunc_##x(void)                                                                               \
-    {                                                                                                                  \
-        MyUnitTest* pclCurrent = &TestObj_##x;
-
-#define TEST_END                                                                                                       \
-    pclCurrent->Complete();                                                                                            \
-    pclCurrent->PrintTestResult();                                                                                     \
-    }
+    static void       TestFunc_##x(MyUnitTest* pclCurrent)
 
 //---------------------------------------------------------------------------
 #define EXPECT_TRUE(x)                                                                                                 \

@@ -190,7 +190,7 @@ TEST(ut_waitany)
 
     clThread1.Exit();
 }
-TEST_END
+
 
 //===========================================================================
 TEST(ut_waitall)
@@ -256,7 +256,7 @@ TEST(ut_waitall)
 
     clThread1.Exit();
 }
-TEST_END
+
 
 //---------------------------------------------------------------------------
 TEST(ut_flag_multiwait)
@@ -391,7 +391,7 @@ TEST(ut_flag_multiwait)
 
     EXPECT_EQUALS(u8FlagCount, 2);
 }
-TEST_END
+
 
 //===========================================================================
 TEST(ut_timedwait)
@@ -503,7 +503,7 @@ TEST(ut_timedwait)
     EXPECT_EQUALS(u8TimeoutCount, 5);
     EXPECT_EQUALS(u8FlagCount, 5);
 }
-TEST_END
+
 
 //===========================================================================
 // Test Whitelist Goes Here

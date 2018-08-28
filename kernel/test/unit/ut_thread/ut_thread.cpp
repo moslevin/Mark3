@@ -80,7 +80,7 @@ TEST(ut_threadcreate)
     // Ensure that the semaphore was posted before we got to the 10ms timeout
     EXPECT_FALSE(g_pclCurrent->GetExpired());
 }
-TEST_END
+
 
 //===========================================================================
 TEST(ut_threadstop)
@@ -96,7 +96,7 @@ TEST(ut_threadstop)
 
     EXPECT_FALSE(g_pclCurrent->GetExpired());
 }
-TEST_END
+
 
 //===========================================================================
 TEST(ut_threadexit)
@@ -109,7 +109,7 @@ TEST(ut_threadexit)
 
     EXPECT_TRUE(g_pclCurrent->GetExpired());
 }
-TEST_END
+
 
 //===========================================================================
 TEST(ut_threadsleep)
@@ -174,7 +174,7 @@ TEST(ut_threadsleep)
 
     Profiler::Stop();
 }
-TEST_END
+
 
 //===========================================================================
 TEST(ut_roundrobin)
@@ -245,7 +245,7 @@ TEST(ut_roundrobin)
     EXPECT_FAIL_EQUALS(u32RR2, 0);
     EXPECT_FAIL_EQUALS(u32RR3, 0);
 }
-TEST_END
+
 
 //===========================================================================
 TEST(ut_quanta)
@@ -337,7 +337,7 @@ TEST(ut_quanta)
     EXPECT_FAIL_EQUALS(u32RR2, 0);
     EXPECT_FAIL_EQUALS(u32RR3, 0);
 }
-TEST_END
+
 
 //===========================================================================
 // Test Whitelist Goes Here

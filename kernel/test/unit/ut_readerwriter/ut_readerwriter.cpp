@@ -87,7 +87,7 @@ TEST(ut_rw_single_reader)
     // Wait for thread to die...
     Thread::Sleep(50);
 }
-TEST_END
+
 
 TEST(ut_rw_single_writer)
 {
@@ -110,7 +110,7 @@ TEST(ut_rw_single_writer)
     // Wait for thread to die...
     Thread::Sleep(50);
 }
-TEST_END
+
 
 TEST(ut_rw_multiple_writers_block)
 {
@@ -155,7 +155,7 @@ TEST(ut_rw_multiple_writers_block)
     // Wait for threads to die...
     Thread::Sleep(50);
 }
-TEST_END
+
 
 TEST(ut_rw_multiple_readers_no_block)
 {
@@ -194,7 +194,7 @@ TEST(ut_rw_multiple_readers_no_block)
     // Wait for threads to die...
     Thread::Sleep(50);
 }
-TEST_END
+
 
 TEST(ut_rw_reader_blocks_writer)
 {
@@ -242,7 +242,7 @@ TEST(ut_rw_reader_blocks_writer)
     EXPECT_EQUALS(iNumReads, 2);
     EXPECT_EQUALS(iNumWrites, 1);
 }
-TEST_END
+
 
 TEST(ut_rw_writer_blocks_reader)
 {
@@ -295,7 +295,7 @@ TEST(ut_rw_writer_blocks_reader)
     EXPECT_EQUALS(iNumWrites, 2);
     EXPECT_EQUALS(iNumReads, 1);
 }
-TEST_END
+
 
 TEST(ut_rw_writer_timeout)
 {
@@ -320,7 +320,7 @@ TEST(ut_rw_writer_timeout)
 
     Thread::Sleep(50);
 }
-TEST_END
+
 
 TEST(ut_rw_reader_timeout)
 {
@@ -345,7 +345,7 @@ TEST(ut_rw_reader_timeout)
 
     Thread::Sleep(50);
 }
-TEST_END
+
 
 TEST(ut_rw_timed_read_success)
 {
@@ -368,7 +368,7 @@ TEST(ut_rw_timed_read_success)
     EXPECT_EQUALS(iNumWrites, 1);
     EXPECT_TRUE(success);
 }
-TEST_END
+
 
 TEST(ut_rw_timed_write_success)
 {
@@ -391,7 +391,7 @@ TEST(ut_rw_timed_write_success)
     EXPECT_EQUALS(iNumReads, 1);
     EXPECT_TRUE(success);
 }
-TEST_END
+
 
 //===========================================================================
 // Test Whitelist Goes Here
