@@ -72,7 +72,7 @@ public:
      *  Initialize a mutex object for use - must call this function before using
      *  the object.
      *
-     * @param bRecursieve Whether or not the mutex can be recursively locked.
+     * @param bRecursive_ Whether or not the mutex can be recursively locked.
      */
     void Init(bool bRecursive_ = true);
 

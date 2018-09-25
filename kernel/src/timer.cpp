@@ -102,7 +102,6 @@ void Timer::Start()
 void Timer::Stop()
 {
     KERNEL_ASSERT(IsInitialized());
-
     if ((m_u8Flags & TIMERLIST_FLAG_ACTIVE) == 0) {
         return;
     }
@@ -116,8 +115,6 @@ void Timer::SetIntervalTicks(uint32_t u32Ticks_)
     m_u32Interval = u32Ticks_;
 }
 
-//---------------------------------------------------------------------------
-//!! The next three cost u16 330 bytes of flash on AVR...
 //---------------------------------------------------------------------------
 void Timer::SetIntervalSeconds(uint32_t u32Seconds_)
 {
@@ -136,13 +133,6 @@ void Timer::SetIntervalMSeconds(uint32_t u32MSeconds_)
 void Timer::SetIntervalUSeconds(uint32_t u32USeconds_)
 {
     KERNEL_ASSERT(IsInitialized());
-
-#if KERNEL_TIMERS_TICKLESS
-    if (u32USeconds_ < KERNEL_TIMERS_MINIMUM_DELAY_US) {
-        u32USeconds_ = KERNEL_TIMERS_MINIMUM_DELAY_US;
-    }
-#endif
-
     m_u32Interval = USECONDS_TO_TICKS(u32USeconds_);
 }
 

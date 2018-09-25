@@ -20,102 +20,71 @@ See license.txt for more information
 */
 
 #include "mark3.h"
+
+#if KERNEL_ROUND_ROBIN
 namespace Mark3
 {
-namespace
-{
-    volatile bool bAddQuantumTimer; // Indicates that a timer add is pending
-} // anonymous namespace
 
-Thread* Quantum::m_pclTimerThread;
+//---------------------------------------------------------------------------
+uint16_t Quantum::m_u16TicksRemain;
 Thread* Quantum::m_pclActiveThread;
-
-Timer Quantum::m_clQuantumTimer;
-bool  Quantum::m_bActive;
+Thread* Quantum::m_pclTimerThread;
 bool  Quantum::m_bInTimer;
 
 //---------------------------------------------------------------------------
-void Quantum::SetTimer(Thread* pclThread_)
+void Quantum::SetInTimer()
 {
-    KERNEL_ASSERT(pclThread_ != nullptr);
+    CS_ENTER();
+    m_bInTimer = true;
 
-    auto lQuantumCallback = [](Thread* pclThread_, void* /*pvData_*/) {
-        if (pclThread_->GetCurrent()->GetHead() != pclThread_->GetCurrent()->GetTail()) {
-            bAddQuantumTimer = true;
-            pclThread_->GetCurrent()->PivotForward();
+    // Timer is active
+    if (m_u16TicksRemain) {
+        m_u16TicksRemain--;
+    }
+    CS_EXIT();
+}
+
+//---------------------------------------------------------------------------
+void Quantum::ClearInTimer()
+{
+    CS_ENTER();
+    m_bInTimer = false;
+
+    // Timer expired - Pivot the thread list.
+    if (m_pclActiveThread && (!m_u16TicksRemain)) {
+        auto* pclThreadList = m_pclActiveThread->GetCurrent();
+        if (pclThreadList->GetHead() != pclThreadList->GetTail()) {
+            pclThreadList->PivotForward();
         }
-    };
-
-    m_pclActiveThread = pclThread_;
-    m_clQuantumTimer.SetIntervalMSeconds(pclThread_->GetQuantum());
-    m_clQuantumTimer.SetFlags(TIMERLIST_FLAG_ONE_SHOT);
-    m_clQuantumTimer.SetData(NULL);
-    m_clQuantumTimer.SetCallback(lQuantumCallback);
-    m_clQuantumTimer.SetOwner(pclThread_);
+        m_pclActiveThread = nullptr;
+    }
+    CS_EXIT();
 }
 
 //---------------------------------------------------------------------------
-void Quantum::AddThread(Thread* pclThread_)
+void Quantum::Update(Thread* pclTargetThread_)
 {
-    KERNEL_ASSERT(pclThread_ != nullptr);
-
-    if (m_bActive) {
+    // Don't cancel the current RR interval if we're being interrupted by
+    // the timer thread, or are in the middle of running the timer thread.
+    // OR if the thread list only has one thread
+    auto* pclThreadList = pclTargetThread_->GetCurrent();
+    if ((pclThreadList->GetHead() == pclThreadList->GetTail()) ||
+       (pclTargetThread_ == m_pclTimerThread) ||
+       (pclTargetThread_ == m_pclActiveThread) ||
+        m_bInTimer) {
         return;
     }
 
-    // If this is called from the timer callback, queue a timer add, and defer
-    // until later.
-    if (m_bInTimer) {
-        bAddQuantumTimer = true;
-        return;
-    }
-
-    // If this isn't the only thread in the list.
-    if (pclThread_->GetCurrent()->GetHead() != pclThread_->GetCurrent()->GetTail()) {
-        m_clQuantumTimer.Init();
-        Quantum::SetTimer(pclThread_);
-        TimerScheduler::Add(&m_clQuantumTimer);
-        m_bActive = true;
-    }
+    // Update with a new thread and timeout.
+    m_pclActiveThread = pclTargetThread_;
+    m_u16TicksRemain = pclTargetThread_->GetQuantum();
 }
 
 //---------------------------------------------------------------------------
-void Quantum::RemoveThread(void)
+void Quantum::Cancel()
 {
-    if (!m_bActive) {
-        return;
-    }
-
-    // Cancel the current timer
-    TimerScheduler::Remove(&m_clQuantumTimer);
-    m_bActive         = false;
-    m_pclActiveThread = nullptr;
-}
-
-//---------------------------------------------------------------------------
-void Quantum::UpdateTimer(void)
-{
-    // If we have to re-add the quantum timer (more than 2 threads at the
-    // high-priority level...)
-    if (bAddQuantumTimer) {
-        // Trigger a thread yield - this will also re-schedule the
-        // thread *and* reset the round-robin scheduler.
-        Thread::Yield();
-        bAddQuantumTimer = false;
-    }
-}
-
-//---------------------------------------------------------------------------
-void Quantum::SetTimerThread(Thread* pclThread_)
-{
-    KERNEL_ASSERT(pclThread_ != nullptr);
-
-    m_pclTimerThread = pclThread_;
-}
-
-//---------------------------------------------------------------------------
-Thread* Quantum::GetTimerThread()
-{
-    return m_pclTimerThread;
+	m_pclActiveThread = nullptr;
+	m_u16TicksRemain = 0;
 }
 } // namespace Mark3
+#endif // #if KERNEL_ROUND_ROBIN

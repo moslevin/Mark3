@@ -61,7 +61,7 @@ public:
      *
      *  Remove a timer from the TimerList, cancelling its expiry.
      *
-     *  @param pclListNode_ Pointer to the Timer to remove
+     *  @param pclLinkListNode_ Pointer to the Timer to remove
      */
     void Remove(Timer* pclLinkListNode_);
 

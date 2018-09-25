@@ -49,9 +49,11 @@ void ThreadPort::InitStack(Thread* pclThread_)
     // Start by finding the bottom of the stack
     pu8Stack = (uint8_t*)pclThread_->m_pwStackTop;
 
+#if KERNEL_STACK_CHECK
     // clear the stack, and initialize it to a known-default value (easier
     // to debug when things go sour with stack corruption or overflow)
     for (i = 0; i < pclThread_->m_u16StackSize; i++) { pclThread_->m_pwStack[i] = 0xFF; }
+#endif // #if KERNEL_STACK_CHECK
 
     // Our context starts with the entry function
     PUSH_TO_STACK(pu8Stack, (uint8_t)(u16Addr & 0x00FF));
@@ -106,13 +108,13 @@ void ThreadPort::StartThreads()
     KernelTimer::Start(); // enable the kernel timer
     KernelSWI::Start();   // enable the task switch SWI
 
+#if KERNEL_ROUND_ROBIN
     // Restart the thread quantum timer, as any value held prior to starting
     // the kernel will be invalid.  This fixes a bug where multiple threads
     // started with the highest priority before starting the kernel causes problems
     // until the running thread voluntarily blocks.
-    Quantum::RemoveThread();
-    Quantum::AddThread(g_pclCurrent);
-
+    Quantum::Update(g_pclCurrent);
+#endif // #if KERNEL_ROUND_ROBIN
     // Restore the context...
     Thread_RestoreContext(); // restore the context of the first running thread
     ASM("reti");             // return from interrupt - will return to the first scheduled thread

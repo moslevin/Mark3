@@ -64,12 +64,17 @@ void Thread::Init(
     m_pwStackTop = TOP_OF_STACK(pwStack_, u16StackSize_);
 
     m_u16StackSize  = u16StackSize_;
-    m_u16Quantum    = THREAD_QUANTUM_DEFAULT;
     m_uXPriority    = uXPriority_;
     m_uXCurPriority = m_uXPriority;
     m_pfEntryPoint  = pfEntryPoint_;
     m_pvArg         = pvArg_;
+
+#if KERNEL_NAMED_THREADS
     m_szName        = NULL;
+#endif
+#if KERNEL_ROUND_ROBIN
+    m_u16Quantum    = THREAD_QUANTUM_DEFAULT;
+#endif
 
     m_clTimer.Init();
 
@@ -84,10 +89,12 @@ void Thread::Init(
     m_pclCurrent->Add(this);
     CS_EXIT();
 
+#if KERNEL_THREAD_CREATE_HOOK
     ThreadCreateCallout pfCallout = Kernel::GetThreadCreateCallout();
     if (pfCallout != nullptr) {
         pfCallout(this);
     }
+#endif
 }
 
 //---------------------------------------------------------------------------
@@ -98,6 +105,7 @@ Thread* Thread::Init(uint16_t u16StackSize_, PORT_PRIO_TYPE uXPriority_, ThreadE
     pclNew->Init(pwStack, u16StackSize_, uXPriority_, pfEntryPoint_, pvArg_);
     return pclNew;
 }
+
 //---------------------------------------------------------------------------
 void Thread::Start(void)
 {
@@ -113,15 +121,14 @@ void Thread::Start(void)
     m_pclCurrent = m_pclOwner;
     m_eState     = ThreadState::Ready;
 
+#if KERNEL_ROUND_ROBIN
     if (Kernel::IsStarted()) {
         if (GetCurPriority() >= Scheduler::GetCurrentThread()->GetCurPriority()) {
             // Deal with the thread Quantum
-            if (Quantum::GetTimerThread() != this) {
-                Quantum::RemoveThread();
-                Quantum::AddThread(this);
-            }
+            Quantum::Update(this);
         }
     }
+#endif
 
     if (Kernel::IsStarted()) {
         if (GetCurPriority() >= Scheduler::GetCurrentThread()->GetCurPriority()) {
@@ -146,6 +153,10 @@ void Thread::Stop()
     // If a thread is attempting to stop itself, ensure we call the scheduler
     if (this == Scheduler::GetCurrentThread()) {
         bReschedule = true;
+#if KERNEL_ROUND_ROBIN
+        // Cancel RR scheduling
+        Quantum::Cancel();
+#endif
     }
 
     // Add this thread to the stop-list (removing it from active scheduling)
@@ -190,6 +201,10 @@ void Thread::Exit()
     // scheduler again.
     if (this == Scheduler::GetCurrentThread()) {
         bReschedule = true;
+#if KERNEL_ROUND_ROBIN
+        // Cancel RR scheduling
+        Quantum::Cancel();
+#endif
     }
 
     // Remove the thread from scheduling
@@ -217,10 +232,12 @@ void Thread::Exit()
     TimerScheduler::Remove(&m_clTimer);
     CS_EXIT();
 
+#if KERNEL_THREAD_EXIT_HOOK
     ThreadExitCallout pfCallout = Kernel::GetThreadExitCallout();
     if (pfCallout != nullptr) {
         pfCallout(this);
     }
+#endif
 
     if (bReschedule) {
         // Choose a new "next" thread if we must
@@ -254,32 +271,7 @@ void Thread::Sleep(uint32_t u32TimeMs_)
     clSemaphore.Pend();
 }
 
-//---------------------------------------------------------------------------
-void Thread::USleep(uint32_t u32TimeUs_)
-{
-    Semaphore clSemaphore;
-    auto*     pclTimer       = g_pclCurrent->GetTimer();
-    auto      lTimerCallback = [](Thread* /*pclOwner*/, void* pvData_) {
-        auto* pclSemaphore = static_cast<Semaphore*>(pvData_);
-        pclSemaphore->Post();
-    };
-
-    // Create a semaphore that this thread will block on
-    clSemaphore.Init(0, 1);
-
-    // Create a one-shot timer that will call a callback that posts the
-    // semaphore, waking our thread.
-    pclTimer->Init();
-    pclTimer->SetIntervalUSeconds(u32TimeUs_);
-    pclTimer->SetCallback(lTimerCallback);
-    pclTimer->SetData((void*)&clSemaphore);
-    pclTimer->SetFlags(TIMERLIST_FLAG_ONE_SHOT);
-
-    // Add the new timer to the timer scheduler, and block the thread
-    TimerScheduler::Add(pclTimer);
-    clSemaphore.Pend();
-}
-
+#if KERNEL_STACK_CHECK
 //---------------------------------------------------------------------------
 uint16_t Thread::GetStackSlack()
 {
@@ -312,6 +304,7 @@ uint16_t Thread::GetStackSlack()
 
     return wMid;
 }
+#endif
 
 //---------------------------------------------------------------------------
 void Thread::Yield()
@@ -322,21 +315,23 @@ void Thread::Yield()
         Scheduler::Schedule();
 
         // Only switch contexts if the new task is different than the old task
-        if (Scheduler::GetCurrentThread() != Scheduler::GetNextThread()) {
-            if (Quantum::GetTimerThread() != Scheduler::GetNextThread()) {
-                if (Quantum::GetActiveThread() != Scheduler::GetNextThread()) {
-                    // new thread scheduled.  Stop current quantum timer (if it exists),
-                    // and restart it for the new thread (if required).
-                    Quantum::RemoveThread();
-                    Quantum::AddThread((Thread*)Scheduler::GetNextThread());
-                }
-            }
+        if (g_pclCurrent != g_pclNext) {
+#if KERNEL_ROUND_ROBIN
+            Quantum::Update((Thread*)g_pclNext);
+#endif
             Thread::ContextSwitchSWI();
         }
     } else {
         Scheduler::QueueScheduler();
     }
     CS_EXIT();
+}
+
+//---------------------------------------------------------------------------
+void Thread::CoopYield(void)
+{
+    g_pclCurrent->GetCurrent()->PivotForward();
+    Yield();
 }
 
 //---------------------------------------------------------------------------
@@ -356,10 +351,14 @@ void Thread::SetPriority(PORT_PRIO_TYPE uXPriority_)
     auto bSchedule = false;
 
     CS_ENTER();
+
     // If this is the currently running thread, it's a good idea to reschedule
     // Or, if the new priority is a higher priority than the current thread's.
     if ((g_pclCurrent == this) || (uXPriority_ > g_pclCurrent->GetPriority())) {
         bSchedule = true;
+#if KERNEL_ROUND_ROBIN
+        Quantum::Cancel();
+#endif
     }
     Scheduler::Remove(this);
     CS_EXIT();
@@ -373,14 +372,11 @@ void Thread::SetPriority(PORT_PRIO_TYPE uXPriority_)
 
     if (bSchedule) {
         if (Scheduler::IsEnabled()) {
-            CS_ENTER();
+            CS_ENTER();            
             Scheduler::Schedule();
-            if (Quantum::GetTimerThread() != Scheduler::GetNextThread()) {
-                // new thread scheduled.  Stop current quantum timer (if it exists),
-                // and restart it for the new thread (if required).
-                Quantum::RemoveThread();
-                Quantum::AddThread((Thread*)Scheduler::GetNextThread());
-            }
+#if KERNEL_ROUND_ROBIN
+            Quantum::Update((Thread*)g_pclNext);
+#endif
             CS_EXIT();
             Thread::ContextSwitchSWI();
         } else {
@@ -403,13 +399,17 @@ void Thread::ContextSwitchSWI()
 {
     // Call the context switch interrupt if the scheduler is enabled.
     if (Scheduler::IsEnabled()) {
+#if KERNEL_STACK_CHECK
         if (g_pclCurrent && (g_pclCurrent->GetStackSlack() <= Kernel::GetStackGuardThreshold())) {
             Kernel::Panic(PANIC_STACK_SLACK_VIOLATED);
         }
+#endif
+#if KERNEL_CONTEXT_SWITCH_CALLOUT
         auto pfCallout = Kernel::GetThreadContextSwitchCallout();
         if (pfCallout != nullptr) {
             pfCallout(g_pclCurrent);
         }
+#endif
         KernelSWI::Trigger();
     }
 }

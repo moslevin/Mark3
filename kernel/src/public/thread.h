@@ -127,6 +127,7 @@ public:
      */
     void Stop();
 
+#if KERNEL_NAMED_THREADS
     /**
      *  @brief SetName
      *
@@ -144,6 +145,7 @@ public:
      *          will be NULL.
      */
     const char* GetName() { return m_szName; }
+#endif // #if KERNEL_NAMED_THREADS
 
     /**
      *  @brief GetOwner
@@ -161,7 +163,7 @@ public:
      *
      *  @return Pointer to the thread's current list
      */
-    ThreadList* GetCurrent(void) { return m_pclCurrent; }
+    inline ThreadList* GetCurrent(void) { return m_pclCurrent; }
     /**
      *  @brief GetPriority
      *
@@ -180,6 +182,7 @@ public:
      */
     PORT_PRIO_TYPE GetCurPriority(void) { return m_uXCurPriority; }
 
+#if KERNEL_ROUND_ROBIN
     /**
      *  @brief SetQuantum
      *
@@ -196,6 +199,7 @@ public:
      *  @return The thread's quantum
      */
     uint16_t GetQuantum(void) { return m_u16Quantum; }
+#endif // #if KERNEL_ROUND_ROBIN
 
     /**
      *  @brief SetCurrent
@@ -262,16 +266,6 @@ public:
     static void Sleep(uint32_t u32TimeMs_);
 
     /**
-     *  @brief USleep
-     *
-     *  Put the thread to sleep for the specified time (in microseconds).
-     *  Actual time slept may be longer (but not less than) the interval specified.
-     *
-     *  @param u32TimeUs_ Time to sleep (in microseconds)
-     */
-    static void USleep(uint32_t u32TimeUs_);
-
-    /**
      *  @brief Yield
      *
      *  Yield the thread - this forces the system to call the scheduler and
@@ -279,6 +273,17 @@ public:
      *  threads are moved in and out of the scheduler.
      */
     static void Yield(void);
+
+    /**
+     * @brief CoopYield
+     *
+     * Cooperative yield - This forces the system to not only call the scheduler,
+     * but also move the currently executing thread to the back of the current
+     * thread list, allowing other same-priority threads the opportunity to run.
+     * This is used primarily for cooperative scheduling between threads in the
+     * same priority level.
+     */
+    static void CoopYield(void);
 
     /**
      *  @brief SetID
@@ -296,6 +301,8 @@ public:
      *  @return Thread's 8-bit ID, set by the user
      */
     uint8_t GetID() { return m_u8ThreadID; }
+
+#if KERNEL_STACK_CHECK
     /**
      *  @brief GetStackSlack
      *
@@ -309,7 +316,9 @@ public:
      *  @return The amount of slack (unused bytes) on the stack
      */
     uint16_t GetStackSlack();
+#endif // #if KERNEL_STACK_CHECK
 
+#if KERNEL_EVENT_FLAGS
     /**
      *  @brief GetEventFlagMask returns the thread's current event-flag mask,
      *        which is used in conjunction with the EventFlag blocking object
@@ -318,22 +327,26 @@ public:
      *  @return A copy of the thread's event flag mask
      */
     uint16_t GetEventFlagMask() { return m_u16FlagMask; }
+
     /**
      *  @brief SetEventFlagMask Sets the active event flag bitfield mask
      *  @param u16Mask_
      */
     void SetEventFlagMask(uint16_t u16Mask_) { m_u16FlagMask = u16Mask_; }
+
     /**
      * @brief SetEventFlagMode Sets the active event flag operation mode
      * @param eMode_ Event flag operation mode, defines the logical operator
      *               to apply to the event flag.
      */
     void SetEventFlagMode(EventFlagOperation eMode_) { m_eFlagMode = eMode_; }
+
     /**
      * @brief GetEventFlagMode Returns the thread's event flag's operating mode
      * @return The thread's event flag mode.
      */
     EventFlagOperation GetEventFlagMode() { return m_eFlagMode; }
+#endif // #if KERNEL_EVENT_FLAGS
 
     /**
      *  Return a pointer to the thread's timer object
@@ -357,6 +370,7 @@ public:
      */
     bool GetExpired();
 
+#if KERNEL_EXTENDED_CONTEXT
     /**
      * @brief GetExtendedContext
      *
@@ -380,6 +394,7 @@ public:
      * @param pvData_ Object to assign to the extended data pointer.+
      */
     void SetExtendedContext(void* pvData_) { m_pvExtendedContext = pvData_; }
+#endif // #if KERNEL_EXTENDED_CONTEXT
 
     /**
      * @brief GetState Returns the current state of the thread to the
@@ -446,11 +461,15 @@ private:
     //! Enum indicating the thread's current state
     ThreadState m_eState;
 
+#if KERNEL_EXTENDED_CONTEXT
     //! Pointer provided to a Thread to implement thread-local storage
     void* m_pvExtendedContext;
+#endif // #if KERNEL_EXTENDED_CONTEXT
 
+#if KERNEL_NAMED_THREADS
     //! Thread name
     const char* m_szName;
+#endif // #if KERNEL_NAMED_THREADS
 
     //! Size of the stack (in bytes)
     uint16_t m_u16StackSize;
@@ -467,14 +486,18 @@ private:
     //! Pointer to the argument passed into the thread's entrypoint
     void* m_pvArg;
 
+#if KERNEL_ROUND_ROBIN
     //! Thread quantum (in milliseconds)
     uint16_t m_u16Quantum;
+#endif // #if KERNEL_ROUND_ROBIN
 
+#if KERNEL_EVENT_FLAGS
     //! Event-flag mask
     uint16_t m_u16FlagMask;
 
     //! Event-flag mode
     EventFlagOperation m_eFlagMode;
+#endif // #if KERNEL_EVENT_FLAGS
 
     //! Timer used for blocking-object timeouts
     Timer m_clTimer;

@@ -97,6 +97,7 @@ public:
      */
     static void Panic(uint16_t u16Cause_);
 
+#if KERNEL_THREAD_CREATE_CALLOUT
     /**
      * @brief SetThreadCreateCallout
      *
@@ -108,6 +109,9 @@ public:
      * @param pfCreate_ Pointer to a function to call on thread creation
      */
     static void SetThreadCreateCallout(ThreadCreateCallout pfCreate_) { m_pfThreadCreateCallout = pfCreate_; }
+#endif // #if KERNEL_THREAD_CREATE_HOOK
+
+#if KERNEL_THREAD_EXIT_CALLOUT
     /**
      * @brief SetThreadExitCallout
      *
@@ -117,11 +121,14 @@ public:
      * A callout is only executed if this method has been called to set a
      * valid handler function.
      *
-     * @param pfCreate_ Pointer to a function to call on thread exit
+     * @param pfExit_ Pointer to a function to call on thread exit
      */
     static void SetThreadExitCallout(ThreadExitCallout pfExit_) { m_pfThreadExitCallout = pfExit_; }
+#endif // #if KERNEL_THREAD_EXIT_CALLOUT
+
+#if KERNEL_CONTEXT_SWITCH_CALLOUT
     /**
-     * @brief SetThreadContextSwitchCallout
+     * @brief  SetThreadContextSwitchCallout
      *
      * Set a function to be called on each context switch.
      *
@@ -134,6 +141,7 @@ public:
     {
         m_pfThreadContextCallout = pfContext_;
     }
+#endif // KERNEL_CONTEXT_SWITCH_CALLOUT
 
     /**
      * @brief SetDebugPrintFunction
@@ -158,6 +166,7 @@ public:
      */
     static void DebugPrint(const char* szString_);
 
+#if KERNEL_THREAD_CREATE_CALLOUT
     /**
      * @brief GetThreadCreateCallout
      *
@@ -167,38 +176,50 @@ public:
      *         or NULL if not set.
      */
     static ThreadCreateCallout GetThreadCreateCallout(void) { return m_pfThreadCreateCallout; }
+#endif // #if KERNEL_THREAD_CREATE_HOOK
+#if KERNEL_THREAD_EXIT_CALLOUT
     /**
      * @brief GetThreadExitCallout
-     *
      * Return the current function called on every Thread::Exit();
      *
      * @return Pointer to the currently-installed callout function,
      *         or NULL if not set.
      */
     static ThreadExitCallout GetThreadExitCallout(void) { return m_pfThreadExitCallout; }
+#endif // #if KERNEL_THREAD_EXIT_HOOK
+#if KERNEL_CONTEXT_SWITCH_CALLOUT
     /**
      * @brief GetThreadContextSwitchCallout
-     *
      * Return the current function called on every Thread::ContextSwitchSWI()
      *
      * @return Pointer to the currently-installed callout function,
      *         or NULL if not set.
      */
     static ThreadContextCallout GetThreadContextSwitchCallout(void) { return m_pfThreadContextCallout; }
-
+#endif // #if KERNEL_CONTEXT_SWITCH_CALLOUT
+#if KERNEL_STACK_CHECK
     static void     SetStackGuardThreshold(uint16_t u16Threshold_) { m_u16GuardThreshold = u16Threshold_; }
     static uint16_t GetStackGuardThreshold(void) { return m_u16GuardThreshold; }
+#endif // #if KERNEL_STACK_CHECK
 
 private:
     static bool      m_bIsStarted; //!< true if kernel is running, false otherwise
     static bool      m_bIsPanic;   //!< true if kernel is in panic state, false otherwise
     static PanicFunc m_pfPanic;    //!< set panic function
 
+#if KERNEL_THREAD_CREATE_CALLOUT
     static ThreadCreateCallout  m_pfThreadCreateCallout;  //!< Function to call on thread creation
+#endif // #if KERNEL_THREAD_CREATE_HOOK
+#if KERNEL_THREAD_EXIT_CALLOUT
     static ThreadExitCallout    m_pfThreadExitCallout;    //!< Function to call on thread exit
+#endif // #if KERNEL_THREAD_EXIT_HOOK
+#if KERNEL_CONTEXT_SWITCH_CALLOUT
     static ThreadContextCallout m_pfThreadContextCallout; //!< Function to call on context switch
+#endif // #if KERNEL_CONTEXT_SWITCH_CALLOUT
     static DebugPrintFunction   m_pfDebugPrintFunction;   //!< Function to call to print debug info
+#if KERNEL_STACK_CHECK
     static uint16_t             m_u16GuardThreshold;
+#endif // #if KERNEL_STACK_CHECK
 };
 
 } // namespace Mark3

@@ -72,6 +72,10 @@ public:
      */
     static void Process() { m_clTimerList.Process(); }
 
+#if KERNEL_TIMERS_TICKLESS
+    static void ForceUpdate(uint32_t u32Ticks_) { m_clTimerList.ForceUpdate(u32Ticks_); }
+#endif
+
 private:
     //! TimerList object manipu32ated by the Timer Scheduler
     static TimerList m_clTimerList;

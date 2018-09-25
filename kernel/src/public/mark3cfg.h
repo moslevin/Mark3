@@ -27,4 +27,20 @@ See license.txt for more information
 
 #define KERNEL_DEBUG (0)
 
+#define KERNEL_STACK_CHECK (0)
+
+#define KERNEL_NAMED_THREADS (0)
+
+#define KERNEL_EVENT_FLAGS (1)
+
+#define KERNEL_CONTEXT_SWITCH_CALLOUT (1)
+
+#define KERNEL_THREAD_CREATE_CALLOUT (1)
+
+#define KERNEL_THREAD_EXIT_CALLOUT (1)
+
+#define KERNEL_ROUND_ROBIN (1)
+
+#define KERNEL_EXTENDED_CONTEXT (0)
+
 #include "portcfg.h" //!< include CPU/Port specific configuration options

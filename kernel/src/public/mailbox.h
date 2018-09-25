@@ -294,7 +294,7 @@ private:
      *
      * @param pvData_   Pointer to the envelope data
      * @param bTail_    true - write to tail, false - write to head
-     * @param u32WaitTimeMS_ Time to wait before timeout (in ms).
+     * @param u32TimeoutMS_ Time to wait before timeout (in ms).
      * @return          true - data successfully written, false - buffer full
      */
     bool Send_i(const void* pvData_, bool bTail_, uint32_t u32TimeoutMS_);

@@ -25,11 +25,19 @@ bool      Kernel::m_bIsStarted; //!< true if kernel is running, false otherwise
 bool      Kernel::m_bIsPanic;   //!< true if kernel is in panic state, false otherwise
 PanicFunc Kernel::m_pfPanic;    //!< set panic function
 
+#if KERNEL_THREAD_CREATE_HOOK
 ThreadCreateCallout  Kernel::m_pfThreadCreateCallout;  //!< Function to call on thread creation
+#endif // #if KERNEL_THREAD_CREATE_HOOK
+#if KERNEL_THREAD_EXIT_HOOK
 ThreadExitCallout    Kernel::m_pfThreadExitCallout;    //!< Function to call on thread exit
+#endif // #if KERNEL_THREAD_EXIT_HOOK
+#if KERNEL_CONTEXT_SWITCH_CALLOUT
 ThreadContextCallout Kernel::m_pfThreadContextCallout; //!< Function to call on context switch
+#endif // #if KERNEL_CONTEXT_SWITCH_CALLOUT
 DebugPrintFunction   Kernel::m_pfDebugPrintFunction;   //!< Function to call when printing debug info
+#if KERNEL_STACK_CHECK
 uint16_t             Kernel::m_u16GuardThreshold;
+#endif // #if KERNEL_STACK_CHECK
 
 //---------------------------------------------------------------------------
 void Kernel::Init(void)
@@ -39,7 +47,9 @@ void Kernel::Init(void)
     // Initialize the global kernel data - thread-scheduler, and timer-scheduler.
     Scheduler::Init();
     TimerScheduler::Init();
+#if KERNEL_STACK_CHECK
     m_u16GuardThreshold = KERNEL_STACK_GUARD_DEFAULT;
+#endif // #if KERNEL_STACK_CHECK
 }
 
 //---------------------------------------------------------------------------

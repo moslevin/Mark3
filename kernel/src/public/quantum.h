@@ -29,6 +29,7 @@ See license.txt for more information
 #include "timerlist.h"
 #include "timerscheduler.h"
 
+#if KERNEL_ROUND_ROBIN
 namespace Mark3
 {
 class Timer;
@@ -41,30 +42,8 @@ class Timer;
 class Quantum
 {
 public:
-    /**
-     *  @brief UpdateTimer
-     *
-     *  This function is called to update the thread quantum timer whenever
-     *  something in the scheduler has changed.  This can result in the timer
-     *  being re-loaded or started.  The timer is never stopped, but if may
-     *  be ignored on expiry.
-     */
-    static void UpdateTimer();
 
-    /**
-     *  @brief AddThread
-     *
-     *  Add the thread to the quantum timer.  Only one thread can own the quantum,
-     *  since only one thread can be running on a core at a time.
-     */
-    static void AddThread(Thread* pclThread_);
-
-    /**
-     *  @brief RemoveThread
-     *
-     *  Remove the thread from the quantum timer.  This will cancel the timer.
-     */
-    static void RemoveThread();
+    static void Init();
 
     /**
      *  @brief SetInTimer
@@ -74,38 +53,46 @@ public:
      *  updated in the middle of a callback cycle, potentially resulting in
      *  the kernel timer becoming disabled.
      */
-    static void SetInTimer(void) { m_bInTimer = true; }
+    static void SetInTimer();
+
     /**
      * @brief ClearInTimer
      *
      *  Clear the flag once the timer callback function has been completed.
      */
-    static void ClearInTimer(void) { m_bInTimer = false; }
+    static void ClearInTimer();
 
-    static void SetTimerThread(Thread* pclTimerThread_);
+    /**
+     * @brief Update
+     *
+     * Update the current thread being tracked for round-robing scheduling.
+     * Note - this has no effect if called from the Timer thread, or if
+     * the Timer thread is active.
+     *
+     * @param pclTargetThread_ New thread to track.
+     */
+    static void Update(Thread* pclTargetThread_);
 
-    static Thread* GetTimerThread();
+    /**
+     * @brief SetTimerThread
+     *
+     * Pass the timer thread's Thread pointer to the Quantum module to track
+     * against requests to update the round-robin timer.
+     *
+     * @param pclTimerThread_ Pointer to the Timer thread's Thread object.
+     */
+    static void SetTimerThread(Thread* pclTimerThread_) { m_pclTimerThread = pclTimerThread_; }
 
-    static Thread* GetActiveThread() { return m_pclActiveThread; }
+    /**
+     * Cancel the round-robin timer.
+     */
+    static void Cancel();
 
 private:
-    /**
-     *  @brief SetTimer
-     *
-     *  Set up the quantum timer in the timer scheduler.  This creates a
-     *  one-shot timer, which calls a static callback in quantum.cpp that
-     *  on expiry will pivot the head of the threadlist for the thread's
-     *  priority.  This is the mechanism that provides round-robin
-     *  scheduling in the system.
-     *
-     *  @param pclThread_ Pointer to the thread to set the Quantum timer on
-     */
-    static void SetTimer(Thread* pclThread_);
-
-    static Thread* m_pclTimerThread;
     static Thread* m_pclActiveThread;
-    static Timer   m_clQuantumTimer;
-    static bool    m_bActive;
-    static bool    m_bInTimer;
+    static Thread* m_pclTimerThread;
+    static uint16_t m_u16TicksRemain;
+    static bool m_bInTimer;
 };
 } // namespace Mark3
+#endif // #if KERNEL_ROUND_ROBIN

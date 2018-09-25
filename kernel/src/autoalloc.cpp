@@ -108,6 +108,8 @@ void AutoAlloc::DestroyMutex(Mutex* pclMutex_)
     pclMutex_->~Mutex();
     Free(AutoAllocType::Mutex, pclMutex_);
 }
+
+#if KERNEL_EVENT_FLAGS
 //---------------------------------------------------------------------------
 EventFlag* AutoAlloc::NewEventFlag(void)
 {
@@ -123,6 +125,8 @@ void AutoAlloc::DestroyEventFlag(EventFlag* pclEventFlag_)
     pclEventFlag_->~EventFlag();
     Free(AutoAllocType::EventFlag, pclEventFlag_);
 }
+#endif // #if KERNEL_EVENT_FLAGS
+
 //---------------------------------------------------------------------------
 Message* AutoAlloc::NewMessage(void)
 {

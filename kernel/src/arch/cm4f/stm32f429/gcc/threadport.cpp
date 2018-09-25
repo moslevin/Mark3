@@ -267,7 +267,9 @@ void ThreadPort::InitStack(Thread* pclThread_)
 
     // Initialize the stack to all FF's to aid in stack depth checking
     pu32Temp = (uint32_t*)pclThread_->m_pwStack;
+#if KERNEL_STACK_CHECK
     for (i = 0; i < pclThread_->m_u16StackSize / sizeof(uint32_t); i++) { pu32Temp[i] = 0xFFFFFFFF; }
+#endif
 
     PUSH_TO_STACK(pu32Stack, 0); // We need one word of padding, apparently...
 
@@ -318,8 +320,9 @@ void ThreadPort::StartThreads()
     KernelTimer::Start(); // enable the kernel timer
     KernelSWI::Start();   // enable the task switch SWI
 
-    Quantum::RemoveThread();
-    Quantum::AddThread(g_pclCurrent);
+#if KERNEL_ROUND_ROBIN
+    Quantum::Update(g_pclCurrent);
+#endif // #if KERNEL_ROUND_ROBIN
 
     SCB->CPACR |= 0x00F00000; // Enable floating-point
 

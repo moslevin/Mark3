@@ -125,7 +125,7 @@ public:
      *
      *  @return Pointer to the head node in the list
      */
-    LinkListNode* GetHead() { return m_pclHead; }
+    inline LinkListNode* GetHead() { return m_pclHead; }
     /**
      *  @brief GetTail
      *
@@ -133,7 +133,7 @@ public:
      *
      *  @return Pointer to the tail node in the list
      */
-    LinkListNode* GetTail() { return m_pclTail; }
+    inline LinkListNode* GetTail() { return m_pclTail; }
 };
 
 //---------------------------------------------------------------------------

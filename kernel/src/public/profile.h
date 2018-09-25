@@ -117,7 +117,7 @@ private:
      *
      *  Figure out how many ticks have elapsed in this iteration
      *
-     *  @param u16Count_ Current timer count
+     *  @param u16Current_ Current timer count
      *  @param u32Epoch_ Current timer epoch
      *
      *  @return Current tick count

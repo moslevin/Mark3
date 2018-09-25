@@ -18,6 +18,8 @@ See license.txt for more information
 
 #include "mark3.h"
 
+#if KERNEL_EVENT_FLAGS
+
 namespace Mark3
 {
 namespace
@@ -302,3 +304,4 @@ uint16_t EventFlag::GetMask()
     return u16Return;
 }
 } // namespace Mark3
+#endif // #if KERNEL_EVENT_FLAGS

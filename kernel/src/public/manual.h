@@ -110,13 +110,6 @@ See license.txt for more information
 */
 /**
     @page BUILD0 Building Mark3
-
-    @section BUILDLAYOUT Source Layout
-
-    @section BUILDLAYOUT Configuring a build target
-
-    @section BUILDLAYOUT Running the build
-
 */
 /**
     @page START Getting Started With The Mark3 API
@@ -791,7 +784,7 @@ See license.txt for more information
 
     @subsection NTFE Notification Example
 
-    @code
+    @code NOTIFIER
 
     static Notify clNotifier;
 
@@ -1135,8 +1128,8 @@ See license.txt for more information
     The following figure demonstrates the differences between the architecture of
     a bare-metal system and RTOS based system at a high level:
 
-    \image html Mark3_arch.png
-    \image latex Mark3_arch.png "Arch" width=10cm
+    @image html Mark3_arch.png
+    @image latex Mark3_arch.png "Arch" width=10cm
 
     As can be seen, the RTOS (And associated middleware + libraries) captures a
     certain fixed size.
@@ -2008,8 +2001,8 @@ See license.txt for more information
     At a high level, the Mark3 RTOS is organized into the following features, and
     layered as shown below:
 
-    \image html Mark3_arch4.png
-    \image latex Mark3_arch4.png "Overview" width=10cm
+    @image html Mark3_arch4.png
+    @image latex Mark3_arch4.png "Overview" width=10cm
 
     Everything in the “green” layer represents the Mark3 public API and classes,
     beneath which lives all hardware abstraction and CPU-specific porting and
@@ -2073,8 +2066,8 @@ See license.txt for more information
     in some cases, groups of functions/macros).  The relationship between objects
     in the Mark3 kernel is shown below:
 
-    \image html Mark3_arch5.png
-    \image latex Mark3_arch5.png "Overview" width=10cm
+    @image html Mark3_arch5.png
+    @image latex Mark3_arch5.png "Overview" width=10cm
 
     The objects shown in the preceding table can be grouped together by feature.
     In the table below, we group each feature by object, referencing the source
@@ -2117,8 +2110,8 @@ See license.txt for more information
     The classes involved in threading and scheudling in Mark3 are highlighted
     in the following diagram, and are discussed in detail in this chapter:
 
-    \image html Mark3_arch24.png
-    \image latex Mark3_arch24.png "Threads and Scheduling" width=10cm
+    @image html Mark3_arch24.png
+    @image latex Mark3_arch24.png "Threads and Scheduling" width=10cm
 
     @subsection BITTHREAD A Bit About Threads
 
@@ -2215,8 +2208,8 @@ See license.txt for more information
 
     The relationship between these objects in the system are shown below:
 
-    \image html Mark3_arch21.png
-    \image latex Mark3_arch21.png "Blocking Objects" width=10cm
+    @image html Mark3_arch21.png
+    @image latex Mark3_arch21.png "Blocking Objects" width=10cm
 
     Each of these objects inherit from the BlockingObject class, which itself
     contains a ThreadList object.  This class contains methods to Block() a
@@ -2447,8 +2440,8 @@ See license.txt for more information
 
     Timers are implemented using the following components in the Mark3 Kernel:
 
-    \image html Mark3_arch20.png
-    \image latex Mark3_arch20.png "Timers" width=10cm
+    @image html Mark3_arch20.png
+    @image latex Mark3_arch20.png "Timers" width=10cm
 
     The Timer class provides the basic periodic and one-shot timer functionality
     used by applicaiton code, blocking objects, and IPC.
@@ -2579,8 +2572,8 @@ See license.txt for more information
 
     @section SYNCHIPC Synchronization and IPC
 
-    \image html Mark3_arch21.png
-    \image latex Mark3_arch21.png "Synchronization and IPC" width=10cm
+    @image html Mark3_arch21.png
+    @image latex Mark3_arch21.png "Synchronization and IPC" width=10cm
 
     @section BLOCKINGOBJECTS Blocking Objects
 
@@ -2788,20 +2781,18 @@ See license.txt for more information
 
     @subsection ATOMICOPS Atomic Operations
 
-    \image html Mark3_arch25.png
-    \image latex Mark3_arch25.png "Atomic operations" width=10cm
+    @image html Mark3_arch25.png
+    @image latex Mark3_arch25.png "Atomic operations" width=10cm
 
     This utility class provides primatives for atomic operations - that is,
     operations that are guaranteed to execute uninterrupted.  Basic atomic
     primatives provided here include Set/Add/Delete for 8, 16, and 32-bit integer
     types, as well as an atomic test-and-set.
 
-    @subsection
-
     @subsection DRIVERS Drivers
 
-    \image html Mark3_arch18.png
-    \image latex Mark3_arch18.png "Drivers" width=10cm
+    @image html Mark3_arch18.png
+    @image latex Mark3_arch18.png "Drivers" width=10cm
 
     This is the basis of the driver framework.  In the context of Mark3, drivers
     don't necessarily have to be based on physical hardware peripherals.  They
@@ -2888,8 +2879,8 @@ See license.txt for more information
 
     @section KRNLPROPER Kernel Proper and Porting
 
-    \image html Mark3_arch26.png
-    \image latex Mark3_arch26.png "Kernel Proper and Porting" width=10cm
+    @image html Mark3_arch26.png
+    @image latex Mark3_arch26.png "Kernel Proper and Porting" width=10cm
 
     The Kernel class is a static class with methods to handle the initialization
     and startup of the RTOS, manage errors, and provide user-hooks for fatal
@@ -3602,7 +3593,7 @@ See license.txt for more information
     - Removed fake idle-thread feature, since it doesn't support all targets
     - Make all unit tests and examples run on all targets
     - Moved AVR-specific code out of the kernel (kernelaware debugging support)
-    - Disable build-time configuration, and remove all associated #ifdefs throughout the code.
+    - Disable build-time configuration, and remove all associated ifdefs throughout the code.
     - Support qemu-system-arm's lm3s6965 evb target, with semihosting
     - Various bugfixes and improvements
     .
@@ -3698,43 +3689,39 @@ See license.txt for more information
 
  */
 /**
-    \example lab1_kernel_setup/main.cpp
+    @example lab1_kernel_setup/main.cpp
     This example demonstrates basic kernel setup with two threads.
 
-    \example lab3_round_robin/main.cpp
+    @example lab3_round_robin/main.cpp
     This example demonstrates how to use round-robin thread scheduling with
     multiple threads of the same priority.
 
-    \example lab4_semaphores/main.cpp
+    @example lab4_semaphores/main.cpp
     This example demonstrates how to use semaphores for Thread synchronization.
 
-    \example lab5_mutexes/main.cpp
+    @example lab5_mutexes/main.cpp
     This example demonstrates how to use mutexes to protect against concurrent
     access to resources.
 
-    \example lab6_timers/main.cpp
+    @example lab6_timers/main.cpp
     This example demonstrates how to create and use software timers.
 
-    \example lab7_events/main.cpp
+    @example lab7_events/main.cpp
     This example demonstrates how to create and use event groups
 
-    \example lab8_messages/main.cpp
+    @example lab8_messages/main.cpp
     This example demonstrates how to pass data between threads using message
     passing.
 
-    \example lab9_dynamic_threads/main.cpp
+    @example lab9_dynamic_threads/main.cpp
     This example demonstrates how to create and destroy threads dynamically at
     runtime.
 
-    \example lab10_notifications/main.cpp
+    @example lab10_notifications/main.cpp
     This examples demonstrates how to use notifcation objects as a thread
     synchronization mechanism.
 
-    \example lab11_mailboxes/main.cpp
+    @example lab11_mailboxes/main.cpp
     This examples shows how to use mailboxes to deliver data between threads in
     a synchronized way.
-
-    \example buffalogger/main.cpp
-    This example demonstrates how low-overhead logging can be implemented using
-    buffalogger.
 */

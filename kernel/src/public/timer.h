@@ -42,43 +42,13 @@ class Thread;
 #define MAX_TIMER_TICKS (0x7FFFFFFF) //!< Maximum value to set
 #define TIMER_TICKS_INVALID (0x80000000)
 //---------------------------------------------------------------------------
-#if KERNEL_TIMERS_TICKLESS
-
-//---------------------------------------------------------------------------
-/*
-    Ugly macros to support a wide resolution of delays.
-    Given a 16-bit timer @ 16MHz & 256 cycle prescaler, this gives u16...
-    Max time, SECONDS_TO_TICKS:  68719s
-    Max time, MSECONDS_TO_TICKS: 6871.9s
-    Max time, USECONDS_TO_TICKS: 6.8719s
-
-    ...With a 16us tick resolution.
-
-    Depending on the system frequency and timer resolution, you may want to
-    customize these values to suit your system more appropriately.
- */
-//---------------------------------------------------------------------------
-#define SECONDS_TO_TICKS(x) ((((uint32_t)x) * PORT_TIMER_FREQ))
-#define MSECONDS_TO_TICKS(x) ((((((uint32_t)x) * (PORT_TIMER_FREQ / 100)) + 5) / 10))
-#define USECONDS_TO_TICKS(x) ((((((uint32_t)x) * PORT_TIMER_FREQ) + 50000) / 1000000))
-
-//---------------------------------------------------------------------------
-#define MIN_TICKS (3) //!< The minimum tick value to set
-//---------------------------------------------------------------------------
-
-#else
 
 //---------------------------------------------------------------------------
 // add time because we don't know how far in an epoch we are when a call is made.
-#define SECONDS_TO_TICKS(x) (((uint32_t)(x)*1000) + 1)
-#define MSECONDS_TO_TICKS(x) ((uint32_t)(x + 1))
+#define SECONDS_TO_TICKS(x) (((uint32_t)(x)*1000))
+#define MSECONDS_TO_TICKS(x) ((uint32_t)(x))
 #define USECONDS_TO_TICKS(x) (((uint32_t)(x + 999)) / 1000)
 
-//---------------------------------------------------------------------------
-#define MIN_TICKS (1) //!< The minimum tick value to set
-//---------------------------------------------------------------------------
-
-#endif // KERNEL_TIMERS_TICKLESS
 //---------------------------------------------------------------------------
 /**
  * This type defines the callback function type for timer events.  Since these

@@ -34,35 +34,6 @@ See license.txt for more information
 */
 #define KERNEL_NUM_PRIORITIES (16)
 
-/**
-    If you've opted to use the kernel timers module, you have an option
-    as to which timer implementation to use:  Tick-based or Tick-less.
-
-    Tick-based timers provide a "traditional" RTOS timer implementation
-    based on a fixed-frequency timer interrupt.  While this provides
-    very accurate, reliable timing, it also means that the CPU is being
-    interrupted far more often than may be necessary (as not all timer
-    ticks result in "real work" being done).
-
-    Tick-less timers still rely on a hardware timer interrupt, but uses
-    a dynamic expiry interval to ensure that the interrupt is only
-    called when the next timer expires.  This increases the complexity
-    of the timer interrupt handler, but reduces the number and frequency.
-
-    Note that the CPU port (kerneltimer.cpp) must be implemented for the
-    particular timer variant desired.
-*/
-#define KERNEL_TIMERS_TICKLESS (1)
-
-#if KERNEL_TIMERS_TICKLESS
-/**
-    When using tickless timers, it is useful to define a minimum sleep
-    value.  In the event that a delay/sleep/timeout value lower than this
-    is provided to a timer-based API, the minimum value will be substituted.
-*/
-#define KERNEL_TIMERS_MINIMUM_DELAY_US (25)
-#endif
-
 #define KERNEL_TIMERS_THREAD_PRIORITY (KERNEL_NUM_PRIORITIES - 1)
 
 #define THREAD_QUANTUM_DEFAULT (4)
@@ -110,11 +81,7 @@ See license.txt for more information
     In tick-based mode, this is the frequency at which the fixed-frequency kernel tick
     interrupt occurs.
 */
-#if KERNEL_TIMERS_TICKLESS
-#define PORT_TIMER_FREQ ((uint32_t)(PORT_SYSTEM_FREQ / 256)) //!< Timer resolution in ticks
-#else
 #define PORT_TIMER_FREQ ((uint32_t)(PORT_SYSTEM_FREQ / 1000)) //!< Fixed timer interrupt frequency
-#endif
 
 /**
     Define the default/minimum size of a thread stack

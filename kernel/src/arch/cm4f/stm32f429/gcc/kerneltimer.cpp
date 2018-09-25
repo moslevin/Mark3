@@ -45,15 +45,14 @@ using namespace Mark3;
 extern "C" {
 void SysTick_Handler(void)
 {
+	HAL_IncTick();
+
     if (!Kernel::IsStarted()) {
         return;
     }
-    KernelTimer::ClearExpiry();
 
     s_clTimerSemaphore.Post();
-    TimerScheduler::Process();
 
-    Quantum::UpdateTimer();
     // Clear the systick interrupt pending bit.
     SCB->ICSR = SCB_ICSR_PENDSTCLR_Msk;
 }
@@ -67,8 +66,13 @@ static void KernelTimer_Task(void* unused)
     (void)unused;
     while (1) {
         s_clTimerSemaphore.Pend();
+#if KERNEL_ROUND_ROBIN
+        Quantum::SetInTimer();
+#endif // #if KERNEL_ROUND_ROBIN
         TimerScheduler::Process();
-        Quantum::UpdateTimer();
+#if KERNEL_ROUND_ROBIN
+        Quantum::ClearInTimer();
+#endif // #if KERNEL_ROUND_ROBIN
     }
 }
 
@@ -81,7 +85,9 @@ void KernelTimer::Config(void)
                          KERNEL_TIMERS_THREAD_PRIORITY,
                          KernelTimer_Task,
                          0);
+#if KERNEL_ROUND_ROBIN
     Quantum::SetTimerThread(&s_clTimerThread);
+#endif // #if KERNEL_ROUND_ROBIN
     s_clTimerThread.Start();
 }
 
@@ -108,33 +114,6 @@ uint16_t KernelTimer::Read(void)
     // Not implemented in this port
     return 0;
 }
-
-//---------------------------------------------------------------------------
-uint32_t KernelTimer::SubtractExpiry(uint32_t u32Interval_)
-{
-    return 0;
-}
-
-//---------------------------------------------------------------------------
-uint32_t KernelTimer::TimeToExpiry(void)
-{
-    return 0;
-}
-
-//---------------------------------------------------------------------------
-uint32_t KernelTimer::GetOvertime(void)
-{
-    return 0;
-}
-
-//---------------------------------------------------------------------------
-uint32_t KernelTimer::SetExpiry(uint32_t u32Interval_)
-{
-    return 0;
-}
-
-//---------------------------------------------------------------------------
-void KernelTimer::ClearExpiry(void) {}
 
 //-------------------------------------------------------------------------
 uint8_t KernelTimer::DI(void)

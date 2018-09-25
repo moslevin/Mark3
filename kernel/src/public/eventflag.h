@@ -23,6 +23,7 @@ See license.txt for more information
 #include "blocking.h"
 #include "thread.h"
 
+#if KERNEL_EVENT_FLAGS
 namespace Mark3
 {
 //---------------------------------------------------------------------------
@@ -76,7 +77,7 @@ public:
      *
      * Wake the given thread, currently blocking on this object
      *
-     * @param pclOwner_ Pointer to the owner thread to unblock.
+     * @param pclChosenOne_ Pointer to the owner thread to unblock.
      */
     void WakeMe(Thread* pclChosenOne_);
 
@@ -117,3 +118,4 @@ private:
     uint16_t m_u16SetMask; //!< Event flags currently set in this object
 };
 } // namespace Mark3
+#endif // #if KERNEL_EVENT_FLAGS
