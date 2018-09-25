@@ -288,7 +288,10 @@ void ThreadPort::InitStack(Thread* pclThread_)
 
     // Initialize the stack to all FF's to aid in stack depth checking
     pu32Temp = (uint32_t*)pclThread_->m_pwStack;
+
+#if KERNEL_STACK_CHECK
     for (i = 0; i < pclThread_->m_u16StackSize / sizeof(uint32_t); i++) { pu32Temp[i] = 0xFFFFFFFF; }
+#endif // #if KERNEL_STACK_CHECK
 
     PUSH_TO_STACK(pu32Stack, 0); // We need one word of padding, apparently...
 
@@ -340,8 +343,9 @@ void ThreadPort::StartThreads()
     // the kernel will be invalid.  This fixes a bug where multiple threads
     // started with the highest priority before starting the kernel causes problems
     // until the running thread voluntarily blocks.
-    Quantum::RemoveThread();
-    Quantum::AddThread(g_pclCurrent);
+#if KERNEL_ROUND_ROBIN
+    Quantum::Update(g_pclCurrent);
+#endif // #if KERNEL_ROUND_ROBIN
 
     ThreadPort_StartFirstThread(); // Jump to the first thread (does not return)
 }

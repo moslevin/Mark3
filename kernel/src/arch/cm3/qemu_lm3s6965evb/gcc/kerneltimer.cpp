@@ -46,10 +46,10 @@ void SysTick_Handler(void)
     if (!Kernel::IsStarted()) {
         return;
     }
-    KernelTimer::ClearExpiry();
-    s_clTimerSemaphore.Post();
 
     Profiler::Process();
+
+    s_clTimerSemaphore.Post();
 
     // Clear the systick interrupt pending bit.
     SCB->ICSR = SCB_ICSR_PENDSTCLR_Msk;
@@ -65,8 +65,13 @@ static void KernelTimer_Task(void* unused)
     Scheduler::GetCurrentThread()->SetName("Timer");
     while (1) {
         s_clTimerSemaphore.Pend();
+#if KERNEL_ROUND_ROBIN
+        Quantum::SetInTimer();
+#endif // #if KERNEL_ROUND_ROBIN
         TimerScheduler::Process();
-        Quantum::UpdateTimer();
+#if KERNEL_ROUND_ROBIN
+        Quantum::ClearInTimer();
+#endif // #if KERNEL_ROUND_ROBIN
     }
 }
 
@@ -79,7 +84,9 @@ void KernelTimer::Config(void)
                          KERNEL_TIMERS_THREAD_PRIORITY,
                          KernelTimer_Task,
                          0);
+#if KERNEL_ROUND_ROBIN
     Quantum::SetTimerThread(&s_clTimerThread);
+#endif // #if KERNEL_ROUND_ROBIN
     s_clTimerThread.Start();
 }
 
@@ -103,36 +110,8 @@ void KernelTimer::Stop(void)
 //---------------------------------------------------------------------------
 PORT_TIMER_COUNT_TYPE KernelTimer::Read(void)
 {
-    // Not implemented in this port
     return (PORT_TIMER_COUNT_TYPE)(SysTick->VAL);
 }
-
-//---------------------------------------------------------------------------
-PORT_TIMER_COUNT_TYPE KernelTimer::SubtractExpiry(uint32_t u32Interval_)
-{
-    return 0;
-}
-
-//---------------------------------------------------------------------------
-PORT_TIMER_COUNT_TYPE KernelTimer::TimeToExpiry(void)
-{
-    return 0;
-}
-
-//---------------------------------------------------------------------------
-PORT_TIMER_COUNT_TYPE KernelTimer::GetOvertime(void)
-{
-    return 0;
-}
-
-//---------------------------------------------------------------------------
-PORT_TIMER_COUNT_TYPE KernelTimer::SetExpiry(uint32_t u32Interval_)
-{
-    return 0;
-}
-
-//---------------------------------------------------------------------------
-void KernelTimer::ClearExpiry(void) {}
 
 //-------------------------------------------------------------------------
 uint8_t KernelTimer::DI(void)

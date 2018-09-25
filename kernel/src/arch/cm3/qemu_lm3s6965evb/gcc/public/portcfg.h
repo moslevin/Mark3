@@ -34,27 +34,7 @@ See license.txt for more information
     In practice, systems rarely need more than 32 priority levels, with the
     most complex having the capacity for 256.
 */
-#define KERNEL_NUM_PRIORITIES (255)
-
-/**
-    If you've opted to use the kernel timers module, you have an option
-    as to which timer implementation to use:  Tick-based or Tick-less.
-
-    Tick-based timers provide a "traditional" RTOS timer implementation
-    based on a fixed-frequency timer interrupt.  While this provides
-    very accurate, reliable timing, it also means that the CPU is being
-    interrupted far more often than may be necessary (as not all timer
-    ticks result in "real work" being done).
-
-    Tick-less timers still rely on a hardware timer interrupt, but uses
-    a dynamic expiry interval to ensure that the interrupt is only
-    called when the next timer expires.  This increases the complexity
-    of the timer interrupt handler, but reduces the number and frequency.
-
-    Note that the CPU port (kerneltimer.cpp) must be implemented for the
-    particular timer variant desired.
-*/
-#define KERNEL_TIMERS_TICKLESS (0)
+#define KERNEL_NUM_PRIORITIES (32)
 
 #define KERNEL_TIMERS_THREAD_PRIORITY (KERNEL_NUM_PRIORITIES - 1)
 
@@ -106,11 +86,7 @@ extern uint32_t SystemCoreClock;
     In tick-based mode, this is the frequency at which the fixed-frequency kernel tick
     interrupt occurs.
 */
-#if KERNEL_TIMERS_TICKLESS
-#error "Port does not support tickless timers"
-#else
 #define PORT_TIMER_FREQ ((uint32_t)(PORT_SYSTEM_FREQ / 1000)) // Timer ticks per second...
-#endif
 
 /**
     Define the default/minimum size of a thread stack
