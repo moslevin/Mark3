@@ -27,9 +27,9 @@ See license.txt for more information
 
 #define KERNEL_DEBUG (0)
 
-#define KERNEL_STACK_CHECK (0)
+#define KERNEL_STACK_CHECK (1)
 
-#define KERNEL_NAMED_THREADS (0)
+#define KERNEL_NAMED_THREADS (1)
 
 #define KERNEL_EVENT_FLAGS (1)
 
@@ -41,6 +41,6 @@ See license.txt for more information
 
 #define KERNEL_ROUND_ROBIN (1)
 
-#define KERNEL_EXTENDED_CONTEXT (0)
+#define KERNEL_EXTENDED_CONTEXT (1)
 
 #include "portcfg.h" //!< include CPU/Port specific configuration options
