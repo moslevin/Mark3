@@ -33,7 +33,9 @@ extern "C" {
 //---------------------------------------------------------------------------
 // Define a series of handle types to be used in place of the underlying classes
 // of Mark3.
+#if KERNEL_EVENT_FLAGS
 typedef void* EventFlag_t;         //!< EventFlag opaque handle data type
+#endif // #if KERNEL_EVENT_FLAGS
 typedef void* Mailbox_t;           //!< Mailbox opaque handle data type
 typedef void* Message_t;           //!< Message opaque handle data type
 typedef void* MessagePool_t;       //!< MessagePool opaque handle data type
@@ -48,9 +50,15 @@ typedef void* ReaderWriterLock_t;  //!< Reader-writer-lock opaque handle data ty
 
 //---------------------------------------------------------------------------
 // Function pointer types used by Kernel APIs
+#if KERNEL_THREAD_CREATE_CALLOUT
 typedef void (*thread_create_callout_t)(Thread_t hThread_);
+#endif // #if KERNEL_THREAD_CREATE_CALLOUT
+#if KERNEL_THREAD_EXIT_CALLOUT
 typedef void (*thread_exit_callout_t)(Thread_t hThread_);
+#endif // #if KERNEL_THREAD_EXIT_CALLOUT
+#if KERNEL_CONTEXT_SWITCH_CALLOUT
 typedef void (*thread_context_callout_t)(Thread_t hThread_);
+#endif // #if KERNEL_CONTEXT_SWITCH_CALLOUT
 typedef void (*kernel_debug_print_t)(const char* szString_);
 
 //---------------------------------------------------------------------------
@@ -64,12 +72,19 @@ typedef void (*kernel_debug_print_t)(const char* szString_);
 #define MESSAGEQUEUE_SIZE (sizeof(Fake_MessageQueue))
 #define MAILBOX_SIZE (sizeof(Fake_Mailbox))
 #define NOTIFY_SIZE (sizeof(Fake_Notify))
+#if KERNEL_EVENT_FLAGS
 #define EVENTFLAG_SIZE (sizeof(Fake_EventFlag))
+#endif // #if KERNEL_EVENT_FLAGS
 #define MESSAGEPOOL_SIZE (sizeof(Fake_MessagePool))
 #define CONDITIONVARIABLE_SIZE (sizeof(Fake_ConditionVariable))
 #define READERWRITERLOCK_SIZE (sizeof(Fake_ReaderWriterLock))
 
+#if KERNEL_EVENT_FLAGS
 //---------------------------------------------------------------------------
+/**
+ * Define the various types of modifications that can be performed to
+ * an event flag object.
+ */
 typedef enum {
     EVENT_FLAG_ALL_SET,        //!< Block until all bits in the specified bitmask are set
     EVENT_FLAG_ANY_SET,        //!< Block until any bits in the specified bitmask are set
@@ -77,15 +92,20 @@ typedef enum {
     EVENT_FlAG_ANY_CLEAR,      //!< Block until any bits in the specified bitmask are cleared
     EVENT_FLAG_PENDING_UNBLOCK //!< Special code.  Not used by user
 } event_flag_operation_t;
+#endif // #if KERNEL_EVENT_FLAGS
 
 //---------------------------------------------------------------------------
+/**
+ * Define the various states that a thread can be in
+ */
 typedef enum {
-    THREAD_STATE_EXIT = 0,
-    THREAD_STATE_READY,
-    THREAD_STATE_BLOCKED,
-    THREAD_STATE_STOP,
-    THREAD_STATE_INVALID
+    THREAD_STATE_EXIT = 0,      ///!< Thread has terminated via exit path
+    THREAD_STATE_READY,         ///!< Thread is ready to run
+    THREAD_STATE_BLOCKED,       ///!< Thread is blocked on a blocking call
+    THREAD_STATE_STOP,          ///!< Thread has been manually stopped
+    THREAD_STATE_INVALID        ///!< Invalid thread state
 } thread_state_t;
+
 //---------------------------------------------------------------------------
 // Macros for declaring opaque buffers of an appropriate size for the given
 // kernel objects
@@ -132,9 +152,11 @@ typedef enum {
     K_WORD   TOKEN_2(__notify_, name)[WORD_ROUND(NOTIFY_SIZE)];                                                        \
     Notify_t name = (Notify_t)TOKEN_2(__notify_, name);
 
+#if KERNEL_EVENT_FLAGS
 #define DECLARE_EVENTFLAG(name)                                                                                        \
     K_WORD      TOKEN_2(__eventflag_, name)[WORD_ROUND(EVENTFLAG_SIZE)];                                               \
     EventFlag_t name = (EventFlag_t)TOKEN_2(__eventflag_, name);
+#endif // #if KERNEL_EVENT_FLAGS
 
 #define DECLARE_CONDITIONVARIABLE(name)                                                                                \
     K_WORD              TOKEN_2(__condvar_, name)[WORD_ROUND(EVENTFLAG_SIZE)];                                         \
@@ -176,6 +198,7 @@ void        Free_Semaphore(Semaphore_t handle);
 Mutex_t Alloc_Mutex(void);
 void    Free_Mutex(Mutex_t handle);
 
+#if KERNEL_EVENT_FLAGS
 /**
  * @brief Alloc_EventFlag
  * @sa EventFlag* AutoAlloc::NewEventFlag()
@@ -183,6 +206,7 @@ void    Free_Mutex(Mutex_t handle);
  */
 EventFlag_t Alloc_EventFlag(void);
 void        Free_EventFlag(EventFlag_t handle);
+#endif // #if KERNEL_EVENT_FLAGS
 
 /**
  * @brief Alloc_Message
@@ -275,47 +299,61 @@ bool Kernel_IsPanic(void);
  */
 void Kernel_Panic(uint16_t u16Cause_);
 
+#if KERNEL_THREAD_CREATE_CALLOUT
 /**
  * @brief Kernel_SetThreadCreateCallout
  * @sa Kernel::SetThreadCreateCallout
  * @param pfCreate_ Function to calll on thread creation
  */
 void Kernel_SetThreadCreateCallout(thread_create_callout_t pfCreate_);
+#endif // #if KERNEL_THREAD_CREATE_CALLOUT
+
+#if KERNEL_THREAD_EXIT_CALLOUT
 /**
  * @brief Kernel_SetThreadExitCallout
  * @sa Kernel::SetThreadExitCallout
  * @param pfExit_ Function to call on thread exit
  */
 void Kernel_SetThreadExitCallout(thread_exit_callout_t pfExit_);
+#endif // #if KERNEL_THREAD_EXIT_CALLOUT
 
+#if KERNEL_CONTEXT_SWITCH_CALLOUT
 /**
  * @brief Kernel_SetThreadContextSwitchCallout
  * @sa Kernel::SetThreadContextSwitchCallout
  * @param pfContext_ Function to call prior to each context switch
  */
 void Kernel_SetThreadContextSwitchCallout(thread_context_callout_t pfContext_);
+#endif // #if KERNEL_CONTEXT_SWITCH_CALLOUT
 
+#if KERNEL_THREAD_CREATE_CALLOUT
 /**
  * @brief Kernel_GetThreadCreateCallout
  * @sa Kernel::GetThreadCreateCallout
  * @return Current function called on each thread creation
  */
 thread_create_callout_t Kernel_GetThreadCreateCallout(void);
+#endif // #if KERNEL_THREAD_CREATE_CALLOUT
 
+#if KERNEL_THREAD_EXIT_CALLOUT
 /**
  * @brief Kernel_GetThreadExitCallout
  * @sa Kernel::GetThreadExitCallout
  * @return Current function called on each thread exit
  */
 thread_exit_callout_t Kernel_GetThreadExitCallout(void);
+#endif // #if KERNEL_THREAD_EXIT_CALLOUT
 
+#if KERNEL_CONTEXT_SWITCH_CALLOUT
 /**
  * @brief Kernel_GetThreadContextSwitchCallout
  * @sa Kernel::GetThreadContextSwitchCallout
  * @return Current function called on each context switch
  */
 thread_context_callout_t Kernel_GetThreadContextSwitchCallout(void);
+#endif // #if KERNEL_CONTEXT_SWITCH_CALLOUT
 
+#if KERNEL_STACK_CHECK
 /**
  * @brief Kernel_SetStackGuardThreshold
  * @sa Kernel::SetStackGuardThreshold
@@ -330,12 +368,14 @@ void Kernel_SetStackGuardThreshold(uint16_t u16Threshold_);
  * @return Current kernel stack-guard threshold
  */
 uint16_t Kernel_GetStackGuardThreshold(void);
+#endif // #if KERNEL_STACK_CHECK
+
 //---------------------------------------------------------------------------
 // Scheduler APIs
 /**
  * @brief Scheduler_Enable
  * @sa void Scheduler::SetScheduler(bool bEnable_)
- * @param bEnable_true to enable, false to disable the scheduler
+ * @param bEnable_ true to enable, false to disable the scheduler
  */
 void Scheduler_Enable(bool bEnable_);
 /**
@@ -385,6 +425,8 @@ void Thread_Start(Thread_t handle);
  * @param handle Handle of the thread to stop
  */
 void Thread_Stop(Thread_t handle);
+
+#if KERNEL_NAMED_THREADS
 /**
  * @brief Thread_SetName
  * @sa void Thread::SetName(const char *szName_)
@@ -399,6 +441,8 @@ void Thread_SetName(Thread_t handle, const char* szName_);
  * @return Thread current name, or NULL if no name specified
  */
 const char* Thread_GetName(Thread_t handle);
+#endif // #if KERNEL_NAMED_THREADS
+
 /**
  * @brief Thread_GetPriority
  * @sa PORT_PRIO_TYPE Thread::GetPriority()
@@ -413,6 +457,8 @@ PORT_PRIO_TYPE Thread_GetPriority(Thread_t handle);
  * @return Current priority of the thread considering priority inheritence
  */
 PORT_PRIO_TYPE Thread_GetCurPriority(Thread_t handle);
+
+#if KERNEL_ROUND_ROBIN
 /**
  * @brief Thread_SetQuantum
  * @sa void Thread::SetQuentum(uint16_t u16Quantum_)
@@ -427,6 +473,8 @@ void Thread_SetQuantum(Thread_t handle, uint16_t u16Quantum_);
  * @return Thread's current execution quantum
  */
 uint16_t Thread_GetQuantum(Thread_t handle);
+#endif // #if KERNEL_ROUND_ROBIN
+
 /**
  * @brief Thread_SetPriority
  * @sa void Thread::SetPriority(PORT_PRIO_TYPE uXPriority_)
@@ -446,12 +494,8 @@ void Thread_Exit(Thread_t handle);
  * @param u32TimeMs_ Time in ms to block the thread for
  */
 void Thread_Sleep(uint32_t u32TimeMs_);
-/**
- * @brief Thread_USleep
- * @sa void Thread::USleep(uint32_t u32TimeUs_)
- * @param u32TimeUs_ Time in us to block the thread for
- */
-void Thread_USleep(uint32_t u32TimeUs_);
+
+#if KERNEL_EXTENDED_CONTEXT
 /**
  * @brief Thread_GetExtendedContext
  * @sa Thread::GetExtendedContext()
@@ -467,11 +511,20 @@ void* Thread_GetExtendedContext(Thread_t handle);
  * @param pvData_ Pointer to Object to assign to Thread's extended context
  */
 void Thread_SetExtendedContext(Thread_t handle, void* pvData_);
+#endif // #if KERNEL_EXTENDED_CONTEXT
+
 /**
  * @brief Thread_Yield
  * @sa void Thread::Yield()
  */
 void Thread_Yield(void);
+
+/**
+ * @brief Thread_CoopYield
+ * @sa void Thread::CoopYield()
+ */
+void Thread_CoopYield(void);
+
 /**
  * @brief Thread_SetID
  * @sa void Thread::SetID(uint8_t u8ID_)
@@ -486,6 +539,8 @@ void Thread_SetID(Thread_t handle, uint8_t u8ID_);
  * @return Return ID assigned to the thread
  */
 uint8_t Thread_GetID(Thread_t handle);
+
+#if KERNEL_STACK_CHECK
 /**
  * @brief Thread_GetStackSlack
  * @sa uint16_t Thread::GetStackSlack()
@@ -493,6 +548,8 @@ uint8_t Thread_GetID(Thread_t handle);
  * @return Return the amount of unused stack on the given thread
  */
 uint16_t Thread_GetStackSlack(Thread_t handle);
+#endif // #if KERNEL_STACK_CHECK
+
 /**
  * @brief Thread_GetState
  * @sa ThreadState Thread::GetState()
@@ -531,7 +588,7 @@ void Timer_Start(Timer_t          handle,
 /**
  * @brief Timer_Restart
  * @sa void Timer::Start()
- * @param handler Handle of the timer to restart.
+ * @param handle Handle of the timer to restart.
  */
 void Timer_Restart(Timer_t handle);
 
@@ -602,6 +659,7 @@ void Mutex_Release(Mutex_t handle);
  */
 bool Mutex_TimedClaim(Mutex_t handle, uint32_t u32WaitTimeMS_);
 
+#if KERNEL_EVENT_FLAGS
 //---------------------------------------------------------------------------
 // EventFlag APIs
 /**
@@ -650,6 +708,7 @@ void EventFlag_Clear(EventFlag_t handle, uint16_t u16Mask_);
  * @return Return the current bitmask
  */
 uint16_t EventFlag_GetMask(EventFlag_t handle);
+#endif // #if KERNEL_EVENT_FLAGS
 
 //---------------------------------------------------------------------------
 // Notification APIs

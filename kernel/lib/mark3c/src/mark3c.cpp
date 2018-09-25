@@ -212,42 +212,48 @@ void Kernel_Panic(uint16_t u16Cause_)
     Kernel::Panic(u16Cause_);
 }
 
+#if KERNEL_THREAD_CREATE_CALLOUT
 //---------------------------------------------------------------------------
 void Kernel_SetThreadCreateCallout(thread_create_callout_t pfCreate_)
 {
     Kernel::SetThreadCreateCallout((ThreadCreateCallout)pfCreate_);
 }
-
+#endif // #if KERNEL_THREAD_CREATE_CALLOUT
 //---------------------------------------------------------------------------
+#if KERNEL_THREAD_EXIT_CALLOUT
 void Kernel_SetThreadExitCallout(thread_exit_callout_t pfExit_)
 {
     Kernel::SetThreadExitCallout((ThreadExitCallout)pfExit_);
 }
-
+#endif //#if KERNEL_THREAD_EXIT_CALLOUT
+#if KERNEL_CONTEXT_SWITCH_CALLOUT
 //---------------------------------------------------------------------------
 void Kernel_SetThreadContextSwitchCallout(thread_context_callout_t pfContext_)
 {
     Kernel::SetThreadContextSwitchCallout((ThreadContextCallout)pfContext_);
 }
-
+#endif // #if KERNEL_CONTEXT_SWITCH_CALLOUT
+#if KERNEL_THREAD_CREATE_CALLOUT
 //---------------------------------------------------------------------------
 thread_create_callout_t Kernel_GetThreadCreateCallout(void)
 {
     return (thread_create_callout_t)Kernel::GetThreadCreateCallout();
 }
-
+#endif // #if KERNEL_THREAD_CREATE_CALLOUT
+#if KERNEL_THREAD_EXIT_CALLOUT
 //---------------------------------------------------------------------------
 thread_exit_callout_t Kernel_GetThreadExitCallout(void)
 {
     return (thread_exit_callout_t)Kernel::GetThreadExitCallout();
 }
-
+#endif // #if KERNEL_THREAD_EXIT_CALLOUT
+#if KERNEL_CONTEXT_SWITCH_CALLOUT
 //---------------------------------------------------------------------------
 thread_context_callout_t Kernel_GetThreadContextSwitchCallout(void)
 {
     return (thread_context_callout_t)Kernel::GetThreadContextSwitchCallout();
 }
-
+#endif // #if KERNEL_CONTEXT_SWITCH_CALLOUT
 //---------------------------------------------------------------------------
 void Kernel_SetStackGuardThreshold(uint16_t u16Threshold_)
 {
@@ -378,12 +384,7 @@ void Thread_Sleep(uint32_t u32TimeMs_)
     Thread::Sleep(u32TimeMs_);
 }
 
-//---------------------------------------------------------------------------
-void Thread_USleep(uint32_t u32TimeUs_)
-{
-    Thread::USleep(u32TimeUs_);
-}
-
+#if KERNEL_EXTENDED_CONTEXT
 //---------------------------------------------------------------------------
 void* Thread_GetExtendedContext(Thread_t handle)
 {
@@ -397,11 +398,17 @@ void Thread_SetExtendedContext(Thread_t handle, void* pvData_)
     Thread* pclThread = (Thread*)handle;
     pclThread->SetExtendedContext(pvData_);
 }
+#endif // #if KERNEL_EXTENDED_CONTEXT
 
 //---------------------------------------------------------------------------
 void Thread_Yield(void)
 {
     Thread::Yield();
+}
+//---------------------------------------------------------------------------
+void Thread_CoopYield(void)
+{
+    Thread::CoopYield();
 }
 //---------------------------------------------------------------------------
 void Thread_SetID(Thread_t handle, uint8_t u8ID_)
@@ -524,6 +531,7 @@ bool Mutex_TimedClaim(Mutex_t handle, uint32_t u32WaitTimeMS_)
     return pclMutex->Claim(u32WaitTimeMS_);
 }
 
+#if KERNEL_EVENT_FLAGS
 //---------------------------------------------------------------------------
 // EventFlag APIs
 //---------------------------------------------------------------------------
@@ -567,6 +575,7 @@ uint16_t EventFlag_GetMask(EventFlag_t handle)
     EventFlag* pclFlag = (EventFlag*)handle;
     return pclFlag->GetMask();
 }
+#endif // #if #if KERNEL_EVENT_FLAGS
 
 //---------------------------------------------------------------------------
 // Notification APIs
