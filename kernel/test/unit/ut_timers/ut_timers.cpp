@@ -68,7 +68,7 @@ TEST(ut_timer_tolerance)
     // Test point - 1ms timer should take at least 1ms
     clProfileTimer.Init();
     clProfileTimer.Start();
-    clTimer1.Start(false, 1, TimerExpired, 0);
+    clTimer1.Start(false, 1 + 1, TimerExpired, 0);
     clTimerSem.Pend();
     clProfileTimer.Stop();
 
@@ -83,7 +83,7 @@ TEST(ut_timer_tolerance)
     // Test point - 10ms timer should take at least 10ms
     clProfileTimer.Init();
     clProfileTimer.Start();
-    clTimer1.Start(false, 10, TimerExpired, 0);
+    clTimer1.Start(false, 10 + 1, TimerExpired, 0);
     clTimerSem.Pend();
     clProfileTimer.Stop();
 
@@ -99,7 +99,7 @@ TEST(ut_timer_tolerance)
     // Test point - 100ms timer should take at least 100ms
     clProfileTimer.Init();
     clProfileTimer.Start();
-    clTimer1.Start(false, 100, TimerExpired, 0);
+    clTimer1.Start(false, 100 + 1, TimerExpired, 0);
     clTimerSem.Pend();
     clProfileTimer.Stop();
 
@@ -115,7 +115,7 @@ TEST(ut_timer_tolerance)
     // Test point - 500ms timer should take at least 500ms
     clProfileTimer.Init();
     clProfileTimer.Start();
-    clTimer1.Start(false, 1000, TimerExpired, 0);
+    clTimer1.Start(false, 1000 + 1, TimerExpired, 0);
     clTimerSem.Pend();
     clProfileTimer.Stop();
 
@@ -146,7 +146,7 @@ TEST(ut_timer_longrun)
     // Test point - long running timer accuracy; 10-second timer
     // expires after 10 seconds.
     clProfileTimer.Init();
-    clTimer1.Start(false, 10000, TimerExpired, 0);
+    clTimer1.Start(false, 10000 + 1, TimerExpired, 0);
     u32CallbackCount = 0;
 
     while (!u32CallbackCount) {
@@ -186,7 +186,7 @@ TEST(ut_timer_repeat)
     clProfileTimer.Init();
     clProfileTimer.Start();
 
-    clTimer1.Start(true, 10, TimerExpired, 0);
+    clTimer1.Start(true, 10 + 1, TimerExpired, 0);
 
     while (u32CallbackCount < 100) { clTimerSem.Pend(); }
 
@@ -229,11 +229,11 @@ TEST(ut_timer_multi)
     clTimer3.Init();
 
     clProfileTimer.Start();
-    clTimer1.Start(false, 100, TimerExpired, 0);
+    clTimer1.Start(false, 100 + 1, TimerExpired, 0);
     clProfileTimer2.Start();
-    clTimer2.Start(false, 200, TimerExpired, 0);
+    clTimer2.Start(false, 200 + 1, TimerExpired, 0);
     clProfileTimer3.Start();
-    clTimer3.Start(false, 50, TimerExpired, 0);
+    clTimer3.Start(false, 50 + 1, TimerExpired, 0);
 
     // Each timer expiry will post the semaphore.
     clTimerSem.Pend();

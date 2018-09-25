@@ -193,6 +193,8 @@ TEST(ut_raii)
         LockGuard lockGuard{ &clMutex };
         EXPECT_EQUALS(u8Token, 1);
     }
+
+    Thread::Sleep(100);
 }
 
 

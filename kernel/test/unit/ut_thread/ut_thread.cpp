@@ -117,16 +117,18 @@ TEST(ut_threadsleep)
     auto lThreadSleepEntryPoint = [](void* /*unused_*/) {
         // Thread will sleep for various intervals, synchronized
         // to semaphore-based IPC.
+
+        // +1 tick for initial, incomplete tick.
         clSem1.Pend();
-        Thread::Sleep(5);
+        Thread::Sleep(5 + 1);
         clSem2.Post();
 
         clSem1.Pend();
-        Thread::Sleep(50);
+        Thread::Sleep(50 + 1);
         clSem2.Post();
 
         clSem1.Pend();
-        Thread::Sleep(200);
+        Thread::Sleep(200 + 1);
         clSem2.Post();
 
         // Exit this thread.
@@ -184,10 +186,10 @@ TEST(ut_roundrobin)
         while (1) { (*pu32Value)++; }
     };
 
-    uint32_t u32Avg;
-    uint32_t u32Max;
-    uint32_t u32Min;
-    uint32_t u32Range;
+    static volatile uint32_t u32Avg;
+    static volatile uint32_t u32Max;
+    static volatile uint32_t u32Min;
+    static volatile uint32_t u32Range;
 
     // Create three threads that only increment counters, and keep them at
     // the same priority in order to test the roundrobin functionality of
@@ -323,14 +325,9 @@ TEST(ut_quanta)
     u32Range = u32Max - u32Min;
     u32Avg   = (u32RR1 + u32RR2 + u32RR3) / 3;
 
-#if KERNEL_TIMERS_TICKLESS
-    // Max-Min delta should not exceed 5% of average for this test
-    EXPECT_LT(u32Range, u32Avg / 20);
-#else
     // Max-Min delta should not exceed 20% of average for this test -- tick-based timers
     // are coarse, and prone to thread preference due to phase.
     EXPECT_LT(u32Range, u32Avg / 3);
-#endif
 
     // Make sure none of the component values are 0
     EXPECT_FAIL_EQUALS(u32RR1, 0);

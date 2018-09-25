@@ -9,8 +9,8 @@
 #include "mutex.h"
 #include "message.h"
 #include "timerlist.h"
-#include "../unit_test.h"
-#include "../ut_platform.h"
+#include "unit_test.h"
+#include "ut_platform.h"
 
 namespace
 {
