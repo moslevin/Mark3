@@ -24,6 +24,23 @@ See license.txt for more information
 #pragma once
 
 /**
+    Define the number of thread priorities that the kernel's scheduler will
+    support.  The number of thread priorities is limited only by the memory
+    of the host CPU, as a ThreadList object is statically-allocated for each
+    thread priority.
+
+    In practice, systems rarely need more than 32 priority levels, with the
+    most complex having the capacity for 256.
+*/
+#define KERNEL_NUM_PRIORITIES (8)
+
+#define KERNEL_TIMERS_THREAD_PRIORITY (KERNEL_NUM_PRIORITIES - 1)
+
+#define THREAD_QUANTUM_DEFAULT (4)
+
+#define KERNEL_STACK_GUARD_DEFAULT (32) // words
+
+/**
     Define a macro indicating the CPU architecture for which this port belongs.
 
     This may also be set by the toolchain, but that's not guaranteed.
@@ -64,21 +81,17 @@ See license.txt for more information
     In tick-based mode, this is the frequency at which the fixed-frequency kernel tick
     interrupt occurs.
 */
-#if KERNEL_TIMERS_TICKLESS
-#define PORT_TIMER_FREQ ((uint32_t)(PORT_SYSTEM_FREQ / 256)) //!< Timer resolution in ticks
-#else
 #define PORT_TIMER_FREQ ((uint32_t)(PORT_SYSTEM_FREQ / 1000)) //!< Fixed timer interrupt frequency
-#endif
 
 /**
     Define the default/minimum size of a thread stack
 */
-#define PORT_KERNEL_DEFAULT_STACK_SIZE ((K_ADDR)192)
+#define PORT_KERNEL_DEFAULT_STACK_SIZE ((K_ADDR)384)
 
 /**
     Define the size of the kernel-timer thread stack (if one is configured)
 */
-#define PORT_KERNEL_TIMERS_THREAD_STACK ((K_ADDR)256)
+#define PORT_KERNEL_TIMERS_THREAD_STACK ((K_ADDR)384)
 
 /**
     Define the native type corresponding to the kernel timer hardware's counter register.

@@ -23,8 +23,6 @@ See license.txt for more information
 #include "mark3cfg.h"
 #include "ll.h"
 
-#if KERNEL_USE_PROFILER
-
 //---------------------------------------------------------------------------
 #define TICKS_PER_OVERFLOW (256)
 #define CLOCK_DIVIDE (8)
@@ -85,4 +83,3 @@ private:
     static uint32_t m_u32Epoch;
 };
 } // namespace Mark3
-#endif // KERNEL_USE_PROFILER

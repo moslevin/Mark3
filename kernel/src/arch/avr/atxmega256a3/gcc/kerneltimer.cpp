@@ -32,28 +32,26 @@ namespace
 using namespace Mark3;
 //---------------------------------------------------------------------------
 // Static objects implementing the timer thread and its synchronization objects
-#if KERNEL_TIMERS_THREADED
 Thread    s_clTimerThread;
 K_WORD    s_clTimerThreadStack[PORT_KERNEL_TIMERS_THREAD_STACK];
 Semaphore s_clTimerSemaphore;
-#endif
 } // anonymous namespace
 
 namespace Mark3
 {
 //---------------------------------------------------------------------------
-#if KERNEL_TIMERS_THREADED
 static void KernelTimer_Task(void* unused)
 {
     (void)unused;
     while (1) {
         s_clTimerSemaphore.Pend();
-#if KERNEL_USE_TIMERS
+#if KERNEL_ROUND_ROBIN
+        Quantum::SetInTimer();
+#endif // #if KERNEL_ROUND_ROBIN
         TimerScheduler::Process();
-#endif
-#if KERNEL_USE_QUANTUM
-        Quantum::UpdateTimer();
-#endif
+#if KERNEL_ROUND_ROBIN
+        Quantum::ClearInTimer();
+#endif // #if KERNEL_ROUND_ROBIN
     }
 }
 #endif
@@ -76,7 +74,6 @@ void KernelTimer::Config(void)
 
     TCC1.INTCTRLB = 0; // Disable ABCD Capture compare interrupts.
 
-#if KERNEL_TIMERS_THREADED
     s_clTimerSemaphore.Init(0, 1);
     s_clTimerThread.Init(s_clTimerThreadStack,
                          sizeof(s_clTimerThreadStack) / sizeof(K_WORD),
@@ -85,7 +82,6 @@ void KernelTimer::Config(void)
                          0);
     Quantum::SetTimerThread(&s_clTimerThread);
     s_clTimerThread.Start();
-#endif
 }
 
 //---------------------------------------------------------------------------
@@ -105,7 +101,7 @@ void KernelTimer::Stop(void)
 }
 
 //---------------------------------------------------------------------------
-uint16_t KernelTimer::Read(void)
+PORT_TIMER_COUNT_TYPE KernelTimer::Read(void)
 {
     volatile uint16_t u16Read1;
     volatile uint16_t u16Read2;
@@ -116,51 +112,6 @@ uint16_t KernelTimer::Read(void)
     } while (u16Read1 != u16Read2);
 
     return u16Read1;
-}
-
-//---------------------------------------------------------------------------
-uint32_t KernelTimer::SubtractExpiry(uint32_t u32Interval_)
-{
-    TCC1.PER -= (uint16_t)u32Interval_;
-    return (uint32_t)TCC1.PER;
-}
-
-//---------------------------------------------------------------------------
-uint32_t KernelTimer::TimeToExpiry(void)
-{
-    uint16_t u16Read  = KernelTimer::Read();
-    uint16_t u16OCR1A = TCC1.PER;
-
-    if (u16Read >= u16OCR1A) {
-        return 0;
-    } else {
-        return (uint32_t)(u16OCR1A - u16Read);
-    }
-}
-
-//---------------------------------------------------------------------------
-uint32_t KernelTimer::GetOvertime(void)
-{
-    return KernelTimer::Read();
-}
-
-//---------------------------------------------------------------------------
-uint32_t KernelTimer::SetExpiry(uint32_t u32Interval_)
-{
-    uint16_t u16SetInterval;
-    if (u32Interval_ > 65535) {
-        u16SetInterval = 65535;
-    } else {
-        u16SetInterval = (uint16_t)u32Interval_;
-    }
-    TCC1.PER = u16SetInterval;
-    return (uint32_t)u16SetInterval;
-}
-
-//---------------------------------------------------------------------------
-void KernelTimer::ClearExpiry(void)
-{
-    TCC1.PER = 65535;
 }
 
 //---------------------------------------------------------------------------
@@ -193,18 +144,9 @@ void KernelTimer::RI(bool bEnable_)
  *   Timer interrupt ISR - service the timer thread
  */
 //---------------------------------------------------------------------------
+} // namespace Mark3
+using namespace Mark3;
 ISR(TIMER1_COMPA_vect)
 {
-#if KERNEL_TIMERS_THREADED
-    KernelTimer::ClearExpiry();
     s_clTimerSemaphore.Post();
-#else
-#if KERNEL_USE_TIMERS
-    TimerScheduler::Process();
-#endif
-#if KERNEL_USE_QUANTUM
-    Quantum::UpdateTimer();
-#endif
-#endif
 }
-} // namespace Mark3

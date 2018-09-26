@@ -72,11 +72,7 @@ See license.txt for more information
     Define the running CPU frequency.  This may be an integer constant, or an alias
     for another variable which holds the CPU's current running frequency.
 */
-#if defined(__cplusplus)
-extern "C" uint32_t SystemCoreClock;
-#else
-extern uint32_t SystemCoreClock;
-#endif
+
 #define PORT_SYSTEM_FREQ (12000000)
 
 /**

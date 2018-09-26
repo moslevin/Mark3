@@ -25,7 +25,6 @@ See license.txt for more information
 #include <avr/io.h>
 #include <avr/interrupt.h>
 
-#if KERNEL_USE_PROFILER
 uint32_t Profiler::m_u32Epoch;
 
 //---------------------------------------------------------------------------
@@ -48,4 +47,3 @@ void Profiler::Process() {}
 //    Profiler::Process();
 //}
 
-#endif

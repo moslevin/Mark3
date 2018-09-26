@@ -31,11 +31,6 @@ See license.txt for more information
 #include "m3_core_cm0.h"
 
 //---------------------------------------------------------------------------
-#if KERNEL_USE_IDLE_FUNC
-#error "KERNEL_USE_IDLE_FUNC not supported in this port"
-#endif
-
-//---------------------------------------------------------------------------
 extern "C" {
 void SVC_Handler(void) __attribute__((naked));
 void PendSV_Handler(void) __attribute__((naked));
@@ -337,9 +332,11 @@ void ThreadPort::InitStack(Thread* pclThread_)
     // Get the top-of-stack pointer for the thread
     pu32Stack = (uint32_t*)pclThread_->m_pwStackTop;
 
+#if KERNEL_STACK_CHECK
     // Initialize the stack to all FF's to aid in stack depth checking
     pu32Temp = (uint32_t*)pclThread_->m_pwStack;
     for (i = 0; i < pclThread_->m_u16StackSize / sizeof(uint32_t); i++) { pu32Temp[i] = 0xFFFFFFFF; }
+#endif // #if KERNEL_STACK_CHECK
 
     PUSH_TO_STACK(pu32Stack, 0); // We need one word of padding, apparently...
 
@@ -378,9 +375,9 @@ void ThreadPort::StartThreads()
 {
     KernelSWI::Config();   // configure the task switch SWI
     KernelTimer::Config(); // configure the kernel timer
-#if KERNEL_USE_PROFILER
+
     Profiler::Init();
-#endif
+
     Scheduler::SetScheduler(1); // enable the scheduler
     Scheduler::Schedule();      // run the scheduler - determine the first thread to run
 
@@ -389,14 +386,13 @@ void ThreadPort::StartThreads()
     KernelTimer::Start(); // enable the kernel timer
     KernelSWI::Start();   // enable the task switch SWI
 
-#if KERNEL_USE_QUANTUM
+#if KERNEL_ROUND_ROBIN
     // Restart the thread quantum timer, as any value held prior to starting
     // the kernel will be invalid.  This fixes a bug where multiple threads
     // started with the highest priority before starting the kernel causes problems
     // until the running thread voluntarily blocks.
-    Quantum::RemoveThread();
-    Quantum::AddThread(g_pclCurrent);
-#endif
+    Quantum::Update(g_pclCurrent);
+#endif // #if KERNEL_ROUND_ROBIN
 
     ThreadPort_StartFirstThread(); // Jump to the first thread (does not return)
 }

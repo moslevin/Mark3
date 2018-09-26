@@ -25,7 +25,6 @@ See license.txt for more information
 #include <avr/io.h>
 #include <avr/interrupt.h>
 
-#if KERNEL_USE_PROFILER
 namespace Mark3
 {
 uint32_t Profiler::m_u32Epoch;
@@ -83,5 +82,3 @@ ISR(TIMER0_OVF_vect)
 {
     Profiler::Process();
 }
-
-#endif

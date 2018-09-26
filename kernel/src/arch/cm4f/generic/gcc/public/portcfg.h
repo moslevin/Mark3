@@ -14,7 +14,7 @@ See license.txt for more information
 /**
     @file portcfg.h
 
-    @brief Mark3 Port Configuration
+    @brief Mark3 Port Configurationd
 
     This file is used to configure the kernel for your specific target CPU
     in order to provide the optimal set of features for a given use case.
@@ -24,6 +24,24 @@ See license.txt for more information
 #pragma once
 
 #include <stdint.h>
+
+/**
+    Define the number of thread priorities that the kernel's scheduler will
+    support.  The number of thread priorities is limited only by the memory
+    of the host CPU, as a ThreadList object is statically-allocated for each
+    thread priority.
+
+    In practice, systems rarely need more than 32 priority levels, with the
+    most complex having the capacity for 256.
+*/
+#define KERNEL_NUM_PRIORITIES (32)
+
+#define KERNEL_TIMERS_THREAD_PRIORITY (KERNEL_NUM_PRIORITIES - 1)
+
+#define THREAD_QUANTUM_DEFAULT (4)
+
+#define KERNEL_STACK_GUARD_DEFAULT (32) // words
+
 /**
     Define a macro indicating the CPU architecture for which this port belongs.
 
@@ -68,11 +86,7 @@ extern uint32_t SystemCoreClock;
     In tick-based mode, this is the frequency at which the fixed-frequency kernel tick
     interrupt occurs.
 */
-#if KERNEL_TIMERS_TICKLESS
-#error "Port does not support tickless timers"
-#else
 #define PORT_TIMER_FREQ ((uint32_t)(PORT_SYSTEM_FREQ / 1000)) // Timer ticks per second...
-#endif
 
 /**
     Define the default/minimum size of a thread stack

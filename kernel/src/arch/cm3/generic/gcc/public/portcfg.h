@@ -14,18 +14,34 @@ See license.txt for more information
 /**
     @file portcfg.h
 
-    @brief Mark3 Port Configuration
+    @brief Mark3 Port Configurationd
 
     This file is used to configure the kernel for your specific target CPU
     in order to provide the optimal set of features for a given use case.
 
     !! NOTE:  This file must ONLY be included from mark3cfg.h
 */
-
-#ifndef __PORTCFG_H__
-#define __PORTCFG_H__
+#pragma once
 
 #include <stdint.h>
+
+/**
+    Define the number of thread priorities that the kernel's scheduler will
+    support.  The number of thread priorities is limited only by the memory
+    of the host CPU, as a ThreadList object is statically-allocated for each
+    thread priority.
+
+    In practice, systems rarely need more than 32 priority levels, with the
+    most complex having the capacity for 256.
+*/
+#define KERNEL_NUM_PRIORITIES (32)
+
+#define KERNEL_TIMERS_THREAD_PRIORITY (KERNEL_NUM_PRIORITIES - 1)
+
+#define THREAD_QUANTUM_DEFAULT (4)
+
+#define KERNEL_STACK_GUARD_DEFAULT (32) // words
+
 /**
     Define a macro indicating the CPU architecture for which this port belongs.
 
@@ -56,12 +72,7 @@ See license.txt for more information
     Define the running CPU frequency.  This may be an integer constant, or an alias
     for another variable which holds the CPU's current running frequency.
 */
-#if defined(__cplusplus)
-extern "C" uint32_t SystemCoreClock;
-#else
-extern uint32_t SystemCoreClock;
-#endif
-#define PORT_SYSTEM_FREQ (SystemCoreClock)
+#define PORT_SYSTEM_FREQ (12000000)
 
 /**
     Set the timer frequency.  If running in tickless mode, this is simply the frequency
@@ -70,11 +81,7 @@ extern uint32_t SystemCoreClock;
     In tick-based mode, this is the frequency at which the fixed-frequency kernel tick
     interrupt occurs.
 */
-#if KERNEL_TIMERS_TICKLESS
-#error "Port does not support tickless timers"
-#else
 #define PORT_TIMER_FREQ ((uint32_t)(PORT_SYSTEM_FREQ / 1000)) // Timer ticks per second...
-#endif
 
 /**
     Define the default/minimum size of a thread stack
@@ -84,7 +91,7 @@ extern uint32_t SystemCoreClock;
 /**
     Define the size of the kernel-timer thread stack (if one is configured)
 */
-#define PORT_KERNEL_TIMERS_THREAD_STACK ((K_ADDR)256)
+#define PORT_KERNEL_TIMERS_THREAD_STACK ((K_ADDR)512)
 
 /**
     Define the native type corresponding to the kernel timer hardware's counter register.
@@ -96,5 +103,3 @@ extern uint32_t SystemCoreClock;
     be initialized to a negative value.
 */
 #define PORT_MIN_TIMER_TICKS (0)
-
-#endif // __PORTCFG_H__

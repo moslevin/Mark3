@@ -52,9 +52,11 @@ void ThreadPort::InitStack(Thread* pclThread_)
     // Start by finding the bottom of the stack
     pu16Stack = (uint16_t*)pclThread_->m_pwStackTop;
 
+#if KERNEL_STACK_CHECK
     // clear the stack, and initialize it to a known-default value (easier
     // to debug when things go sour with stack corruption or overflow)
     for (i = 0; i < pclThread_->m_u16StackSize / sizeof(uint16_t); i++) { pclThread_->m_pwStack[i] = 0xFFFF; }
+#endif // #if KERNEL_STACK_CHECK
 
     // 1st - push start address... (R0/PC)
     PUSH_TO_STACK(pu16Stack, u16Addr);
@@ -82,35 +84,6 @@ void ThreadPort::InitStack(Thread* pclThread_)
 //---------------------------------------------------------------------------
 static void Thread_Switch(void)
 {
-#if KERNEL_USE_IDLE_FUNC
-    // If there's no next-thread-to-run...
-    if (g_pclNext == Kernel::GetIdleThread()) {
-        g_pclCurrent = Kernel::GetIdleThread();
-
-        // Disable the SWI, and re-enable interrupts -- enter nested interrupt
-        // mode.
-        KernelSWI::DI();
-
-        // So long as there's no "next-to-run" thread, keep executing the Idle
-        // function to conclusion...
-        while (g_pclNext == Kernel::GetIdleThread()) {
-            // Ensure that we run this block in an interrupt enabled context (but
-            // with the rest of the checks being performed in an interrupt disabled
-            // context).
-            __nop();
-            __eint();
-            Kernel::Idle();
-            __dint();
-        }
-
-        // Progress has been achieved -- an interrupt-triggered event has caused
-        // the scheduler to run, and choose a new thread.  Since we've already
-        // saved the context of the thread we've hijacked to run idle, we can
-        // proceed to disable the nested interrupt context and switch to the
-        // new thread.
-        KernelSWI::RI(true);
-    }
-#endif
     KernelSWI::Clear();
     g_pclCurrent = (Thread*)g_pclNext;
 }
@@ -120,17 +93,18 @@ void ThreadPort::StartThreads()
 {
     KernelSWI::Config();   // configure the task switch SWI
     KernelTimer::Config(); // configure the kernel timer
-#if KERNEL_USE_PROFILER
+
     Profiler::Init();
-#endif
     Scheduler::SetScheduler(1); // enable the scheduler
     Scheduler::Schedule();      // run the scheduler - determine the first thread to run
 
     Thread_Switch(); // Set the next scheduled thread to the current thread
 
-#if !KERNEL_TIMERS_TICKLESS
+#if KERNEL_ROUND_ROBIN
+    Quantum::Update(g_pclCurrent);
+#endif // #if KERNEL_ROUND_ROBIN
+
     KernelTimer::Start(); // enable the kernel timer
-#endif
     KernelSWI::Start(); // enable the task switch SWI
 
     g_u8CSCount = 0; // Reset the critical section counter

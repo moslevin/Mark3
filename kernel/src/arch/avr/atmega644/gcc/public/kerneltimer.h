@@ -77,55 +77,6 @@ public:
     static void EI(void);
 
     /**
-     *  @brief SubtractExpiry
-     *
-     *  Subtract the specified number of ticks from the timer's
-     *  expiry count register.  Returns the new expiry value stored in
-     *  the register.
-     *
-     *  @param u32Interval_ Time (in HW-specific) ticks to subtract
-     *  @return Value in ticks stored in the timer's expiry register
-     */
-    static PORT_TIMER_COUNT_TYPE SubtractExpiry(PORT_TIMER_COUNT_TYPE uInterval_);
-
-    /**
-     *  @brief TimeToExpiry
-     *
-     *  Returns the number of ticks remaining before the next timer
-     *  expiry.
-     *
-     *  @return Time before next expiry in platform-specific ticks
-     */
-    static PORT_TIMER_COUNT_TYPE TimeToExpiry(void);
-
-    /**
-     *  @brief SetExpiry
-     *
-     *  Resets the kernel timer's expiry interval to the specified value
-     *
-     *  @param u32Interval_ Desired interval in ticks to set the timer for
-     *  @return Actual number of ticks set (may be less than desired)
-     */
-    static PORT_TIMER_COUNT_TYPE SetExpiry(uint32_t u32Interval_);
-
-    /**
-     *  @brief GetOvertime
-     *
-     *  Return the number of ticks that have elapsed since the last
-     *  expiry.
-     *
-     *  @return Number of ticks that have elapsed after last timer expiration
-     */
-    static PORT_TIMER_COUNT_TYPE GetOvertime(void);
-
-    /**
-     *  @brief ClearExpiry
-     *
-     *  Clear the hardware timer expiry register
-     */
-    static void ClearExpiry(void);
-
-    /**
      *  @brief Read
      *
      *  Safely read the current value in the timer register

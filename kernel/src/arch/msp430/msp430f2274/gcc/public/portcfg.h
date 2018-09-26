@@ -24,6 +24,23 @@ See license.txt for more information
 #pragma once
 
 /**
+    Define the number of thread priorities that the kernel's scheduler will
+    support.  The number of thread priorities is limited only by the memory
+    of the host CPU, as a ThreadList object is statically-allocated for each
+    thread priority.
+
+    In practice, systems rarely need more than 32 priority levels, with the
+    most complex having the capacity for 256.
+*/
+#define KERNEL_NUM_PRIORITIES (8)
+
+#define KERNEL_TIMERS_THREAD_PRIORITY (KERNEL_NUM_PRIORITIES - 1)
+
+#define THREAD_QUANTUM_DEFAULT (4)
+
+#define KERNEL_STACK_GUARD_DEFAULT (32) // words
+
+/**
     Define a macro indicating the CPU architecture for which this port belongs.
 
     This may also be set by the toolchain, but that's not guaranteed.
@@ -36,7 +53,7 @@ See license.txt for more information
     Define types that map to the CPU Architecture's default data-word and address
     size.
 */
-#define K_WORD uint16_t //!< Size of a data word
+#define K_WORD uint16_t  //!< Size of a data word
 #define K_ADDR uint16_t //!< Size of an address (pointer size)
 
 /**
@@ -46,15 +63,15 @@ See license.txt for more information
     PORT_PRIO_MAP_WORD_SIZE should map to the *size* of an element of type
     PORT_PROI_TYPE.
 */
-#define PORT_PRIO_TYPE uint16_t     //!< Type used for bitmap in the PriorityMap class
-#define PORT_PRIO_MAP_WORD_SIZE (2) //!< size of PORT_PRIO_TYPE in bytes
+#define PORT_PRIO_TYPE uint8_t      //!< Type used for bitmap in the PriorityMap class
+#define PORT_PRIO_MAP_WORD_SIZE (1) //!< size of PORT_PRIO_TYPE in bytes
 
 /**
     Define the running CPU frequency.  This may be an integer constant, or an alias
     for another variable which holds the CPU's current running frequency.
 */
 #if !defined(PORT_SYSTEM_FREQ)
-#define PORT_SYSTEM_FREQ ((uint32_t)1200000)
+#define PORT_SYSTEM_FREQ ((uint32_t)12000000) //!< CPU Frequency in Hz
 #endif
 
 /**
@@ -64,11 +81,7 @@ See license.txt for more information
     In tick-based mode, this is the frequency at which the fixed-frequency kernel tick
     interrupt occurs.
 */
-#if !KERNEL_TIMERS_TICKLESS
-#define PORT_TIMER_FREQ ((uint32_t)(PORT_SYSTEM_FREQ / 100)) // Timer ticks per second...
-#else
-#define PORT_TIMER_FREQ ((uint32_t)(PORT_SYSTEM_FREQ / 8))
-#endif
+#define PORT_TIMER_FREQ ((uint32_t)(PORT_SYSTEM_FREQ / 1000)) //!< Fixed timer interrupt frequency
 
 /**
     Define the default/minimum size of a thread stack

@@ -52,9 +52,11 @@ void ThreadPort::InitStack(Thread* pclThread_)
     // Start by finding the bottom of the stack
     pu8Stack = (uint8_t*)pclThread_->m_pwStackTop;
 
+#if KERNEL_STACK_CHECK
     // clear the stack, and initialize it to a known-default value (easier
     // to debug when things go sour with stack corruption or overflow)
     for (i = 0; i < pclThread_->m_u16StackSize; i++) { pclThread_->m_pwStack[i] = 0xFF; }
+#endif // #if KERNEL_STACK_CHECK
 
     // Our context starts with the entry function
     PUSH_TO_STACK(pu8Stack, (uint8_t)(u16Addr & 0x00FF));
@@ -97,41 +99,6 @@ void ThreadPort::InitStack(Thread* pclThread_)
 //---------------------------------------------------------------------------
 static void Thread_Switch(void)
 {
-#if KERNEL_USE_IDLE_FUNC
-    // If there's no next-thread-to-run...
-    if (g_pclNext == Kernel::GetIdleThread()) {
-        g_pclCurrent = Kernel::GetIdleThread();
-
-        // Disable the SWI, and re-enable interrupts -- enter nested interrupt
-        // mode.
-        KernelSWI::DI();
-
-        g_pclCurrent = Kernel::GetIdleThread();
-
-        uint8_t u8SR = _SFR_IO8(SR_);
-
-        // So long as there's no "next-to-run" thread, keep executing the Idle
-        // function to conclusion...
-
-        while (g_pclNext == Kernel::GetIdleThread()) {
-            // Ensure that we run this block in an interrupt enabled context (but
-            // with the rest of the checks being performed in an interrupt disabled
-            // context).
-            ASM("sei");
-            Kernel::Idle();
-            ASM("cli");
-        }
-
-        // Progress has been achieved -- an interrupt-triggered event has caused
-        // the scheduler to run, and choose a new thread.  Since we've already
-        // saved the context of the thread we've hijacked to run idle, we can
-        // proceed to disable the nested interrupt context and switch to the
-        // new thread.
-
-        _SFR_IO8(SR_) = u8SR;
-        KernelSWI::RI(true);
-    }
-#endif
     g_pclCurrent = (Thread*)g_pclNext;
 }
 
@@ -140,9 +107,9 @@ void ThreadPort::StartThreads()
 {
     KernelSWI::Config();   // configure the task switch SWI
     KernelTimer::Config(); // configure the kernel timer
-#if KERNEL_USE_PROFILER
+
     Profiler::Init();
-#endif
+
     Scheduler::SetScheduler(1); // enable the scheduler
     Scheduler::Schedule();      // run the scheduler - determine the first thread to run
 
@@ -151,14 +118,13 @@ void ThreadPort::StartThreads()
     // KernelTimer::Start();                 // enable the kernel timer
     KernelSWI::Start(); // enable the task switch SWI
 
-#if KERNEL_USE_QUANTUM
+#if KERNEL_ROUND_ROBIN
     // Restart the thread quantum timer, as any value held prior to starting
     // the kernel will be invalid.  This fixes a bug where multiple threads
     // started with the highest priority before starting the kernel causes problems
     // until the running thread voluntarily blocks.
-    Quantum::RemoveThread();
-    Quantum::AddThread(g_pclCurrent);
-#endif
+    Quantum::Update(g_pclCurrent);
+#endif // #if KERNEL_ROUND_ROBIN
 
     // Restore the context...
     Thread_RestoreContext(); // restore the context of the first running thread
