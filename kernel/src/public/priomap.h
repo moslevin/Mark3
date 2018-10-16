@@ -42,6 +42,8 @@ See license.txt for more information
 #define PRIO_MAP_WORD_SHIFT (4)
 #elif (PORT_PRIO_MAP_WORD_SIZE == 4)
 #define PRIO_MAP_WORD_SHIFT (5)
+#elif (PORT_PRIO_MAP_WORD_SIZE == 8)
+#define PRIO_MAP_WORD_SHIFT (6)
 #endif
 
 // Bitmask used to separate out the priorities first-level bitmap from its

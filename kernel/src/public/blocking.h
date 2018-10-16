@@ -119,18 +119,6 @@ protected:
     void UnBlock(Thread* pclThread_);
 
     /**
-     *  ThreadList which is used to hold the list of threads blocked
-     *  on a given object.
-     */
-    ThreadList m_clBlockList;
-
-    /**
-     * Token used to check whether or not the object has been initialized
-     * prior to use.
-     */
-    uint8_t m_u8Initialized;
-
-    /**
      * @brief SetInitialized
      */
     void SetInitialized(void) { m_u8Initialized = BLOCKING_INIT_COOKIE; }
@@ -140,5 +128,17 @@ protected:
      * @return
      */
     bool IsInitialized(void) { return (m_u8Initialized == BLOCKING_INIT_COOKIE); }
+
+    /**
+     *  ThreadList which is used to hold the list of threads blocked
+     *  on a given object.
+     */
+    ThreadList m_clBlockList;
+
+    /**
+     * Token used to check whether or not the object has been initialized
+     * prior to use.
+     */
+    uint8_t m_u8Initialized; 
 };
 } // namespace Mark3
