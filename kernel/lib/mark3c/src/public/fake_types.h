@@ -56,9 +56,7 @@ typedef struct {
 //---------------------------------------------------------------------------
 typedef struct {
     Fake_LinkedListNode m_ll_node;
-#if KERNEL_EXTRA_CHECKS
     uint8_t m_u8Initialized;
-#endif
     uint8_t  m_u8Flags;
     void*    m_pfCallback;
     uint32_t m_u32Interval;
@@ -77,38 +75,32 @@ typedef struct {
     PORT_PRIO_TYPE      m_uXPriority;
     PORT_PRIO_TYPE      m_uXCurPriority;
     uint8_t             m_eState;
-#if KERNEL_USE_EXTENDED_CONTEXT
+#if KERNEL_EXTENDED_CONTEXT
     void* m_pvExtendedContext;
-#endif
-#if KERNEL_USE_THREADNAME
+#endif // #if KERNEL_EXTENDED_CONTEXT
+#if KERNEL_NAMED_THREADS
     const char* m_szName;
-#endif
+#endif // #if KERNEL_NAMED_THREADS
     uint16_t m_u16StackSize;
     void*    m_pclCurrent;
     void*    m_pclOwner;
     void*    m_pfEntryPoint;
     void*    m_pvArg;
-#if KERNEL_USE_QUANTUM
+#if KERNEL_ROUND_ROBIN
     uint16_t m_u16Quantum;
-#endif
-#if KERNEL_USE_EVENTFLAG
+#endif // #if KERNEL_ROUND_ROBIN
+#if KERNEL_EVENT_FLAGS
     uint16_t m_u16FlagMask;
     uint8_t  m_eFlagMode;
-#endif
-#if KERNEL_USE_TIMEOUTS || KERNEL_USE_SLEEP
+#endif // #if KERNEL_EVENT_FLAGS
     Fake_Timer m_clTimer;
-#endif
-#if KERNEL_USE_TIMEOUTS
     bool m_bExpired;
-#endif
 } Fake_Thread;
 
 //---------------------------------------------------------------------------
 typedef struct {
     Fake_ThreadList thread_list;
-#if KERNEL_EXTRA_CHECKS
     uint8_t m_u8Initialized;
-#endif
     uint16_t m_u16Value;
     uint16_t m_u16MaxValue;
 } Fake_Semaphore;
@@ -116,11 +108,10 @@ typedef struct {
 //---------------------------------------------------------------------------
 typedef struct {
     Fake_ThreadList thread_list;
-#if KERNEL_EXTRA_CHECKS
     uint8_t m_u8Initialized;
-#endif
     uint8_t m_u8Recurse;
     bool    m_bReady;
+    bool    m_bRecursive;
     uint8_t m_u8MaxPri;
     void*   m_pclOwner;
 } Fake_Mutex;
@@ -152,26 +143,20 @@ typedef struct {
     uint16_t       m_u16ElementSize;
     void*          m_pvBuffer;
     Fake_Semaphore m_clRecvSem;
-#if KERNEL_USE_TIMEOUTS
     Fake_Semaphore m_clSendSem;
-#endif
 } Fake_Mailbox;
 
 //---------------------------------------------------------------------------
 typedef struct {
     Fake_ThreadList thread_list;
-#if KERNEL_EXTRA_CHECKS
     uint8_t m_u8Initialized;
-#endif
     bool m_bPending;
 } Fake_Notify;
 
 //---------------------------------------------------------------------------
 typedef struct {
     Fake_ThreadList thread_list;
-#if KERNEL_EXTRA_CHECKS
     uint8_t m_u8Initialized;
-#endif
     uint16_t m_u16EventFlag;
 } Fake_EventFlag;
 
@@ -180,14 +165,14 @@ typedef struct {
     Fake_Mutex m_clGlobalMutex;
     Fake_Mutex m_clReaderMutex;
     uint8_t    m_u8ReadCount;
-} Fake_ConditionVariable;
+} Fake_ReaderWriterLock;
 
 //---------------------------------------------------------------------------
 typedef struct {
     Fake_Mutex     m_clMutex;
     Fake_Semaphore m_clSemaphore;
     uint8_t        m_u8Waiters;
-} Fake_ReaderWriterLock;
+} Fake_ConditionVariable;
 
 #if defined(__cplusplus)
 }
