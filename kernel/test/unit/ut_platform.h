@@ -52,19 +52,19 @@ typedef struct {
     pclCurrent->ExpectFalse(x)
 #define EXPECT_EQUALS(x, y)                                                                                            \
     pclCurrent->Start();                                                                                               \
-    pclCurrent->ExpectEquals((int32_t)(x), (int32_t)(y))
+    pclCurrent->ExpectEquals((K_INT)(x), (K_INT)(y))
 #define EXPECT_GT(x, y)                                                                                                \
     pclCurrent->Start();                                                                                               \
-    pclCurrent->ExpectGreaterThan((int32_t)(x), (int32_t)(y))
+    pclCurrent->ExpectGreaterThan((K_INT)(x), (K_INT)(y))
 #define EXPECT_LT(x, y)                                                                                                \
     pclCurrent->Start();                                                                                               \
-    pclCurrent->ExpectLessThan((int32_t)(x), (int32_t)(y))
+    pclCurrent->ExpectLessThan((K_INT)(x), (K_INT)(y))
 #define EXPECT_GTE(x, y)                                                                                               \
     pclCurrent->Start();                                                                                               \
-    pclCurrent->ExpectGreaterThanEquals((int32_t)(x), (int32_t)(y))
+    pclCurrent->ExpectGreaterThanEquals((K_INT)(x), (K_INT)(y))
 #define EXPECT_LTE(x, y)                                                                                               \
     pclCurrent->Start();                                                                                               \
-    pclCurrent->ExpectLessThanEquals((int32_t)(x), (int32_t)(y))
+    pclCurrent->ExpectLessThanEquals((K_INT)(x), (K_INT)(y))
 
 //---------------------------------------------------------------------------
 #define EXPECT_FAIL_TRUE(x)                                                                                            \
@@ -75,19 +75,19 @@ typedef struct {
     pclCurrent->ExpectFailFalse(x)
 #define EXPECT_FAIL_EQUALS(x, y)                                                                                       \
     pclCurrent->Start();                                                                                               \
-    pclCurrent->ExpectFailEquals((int32_t)(x), (int32_t)(y))
+    pclCurrent->ExpectFailEquals((K_INT)(x), (K_INT)(y))
 #define EXPECT_FAIL_GT(x, y)                                                                                           \
     pclCurrent->Start();                                                                                               \
-    pclCurrent->ExpectFailGreaterThan((int32_t)(x), (int32_t)(y))
+    pclCurrent->ExpectFailGreaterThan((K_INT)(x), (K_INT)(y))
 #define EXPECT_FAIL_LT(x, y)                                                                                           \
     pclCurrent->Start();                                                                                               \
-    pclCurrent->ExpectFailLessThan((int32_t)(x), (int32_t)(y))
+    pclCurrent->ExpectFailLessThan((K_INT)(x), (K_INT)(y))
 #define EXPECT_FAIL_GTE(x, y)                                                                                          \
     pclCurrent->Start();                                                                                               \
-    pclCurrent->ExpectFailGreaterThanEquals((int32_t)(x), (int32_t)(y))
+    pclCurrent->ExpectFailGreaterThanEquals((K_INT)(x), (K_INT)(y))
 #define EXPECT_FAIL_LTE(x, y)                                                                                          \
     pclCurrent->Start();                                                                                               \
-    pclCurrent->ExpectFailLessThanEquals((int32_t)(x), (int32_t)(y))
+    pclCurrent->ExpectFailLessThanEquals((K_INT)(x), (K_INT)(y))
 
 //---------------------------------------------------------------------------
 #define TEST_NAME_EVALUATE(name) #name

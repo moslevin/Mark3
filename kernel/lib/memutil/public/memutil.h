@@ -59,6 +59,7 @@ public:
     static void DecimalToHex(uint8_t u8Data_, char* szText_);
     static void DecimalToHex(uint16_t u16Data_, char* szText_);
     static void DecimalToHex(uint32_t u32Data_, char* szText_);
+    static void DecimalToHex(uint64_t u64Data_, char* szText_);
 
     //-----------------------------------------------------------------------
     /**
@@ -72,6 +73,7 @@ public:
     static void DecimalToString(uint8_t u8Data_, char* szText_);
     static void DecimalToString(uint16_t u16Data_, char* szText_);
     static void DecimalToString(uint32_t u32Data_, char* szText_);
+    static void DecimalToString(uint64_t u64Data_, char* szText_);
 
     //-----------------------------------------------------------------------
     /**
@@ -85,6 +87,7 @@ public:
     static bool StringToDecimal8(const char* szText_, uint8_t* pu8Out_);
     static bool StringToDecimal16(const char* szText_, uint16_t* pu16Out_);
     static bool StringToDecimal32(const char* szText_, uint32_t* pu32Out_);
+    static bool StringToDecimal64(const char* szText_, uint64_t* pu64Out_);
 
     //-----------------------------------------------------------------------
     /**

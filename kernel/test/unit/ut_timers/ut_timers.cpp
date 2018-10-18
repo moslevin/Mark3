@@ -26,9 +26,6 @@ See license.txt for more information
 #include "kerneltimer.h"
 #include "driver.h"
 #include "memutil.h"
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
 
 namespace
 {

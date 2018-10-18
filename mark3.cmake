@@ -25,13 +25,18 @@ get_property(mark3_ln_dbg_flags GLOBAL PROPERTY global_ln_dbg_flags)
 get_property(mark3_objcopy_flags GLOBAL PROPERTY global_objcopy_flags)
 get_property(mark3_objcopy_dbg_flags GLOBAL PROPERTY global_objcopy_dbg_flags)
 get_property(mark3_base_libs GLOBAL PROPERTY global_base_libs)
+get_property(mark3_asm_compiler GLOBAL PROPERTY global_asm_compiler)
 
 set(CMAKE_SYSTEM_NAME Generic)
 set(CMAKE_SYSTEM_PROCESSOR ${mark3_arch})
 set(CMAKE_C_COMPILER ${mark3_cc})
 set(CMAKE_CXX_COMPILER ${mark3_cxx})
+set(CMAKE_ASM_COMPILER ${mark3_asm_compiler})
 set(CMAKE_CC_FLAGS "")
 set(CMAKE_CXX_FLAGS "")
 set(CMAKE_C_COMPILER_WORKS 1)
 set(CMAKE_CXX_COMPILER_WORKS 1)
+set(CMAKE_ASM_COMPILER_WORKS 1)
+SET(CMAKE_ASM_COMPILE_OBJECT "<CMAKE_ASM_COMPILER> <DEFINES> <FLAGS> -o <OBJECT>   -c <SOURCE>")
+
 

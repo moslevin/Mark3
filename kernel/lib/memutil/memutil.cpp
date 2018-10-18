@@ -102,6 +102,33 @@ void MemUtil::DecimalToHex(uint32_t u32Data_, char* szText_)
         u32Tmp >>= 4;
     }
 }
+
+//---------------------------------------------------------------------------
+void MemUtil::DecimalToHex(uint64_t u64Data_, char* szText_)
+{
+    uint64_t u64Tmp     = u64Data_;
+    uint64_t u64Max     = 1;
+    uint64_t u64Compare = 0x0010;
+
+    KERNEL_ASSERT(szText_);
+
+    while (u64Data_ > u64Compare && u64Max < 8) {
+        u64Max++;
+        u64Compare <<= 4;
+    }
+
+    u64Tmp          = u64Data_;
+    szText_[u64Max] = 0;
+    while ((u64Max--) != 0u) {
+        if ((u64Tmp & 0x0F) <= 9) {
+            szText_[u64Max] = '0' + (u64Tmp & 0x0F);
+        } else {
+            szText_[u64Max] = 'A' + ((u64Tmp & 0x0F) - 10);
+        }
+        u64Tmp >>= 4;
+    }
+}
+
 //---------------------------------------------------------------------------
 void MemUtil::DecimalToString(uint8_t u8Data_, char* szText_)
 {
@@ -165,6 +192,28 @@ void MemUtil::DecimalToString(uint32_t u32Data_, char* szText_)
     while ((u32Max--) != 0u) {
         szText_[u32Max] = '0' + (u32Tmp % 10);
         u32Tmp /= 10;
+    }
+}
+
+
+//---------------------------------------------------------------------------
+void MemUtil::DecimalToString(uint64_t u64Data_, char* szText_)
+{
+    uint64_t u64Tmp     = u64Data_;
+    uint64_t u64Max     = 1;
+    uint64_t u64Compare = 10;
+
+    KERNEL_ASSERT(szText_);
+
+    while (u64Data_ >= u64Compare && u64Max < 12) {
+        u64Compare *= 10;
+        u64Max++;
+    }
+
+    szText_[u64Max] = 0;
+    while ((u64Max--) != 0u) {
+        szText_[u64Max] = '0' + (u64Tmp % 10);
+        u64Tmp /= 10;
     }
 }
 
@@ -248,6 +297,34 @@ bool MemUtil::StringToDecimal32(const char* szText_, uint32_t* pu32Out_)
         u32Tmp += szText_[i] - '0';
     }
     *pu32Out_ = u32Tmp;
+
+    return true;
+}
+
+//---------------------------------------------------------------------------
+bool MemUtil::StringToDecimal64(const char* szText_, uint64_t* pu64Out_)
+{
+    uint64_t u64Tmp = 0;
+    uint64_t u64Len = 0;
+
+    for (uint8_t i = 0; i < 21; i++) {
+        if (szText_[i] == 0) {
+            if (i == 0) {
+                return false;
+            }
+            u64Len = i;
+            break;
+        }
+    }
+
+    for (uint8_t i = 0; i < u64Len; i++) {
+        if ((szText_[i] < '0') || (szText_[i] > '9')) {
+            return false;
+        }
+        u64Tmp *= 10;
+        u64Tmp += szText_[i] - '0';
+    }
+    *pu64Out_ = u64Tmp;
 
     return true;
 }

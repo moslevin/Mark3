@@ -17,6 +17,7 @@ See license.txt for more information
  */
 #pragma once
 
+#include "mark3.h"
 #include "kerneltypes.h"
 
 namespace Mark3
@@ -67,9 +68,11 @@ public:
     void ExpectEquals(uint8_t u8Val_, uint8_t u8Expression_) { (u8Val_ == u8Expression_) ? Pass() : Fail(); }
     void ExpectEquals(uint16_t u16Val_, uint16_t usexpression_) { (u16Val_ == usexpression_) ? Pass() : Fail(); }
     void ExpectEquals(uint32_t u32Val_, uint32_t u32Expression_) { (u32Val_ == u32Expression_) ? Pass() : Fail(); }
+    void ExpectEquals(uint64_t u64Val_, uint64_t u64Expression_) { (u64Val_ == u64Expression_) ? Pass() : Fail(); }
     void ExpectEquals(char cVal_, char cExpression_) { (cVal_ == cExpression_) ? Pass() : Fail(); }
     void ExpectEquals(int16_t s16Val_, int16_t s16Expression_) { (s16Val_ == s16Expression_) ? Pass() : Fail(); }
     void ExpectEquals(int32_t lVal_, int32_t lExpression_) { (lVal_ == lExpression_) ? Pass() : Fail(); }
+    void ExpectEquals(int64_t lVal_, int64_t lExpression_) { (lVal_ == lExpression_) ? Pass() : Fail(); }
     void ExpectEquals(void* pvVal_, void* pvExpression_) { (pvVal_ == pvExpression_) ? Pass() : Fail(); }
     void ExpectFailTrue(bool bExpression_) { bExpression_ ? Fail() : Pass(); }
     void ExpectFailFalse(bool bExpression_) { !bExpression_ ? Fail() : Pass(); }
@@ -77,18 +80,20 @@ public:
     void ExpectFailEquals(uint8_t u8Val_, uint8_t u8Expression_) { (u8Val_ == u8Expression_) ? Fail() : Pass(); }
     void ExpectFailEquals(uint16_t u16Val_, uint16_t usexpression_) { (u16Val_ == usexpression_) ? Fail() : Pass(); }
     void ExpectFailEquals(uint32_t u32Val_, uint32_t u32Expression_) { (u32Val_ == u32Expression_) ? Fail() : Pass(); }
+    void ExpectFailEquals(uint64_t u32Val_, uint64_t u32Expression_) { (u32Val_ == u32Expression_) ? Fail() : Pass(); }
     void ExpectFailEquals(char cVal_, char cExpression_) { (cVal_ == cExpression_) ? Fail() : Pass(); }
     void ExpectFailEquals(int16_t s16Val_, int16_t s16Expression_) { (s16Val_ == s16Expression_) ? Fail() : Pass(); }
     void ExpectFailEquals(int32_t lVal_, int32_t lExpression_) { (lVal_ == lExpression_) ? Fail() : Pass(); }
+    void ExpectFailEquals(int64_t lVal_, int64_t lExpression_) { (lVal_ == lExpression_) ? Fail() : Pass(); }
     void ExpectFailEquals(void* pvVal_, void* pvExpression_) { (pvVal_ == pvExpression_) ? Fail() : Pass(); }
-    void ExpectGreaterThan(int32_t lVal_, int32_t lExpression_) { (lVal_ > lExpression_) ? Pass() : Fail(); }
-    void ExpectLessThan(int32_t lVal_, int32_t lExpression_) { (lVal_ < lExpression_) ? Pass() : Fail(); }
-    void ExpectGreaterThanEquals(int32_t lVal_, int32_t lExpression_) { (lVal_ >= lExpression_) ? Pass() : Fail(); }
-    void ExpectLessThanEquals(int32_t lVal_, int32_t lExpression_) { (lVal_ <= lExpression_) ? Pass() : Fail(); }
-    void ExpectFailGreaterThan(int32_t lVal_, int32_t lExpression_) { (lVal_ > lExpression_) ? Fail() : Pass(); }
-    void ExpectFailLessThan(int32_t lVal_, int32_t lExpression_) { (lVal_ < lExpression_) ? Fail() : Pass(); }
-    void ExpectFailGreaterThanEquals(int32_t lVal_, int32_t lExpression_) { (lVal_ >= lExpression_) ? Fail() : Pass(); }
-    void ExpectFailLessThanEquals(int32_t lVal_, int32_t lExpression_) { (lVal_ <= lExpression_) ? Fail() : Pass(); }
+    void ExpectGreaterThan(K_INT lVal_, K_INT lExpression_) { (lVal_ > lExpression_) ? Pass() : Fail(); }
+    void ExpectLessThan(K_INT lVal_, K_INT lExpression_) { (lVal_ < lExpression_) ? Pass() : Fail(); }
+    void ExpectGreaterThanEquals(K_INT lVal_, K_INT lExpression_) { (lVal_ >= lExpression_) ? Pass() : Fail(); }
+    void ExpectLessThanEquals(K_INT lVal_, K_INT lExpression_) { (lVal_ <= lExpression_) ? Pass() : Fail(); }
+    void ExpectFailGreaterThan(K_INT lVal_, K_INT lExpression_) { (lVal_ > lExpression_) ? Fail() : Pass(); }
+    void ExpectFailLessThan(K_INT lVal_, K_INT lExpression_) { (lVal_ < lExpression_) ? Fail() : Pass(); }
+    void ExpectFailGreaterThanEquals(K_INT lVal_, K_INT lExpression_) { (lVal_ >= lExpression_) ? Fail() : Pass(); }
+    void ExpectFailLessThanEquals(K_INT lVal_, K_INT lExpression_) { (lVal_ <= lExpression_) ? Fail() : Pass(); }
     /**
      *  @brief Complete
      *

@@ -1,6 +1,6 @@
 #----------------------------------------------------------------------------
 function(mark3_add_executable TARGET_NAME)
-    set(hex_image   ${TARGET_NAME}.hex)
+    set(raw_image   ${TARGET_NAME}.img)
     set(elf_image   ${TARGET_NAME}.elf)
     set(bin_image   ${TARGET_NAME}.bin)
     set(dbg_image   ${TARGET_NAME}.dbg)
@@ -18,9 +18,9 @@ function(mark3_add_executable TARGET_NAME)
 
     # Rule for building the hex image
     add_custom_command(
-        OUTPUT ${hex_image}
+        OUTPUT ${raw_image}
         COMMAND
-            ${mark3_objcopy} ${mark3_objcopy_flags} ${elf_image} ${hex_image}
+            ${mark3_objcopy} ${mark3_objcopy_flags} ${elf_image} ${raw_image}
         DEPENDS
             ${elf_image}
     )
@@ -52,7 +52,7 @@ function(mark3_add_executable TARGET_NAME)
     # Ensure that the hex, bin, and debug images are always built for the target
     add_custom_target(${TARGET_NAME}
         ALL
-        DEPENDS ${bin_image} ${hex_image} ${dbg_image}
+        DEPENDS ${bin_image} ${raw_image} ${dbg_image}
     )
 
     # Map the target name to the elf image

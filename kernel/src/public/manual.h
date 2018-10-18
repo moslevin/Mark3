@@ -107,6 +107,7 @@ See license.txt for more information
 
     Configuration is done through settings options in portcfg.h files for each target.
 
+    @sa portcfg.h
 */
 /**
     @page BUILD0 Building Mark3
@@ -148,8 +149,8 @@ See license.txt for more information
     #define STACK_SIZE_APP      (192)
     #define STACK_SIZE_IDLE     (128)
 
-    static uint8_t aucAppStack[STACK_SIZE_APP];
-    static uint8_t aucIdleStack[STACK_SIZE_IDLE];
+    static K_WORD awAppStack[STACK_SIZE_APP];
+    static K_WORD awIdleStack[STACK_SIZE_IDLE];
 
     //3) Define entry point functions for each thread
     void AppThread(void);
@@ -173,13 +174,13 @@ See license.txt for more information
         Kernel::Init();				// MUST be before other kernel ops
 
         //2) Initialize all of the threads we've defined
-        AppThread.Init(	aucAppStack,		// Pointer to the stack
+        AppThread.Init(	awAppStack,		// Pointer to the stack
                         STACK_SIZE_APP,		// Size of the stack
                         1,			// Thread priority
                         (void*)AppEntry,	// Entry function
                         NULL );         	// Entry function argument
 
-        IdleThread.Init( aucIdleStack,		// Pointer to the stack
+        IdleThread.Init( awIdleStack,		// Pointer to the stack
                          STACK_SIZE_IDLE,	// Size of the stack
                          0,			// Thread priority
                          (void*)IdleEntry,	// Entry function
@@ -266,7 +267,7 @@ See license.txt for more information
 
     @code
     Thread clMyThread;
-    uint8_t aucStack[192];
+    K_WORD awStack[192];
 
     void AppEntry(void)
     {
@@ -278,8 +279,8 @@ See license.txt for more information
 
     ...
     {
-        clMyThread.Init(aucStack,	 // Pointer to the stack to use by this thread
-                        192,	      	 // Size of the stack in bytes
+        clMyThread.Init(awStack,	 // Pointer to the stack to use by this thread
+                        sizeof(awStack),	      	 // Size of the stack in bytes
                         1,		 // Thread priority (0 = idle, 7 = max)
                         (void*)AppEntry, // Function where the thread starts executing
                         NULL );          // Argument passed into the entry function
@@ -336,13 +337,13 @@ See license.txt for more information
 
     While extremely simple to use, they provide one of the most powerful
     execution contexts in the system.  The timer callbacks execute from within
-    the timer callback ISR in an interrupt-enabled context.  As such,
-    timer callbacks are considered higher-priority than any thread in the system,
-    but lower priority than other interrupts.  Care must be taken to ensure
+    a timer thread, as a result of a semaphore posted in a timer interrupt.
+    Timer callbacks are executed from a high-priority thread -- typically at the
+    highest priority thread in the system.  Care must be taken to ensure
     that timer callbacks execute as quickly as possible to minimize the
     impact of processing on the throughput of tasks in the system.
-    Wherever possible, heavy-lifting should be deferred to the threads
-    by way of semaphores or messages.
+    Wherever possible, heavy-lifting should be deferred to lower-priroity
+    threads by way of semaphores or messages.
 
     Below is an example showing how to start a periodic system timer
     which will trigger every second:
@@ -2240,10 +2241,8 @@ See license.txt for more information
     rules:
 
     @verbatim
-        Find the highest-priority "Ready" list that has at least one Threads.
-        If the first thread in that bucket is not the current thread, select it
-        to run next. Otherwise, rotate the linked list, and choose the next
-        thread in the list to run
+        Find the highest-priority "Ready" list that has at least one Thread.
+        Select the next thread to run as the first thread in that list
     @endverbatim
 
     Since context switching is one of the most common and frequent operation
@@ -2288,18 +2287,17 @@ See license.txt for more information
     iteratively using bitshifts and compares (which isn't any more efficient
     than the raw list traversal), but it can also be evaluated using either a
     lookup table, or via a special CPU instruction to count the leading zeros in
-    a value.  In Mark3, we opt for the lookup-table approach since we have a
-    limited number of priorities and not all supported CPU architectures support
-    a count leading zero instruction.  To achieve a balance between performance
-    and memory use, we use a 4-bit lookup table (costing 16 bytes) to perform
-    the lookup.
+    a value.  In Mark3, we use all approaches.  In the event a target architecture
+    or toolchain has intrinsic support for a count-leading-zeroes (CLZ) instruction,
+    that implementation is used.  Otherwise, a software-based implementation is
+    provided -- either using a lookup table, or a bitshift-and-compare algorithm.
 
-    (As a sidenote - this is actually a very common approach  in OS schedulers.
+    (As a sidenote - this is actually a very common approach used in OS schedulers.
     It's actually part of the reason why modern ARM cores implement a dedicated
     count-leading-zeros [CLZ] instruction!)
 
-    With a 4-bit lookup table and an 8-bit priority-level bitmap, the priority
-    check algorithm looks something like this:
+    For the lookup-table approach - a 4-bit lookup table can be used with an 8-bit
+    priority-level bitmap would look something like this:
 
     @code{.cpp}
     // Check the highest 4 priority levels, represented in the
@@ -2351,18 +2349,17 @@ See license.txt for more information
     of the alorithms that have been explored above simply look at the first
     Thread in each group.
 
-    Mark3 addresses this issue indirectly, using a software timer to manage
-    round-robin scheduling, as follows.
+    Mark3 addresses this issue indirectly, using an optimized software timer to
+    manage round-robin scheduling, as follows.
 
     In some instances where the scheduler is run by the kernel directly
     (typically as a result of calling Thread::Yield()), the kernel will perfom
     an additional check after running the Scheduler to determine whether or
-    there are multiple ready Threadsin the priority of the next ready thread.
+    there are multiple ready Threads in the priority of the next ready thread.
 
-
-    If there are multiple threads within that priority, the kernel adds a
+    If there are multiple threads within that priority, the kernel starts a
     one-shot software timer which is programmed to expire at the next Thread's
-    configured quantum.  When this timer expires, the timer's callback function
+    configured quantum.  When this timer expires, a timer callback function
     executes to perform two simple operations:
 
     "Pivot" the current Thread's priority list.
@@ -2373,7 +2370,7 @@ See license.txt for more information
     to its next value, which in our case ensures that a new thread will be
     chosen the next time the scheduler is run (the scheduler only looks at the
     head node of the priority lists).  And by calling Yield, the system forces
-    the scheduler t run, a new round-robin software timer to be installed (if
+    the scheduler to run, a new round-robin software timer to be installed (if
     necssary), and triggers a context switch SWI to load the newly-chosen thread.
     Note that if the thread attached to the round-robin timer is pre-empted, the
     kernel will take steps to abort and invalidate that round-robin software
@@ -3593,7 +3590,7 @@ See license.txt for more information
     - Removed fake idle-thread feature, since it doesn't support all targets
     - Make all unit tests and examples run on all targets
     - Moved AVR-specific code out of the kernel (kernelaware debugging support)
-    - Disable build-time configuration, and remove all associated ifdefs throughout the code.
+    - Remove most build-time configuration flags, and remove associated ifdefs throughout the code.
     - Support qemu-system-arm's lm3s6965 evb target, with semihosting
     - Various bugfixes and improvements
     .
