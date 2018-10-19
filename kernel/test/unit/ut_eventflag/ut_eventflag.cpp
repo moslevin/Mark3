@@ -502,12 +502,61 @@ TEST(ut_timedwait)
 
     EXPECT_EQUALS(u8TimeoutCount, 5);
     EXPECT_EQUALS(u8FlagCount, 5);
+
+    clThread1.Stop();
 }
 
+//===========================================================================
+TEST(ut_set_before_wait_clear)
+{
+    clFlagGroup.Init();
+    clFlagGroup.Clear(0xFFFF);
+
+    clFlagGroup.Set(0x03C0);
+
+    auto rc = clFlagGroup.Wait(0x03C0, EventFlagOperation::All_Clear);
+
+    EXPECT_EQUALS(rc, 0x03C0);
+    EXPECT_EQUALS(clFlagGroup.GetMask(), 0);
+    EXPECT_EQUALS(Scheduler::GetCurrentThread()->GetExpired(), false);
+
+    clFlagGroup.Init();
+    clFlagGroup.Clear(0xFFFF);
+    clFlagGroup.Set(0xF00F);
+
+    rc = clFlagGroup.Wait(0x03C0, EventFlagOperation::All_Clear, 10);
+
+    EXPECT_EQUALS(rc, 0);
+    EXPECT_EQUALS(Scheduler::GetCurrentThread()->GetExpired(), true);
+    EXPECT_EQUALS(clFlagGroup.GetMask(), 0xF00F);
+
+    clFlagGroup.Init();
+    clFlagGroup.Clear(0xFFFF);
+
+    clFlagGroup.Set(0xF3C0);
+
+    rc = clFlagGroup.Wait(0x03C0, EventFlagOperation::Any_Clear);
+
+    EXPECT_EQUALS(rc, 0x03C0);
+    EXPECT_EQUALS(Scheduler::GetCurrentThread()->GetExpired(), false);
+    EXPECT_EQUALS(clFlagGroup.GetMask(), 0xF000);
+
+    clFlagGroup.Init();
+    clFlagGroup.Clear(0xFFFF);
+
+    clFlagGroup.Set(0xF00F);
+
+    rc = clFlagGroup.Wait(0x03C0, EventFlagOperation::Any_Clear, 10);
+
+    EXPECT_EQUALS(rc, 0);
+    EXPECT_EQUALS(Scheduler::GetCurrentThread()->GetExpired(), true);
+    EXPECT_EQUALS(clFlagGroup.GetMask(), 0xF00F);
+}
 
 //===========================================================================
 // Test Whitelist Goes Here
 //===========================================================================
 TEST_CASE_START
-TEST_CASE(ut_waitany), TEST_CASE(ut_waitall), TEST_CASE(ut_flag_multiwait), TEST_CASE(ut_timedwait), TEST_CASE_END
+TEST_CASE(ut_waitany), TEST_CASE(ut_waitall), TEST_CASE(ut_flag_multiwait), TEST_CASE(ut_timedwait),
+TEST_CASE(ut_set_before_wait_clear), TEST_CASE_END
 } // namespace Mark3

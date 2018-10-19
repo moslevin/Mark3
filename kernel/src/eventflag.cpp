@@ -43,10 +43,10 @@ namespace
 
         auto* pclEventFlag = static_cast<EventFlag*>(pvData_);
 
-        pclEventFlag->WakeMe(pclOwner_);
         pclOwner_->SetExpired(true);
         pclOwner_->SetEventFlagMask(0);
 
+        pclEventFlag->WakeMe(pclOwner_);
         if (pclOwner_->GetCurPriority() >= Scheduler::GetCurrentThread()->GetCurPriority()) {
             Thread::Yield();
         }
@@ -105,6 +105,11 @@ uint16_t EventFlag::Wait_i(uint16_t u16Mask_, EventFlagOperation eMode_, uint32_
         if ((m_u16SetMask & u16Mask_) == u16Mask_) {
             bMatch = true;
             g_pclCurrent->SetEventFlagMask(u16Mask_);
+
+            if (EventFlagOperation::All_Clear == eMode_) {
+                m_u16SetMask &= ~u16Mask_;
+                g_pclCurrent->SetExpired(false);
+            }
         }
     } else if ((eMode_ == EventFlagOperation::Any_Set) || (eMode_ == EventFlagOperation::Any_Clear)) {
         // Check to see if the existing flags match any of the set flags in
@@ -112,6 +117,11 @@ uint16_t EventFlag::Wait_i(uint16_t u16Mask_, EventFlagOperation eMode_, uint32_
         if ((m_u16SetMask & u16Mask_) != 0) {
             bMatch = true;
             g_pclCurrent->SetEventFlagMask(m_u16SetMask & u16Mask_);
+
+            if (EventFlagOperation::Any_Clear == eMode_) {
+                m_u16SetMask &= ~u16Mask_;
+                g_pclCurrent->SetExpired(false);
+            }
         }
     }
 
