@@ -53,7 +53,7 @@ See license.txt for more information
 
                 // Set the message data/parameters
                 tx_message->SetCode( 1234 );
-                tx_message->SetData( NULL );
+                tx_message->SetData( nullptr );
 
                 // Send the message on the queue.
                 my_queue.Send( tx_message );
@@ -103,7 +103,7 @@ public:
     void Init()
     {
         ClearNode();
-        m_pvData  = NULL;
+        m_pvData  = nullptr;
         m_u16Code = 0;
     }
 
@@ -233,13 +233,13 @@ public:
      *  Receive a message from the message queue.  If the message queue
      *  is empty, the thread will block until a message is available for
      *  the duration specified.  If no message arrives within that
-     *  duration, the call will return with NULL.
+     *  duration, the call will return with nullptr.
      *
      *  @param u32TimeWaitMS_ The amount of time in ms to wait for a
      *          message before timing out and unblocking the waiting thread.
      *
      *  @return Pointer to a message object at the head of the queue or
-     *          NULL on timeout.
+     *          nullptr on timeout.
      */
     Message* Receive(uint32_t u32TimeWaitMS_);
 

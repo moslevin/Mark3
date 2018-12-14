@@ -178,13 +178,13 @@ See license.txt for more information
                         STACK_SIZE_APP,		// Size of the stack
                         1,			// Thread priority
                         (void*)AppEntry,	// Entry function
-                        NULL );         	// Entry function argument
+                        nullptr );         	// Entry function argument
 
         IdleThread.Init( awIdleStack,		// Pointer to the stack
                          STACK_SIZE_IDLE,	// Size of the stack
                          0,			// Thread priority
                          (void*)IdleEntry,	// Entry function
-                         NULL );		// Entry function argument
+                         nullptr );		// Entry function argument
 
         //3) Add the threads to the scheduler
         AppThread.Start();			// Actively schedule the threads
@@ -283,7 +283,7 @@ See license.txt for more information
                         sizeof(awStack),	      	 // Size of the stack in bytes
                         1,		 // Thread priority (0 = idle, 7 = max)
                         (void*)AppEntry, // Function where the thread starts executing
-                        NULL );          // Argument passed into the entry function
+                        nullptr );          // Argument passed into the entry function
 
     }
 
@@ -2259,7 +2259,7 @@ See license.txt for more information
     @code{.cpp}
     for (prio = num_prio - 1; prio >= 0; prio--)
     {
-        if (thread_list[prio].get_head() != NULL)
+        if (thread_list[prio].get_head() != nullptr)
         {
             break;
         }

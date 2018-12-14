@@ -44,7 +44,7 @@ public:
      */
     ThreadList()
         : m_uXPriority(0)
-        , m_pclMap(NULL)
+        , m_pclMap(nullptr)
     {
     }
 
@@ -85,7 +85,7 @@ public:
      *
      *  @param node_        Pointer to the thread to add (link list node)
      *  @param pclMap_      Pointer to the bitmap flag to set (if used in
-     *                      a scheduler context), or NULL for non-scheduler.
+     *                      a scheduler context), or nullptr for non-scheduler.
      *  @param uXPriority_  Priority of the threadlist
      */
     void Add(LinkListNode* node_, PriorityMap* pclMap_, PORT_PRIO_TYPE uXPriority_);

@@ -256,7 +256,7 @@ void Thread_Profiling()
         // test thread, simulating an "average" system thread.  Create the
         // thread at a higher priority than the current thread.
         clThreadInitTimer.Start();
-        clTestThread1.Init(awTestStack1, sizeof(awTestStack1), 2, (ThreadEntryFunc)Thread_ProfilingThread, NULL);
+        clTestThread1.Init(awTestStack1, sizeof(awTestStack1), 2, (ThreadEntryFunc)Thread_ProfilingThread, nullptr);
         clThreadInitTimer.Stop();
 
         // Profile the time it takes from calling "start" to the time when the
@@ -382,9 +382,9 @@ int main(void)
 {
     Kernel::Init();
 
-    clMainThread.Init(awMainStack, sizeof(awMainStack), 1, AppMain, NULL);
+    clMainThread.Init(awMainStack, sizeof(awMainStack), 1, AppMain, nullptr);
 
-    clIdleThread.Init(awIdleStack, sizeof(awIdleStack), 0, IdleMain, NULL);
+    clIdleThread.Init(awIdleStack, sizeof(awIdleStack), 0, IdleMain, nullptr);
 
     clMainThread.Start();
     clIdleThread.Start();

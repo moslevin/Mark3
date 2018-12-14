@@ -86,7 +86,7 @@ Message* MessageQueue::Receive_i(uint32_t u32TimeWaitMS_)
 
     // Block the current thread on the counting semaphore
     if (!m_clSemaphore.Pend(u32TimeWaitMS_)) {
-        return NULL;
+        return nullptr;
     }
 
     CS_ENTER();

@@ -118,7 +118,7 @@ bool Semaphore::Post()
     CS_ENTER();
 
     // If nothing is waiting for the semaphore
-    if (m_clBlockList.GetHead() == NULL) {
+    if (m_clBlockList.GetHead() == nullptr) {
         // Check so see if we've reached the maximum value in the semaphore
         if (m_u16Value < m_u16MaxValue) {
             // Increment the count value

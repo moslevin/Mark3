@@ -114,8 +114,8 @@ public:
      */
     void Init()
     {
-        m_pclHead = NULL;
-        m_pclTail = NULL;
+        m_pclHead = nullptr;
+        m_pclTail = nullptr;
     }
 
     /**
@@ -147,12 +147,12 @@ public:
     /**
      *  @brief DoubleLinkList
      *
-     *  Default constructor - initializes the head/tail nodes to NULL
+     *  Default constructor - initializes the head/tail nodes to nullptr
      */
     DoubleLinkList()
     {
-        m_pclHead = NULL;
-        m_pclTail = NULL;
+        m_pclHead = nullptr;
+        m_pclTail = nullptr;
     }
 
     /**
@@ -184,8 +184,8 @@ public:
     void* operator new(size_t sz, void* pv) { return (CircularLinkList*)pv; };
     CircularLinkList()
     {
-        m_pclHead = NULL;
-        m_pclTail = NULL;
+        m_pclHead = nullptr;
+        m_pclTail = nullptr;
     }
 
     /**

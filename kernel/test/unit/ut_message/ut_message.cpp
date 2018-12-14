@@ -180,7 +180,7 @@ TEST(ut_message_exhaust)
     }
 
     // Test - exhaust the global message pool and ensure that we eventually
-    // get "NULL" returned when the pool is depleted, and not some other
+    // get "nullptr" returned when the pool is depleted, and not some other
     // unexpected condition/system failure.
     for (int i = 0; i < MESSAGE_POOL_SIZE; i++) { EXPECT_FAIL_FALSE(s_clMessagePool.Pop()); }
     EXPECT_FALSE(s_clMessagePool.Pop());

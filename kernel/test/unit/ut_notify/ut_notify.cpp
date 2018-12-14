@@ -48,7 +48,7 @@ TEST(ut_notify)
         }
     };
 
-    clThread.Init(awStack, PORT_KERNEL_DEFAULT_STACK_SIZE, 2, lNotifyFunc, NULL);
+    clThread.Init(awStack, PORT_KERNEL_DEFAULT_STACK_SIZE, 2, lNotifyFunc, nullptr);
     clThread.Start();
     for (int i = 0; i < 10; i++) { clNotify.Wait(0); }
     clThread.Stop();

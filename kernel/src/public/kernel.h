@@ -173,7 +173,7 @@ public:
      * Return the current function called on every Thread::Init();
      *
      * @return Pointer to the currently-installed callout function,
-     *         or NULL if not set.
+     *         or nullptr if not set.
      */
     static ThreadCreateCallout GetThreadCreateCallout(void) { return m_pfThreadCreateCallout; }
 #endif // #if KERNEL_THREAD_CREATE_HOOK
@@ -183,7 +183,7 @@ public:
      * Return the current function called on every Thread::Exit();
      *
      * @return Pointer to the currently-installed callout function,
-     *         or NULL if not set.
+     *         or nullptr if not set.
      */
     static ThreadExitCallout GetThreadExitCallout(void) { return m_pfThreadExitCallout; }
 #endif // #if KERNEL_THREAD_EXIT_HOOK
@@ -193,7 +193,7 @@ public:
      * Return the current function called on every Thread::ContextSwitchSWI()
      *
      * @return Pointer to the currently-installed callout function,
-     *         or NULL if not set.
+     *         or nullptr if not set.
      */
     static ThreadContextCallout GetThreadContextSwitchCallout(void) { return m_pfThreadContextCallout; }
 #endif // #if KERNEL_CONTEXT_SWITCH_CALLOUT

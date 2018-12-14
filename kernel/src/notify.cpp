@@ -74,7 +74,7 @@ void Notify::Signal(void)
     if (pclCurrent == nullptr) {
         m_bPending = true;
     } else {
-        while (pclCurrent != NULL) {
+        while (pclCurrent != nullptr) {
             UnBlock(pclCurrent);
             if (!bReschedule && (pclCurrent->GetCurPriority() >= Scheduler::GetCurrentThread()->GetCurPriority())) {
                 bReschedule = true;

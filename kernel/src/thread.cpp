@@ -70,7 +70,7 @@ void Thread::Init(
     m_pvArg         = pvArg_;
 
 #if KERNEL_NAMED_THREADS
-    m_szName        = NULL;
+    m_szName        = nullptr;
 #endif
 #if KERNEL_ROUND_ROBIN
     m_u16Quantum    = THREAD_QUANTUM_DEFAULT;

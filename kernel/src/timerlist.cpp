@@ -66,7 +66,7 @@ void TimerList::Process(void)
     auto lock = LockGuard{ &m_clMutex };
 
     pclNode = static_cast<Timer*>(GetHead());
-    pclPrev = NULL;
+    pclPrev = nullptr;
 
     // Subtract the elapsed time interval from each active timer.
     while (pclNode != 0) {

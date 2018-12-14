@@ -68,7 +68,7 @@ TEST(ut_threadcreate)
     clSem2.Init(0, 1);
 
     // Initialize our thread
-    clThread1.Init(aucStack1, sizeof(aucStack1), 7, lThreadEntry, NULL);
+    clThread1.Init(aucStack1, sizeof(aucStack1), 7, lThreadEntry, nullptr);
 
     // Start the thread (threads are created in the stopped state)
     clThread1.Start();
@@ -143,7 +143,7 @@ TEST(ut_threadsleep)
     clSem2.Init(0, 1);
 
     // Initialize our thread
-    clThread1.Init(aucStack1, sizeof(aucStack1), 7, lThreadSleepEntryPoint, NULL);
+    clThread1.Init(aucStack1, sizeof(aucStack1), 7, lThreadSleepEntryPoint, nullptr);
 
     // Start the thread (threads are created in the stopped state)
     clThread1.Start();

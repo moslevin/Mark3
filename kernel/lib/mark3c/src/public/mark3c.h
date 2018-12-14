@@ -172,7 +172,7 @@ typedef enum {
  * @brief Alloc_Memory
  * @sa void* AutoAlloc::NewRawData(size_t sSize_)
  * @param eSize_ Size in bytes to allocate from the one-time-allocate heap
- * @return Pointer to an allocated blob of memory, or NULL if heap exhausted
+ * @return Pointer to an allocated blob of memory, or nullptr if heap exhausted
  */
 void* Alloc_Memory(size_t eSize_);
 
@@ -185,7 +185,7 @@ void Free_Memory(void* pvObject_);
 /**
  * @brief Alloc_Semaphore
  * @sa Semaphore* AutoAlloc::NewSemaphore()
- * @return Handle to an allocated object, or NULL if heap exhausted
+ * @return Handle to an allocated object, or nullptr if heap exhausted
  */
 Semaphore_t Alloc_Semaphore(void);
 void        Free_Semaphore(Semaphore_t handle);
@@ -193,7 +193,7 @@ void        Free_Semaphore(Semaphore_t handle);
 /**
  * @brief Alloc_Mutex
  * @sa Mutex* AutoAlloc::NewMutex()
- * @return Handle to an allocated object, or NULL if heap exhausted
+ * @return Handle to an allocated object, or nullptr if heap exhausted
  */
 Mutex_t Alloc_Mutex(void);
 void    Free_Mutex(Mutex_t handle);
@@ -202,7 +202,7 @@ void    Free_Mutex(Mutex_t handle);
 /**
  * @brief Alloc_EventFlag
  * @sa EventFlag* AutoAlloc::NewEventFlag()
- * @return Handle to an allocated object, or NULL if heap exhausted
+ * @return Handle to an allocated object, or nullptr if heap exhausted
  */
 EventFlag_t Alloc_EventFlag(void);
 void        Free_EventFlag(EventFlag_t handle);
@@ -211,7 +211,7 @@ void        Free_EventFlag(EventFlag_t handle);
 /**
  * @brief Alloc_Message
  * @sa AutoAlloc::NewMessage()
- * @return Handle to an allocated object, or NULL if heap exhausted
+ * @return Handle to an allocated object, or nullptr if heap exhausted
  */
 Message_t Alloc_Message(void);
 void      Free_Message(Message_t handle);
@@ -219,7 +219,7 @@ void      Free_Message(Message_t handle);
 /**
  * @brief Alloc_MessageQueue
  * @sa MesageQueue* AutoAlloc::NewMessageQueue()
- * @return Handle to an allocated object, or NULL if heap exhausted
+ * @return Handle to an allocated object, or nullptr if heap exhausted
  */
 MessageQueue_t Alloc_MessageQueue(void);
 void           Free_MessageQueue(MessageQueue_t handle);
@@ -230,7 +230,7 @@ void          Free_MessagePool(MessagePool_t handle);
 /**
  * @brief Alloc_Notify
  * @sa Notify* AutoAlloc::NewNotify()
- * @return Handle to an allocated object, or NULL if heap exhausted
+ * @return Handle to an allocated object, or nullptr if heap exhausted
  */
 Notify_t Alloc_Notify(void);
 void     Free_Notify(Notify_t handle);
@@ -238,7 +238,7 @@ void     Free_Notify(Notify_t handle);
 /**
  * @brief Alloc_Mailbox
  * @sa Mailbox* AutoAlloc::NewMailbox()
- * @return Handle to an allocated object, or NULL if heap exhausted
+ * @return Handle to an allocated object, or nullptr if heap exhausted
  */
 Mailbox_t Alloc_Mailbox(void);
 void      Free_Mailbox(Mailbox_t handle);
@@ -246,7 +246,7 @@ void      Free_Mailbox(Mailbox_t handle);
 /**
  * @brief Alloc_Thread
  * @sa Thread* AutoAlloc::NewThread()
- * @return Handle to an allocated object, or NULL if heap exhausted
+ * @return Handle to an allocated object, or nullptr if heap exhausted
  */
 Thread_t Alloc_Thread(void);
 void     Free_Thread(Thread_t handle);
@@ -254,7 +254,7 @@ void     Free_Thread(Thread_t handle);
 /**
  * @brief Alloc_Timer
  * @sa Timer* AutoAlloc::NewTimer()
- * @return Handle to an allocated object, or NULL if heap exhausted
+ * @return Handle to an allocated object, or nullptr if heap exhausted
  */
 Timer_t Alloc_Timer(void);
 void    Free_Timer(Timer_t handle);
@@ -438,7 +438,7 @@ void Thread_SetName(Thread_t handle, const char* szName_);
  * @brief Thread_GetName
  * @sa const char* Thread::GetName()
  * @param handle Handle of the thread
- * @return Thread current name, or NULL if no name specified
+ * @return Thread current name, or nullptr if no name specified
  */
 const char* Thread_GetName(Thread_t handle);
 #endif // #if KERNEL_NAMED_THREADS
@@ -882,7 +882,7 @@ Message_t MessageQueue_Receive(MessageQueue_t handle);
  *        message before timing out and unblocking the waiting thread.
  *
  * @return Pointer to a message object at the head of the queue or
- *         NULL on timeout.
+ *         nullptr on timeout.
  */
 Message_t MessageQueue_TimedReceive(MessageQueue_t handle, uint32_t u32TimeWaitMS_);
 
@@ -920,7 +920,7 @@ void MessagePool_Push(MessagePool_t handle, Message_t msg);
  * @brief MessagePool_Pop
  * @sa Message* MessagePool::Pop()
  * @param handle  Handle of the message pool object
- * @return Handle to a Message object, or NULL on allocation error
+ * @return Handle to a Message object, or nullptr on allocation error
  */
 Message_t MessagePool_Pop(MessagePool_t handle);
 

@@ -140,7 +140,7 @@ bool Mailbox::Send_i(const void* pvData_, bool bTail_, uint32_t u32TimeoutMS_)
 {
     KERNEL_ASSERT(pvData_ != nullptr);
 
-    const void* pvDst = NULL;
+    const void* pvDst = nullptr;
 
     auto bRet        = false;
     auto bSchedState = Scheduler::SetScheduler(false);

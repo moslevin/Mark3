@@ -26,8 +26,8 @@ namespace Mark3
 //---------------------------------------------------------------------------
 void LinkListNode::ClearNode()
 {
-    next = NULL;
-    prev = NULL;
+    next = nullptr;
+    prev = nullptr;
 }
 
 //---------------------------------------------------------------------------
@@ -36,7 +36,7 @@ void DoubleLinkList::Add(LinkListNode* node_)
     KERNEL_ASSERT(node_ != nullptr);
 
     node_->prev = m_pclTail;
-    node_->next = NULL;
+    node_->next = nullptr;
 
     // If the list is empty, initilize the head
     if (m_pclHead == nullptr) {
@@ -107,8 +107,8 @@ void CircularLinkList::Remove(LinkListNode* node_)
     // Check to see if this is the head of the list...
     if ((node_ == m_pclHead) && (m_pclHead == m_pclTail)) {
         // Clear the head and tail pointers - nothing else left.
-        m_pclHead = NULL;
-        m_pclTail = NULL;
+        m_pclHead = nullptr;
+        m_pclTail = nullptr;
         return;
     }
 

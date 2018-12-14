@@ -194,7 +194,7 @@ void Thread_Profiling()
     KernelAware::ProfileInit("ThreadInit");
     CS_ENTER();
     KernelAware::ProfileStart();
-    clTestThread1.Init(aucTestStack1, TEST_STACK1_SIZE, 2, (ThreadEntryFunc)Thread_ProfilingThread, NULL);
+    clTestThread1.Init(aucTestStack1, TEST_STACK1_SIZE, 2, (ThreadEntryFunc)Thread_ProfilingThread, nullptr);
     KernelAware::ProfileStop();
     CS_EXIT();
     KernelAware::ProfileReport();
@@ -270,9 +270,9 @@ int main(void)
 {
     Kernel::Init();
 
-    clMainThread.Init(awMainStack, MAIN_STACK_SIZE, 1, AppMain, NULL);
+    clMainThread.Init(awMainStack, MAIN_STACK_SIZE, 1, AppMain, nullptr);
 
-    clIdleThread.Init(aucIdleStack, MAIN_STACK_SIZE, 0, IdleMain, NULL);
+    clIdleThread.Init(aucIdleStack, MAIN_STACK_SIZE, 0, IdleMain, nullptr);
 
     clMainThread.Start();
     clIdleThread.Start();

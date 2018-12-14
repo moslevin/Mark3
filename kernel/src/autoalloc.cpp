@@ -57,15 +57,15 @@ AutoAllocFree_t      AutoAlloc::m_pfFree;      //!< Funciton used to free object
 //---------------------------------------------------------------------------
 void AutoAlloc::Init()
 {
-    m_pfAllocator = NULL;
-    m_pfFree      = NULL;
+    m_pfAllocator = nullptr;
+    m_pfFree      = nullptr;
 }
 
 //---------------------------------------------------------------------------
 void* AutoAlloc::Allocate(AutoAllocType eType_, size_t sSize_)
 {
     if (!m_pfAllocator) {
-        return NULL;
+        return nullptr;
     }
     return m_pfAllocator(eType_, sSize_);
 }

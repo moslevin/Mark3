@@ -246,7 +246,7 @@ TEST(ut_sanity_sleep)
 
     // Create a lower-priority thread that sets the test value to a known
     // cookie.
-    clTestThread1.Init(aucTestStack1, TEST_STACK1_SIZE, 2, lSleepFunc, NULL);
+    clTestThread1.Init(aucTestStack1, TEST_STACK1_SIZE, 2, lSleepFunc, nullptr);
     clTestThread1.Start();
 
     // Sleep, when we wake up check the test value
@@ -412,12 +412,12 @@ TEST(ut_sanity_msg)
 
     auto* pclMesg = s_clMessagePool.Pop();
 
-    clTestThread1.Init(aucTestStack1, TEST_STACK1_SIZE, 2, (ThreadEntryFunc)TestMessageTest, NULL);
+    clTestThread1.Init(aucTestStack1, TEST_STACK1_SIZE, 2, (ThreadEntryFunc)TestMessageTest, nullptr);
     clTestThread1.Start();
     Thread::Yield();
 
     pclMesg->SetCode(0x11);
-    pclMesg->SetData(NULL);
+    pclMesg->SetData(nullptr);
 
     clMsgQ2.Send(pclMesg);
 
@@ -589,7 +589,7 @@ TEST(ut_sanity_timer)
 
     clTimer.Init();
     //! Callback should fire just once in 3ms.
-    clTimer.Start(1, 2, lTimerCallback, NULL);
+    clTimer.Start(1, 2, lTimerCallback, nullptr);
 
     Thread::Sleep(3);
     EXPECT_EQUALS(u8TestVal, 1);
@@ -599,7 +599,7 @@ TEST(ut_sanity_timer)
 
     //! Callback will fire every 10ms (use a higher resolution, since a tick-based timer will have a
     //! fairly high jitter for low-count timers).  Not a problem with tickless-mode, however.
-    clTimer.Start(1, 10, lTimerCallback, NULL);
+    clTimer.Start(1, 10, lTimerCallback, nullptr);
 
     Thread::Sleep(100);
 

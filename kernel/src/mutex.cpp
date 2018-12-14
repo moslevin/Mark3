@@ -99,7 +99,7 @@ void Mutex::Init(bool bRecursive_)
     // Reset the data in the mutex
     m_bReady     = true; // The mutex is free.
     m_u8MaxPri   = 0;    // Set the maximum priority inheritence state
-    m_pclOwner   = NULL; // Clear the mutex owner
+    m_pclOwner   = nullptr; // Clear the mutex owner
     m_u8Recurse  = 0;    // Reset recurse count
     m_bRecursive = bRecursive_;
     SetInitialized();
@@ -224,11 +224,11 @@ void Mutex::Release()
     }
 
     // No threads are waiting on this semaphore?
-    if (m_clBlockList.GetHead() == NULL) {
+    if (m_clBlockList.GetHead() == nullptr) {
         // Re-initialize the mutex to its default values
         m_bReady   = true;
         m_u8MaxPri = 0;
-        m_pclOwner = NULL;
+        m_pclOwner = nullptr;
     } else {
         // Wake the highest priority Thread pending on the mutex
         if (WakeNext() != 0u) {

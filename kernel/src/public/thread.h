@@ -142,7 +142,7 @@ public:
      *  @brief GetName
      *
      *  @return Pointer to the name of the thread.  If this is not set,
-     *          will be NULL.
+     *          will be nullptr.
      */
     const char* GetName() { return m_szName; }
 #endif // #if KERNEL_NAMED_THREADS

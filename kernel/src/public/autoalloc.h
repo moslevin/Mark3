@@ -218,7 +218,7 @@ public:
     /**
      * @brief NewConditionVariable
      * Create and initialize a new condition variable from within the system
-     * @return pointer to a new ConditionVariable object, or NULL on failure
+     * @return pointer to a new ConditionVariable object, or nullptr on failure
      */
     static ConditionVariable* NewConditionVariable();
 
@@ -232,7 +232,7 @@ public:
     /**
      * @brief NewReaderWriterLock
      * Allocate and initialize a new ReaderWriterLock object from within the system
-     * @return Pointer to a new ReaderWriterLock object, or NULL on failure
+     * @return Pointer to a new ReaderWriterLock object, or nullptr on failure
      */
     static ReaderWriterLock* NewReaderWriterLock();
 
@@ -261,7 +261,7 @@ public:
      * @brief NewUserTypeAllocation
      * Attempt to allocate a user-defined object type from the heap.
      * @param eUserType_ User defined object type, interpreted by the allocator function
-     * @return pointer to a newly-created object, or NULL on error.
+     * @return pointer to a newly-created object, or nullptr on error.
      */
     static void* NewUserTypeAllocation(uint8_t eUserType_);
 
@@ -277,7 +277,7 @@ public:
      * @brief NewRawData
      * Attempt to allocate a blob of raw data from the heap
      * @param sSize_ Size of the data blob (in bytes)
-     * @return pointer to newly-allocated blob of data, or NULL on error.
+     * @return pointer to newly-allocated blob of data, or nullptr on error.
      */
     static void* NewRawData(size_t sSize_);
 

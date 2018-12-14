@@ -108,11 +108,11 @@ TEST(ut_timer_sanity_multi)
 
     // use prime numbers for extra random interaction.
 
-    clTimer1.Start(true, 7, TCallbackMulti1, NULL);
+    clTimer1.Start(true, 7, TCallbackMulti1, nullptr);
     clProfiler1.Start();
-    clTimer2.Start(true, 13, TCallbackMulti2, NULL);
+    clTimer2.Start(true, 13, TCallbackMulti2, nullptr);
     clProfiler2.Start();
-    clTimer3.Start(true, 19, TCallbackMulti3, NULL);
+    clTimer3.Start(true, 19, TCallbackMulti3, nullptr);
     clProfiler3.Start();
 
     bool bDone = false;
@@ -202,7 +202,7 @@ TEST(ut_timer_sanity_precision)
     // 1ms repeated counter
     auto lCallback = [](Thread* pclOwner_, void* data_) { clTimerSem.Post(); };
 
-    clTimer.Start(true, 1, lCallback, NULL);
+    clTimer.Start(true, 1, lCallback, nullptr);
     for (i = 0; i < 10000; i++) {
         clProfiler1m.Start();
 
@@ -220,7 +220,7 @@ TEST(ut_timer_sanity_precision)
 
     bPass = true;
     // 10ms repeated counter
-    clTimer.Start(true, 10, lCallback, NULL);
+    clTimer.Start(true, 10, lCallback, nullptr);
     for (i = 0; i < 1000; i++) {
         clProfiler10m.Start();
         clTimerSem.Pend();
@@ -237,7 +237,7 @@ TEST(ut_timer_sanity_precision)
     bPass = true;
 
     // 100ms repeated counter
-    clTimer.Start(true, 100, lCallback, NULL);
+    clTimer.Start(true, 100, lCallback, nullptr);
     for (i = 0; i < 100; i++) {
         clProfiler100m.Start();
         clTimerSem.Pend();
