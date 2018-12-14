@@ -46,6 +46,7 @@ set(CM4_CXX_FLAGS "\
     -fmessage-length=0 \
     -mfloat-abi=hard \
     -mfpu=fpv4-sp-d16 \
+    -std=c++11 \
     ")
 
 set(CM4_LN_FLAGS "\

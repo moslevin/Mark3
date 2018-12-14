@@ -5,7 +5,7 @@ find_program(AVR_SIZE_TOOL avr-size)
 find_program(AVR_OBJDUMP avr-objdump)
 
 #----------------------------------------------------------------------------
-set(AVR_CC_FLAGS "\    
+set(AVR_CC_FLAGS "\
     -funsigned-char \
     -funsigned-bitfields \
     -Os \

@@ -41,7 +41,8 @@ set(CM0_CXX_FLAGS "\
     -DUSE_STDPERIPH_DRIVER \
     -D__CHECK_DEVICE_DEFINES \
     -DUSE_FULL_ASSERT \
-    -fmessage-length=0
+    -fmessage-length=0 \
+    -std=c++11 \
     ")
 
 set(CM0_LN_FLAGS "\
