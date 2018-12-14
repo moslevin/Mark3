@@ -60,63 +60,35 @@ void TimerList::Remove(Timer* pclLinkListNode_)
 //---------------------------------------------------------------------------
 void TimerList::Process(void)
 {
-    Timer* pclNode;
-    Timer* pclPrev;
-
     auto lock = LockGuard{ &m_clMutex };
 
-    pclNode = static_cast<Timer*>(GetHead());
-    pclPrev = nullptr;
-
+    auto* pclCurr = static_cast<Timer*>(GetHead());
     // Subtract the elapsed time interval from each active timer.
-    while (pclNode != 0) {
-        // Active timers only...
-        if ((pclNode->m_u8Flags & TIMERLIST_FLAG_ACTIVE) != 0) {
-        pclNode->m_u32TimeLeft--;
-        if (0 == pclNode->m_u32TimeLeft)
-            {
-                // Yes - set the "callback" flag - we'll execute the callbacks later
-                pclNode->m_u8Flags |= TIMERLIST_FLAG_CALLBACK;
+    while (pclCurr != 0) {
+        auto* pclNext = static_cast<Timer*>(pclCurr->GetNext());
 
-                if ((pclNode->m_u8Flags & TIMERLIST_FLAG_ONE_SHOT) != 0) {
-                    // If this was a one-shot timer, deactivate the timer.
-                    pclNode->m_u8Flags |= TIMERLIST_FLAG_EXPIRED;
-                    pclNode->m_u8Flags &= ~TIMERLIST_FLAG_ACTIVE;
+        // Active timers only...
+        if ((pclCurr->m_u8Flags & TIMERLIST_FLAG_ACTIVE) != 0) {
+            pclCurr->m_u32TimeLeft--;
+            if (0 == pclCurr->m_u32TimeLeft) {
+                // Expired -- run the callback. these callbacks must be very fast...
+                if (pclCurr->m_pfCallback != nullptr) {
+                    pclCurr->m_pfCallback(pclCurr->m_pclOwner, pclCurr->m_pvData);
+                }
+
+                if ((pclCurr->m_u8Flags & TIMERLIST_FLAG_ONE_SHOT) != 0) {
+                    // If this was a one-shot timer, deactivate the timer + remove
+                    pclCurr->m_u8Flags |= TIMERLIST_FLAG_EXPIRED;
+                    pclCurr->m_u8Flags &= ~TIMERLIST_FLAG_ACTIVE;
+                    Remove(pclCurr);
                 } else {
                     // Reset the interval timer.
-                    pclNode->m_u32TimeLeft = pclNode->m_u32Interval;
+                    pclCurr->m_u32TimeLeft = pclCurr->m_u32Interval;
                 }
             }
         }
-        pclNode = static_cast<Timer*>(pclNode->GetNext());
-    }
-
-    // Process the expired timers callbacks.
-    pclNode = static_cast<Timer*>(GetHead());
-
-    while (pclNode != 0) {
-        pclPrev = pclNode;
-        pclNode = static_cast<Timer*>(pclNode->GetNext());
-
-        // If the timer expired, run the callbacks now.
-        if ((pclPrev->m_u8Flags & TIMERLIST_FLAG_CALLBACK) != 0) {
-            bool bRemove = false;
-            // If this was a one-shot timer, tag it for removal
-            if ((pclPrev->m_u8Flags & TIMERLIST_FLAG_ONE_SHOT) != 0) {
-                bRemove = true;
-            }
-
-            // Run the callback. these callbacks must be very fast...
-            if (pclPrev->m_pfCallback != nullptr) {
-                pclPrev->m_pfCallback(pclPrev->m_pclOwner, pclPrev->m_pvData);
-            }
-            pclPrev->m_u8Flags &= ~TIMERLIST_FLAG_CALLBACK;
-
-            // Remove one-shot-timers
-            if (bRemove) {
-                Remove(pclPrev);
-            }
-        }
+        pclCurr = pclNext;
     }
 }
+
 } // namespace Mark3

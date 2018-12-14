@@ -574,14 +574,12 @@ void Timer_Init(Timer_t handle);
  * @param handle Handle of the timer
  * @param bRepeat_          Restart the timer continuously on expiry
  * @param u32IntervalMs_    Time in ms to expiry
- * @param u32ToleranceMs_   Group with other timers if they expire within the amount of time specified
  * @param pfCallback_       Callback to run on timer expiry
  * @param pvData_           Data to pass to the callback on expiry
  */
 void Timer_Start(Timer_t          handle,
                  bool             bRepeat_,
                  uint32_t         u32IntervalMs_,
-                 uint32_t         u32ToleranceMs_,
                  timer_callback_t pfCallback_,
                  void*            pvData_);
 

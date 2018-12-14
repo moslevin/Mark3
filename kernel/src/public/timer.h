@@ -112,22 +112,6 @@ public:
     void Start(bool bRepeat_, uint32_t u32IntervalMs_, TimerCallback pfCallback_, void* pvData_);
 
     /**
-     *  @brief Start
-     *
-     *  Start a timer using default ownership, using repeats as an option, and
-     *  millisecond resolution.
-     *
-     *  @param bRepeat_ 0 - timer is one-shot.  1 - timer is repeating.
-     *  @param u32IntervalMs_ - Interval of the timer in miliseconds
-     *  @param u32ToleranceMs_ - Allow the timer expiry to be delayed by an additional maximum time, in
-     *                         order to have as many timers expire at the same time as possible.
-     *  @param pfCallback_ - Function to call on timer expiry
-     *  @param pvData_ - Data to pass into the callback function
-     */
-    void
-    Start(bool bRepeat_, uint32_t u32IntervalMs_, uint32_t u32ToleranceMs_, TimerCallback pfCallback_, void* pvData_);
-
-    /**
      * @brief Start
      *
      * Start or restart a timer using parameters previously configured via
@@ -144,95 +128,6 @@ public:
      *  already been stopped.
      */
     void Stop();
-
-    /**
-     *  @brief SetFlags
-     *
-     * Set the timer's flags based on the bits in the u8Flags_ argument
-     *
-     * @param u8Flags_ Flags to assign to the timer object.
-     *             TIMERLIST_FLAG_ONE_SHOT for a one-shot timer,
-     *             0 for a continuous timer.
-     */
-    void SetFlags(uint8_t u8Flags_) { m_u8Flags = u8Flags_; }
-    /**
-     *  @brief SetCallback
-     *
-     *  Define the callback function to be executed on expiry of the timer
-     *
-     *  @param pfCallback_ Pointer to the callback function to call
-     */
-    void SetCallback(TimerCallback pfCallback_) { m_pfCallback = pfCallback_; }
-    /**
-     *  @brief SetData
-     *
-     *  Define a pointer to be sent to the timer callbcak on timer expiry
-     *
-     *  @param pvData_ Pointer to data to pass as argument into the callback
-     */
-    void SetData(void* pvData_) { m_pvData = pvData_; }
-    /**
-     *  @brief SetOwner
-     *
-     *  Set the owner-thread of this timer object (all timers must be owned by
-     *  a thread).
-     *
-     *  @param pclOwner_ Owner thread of this timer object
-     */
-    void SetOwner(Thread* pclOwner_) { m_pclOwner = pclOwner_; }
-    /**
-     *  @brief SetIntervalTicks
-     *
-     *  Set the timer expiry in system-ticks (platform specific!)
-     *
-     *  @param u32Ticks_ Time in ticks
-     */
-    void SetIntervalTicks(uint32_t u32Ticks_);
-
-    /**
-     *  @brief SetIntervalSeconds
-     *
-     *  Set the timer expiry interval in seconds (platform agnostic)
-     *
-     *  @param u32Seconds_ Time in seconds
-     */
-    void SetIntervalSeconds(uint32_t u32Seconds_);
-
-    /**
-     * @brief GetInterval
-     *
-     * Return the timer's configured interval in ticks
-     *
-     * @return Timer interval in ticks.
-     */
-    uint32_t GetInterval() { return m_u32Interval; }
-    /**
-     *  @brief SetIntervalMSeconds
-     *
-     *  Set the timer expiry interval in milliseconds (platform agnostic)
-     *
-     *  @param u32MSeconds_ Time in milliseconds
-     */
-    void SetIntervalMSeconds(uint32_t u32MSeconds_);
-
-    /**
-     *  @brief SetIntervalUSeconds
-     *
-     *  Set the timer expiry interval in microseconds (platform agnostic)
-     *
-     *  @param u32USeconds_ Time in microseconds
-     */
-    void SetIntervalUSeconds(uint32_t u32USeconds_);
-
-    /**
-     *  @brief SetTolerance
-     *
-     *  Set the timer's maximum tolerance in order to synchronize timer
-     *  processing with other timers in the system.
-     *
-     *  @param u32Ticks_ Maximum tolerance in ticks
-     */
-    void SetTolerance(uint32_t u32Ticks_);
 
 private:
     friend class TimerList;
@@ -262,9 +157,6 @@ private:
 
     //! Time remaining on the timer
     uint32_t m_u32TimeLeft;
-
-    //! Maximum tolerance (usedd for timer harmonization)
-    uint32_t m_u32TimerTolerance;
 
     //! Pointer to the owner thread
     Thread* m_pclOwner;

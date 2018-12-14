@@ -88,11 +88,11 @@ void App1Main(void* unused_)
     // PeriodicCallback will post the semaphore which wakes the thread
     // up to perform an action.  Here that action consists of a trivial message
     // print.
-    Timer_Start(hMyTimer, true, 50, 0, PeriodicCallback, (void*)hMySem);
+    Timer_Start(hMyTimer, true, 50, PeriodicCallback, (void*)hMySem);
 
     // Set up a one-shot timer to print a message after 2.5 seconds, asynchronously
     // from the execution of this thread.
-    Timer_Start(hOneShot, false, 250, 0, OneShotCallback, 0);
+    Timer_Start(hOneShot, false, 250, OneShotCallback, 0);
 
     while (1) {
         // Wait until the semaphore is posted from the timer expiry

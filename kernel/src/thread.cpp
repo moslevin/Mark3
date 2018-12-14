@@ -261,13 +261,8 @@ void Thread::Sleep(uint32_t u32TimeMs_)
     // Create a one-shot timer that will call a callback that posts the
     // semaphore, waking our thread.
     pclTimer->Init();
-    pclTimer->SetIntervalMSeconds(u32TimeMs_);
-    pclTimer->SetCallback(lTimerCallback);
-    pclTimer->SetData((void*)&clSemaphore);
-    pclTimer->SetFlags(TIMERLIST_FLAG_ONE_SHOT);
+    pclTimer->Start(false, u32TimeMs_, lTimerCallback, &clSemaphore);
 
-    // Add the new timer to the timer scheduler, and block the thread
-    TimerScheduler::Add(pclTimer);
     clSemaphore.Pend();
 }
 

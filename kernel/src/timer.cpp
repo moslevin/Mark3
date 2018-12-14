@@ -41,7 +41,6 @@ void Timer::Init()
 
     ClearNode();
     m_u32Interval       = 0;
-    m_u32TimerTolerance = 0;
     m_u32TimeLeft       = 0;
     m_u8Flags           = 0;
 
@@ -57,8 +56,7 @@ void Timer::Start(bool bRepeat_, uint32_t u32IntervalMs_, TimerCallback pfCallba
         return;
     }
 
-    SetIntervalMSeconds(u32IntervalMs_);
-    m_u32TimerTolerance = 0;
+    m_u32Interval       = u32IntervalMs_;
     m_pfCallback        = pfCallback_;
     m_pvData            = pvData_;
 
@@ -69,20 +67,6 @@ void Timer::Start(bool bRepeat_, uint32_t u32IntervalMs_, TimerCallback pfCallba
     }
 
     Start();
-}
-
-//---------------------------------------------------------------------------
-void Timer::Start(
-    bool bRepeat_, uint32_t u32IntervalMs_, uint32_t u32ToleranceMs_, TimerCallback pfCallback_, void* pvData_)
-{
-    KERNEL_ASSERT(IsInitialized());
-
-    if ((m_u8Flags & TIMERLIST_FLAG_ACTIVE) != 0) {
-        return;
-    }
-
-    m_u32TimerTolerance = MSECONDS_TO_TICKS(u32ToleranceMs_);
-    Start(bRepeat_, u32IntervalMs_, pfCallback_, pvData_);
 }
 
 //---------------------------------------------------------------------------
@@ -106,40 +90,5 @@ void Timer::Stop()
         return;
     }
     TimerScheduler::Remove(this);
-}
-
-//---------------------------------------------------------------------------
-void Timer::SetIntervalTicks(uint32_t u32Ticks_)
-{
-    KERNEL_ASSERT(IsInitialized());
-    m_u32Interval = u32Ticks_;
-}
-
-//---------------------------------------------------------------------------
-void Timer::SetIntervalSeconds(uint32_t u32Seconds_)
-{
-    KERNEL_ASSERT(IsInitialized());
-    m_u32Interval = SECONDS_TO_TICKS(u32Seconds_);
-}
-
-//---------------------------------------------------------------------------
-void Timer::SetIntervalMSeconds(uint32_t u32MSeconds_)
-{
-    KERNEL_ASSERT(IsInitialized());
-    m_u32Interval = MSECONDS_TO_TICKS(u32MSeconds_);
-}
-
-//---------------------------------------------------------------------------
-void Timer::SetIntervalUSeconds(uint32_t u32USeconds_)
-{
-    KERNEL_ASSERT(IsInitialized());
-    m_u32Interval = USECONDS_TO_TICKS(u32USeconds_);
-}
-
-//---------------------------------------------------------------------------
-void Timer::SetTolerance(uint32_t u32Ticks_)
-{
-    KERNEL_ASSERT(IsInitialized());
-    m_u32TimerTolerance = u32Ticks_;
 }
 } // namespace Mark3

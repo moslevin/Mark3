@@ -449,12 +449,11 @@ void Timer_Init(Timer_t handle)
 void Timer_Start(Timer_t          handle,
                  bool             bRepeat_,
                  uint32_t         u32IntervalMs_,
-                 uint32_t         u32ToleranceMs_,
                  timer_callback_t pfCallback_,
                  void*            pvData_)
 {
     Timer* pclTimer = (Timer*)handle;
-    pclTimer->Start(bRepeat_, u32IntervalMs_, u32ToleranceMs_, (TimerCallback)pfCallback_, pvData_);
+    pclTimer->Start(bRepeat_, u32IntervalMs_, (TimerCallback)pfCallback_, pvData_);
 }
 
 //---------------------------------------------------------------------------

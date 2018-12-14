@@ -61,7 +61,6 @@ typedef struct {
     void*    m_pfCallback;
     uint32_t m_u32Interval;
     uint32_t m_u32TimeLeft;
-    uint32_t m_u32TimerTolerance;
     void*    m_pclOwner;
     void*    m_pvData;
 } Fake_Timer;
