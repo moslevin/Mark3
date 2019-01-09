@@ -13,8 +13,13 @@ message(STATUS " CPU Variant       = ${mark3_variant}")
 message(STATUS " Toolchain         = ${mark3_toolchain}")
 message(STATUS "-----------------------------------------------")
 
-### Include an architecture/variant/toolchain specific platorm configuration
+### Include an architecture/variant/toolchain specific platorm configuration.  If the files exist in the
+### BSP, prefer that over the files included as part of the kernel's "build" directory. 
+if(EXISTS "${mark3_root_dir}/bsp/arch/${mark3_arch}/${mark3_variant}/${mark3_toolchain}/platform.cmake")
+include("${mark3_root_dir}/bsp/arch/${mark3_arch}/${mark3_variant}/${mark3_toolchain}/platform.cmake")
+else()
 include("${mark3_root_dir}/build/arch/${mark3_arch}/${mark3_variant}/${mark3_toolchain}/platform.cmake")
+endif()
 
 ### Load variables from the platform configuration file into global variables
 get_property(mark3_cc GLOBAL PROPERTY global_cc)
