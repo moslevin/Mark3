@@ -6,7 +6,5 @@ include("./build/rules.cmake")
 
 add_subdirectory(bsp)
 add_subdirectory(drivers)
-add_subdirectory(external)
 add_subdirectory(kernel)
-add_subdirectory(vendor)
-
+add_subdirectory(lib)
