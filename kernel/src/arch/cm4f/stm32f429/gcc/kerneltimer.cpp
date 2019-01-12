@@ -29,6 +29,10 @@ See license.txt for more information
 
 #include "stm32f4xx.h"
 
+extern "C" {
+	extern void HAL_IncTick(void);
+};
+
 using namespace Mark3;
 namespace
 {
