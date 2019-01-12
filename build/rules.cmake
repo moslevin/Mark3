@@ -1,5 +1,5 @@
 #----------------------------------------------------------------------------
-function(mark3_add_executable TARGET_NAME)
+function(mark3_add_executable_i TARGET_NAME C_FLAGS)
     set(raw_image   ${TARGET_NAME}.img)
     set(elf_image   ${TARGET_NAME}.elf)
     set(bin_image   ${TARGET_NAME}.bin)
@@ -10,7 +10,7 @@ function(mark3_add_executable TARGET_NAME)
     add_executable(${elf_image} ${ARGN})
     set_target_properties(${elf_image}
         PROPERTIES
-            COMPILE_FLAGS   "${mark3_cxx_flags}"
+            COMPILE_FLAGS   "${C_FLAGS}"
             LINK_FLAGS      "${mark3_ln_flags} -Wl,-Map=${map_file}"
     )
 
@@ -66,7 +66,28 @@ function(mark3_add_executable TARGET_NAME)
       PROPERTIES
          ADDITIONAL_MAKE_CLEAN_FILES "${map_file}"
     )
+endfunction(mark3_add_executable_i)
+
+#----------------------------------------------------------------------------
+function(mark3_add_executable TARGET_NAME)
+    mark3_add_executable_i(${TARGET_NAME} ${mark3_cxx_flags} ${ARGN})
 endfunction(mark3_add_executable)
+
+#----------------------------------------------------------------------------
+function(mark3_add_executable_c TARGET_NAME)
+    mark3_add_executable_i(${TARGET_NAME} ${mark3_cc_flags} ${ARGN})
+endfunction(mark3_add_executable_c)
+
+#----------------------------------------------------------------------------
+function(mark3_add_library_c TARGET_NAME)
+    add_library(${TARGET_NAME} ${ARGN})
+    set_target_properties(
+        ${TARGET_NAME}
+        PROPERTIES
+            COMPILE_FLAGS   "${mark3_cc_flags}"
+    )
+
+endfunction(mark3_add_library_c)
 
 #----------------------------------------------------------------------------
 function(mark3_add_library TARGET_NAME)
