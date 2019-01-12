@@ -110,10 +110,10 @@ void MessageQueue::Send(Message* pclSrc_)
     // Add the message to the head of the linked list
     m_clLinkList.Add(pclSrc_);
 
+    CS_EXIT();
+
     // Post the semaphore, waking the blocking thread for the queue.
     m_clSemaphore.Post();
-
-    CS_EXIT();
 }
 
 //---------------------------------------------------------------------------
