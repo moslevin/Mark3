@@ -139,6 +139,6 @@ protected:
      * Token used to check whether or not the object has been initialized
      * prior to use.
      */
-    uint8_t m_u8Initialized; 
+    uint8_t m_u8Initialized;
 };
 } // namespace Mark3

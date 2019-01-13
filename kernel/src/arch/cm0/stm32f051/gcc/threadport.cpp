@@ -277,7 +277,7 @@ void PendSV_Handler(void)
 //---------------------------------------------------------------------------
 namespace Mark3
 {
-static void ThreadPort_StartFirstThread(void) __attribute__((naked));
+static void       ThreadPort_StartFirstThread(void) __attribute__((naked));
 volatile uint32_t g_ulCriticalCount;
 
 //---------------------------------------------------------------------------

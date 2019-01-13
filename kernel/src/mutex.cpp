@@ -97,10 +97,10 @@ void Mutex::Init(bool bRecursive_)
     KERNEL_ASSERT(!m_clBlockList.GetHead());
 
     // Reset the data in the mutex
-    m_bReady     = true; // The mutex is free.
-    m_u8MaxPri   = 0;    // Set the maximum priority inheritence state
+    m_bReady     = true;    // The mutex is free.
+    m_u8MaxPri   = 0;       // Set the maximum priority inheritence state
     m_pclOwner   = nullptr; // Clear the mutex owner
-    m_u8Recurse  = 0;    // Reset recurse count
+    m_u8Recurse  = 0;       // Reset recurse count
     m_bRecursive = bRecursive_;
     SetInitialized();
 }

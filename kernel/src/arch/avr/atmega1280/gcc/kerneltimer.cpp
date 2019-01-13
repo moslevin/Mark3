@@ -82,7 +82,7 @@ void KernelTimer::Start(void)
 {
     TCCR1B = ((1 << WGM12) | (1 << CS11) | (1 << CS10));
     OCR1A  = ((PORT_SYSTEM_FREQ / 1000) / 64);
-    TCNT1 = 0;
+    TCNT1  = 0;
     TIFR1 &= ~TIMER_IFR;
     TIMSK1 |= TIMER_IMSK;
 }

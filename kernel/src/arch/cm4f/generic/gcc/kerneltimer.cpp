@@ -38,7 +38,6 @@ Semaphore s_clTimerSemaphore;
 
 } // anonymous namespace
 
-
 //---------------------------------------------------------------------------
 extern "C" {
 void SysTick_Handler(void)

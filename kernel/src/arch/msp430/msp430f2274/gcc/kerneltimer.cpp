@@ -59,7 +59,7 @@ static void KernelTimer_Task(void* unused)
 #if KERNEL_ROUND_ROBIN
         Quantum::SetInTimer();
 #endif // #if KERNEL_ROUND_ROBIN
-        TimerScheduler::Process();       
+        TimerScheduler::Process();
 #if KERNEL_ROUND_ROBIN
         Quantum::ClearInTimer();
 #endif // #if KERNEL_ROUND_ROBIN
@@ -69,12 +69,12 @@ static void KernelTimer_Task(void* unused)
 //---------------------------------------------------------------------------
 void KernelTimer::Config(void)
 {
-    TACTL = 0;         // Reset the register
-    TAR   = 0;         // Clear Timer A
-    TACTL |= TACLR;    // Reset the clock divider, etc.
-    TACTL |= TASSEL_2; // Set the timer to use SMCLK
-    TACTL &= ~TAIFG;   // Clear any pending interrupts
-    TACCTL0 &= ~CCIFG; // Clear pending interrupts
+    TACTL = 0;                          // Reset the register
+    TAR   = 0;                          // Clear Timer A
+    TACTL |= TACLR;                     // Reset the clock divider, etc.
+    TACTL |= TASSEL_2;                  // Set the timer to use SMCLK
+    TACTL &= ~TAIFG;                    // Clear any pending interrupts
+    TACCTL0 &= ~CCIFG;                  // Clear pending interrupts
     TACCR0 = (uint16_t)PORT_TIMER_FREQ; // Set interrupts to occur at tick freq.
 
     s_clTimerSemaphore.Init(0, 1);

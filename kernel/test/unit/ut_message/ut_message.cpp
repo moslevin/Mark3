@@ -169,7 +169,6 @@ TEST(ut_message_tx_rx)
     clMsgThread.Exit();
 }
 
-
 //===========================================================================
 TEST(ut_message_exhaust)
 {
@@ -192,7 +191,6 @@ TEST(ut_message_exhaust)
         s_clMessagePool.Push(&s_clMessages[i]);
     }
 }
-
 
 //===========================================================================
 TEST(ut_message_timed_rx)
@@ -227,7 +225,6 @@ TEST(ut_message_timed_rx)
 
     clMsgThread.Exit();
 }
-
 
 //===========================================================================
 // Test Whitelist Goes Here

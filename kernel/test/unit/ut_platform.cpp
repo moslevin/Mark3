@@ -142,7 +142,7 @@ int main(void)
                     sizeof(aucIdleStack),       //!< Size of the stack
                     0,                          //!< Thread priority
                     (ThreadEntryFunc)IdleEntry, //!< Entry function
-                    nullptr);                      //!< Entry function argument
+                    nullptr);                   //!< Entry function argument
 
     IdleThread.Start();
 

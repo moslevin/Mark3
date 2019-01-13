@@ -86,7 +86,6 @@ TEST(ut_condvar_wait_signal)
     EXPECT_TRUE(isSignalled);
 }
 
-
 //===========================================================================
 TEST(ut_condvar_wait_broadcast)
 {
@@ -141,7 +140,6 @@ TEST(ut_condvar_wait_broadcast)
     Thread::Sleep(10);
     EXPECT_EQUALS(iSignalCount, 3);
 }
-
 
 //===========================================================================
 TEST(ut_condvar_wait_multi_signal)
@@ -208,7 +206,6 @@ TEST(ut_condvar_wait_multi_signal)
     EXPECT_EQUALS(iSignalCount, 3);
 }
 
-
 //===========================================================================
 TEST(ut_condvar_wait_multi_broadcast)
 {
@@ -264,7 +261,6 @@ TEST(ut_condvar_wait_multi_broadcast)
     EXPECT_EQUALS(iSignalCount, 3);
 }
 
-
 //===========================================================================
 TEST(ut_condvar_wait_timeout)
 {
@@ -300,7 +296,6 @@ TEST(ut_condvar_wait_timeout)
     Thread::Sleep(50);
     EXPECT_TRUE(isTimeout);
 }
-
 
 //===========================================================================
 TEST(ut_condvar_timedwait_success)

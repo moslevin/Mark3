@@ -32,6 +32,5 @@ TEST(ut_mark3c_object_sizes)
 // Test Whitelist Goes Here
 //===========================================================================
 TEST_CASE_START
-TEST_CASE(ut_mark3c_object_sizes),
-TEST_CASE_END
+TEST_CASE(ut_mark3c_object_sizes), TEST_CASE_END
 } // namespace Mark3

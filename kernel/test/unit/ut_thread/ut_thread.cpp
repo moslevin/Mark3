@@ -81,7 +81,6 @@ TEST(ut_threadcreate)
     EXPECT_FALSE(g_pclCurrent->GetExpired());
 }
 
-
 //===========================================================================
 TEST(ut_threadstop)
 {
@@ -97,7 +96,6 @@ TEST(ut_threadstop)
     EXPECT_FALSE(g_pclCurrent->GetExpired());
 }
 
-
 //===========================================================================
 TEST(ut_threadexit)
 {
@@ -109,7 +107,6 @@ TEST(ut_threadexit)
 
     EXPECT_TRUE(g_pclCurrent->GetExpired());
 }
-
 
 //===========================================================================
 TEST(ut_threadsleep)
@@ -176,7 +173,6 @@ TEST(ut_threadsleep)
 
     Profiler::Stop();
 }
-
 
 //===========================================================================
 TEST(ut_roundrobin)
@@ -247,7 +243,6 @@ TEST(ut_roundrobin)
     EXPECT_FAIL_EQUALS(u32RR2, 0);
     EXPECT_FAIL_EQUALS(u32RR3, 0);
 }
-
 
 //===========================================================================
 TEST(ut_quanta)
@@ -334,7 +329,6 @@ TEST(ut_quanta)
     EXPECT_FAIL_EQUALS(u32RR2, 0);
     EXPECT_FAIL_EQUALS(u32RR3, 0);
 }
-
 
 //===========================================================================
 // Test Whitelist Goes Here

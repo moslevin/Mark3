@@ -105,7 +105,7 @@ void ThreadPort::StartThreads()
 #endif // #if KERNEL_ROUND_ROBIN
 
     KernelTimer::Start(); // enable the kernel timer
-    KernelSWI::Start(); // enable the task switch SWI
+    KernelSWI::Start();   // enable the task switch SWI
 
     g_u8CSCount = 0; // Reset the critical section counter
     g_u16SR     = 0;

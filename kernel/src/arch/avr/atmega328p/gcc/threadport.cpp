@@ -115,7 +115,6 @@ void ThreadPort::StartThreads()
     Quantum::Update(g_pclCurrent);
 #endif // #if KERNEL_ROUND_ROBIN
 
-
     // Restore the context...
     Thread_RestoreContext(); // restore the context of the first running thread
     ASM("reti");             // return from interrupt - will return to the first scheduled thread

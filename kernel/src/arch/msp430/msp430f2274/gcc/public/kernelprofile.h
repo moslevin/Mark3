@@ -22,7 +22,6 @@ See license.txt for more information
 #include "mark3cfg.h"
 #include "ll.h"
 
-
 //---------------------------------------------------------------------------
 #define TICKS_PER_OVERFLOW (256)
 #define CLOCK_DIVIDE (8)

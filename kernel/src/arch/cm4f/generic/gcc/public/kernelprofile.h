@@ -82,4 +82,3 @@ private:
     static uint32_t m_u32Epoch;
 };
 } // namespace Mark3
-

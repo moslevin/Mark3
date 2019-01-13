@@ -35,7 +35,7 @@ extern "C" {
 // of Mark3.
 #if KERNEL_EVENT_FLAGS
 typedef void* EventFlag_t;         //!< EventFlag opaque handle data type
-#endif // #if KERNEL_EVENT_FLAGS
+#endif                             // #if KERNEL_EVENT_FLAGS
 typedef void* Mailbox_t;           //!< Mailbox opaque handle data type
 typedef void* Message_t;           //!< Message opaque handle data type
 typedef void* MessagePool_t;       //!< MessagePool opaque handle data type
@@ -99,11 +99,11 @@ typedef enum {
  * Define the various states that a thread can be in
  */
 typedef enum {
-    THREAD_STATE_EXIT = 0,      ///!< Thread has terminated via exit path
-    THREAD_STATE_READY,         ///!< Thread is ready to run
-    THREAD_STATE_BLOCKED,       ///!< Thread is blocked on a blocking call
-    THREAD_STATE_STOP,          ///!< Thread has been manually stopped
-    THREAD_STATE_INVALID        ///!< Invalid thread state
+    THREAD_STATE_EXIT = 0, ///!< Thread has terminated via exit path
+    THREAD_STATE_READY,    ///!< Thread is ready to run
+    THREAD_STATE_BLOCKED,  ///!< Thread is blocked on a blocking call
+    THREAD_STATE_STOP,     ///!< Thread has been manually stopped
+    THREAD_STATE_INVALID   ///!< Invalid thread state
 } thread_state_t;
 
 //---------------------------------------------------------------------------
@@ -577,11 +577,7 @@ void Timer_Init(Timer_t handle);
  * @param pfCallback_       Callback to run on timer expiry
  * @param pvData_           Data to pass to the callback on expiry
  */
-void Timer_Start(Timer_t          handle,
-                 bool             bRepeat_,
-                 uint32_t         u32IntervalMs_,
-                 timer_callback_t pfCallback_,
-                 void*            pvData_);
+void Timer_Start(Timer_t handle, bool bRepeat_, uint32_t u32IntervalMs_, timer_callback_t pfCallback_, void* pvData_);
 
 /**
  * @brief Timer_Restart

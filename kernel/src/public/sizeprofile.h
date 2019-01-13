@@ -10,16 +10,17 @@ maximum size of each module before dead code elimination and any
 additional link-time optimization, and represent the maximum possible
 size that any module can take.
 
-The results below are for profiling on Atmel AVR atmega1284p-based targets using gcc. 
+The results below are for profiling on Atmel AVR atmega1284p-based targets using gcc.
 Results are not necessarily indicative of relative or absolute performance
 on other platforms or toolchains.
 @section SIZEPROFILEINFO Information
 
 Date Profiled:
-Thu Dec 13 21:46:59 EST 2018
+Sat Jan 12 20:25:41 EST 2019
 
 @section SIZEPROFILEVER  Compiler Version
-avr-gcc (GCC) 5.4.0 Copyright (C) 2015 Free Software Foundation, Inc. This is free software; see the source for copying conditions. There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+avr-gcc (GCC) 5.4.0 Copyright (C) 2015 Free Software Foundation, Inc. This is free software; see the source for copying
+conditions. There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
 @section SIZEPROFILERES  Profiling Results
 Mark3 Module Size Report:
@@ -34,7 +35,7 @@ Mark3 Module Size Report:
     -  Fundamental Kernel Linked-List Classes.......... : 560 Bytes
     -  RAII Locking Support based on Mark3 Mutex class. : 62 Bytes
     -  Mailbox IPC Support............................. : 934 Bytes
-    -  Message-based IPC............................... : 204 Bytes
+    -  Message-based IPC............................... : 202 Bytes
     -  Mutex (Synchronization Object).................. : 654 Bytes
     -  Notification Blocking Object.................... : 566 Bytes
     -  2D Priority Map Object - Scheduler.............. : 260 Bytes
@@ -55,10 +56,10 @@ Mark3 Module Size Report:
 Mark3 Kernel Size Summary:
 @code
     - Kernel                   :  3019 Bytes
-    - Synchronization Objects  :  2710 Bytes
+    - Synchronization Objects  :  2708 Bytes
     - Port                     :  3182 Bytes
     - Features                 :  2546 Bytes
-    - Total Size               :  11457 Bytes
+    - Total Size               :  11455 Bytes
 @endcode
 */
 #endif // __SIZE_REPORT_H__

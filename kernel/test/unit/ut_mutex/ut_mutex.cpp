@@ -84,7 +84,6 @@ TEST(ut_typical_mutex)
     EXPECT_EQUALS(u8Token, 0x69);
 }
 
-
 //===========================================================================
 TEST(ut_timed_mutex)
 {
@@ -113,7 +112,6 @@ TEST(ut_timed_mutex)
 
     EXPECT_TRUE(clMutex.Claim(30));
 }
-
 
 //===========================================================================
 TEST(ut_priority_mutex)
@@ -165,7 +163,6 @@ TEST(ut_priority_mutex)
     clTestThread2.Exit();
 }
 
-
 //===========================================================================
 TEST(ut_raii)
 {
@@ -196,7 +193,6 @@ TEST(ut_raii)
 
     Thread::Sleep(100);
 }
-
 
 //===========================================================================
 TEST(ut_raii_timeout)
@@ -238,7 +234,6 @@ TEST(ut_raii_timeout)
 
     Thread::Sleep(100);
 }
-
 
 //===========================================================================
 // Test Whitelist Goes Here

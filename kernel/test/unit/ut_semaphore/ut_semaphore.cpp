@@ -57,7 +57,6 @@ TEST(ut_semaphore_count)
     EXPECT_FALSE(clTestSem.Post());
 }
 
-
 //===========================================================================
 TEST(ut_semaphore_post_pend)
 {
@@ -101,7 +100,6 @@ TEST(ut_semaphore_post_pend)
     EXPECT_EQUALS(u8Counter, 10);
 }
 
-
 //===========================================================================
 TEST(ut_semaphore_timed)
 {
@@ -133,8 +131,6 @@ TEST(ut_semaphore_timed)
 
     EXPECT_TRUE(clTestSem2.Pend(30));
 }
-
-
 
 //===========================================================================
 // Test Whitelist Goes Here

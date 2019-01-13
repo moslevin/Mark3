@@ -40,9 +40,9 @@ void Timer::Init()
     }
 
     ClearNode();
-    m_u32Interval       = 0;
-    m_u32TimeLeft       = 0;
-    m_u8Flags           = 0;
+    m_u32Interval = 0;
+    m_u32TimeLeft = 0;
+    m_u8Flags     = 0;
 
     SetInitialized();
 }
@@ -56,9 +56,9 @@ void Timer::Start(bool bRepeat_, uint32_t u32IntervalMs_, TimerCallback pfCallba
         return;
     }
 
-    m_u32Interval       = u32IntervalMs_;
-    m_pfCallback        = pfCallback_;
-    m_pvData            = pvData_;
+    m_u32Interval = u32IntervalMs_;
+    m_pfCallback  = pfCallback_;
+    m_pvData      = pvData_;
 
     if (!bRepeat_) {
         m_u8Flags = TIMERLIST_FLAG_ONE_SHOT;

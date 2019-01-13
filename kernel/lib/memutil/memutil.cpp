@@ -195,7 +195,6 @@ void MemUtil::DecimalToString(uint32_t u32Data_, char* szText_)
     }
 }
 
-
 //---------------------------------------------------------------------------
 void MemUtil::DecimalToString(uint64_t u64Data_, char* szText_)
 {

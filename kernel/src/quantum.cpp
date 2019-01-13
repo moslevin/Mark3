@@ -24,12 +24,11 @@ See license.txt for more information
 #if KERNEL_ROUND_ROBIN
 namespace Mark3
 {
-
 //---------------------------------------------------------------------------
 uint16_t Quantum::m_u16TicksRemain;
-Thread* Quantum::m_pclActiveThread;
-Thread* Quantum::m_pclTimerThread;
-bool  Quantum::m_bInTimer;
+Thread*  Quantum::m_pclActiveThread;
+Thread*  Quantum::m_pclTimerThread;
+bool     Quantum::m_bInTimer;
 
 //---------------------------------------------------------------------------
 void Quantum::SetInTimer()
@@ -68,23 +67,21 @@ void Quantum::Update(Thread* pclTargetThread_)
     // the timer thread, or are in the middle of running the timer thread.
     // OR if the thread list only has one thread
     auto* pclThreadList = pclTargetThread_->GetCurrent();
-    if ((pclThreadList->GetHead() == pclThreadList->GetTail()) ||
-       (pclTargetThread_ == m_pclTimerThread) ||
-       (pclTargetThread_ == m_pclActiveThread) ||
-        m_bInTimer) {
+    if ((pclThreadList->GetHead() == pclThreadList->GetTail()) || (pclTargetThread_ == m_pclTimerThread)
+        || (pclTargetThread_ == m_pclActiveThread) || m_bInTimer) {
         return;
     }
 
     // Update with a new thread and timeout.
     m_pclActiveThread = pclTargetThread_;
-    m_u16TicksRemain = pclTargetThread_->GetQuantum();
+    m_u16TicksRemain  = pclTargetThread_->GetQuantum();
 }
 
 //---------------------------------------------------------------------------
 void Quantum::Cancel()
 {
-	m_pclActiveThread = nullptr;
-	m_u16TicksRemain = 0;
+    m_pclActiveThread = nullptr;
+    m_u16TicksRemain  = 0;
 }
 } // namespace Mark3
 #endif // #if KERNEL_ROUND_ROBIN

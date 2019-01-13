@@ -56,13 +56,13 @@ typedef struct {
 //---------------------------------------------------------------------------
 typedef struct {
     Fake_LinkedListNode m_ll_node;
-    uint8_t m_u8Initialized;
-    uint8_t  m_u8Flags;
-    void*    m_pfCallback;
-    uint32_t m_u32Interval;
-    uint32_t m_u32TimeLeft;
-    void*    m_pclOwner;
-    void*    m_pvData;
+    uint8_t             m_u8Initialized;
+    uint8_t             m_u8Flags;
+    void*               m_pfCallback;
+    uint32_t            m_u32Interval;
+    uint32_t            m_u32TimeLeft;
+    void*               m_pclOwner;
+    void*               m_pvData;
 } Fake_Timer;
 
 //---------------------------------------------------------------------------
@@ -93,26 +93,26 @@ typedef struct {
     uint8_t  m_eFlagMode;
 #endif // #if KERNEL_EVENT_FLAGS
     Fake_Timer m_clTimer;
-    bool m_bExpired;
+    bool       m_bExpired;
 } Fake_Thread;
 
 //---------------------------------------------------------------------------
 typedef struct {
     Fake_ThreadList thread_list;
-    uint8_t m_u8Initialized;
-    uint16_t m_u16Value;
-    uint16_t m_u16MaxValue;
+    uint8_t         m_u8Initialized;
+    uint16_t        m_u16Value;
+    uint16_t        m_u16MaxValue;
 } Fake_Semaphore;
 
 //---------------------------------------------------------------------------
 typedef struct {
     Fake_ThreadList thread_list;
-    uint8_t m_u8Initialized;
-    uint8_t m_u8Recurse;
-    bool    m_bReady;
-    bool    m_bRecursive;
-    uint8_t m_u8MaxPri;
-    void*   m_pclOwner;
+    uint8_t         m_u8Initialized;
+    uint8_t         m_u8Recurse;
+    bool            m_bReady;
+    bool            m_bRecursive;
+    uint8_t         m_u8MaxPri;
+    void*           m_pclOwner;
 } Fake_Mutex;
 
 //---------------------------------------------------------------------------
@@ -148,15 +148,15 @@ typedef struct {
 //---------------------------------------------------------------------------
 typedef struct {
     Fake_ThreadList thread_list;
-    uint8_t m_u8Initialized;
-    bool m_bPending;
+    uint8_t         m_u8Initialized;
+    bool            m_bPending;
 } Fake_Notify;
 
 //---------------------------------------------------------------------------
 typedef struct {
     Fake_ThreadList thread_list;
-    uint8_t m_u8Initialized;
-    uint16_t m_u16EventFlag;
+    uint8_t         m_u8Initialized;
+    uint16_t        m_u16EventFlag;
 } Fake_EventFlag;
 
 //---------------------------------------------------------------------------

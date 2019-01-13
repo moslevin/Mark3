@@ -42,7 +42,6 @@ class Timer;
 class Quantum
 {
 public:
-
     static void Init();
 
     /**
@@ -89,10 +88,10 @@ public:
     static void Cancel();
 
 private:
-    static Thread* m_pclActiveThread;
-    static Thread* m_pclTimerThread;
+    static Thread*  m_pclActiveThread;
+    static Thread*  m_pclTimerThread;
     static uint16_t m_u16TicksRemain;
-    static bool m_bInTimer;
+    static bool     m_bInTimer;
 };
 } // namespace Mark3
 #endif // #if KERNEL_ROUND_ROBIN

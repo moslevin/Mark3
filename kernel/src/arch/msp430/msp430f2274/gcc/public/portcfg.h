@@ -53,9 +53,9 @@ See license.txt for more information
     Define types that map to the CPU Architecture's default data-word and address
     size.
 */
-#define K_WORD uint16_t  //!< Size of a data word
+#define K_WORD uint16_t //!< Size of a data word
 #define K_ADDR uint16_t //!< Size of an address (pointer size)
-#define K_INT  int32_t
+#define K_INT int32_t
 
 /**
     Set a base datatype used to represent each element of the scheduler's

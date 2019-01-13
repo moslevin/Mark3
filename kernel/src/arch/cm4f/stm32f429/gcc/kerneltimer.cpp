@@ -30,7 +30,7 @@ See license.txt for more information
 #include "stm32f4xx.h"
 
 extern "C" {
-	extern void HAL_IncTick(void);
+extern void HAL_IncTick(void);
 };
 
 using namespace Mark3;
@@ -49,7 +49,7 @@ using namespace Mark3;
 extern "C" {
 void SysTick_Handler(void)
 {
-	HAL_IncTick();
+    HAL_IncTick();
 
     if (!Kernel::IsStarted()) {
         return;

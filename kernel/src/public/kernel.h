@@ -208,17 +208,17 @@ private:
     static PanicFunc m_pfPanic;    //!< set panic function
 
 #if KERNEL_THREAD_CREATE_CALLOUT
-    static ThreadCreateCallout  m_pfThreadCreateCallout;  //!< Function to call on thread creation
-#endif // #if KERNEL_THREAD_CREATE_HOOK
+    static ThreadCreateCallout m_pfThreadCreateCallout; //!< Function to call on thread creation
+#endif                                                  // #if KERNEL_THREAD_CREATE_HOOK
 #if KERNEL_THREAD_EXIT_CALLOUT
-    static ThreadExitCallout    m_pfThreadExitCallout;    //!< Function to call on thread exit
-#endif // #if KERNEL_THREAD_EXIT_HOOK
+    static ThreadExitCallout m_pfThreadExitCallout; //!< Function to call on thread exit
+#endif                                              // #if KERNEL_THREAD_EXIT_HOOK
 #if KERNEL_CONTEXT_SWITCH_CALLOUT
     static ThreadContextCallout m_pfThreadContextCallout; //!< Function to call on context switch
-#endif // #if KERNEL_CONTEXT_SWITCH_CALLOUT
-    static DebugPrintFunction   m_pfDebugPrintFunction;   //!< Function to call to print debug info
+#endif                                                    // #if KERNEL_CONTEXT_SWITCH_CALLOUT
+    static DebugPrintFunction m_pfDebugPrintFunction;     //!< Function to call to print debug info
 #if KERNEL_STACK_CHECK
-    static uint16_t             m_u16GuardThreshold;
+    static uint16_t m_u16GuardThreshold;
 #endif // #if KERNEL_STACK_CHECK
 };
 

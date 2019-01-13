@@ -446,11 +446,7 @@ void Timer_Init(Timer_t handle)
 }
 
 //---------------------------------------------------------------------------
-void Timer_Start(Timer_t          handle,
-                 bool             bRepeat_,
-                 uint32_t         u32IntervalMs_,
-                 timer_callback_t pfCallback_,
-                 void*            pvData_)
+void Timer_Start(Timer_t handle, bool bRepeat_, uint32_t u32IntervalMs_, timer_callback_t pfCallback_, void* pvData_)
 {
     Timer* pclTimer = (Timer*)handle;
     pclTimer->Start(bRepeat_, u32IntervalMs_, (TimerCallback)pfCallback_, pvData_);

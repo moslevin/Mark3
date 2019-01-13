@@ -52,7 +52,6 @@ void ThreadPort::InitStack(Thread* pclThread_)
     // Start by finding the bottom of the stack
     pu8Stack = (uint8_t*)pclThread_->m_pwStackTop;
 
-
 #if KERNEL_STACK_CHECK
     // clear the stack, and initialize it to a known-default value (easier
     // to debug when things go sour with stack corruption or overflow)

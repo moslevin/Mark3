@@ -191,7 +191,6 @@ TEST(ut_waitany)
     clThread1.Exit();
 }
 
-
 //===========================================================================
 TEST(ut_waitall)
 {
@@ -256,7 +255,6 @@ TEST(ut_waitall)
 
     clThread1.Exit();
 }
-
 
 //---------------------------------------------------------------------------
 TEST(ut_flag_multiwait)
@@ -391,7 +389,6 @@ TEST(ut_flag_multiwait)
 
     EXPECT_EQUALS(u8FlagCount, 2);
 }
-
 
 //===========================================================================
 TEST(ut_timedwait)
@@ -558,5 +555,5 @@ TEST(ut_set_before_wait_clear)
 //===========================================================================
 TEST_CASE_START
 TEST_CASE(ut_waitany), TEST_CASE(ut_waitall), TEST_CASE(ut_flag_multiwait), TEST_CASE(ut_timedwait),
-TEST_CASE(ut_set_before_wait_clear), TEST_CASE_END
+    TEST_CASE(ut_set_before_wait_clear), TEST_CASE_END
 } // namespace Mark3

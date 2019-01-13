@@ -70,10 +70,10 @@ void Thread::Init(
     m_pvArg         = pvArg_;
 
 #if KERNEL_NAMED_THREADS
-    m_szName        = nullptr;
+    m_szName = nullptr;
 #endif
 #if KERNEL_ROUND_ROBIN
-    m_u16Quantum    = THREAD_QUANTUM_DEFAULT;
+    m_u16Quantum = THREAD_QUANTUM_DEFAULT;
 #endif
 
     m_clTimer.Init();
@@ -367,7 +367,7 @@ void Thread::SetPriority(PORT_PRIO_TYPE uXPriority_)
 
     if (bSchedule) {
         if (Scheduler::IsEnabled()) {
-            CS_ENTER();            
+            CS_ENTER();
             Scheduler::Schedule();
 #if KERNEL_ROUND_ROBIN
             Quantum::Update((Thread*)g_pclNext);
