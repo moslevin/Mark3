@@ -42,7 +42,7 @@ public:
      * Initialize the Streamer object prior to its use, providing a blob
      * of memory for the object to manage.
      *
-     * @param pu8Buffer_    Blob of memory to use as a circular buffer
+     * @param pau8Buffer_   Blob of memory to use as a circular buffer
      * @param u16Size_      Size of the supplied buffer in bytes
      */
     void Init(uint8_t* pau8Buffer_, uint16_t u16Size_);
@@ -60,9 +60,13 @@ public:
 
     /**
      * @brief Read
-     * @param pu8Data_
-     * @param u16Len_
-     * @return
+     *
+     * Read from the stream until a specified number of bytes have been read,
+     * or the stream is exhausted.
+     *
+     * @param pu8Data_ pointer to an array of data read into
+     * @param u16Len_ maximum number of bytes to read
+     * @return number of bytes read
      */
     uint16_t Read(uint8_t* pu8Data_, uint16_t u16Len_);
 
@@ -79,9 +83,12 @@ public:
 
     /**
      * @brief Write
-     * @param pu8Data_
-     * @param u16Len_
-     * @return
+     *
+     * Write a maximum number of bytes to the stream.
+     *
+     * @param pu8Data_ pointer to an array of bytes to write out to the stream
+     * @param u16Len_ Length of data held in the array
+     * @return number of bytes written to the stream
      */
     uint16_t Write(uint8_t* pu8Data_, uint16_t u16Len_);
 
@@ -102,7 +109,8 @@ public:
      * This should be used in conjunction with the Lock method and judicious
      * use of critical sections to prevent race conditions.
      *
-     * @param ppu8Data_  Pointer to a pointer of data in the stream
+     * @param pu8Addr_   [out] Pointer to a byte pointer that will contain the address
+     * of the "claimed" byte on success.
      * @return           true if successful, false if buffer full or locked.
      */
     bool Claim(uint8_t** pu8Addr_);
@@ -145,6 +153,10 @@ public:
      */
     bool CanWrite(void);
 
+    /**
+     * @brief IsEmpty
+     * @return true if the stream is empty
+     */
     bool IsEmpty(void);
 
 private:

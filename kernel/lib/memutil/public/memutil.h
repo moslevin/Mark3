@@ -79,10 +79,12 @@ public:
     /**
      * @brief StringToDecimial8
      *
+     * Convert a string to an unsigned integer value.
      *
-     * @param szText_
-     * @param u8Out_
-     * @return
+     * @param szText_ String to convert
+     * @param pu8Out_ Pointer to a uint8_t that will contain the result
+     * @return true on success, false on invalid parameters or failure to
+     * convert the input string to an unsigned integer value
      */
     static bool StringToDecimal8(const char* szText_, uint8_t* pu8Out_);
     static bool StringToDecimal16(const char* szText_, uint16_t* pu16Out_);
