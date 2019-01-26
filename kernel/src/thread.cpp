@@ -89,7 +89,7 @@ void Thread::Init(
     m_pclCurrent->Add(this);
     CS_EXIT();
 
-#if KERNEL_THREAD_CREATE_HOOK
+#if KERNEL_THREAD_CREATE_CALLOUT
     ThreadCreateCallout pfCallout = Kernel::GetThreadCreateCallout();
     if (pfCallout != nullptr) {
         pfCallout(this);
@@ -232,7 +232,7 @@ void Thread::Exit()
     TimerScheduler::Remove(&m_clTimer);
     CS_EXIT();
 
-#if KERNEL_THREAD_EXIT_HOOK
+#if KERNEL_THREAD_EXIT_CALLOUT
     ThreadExitCallout pfCallout = Kernel::GetThreadExitCallout();
     if (pfCallout != nullptr) {
         pfCallout(this);
