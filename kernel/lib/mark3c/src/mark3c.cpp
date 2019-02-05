@@ -212,6 +212,12 @@ void Kernel_Panic(uint16_t u16Cause_)
     Kernel::Panic(u16Cause_);
 }
 
+//---------------------------------------------------------------------------
+uint32_t Kernel_GetTicks(void)
+{
+    Kernel::GetTicks();
+}
+
 #if KERNEL_THREAD_CREATE_CALLOUT
 //---------------------------------------------------------------------------
 void Kernel_SetThreadCreateCallout(thread_create_callout_t pfCreate_)

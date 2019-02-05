@@ -364,11 +364,18 @@ void Kernel_SetStackGuardThreshold(uint16_t u16Threshold_);
 
 /**
  * @brief Kernel_GetStackGuardThreshold
- * @sa Kernel:GetStackGuardThreshold
+ * @sa Kernel::GetStackGuardThreshold
  * @return Current kernel stack-guard threshold
  */
 uint16_t Kernel_GetStackGuardThreshold(void);
 #endif // #if KERNEL_STACK_CHECK
+
+/**
+ * @brief Kernel_GetTicks
+ * @sa Kernel::GetTicks()
+ * @return Number of kernel ticks that have elapsed since boot
+ */
+uint32_t Kernel_GetTicks(void);
 
 //---------------------------------------------------------------------------
 // Scheduler APIs
