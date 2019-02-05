@@ -55,6 +55,7 @@ void SysTick_Handler(void)
         return;
     }
 
+    Kernel::Tick();
     s_clTimerSemaphore.Post();
 
     // Clear the systick interrupt pending bit.

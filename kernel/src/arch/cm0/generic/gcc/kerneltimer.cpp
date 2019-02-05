@@ -17,10 +17,7 @@ See license.txt for more information
 
     @brief  Kernel Timer Implementation for ARM Cortex-M0
 */
-
-#include "kerneltypes.h"
-#include "kerneltimer.h"
-#include "threadport.h"
+#include "mark3.h"
 #include "m3_core_cm0.h"
 
 #include "ksemaphore.h"
@@ -44,6 +41,7 @@ void SysTick_Handler(void);
 //---------------------------------------------------------------------------
 void SysTick_Handler(void)
 {
+    Kernel::Tick();
     s_clTimerSemaphore.Post();
 
     // Clear the systick interrupt pending bit.

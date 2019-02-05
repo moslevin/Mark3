@@ -202,6 +202,9 @@ public:
     static uint16_t GetStackGuardThreshold(void) { return m_u16GuardThreshold; }
 #endif // #if KERNEL_STACK_CHECK
 
+    static void Tick() { m_u32Ticks++; }
+    static uint32_t GetTicks();
+
 private:
     static bool      m_bIsStarted; //!< true if kernel is running, false otherwise
     static bool      m_bIsPanic;   //!< true if kernel is in panic state, false otherwise
@@ -220,6 +223,7 @@ private:
 #if KERNEL_STACK_CHECK
     static uint16_t m_u16GuardThreshold;
 #endif // #if KERNEL_STACK_CHECK
+    static uint32_t m_u32Ticks;
 };
 
 } // namespace Mark3

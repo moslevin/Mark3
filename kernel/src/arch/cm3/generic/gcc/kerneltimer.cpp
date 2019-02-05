@@ -43,6 +43,7 @@ void SysTick_Handler(void)
     if (!Kernel::IsStarted()) {
         return;
     }
+    Kernel::Tick();
     s_clTimerSemaphore.Post();
 
     // Clear the systick interrupt pending bit.

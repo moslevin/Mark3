@@ -38,6 +38,7 @@ DebugPrintFunction Kernel::m_pfDebugPrintFunction;     //!< Function to call whe
 #if KERNEL_STACK_CHECK
 uint16_t Kernel::m_u16GuardThreshold;
 #endif // #if KERNEL_STACK_CHECK
+uint32_t Kernel::m_u32Ticks;
 
 //---------------------------------------------------------------------------
 void Kernel::Init(void)
@@ -77,6 +78,16 @@ void Kernel::DebugPrint(const char* szString_)
     if (m_pfDebugPrintFunction != nullptr) {
         m_pfDebugPrintFunction(szString_);
     }
+}
+
+//---------------------------------------------------------------------------
+uint32_t Kernel::GetTicks()
+{
+    uint32_t rc;
+    CS_ENTER();
+    rc = m_u32Ticks;
+    CS_EXIT();
+    return rc;
 }
 
 } // namespace Mark3

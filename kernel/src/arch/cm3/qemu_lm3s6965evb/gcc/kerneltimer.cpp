@@ -48,7 +48,7 @@ void SysTick_Handler(void)
     }
 
     Profiler::Process();
-
+    Kernel::Tick();
     s_clTimerSemaphore.Post();
 
     // Clear the systick interrupt pending bit.

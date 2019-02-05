@@ -18,11 +18,7 @@ See license.txt for more information
     @brief  Kernel Timer Implementation for ATMega328p
 */
 
-#include "kerneltypes.h"
-#include "kerneltimer.h"
-
-#include "ksemaphore.h"
-#include "thread.h"
+#include "mark3.h"
 
 #include <avr/io.h>
 #include <avr/interrupt.h>
@@ -148,5 +144,6 @@ void KernelTimer::RI(bool bEnable_)
 using namespace Mark3;
 ISR(TIMER1_COMPA_vect)
 {
+    Kernel::Tick();
     s_clTimerSemaphore.Post();
 }

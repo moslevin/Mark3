@@ -45,6 +45,7 @@ void __attribute__((interrupt(TIMERA0_VECTOR))) isr_KernelTIMER(void)
     if (!Kernel::IsStarted()) {
         return;
     }
+    Kernel::Tick();
     s_clTimerSemaphore.Post();
 }
 

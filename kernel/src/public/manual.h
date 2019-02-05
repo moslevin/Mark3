@@ -105,9 +105,189 @@ See license.txt for more information
 
     @section CONFIG_I Overview
 
-    Configuration is done through settings options in portcfg.h files for each target.
+    Configuration is done through setting options in mark3cfg.h , and portcfg.h.
+
+    mark3cfg.h contains global kernel configuration options, which determine
+    specific kernel behaviors, and enable certain kernel APIs independent of the
+    any target architecture.  Previous to the R7 release, all kernel configuration
+    options were set from mark3cfg.h, and there was an incredible amount of granularity
+    in the configuration options.
+
+    One main motivating factor behind removing the
+    granular configuration in mark3cfg.h is that it added a ton of #ifdefs throughout
+    the code, which made it look less clean.  It was also difficult to maintain since
+    there were too many permutations and combinations of configuration options to
+    reasonably test.
+
+    Another motivation for removing the vast array of configuration options from mark3cfg.h
+    is that there's limited benefit to code size.  With the advent of modern compiler
+    optimizations such as section-based garbage collection and link-time optimizations,
+    compilers to a remarkable job of optimizing out unused code.  Mark3 supports these
+    optimizations, allowing for nearly the same level of performance benefit as feature
+    specific #ifdefs.  In short - you still only pay for what you use, without having to
+    select the features you want ahead of time.
+
+    @subsection CONFIG_MARK3CFG Kernel Configuration Options
+
+    Kernel configuration is performed by setting #define's in mark3cfg.h to values of 0
+    or 1.
+
+    <b>KERNEL_DEBUG</b>
+
+    When enabled, assert statements within the kernel are checked at runtime.  This is
+    useful for tracking kernel-breaking changes, memory corruption, etc. in debug builds.
+
+    Should be disabled in release builds for performance reasons.
+
+    <b>KERNEL_STACK_CHECK</b>
+
+    Perform stack-depth checks on threads at each context switch, which is useful
+    in detecting stack overflows / near overflows.  Near-overflow detection uses
+    thresholds defined in the target's portcfg.h.  Enabling this also adds the
+    Thread::GetStackSlack() method, which allows a thread's stack to be profiled
+    on-demand.
+
+    Note:  When enabled, the additional stack checks result in a performance hit
+    to context switches and thread initialization.
+
+    <b>KERNEL_NAMED_THREADS</b>
+
+    Enabling this provides the Thread::SetName() and Thread::GetName() methods,
+    allowing for each thread to be named with a null-terminated const char* string.
+
+    Note: the string passed to Thread::SetName() must persist for the lifetime of
+    the thread
+
+    <b>KERNEL_EVENT_FLAGS</b>
+
+    This flag enables the event-flags synchronization object.  This feature allows
+    threads to be blocked, waiting on specific condition bits to be set or cleared
+    on an EventFlag object.
+
+    While other synchronization objects are enabled by default, this one is configurable
+    because it impacts the Thread object's member data.
+
+    <b>KERNEL_CONTEXT_SWITCH_CALLOUT</b>
+
+    When enabled, this feature allows a user to define a callback to be executed
+    whenever a context switch occurs.  Enabling this provides a means for a user
+    to track thread statistics, but it does result in additional overhead during
+    a context switch.
+
+    <b>KERNEL_THREAD_CREATE_CALLOUT</b>
+
+    This feature provides a user-defined kernel callback that is executed whenever
+    a thread is started.
+
+    <b>KERNEL_THREAD_EXIT_CALLOUT</b>
+
+    This feature provides a user-defined kernel callback that is executed whenever
+    a thread is terminated.
+
+    <b>KERNEL_ROUND_ROBIN</b>
+
+    Enable round-robin scheduling within each priority level.  When selected, this
+    results in a small performance hit during context switching and in the system
+    tick handler, as a special software timer is used to manage the running thread's
+    quantum.  Can be disabled to optimize performance if not required.
+
+    <b>KERNEL_EXTENDED_CONTEXT</b>
+
+    Provide a special data pointer in the thread object, which may be used to add
+    additional context to a thread.  Typically this would be used to implement
+    thread-local-storage.
+
+    @subsection CONFIG_PORTCFG Port Configuration Options
+
+    The bulk of kernel configuration options reside in the target's portcfg.h file.
+    These options determine various sizes, priorities, and default values related
+    to registers, timers, and threads.  Some ports may define their own configuration
+    options used locally by its kerneltimer/kernelswi/threadport modules; these are
+    not shown here.  The common configuration options are described below.
+
+    <b>KERNEL_NUM_PRIORITIES</b>
+
+    Define the number of thread priorities that the kernel's scheduler will
+    support.  The number of thread priorities is limited only by the memory
+    of the host CPU, as a ThreadList object is statically-allocated for each
+    thread priority.
+
+    In practice, systems rarely need more than 32 priority levels, with the
+    most complex having the capacity for 256.
+
+    <b>KERNEL_TIMERS_THREAD_PRIORITY</b>
+
+    Define the priority at which the kernel timer thread runs.  Typically,
+    this needs to be one of the highest
+
+    Note:  Other threads at or above the timer thread's priority are not permitted
+    to use the kernel's Timer API, as the thread relies on strict priority scheduling
+    to manage the global timer list without requiring additional/excessive
+    critical sections.
+
+    <b>THREAD_QUANTUM_DEFAULT</b>
+
+    Number of milliseconds to set as the default epoch for round-robin scheduling
+    when multiple ready threads are active within the same priority.
+
+    <b>KERNEL_STACK_GUARD_DEFAULT</b>
+
+    Set the minimum number of words of margin that each thread's stack must maintain.
+    If a thread's stack grows into theis margin, a kernel assert will be generated in
+    debug builds.  This is useful for ensuring that threads are not in danger of
+    overflowing their stacks during development/verification.
+
+    <b>K_WORD</b>
+
+    Define the size of a data word (in bytes) on the target
+
+    <b>K_ADDR</b>
+
+    Define the size of an address (in bytes) on the target.  This typically only differs
+    from K_WORD on Harvard-architecture CPUs.
+
+    <b>K_INT</b>
+
+    Define a type to be used as an integer by the kernel.
+
+    <b>PORT_PRIO_TYPE</b>
+
+    Set a base datatype used to represent each element of the scheduler's
+    priority bitmap.
+
+    <b>PORT_PRIO_MAP_WORD_SIZE</b>
+
+    Size of PORT_PRIO_TYPE in bytes
+
+    <b>PORT_SYSTEM_FREQ </b>
+
+    Define the running CPU frequency.  This may be an integer constant, or an alias
+    for another variable which holds the CPU's current running frequency.
+
+    <b>PORT_TIMER_FREQ</b>
+
+    Set the timer tick frequency.  This is the frequency at which the fixed-frequency
+    kernel tick interrupt occurs.
+
+    <b>PORT_KERNEL_DEFAULT_STACK_SIZE</b>
+
+    Define the default thread stack size (in bytes)
+
+    <b>PORT_KERNEL_TIMERS_THREAD_STACK</b>
+
+    Define the Timer thread's stack size (in bytes)
+
+    <b>PORT_TIMER_COUNT_TYPE</b>
+
+    Define the native type corresponding to the target timer hardware's counter register.
+
+    <b>PORT_MIN_TIMER_TICKS</b>
+
+    Minimum number of timer ticks for any delay or sleep, required to ensure that a timer cannot
+    be initialized to a negative value.
 
     @sa portcfg.h
+    @sa mark3cfg.h
 */
 /**
     @page BUILD0 Building Mark3
@@ -618,24 +798,6 @@ See license.txt for more information
     APIs can be used to provide event-driven programming facilities
     throughout the whole of the OS.
 
-    @subsection MSGP Global Message Pool
-
-    To maintain efficiency in the messaging system (and to prevent
-    over-allocation of data), a global pool of message objects is provided.
-    The size of this message pool is specified in the implementation, and
-    can be adjusted depending on the requirements of the target application
-    as a compile-time option.
-
-    Allocating a message from the message pool is as simple as calling the
-    GlobalMessagePool::Pop() Method.
-
-    Messages are returned back to the GlobalMessagePool::Push() method once
-    the message contents are no longer required.
-
-    One must be careful to ensure that discarded messages always are
-    returned to the pool, otherwise a resource leak can occur, which may
-    cripple the operating system's ability to pass data between threads.
-
     @subsection MSGQ Message Queues
 
     Message objects specify data with context, but do not specify where the
@@ -669,7 +831,7 @@ See license.txt for more information
     void TxMessage()
     {
         // Get a message, initialize its data
-        Message *pclMesg = GlobalMessagePool::Pop();
+        Message *pclMesg = MyMessagePool.Pop();
 
         pclMesg->SetCode(0xAB);
         pclMesg->SetData((void*)some_data);
@@ -691,7 +853,7 @@ See license.txt for more information
         pclMesg->GetCode();
 
         // Free the message once we're done with it.
-        GlobalMessagePool::Push(pclMesg);
+        MyMessagePool.Push(pclMesg);
     }
     @endcode
 
@@ -1892,7 +2054,7 @@ See license.txt for more information
 
     Looking at its competitors, Mark3 as a kernel supports most, if not all of
     the compelling features found in modern RTOS kernels, including dynamic
-    threads, tickless timers, efficient message passing, and multiple types of
+    threads, dynamic timers, efficient message passing, and multiple types of
     synchronization primatives.
 
     @subsection INSIDEOVERNED No external dependencies, no new language features
@@ -1979,10 +2141,6 @@ See license.txt for more information
     The flAVR AVR simulator was written to replace the dependency on that tool,
     and overcome those limitations.  It also provides a GDB interface, as well as
     its own built-in debugger, profilers, and trace tools.
-
-    The example and test code relies heavily on flAVR kernel aware messaging, so
-    it is recommended that you familiarize yourself with that tool if you intend
-    to do any sort of customizations or extensions to the kernel.
 
     flAVR is hosted on sourceforge at http://www.sourceforge.net/projects/flavr/ .
     In its basic configuration, it builds with minimal external dependencies.
@@ -2096,7 +2254,6 @@ See license.txt for more information
     |                     | ReaderWriterLock      |  readerwriter.cpp/.h            |
     |IPC/Message-passing  | Mailbox               |  mailbox.cpp/.h                 |
     |                     | MessageQueue          |  message.cpp/.h                 |
-    |                     | GlobalMessagePool     |  message.cpp/.h                 |
     |Debugging            | Miscellaneous Macros  |  kerneldebug.h                  |
     |Atomic Operations    | Atomic                |  atomic.cpp/.h                  |
     |Kernel               | Kernel                |  kernel.cpp/.h                  |
@@ -2503,6 +2660,17 @@ See license.txt for more information
 
     @subsection TICKLESSTIMERS Tickless Timers
 
+    Note:  Tickless timers are removed as of the R7 release.  The below documentation
+    is preserved for historical information only.  The reason for removing
+    tickless timers include the overhead associated with managing those timers
+    (significantly more math and management is involved).  In practice, there
+    are few scenarios where purely tickless timers add benefit - beyond the most
+    constrained devices.  Also, it is entirely possible to disable software timers
+    from the idle task when lower power/fewer interrupts are desired in most cases
+    where a tickless timer would be of value.
+
+    ---
+
     In a tickless system, the kernel timer only runs when there are active
     timers pending expiry, and even then, the timer module only generates
     interrupts when a timer expires, or a timer reaches its maximum count value.
@@ -2672,7 +2840,7 @@ See license.txt for more information
     Signalling a notification object that has no actively-waiting threads has no
     effect.
 
-    @section MSGMSGQ Messages and Global Message Queue
+    @section MSGMSGQ Messages and Message Queues
 
     @subsection MESSAGES Messages
 
@@ -2682,7 +2850,7 @@ See license.txt for more information
 
     Sending a message consists of the following operations:
 
-    - Obtain a Message object from the global message pool
+    - Obtain a Message object from a source message pool
     - Set the message data and event fields
     - Send the message to the destination message queue
     .
@@ -2691,7 +2859,7 @@ See license.txt for more information
 
     - Wait for a messages in the destination message queue
     - Process the message data
-    - Return the message back to the global message pool
+    - Return the message back to the source message pool
     .
 
     These operations, and the various data objects involved are discussed in
@@ -2722,25 +2890,6 @@ See license.txt for more information
     ISR context.  This helps maintain consistency, since the same APIs can be
     used to provide event-driven programming facilities throughout the whole of
     the OS.
-
-    @subsection MESSAGEPOOL Global Message Pool
-
-    To maintain efficiency in the messaging system (and to prevent over-allocation
-    of data), a global pool of message objects is provided. The size of this
-    message pool is specified in the implementation, and can be adjusted
-    depending on the requirements of the target application as a compile-time
-    option.
-
-    Allocating a message from the message pool is as simple as calling the
-
-    GlobalMessagePool::Pop() Method.
-
-    Messages are returned back to the GlobalMessagePool::Push() method once the
-    message contents are no longer required.
-
-    One must be careful to ensure that discarded messages always are returned to
-    the pool, otherwise a resource leak will occur, which may cripple the
-    operating system's ability to pass data between threads.
 
     @subsection MESSAGEQUEUES Message Queues
 
@@ -3573,25 +3722,29 @@ See license.txt for more information
     @page RELEASE Release Notes
 
     @section RELR7 R7 (Full Throttle) Release
-    - Re-focusing project on kernel integrating with 3rd party code instead of 1st party middleware
+    - Re-focusing project on kernel, integrating with 3rd party code instead of 1st party middleware
     - Re-focusing on atmega1284p and cortex-m as default targets
     - New: Refactored codebase to C++14 standard
     - New: Moved non-kernel code, drivers, libs, and BSPs to separate repos from kernel
     - New: Modular repository-based structure, managed via Android's Repo tool
     - New: ConditionVariable kernel API
     - New: ReaderWriterLock kernel API
-    - New: Slab memory allocator
-    - New: Bitmap object-allocator
     - New: AutoAlloc redirects to user-defined allocators
     - New: Global new() and delete() overrides redirect to AutoAlloc APIs
     - New: RAII Mutex Locking APIs
+    - New: Support for cortex-a53 (aarch64) targets
+    - New: Doxygen builds as part of cmake process
     - Updated Mark3c for new APIs
     - Moved driver layer out of the kernel
+    - Moved all non-essential libraries out of the kernel (into other repos)
+    - Build system supports modular BSP architecture
     - Removed fake idle-thread feature, since it doesn't support all targets
-    - Make all unit tests and examples run on all targets
+    - Unit tests and examples will run on any target with a BSP
     - Moved AVR-specific code out of the kernel (kernelaware debugging support)
-    - Remove most build-time configuration flags, and remove associated ifdefs throughout the code.
+    - Remove most build-time configuration flags from mark3cfg.h, and remove associated ifdefs throughout the code.
     - Support qemu-system-arm's lm3s6965 evb target, with semihosting
+    - Support qemu-system-arm's rasbpi3 evb target, with semihosting
+    - Incrase test coverage
     - Various bugfixes and improvements
     .
 
