@@ -215,7 +215,7 @@ void Kernel_Panic(uint16_t u16Cause_)
 //---------------------------------------------------------------------------
 uint32_t Kernel_GetTicks(void)
 {
-    Kernel::GetTicks();
+    return Kernel::GetTicks();
 }
 
 #if KERNEL_THREAD_CREATE_CALLOUT
