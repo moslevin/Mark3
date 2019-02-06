@@ -82,6 +82,8 @@ TEST(ut_typical_mutex)
     // thread immediately resumes, claiming the mutex, and adjusting the
     // token value to its value.  Check the new token value here.
     EXPECT_EQUALS(u8Token, 0x69);
+
+    clMutexThread.Exit();
 }
 
 //===========================================================================
@@ -111,6 +113,8 @@ TEST(ut_timed_mutex)
     clMutexThread.Start();
 
     EXPECT_TRUE(clMutex.Claim(30));
+
+    clMutexThread.Exit();
 }
 
 //===========================================================================
@@ -192,6 +196,8 @@ TEST(ut_raii)
     }
 
     Thread::Sleep(100);
+
+    clMutexThread.Exit();
 }
 
 //===========================================================================
@@ -233,6 +239,9 @@ TEST(ut_raii_timeout)
     EXPECT_EQUALS(u8Token, 2);
 
     Thread::Sleep(100);
+
+    clMutexThread.Exit();
+    clTestThread2.Exit();
 }
 
 //===========================================================================
