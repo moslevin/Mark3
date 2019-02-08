@@ -95,6 +95,11 @@ void ThreadPort::StartThreads()
     KernelTimer::Config(); // configure the kernel timer
 
     Profiler::Init();
+
+    // Tell the kernel that we're ready to start scheduling threads
+    // for the first time.
+    Kernel::CompleteStart();
+
     Scheduler::SetScheduler(1); // enable the scheduler
     Scheduler::Schedule();      // run the scheduler - determine the first thread to run
 

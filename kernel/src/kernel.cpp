@@ -41,7 +41,7 @@ uint16_t Kernel::m_u16GuardThreshold;
 uint32_t Kernel::m_u32Ticks;
 
 //---------------------------------------------------------------------------
-void Kernel::Init(void)
+void Kernel::Init()
 {
     AutoAlloc::Init();
 
@@ -54,10 +54,15 @@ void Kernel::Init(void)
 }
 
 //---------------------------------------------------------------------------
-void Kernel::Start(void)
+void Kernel::Start()
+{
+    ThreadPort::StartThreads();
+}
+
+//---------------------------------------------------------------------------
+void Kernel::CompleteStart()
 {
     m_bIsStarted = true;
-    ThreadPort::StartThreads();
 }
 
 //---------------------------------------------------------------------------

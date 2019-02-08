@@ -100,6 +100,10 @@ void ThreadPort::StartThreads()
 
     Profiler::Init();
 
+    // Tell the kernel that we're ready to start scheduling threads
+    // for the first time.
+    Kernel::CompleteStart();
+
     Scheduler::SetScheduler(1); // enable the scheduler
     Scheduler::Schedule();      // run the scheduler - determine the first thread to run
 
@@ -115,6 +119,7 @@ void ThreadPort::StartThreads()
     // until the running thread voluntarily blocks.
     Quantum::Update(g_pclCurrent);
 #endif // #if KERNEL_ROUND_ROBIN
+
     // Restore the context...
     Thread_RestoreContext(); // restore the context of the first running thread
     ASM("reti");             // return from interrupt - will return to the first scheduled thread

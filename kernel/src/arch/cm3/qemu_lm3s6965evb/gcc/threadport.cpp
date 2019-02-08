@@ -29,6 +29,7 @@ See license.txt for more information
 #include "timerlist.h"
 #include "quantum.h"
 #include "m3_core_cm3.h"
+#include "kernel.h"
 
 //---------------------------------------------------------------------------
 extern "C" {
@@ -330,7 +331,13 @@ void ThreadPort::StartThreads()
 {
     KernelSWI::Config();   // configure the task switch SWI
     KernelTimer::Config(); // configure the kernel timer
+
     Profiler::Init();
+
+    // Tell the kernel that we're ready to start scheduling threads
+    // for the first time.
+    Kernel::CompleteStart();
+
     Scheduler::SetScheduler(1); // enable the scheduler
     Scheduler::Schedule();      // run the scheduler - determine the first thread to run
 

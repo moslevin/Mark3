@@ -55,7 +55,7 @@ public:
      *  Initializes all global resources used by the operating system.  This
      *  must be called before any other kernel function is invoked.
      */
-    static void Init(void);
+    static void Init();
 
     /**
      *  @brief
@@ -69,7 +69,15 @@ public:
      *  this is if the system is configured to use the threadless idle hook,
      *  in which case the kernel is allowed to run without any ready threads.
      */
-    static void Start(void);
+    static void Start();
+
+    /**
+     * @brief CompleteStart
+     *
+     * Call this from the thread initialization code at the point that the
+     * scheduler is to be run for the first time.
+     */
+    static void CompleteStart();
 
     /**
      * @brief IsStarted
@@ -175,7 +183,7 @@ public:
      * @return Pointer to the currently-installed callout function,
      *         or nullptr if not set.
      */
-    static ThreadCreateCallout GetThreadCreateCallout(void) { return m_pfThreadCreateCallout; }
+    static ThreadCreateCallout GetThreadCreateCallout() { return m_pfThreadCreateCallout; }
 #endif // #if KERNEL_THREAD_CREATE_HOOK
 #if KERNEL_THREAD_EXIT_CALLOUT
     /**
@@ -185,7 +193,7 @@ public:
      * @return Pointer to the currently-installed callout function,
      *         or nullptr if not set.
      */
-    static ThreadExitCallout GetThreadExitCallout(void) { return m_pfThreadExitCallout; }
+    static ThreadExitCallout GetThreadExitCallout() { return m_pfThreadExitCallout; }
 #endif // #if KERNEL_THREAD_EXIT_HOOK
 #if KERNEL_CONTEXT_SWITCH_CALLOUT
     /**
@@ -195,11 +203,11 @@ public:
      * @return Pointer to the currently-installed callout function,
      *         or nullptr if not set.
      */
-    static ThreadContextCallout GetThreadContextSwitchCallout(void) { return m_pfThreadContextCallout; }
+    static ThreadContextCallout GetThreadContextSwitchCallout() { return m_pfThreadContextCallout; }
 #endif // #if KERNEL_CONTEXT_SWITCH_CALLOUT
 #if KERNEL_STACK_CHECK
     static void     SetStackGuardThreshold(uint16_t u16Threshold_) { m_u16GuardThreshold = u16Threshold_; }
-    static uint16_t GetStackGuardThreshold(void) { return m_u16GuardThreshold; }
+    static uint16_t GetStackGuardThreshold() { return m_u16GuardThreshold; }
 #endif // #if KERNEL_STACK_CHECK
 
     static void Tick() { m_u32Ticks++; }
