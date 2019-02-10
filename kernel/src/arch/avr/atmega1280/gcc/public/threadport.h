@@ -193,6 +193,14 @@ class Thread;
 class ThreadPort
 {
 public:
+    /**
+     * @brief Init
+     *
+     * Function to perform early init of the target environment prior to
+     * using OS primatives.
+     */
+    static void Init() {}
+
     /**        
      *  @brief StartThreads
      *

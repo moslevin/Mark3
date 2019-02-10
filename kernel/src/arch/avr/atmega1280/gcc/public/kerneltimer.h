@@ -83,5 +83,7 @@ public:
      *  @return Value held in the timer register
      */
     static PORT_TIMER_COUNT_TYPE Read(void);
+
+    static ISR();
 };
 } // namespace Mark3

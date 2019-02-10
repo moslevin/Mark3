@@ -43,6 +43,9 @@ uint32_t Kernel::m_u32Ticks;
 //---------------------------------------------------------------------------
 void Kernel::Init()
 {
+    // Call port-specific early init function
+    ThreadPort::Init();
+
     AutoAlloc::Init();
 
     // Initialize the global kernel data - thread-scheduler, and timer-scheduler.
