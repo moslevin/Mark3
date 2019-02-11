@@ -1,6 +1,6 @@
-subdirlist(SUBDIRS ${CMAKE_CURRENT_LIST_DIR})
-foreach(subdir ${SUBDIRS})
-  if(NOT ${subdir} MATCHES ".git")
-    add_subdirectory(${subdir})
-  endif()
-endforeach()
+add_subdirectory(src)
+if ("${mark3_has_bsp}" STREQUAL "true")
+    add_subdirectory(test)
+    add_subdirectory(example)
+endif()
+
