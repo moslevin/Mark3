@@ -11,7 +11,7 @@ set(arm_extra_headers
     ${folder_prefix}/kernelprofile.h
     ${folder_prefix}/kernelswi.h
     ${folder_prefix}/kerneltimer.h
-    ${folder_prefix}/m3_core_cm0.h
+    ${folder_prefix}/m3_core_cm4.h
     ${folder_prefix}/portcfg.h
     ${folder_prefix}/threadport.h
     )
