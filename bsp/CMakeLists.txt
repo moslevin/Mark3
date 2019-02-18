@@ -1,0 +1,5 @@
+set(ARCH_PATH "./arch/${mark3_arch}/${mark3_variant}/${mark3_toolchain}") 
+get_filename_component(_fullpath "${ARCH_PATH}" REALPATH)
+if(EXISTS "${_fullpath}" AND IS_DIRECTORY "${_fullpath}")
+  add_subdirectory(${_fullpath} ${CMAKE_CURRENT_BINARY_DIR}/${mark3_variant})
+endif()

@@ -1,6 +1,0 @@
-add_subdirectory(arial_10)
-add_subdirectory(arial_12)
-add_subdirectory(courier_10)
-add_subdirectory(courier_12)
-add_subdirectory(tahoma_10)
-add_subdirectory(tahoma_12)

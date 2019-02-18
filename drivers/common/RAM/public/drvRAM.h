@@ -8,22 +8,23 @@
 
 --[Mark3 Realtime Platform]--------------------------------------------------
 
-Copyright (c) 2012 - 2017 Funkenstein Software Consulting, all rights reserved.
+Copyright (c) 2012 - 2018 m0slevin, all rights reserved.
 See license.txt for more information
 ===========================================================================*/
-/*!
+/**
 
-    \file   drvRAM.h
+    @file   drvRAM.h
 
-    \brief  Generic RAM-buffer driver
+    @brief  Generic RAM-buffer driver
 
 */
-#ifndef __DRVEEPROM_H_
-#define __DRVEEPROM_H_
+#pragma once
 
 #include "kerneltypes.h"
 #include "driver.h"
 
+namespace Mark3
+{
 typedef enum {
     EEPROM_CMD_SEEK = 0x80, //!< Set the current EEPROM address, used for read/write
     EEPROM_CMD_SET_BUFFER   //!< Set the data buffer and buffer size before use
@@ -34,19 +35,18 @@ class RAMDriver;
 class RAMDriver : public Driver
 {
 public:
-    virtual void     Init();
-    virtual uint8_t  Open();
-    virtual uint8_t  Close();
-    virtual uint16_t Read(uint16_t u16Bytes_, uint8_t* pu8Data_);
+    virtual int    Init();
+    virtual int    Open();
+    virtual int    Close();
+    virtual size_t Read(void* pvData_, size_t uBytes_);
 
-    virtual uint16_t Write(uint16_t u16Bytes_, uint8_t* pu8Data_);
+    virtual size_t Write(const void* pvData_, size_t uBytes_);
 
-    virtual uint16_t Control(uint16_t u16Event_, void* pvIn_, uint16_t u16SizeIn_, void* pvOut_, uint16_t u16SizeOut_);
+    virtual int Control(uint16_t u16Event_, void* pvIn_, size_t uSizeIn_, const void* pvOut_, size_t uSizeOut_);
 
 private:
     uint16_t m_u16Address;
     uint16_t m_u16Size;
     uint8_t* m_pcData;
 };
-
-#endif
+} // namespace Mark3
