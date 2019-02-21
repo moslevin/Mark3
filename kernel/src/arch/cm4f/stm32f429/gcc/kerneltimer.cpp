@@ -104,7 +104,7 @@ void KernelTimer::Start(void)
 
     SysTick_Config(PORT_TIMER_FREQ); // 1KHz fixed clock...
     NVIC_SetPriority(SysTick_IRQn, u8Priority);
-    SysTick->CTRL |= SysTick_CTRL_TICKINT_Msk;
+    NVIC_EnableIRQ(SysTick_IRQn);
 }
 
 //---------------------------------------------------------------------------
