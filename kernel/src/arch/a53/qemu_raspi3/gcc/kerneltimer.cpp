@@ -15,25 +15,19 @@ See license.txt for more information
 
     @file   kerneltimer.cpp
 
-    @brief  Kernel Timer Implementation for ARM Cortex-M4
+    @brief  Kernel Timer Implementation for ARM Cortex-A53
 */
 
-#include "kerneltypes.h"
-#include "kerneltimer.h"
-#include "threadport.h"
-#include "kernel.h"
-#include "ksemaphore.h"
-#include "kernelprofile.h"
-#include "thread.h"
-#include "quantum.h"
-
-#include "stm32f4xx.h"
-
-extern "C" {
-extern void HAL_IncTick(void);
-};
+#include "mark3.h"
 
 using namespace Mark3;
+
+// Generic timer address definitions
+#define CORE0_TIMER_IRQCNTL (*(volatile uint32_t*)0x40000040)
+#define CORE0_IRQ_SOURCE (*(volatile uint32_t*)0x40000060)
+
+uint32_t g_uGenericTimerFreq;
+
 namespace
 {
 //---------------------------------------------------------------------------
@@ -41,25 +35,40 @@ namespace
 Thread    s_clTimerThread;
 K_WORD    s_clTimerThreadStack[PORT_KERNEL_TIMERS_THREAD_STACK];
 Semaphore s_clTimerSemaphore;
-} // anonymous namespace
 
-using namespace Mark3;
+//---------------------------------------------------------------------------
+void enable_cntv(void)
+{
+    uint32_t u32Val = 1;
+    ASM("msr cntv_ctl_el0, %0 \n" ::"r"(u32Val));
+}
+
+//---------------------------------------------------------------------------
+void write_cntv_tval(uint32_t u32Val)
+{
+    ASM(" msr cntv_tval_el0, %0 \n" ::"r"(u32Val));
+}
+
+//---------------------------------------------------------------------------
+uint32_t read_cntfrq(void)
+{
+    uint32_t u32Val;
+    ASM(" mrs %0, cntfrq_el0 \n" : "=r"(u32Val));
+    return u32Val;
+}
+} // anonymous namespace
 
 //---------------------------------------------------------------------------
 extern "C" {
-void SysTick_Handler(void)
-{
-    HAL_IncTick();
 
+void TimerTick_Handler(void)
+{
     if (!Kernel::IsStarted()) {
         return;
     }
-
+    KernelTimer::ClearExpiry();
     Kernel::Tick();
     s_clTimerSemaphore.Post();
-
-    // Clear the systick interrupt pending bit.
-    SCB->ICSR = SCB_ICSR_PENDSTCLR_Msk;
 }
 }
 
@@ -69,7 +78,9 @@ namespace Mark3
 static void KernelTimer_Task(void* unused)
 {
     (void)unused;
-    while (1) {
+
+    KernelTimer::Start();
+    while (1) {        
         s_clTimerSemaphore.Pend();
 #if KERNEL_ROUND_ROBIN
         Quantum::SetInTimer();
@@ -90,34 +101,41 @@ void KernelTimer::Config(void)
                          KERNEL_TIMERS_THREAD_PRIORITY,
                          KernelTimer_Task,
                          0);
-#if KERNEL_ROUND_ROBIN
     Quantum::SetTimerThread(&s_clTimerThread);
-#endif // #if KERNEL_ROUND_ROBIN
     s_clTimerThread.Start();
 }
 
 //---------------------------------------------------------------------------
 void KernelTimer::Start(void)
 {
-    // Barely higher priority than the SVC and PendSV interrupts.
-    uint8_t u8Priority = static_cast<uint8_t>((1 << __NVIC_PRIO_BITS) - 2);
+    g_uGenericTimerFreq = read_cntfrq();
 
-    SysTick_Config(PORT_TIMER_FREQ); // 1KHz fixed clock...
-    NVIC_SetPriority(SysTick_IRQn, u8Priority);
-    SysTick->CTRL |= SysTick_CTRL_TICKINT_Msk;
+    write_cntv_tval(PORT_TIMER_FREQ); // Set timer tick
+
+    CORE0_TIMER_IRQCNTL = 0x08; // Route timer interrupt to core 0
+
+    enable_cntv();
 }
 
 //---------------------------------------------------------------------------
 void KernelTimer::Stop(void)
 {
-    SysTick->CTRL = ~SysTick_CTRL_ENABLE_Msk;
+    // Not implemented in this port
 }
 
 //---------------------------------------------------------------------------
-uint16_t KernelTimer::Read(void)
+PORT_TIMER_COUNT_TYPE KernelTimer::Read(void)
 {
     // Not implemented in this port
     return 0;
+}
+
+//---------------------------------------------------------------------------
+void KernelTimer::ClearExpiry(void)
+{
+    if (CORE0_IRQ_SOURCE & 0x08) {
+        write_cntv_tval(PORT_TIMER_FREQ);
+    }
 }
 
 //-------------------------------------------------------------------------

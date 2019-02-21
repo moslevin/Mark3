@@ -15,52 +15,21 @@ See license.txt for more information
 
     @file   kerneltimer.cpp
 
-    @brief  Kernel Timer Implementation for ARM Cortex-M4
+    @brief  Kernel Timer Implementation for ATMega328p
 */
 
-#include "kerneltypes.h"
-#include "kerneltimer.h"
-#include "threadport.h"
-#include "kernel.h"
-#include "ksemaphore.h"
-#include "kernelprofile.h"
-#include "thread.h"
-#include "quantum.h"
+#include "mark3.h"
 
-#include "stm32f4xx.h"
+#include <stdio.h>
 
-extern "C" {
-extern void HAL_IncTick(void);
-};
-
-using namespace Mark3;
 namespace
 {
+using namespace Mark3;
 //---------------------------------------------------------------------------
 // Static objects implementing the timer thread and its synchronization objects
 Thread    s_clTimerThread;
 K_WORD    s_clTimerThreadStack[PORT_KERNEL_TIMERS_THREAD_STACK];
 Semaphore s_clTimerSemaphore;
-} // anonymous namespace
-
-using namespace Mark3;
-
-//---------------------------------------------------------------------------
-extern "C" {
-void SysTick_Handler(void)
-{
-    HAL_IncTick();
-
-    if (!Kernel::IsStarted()) {
-        return;
-    }
-
-    Kernel::Tick();
-    s_clTimerSemaphore.Post();
-
-    // Clear the systick interrupt pending bit.
-    SCB->ICSR = SCB_ICSR_PENDSTCLR_Msk;
-}
 }
 
 namespace Mark3
@@ -99,41 +68,42 @@ void KernelTimer::Config(void)
 //---------------------------------------------------------------------------
 void KernelTimer::Start(void)
 {
-    // Barely higher priority than the SVC and PendSV interrupts.
-    uint8_t u8Priority = static_cast<uint8_t>((1 << __NVIC_PRIO_BITS) - 2);
-
-    SysTick_Config(PORT_TIMER_FREQ); // 1KHz fixed clock...
-    NVIC_SetPriority(SysTick_IRQn, u8Priority);
-    SysTick->CTRL |= SysTick_CTRL_TICKINT_Msk;
 }
 
 //---------------------------------------------------------------------------
 void KernelTimer::Stop(void)
 {
-    SysTick->CTRL = ~SysTick_CTRL_ENABLE_Msk;
 }
 
 //---------------------------------------------------------------------------
-uint16_t KernelTimer::Read(void)
+PORT_TIMER_COUNT_TYPE KernelTimer::Read(void)
 {
-    // Not implemented in this port
     return 0;
 }
 
-//-------------------------------------------------------------------------
+//---------------------------------------------------------------------------
 uint8_t KernelTimer::DI(void)
 {
-    return 0;
 }
 
 //---------------------------------------------------------------------------
 void KernelTimer::EI(void)
 {
-    KernelTimer::RI(0);
 }
 
 //---------------------------------------------------------------------------
-void KernelTimer::RI(bool bEnable_) {}
+void KernelTimer::RI(bool bEnable_)
+{
+
+}
 
 //---------------------------------------------------------------------------
+void KernelTimer::ISR()
+{
+    Kernel::Tick();
+    s_clTimerSemaphore.Post();
+}
 } // namespace Mark3
+
+
+
