@@ -98,7 +98,7 @@ void KernelTimer::Start(void)
 
     M3_SysTick_Config(PORT_TIMER_FREQ); // 1KHz fixed clock...
     M3_NVIC_SetPriority(M3_SYSTICK_IRQn, u8Priority);
-    M3_NVIC_EnableIRQ(M3_SYSTICK_IRQn);
+    SysTick->CTRL |= SysTick_CTRL_TICKINT_Msk;
 }
 
 //---------------------------------------------------------------------------
