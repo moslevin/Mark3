@@ -53,36 +53,5 @@ public:
      */
     static void Stop(void);
 
-    /**
-     *  @brief DI
-     *
-     *  Disable the kernel timer's expiry interrupt
-     */
-    static uint8_t DI(void);
-
-    /**
-     *  @brief RI
-     *
-     *  Retstore the state of the kernel timer's expiry interrupt.
-     *
-     *  @param bEnable_ 1 enable, 0 disable
-     */
-    static void RI(bool bEnable_);
-
-    /**
-     *  @brief EI
-     *
-     *  Enable the kernel timer's expiry interrupt
-     */
-    static void EI(void);
-
-    /**
-     *  @brief Read
-     *
-     *  Safely read the current value in the timer register
-     *
-     *  @return Value held in the timer register
-     */
-    static PORT_TIMER_COUNT_TYPE Read(void);
 };
 } // namespace Mark3
