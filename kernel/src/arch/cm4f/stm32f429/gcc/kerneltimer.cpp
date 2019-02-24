@@ -23,7 +23,6 @@ See license.txt for more information
 #include "threadport.h"
 #include "kernel.h"
 #include "ksemaphore.h"
-#include "kernelprofile.h"
 #include "thread.h"
 #include "quantum.h"
 

@@ -112,22 +112,9 @@ public:
     uint32_t GetCurrent();
 
 private:
-    /**
-     *  @brief ComputeCurrentTicks
-     *
-     *  Figure out how many ticks have elapsed in this iteration
-     *
-     *  @param u16Current_ Current timer count
-     *  @param u32Epoch_ Current timer epoch
-     *
-     *  @return Current tick count
-     */
-    uint32_t ComputeCurrentTicks(uint16_t u16Current_, uint32_t u32Epoch_);
-
-    uint32_t m_u32Cumulative;       //!< Cumulative tick-count for this timer
-    uint32_t m_u32CurrentIteration; //!< Tick-count for the current iteration
-    uint16_t m_u16Initial;          //!< Initial count
-    uint32_t m_u32InitialEpoch;     //!< Initial Epoch
+    uint32_t m_u32StartTicks;       //!< Cumulative tick-count for this timer
+    uint32_t m_u32CurrentIteration; //!< Tick count for current iteration.
+    uint32_t m_u32Cumulative;       //!< Cumulative ticks tracked
     uint16_t m_u16Iterations;       //!< Number of iterations executed for this profiling timer
     bool     m_bActive;             //!< Wheter or not the timer is active or stopped
 };

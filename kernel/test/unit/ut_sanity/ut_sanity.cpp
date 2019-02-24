@@ -4,7 +4,6 @@
 #include "thread.h"
 #include "driver.h"
 #include "profile.h"
-#include "kernelprofile.h"
 #include "ksemaphore.h"
 #include "mutex.h"
 #include "message.h"

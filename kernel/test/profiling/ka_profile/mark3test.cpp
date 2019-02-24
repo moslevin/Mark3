@@ -6,7 +6,6 @@
 #include "driver.h"
 #include "drvATMegaUART.h"
 #include "profile.h"
-#include "kernelprofile.h"
 #include "ksemaphore.h"
 #include "mutex.h"
 #include "message.h"

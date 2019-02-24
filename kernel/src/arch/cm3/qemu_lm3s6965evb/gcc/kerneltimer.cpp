@@ -24,7 +24,6 @@ See license.txt for more information
 #include "m3_core_cm3.h"
 #include "kernel.h"
 #include "ksemaphore.h"
-#include "kernelprofile.h"
 #include "thread.h"
 #include "quantum.h"
 
@@ -47,7 +46,6 @@ void SysTick_Handler(void)
         return;
     }
 
-    Profiler::Process();
     Kernel::Tick();
     s_clTimerSemaphore.Post();
 

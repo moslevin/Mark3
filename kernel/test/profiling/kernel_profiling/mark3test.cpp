@@ -4,19 +4,11 @@
 #include "thread.h"
 #include "driver.h"
 #include "profile.h"
-#include "kernelprofile.h"
 #include "ksemaphore.h"
 #include "mutex.h"
 #include "message.h"
 #include "timerlist.h"
 #include "ut_support.h"
-
-#if defined(AVR)
-#include "drvATMegaUART.h"
-#include <avr/io.h>
-#include <avr/interrupt.h>
-#include <avr/sleep.h>
-#endif
 
 extern "C" void __cxa_pure_virtual() {}
 
@@ -352,7 +344,6 @@ void AppMain(void* unused)
     ProfileInit();
     for (uint32_t i = 0; i < 100; i++) {
         //---[ API Profiling ]-----------------------------
-        Profiler::Start();
         ProfileOverhead();
         pclUART->Write(".", 1);
         Semaphore_Profiling();
@@ -363,7 +354,6 @@ void AppMain(void* unused)
         pclUART->Write(".", 1);
         Scheduler_Profiling();
         pclUART->Write(".", 1);
-        Profiler::Stop();
         pclUART->Write("\r\n", 2);
     }
     ProfilePrintResults();

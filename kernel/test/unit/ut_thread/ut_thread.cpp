@@ -19,7 +19,6 @@ See license.txt for more information
 #include "../ut_platform.h"
 #include "thread.h"
 #include "ksemaphore.h"
-#include "kernelprofile.h"
 #include "profile.h"
 #include "kerneltimer.h"
 #include "driver.h"
@@ -117,23 +116,20 @@ TEST(ut_threadsleep)
 
         // +1 tick for initial, incomplete tick.
         clSem1.Pend();
-        Thread::Sleep(5 + 1);
+        Thread::Sleep(5);
         clSem2.Post();
 
         clSem1.Pend();
-        Thread::Sleep(50 + 1);
+        Thread::Sleep(50);
         clSem2.Post();
 
         clSem1.Pend();
-        Thread::Sleep(200 + 1);
+        Thread::Sleep(200);
         clSem2.Post();
 
         // Exit this thread.
         Scheduler::GetCurrentThread()->Exit();
     };
-
-    Profiler::Init();
-    Profiler::Start();
 
     // Start another thread, which sleeps for a various length of time
     clSem1.Init(0, 1);
@@ -152,26 +148,24 @@ TEST(ut_threadsleep)
     clSem2.Pend();
     clProfiler1.Stop();
 
-    EXPECT_GTE((clProfiler1.GetCurrent() * CLOCK_DIVIDE), (PORT_SYSTEM_FREQ / 200));
-    EXPECT_LTE((clProfiler1.GetCurrent() * CLOCK_DIVIDE), (PORT_SYSTEM_FREQ / 200) + (PORT_SYSTEM_FREQ / 200));
+    EXPECT_GTE(clProfiler1.GetCurrent(), 5);
+    EXPECT_LTE(clProfiler1.GetCurrent(), 7);
 
     clSem1.Post();
     clProfiler1.Start();
     clSem2.Pend();
     clProfiler1.Stop();
 
-    EXPECT_GTE((clProfiler1.GetCurrent() * CLOCK_DIVIDE), PORT_SYSTEM_FREQ / 20);
-    EXPECT_LTE((clProfiler1.GetCurrent() * CLOCK_DIVIDE), (PORT_SYSTEM_FREQ / 20) + (PORT_SYSTEM_FREQ / 200));
+    EXPECT_GTE(clProfiler1.GetCurrent(), 50);
+    EXPECT_LTE(clProfiler1.GetCurrent(), 52);
 
     clSem1.Post();
     clProfiler1.Start();
     clSem2.Pend();
     clProfiler1.Stop();
 
-    EXPECT_GTE((clProfiler1.GetCurrent() * CLOCK_DIVIDE), PORT_SYSTEM_FREQ / 5);
-    EXPECT_LTE((clProfiler1.GetCurrent() * CLOCK_DIVIDE), (PORT_SYSTEM_FREQ / 5) + (PORT_SYSTEM_FREQ / 200));
-
-    Profiler::Stop();
+    EXPECT_GTE(clProfiler1.GetCurrent(), 200);
+    EXPECT_LTE(clProfiler1.GetCurrent(), 202);
 }
 
 //===========================================================================

@@ -26,7 +26,6 @@ See license.txt for more information
 #include "threadport.h"
 #include "kernelswi.h"
 #include "kerneltimer.h"
-#include "kernelprofile.h"
 
 #include "kernel.h"
 #include "thread.h"
