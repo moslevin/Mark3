@@ -40,7 +40,7 @@ See license.txt for more information
 #include "ll.h"
 #include "threadlist.h"
 #include "scheduler.h"
-#include "threadport.h"
+#include "ithreadport.h"
 #include "quantum.h"
 #include "autoalloc.h"
 #include "priomap.h"

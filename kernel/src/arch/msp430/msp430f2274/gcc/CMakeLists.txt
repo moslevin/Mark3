@@ -7,8 +7,6 @@ set(msp_extra_cxx
     )
 
 set(msp_extra_headers
-    ${folder_prefix}/kernelswi.h
-    ${folder_prefix}/kerneltimer.h
     ${folder_prefix}/portcfg.h
     ${folder_prefix}/threadport.h
     )

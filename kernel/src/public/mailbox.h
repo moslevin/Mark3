@@ -21,7 +21,7 @@ See license.txt for more information
 
 #include "mark3cfg.h"
 #include "kerneltypes.h"
-#include "threadport.h"
+#include "ithreadport.h"
 #include "ksemaphore.h"
 
 namespace Mark3
