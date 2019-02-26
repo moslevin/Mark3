@@ -73,12 +73,7 @@ See license.txt for more information
     Define the running CPU frequency.  This may be an integer constant, or an alias
     for another variable which holds the CPU's current running frequency.
 */
-#if defined(__cplusplus)
-extern "C" uint32_t SystemCoreClock;
-#else
-extern uint32_t SystemCoreClock;
-#endif
-#define PORT_SYSTEM_FREQ (SystemCoreClock)
+#define PORT_SYSTEM_FREQ (120000000)
 
 /**
     Set the timer frequency.  If running in tickless mode, this is simply the frequency

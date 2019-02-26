@@ -38,7 +38,10 @@ set(LIB_HEADERS
     public/blocking.h
     public/condvar.h
     public/eventflag.h
+    public/ithreadport.h
     public/ksemaphore.h
+    public/kernelswi.h
+    public/kerneltimer.h
     public/ll.h
     public/mailbox.h
     public/mark3.h

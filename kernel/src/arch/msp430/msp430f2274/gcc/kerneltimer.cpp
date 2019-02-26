@@ -112,38 +112,4 @@ void KernelTimer::Stop(void)
     TACCR0 = 0;
 }
 
-//---------------------------------------------------------------------------
-uint16_t KernelTimer::Read(void)
-{
-    uint16_t u16Val;
-    TACCTL0 &= ~MC_1;
-    u16Val = TAR;
-    TACCTL0 |= MC_1;
-    return u16Val;
-}
-
-//---------------------------------------------------------------------------
-uint8_t KernelTimer::DI(void)
-{
-    uint8_t u8Ret = ((TACCTL0 & CCIE) != 0);
-    TACCTL0 &= ~CCIE;
-    TACCTL0 &= ~CCIFG;
-    return u8Ret;
-}
-
-//---------------------------------------------------------------------------
-void KernelTimer::EI(void)
-{
-    KernelTimer::RI(1);
-}
-
-//---------------------------------------------------------------------------
-void KernelTimer::RI(bool bEnable_)
-{
-    if (bEnable_) {
-        TACCTL0 |= CCIE;
-    } else {
-        TACCTL0 &= ~CCIE;
-    }
-}
 } // namespace Mark3

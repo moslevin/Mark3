@@ -36,37 +36,6 @@ void KernelSWI::Start(void)
 {
     // Nothing to do...
 }
-
-//---------------------------------------------------------------------------
-void KernelSWI::Stop(void)
-{
-    // Nothing to do...
-}
-
-//---------------------------------------------------------------------------
-uint8_t KernelSWI::DI()
-{
-    // Not implemented
-    return 0;
-}
-
-//---------------------------------------------------------------------------
-void KernelSWI::RI(bool bEnable_)
-{
-    // Not implemented
-}
-
-//---------------------------------------------------------------------------
-void KernelSWI::Clear(void)
-{
-    // There's no convenient CMSIS function call for PendSV set/clear,
-    // But we do at least have some structs/macros.
-
-    // Note that set/clear each have their own bits in the same register.
-    // Setting the "set" or "clear" bit results in the desired operation.
-    SCB->ICSR = SCB_ICSR_PENDSVCLR_Msk;
-}
-
 //---------------------------------------------------------------------------
 void KernelSWI::Trigger(void)
 {

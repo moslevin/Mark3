@@ -24,7 +24,6 @@ See license.txt for more information
 #include "m3_core_cm3.h"
 #include "kernel.h"
 #include "ksemaphore.h"
-#include "kernelprofile.h"
 #include "thread.h"
 #include "quantum.h"
 
@@ -47,7 +46,6 @@ void SysTick_Handler(void)
         return;
     }
 
-    Profiler::Process();
     Kernel::Tick();
     s_clTimerSemaphore.Post();
 
@@ -106,27 +104,5 @@ void KernelTimer::Stop(void)
 {
     SysTick->CTRL = ~SysTick_CTRL_ENABLE_Msk;
 }
-
-//---------------------------------------------------------------------------
-PORT_TIMER_COUNT_TYPE KernelTimer::Read(void)
-{
-    return (PORT_TIMER_COUNT_TYPE)(SysTick->VAL);
-}
-
-//-------------------------------------------------------------------------
-uint8_t KernelTimer::DI(void)
-{
-    return 0;
-}
-
-//---------------------------------------------------------------------------
-void KernelTimer::EI(void)
-{
-    KernelTimer::RI(0);
-}
-
-//---------------------------------------------------------------------------
-void KernelTimer::RI(bool bEnable_) {}
-
 //---------------------------------------------------------------------------
 } // namespace Mark3

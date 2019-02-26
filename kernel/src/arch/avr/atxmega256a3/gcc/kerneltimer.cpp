@@ -97,44 +97,6 @@ void KernelTimer::Stop(void)
 }
 
 //---------------------------------------------------------------------------
-PORT_TIMER_COUNT_TYPE KernelTimer::Read(void)
-{
-    volatile uint16_t u16Read1;
-    volatile uint16_t u16Read2;
-
-    do {
-        u16Read1 = TCC1.CNT;
-        u16Read2 = TCC1.CNT;
-    } while (u16Read1 != u16Read2);
-
-    return u16Read1;
-}
-
-//---------------------------------------------------------------------------
-uint8_t KernelTimer::DI(void)
-{
-    bool bEnabled = ((TCC1.INTCTRLA & 0X01) != 0);
-    TCC1.INTCTRLA &= ~(0x01); // Disable the interrupt
-    return bEnabled;
-}
-
-//---------------------------------------------------------------------------
-void KernelTimer::EI(void)
-{
-    KernelTimer::RI(0);
-}
-
-//---------------------------------------------------------------------------
-void KernelTimer::RI(bool bEnable_)
-{
-    if (bEnable_) {
-        TCC1.INTCTRLA |= (0x01); // Disable the interrupt
-    } else {
-        TCC1.INTCTRLA &= ~(0x01); // Disable the interrupt
-    }
-}
-
-//---------------------------------------------------------------------------
 /**
  *   @brief ISR(TIMER1_COMPA_vect)
  *   Timer interrupt ISR - service the timer thread

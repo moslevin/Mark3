@@ -62,38 +62,6 @@ void KernelSWI::Start(void)
 }
 
 //---------------------------------------------------------------------------
-void KernelSWI::Stop(void)
-{
-    TCC0.INTFLAGS |= 0x01;    // Clear interrupt on overflow
-    TCC0.INTCTRLA &= ~(0x03); // Disable the interrupt
-    TCC0.CTRLA = 0;           // Clock source:  SWI Event
-}
-
-//---------------------------------------------------------------------------
-uint8_t KernelSWI::DI()
-{
-    bool bEnabled = ((TCC0.INTCTRLA & 0x03) != 0);
-    TCC0.INTCTRLA &= ~0x03;
-    return bEnabled;
-}
-
-//---------------------------------------------------------------------------
-void KernelSWI::RI(bool bEnable_)
-{
-    if (bEnable_) {
-        TCC0.INTCTRLA |= 0x03;
-    } else {
-        TCC0.INTCTRLA &= ~0x03;
-    }
-}
-
-//---------------------------------------------------------------------------
-void KernelSWI::Clear(void)
-{
-    TCC0.INTFLAGS |= 0x01; // Clear interrupt on overflow
-}
-
-//---------------------------------------------------------------------------
 void KernelSWI::Trigger(void)
 {
     // if(Thread_IsSchedulerEnabled())

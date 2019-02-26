@@ -22,8 +22,6 @@ See license.txt for more information
 #include "kerneltypes.h"
 #include "mark3cfg.h"
 #include "thread.h"
-#include "threadport.h"
-#include "kernelprofile.h"
 #include "kernelswi.h"
 #include "kerneltimer.h"
 #include "timerlist.h"
@@ -96,8 +94,6 @@ void ThreadPort::StartThreads()
 {
     KernelSWI::Config();   // configure the task switch SWI
     KernelTimer::Config(); // configure the kernel timer
-
-    Profiler::Init();
 
     // Tell the kernel that we're ready to start scheduling threads
     // for the first time.

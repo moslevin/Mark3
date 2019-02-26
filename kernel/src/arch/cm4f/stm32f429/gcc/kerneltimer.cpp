@@ -23,7 +23,6 @@ See license.txt for more information
 #include "threadport.h"
 #include "kernel.h"
 #include "ksemaphore.h"
-#include "kernelprofile.h"
 #include "thread.h"
 #include "quantum.h"
 
@@ -112,28 +111,6 @@ void KernelTimer::Stop(void)
 {
     SysTick->CTRL = ~SysTick_CTRL_ENABLE_Msk;
 }
-
-//---------------------------------------------------------------------------
-uint16_t KernelTimer::Read(void)
-{
-    // Not implemented in this port
-    return 0;
-}
-
-//-------------------------------------------------------------------------
-uint8_t KernelTimer::DI(void)
-{
-    return 0;
-}
-
-//---------------------------------------------------------------------------
-void KernelTimer::EI(void)
-{
-    KernelTimer::RI(0);
-}
-
-//---------------------------------------------------------------------------
-void KernelTimer::RI(bool bEnable_) {}
 
 //---------------------------------------------------------------------------
 } // namespace Mark3

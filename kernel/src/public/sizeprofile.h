@@ -16,7 +16,7 @@ on other platforms or toolchains.
 @section SIZEPROFILEINFO Information
 
 Date Profiled:
-Mon Feb 4 21:00:33 EST 2019
+Sat Feb 23 22:07:45 EST 2019
 
 @section SIZEPROFILEVER  Compiler Version
 arm-none-eabi-gcc (15:6.3.1+svn253039-1build1) 6.3.1 20170620 Copyright (C) 2016 Free Software Foundation, Inc. This is free software; see the source for copying conditions. There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
@@ -38,7 +38,7 @@ Mark3 Module Size Report:
     -  Mutex (Synchronization Object).................. : 464 Bytes
     -  Notification Blocking Object.................... : 396 Bytes
     -  2D Priority Map Object - Scheduler.............. : 58 Bytes
-    -  Performance-profiling timers.................... : 240 Bytes
+    -  Performance-profiling timers.................... : 172 Bytes
     -  Round-Robin Scheduling Support.................. : 207 Bytes
     -  Reader-writer Locks (Synchronization Object).... : 158 Bytes
     -  Thread Scheduling............................... : 798 Bytes
@@ -46,9 +46,8 @@ Mark3 Module Size Report:
     -  Fundamental Kernel Thread-list Data Structures.. : 150 Bytes
     -  Software Timer Kernel Object.................... : 228 Bytes
     -  Software Timer Management....................... : 196 Bytes
-    -  ARM Cortex-M3 - Profiling Timer Implementation....... : 119 Bytes
     -  ARM Cortex-M3 - Kernel Interrupt Implemenation....... : 66 Bytes
-    -  ARM Cortex-M3 - Kernel Timer Implementation.......... : 2526 Bytes
+    -  ARM Cortex-M3 - Kernel Timer Implementation.......... : 2522 Bytes
     -  ARM Cortex-M3 - Basic Threading Support.............. : 340 Bytes
 @endcode
 
@@ -56,9 +55,9 @@ Mark3 Kernel Size Summary:
 @code
     - Kernel                   :  2669 Bytes
     - Synchronization Objects  :  1986 Bytes
-    - Port                     :  4035 Bytes
-    - Features                 :  1931 Bytes
-    - Total Size               :  10621 Bytes
+    - Port                     :  3912 Bytes
+    - Features                 :  1863 Bytes
+    - Total Size               :  10430 Bytes
 @endcode
 */
 #endif // __SIZE_REPORT_H__

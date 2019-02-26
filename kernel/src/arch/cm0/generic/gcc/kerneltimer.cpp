@@ -93,27 +93,4 @@ void KernelTimer::Stop(void)
 {
     SysTick->CTRL &= ~SysTick_CTRL_ENABLE_Msk;
 }
-
-//---------------------------------------------------------------------------
-PORT_TIMER_COUNT_TYPE KernelTimer::Read(void)
-{
-    // Not implemented in this port
-    return 0;
-}
-
-//-------------------------------------------------------------------------
-uint8_t KernelTimer::DI(void)
-{
-    return 0;
-}
-
-//---------------------------------------------------------------------------
-void KernelTimer::EI(void)
-{
-    KernelTimer::RI(0);
-}
-
-//---------------------------------------------------------------------------
-void KernelTimer::RI(bool bEnable_) {}
-
 } // namespace Mark3

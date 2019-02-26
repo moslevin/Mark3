@@ -20,13 +20,14 @@ See license.txt for more information
 #pragma once
 
 #include "mark3cfg.h"
+#include "threadport.h"
+
 #include "kerneltypes.h"
 #include "kerneldebug.h"
 
-#include "threadport.h"
+#include "ithreadport.h"
 #include "kernelswi.h"
 #include "kerneltimer.h"
-#include "kernelprofile.h"
 
 #include "kernel.h"
 #include "thread.h"

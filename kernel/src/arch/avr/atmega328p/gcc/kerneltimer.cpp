@@ -91,45 +91,6 @@ void KernelTimer::Stop(void)
     TCNT1 = 0;
     OCR1A = 0;
 }
-
-//---------------------------------------------------------------------------
-PORT_TIMER_COUNT_TYPE KernelTimer::Read(void)
-{
-    volatile uint16_t u16Read1;
-    volatile uint16_t u16Read2;
-
-    do {
-        u16Read1 = TCNT1;
-        u16Read2 = TCNT1;
-    } while (u16Read1 != u16Read2);
-
-    return u16Read1;
-}
-
-//---------------------------------------------------------------------------
-uint8_t KernelTimer::DI(void)
-{
-    bool bEnabled = ((TIMSK1 & (TIMER_IMSK)) != 0);
-    TIFR1 &= ~TIMER_IFR;   // Clear interrupt flags
-    TIMSK1 &= ~TIMER_IMSK; // Disable interrupt
-    return bEnabled;
-}
-
-//---------------------------------------------------------------------------
-void KernelTimer::EI(void)
-{
-    KernelTimer::RI(0);
-}
-
-//---------------------------------------------------------------------------
-void KernelTimer::RI(bool bEnable_)
-{
-    if (bEnable_) {
-        TIMSK1 |= (1 << OCIE1A); // Enable interrupt
-    } else {
-        TIMSK1 &= ~(1 << OCIE1A);
-    }
-}
 } // namespace Mark3
 
 //---------------------------------------------------------------------------

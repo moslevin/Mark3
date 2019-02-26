@@ -12,73 +12,46 @@ Copyright (c) 2012 - 2018 m0slevin, all rights reserved.
 See license.txt for more information
 =========================================================================== */
 /**
-    @file kernelprofile.h
 
-    @brief Profiling timer hardware interface
+    @file   kerneltimer.h
+
+    @brief  Kernel Timer Class declaration
  */
+
 #pragma once
 
 #include "kerneltypes.h"
 #include "mark3cfg.h"
-#include "ll.h"
-
-//---------------------------------------------------------------------------
-#define TICKS_PER_OVERFLOW (256)
-#define CLOCK_DIVIDE (8)
 
 namespace Mark3
 {
 //---------------------------------------------------------------------------
 /**
- *   System profiling timer interface
+    Hardware timer interface, used by all scheduling/timer subsystems.
  */
-class Profiler
+class KernelTimer
 {
 public:
     /**
-     *  @brief Init
+     *  @brief Config
      *
-     *  Initialize the global system profiler.  Must be
-     *  called prior to use.
+     *  Initializes the kernel timer before use
      */
-    static void Init();
+    static void Config(void);
 
     /**
      *  @brief Start
      *
-     *  Start the global profiling timer service.
+     *  Starts the kernel time (must be configured first)
      */
-    static void Start();
+    static void Start(void);
 
     /**
      *  @brief Stop
      *
-     *  Stop the global profiling timer service
+     *  Shut down the kernel timer, used when no timers are scheduled
      */
-    static void Stop();
+    static void Stop(void);
 
-    /**
-     *  @brief Read
-     *
-     *  Read the current tick count in the timer.
-     */
-    static uint16_t Read();
-
-    /**
-     *  @brief Process
-     *
-     *  Process the profiling counters from ISR.
-     */
-    static void Process();
-
-    /**
-     *  @brief GetEpoch
-     *
-     *  Return the current timer epoch
-     */
-    static uint32_t GetEpoch() { return m_u32Epoch; }
-
-private:
-    static uint32_t m_u32Epoch;
 };
 } // namespace Mark3

@@ -64,7 +64,7 @@ void   IdleMain(void* /*unused_*/)
 
 #define MAX_THREADS (10)
 Thread*  apclActiveThreads[10];
-uint32_t au16ActiveTime[10];
+uint32_t au32ActiveTime[10];
 
 void PrintThreadSlack(void)
 {
@@ -117,7 +117,7 @@ void ThreadExit(Thread* pclThread_)
     for (uint8_t i = 0; i < MAX_THREADS; i++) {
         if (apclActiveThreads[i] == pclThread_) {
             apclActiveThreads[i] = 0;
-            au16ActiveTime[i]    = 0;
+            au32ActiveTime[i]    = 0;
             break;
         }
     }
@@ -130,19 +130,19 @@ void ThreadExit(Thread* pclThread_)
 void ThreadContextSwitch(Thread* pclThread_)
 {
     Kernel::DebugPrint("CS\n");
-    static uint16_t u16LastTick = 0;
-    auto            u16Ticks    = KernelTimer::Read();
+    static uint32_t u32LastTicks = 0;
+    auto            u32Ticks    = Kernel::GetTicks();
 
     CS_ENTER();
     for (uint8_t i = 0; i < MAX_THREADS; i++) {
         if (apclActiveThreads[i] == pclThread_) {
-            au16ActiveTime[i] += u16Ticks - u16LastTick;
+            au32ActiveTime[i] += u32Ticks - u32LastTicks;
             break;
         }
     }
     CS_EXIT();
 
-    u16LastTick = u16Ticks;
+    u32LastTicks = u32Ticks;
 }
 
 //---------------------------------------------------------------------------

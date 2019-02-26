@@ -47,7 +47,7 @@ See license.txt for more information
 
 #include "kerneltypes.h"
 #include "thread.h"
-#include "threadport.h"
+#include "ithreadport.h"
 #include "priomap.h"
 
 extern volatile Mark3::Thread* g_pclNext;
