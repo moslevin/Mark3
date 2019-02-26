@@ -83,7 +83,7 @@ void ThreadPort::InitStack(Thread* pclThread_)
 //---------------------------------------------------------------------------
 static void Thread_Switch(void)
 {
-    KernelSWI::Clear();
+    P1IFG &= ~0x04;
     g_pclCurrent = (Thread*)g_pclNext;
 }
 

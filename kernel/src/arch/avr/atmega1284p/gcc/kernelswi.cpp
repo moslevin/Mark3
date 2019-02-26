@@ -43,36 +43,6 @@ void KernelSWI::Start(void)
 }
 
 //---------------------------------------------------------------------------
-void KernelSWI::Stop(void)
-{
-    EIMSK &= ~(1 << INT2); // Disable INT0 interrupts
-}
-
-//---------------------------------------------------------------------------
-uint8_t KernelSWI::DI()
-{
-    bool bEnabled = ((EIMSK & (1 << INT2)) != 0);
-    EIMSK &= ~(1 << INT2);
-    return bEnabled;
-}
-
-//---------------------------------------------------------------------------
-void KernelSWI::RI(bool bEnable_)
-{
-    if (bEnable_) {
-        EIMSK |= (1 << INT2);
-    } else {
-        EIMSK &= ~(1 << INT2);
-    }
-}
-
-//---------------------------------------------------------------------------
-void KernelSWI::Clear(void)
-{
-    EIFR &= ~(1 << INTF2); // Clear the interrupt flag for INT0
-}
-
-//---------------------------------------------------------------------------
 void KernelSWI::Trigger(void)
 {
     // if(Thread_IsSchedulerEnabled())

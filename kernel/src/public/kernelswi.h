@@ -47,43 +47,11 @@ public:
     static void Start(void);
 
     /**
-     *  @brief Stop
-     *
-     *  Disable the software interrupt functionality
-     */
-    static void Stop(void);
-
-    /**
-     *  @brief Clear
-     *
-     *  Clear the software interrupt
-     */
-    static void Clear(void);
-
-    /**
      *  @brief Trigger
      *
      *  Call the software interrupt
      *
      */
     static void Trigger(void);
-
-    /**
-     *  @brief DI
-     *
-     *  Disable the SWI flag itself
-     *
-     *  @return previous status of the SWI, prior to the DI call
-     */
-    static uint8_t DI();
-
-    /**
-     *  @brief RI
-     *
-     *  Restore the state of the SWI to the value specified
-     *
-     *  @param bEnable_ true - enable the SWI, false - disable SWI
-     */
-    static void RI(bool bEnable_);
 };
 } // namespace Mark3
