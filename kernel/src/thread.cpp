@@ -100,7 +100,7 @@ void Thread::Init(
 //---------------------------------------------------------------------------
 Thread* Thread::Init(uint16_t u16StackSize_, PORT_PRIO_TYPE uXPriority_, ThreadEntryFunc pfEntryPoint_, void* pvArg_)
 {
-    auto* pclNew  = AutoAlloc::NewThread();
+    auto* pclNew  = AutoAlloc::NewObject<Thread, AutoAllocType::Thread>();
     auto* pwStack = static_cast<K_WORD*>(AutoAlloc::NewRawData(u16StackSize_));
     pclNew->Init(pwStack, u16StackSize_, uXPriority_, pfEntryPoint_, pvArg_);
     return pclNew;
