@@ -39,139 +39,139 @@ void Free_Memory(void* pvObject_)
 //---------------------------------------------------------------------------
 Semaphore_t Alloc_Semaphore(void)
 {
-    return (Semaphore_t)AutoAlloc::NewSemaphore();
+    return (Semaphore_t)AutoAlloc::NewObject<Semaphore, AutoAllocType::Semaphore>();
 }
 
 //---------------------------------------------------------------------------
 void Free_Semaphore(Semaphore_t handle)
 {
-    AutoAlloc::DestroySemaphore((Semaphore*)handle);
+    AutoAlloc::DestroyObject<Semaphore, AutoAllocType::Semaphore>((Semaphore*)handle);
 }
 
 //---------------------------------------------------------------------------
 Mutex_t Alloc_Mutex(void)
 {
-    return (Mutex_t)AutoAlloc::NewMutex();
+    return (Mutex_t)AutoAlloc::NewObject<Mutex, AutoAllocType::Mutex>();
 }
 
 //---------------------------------------------------------------------------
 void Free_Mutex(Mutex_t handle)
 {
-    AutoAlloc::DestroyMutex((Mutex*)handle);
+    AutoAlloc::DestroyObject<Mutex, AutoAllocType::Mutex>((Mutex*)handle);
 }
 
 //---------------------------------------------------------------------------
 EventFlag_t Alloc_EventFlag(void)
 {
-    return (EventFlag_t)AutoAlloc::NewEventFlag();
+    return (EventFlag_t)AutoAlloc::NewObject<EventFlag, AutoAllocType::EventFlag>();
 }
 
 //---------------------------------------------------------------------------
 void Free_EventFlag(EventFlag_t handle)
 {
-    AutoAlloc::DestroyEventFlag((EventFlag*)handle);
+    AutoAlloc::DestroyObject<EventFlag, AutoAllocType::EventFlag>((EventFlag*)handle);
 }
 
 //---------------------------------------------------------------------------
 Message_t Alloc_Message(void)
 {
-    return (Message_t)AutoAlloc::NewMessage();
+    return (Message_t)AutoAlloc::NewObject<Message, AutoAllocType::Message>();
 }
 
 //---------------------------------------------------------------------------
 void Free_Message(Message_t handle)
 {
-    AutoAlloc::DestroyMessage((Message*)handle);
+    AutoAlloc::DestroyObject<Message, AutoAllocType::Message>((Message*)handle);
 }
 
 //---------------------------------------------------------------------------
 MessageQueue_t Alloc_MessageQueue(void)
 {
-    return (MessageQueue_t)AutoAlloc::NewMessageQueue();
+    return (MessageQueue_t)AutoAlloc::NewObject<MessageQueue, AutoAllocType::MessageQueue>();
 }
 
 //---------------------------------------------------------------------------
 void Free_MessageQueue(MessageQueue_t handle)
 {
-    AutoAlloc::DestroyMessageQueue((MessageQueue*)handle);
+    AutoAlloc::DestroyObject<MessageQueue, AutoAllocType::MessageQueue>((MessageQueue*)handle);
 }
 
 //---------------------------------------------------------------------------
 MessagePool_t Alloc_MessagePool(void)
 {
-    return (MessagePool_t)AutoAlloc::NewMessagePool();
+    return (MessagePool_t)AutoAlloc::NewObject<MessagePool, AutoAllocType::MessagePool>();
 }
 
 //---------------------------------------------------------------------------
 void Free_MessagePool(MessagePool_t handle)
 {
-    AutoAlloc::DestroyMessagePool((MessagePool*)handle);
+    AutoAlloc::DestroyObject<MessagePool, AutoAllocType::MessagePool>((MessagePool*)handle);
 }
 
 //---------------------------------------------------------------------------
 Notify_t Alloc_Notify(void)
 {
-    return (Notify_t)AutoAlloc::NewNotify();
+    return (Notify_t)AutoAlloc::NewObject<Notify, AutoAllocType::Notify>();
 }
 
 //---------------------------------------------------------------------------
 void Free_Notify(Notify_t handle)
 {
-    AutoAlloc::DestroyNotify((Notify*)handle);
+    AutoAlloc::DestroyObject<Notify, AutoAllocType::Notify>((Notify*)handle);
 }
 //---------------------------------------------------------------------------
 Mailbox_t Alloc_Mailbox(void)
 {
-    return (Mailbox_t)AutoAlloc::NewMailbox();
+    return (Mailbox_t)AutoAlloc::NewObject<Mailbox, AutoAllocType::MailBox>();
 }
 //---------------------------------------------------------------------------
 void Free_Mailbox(Mailbox_t handle)
 {
-    AutoAlloc::DestroyMailbox((Mailbox*)handle);
+    AutoAlloc::DestroyObject<Mailbox, AutoAllocType::MailBox>((Mailbox*)handle);
 }
 
 //---------------------------------------------------------------------------
 ConditionVariable_t Alloc_ConditionVariable(void)
 {
-    return (ConditionVariable_t)AutoAlloc::NewConditionVariable();
+    return (ConditionVariable_t)AutoAlloc::NewObject<ConditionVariable, AutoAllocType::ConditionVariable>();
 }
 //---------------------------------------------------------------------------
 void Free_ConditionVariable(ConditionVariable_t handle)
 {
-    AutoAlloc::DestroyConditionVariable((ConditionVariable*)handle);
+    AutoAlloc::DestroyObject<ConditionVariable, AutoAllocType::ConditionVariable>((ConditionVariable*)handle);
 }
 
 //---------------------------------------------------------------------------
 ReaderWriterLock_t Alloc_ReaderWriterLock(void)
 {
-    return (ReaderWriterLock_t)AutoAlloc::NewReaderWriterLock();
+    return (ReaderWriterLock_t)AutoAlloc::NewObject<ReaderWriterLock, AutoAllocType::ReaderWriterLock>();
 }
 //---------------------------------------------------------------------------
 void Free_ReaderWriterLock(ReaderWriterLock_t handle)
 {
-    AutoAlloc::DestroyReaderWriterLock((ReaderWriterLock*)handle);
+    AutoAlloc::DestroyObject<ReaderWriterLock, AutoAllocType::ReaderWriterLock>((ReaderWriterLock*)handle);
 }
 
 //---------------------------------------------------------------------------
 Thread_t Alloc_Thread(void)
 {
-    return (Thread_t)AutoAlloc::NewThread();
+    return (Thread_t)AutoAlloc::NewObject<Thread, AutoAllocType::Thread>();
 }
 //---------------------------------------------------------------------------
 void Free_Thread(Thread_t handle)
 {
-    AutoAlloc::DestroyThread((Thread*)handle);
+    AutoAlloc::DestroyObject<Thread, AutoAllocType::Thread>((Thread*)handle);
 }
 
 //---------------------------------------------------------------------------
 Timer_t Alloc_Timer(void)
 {
-    return (Thread_t)AutoAlloc::NewTimer();
+    return (Thread_t)AutoAlloc::NewObject<Timer, AutoAllocType::Timer>();
 }
 //---------------------------------------------------------------------------
 void Free_Timer(Timer_t handle)
 {
-    AutoAlloc::DestroyTimer((Timer*)handle);
+    AutoAlloc::DestroyObject<Timer, AutoAllocType::Timer>((Timer*)handle);
 }
 
 //---------------------------------------------------------------------------

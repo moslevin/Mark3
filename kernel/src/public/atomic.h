@@ -23,49 +23,77 @@ See license.txt for more information
 #include "kerneltypes.h"
 #include "mark3cfg.h"
 #include "ithreadport.h"
+#include "kerneldebug.h"
 
 namespace Mark3
 {
 /**
- * @brief The Atomic class
+ * @brief The Atomic namespace
  *
- * This utility class provides primatives for atomic operations - that is,
+ * This utility module provides primatives for atomic operations - that is,
  * operations that are guaranteed to execute uninterrupted.  Basic atomic
- * primatives provided here include Set/Add/Delete for 8, 16, and 32-bit
- * integer types, as well as an atomic test-and-set.
+ * primatives provided here include Set/Add/Subtract, as well as an atomic 
+ * test-and-set.
  *
  */
 namespace Atomic
 {
     /**
      * @brief Set Set a variable to a given value in an uninterruptable operation
-     * @param pu8Source_ Pointer to a variable to set the value of
-     * @param u8Val_ New value to set in the variable
+     * @param pSource_ Pointer to a variable to set the value of
+     * @param val_ New value to set in the variable
      * @return Previously-set value
      */
-    uint8_t  Set(uint8_t* pu8Source_, uint8_t u8Val_);
-    uint16_t Set(uint16_t* pu16Source_, uint16_t u16Val_);
-    uint32_t Set(uint32_t* pu32Source_, uint32_t u32Val_);
+    template<typename T>
+    T Set(T* pSource_, T val_)
+    {
+        KERNEL_ASSERT(pSource_ != nullptr);
+
+        T ret;
+        CS_ENTER();
+        ret       = *pSource_;
+        *pSource_ = val_;
+        CS_EXIT();
+        return ret;
+    }
 
     /**
      * @brief Add Add a value to a variable in an uninterruptable operation
-     * @param pu8Source_ Pointer to a variable
-     * @param u8Val_ Value to add to the variable
-     * @return Previously-held value in pu8Source_
+     * @param pSource_ Pointer to a variable
+     * @param val_ Value to add to the variable
+     * @return Previously-held value in pSource_
      */
-    uint8_t  Add(uint8_t* pu8Source_, uint8_t u8Val_);
-    uint16_t Add(uint16_t* pu16Source_, uint16_t u16Val_);
-    uint32_t Add(uint32_t* pu32Source_, uint32_t u32Val_);
+    template<typename T>
+    T Add(T* pSource_, T val_)
+    {
+        KERNEL_ASSERT(pSource_ != nullptr);
+
+        T ret;
+        CS_ENTER();
+        ret = *pSource_;
+        *pSource_ += val_;
+        CS_EXIT();
+        return ret;
+    }
 
     /**
      * @brief Sub Subtract a value from a variable in an uninterruptable operation
-     * @param pu8Source_ Pointer to a variable
-     * @param u8Val_ Value to subtract from the variable
-     * @return Previously-held value in pu8Source_
+     * @param pSource_ Pointer to a variable
+     * @param val_ Value to subtract from the variable
+     * @return Previously-held value in pSource_
      */
-    uint8_t  Sub(uint8_t* pu8Source_, uint8_t u8Val_);
-    uint16_t Sub(uint16_t* pu16Source_, uint16_t u16Val_);
-    uint32_t Sub(uint32_t* pu32Source_, uint32_t u32Val_);
+    template<typename T>
+    T Sub(T* pSource_, T val_)
+    {
+        KERNEL_ASSERT(pSource_ != nullptr);
+
+        T ret;
+        CS_ENTER();
+        ret = *pSource_;
+        *pSource_ -= val_;
+        CS_EXIT();
+        return ret;
+    }
 
     /**
      * @brief TestAndSet Test to see if a variable is set, and set it if

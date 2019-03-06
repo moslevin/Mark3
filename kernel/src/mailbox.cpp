@@ -61,7 +61,7 @@ Mailbox* Mailbox::Init(uint16_t u16BufferSize_, uint16_t u16ElementSize_)
     KERNEL_ASSERT(u16BufferSize_);
     KERNEL_ASSERT(u16ElementSize_);
 
-    auto* pclNew   = AutoAlloc::NewMailbox();
+    auto* pclNew   = AutoAlloc::NewObject<Mailbox, AutoAllocType::MailBox>();
     auto* pvBuffer = AutoAlloc::NewRawData(u16BufferSize_);
 
     KERNEL_ASSERT(pclNew != nullptr);
@@ -71,7 +71,7 @@ Mailbox* Mailbox::Init(uint16_t u16BufferSize_, uint16_t u16ElementSize_)
         return nullptr;
     }
     if (!pvBuffer) {
-        AutoAlloc::DestroyMailbox(pclNew);
+        AutoAlloc::DestroyObject<Mailbox, AutoAllocType::MailBox>(pclNew);
         return nullptr;
     }
 
