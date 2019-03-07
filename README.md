@@ -1,5 +1,6 @@
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/1c6a3d96c7cd471189dc75850cde71ba)](https://app.codacy.com/app/moslevin/Mark3?utm_source=github.com&utm_medium=referral&utm_content=moslevin/Mark3&utm_campaign=Badge_Grade_Dashboard)
+[![Coverity Scan Build Status](https://scan.coverity.com/projects/17835/badge.svg)](https://scan.coverity.com/projects/moslevin-mark3)
 
 The Mark3 Real-time Operating System
 
