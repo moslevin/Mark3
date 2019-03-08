@@ -1,6 +1,8 @@
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/1c6a3d96c7cd471189dc75850cde71ba)](https://app.codacy.com/app/moslevin/Mark3?utm_source=github.com&utm_medium=referral&utm_content=moslevin/Mark3&utm_campaign=Badge_Grade_Dashboard)
 [![Coverity Scan Build Status](https://scan.coverity.com/projects/17835/badge.svg)](https://scan.coverity.com/projects/moslevin-mark3)
+[![Sonarcloud Status](https://sonarcloud.io/api/project_badges/measure?project=moslevin_Mark3&metric=alert_status)](https://sonarcloud.io/project/issues?id=moslevin_Mark3)
+[![Documentation](https://img.shields.io/badge/docs-doxygen-blue.svg)](http://moslevin.github.io/Mark3)
 
 The Mark3 Real-time Operating System
 
@@ -57,15 +59,15 @@ Supported targets:
 
 Currently, Mark3 supports GCC toolchains for the following parts:
 
-	atmega328p
-	atmega644
-	atmega1284p
-	atxmega256a3 (*experimental)
-	atmega1280
-	atmega2560
-	msp430f2274
-	ARM Cortex-M0 (generic)
-	ARM Cortex-M3 (generic)
+        atmega328p
+        atmega644
+        atmega1284p
+        atxmega256a3 (*experimental)
+        atmega1280
+        atmega2560
+        msp430f2274
+        ARM Cortex-M0 (generic)
+        ARM Cortex-M3 (generic)
         ARM Cortex-M4F (generic, hardware floating point)
 
 Additional Documentation
