@@ -273,7 +273,7 @@ uint16_t Thread::GetStackSlack()
     KERNEL_ASSERT(IsInitialized());
 
     K_ADDR wBottom = 0;
-    auto   wTop    = static_cast<K_ADDR>(m_u16StackSize - 1);
+    auto   wTop    = static_cast<K_ADDR>(m_u16StackSize - 1) / sizeof(K_ADDR);
     auto   wMid    = ((wTop + wBottom) + 1) / 2;
 
     CS_ENTER();
@@ -297,7 +297,7 @@ uint16_t Thread::GetStackSlack()
 
     CS_EXIT();
 
-    return wMid;
+    return wMid * sizeof(K_ADDR);
 }
 #endif
 
