@@ -1,6 +1,0 @@
-subdirlist(SUBDIRS ${CMAKE_CURRENT_LIST_DIR})
-foreach(subdir ${SUBDIRS})
-  if(NOT ${subdir} MATCHES ".git")
-    add_subdirectory(${subdir})
-  endif()
-endforeach()
