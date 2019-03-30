@@ -140,7 +140,7 @@ bool Mailbox::Send_i(const void* pvData_, bool bTail_, uint32_t u32TimeoutMS_)
 {
     KERNEL_ASSERT(pvData_ != nullptr);
 
-    const void* pvDst = nullptr;
+    void* pvDst = nullptr;
 
     auto bRet        = false;
     auto bSchedState = Scheduler::SetScheduler(false);
@@ -194,7 +194,7 @@ bool Mailbox::Send_i(const void* pvData_, bool bTail_, uint32_t u32TimeoutMS_)
 }
 
 //---------------------------------------------------------------------------
-bool Mailbox::Receive_i(const void* pvData_, bool bTail_, uint32_t u32WaitTimeMS_)
+bool Mailbox::Receive_i(void* pvData_, bool bTail_, uint32_t u32WaitTimeMS_)
 {
     KERNEL_ASSERT(pvData_ != nullptr);
     const void* pvSrc;

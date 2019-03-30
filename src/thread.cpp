@@ -37,8 +37,8 @@ Thread::~Thread()
     if (m_eState == ThreadState::Stop) {
         CS_ENTER();
         m_pclCurrent->Remove(this);
-        m_pclCurrent = 0;
-        m_pclOwner   = 0;
+        m_pclCurrent = nullptr;
+        m_pclOwner   = nullptr;
         m_eState     = ThreadState::Exit;
         CS_EXIT();
     } else if (m_eState != ThreadState::Exit) {
@@ -214,8 +214,8 @@ void Thread::Exit()
         m_pclCurrent->Remove(this);
     }
 
-    m_pclCurrent = 0;
-    m_pclOwner   = 0;
+    m_pclCurrent = nullptr;
+    m_pclOwner   = nullptr;
     m_eState     = ThreadState::Exit;
 
     // We've removed the thread from scheduling, but interrupts might
@@ -272,9 +272,9 @@ uint16_t Thread::GetStackSlack()
 {
     KERNEL_ASSERT(IsInitialized());
 
-    K_ADDR wBottom = 0;
-    auto   wTop    = static_cast<K_ADDR>(m_u16StackSize - 1) / sizeof(K_ADDR);
-    auto   wMid    = ((wTop + wBottom) + 1) / 2;
+    auto wBottom = uint16_t{0};
+    auto   wTop    = static_cast<uint16_t>((m_u16StackSize - 1) / sizeof(K_ADDR));
+    auto   wMid    = static_cast<uint16_t>(((wTop + wBottom) + 1) / 2);
 
     CS_ENTER();
 
@@ -282,9 +282,9 @@ uint16_t Thread::GetStackSlack()
     // stack go from 0xFF's to non 0xFF.  Not Definitive, but accurate enough
     while ((wTop - wBottom) > 1) {
 #if STACK_GROWS_DOWN
-        if (m_pwStack[wMid] != (K_WORD)(-1))
+        if (m_pwStack[wMid] != static_cast<K_WORD>(-1))
 #else
-        if (m_pwStack[wMid] == (K_WORD)(-1))
+        if (m_pwStack[wMid] == static_cast<K_WORD>(-1))
 #endif
         {
             //! ToDo : Reverse the logic for MCUs where stack grows UP instead of down
@@ -312,7 +312,7 @@ void Thread::Yield()
         // Only switch contexts if the new task is different than the old task
         if (g_pclCurrent != g_pclNext) {
 #if KERNEL_ROUND_ROBIN
-            Quantum::Update((Thread*)g_pclNext);
+            Quantum::Update(g_pclNext);
 #endif
             Thread::ContextSwitchSWI();
         }
@@ -370,7 +370,7 @@ void Thread::SetPriority(PORT_PRIO_TYPE uXPriority_)
             CS_ENTER();
             Scheduler::Schedule();
 #if KERNEL_ROUND_ROBIN
-            Quantum::Update((Thread*)g_pclNext);
+            Quantum::Update(g_pclNext);
 #endif
             CS_EXIT();
             Thread::ContextSwitchSWI();

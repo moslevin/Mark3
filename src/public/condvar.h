@@ -23,6 +23,8 @@ See license.txt for more information
 #include "ksemaphore.h"
 #include "mutex.h"
 
+#include <stddef.h>
+
 namespace Mark3
 {
 /**

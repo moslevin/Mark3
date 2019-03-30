@@ -21,7 +21,7 @@ See license.txt for more information
 
 #include "mark3.h"
 
-volatile Mark3::Thread* g_pclNext;
+Mark3::Thread* g_pclNext;
 Mark3::Thread*          g_pclCurrent;
 
 namespace Mark3
@@ -35,7 +35,7 @@ PriorityMap Scheduler::m_clPrioMap;
 //---------------------------------------------------------------------------
 void Scheduler::Init()
 {
-    for (int i = 0; i < KERNEL_NUM_PRIORITIES; i++) {
+    for (PORT_PRIO_TYPE i = 0; i < KERNEL_NUM_PRIORITIES; i++) {
         m_aclPriorities[i].SetPriority(i);
         m_aclPriorities[i].SetMapPointer(&m_clPrioMap);
     }

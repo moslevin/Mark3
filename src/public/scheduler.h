@@ -50,8 +50,8 @@ See license.txt for more information
 #include "ithreadport.h"
 #include "priomap.h"
 
-extern volatile Mark3::Thread* g_pclNext;
-extern Mark3::Thread*          g_pclCurrent;
+extern Mark3::Thread* g_pclNext;
+extern Mark3::Thread* g_pclCurrent;
 
 namespace Mark3
 {

@@ -164,7 +164,7 @@ private:
     uint8_t m_u8Recurse;  //!< The recursive lock-count when a mutex is claimed multiple times by the same owner
     bool    m_bReady;     //!< State of the mutex - true = ready, false = claimed
     bool    m_bRecursive; //!< Whether or not the lock is recursive
-    uint8_t m_u8MaxPri;   //!< Maximum priority of thread in queue, used for priority inheritence
+    PORT_PRIO_TYPE m_uMaxPri;   //!< Maximum priority of thread in queue, used for priority inheritence
     Thread* m_pclOwner;   //!< Pointer to the thread that owns the mutex (when claimed)
 };
 } // namespace Mark3

@@ -47,7 +47,7 @@ Message* MessagePool::Pop()
     CS_ENTER();
 
     pclRet = static_cast<Message*>(m_clList.GetHead());
-    if (0 != pclRet) {
+    if (nullptr != pclRet) {
         m_clList.Remove(static_cast<LinkListNode*>(pclRet));
     }
 

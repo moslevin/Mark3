@@ -98,7 +98,7 @@ void Mutex::Init(bool bRecursive_)
 
     // Reset the data in the mutex
     m_bReady     = true;    // The mutex is free.
-    m_u8MaxPri   = 0;       // Set the maximum priority inheritence state
+    m_uMaxPri   = 0;       // Set the maximum priority inheritence state
     m_pclOwner   = nullptr; // Clear the mutex owner
     m_u8Recurse  = 0;       // Reset recurse count
     m_bRecursive = bRecursive_;
@@ -123,7 +123,7 @@ bool Mutex::Claim_i(uint32_t u32WaitTimeMS_)
         // Mutex isn't claimed, claim it.
         m_bReady    = false;
         m_u8Recurse = 0;
-        m_u8MaxPri  = g_pclCurrent->GetPriority();
+        m_uMaxPri  = g_pclCurrent->GetPriority();
         m_pclOwner  = g_pclCurrent;
 
         Scheduler::SetScheduler(true);
@@ -147,7 +147,7 @@ bool Mutex::Claim_i(uint32_t u32WaitTimeMS_)
     if (u32WaitTimeMS_ != 0u) {
         g_pclCurrent->SetExpired(false);
         clTimer.Init();
-        clTimer.Start(false, u32WaitTimeMS_, (TimerCallback)TimedMutex_Callback, this);
+        clTimer.Start(false, u32WaitTimeMS_, TimedMutex_Callback, this);
         bUseTimer = true;
     }
     BlockPriority(g_pclCurrent);
@@ -155,18 +155,18 @@ bool Mutex::Claim_i(uint32_t u32WaitTimeMS_)
     // Check if priority inheritence is necessary.  We do this in order
     // to ensure that we don't end up with priority inversions in case
     // multiple threads are waiting on the same resource.
-    if (m_u8MaxPri <= g_pclCurrent->GetPriority()) {
-        m_u8MaxPri = g_pclCurrent->GetPriority();
+    if (m_uMaxPri <= g_pclCurrent->GetPriority()) {
+        m_uMaxPri = g_pclCurrent->GetPriority();
 
         auto* pclTemp = static_cast<Thread*>(m_clBlockList.GetHead());
         while (pclTemp != nullptr) {
-            pclTemp->InheritPriority(m_u8MaxPri);
+            pclTemp->InheritPriority(m_uMaxPri);
             if (pclTemp == static_cast<Thread*>(m_clBlockList.GetTail())) {
                 break;
             }
             pclTemp = static_cast<Thread*>(pclTemp->GetNext());
         }
-        m_pclOwner->InheritPriority(m_u8MaxPri);
+        m_pclOwner->InheritPriority(m_uMaxPri);
     }
 
     // Done with thread data -reenable the scheduler
@@ -227,7 +227,7 @@ void Mutex::Release()
     if (m_clBlockList.GetHead() == nullptr) {
         // Re-initialize the mutex to its default values
         m_bReady   = true;
-        m_u8MaxPri = 0;
+        m_uMaxPri = 0;
         m_pclOwner = nullptr;
     } else {
         // Wake the highest priority Thread pending on the mutex
