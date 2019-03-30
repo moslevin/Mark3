@@ -356,12 +356,10 @@ void Thread::SetPriority(PORT_PRIO_TYPE uXPriority_)
 #endif
     }
     Scheduler::Remove(this);
-    CS_EXIT();
 
     m_uXCurPriority = uXPriority_;
     m_uXPriority    = uXPriority_;
 
-    CS_ENTER();
     Scheduler::Add(this);
     CS_EXIT();
 
