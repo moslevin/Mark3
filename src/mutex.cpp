@@ -98,7 +98,7 @@ void Mutex::Init(bool bRecursive_)
 
     // Reset the data in the mutex
     m_bReady     = true;    // The mutex is free.
-    m_uMaxPri   = 0;       // Set the maximum priority inheritence state
+    m_uMaxPri    = 0;       // Set the maximum priority inheritence state
     m_pclOwner   = nullptr; // Clear the mutex owner
     m_u8Recurse  = 0;       // Reset recurse count
     m_bRecursive = bRecursive_;
@@ -110,8 +110,8 @@ bool Mutex::Claim_i(uint32_t u32WaitTimeMS_)
 {
     KERNEL_ASSERT(IsInitialized());
 
-    auto clTimer = Timer{};
-    auto  bUseTimer = false;
+    auto clTimer   = Timer {};
+    auto bUseTimer = false;
 
     // Disable the scheduler while claiming the mutex - we're dealing with all
     // sorts of private thread data, can't have a thread switch while messing
@@ -123,7 +123,7 @@ bool Mutex::Claim_i(uint32_t u32WaitTimeMS_)
         // Mutex isn't claimed, claim it.
         m_bReady    = false;
         m_u8Recurse = 0;
-        m_uMaxPri  = g_pclCurrent->GetPriority();
+        m_uMaxPri   = g_pclCurrent->GetPriority();
         m_pclOwner  = g_pclCurrent;
 
         Scheduler::SetScheduler(true);
@@ -227,7 +227,7 @@ void Mutex::Release()
     if (nullptr == m_clBlockList.GetHead()) {
         // Re-initialize the mutex to its default values
         m_bReady   = true;
-        m_uMaxPri = 0;
+        m_uMaxPri  = 0;
         m_pclOwner = nullptr;
     } else {
         // Wake the highest priority Thread pending on the mutex

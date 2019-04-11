@@ -125,8 +125,8 @@ protected:
     bool IsInitialized(void) { return (m_u8Initialized == m_uBlockingInitCookie); }
 
     // Cookies used to determine whether or not an object has been initialized
-    static constexpr auto m_uBlockingInvalidCookie = uint8_t{0x3C};
-    static constexpr auto m_uBlockingInitCookie = uint8_t{0xC3};
+    static constexpr auto m_uBlockingInvalidCookie = uint8_t { 0x3C };
+    static constexpr auto m_uBlockingInitCookie    = uint8_t { 0xC3 };
 
     /**
      *  ThreadList which is used to hold the list of threads blocked

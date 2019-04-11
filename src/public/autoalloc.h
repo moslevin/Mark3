@@ -90,8 +90,8 @@ public:
     /**
      * Template function used to manage the allocation of predefined kernel object types
      */
-    template <typename T, AutoAllocType e>
-    static T* NewObject() {
+    template <typename T, AutoAllocType e> static T* NewObject()
+    {
         auto* pvObj = Allocate(e, sizeof(T));
         if (pvObj) {
             return new (pvObj) T();
@@ -103,8 +103,8 @@ public:
      * Template function used to manage the destruction and de-allocation of predefined
      * kernel objects
      */
-    template <typename T, AutoAllocType e>
-    static void DestroyObject(T* pObj_) {
+    template <typename T, AutoAllocType e> static void DestroyObject(T* pObj_)
+    {
         pObj_->~T();
         Free(e, pObj_);
     }
@@ -142,7 +142,7 @@ public:
 
 private:
     static void* Allocate(AutoAllocType eType_, size_t sSize_);
-    static void Free(AutoAllocType eType_, void* pvObj_);
+    static void  Free(AutoAllocType eType_, void* pvObj_);
 
     static AutoAllocAllocator_t m_pfAllocator; //!< Function used to allocate objects
     static AutoAllocFree_t      m_pfFree;      //!< Funciton used to free objectss

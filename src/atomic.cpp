@@ -27,7 +27,7 @@ bool Atomic::TestAndSet(bool* pbLock_)
 {
     KERNEL_ASSERT(nullptr != pbLock_);
 
-    auto bRet = bool{};
+    auto bRet = bool {};
     CS_ENTER();
     bRet = *pbLock_;
     if (!bRet) {

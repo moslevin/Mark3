@@ -153,8 +153,8 @@ bool Semaphore::Pend_i(uint32_t u32WaitTimeMS_)
 {
     KERNEL_ASSERT(IsInitialized());
 
-    auto clSemTimer = Timer{};
-    auto  bUseTimer = false;
+    auto clSemTimer = Timer {};
+    auto bUseTimer  = false;
 
     // Once again, messing with thread data - ensure
     // we're doing all of these operations from within a thread-safe context.

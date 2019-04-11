@@ -177,7 +177,7 @@ TEST(ut_raii)
         u8Token        = 0;
         auto* pclMutex = static_cast<Mutex*>(mutex_);
         {
-            LockGuard lockGuard{ pclMutex };
+            LockGuard lockGuard { pclMutex };
             Thread::Sleep(100);
             u8Token = 1;
         }
@@ -191,7 +191,7 @@ TEST(ut_raii)
     Thread::Sleep(50);
     EXPECT_EQUALS(u8Token, 0);
     {
-        LockGuard lockGuard{ &clMutex };
+        LockGuard lockGuard { &clMutex };
         EXPECT_EQUALS(u8Token, 1);
     }
 
@@ -207,7 +207,7 @@ TEST(ut_raii_timeout)
     auto lRAIIThread = [](void* mutex_) {
         auto* pclMutex = static_cast<Mutex*>(mutex_);
         {
-            LockGuard lockGuard{ pclMutex, 50 };
+            LockGuard lockGuard { pclMutex, 50 };
             if (lockGuard.isAcquired()) {
                 u8Token = 1;
             } else {

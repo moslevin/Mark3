@@ -10,7 +10,7 @@ maximum size of each module before dead code elimination and any
 additional link-time optimization, and represent the maximum possible
 size that any module can take.
 
-The results below are for profiling on ARM Cortex-M3 qemu_lm3s6965evb-based targets using gcc. 
+The results below are for profiling on ARM Cortex-M3 qemu_lm3s6965evb-based targets using gcc.
 Results are not necessarily indicative of relative or absolute performance
 on other platforms or toolchains.
 @section SIZEPROFILEINFO Information
@@ -19,7 +19,9 @@ Date Profiled:
 Tue Mar 5 20:18:21 EST 2019
 
 @section SIZEPROFILEVER  Compiler Version
-arm-none-eabi-gcc (15:6.3.1+svn253039-1build1) 6.3.1 20170620 Copyright (C) 2016 Free Software Foundation, Inc. This is free software; see the source for copying conditions. There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+arm-none-eabi-gcc (15:6.3.1+svn253039-1build1) 6.3.1 20170620 Copyright (C) 2016 Free Software Foundation, Inc. This is
+free software; see the source for copying conditions. There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR
+A PARTICULAR PURPOSE.
 
 @section SIZEPROFILERES  Profiling Results
 Mark3 Module Size Report:

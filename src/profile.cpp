@@ -24,10 +24,10 @@ namespace Mark3
 //---------------------------------------------------------------------------
 void ProfileTimer::Init()
 {
-    m_u32StartTicks       = 0;
-    m_u32Cumulative       = 0;
-    m_u16Iterations       = 0;
-    m_bActive             = false;
+    m_u32StartTicks = 0;
+    m_u32Cumulative = 0;
+    m_u16Iterations = 0;
+    m_bActive       = false;
 }
 
 //---------------------------------------------------------------------------
@@ -75,7 +75,6 @@ uint32_t ProfileTimer::GetCurrent()
         u32Current = Kernel::GetTicks() - m_u32StartTicks;
         CS_EXIT();
         return u32Current;
-
     }
     return m_u32CurrentIteration;
 }

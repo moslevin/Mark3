@@ -50,7 +50,7 @@ Thread::~Thread()
 void Thread::Init(
     K_WORD* pwStack_, uint16_t u16StackSize_, PORT_PRIO_TYPE uXPriority_, ThreadEntryFunc pfEntryPoint_, void* pvArg_)
 {
-    static auto u8ThreadID = uint8_t{0};
+    static auto u8ThreadID = uint8_t { 0 };
 
     KERNEL_ASSERT(pwStack_);
     KERNEL_ASSERT(pfEntryPoint_);
@@ -248,9 +248,9 @@ void Thread::Exit()
 //---------------------------------------------------------------------------
 void Thread::Sleep(uint32_t u32TimeMs_)
 {
-    auto clSemaphore = Semaphore{};
-    auto*     pclTimer       = g_pclCurrent->GetTimer();
-    auto      lTimerCallback = [](Thread* /*pclOwner*/, void* pvData_) {
+    auto  clSemaphore    = Semaphore {};
+    auto* pclTimer       = g_pclCurrent->GetTimer();
+    auto  lTimerCallback = [](Thread* /*pclOwner*/, void* pvData_) {
         auto* pclSemaphore = static_cast<Semaphore*>(pvData_);
         pclSemaphore->Post();
     };
@@ -272,9 +272,9 @@ uint16_t Thread::GetStackSlack()
 {
     KERNEL_ASSERT(IsInitialized());
 
-    auto wBottom = uint16_t{0};
-    auto   wTop    = static_cast<uint16_t>((m_u16StackSize - 1) / sizeof(K_ADDR));
-    auto   wMid    = static_cast<uint16_t>(((wTop + wBottom) + 1) / 2);
+    auto wBottom = uint16_t { 0 };
+    auto wTop    = static_cast<uint16_t>((m_u16StackSize - 1) / sizeof(K_ADDR));
+    auto wMid    = static_cast<uint16_t>(((wTop + wBottom) + 1) / 2);
 
     CS_ENTER();
 

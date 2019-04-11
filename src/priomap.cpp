@@ -20,7 +20,6 @@ See license.txt for more information
 
 namespace Mark3
 {
-
 //---------------------------------------------------------------------------
 PriorityMap::PriorityMap()
 {

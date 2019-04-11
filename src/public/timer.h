@@ -29,12 +29,12 @@ namespace Mark3
 class Thread;
 
 //---------------------------------------------------------------------------
-static constexpr auto uMaxTimerTicks = uint32_t{0x7FFFFFFF}; //!< Maximum value to set
-static constexpr auto uTimerTicksInvalid = uint32_t{0};
-static constexpr auto uTimerFlagOneShot = uint8_t{0x01}; //!< Timer is one-shot
-static constexpr auto uTimerFlagActive = uint8_t{0x02};   //!< Timer is currently active
-static constexpr auto uTimerFlagCallback = uint8_t{0x04}; //!< Timer is pending a callback
-static constexpr auto uTimerFlagExpired = uint8_t{0x08};  //!< Timer is actually expired.
+static constexpr auto uMaxTimerTicks     = uint32_t { 0x7FFFFFFF }; //!< Maximum value to set
+static constexpr auto uTimerTicksInvalid = uint32_t { 0 };
+static constexpr auto uTimerFlagOneShot  = uint8_t { 0x01 }; //!< Timer is one-shot
+static constexpr auto uTimerFlagActive   = uint8_t { 0x02 }; //!< Timer is currently active
+static constexpr auto uTimerFlagCallback = uint8_t { 0x04 }; //!< Timer is pending a callback
+static constexpr auto uTimerFlagExpired  = uint8_t { 0x08 }; //!< Timer is actually expired.
 
 //---------------------------------------------------------------------------
 /**
@@ -130,12 +130,12 @@ private:
      */
     bool IsInitialized(void) { return (m_u8Initialized == m_uTimerInitCookie); }
 
-    static inline uint32_t SecondsToTicks(uint32_t x) { return (x) * 1000; }
+    static inline uint32_t SecondsToTicks(uint32_t x) { return (x)*1000; }
     static inline uint32_t MSecondsToTicks(uint32_t x) { return (x); }
     static inline uint32_t USecondsToTicks(uint32_t x) { return ((x + 999) / 1000); }
 
-    static constexpr auto m_uTimerInvalidCookie = uint8_t{0x3C};
-    static constexpr auto m_uTimerInitCookie = uint8_t{0xC3};
+    static constexpr auto m_uTimerInvalidCookie = uint8_t { 0x3C };
+    static constexpr auto m_uTimerInitCookie    = uint8_t { 0xC3 };
 
     //! Cookie used to determine whether or not the timer is initialized
     uint8_t m_u8Initialized;

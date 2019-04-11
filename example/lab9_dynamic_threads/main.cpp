@@ -131,7 +131,7 @@ void ThreadContextSwitch(Thread* pclThread_)
 {
     Kernel::DebugPrint("CS\n");
     static uint32_t u32LastTicks = 0;
-    auto            u32Ticks    = Kernel::GetTicks();
+    auto            u32Ticks     = Kernel::GetTicks();
 
     CS_ENTER();
     for (uint8_t i = 0; i < MAX_THREADS; i++) {

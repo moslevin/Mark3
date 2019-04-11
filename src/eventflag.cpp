@@ -88,8 +88,8 @@ uint16_t EventFlag::Wait_i(uint16_t u16Mask_, EventFlagOperation eMode_, uint32_
     auto bThreadYield = false;
     auto bMatch       = false;
 
-    auto clEventTimer = Timer{};
-    auto  bUseTimer = false;
+    auto clEventTimer = Timer {};
+    auto bUseTimer    = false;
 
     // Ensure we're operating in a critical section while we determine
     // whether or not we need to block the current thread on this object.
@@ -186,7 +186,7 @@ void EventFlag::Set(uint16_t u16Mask_)
 {
     KERNEL_ASSERT(IsInitialized());
 
-    auto     bReschedule = false;
+    auto bReschedule = false;
 
     CS_ENTER();
     // Walk through the whole block list, checking to see whether or not
@@ -207,7 +207,7 @@ void EventFlag::Set(uint16_t u16Mask_)
         // First loop - process every thread in the block-list and check to
         // see whether or not the current flags match the event-flag conditions
         // on the thread.
-        auto*  pclPrev = static_cast<Thread*>(nullptr);
+        auto* pclPrev = static_cast<Thread*>(nullptr);
         do {
             pclPrev    = pclCurrent;
             pclCurrent = static_cast<Thread*>(pclCurrent->GetNext());

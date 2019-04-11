@@ -210,7 +210,7 @@ public:
     static uint16_t GetStackGuardThreshold() { return m_u16GuardThreshold; }
 #endif // #if KERNEL_STACK_CHECK
 
-    static void Tick() { m_u32Ticks++; }
+    static void     Tick() { m_u32Ticks++; }
     static uint32_t GetTicks();
 
 private:

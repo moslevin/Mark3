@@ -167,7 +167,7 @@ public:
     static void QueueScheduler() { m_bQueuedSchedule = true; }
 
 private:
-    static constexpr auto m_uNumPriorities = size_t{KERNEL_NUM_PRIORITIES};
+    static constexpr auto m_uNumPriorities = size_t { KERNEL_NUM_PRIORITIES };
 
     //! Scheduler's state - enabled or disabled
     static bool m_bEnabled;

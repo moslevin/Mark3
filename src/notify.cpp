@@ -125,9 +125,9 @@ bool Notify::Wait(uint32_t u32WaitTimeMS_, bool* pbFlag_)
     KERNEL_ASSERT(nullptr != pbFlag_);
     KERNEL_ASSERT(IsInitialized());
 
-    auto  bUseTimer  = false;
-    auto  bEarlyExit = false;
-    auto clNotifyTimer = Timer{};
+    auto bUseTimer     = false;
+    auto bEarlyExit    = false;
+    auto clNotifyTimer = Timer {};
 
     CS_ENTER();
     if (!m_bPending) {

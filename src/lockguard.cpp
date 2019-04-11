@@ -23,8 +23,8 @@ namespace Mark3
 {
 //---------------------------------------------------------------------------
 LockGuard::LockGuard(Mutex* pclMutex_)
-    : m_bIsAcquired{ true }
-    , m_pclMutex{ pclMutex_ }
+    : m_bIsAcquired { true }
+    , m_pclMutex { pclMutex_ }
 {
     KERNEL_ASSERT(nullptr != m_pclMutex);
     m_pclMutex->Claim();
@@ -32,7 +32,7 @@ LockGuard::LockGuard(Mutex* pclMutex_)
 
 //---------------------------------------------------------------------------
 LockGuard::LockGuard(Mutex* pclMutex_, uint32_t u32TimeoutMs_)
-    : m_pclMutex{ pclMutex_ }
+    : m_pclMutex { pclMutex_ }
 {
     KERNEL_ASSERT(nullptr != pclMutex_);
     m_bIsAcquired = m_pclMutex->Claim(u32TimeoutMs_);

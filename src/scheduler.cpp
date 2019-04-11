@@ -74,7 +74,7 @@ void Scheduler::Remove(Thread* pclThread_)
 //---------------------------------------------------------------------------
 bool Scheduler::SetScheduler(bool bEnable_)
 {
-    auto bRet = bool{false};
+    auto bRet = bool { false };
     CS_ENTER();
     bRet       = m_bEnabled;
     m_bEnabled = bEnable_;

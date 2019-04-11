@@ -178,7 +178,7 @@ public:
 
     uint16_t GetFreeSlots(void)
     {
-        auto rc = uint16_t{};
+        auto rc = uint16_t {};
         CS_ENTER();
         rc = m_u16Free;
         CS_EXIT();
@@ -214,7 +214,7 @@ private:
      */
     void* GetTailPointer(void)
     {
-        auto uAddr =  reinterpret_cast<K_ADDR>(m_pvBuffer);
+        auto uAddr = reinterpret_cast<K_ADDR>(m_pvBuffer);
         uAddr += static_cast<K_ADDR>(m_u16ElementSize) * static_cast<K_ADDR>(m_u16Tail);
         return reinterpret_cast<void*>(uAddr);
     }

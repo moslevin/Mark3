@@ -44,13 +44,13 @@ See license.txt for more information
 // Used for bitshifting the bit index away from the map index.
 // i.e. 3 == 8 bits, 4 == 16 bits, 5 == 32 bits, etc...
 #if (PORT_PRIO_MAP_WORD_SIZE == 1)
-# define PRIO_MAP_WORD_SHIFT (3u)
+#define PRIO_MAP_WORD_SHIFT (3u)
 #elif (PORT_PRIO_MAP_WORD_SIZE == 2)
-# define PRIO_MAP_WORD_SHIFT (4u)
+#define PRIO_MAP_WORD_SHIFT (4u)
 #elif (PORT_PRIO_MAP_WORD_SIZE == 4)
-# define PRIO_MAP_WORD_SHIFT (5u)
+#define PRIO_MAP_WORD_SHIFT (5u)
 #elif (PORT_PRIO_MAP_WORD_SIZE == 8)
-# define PRIO_MAP_WORD_SHIFT (6u)
+#define PRIO_MAP_WORD_SHIFT (6u)
 #endif
 
 namespace Mark3
@@ -94,10 +94,10 @@ public:
     PORT_PRIO_TYPE HighestPriority(void);
 
 private:
-    static inline PORT_PRIO_TYPE PrioBit(PORT_PRIO_TYPE prio) {return prio & m_uXPrioMapBitMask;}
+    static inline PORT_PRIO_TYPE PrioBit(PORT_PRIO_TYPE prio) { return prio & m_uXPrioMapBitMask; }
 
     // function used to get the map index for a given priroity
-    static inline PORT_PRIO_TYPE PrioMapWordIndex(PORT_PRIO_TYPE prio) {return prio >> m_uXPrioMapWordShift;}
+    static inline PORT_PRIO_TYPE PrioMapWordIndex(PORT_PRIO_TYPE prio) { return prio >> m_uXPrioMapWordShift; }
 
     static inline PORT_PRIO_TYPE priority_from_bitmap(PORT_PRIO_TYPE uXPrio_)
     {
@@ -106,8 +106,8 @@ private:
         return m_uXPrioMapBits - CLZ(uXPrio_);
 #else
         // Default un-optimized count-leading zeros operation
-        PORT_PRIO_TYPE uXMask = 1 << (m_uXPrioMapBits - 1);
-        auto u8Zeros = PORT_PRIO_TYPE{0};
+        PORT_PRIO_TYPE uXMask  = 1 << (m_uXPrioMapBits - 1);
+        auto           u8Zeros = PORT_PRIO_TYPE { 0 };
 
         while (uXMask) {
             if (uXMask & uXPrio_) {
@@ -121,18 +121,19 @@ private:
 #endif
     }
 
-    static constexpr auto m_uXPrioMapWordShift = PORT_PRIO_TYPE{PRIO_MAP_WORD_SHIFT};
+    static constexpr auto m_uXPrioMapWordShift = PORT_PRIO_TYPE { PRIO_MAP_WORD_SHIFT };
 
     // Bitmask used to separate out the priorities first-level bitmap from its
     // second-level map index for a given priority
-    static constexpr auto m_uXPortPrioMapWordSize = PORT_PRIO_TYPE{PORT_PRIO_MAP_WORD_SIZE};
+    static constexpr auto m_uXPortPrioMapWordSize = PORT_PRIO_TYPE { PORT_PRIO_MAP_WORD_SIZE };
 
     // Size of the map index type in bits
-    static constexpr auto m_uXPrioMapBits = PORT_PRIO_TYPE{8 * m_uXPortPrioMapWordSize};
-    static constexpr auto m_uXPrioMapBitMask = PORT_PRIO_TYPE{(1 << m_uXPrioMapWordShift) - 1};
+    static constexpr auto m_uXPrioMapBits    = PORT_PRIO_TYPE { 8 * m_uXPortPrioMapWordSize };
+    static constexpr auto m_uXPrioMapBitMask = PORT_PRIO_TYPE { (1 << m_uXPrioMapWordShift) - 1 };
 
     // Required size of the bitmap array in words
-    static constexpr auto m_uXPrioMapNumWords = PORT_PRIO_TYPE{(KERNEL_NUM_PRIORITIES + (m_uXPrioMapBits - 1)) / m_uXPrioMapBits};
+    static constexpr auto m_uXPrioMapNumWords
+        = PORT_PRIO_TYPE { (KERNEL_NUM_PRIORITIES + (m_uXPrioMapBits - 1)) / m_uXPrioMapBits };
 
 #if PRIO_MAP_MULTI_LEVEL
     PORT_PRIO_TYPE m_auXPriorityMap[m_uXPrioMapNumWords];

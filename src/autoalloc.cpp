@@ -49,10 +49,10 @@ void operator delete[](void* p)
 }
 #endif
 
-namespace Mark3 {
-
-AutoAllocAllocator_t    AutoAlloc::m_pfAllocator; //!< Function used to allocate objects
-AutoAllocFree_t         AutoAlloc::m_pfFree;      //!< Funciton used to free objects
+namespace Mark3
+{
+AutoAllocAllocator_t AutoAlloc::m_pfAllocator; //!< Function used to allocate objects
+AutoAllocFree_t      AutoAlloc::m_pfFree;      //!< Funciton used to free objects
 
 //---------------------------------------------------------------------------
 void* AutoAlloc::Allocate(AutoAllocType eType_, size_t sSize_)
