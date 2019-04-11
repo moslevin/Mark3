@@ -47,9 +47,9 @@ namespace Atomic
     template<typename T>
     T Set(T* pSource_, T val_)
     {
-        KERNEL_ASSERT(pSource_ != nullptr);
+        KERNEL_ASSERT(nullptr != pSource_);
 
-        T ret;
+        auto ret = T{};
         CS_ENTER();
         ret       = *pSource_;
         *pSource_ = val_;
@@ -66,9 +66,9 @@ namespace Atomic
     template<typename T>
     T Add(T* pSource_, T val_)
     {
-        KERNEL_ASSERT(pSource_ != nullptr);
+        KERNEL_ASSERT(nullptr != pSource_);
 
-        T ret;
+        auto ret = T{};
         CS_ENTER();
         ret = *pSource_;
         *pSource_ += val_;
@@ -85,9 +85,9 @@ namespace Atomic
     template<typename T>
     T Sub(T* pSource_, T val_)
     {
-        KERNEL_ASSERT(pSource_ != nullptr);
+        KERNEL_ASSERT(nullptr != pSource_);
 
-        T ret;
+        auto ret = T{};
         CS_ENTER();
         ret = *pSource_;
         *pSource_ -= val_;

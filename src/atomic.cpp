@@ -25,9 +25,9 @@ namespace Mark3
 //---------------------------------------------------------------------------
 bool Atomic::TestAndSet(bool* pbLock_)
 {
-    KERNEL_ASSERT(pbLock_ != nullptr);
+    KERNEL_ASSERT(nullptr != pbLock_);
 
-    bool bRet;
+    auto bRet = bool{};
     CS_ENTER();
     bRet = *pbLock_;
     if (!bRet) {

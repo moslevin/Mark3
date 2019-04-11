@@ -34,7 +34,7 @@ namespace Mark3
 class Mailbox
 {
 public:
-    void* operator new(size_t sz, void* pv) { return (Mailbox*)pv; }
+    void* operator new(size_t sz, void* pv) { return reinterpret_cast<Mailbox*>(pv); }
     ~Mailbox();
 
     /**
@@ -178,7 +178,7 @@ public:
 
     uint16_t GetFreeSlots(void)
     {
-        uint16_t rc;
+        auto rc = uint16_t{};
         CS_ENTER();
         rc = m_u16Free;
         CS_EXIT();
@@ -199,9 +199,9 @@ private:
      */
     void* GetHeadPointer(void)
     {
-        K_ADDR uAddr = (K_ADDR)m_pvBuffer;
-        uAddr += (K_ADDR)(m_u16ElementSize) * (K_ADDR)(m_u16Head);
-        return (void*)uAddr;
+        auto uAddr = reinterpret_cast<K_ADDR>(m_pvBuffer);
+        uAddr += static_cast<K_ADDR>(m_u16ElementSize) * static_cast<K_ADDR>(m_u16Head);
+        return reinterpret_cast<void*>(uAddr);
     }
 
     /**
@@ -214,9 +214,9 @@ private:
      */
     void* GetTailPointer(void)
     {
-        K_ADDR uAddr = (K_ADDR)m_pvBuffer;
-        uAddr += (K_ADDR)(m_u16ElementSize) * (K_ADDR)(m_u16Tail);
-        return (void*)uAddr;
+        auto uAddr =  reinterpret_cast<K_ADDR>(m_pvBuffer);
+        uAddr += static_cast<K_ADDR>(m_u16ElementSize) * static_cast<K_ADDR>(m_u16Tail);
+        return reinterpret_cast<void*>(uAddr);
     }
 
     /**

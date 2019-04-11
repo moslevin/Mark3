@@ -32,7 +32,7 @@ namespace Mark3
 class Notify : public BlockingObject
 {
 public:
-    void* operator new(size_t sz, void* pv) { return (Notify*)pv; };
+    void* operator new(size_t sz, void* pv) { return reinterpret_cast<Notify*>(pv); };
     ~Notify();
 
     /**

@@ -4,9 +4,6 @@
 
 namespace Mark3 {
 //------------------------------------------------------------------------
-extern volatile uint32_t g_ulCriticalCount;
-
-//------------------------------------------------------------------------
 class Thread;
 /**
  *  Class defining the architecture specific functions required by the 

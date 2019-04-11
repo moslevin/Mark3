@@ -35,7 +35,7 @@ namespace Mark3
 class Semaphore : public BlockingObject
 {
 public:
-    void* operator new(size_t sz, void* pv) { return (Semaphore*)pv; };
+    void* operator new(size_t sz, void* pv) { return reinterpret_cast<Semaphore*>(pv); };
     ~Semaphore();
 
     /**

@@ -43,7 +43,7 @@ void MessagePool::Push(Message* pclMessage_)
 //---------------------------------------------------------------------------
 Message* MessagePool::Pop()
 {
-    Message* pclRet;
+    auto* pclRet = static_cast<Message*>(nullptr);
     CS_ENTER();
 
     pclRet = static_cast<Message*>(m_clList.GetHead());
@@ -82,7 +82,7 @@ Message* MessageQueue::Receive(uint32_t u32TimeWaitMS_)
 //---------------------------------------------------------------------------
 Message* MessageQueue::Receive_i(uint32_t u32TimeWaitMS_)
 {
-    Message* pclRet;
+    auto* pclRet = static_cast<Message*>(nullptr);
 
     // Block the current thread on the counting semaphore
     if (!m_clSemaphore.Pend(u32TimeWaitMS_)) {

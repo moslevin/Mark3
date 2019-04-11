@@ -167,6 +167,8 @@ public:
     static void QueueScheduler() { m_bQueuedSchedule = true; }
 
 private:
+    static constexpr auto m_uNumPriorities = size_t{KERNEL_NUM_PRIORITIES};
+
     //! Scheduler's state - enabled or disabled
     static bool m_bEnabled;
 
@@ -177,7 +179,7 @@ private:
     static ThreadList m_clStopList;
 
     //! ThreadLists for all threads at all priorities
-    static ThreadList m_aclPriorities[KERNEL_NUM_PRIORITIES];
+    static ThreadList m_aclPriorities[m_uNumPriorities];
 
     //! Priority bitmap lookup structure, 1-bit per thread priority.
     static PriorityMap m_clPrioMap;

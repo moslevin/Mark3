@@ -38,8 +38,8 @@ namespace
      */
     void TimedSemaphore_Callback(Thread* pclOwner_, void* pvData_)
     {
-        KERNEL_ASSERT(pclOwner_ != nullptr);
-        KERNEL_ASSERT(pvData_ != nullptr);
+        KERNEL_ASSERT(nullptr != pclOwner_);
+        KERNEL_ASSERT(nullptr != pvData_);
 
         auto* pclSemaphore = static_cast<Semaphore*>(pvData_);
 
@@ -60,7 +60,7 @@ Semaphore::~Semaphore()
 {
     // If there are any threads waiting on this object when it goes out
     // of scope, set a kernel panic.
-    if (m_clBlockList.GetHead() != nullptr) {
+    if (nullptr != m_clBlockList.GetHead()) {
         Kernel::Panic(PANIC_ACTIVE_SEMAPHORE_DESCOPED);
     }
 }
@@ -118,7 +118,7 @@ bool Semaphore::Post()
     CS_ENTER();
 
     // If nothing is waiting for the semaphore
-    if (m_clBlockList.GetHead() == nullptr) {
+    if (nullptr == m_clBlockList.GetHead()) {
         // Check so see if we've reached the maximum value in the semaphore
         if (m_u16Value < m_u16MaxValue) {
             // Increment the count value
@@ -153,7 +153,7 @@ bool Semaphore::Pend_i(uint32_t u32WaitTimeMS_)
 {
     KERNEL_ASSERT(IsInitialized());
 
-    Timer clSemTimer;
+    auto clSemTimer = Timer{};
     auto  bUseTimer = false;
 
     // Once again, messing with thread data - ensure
@@ -161,14 +161,14 @@ bool Semaphore::Pend_i(uint32_t u32WaitTimeMS_)
     CS_ENTER();
 
     // Check to see if we need to take any action based on the semaphore count
-    if (m_u16Value != 0) {
+    if (0 != m_u16Value) {
         // The semaphore count is non-zero, we can just decrement the count
         // and go along our merry way.
         m_u16Value--;
     } else {
         // The semaphore count is zero - we need to block the current thread
         // and wait until the semaphore is posted from elsewhere.
-        if (u32WaitTimeMS_ != 0u) {
+        if (0u != u32WaitTimeMS_) {
             g_pclCurrent->SetExpired(false);
             clSemTimer.Init();
             clSemTimer.Start(false, u32WaitTimeMS_, TimedSemaphore_Callback, this);

@@ -92,7 +92,7 @@ public:
      */
     template <typename T, AutoAllocType e>
     static T* NewObject() {
-        void* pvObj = Allocate(e, sizeof(T));
+        auto* pvObj = Allocate(e, sizeof(T));
         if (pvObj) {
             return new (pvObj) T();
         }

@@ -60,7 +60,7 @@ void ProfileTimer::Stop()
 //---------------------------------------------------------------------------
 uint32_t ProfileTimer::GetAverage()
 {
-    if (m_u16Iterations != 0u) {
+    if (0u != m_u16Iterations) {
         return (m_u32Cumulative + static_cast<uint32_t>(m_u16Iterations / 2)) / static_cast<uint32_t>(m_u16Iterations);
     }
     return 0;

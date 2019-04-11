@@ -45,7 +45,7 @@ namespace Mark3
 class EventFlag : public BlockingObject
 {
 public:
-    void* operator new(size_t sz, void* pv) { return (EventFlag*)pv; };
+    void* operator new(size_t sz, void* pv) { return reinterpret_cast<EventFlag*>(pv); };
     ~EventFlag();
 
     /**

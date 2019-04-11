@@ -19,6 +19,7 @@ See license.txt for more information
  */
 #pragma once
 
+#include "portcfg.h"
 #include "kerneltypes.h"
 #include "thread.h"
 #include "ithreadport.h"

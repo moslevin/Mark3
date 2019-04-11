@@ -61,7 +61,7 @@ using ThreadContextCallout = void (*)(Thread* pclThread_);
 class Thread : public LinkListNode
 {
 public:
-    void* operator new(size_t sz, void* pv) { return (Thread*)pv; };
+    void* operator new(size_t sz, void* pv) { return reinterpret_cast<Thread*>(pv); };
     ~Thread();
 
     Thread() { m_eState = ThreadState::Invalid; }

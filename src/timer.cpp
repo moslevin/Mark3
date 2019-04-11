@@ -28,7 +28,7 @@ TimerList TimerScheduler::m_clTimerList;
 //---------------------------------------------------------------------------
 Timer::Timer()
 {
-    m_u8Initialized = TIMER_INVALID_COOKIE;
+    m_u8Initialized = m_uTimerInvalidCookie;
     m_u8Flags       = 0;
 }
 
@@ -36,7 +36,7 @@ Timer::Timer()
 void Timer::Init()
 {
     if (IsInitialized()) {
-        KERNEL_ASSERT((m_u8Flags & TIMERLIST_FLAG_ACTIVE) == 0);
+        KERNEL_ASSERT((m_u8Flags & uTimerFlagActive) == 0);
     }
 
     ClearNode();
@@ -52,7 +52,7 @@ void Timer::Start(bool bRepeat_, uint32_t u32IntervalMs_, TimerCallback pfCallba
 {
     KERNEL_ASSERT(IsInitialized());
 
-    if ((m_u8Flags & TIMERLIST_FLAG_ACTIVE) != 0) {
+    if ((m_u8Flags & uTimerFlagActive) != 0) {
         return;
     }
 
@@ -61,7 +61,7 @@ void Timer::Start(bool bRepeat_, uint32_t u32IntervalMs_, TimerCallback pfCallba
     m_pvData      = pvData_;
 
     if (!bRepeat_) {
-        m_u8Flags = TIMERLIST_FLAG_ONE_SHOT;
+        m_u8Flags = uTimerFlagOneShot;
     } else {
         m_u8Flags = 0;
     }
@@ -74,7 +74,7 @@ void Timer::Start()
 {
     KERNEL_ASSERT(IsInitialized());
 
-    if ((m_u8Flags & TIMERLIST_FLAG_ACTIVE) != 0) {
+    if ((m_u8Flags & uTimerFlagActive) != 0) {
         return;
     }
 
@@ -86,7 +86,7 @@ void Timer::Start()
 void Timer::Stop()
 {
     KERNEL_ASSERT(IsInitialized());
-    if ((m_u8Flags & TIMERLIST_FLAG_ACTIVE) == 0) {
+    if ((m_u8Flags & uTimerFlagActive) == 0) {
         return;
     }
     TimerScheduler::Remove(this);

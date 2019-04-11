@@ -24,7 +24,6 @@ namespace Mark3
 {
 //---------------------------------------------------------------------------
 void ConditionVariable::Init()
-
 {
     m_clMutex.Init();
     m_clSemaphore.Init(0, 255);
@@ -33,7 +32,7 @@ void ConditionVariable::Init()
 //---------------------------------------------------------------------------
 void ConditionVariable::Wait(Mutex* pclMutex_)
 {
-    KERNEL_ASSERT(pclMutex_ != nullptr);
+    KERNEL_ASSERT(nullptr != pclMutex_);
 
     m_clMutex.Claim();
 
@@ -49,7 +48,7 @@ void ConditionVariable::Wait(Mutex* pclMutex_)
 //---------------------------------------------------------------------------
 bool ConditionVariable::Wait(Mutex* pclMutex_, uint32_t u32WaitTimeMS_)
 {
-    KERNEL_ASSERT(pclMutex_ != nullptr);
+    KERNEL_ASSERT(nullptr != pclMutex_);
 
     m_clMutex.Claim();
 

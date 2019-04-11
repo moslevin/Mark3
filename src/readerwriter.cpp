@@ -45,7 +45,7 @@ void ReaderWriterLock::ReleaseReader()
 {
     m_clReaderMutex.Claim();
     m_u8ReadCount--;
-    if (m_u8ReadCount == 0) {
+    if (0 == m_u8ReadCount) {
         m_clGlobalMutex.Release();
     }
     m_clReaderMutex.Release();
@@ -78,7 +78,7 @@ bool ReaderWriterLock::AcquireReader_i(uint32_t u32TimeoutMs_)
     }
 
     m_u8ReadCount++;
-    if (m_u8ReadCount == 1) {
+    if (1 == m_u8ReadCount) {
         rc = m_clGlobalMutex.Claim(u32TimeoutMs_);
     }
 

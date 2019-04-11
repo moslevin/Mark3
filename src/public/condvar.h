@@ -1,5 +1,3 @@
-#pragma once
-
 /*===========================================================================
      _____        _____        _____        _____
  ___|    _|__  __|_    |__  __|__   |__  __| __  |__  ______
@@ -18,6 +16,7 @@ See license.txt for more information
 
     @brief  Condition Variable implementation
 */
+#pragma once
 
 #include "mark3cfg.h"
 #include "ksemaphore.h"
@@ -40,7 +39,7 @@ namespace Mark3
 class ConditionVariable
 {
 public:
-    void* operator new(size_t sz, void* pv) { return (ConditionVariable*)pv; }
+    void* operator new(size_t sz, void* pv) { return reinterpret_cast<ConditionVariable*>(pv); }
 
     /**
      * @brief Init

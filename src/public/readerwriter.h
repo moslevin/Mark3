@@ -40,7 +40,7 @@ namespace Mark3
 class ReaderWriterLock
 {
 public:
-    void* operator new(size_t sz, void* pv) { return (ReaderWriterLock*)pv; }
+    void* operator new(size_t sz, void* pv) { return reinterpret_cast<ReaderWriterLock*>(pv); }
 
     /**
      * @brief Init

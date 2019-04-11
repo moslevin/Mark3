@@ -25,7 +25,7 @@ namespace Mark3
 //---------------------------------------------------------------------------
 void BlockingObject::Block(Thread* pclThread_)
 {
-    KERNEL_ASSERT(pclThread_ != nullptr);
+    KERNEL_ASSERT(nullptr != pclThread_);
 
     // Remove the thread from its current thread list (the "owner" list)
     // ... And add the thread to this object's block list
@@ -40,7 +40,7 @@ void BlockingObject::Block(Thread* pclThread_)
 //---------------------------------------------------------------------------
 void BlockingObject::BlockPriority(Thread* pclThread_)
 {
-    KERNEL_ASSERT(pclThread_ != nullptr);
+    KERNEL_ASSERT(nullptr != pclThread_);
 
     // Remove the thread from its current thread list (the "owner" list)
     // ... And add the thread to this object's block list
@@ -55,7 +55,7 @@ void BlockingObject::BlockPriority(Thread* pclThread_)
 //---------------------------------------------------------------------------
 void BlockingObject::UnBlock(Thread* pclThread_)
 {
-    KERNEL_ASSERT(pclThread_ != nullptr);
+    KERNEL_ASSERT(nullptr != pclThread_);
 
     // Remove the thread from its current thread list (the "owner" list)
     pclThread_->GetCurrent()->Remove(pclThread_);

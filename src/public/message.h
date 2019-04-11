@@ -94,7 +94,7 @@ namespace Mark3
 class Message : public LinkListNode
 {
 public:
-    void* operator new(size_t sz, void* pv) { return (Message*)pv; }
+    void* operator new(size_t sz, void* pv) { return reinterpret_cast<Message*>(pv); }
     /**
      *  @brief Init
      *

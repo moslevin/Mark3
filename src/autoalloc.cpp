@@ -23,6 +23,7 @@ See license.txt for more information
 //---------------------------------------------------------------------------
 // Override new() and delete() using functions provided to AutoAlloc
 //---------------------------------------------------------------------------
+#if PORT_OVERLOAD_NEW
 using namespace Mark3;
 void* operator new(size_t n)
 {
@@ -46,6 +47,7 @@ void operator delete[](void* p)
 {
     AutoAlloc::DestroyRawData(p);
 }
+#endif
 
 namespace Mark3 {
 

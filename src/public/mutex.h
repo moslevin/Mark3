@@ -63,7 +63,7 @@ namespace Mark3
 class Mutex : public BlockingObject
 {
 public:
-    void* operator new(size_t sz, void* pv) { return (Mutex*)pv; };
+    void* operator new(size_t sz, void* pv) { return reinterpret_cast<Mutex*>(pv); };
     ~Mutex();
 
     /**
