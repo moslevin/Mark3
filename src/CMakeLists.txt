@@ -20,13 +20,13 @@ set(LIB_SOURCES
     message.cpp
     mutex.cpp
     notify.cpp
-    priomap.cpp
     profile.cpp
     quantum.cpp
     readerwriter.cpp
     scheduler.cpp
     thread.cpp
     threadlist.cpp
+    threadlistlist.cpp
     timer.cpp
     timerlist.cpp
     ${local_mark3_extra_cxx}
@@ -50,6 +50,8 @@ set(LIB_HEADERS
     public/mutex.h
     public/notify.h
     public/priomap.h
+    public/priomapl1.h
+    public/priomapl2.h
     public/profile.h
     public/quantum.h
     public/readerwriter.h

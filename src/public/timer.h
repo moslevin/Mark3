@@ -64,7 +64,7 @@ class Quantum;
  * scheduling, thread sleep, and timeouts.  Relies on a single hardware timer,
  * which is multiplexed through the kernel.
  */
-class Timer : public LinkListNode
+class Timer : public TypedLinkListNode<Timer>
 {
 public:
     void* operator new(size_t sz, void* pv) { return reinterpret_cast<Timer*>(pv); }

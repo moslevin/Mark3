@@ -25,6 +25,7 @@ See license.txt for more information
 #include "priomap.h"
 #include "ll.h"
 
+//---------------------------------------------------------------------------
 namespace Mark3
 {
 class Thread;
@@ -33,7 +34,7 @@ class Thread;
     This class is used for building thread-management facilities, such as
     schedulers, and blocking objects.
  */
-class ThreadList : public CircularLinkList
+class ThreadList : public LinkListNode, public TypedCircularLinkList<Thread>
 {
 public:
     void* operator new(size_t sz, void* pv) { return reinterpret_cast<ThreadList*>(pv); };
@@ -42,11 +43,7 @@ public:
      *
      *  Default constructor - zero-initializes the data.
      */
-    ThreadList()
-        : m_uXPriority(0)
-        , m_pclMap(nullptr)
-    {
-    }
+    ThreadList();
 
     /**
      *  @brief SetPriority
@@ -75,7 +72,7 @@ public:
      *
      *  @param node_ Pointer to the thread (link list node) to add to the list
      */
-    void Add(LinkListNode* node_);
+    void Add(Thread* node_);
 
     /**
      *  @brief Add
@@ -88,7 +85,7 @@ public:
      *                      a scheduler context), or nullptr for non-scheduler.
      *  @param uXPriority_  Priority of the threadlist
      */
-    void Add(LinkListNode* node_, PriorityMap* pclMap_, PORT_PRIO_TYPE uXPriority_);
+    void Add(Thread* node_, PriorityMap* pclMap_, PORT_PRIO_TYPE uXPriority_);
 
     /**
      * @brief AddPriority
@@ -98,7 +95,7 @@ public:
      *
      * @param node_         Pointer to a thread to add to the list.
      */
-    void AddPriority(LinkListNode* node_);
+    void AddPriority(Thread* node_);
 
     /**
      *  @brief Remove
@@ -107,7 +104,7 @@ public:
      *
      *  @param node_ Pointer to the thread to remove
      */
-    void Remove(LinkListNode* node_);
+    void Remove(Thread* node_);
 
     /**
      *  @brief HighestWaiter

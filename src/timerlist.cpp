@@ -38,7 +38,7 @@ void TimerList::Add(Timer* pclListNode_)
     auto lock = LockGuard { &m_clMutex };
 
     pclListNode_->ClearNode();
-    DoubleLinkList::Add(pclListNode_);
+    TypedDoubleLinkList<Timer>::Add(pclListNode_);
 
     // Set the initial timer value
     pclListNode_->m_u32TimeLeft = pclListNode_->m_u32Interval;
@@ -53,7 +53,7 @@ void TimerList::Remove(Timer* pclLinkListNode_)
     KERNEL_ASSERT(nullptr != pclLinkListNode_);
     auto lock = LockGuard { &m_clMutex };
 
-    DoubleLinkList::Remove(pclLinkListNode_);
+    TypedDoubleLinkList<Timer>::Remove(pclLinkListNode_);
     pclLinkListNode_->m_u8Flags &= ~uTimerFlagActive;
 }
 
@@ -62,10 +62,10 @@ void TimerList::Process(void)
 {
     auto lock = LockGuard { &m_clMutex };
 
-    auto* pclCurr = static_cast<Timer*>(GetHead());
+    auto* pclCurr = GetHead();
     // Subtract the elapsed time interval from each active timer.
     while (nullptr != pclCurr) {
-        auto* pclNext = static_cast<Timer*>(pclCurr->GetNext());
+        auto* pclNext = pclCurr->GetNext();
 
         // Active timers only...
         if ((pclCurr->m_u8Flags & uTimerFlagActive) != 0) {

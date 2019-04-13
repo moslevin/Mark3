@@ -20,8 +20,16 @@ See license.txt for more information
 */
 
 #include "mark3.h"
+#include "threadlistlist.h"
 namespace Mark3
 {
+//---------------------------------------------------------------------------
+ThreadList::ThreadList()
+    : m_uXPriority(0)
+    , m_pclMap(nullptr)
+{
+}
+
 //---------------------------------------------------------------------------
 void ThreadList::SetPriority(PORT_PRIO_TYPE uXPriority_)
 {
@@ -36,11 +44,16 @@ void ThreadList::SetMapPointer(PriorityMap* pclMap_)
 }
 
 //---------------------------------------------------------------------------
-void ThreadList::Add(LinkListNode* node_)
+void ThreadList::Add(Thread* pclThread_)
 {
-    KERNEL_ASSERT(node_ != nullptr);
-    CircularLinkList::Add(node_);
-    CircularLinkList::PivotForward();
+    KERNEL_ASSERT(pclThread_ != nullptr);
+
+    // If list was empty, add the object for global threadlist tracking
+    if (!GetHead()) {
+        ThreadListList::Add(this);
+    }
+    TypedCircularLinkList<Thread>::Add(pclThread_);
+    PivotForward();
 
     // We've specified a bitmap for this threadlist
     if (nullptr != m_pclMap) {
@@ -50,44 +63,42 @@ void ThreadList::Add(LinkListNode* node_)
 }
 
 //---------------------------------------------------------------------------
-void ThreadList::AddPriority(LinkListNode* node_)
+void ThreadList::AddPriority(Thread* pclThread_)
 {
     KERNEL_ASSERT(node_ != nullptr);
-    auto* pclCurr = static_cast<Thread*>(GetHead());
+    auto* pclCurr = GetHead();
     if (nullptr == pclCurr) {
-        Add(node_);
+        Add(pclThread_);
         return;
     }
     auto uXHeadPri = pclCurr->GetCurPriority();
-
-    auto* pclTail = static_cast<Thread*>(GetTail());
-    auto* pclNode = static_cast<Thread*>(node_);
+    auto* pclTail = GetTail();
 
     // Set the threadlist's priority level, flag pointer, and then add the
     // thread to the threadlist
-    auto uXPriority = pclNode->GetCurPriority();
+    auto uXPriority = pclThread_->GetCurPriority();
     do {
         if (uXPriority > pclCurr->GetCurPriority()) {
             break;
         }
-        pclCurr = static_cast<Thread*>(pclCurr->GetNext());
+        pclCurr = pclCurr->GetNext();
     } while (pclCurr != pclTail);
 
     // Insert pclNode before pclCurr in the linked list.
-    InsertNodeBefore(pclNode, pclCurr);
+    InsertNodeBefore(pclThread_, pclCurr);
 
     // If the priority is greater than current head, reset
     // the head pointer.
     if (uXPriority > uXHeadPri) {
-        m_pclHead = pclNode;
-        m_pclTail = m_pclHead->prev;
-    } else if (pclNode->GetNext() == m_pclHead) {
-        m_pclTail = pclNode;
+        SetHead(pclThread_);
+        SetTail(GetHead()->GetPrev());
+    } else if (pclThread_->GetNext() == GetHead()) {
+        SetTail(pclThread_);
     }
 }
 
 //---------------------------------------------------------------------------
-void ThreadList::Add(LinkListNode* node_, PriorityMap* pclMap_, PORT_PRIO_TYPE uXPriority_)
+void ThreadList::Add(Thread* node_, PriorityMap* pclMap_, PORT_PRIO_TYPE uXPriority_)
 {
     // Set the threadlist's priority level, flag pointer, and then add the
     // thread to the threadlist
@@ -97,21 +108,25 @@ void ThreadList::Add(LinkListNode* node_, PriorityMap* pclMap_, PORT_PRIO_TYPE u
 }
 
 //---------------------------------------------------------------------------
-void ThreadList::Remove(LinkListNode* node_)
+void ThreadList::Remove(Thread* node_)
 {
     // Remove the thread from the list
-    CircularLinkList::Remove(node_);
+    TypedCircularLinkList<Thread>::Remove(node_);
 
     // If the list is empty...
-    if ((nullptr == m_pclHead) && (nullptr != m_pclMap)) {
-        // Clear the bit in the bitmap at this priority level
-        m_pclMap->Clear(m_uXPriority);
+    if (nullptr == GetHead()) {
+        // No more threads - remove this object from global threadlist tracking
+        ThreadListList::Add(this);
+        if (nullptr != m_pclMap) {
+            // Clear the bit in the bitmap at this priority level
+            m_pclMap->Clear(m_uXPriority);
+        }
     }
 }
 
 //---------------------------------------------------------------------------
 Thread* ThreadList::HighestWaiter()
 {
-    return static_cast<Thread*>(GetHead());
+    return GetHead();
 }
 } // namespace Mark3

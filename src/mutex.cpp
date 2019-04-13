@@ -158,13 +158,13 @@ bool Mutex::Claim_i(uint32_t u32WaitTimeMS_)
     if (m_uMaxPri <= g_pclCurrent->GetPriority()) {
         m_uMaxPri = g_pclCurrent->GetPriority();
 
-        auto* pclTemp = static_cast<Thread*>(m_clBlockList.GetHead());
+        auto* pclTemp = m_clBlockList.GetHead();
         while (nullptr != pclTemp) {
             pclTemp->InheritPriority(m_uMaxPri);
-            if (static_cast<Thread*>(m_clBlockList.GetTail()) == pclTemp) {
+            if (m_clBlockList.GetTail() == pclTemp) {
                 break;
             }
-            pclTemp = static_cast<Thread*>(pclTemp->GetNext());
+            pclTemp = pclTemp->GetNext();
         }
         m_pclOwner->InheritPriority(m_uMaxPri);
     }

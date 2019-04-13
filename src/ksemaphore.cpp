@@ -184,7 +184,7 @@ bool Semaphore::Pend_i(uint32_t u32WaitTimeMS_)
 
     if (bUseTimer) {
         clSemTimer.Stop();
-        return (static_cast<int>(g_pclCurrent->GetExpired()) == 0);
+        return (g_pclCurrent->GetExpired() == false);
     }
     return true;
 }

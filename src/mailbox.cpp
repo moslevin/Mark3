@@ -197,7 +197,7 @@ bool Mailbox::Send_i(const void* pvData_, bool bTail_, uint32_t u32TimeoutMS_)
 bool Mailbox::Receive_i(void* pvData_, bool bTail_, uint32_t u32WaitTimeMS_)
 {
     KERNEL_ASSERT(nullptr != pvData_);
-    auto* pvSrc = static_cast<const void*>(nullptr);
+    auto* pvSrc = (const void*){};
 
     if (!m_clRecvSem.Pend(u32WaitTimeMS_)) {
         // Failed to get the notification from the counting semaphore in the

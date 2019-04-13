@@ -52,7 +52,7 @@ void Scheduler::Schedule()
     uXPrio--;
 
     // Get the thread node at this priority.
-    g_pclNext = static_cast<Thread*>(m_aclPriorities[uXPrio].GetHead());
+    g_pclNext = m_aclPriorities[uXPrio].GetHead();
 }
 
 //---------------------------------------------------------------------------

@@ -201,16 +201,16 @@ void EventFlag::Set(uint16_t u16Mask_)
     // we remove the first or last elements in the list, or if there's only
     // one element in the list.
 
-    auto* pclCurrent = static_cast<Thread*>(m_clBlockList.GetHead());
+    auto* pclCurrent = m_clBlockList.GetHead();
     // Do nothing when there are no objects blocking.
     if (nullptr != pclCurrent) {
         // First loop - process every thread in the block-list and check to
         // see whether or not the current flags match the event-flag conditions
         // on the thread.
-        auto* pclPrev = static_cast<Thread*>(nullptr);
+        auto* pclPrev = (Thread*){};
         do {
             pclPrev    = pclCurrent;
-            pclCurrent = static_cast<Thread*>(pclCurrent->GetNext());
+            pclCurrent = pclCurrent->GetNext();
 
             // Read the thread's event mask/mode
             auto u16ThreadMask = pclPrev->GetEventFlagMask();
@@ -253,11 +253,11 @@ void EventFlag::Set(uint16_t u16Mask_)
 
         // Second loop - go through and unblock all of the threads that
         // were tagged for unblocking.
-        pclCurrent   = static_cast<Thread*>(m_clBlockList.GetHead());
+        pclCurrent   = m_clBlockList.GetHead();
         auto bIsTail = false;
         do {
             pclPrev    = pclCurrent;
-            pclCurrent = static_cast<Thread*>(pclCurrent->GetNext());
+            pclCurrent = pclCurrent->GetNext();
 
             // Check to see if this is the condition to terminate the loop
             if (pclPrev == m_clBlockList.GetTail()) {

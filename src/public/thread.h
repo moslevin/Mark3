@@ -58,7 +58,7 @@ using ThreadContextCallout = void (*)(Thread* pclThread_);
 /**
  *  Object providing fundamental multitasking support in the kernel.
  */
-class Thread : public LinkListNode
+class Thread : public TypedLinkListNode<Thread>
 {
 public:
     void* operator new(size_t sz, void* pv) { return reinterpret_cast<Thread*>(pv); };

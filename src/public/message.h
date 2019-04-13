@@ -91,7 +91,7 @@ namespace Mark3
 /**
  *  Class to provide message-based IPC services in the kernel.
  */
-class Message : public LinkListNode
+class Message : public TypedLinkListNode<Message>
 {
 public:
     void* operator new(size_t sz, void* pv) { return reinterpret_cast<Message*>(pv); }
@@ -196,7 +196,7 @@ public:
 
 private:
     //! Linked list used to manage the Message objects
-    DoubleLinkList m_clList;
+    TypedDoubleLinkList<Message> m_clList;
 };
 
 //---------------------------------------------------------------------------
@@ -278,6 +278,6 @@ private:
     Semaphore m_clSemaphore;
 
     //! List object used to store messages
-    DoubleLinkList m_clLinkList;
+    TypedDoubleLinkList<Message> m_clLinkList;
 };
 } // namespace Mark3

@@ -70,7 +70,7 @@ void Notify::Signal(void)
     auto bReschedule = false;
 
     CS_ENTER();
-    auto* pclCurrent = static_cast<Thread*>(m_clBlockList.GetHead());
+    auto* pclCurrent = m_clBlockList.GetHead();
     if (nullptr == pclCurrent) {
         m_bPending = true;
     } else {
@@ -79,7 +79,7 @@ void Notify::Signal(void)
             if (!bReschedule && (pclCurrent->GetCurPriority() >= Scheduler::GetCurrentThread()->GetCurPriority())) {
                 bReschedule = true;
             }
-            pclCurrent = reinterpret_cast<Thread*>(m_clBlockList.GetHead());
+            pclCurrent = m_clBlockList.GetHead();
         }
         m_bPending = false;
     }
