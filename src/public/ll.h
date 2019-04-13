@@ -81,7 +81,7 @@ public:
      *
      *  @return a pointer to the next node in the list.
      */
-    LinkListNode* GetNext(void) { return next; }
+    inline LinkListNode* GetNext(void) { return next; }
     /**
      *  @brief GetPrev
      *
@@ -89,13 +89,20 @@ public:
      *
      *  @return a pointer to the previous node in the list.
      */
-    LinkListNode* GetPrev(void) { return prev; }
+    inline LinkListNode* GetPrev(void) { return prev; }
     friend class LinkList;
     friend class DoubleLinkList;
     friend class CircularLinkList;
-    friend class ThreadList;
 };
 
+//---------------------------------------------------------------------------
+template <typename T>
+class TypedLinkListNode : public LinkListNode
+{
+public:
+    inline T* GetNext() { return reinterpret_cast<T*>(LinkListNode::GetNext()); }
+    inline T* GetPrev() { return reinterpret_cast<T*>(LinkListNode::GetPrev()); }
+};
 //---------------------------------------------------------------------------
 /**
  *  Abstract-data-type from which all other linked-lists are derived
@@ -126,6 +133,8 @@ public:
      *  @return Pointer to the head node in the list
      */
     inline LinkListNode* GetHead() { return m_pclHead; }
+    inline void SetHead(LinkListNode* pclNode_) { m_pclHead = pclNode_; }
+
     /**
      *  @brief GetTail
      *
@@ -134,6 +143,7 @@ public:
      *  @return Pointer to the tail node in the list
      */
     inline LinkListNode* GetTail() { return m_pclTail; }
+    inline void SetTail(LinkListNode* pclNode_) { m_pclTail = pclNode_; }
 };
 
 //---------------------------------------------------------------------------
@@ -143,7 +153,7 @@ public:
 class DoubleLinkList : public LinkList
 {
 public:
-    void* operator new(size_t sz, void* pv) { return (DoubleLinkList*)pv; };
+    void* operator new(size_t sz, void* pv) { return reinterpret_cast<DoubleLinkList*>(pv); };
     /**
      *  @brief DoubleLinkList
      *
@@ -232,5 +242,119 @@ public:
      * @param insert_   Insert point.
      */
     void InsertNodeBefore(LinkListNode* node_, LinkListNode* insert_);
+};
+
+template <typename T>
+class TypedDoubleLinkList : public DoubleLinkList
+{
+public:
+    void* operator new(size_t sz, void* pv) { return reinterpret_cast<TypedDoubleLinkList<T>*>(pv); }
+
+    TypedDoubleLinkList<T>() {
+        DoubleLinkList();
+    }
+
+    inline T* GetHead() { return reinterpret_cast<T*>(DoubleLinkList::GetHead()); }
+    inline void SetHead(T* pclNode_) { DoubleLinkList::SetHead(reinterpret_cast<LinkListNode*>(pclNode_)); }
+
+    /**
+     *  @brief GetTail
+     *
+     *  Get the tail node of the linked list
+     *
+     *  @return Pointer to the tail node in the list
+     */
+    inline T* GetTail() { return reinterpret_cast<T*>(DoubleLinkList::GetTail()); }
+    inline void SetTail(T* pclNode_) { DoubleLinkList::SetTail(reinterpret_cast<LinkListNode*>(pclNode_)); }
+
+    /**
+     *  @brief Add
+     *
+     *  Add the linked list node to this linked list
+     *
+     *  @param node_ Pointer to the node to add
+     */
+    inline void Add(T* pNode_)
+    {
+        DoubleLinkList::Add(reinterpret_cast<LinkListNode*>(pNode_));
+    }
+
+    /**
+     *  @brief Remove
+     *
+     *  Add the linked list node to this linked list
+     *
+     *  @param node_ Pointer to the node to remove
+     */
+    inline void Remove(T* pNode_)
+    {
+        DoubleLinkList::Remove(reinterpret_cast<LinkListNode*>(pNode_));
+    }
+};
+
+//---------------------------------------------------------------------------
+/**
+    Circular-linked-list data type, inherited from the base LinkList type.
+ */
+template <typename T>
+class TypedCircularLinkList : public CircularLinkList
+{
+public:
+    void* operator new(size_t sz, void* pv) { return reinterpret_cast<TypedCircularLinkList<T>*>(pv); }
+
+    TypedCircularLinkList<T>() {
+        CircularLinkList();
+    }
+
+    inline T* GetHead() { return reinterpret_cast<T*>(CircularLinkList::GetHead()); }
+    inline void SetHead(T* pclNode_) { CircularLinkList::SetHead(reinterpret_cast<LinkListNode*>(pclNode_)); }
+
+    /**
+     *  @brief GetTail
+     *
+     *  Get the tail node of the linked list
+     *
+     *  @return Pointer to the tail node in the list
+     */
+    inline T* GetTail() { return reinterpret_cast<T*>(CircularLinkList::GetTail()); }
+    inline void SetTail(T* pclNode_) { CircularLinkList::SetTail(reinterpret_cast<LinkListNode*>(pclNode_)); }
+
+    /**
+     *  @brief
+     *
+     *  Add the linked list node to this linked list
+     *
+     *  @param node_ Pointer to the node to add
+     */
+    inline void Add(T* pNode_)
+    {
+        CircularLinkList::Add(reinterpret_cast<LinkListNode*>(pNode_));
+    }
+
+    /**
+     *  @brief Remove
+     *
+     *  Add the linked list node to this linked list
+     *
+     *  @param node_ Pointer to the node to remove
+     */
+    inline void Remove(T* pNode_)
+    {
+        CircularLinkList::Remove(reinterpret_cast<LinkListNode*>(pNode_));
+    }
+
+    /**
+     * @brief InsertNodeBefore
+     *
+     * Insert a linked-list node into the list before the specified insertion
+     * point.
+     *
+     * @param node_     Node to insert into the list
+     * @param insert_   Insert point.
+     */
+    inline void InsertNodeBefore(T* pNode_, T* pInsert_)
+    {
+        CircularLinkList::InsertNodeBefore(reinterpret_cast<LinkListNode*>(pNode_), reinterpret_cast<LinkListNode*>(pInsert_));
+    }
 };
 } // namespace Mark3
