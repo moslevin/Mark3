@@ -116,7 +116,7 @@ void ThreadList::Remove(Thread* node_)
     // If the list is empty...
     if (nullptr == GetHead()) {
         // No more threads - remove this object from global threadlist tracking
-        ThreadListList::Add(this);
+        ThreadListList::Remove(this);
         if (nullptr != m_pclMap) {
             // Clear the bit in the bitmap at this priority level
             m_pclMap->Clear(m_uXPriority);
