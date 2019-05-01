@@ -3721,6 +3721,22 @@ See license.txt for more information
 /**
     @page RELEASE Release Notes
 
+    @section RELR9 R9 Release
+    - New: templated linked-lists to avoid explicit casting used in list traversal
+    - New: ThreadListList class to efficiently track all threads in the system 
+    - Remove use of C-style casts in kernel
+    - Remove use of 0 as nullptr in kernel
+    - Refactor code to use constexpr instead of C-style preprocessor defines where possible
+    - Refactor priority-map class as a set of template classes, reducing use of macros and defines
+    - Fix a "disappearing thread" bug where an inopportune context switch could cause a thread to get lost
+    - Docs no longer build by default
+    .
+
+    @section RELR8 R8 Release
+    - Structural changes to separate the kernel from the rest of Mark3-repo
+    - Cleanup and reformatting
+    .
+
     @section RELR7 R7 (Full Throttle) Release
     - Re-focusing project on kernel, integrating with 3rd party code instead of 1st party middleware
     - Re-focusing on atmega1284p and cortex-m as default targets
