@@ -34,7 +34,7 @@ namespace Mark3
 class Mailbox
 {
 public:
-    void* operator new(size_t sz, void* pv) { return (Mailbox*)pv; }
+    void* operator new(size_t sz, void* pv) { return reinterpret_cast<Mailbox*>(pv); }
     ~Mailbox();
 
     /**
@@ -178,7 +178,7 @@ public:
 
     uint16_t GetFreeSlots(void)
     {
-        uint16_t rc;
+        auto rc = uint16_t {};
         CS_ENTER();
         rc = m_u16Free;
         CS_EXIT();
@@ -199,9 +199,9 @@ private:
      */
     void* GetHeadPointer(void)
     {
-        K_ADDR uAddr = (K_ADDR)m_pvBuffer;
-        uAddr += (K_ADDR)(m_u16ElementSize) * (K_ADDR)(m_u16Head);
-        return (void*)uAddr;
+        auto uAddr = reinterpret_cast<K_ADDR>(m_pvBuffer);
+        uAddr += static_cast<K_ADDR>(m_u16ElementSize) * static_cast<K_ADDR>(m_u16Head);
+        return reinterpret_cast<void*>(uAddr);
     }
 
     /**
@@ -214,9 +214,9 @@ private:
      */
     void* GetTailPointer(void)
     {
-        K_ADDR uAddr = (K_ADDR)m_pvBuffer;
-        uAddr += (K_ADDR)(m_u16ElementSize) * (K_ADDR)(m_u16Tail);
-        return (void*)uAddr;
+        auto uAddr = reinterpret_cast<K_ADDR>(m_pvBuffer);
+        uAddr += static_cast<K_ADDR>(m_u16ElementSize) * static_cast<K_ADDR>(m_u16Tail);
+        return reinterpret_cast<void*>(uAddr);
     }
 
     /**
@@ -228,10 +228,10 @@ private:
      * @param dst_  Pointer to an object to write to
      * @param len_  Length to copy (in bytes)
      */
-    void CopyData(const void* src_, const void* dst_, uint16_t len_)
+    void CopyData(const void* src_, void* dst_, uint16_t len_)
     {
-        uint8_t* u8Src = (uint8_t*)src_;
-        uint8_t* u8Dst = (uint8_t*)dst_;
+        auto* u8Src = reinterpret_cast<const uint8_t*>(src_);
+        auto* u8Dst = reinterpret_cast<uint8_t*>(dst_);
         while (len_--) { *u8Dst++ = *u8Src++; }
     }
 
@@ -309,7 +309,7 @@ private:
      * @param u32WaitTimeMS_ Time to wait before timeout (in ms).
      * @return              true - read successfully, false - timeout.
      */
-    bool Receive_i(const void* pvData_, bool bTail_, uint32_t u32WaitTimeMS_);
+    bool Receive_i(void* pvData_, bool bTail_, uint32_t u32WaitTimeMS_);
 
     uint16_t m_u16Head; //!< Current head index
     uint16_t m_u16Tail; //!< Current tail index

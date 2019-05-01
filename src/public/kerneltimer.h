@@ -52,6 +52,5 @@ public:
      *  Shut down the kernel timer, used when no timers are scheduled
      */
     static void Stop(void);
-
 };
 } // namespace Mark3

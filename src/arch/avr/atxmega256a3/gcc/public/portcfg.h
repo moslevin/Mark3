@@ -91,3 +91,10 @@ See license.txt for more information
     be initialized to a negative value.
 */
 #define PORT_MIN_TIMER_TICKS (0)
+
+/**
+    Set this to 1 to overload the system's New/Free functions with the kernel's allocator functions.
+    A user must configure the Kernel's allocator functions to point to a real heap implementation
+    backed with real memory in order to use dynamic object creation.
+*/
+#define PORT_OVERLOAD_NEW (1)

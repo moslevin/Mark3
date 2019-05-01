@@ -45,9 +45,7 @@ void Kernel::Init()
 {
     // Call port-specific early init function
     ThreadPort::Init();
-
     AutoAlloc::Init();
-
     // Initialize the global kernel data - thread-scheduler, and timer-scheduler.
     Scheduler::Init();
     TimerScheduler::Init();
@@ -72,7 +70,7 @@ void Kernel::CompleteStart()
 void Kernel::Panic(uint16_t u16Cause_)
 {
     m_bIsPanic = true;
-    if (m_pfPanic != nullptr) {
+    if (nullptr != m_pfPanic) {
         m_pfPanic(u16Cause_);
     } else {
         while (true) {}
@@ -82,8 +80,8 @@ void Kernel::Panic(uint16_t u16Cause_)
 //---------------------------------------------------------------------------
 void Kernel::DebugPrint(const char* szString_)
 {
-    KERNEL_ASSERT(szString_ != nullptr);
-    if (m_pfDebugPrintFunction != nullptr) {
+    KERNEL_ASSERT(nullptr != szString_);
+    if (nullptr != m_pfDebugPrintFunction) {
         m_pfDebugPrintFunction(szString_);
     }
 }

@@ -24,10 +24,10 @@ namespace Mark3
 //---------------------------------------------------------------------------
 void ProfileTimer::Init()
 {
-    m_u32StartTicks       = 0;
-    m_u32Cumulative       = 0;
-    m_u16Iterations       = 0;
-    m_bActive             = false;
+    m_u32StartTicks = 0;
+    m_u32Cumulative = 0;
+    m_u16Iterations = 0;
+    m_bActive       = false;
 }
 
 //---------------------------------------------------------------------------
@@ -60,8 +60,8 @@ void ProfileTimer::Stop()
 //---------------------------------------------------------------------------
 uint32_t ProfileTimer::GetAverage()
 {
-    if (m_u16Iterations != 0u) {
-        return (m_u32Cumulative + (uint32_t)(m_u16Iterations / 2)) / (uint32_t)m_u16Iterations;
+    if (0u != m_u16Iterations) {
+        return (m_u32Cumulative + static_cast<uint32_t>(m_u16Iterations / 2)) / static_cast<uint32_t>(m_u16Iterations);
     }
     return 0;
 }
@@ -75,7 +75,6 @@ uint32_t ProfileTimer::GetCurrent()
         u32Current = Kernel::GetTicks() - m_u32StartTicks;
         CS_EXIT();
         return u32Current;
-
     }
     return m_u32CurrentIteration;
 }

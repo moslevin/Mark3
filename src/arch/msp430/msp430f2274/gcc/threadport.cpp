@@ -84,7 +84,7 @@ void ThreadPort::InitStack(Thread* pclThread_)
 static void Thread_Switch(void)
 {
     P1IFG &= ~0x04;
-    g_pclCurrent = (Thread*)g_pclNext;
+    g_pclCurrent = g_pclNext;
 }
 
 //---------------------------------------------------------------------------

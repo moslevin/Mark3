@@ -53,11 +53,6 @@ See license.txt for more information
 
 namespace Mark3
 {
-//---------------------------------------------------------------------------
-// Cookies used to determine whether or not an object has been initialized
-#define BLOCKING_INVALID_COOKIE (0x3C)
-#define BLOCKING_INIT_COOKIE (0xC3)
-
 class Thread;
 
 //---------------------------------------------------------------------------
@@ -69,8 +64,8 @@ class Thread;
 class BlockingObject
 {
 public:
-    BlockingObject() { m_u8Initialized = BLOCKING_INVALID_COOKIE; }
-    ~BlockingObject() { m_u8Initialized = BLOCKING_INVALID_COOKIE; }
+    BlockingObject() { m_u8Initialized = m_uBlockingInvalidCookie; }
+    ~BlockingObject() { m_u8Initialized = m_uBlockingInvalidCookie; }
 
 protected:
     /**
@@ -121,13 +116,17 @@ protected:
     /**
      * @brief SetInitialized
      */
-    void SetInitialized(void) { m_u8Initialized = BLOCKING_INIT_COOKIE; }
+    void SetInitialized(void) { m_u8Initialized = m_uBlockingInitCookie; }
 
     /**
      * @brief IsInitialized
      * @return
      */
-    bool IsInitialized(void) { return (m_u8Initialized == BLOCKING_INIT_COOKIE); }
+    bool IsInitialized(void) { return (m_u8Initialized == m_uBlockingInitCookie); }
+
+    // Cookies used to determine whether or not an object has been initialized
+    static constexpr auto m_uBlockingInvalidCookie = uint8_t { 0x3C };
+    static constexpr auto m_uBlockingInitCookie    = uint8_t { 0xC3 };
 
     /**
      *  ThreadList which is used to hold the list of threads blocked

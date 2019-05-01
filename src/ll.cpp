@@ -33,13 +33,13 @@ void LinkListNode::ClearNode()
 //---------------------------------------------------------------------------
 void DoubleLinkList::Add(LinkListNode* node_)
 {
-    KERNEL_ASSERT(node_ != nullptr);
+    KERNEL_ASSERT(nullptr != node_);
 
     node_->prev = m_pclTail;
     node_->next = nullptr;
 
     // If the list is empty, initilize the head
-    if (m_pclHead == nullptr) {
+    if (nullptr == m_pclHead) {
         m_pclHead = node_;
     }
     // Otherwise, adjust the tail's next pointer
@@ -54,15 +54,15 @@ void DoubleLinkList::Add(LinkListNode* node_)
 //---------------------------------------------------------------------------
 void DoubleLinkList::Remove(LinkListNode* node_)
 {
-    KERNEL_ASSERT(node_ != nullptr);
+    KERNEL_ASSERT(nullptr != node_);
 
-    if (node_->prev != nullptr) {
+    if (nullptr != node_->prev) {
         if (node_->prev->next != node_) {
             Kernel::Panic(PANIC_LIST_UNLINK_FAILED);
         }
         node_->prev->next = node_->next;
     }
-    if (node_->next != nullptr) {
+    if (nullptr != node_->next) {
         if (node_->next->prev != node_) {
             Kernel::Panic(PANIC_LIST_UNLINK_FAILED);
         }
@@ -80,9 +80,9 @@ void DoubleLinkList::Remove(LinkListNode* node_)
 //---------------------------------------------------------------------------
 void CircularLinkList::Add(LinkListNode* node_)
 {
-    KERNEL_ASSERT(node_ != nullptr);
+    KERNEL_ASSERT(nullptr != node_);
 
-    if (m_pclHead == nullptr) {
+    if (nullptr == m_pclHead) {
         // If the list is empty, initilize the nodes
         m_pclHead = node_;
         m_pclTail = node_;
@@ -102,7 +102,7 @@ void CircularLinkList::Add(LinkListNode* node_)
 //---------------------------------------------------------------------------
 void CircularLinkList::Remove(LinkListNode* node_)
 {
-    KERNEL_ASSERT(node_ != nullptr);
+    KERNEL_ASSERT(nullptr != node_);
 
     // Check to see if this is the head of the list...
     if ((node_ == m_pclHead) && (m_pclHead == m_pclTail)) {
@@ -134,7 +134,7 @@ void CircularLinkList::Remove(LinkListNode* node_)
 //---------------------------------------------------------------------------
 void CircularLinkList::PivotForward()
 {
-    if (m_pclHead != nullptr) {
+    if (nullptr != m_pclHead) {
         m_pclHead = m_pclHead->next;
         m_pclTail = m_pclTail->next;
     }
@@ -143,7 +143,7 @@ void CircularLinkList::PivotForward()
 //---------------------------------------------------------------------------
 void CircularLinkList::PivotBackward()
 {
-    if (m_pclHead != nullptr) {
+    if (nullptr != m_pclHead) {
         m_pclHead = m_pclHead->prev;
         m_pclTail = m_pclTail->prev;
     }
@@ -152,13 +152,13 @@ void CircularLinkList::PivotBackward()
 //---------------------------------------------------------------------------
 void CircularLinkList::InsertNodeBefore(LinkListNode* node_, LinkListNode* insert_)
 {
-    KERNEL_ASSERT(node_ != nullptr);
-    KERNEL_ASSERT(insert_ != nullptr);
+    KERNEL_ASSERT(nullptr != node_);
+    KERNEL_ASSERT(nullptr != insert_);
 
     node_->next = insert_;
     node_->prev = insert_->prev;
 
-    if (insert_->prev != nullptr) {
+    if (nullptr != insert_->prev) {
         insert_->prev->next = node_;
     }
     insert_->prev = node_;

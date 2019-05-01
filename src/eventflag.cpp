@@ -38,8 +38,8 @@ namespace
      */
     void TimedEventFlag_Callback(Thread* pclOwner_, void* pvData_)
     {
-        KERNEL_ASSERT(pclOwner_ != nullptr);
-        KERNEL_ASSERT(pvData_ != nullptr);
+        KERNEL_ASSERT(nullptr != pclOwner_);
+        KERNEL_ASSERT(nullptr != pvData_);
 
         auto* pclEventFlag = static_cast<EventFlag*>(pvData_);
 
@@ -57,7 +57,7 @@ EventFlag::~EventFlag()
 {
     // If there are any threads waiting on this object when it goes out
     // of scope, set a kernel panic.
-    if (m_clBlockList.HighestWaiter() != nullptr) {
+    if (nullptr != m_clBlockList.HighestWaiter()) {
         Kernel::Panic(PANIC_ACTIVE_EVENTFLAG_DESCOPED);
     }
 }
@@ -74,7 +74,7 @@ void EventFlag::Init()
 void EventFlag::WakeMe(Thread* pclChosenOne_)
 {
     KERNEL_ASSERT(IsInitialized());
-    KERNEL_ASSERT(pclChosenOne_ != nullptr);
+    KERNEL_ASSERT(nullptr != pclChosenOne_);
 
     UnBlock(pclChosenOne_);
 }
@@ -88,8 +88,8 @@ uint16_t EventFlag::Wait_i(uint16_t u16Mask_, EventFlagOperation eMode_, uint32_
     auto bThreadYield = false;
     auto bMatch       = false;
 
-    Timer clEventTimer;
-    auto  bUseTimer = false;
+    auto clEventTimer = Timer {};
+    auto bUseTimer    = false;
 
     // Ensure we're operating in a critical section while we determine
     // whether or not we need to block the current thread on this object.
@@ -99,7 +99,7 @@ uint16_t EventFlag::Wait_i(uint16_t u16Mask_, EventFlagOperation eMode_, uint32_
     // desired bits.
     g_pclCurrent->SetEventFlagMask(u16Mask_);
 
-    if ((eMode_ == EventFlagOperation::All_Set) || (eMode_ == EventFlagOperation::All_Clear)) {
+    if ((EventFlagOperation::All_Set == eMode_) || (EventFlagOperation::All_Clear == eMode_)) {
         // Check to see if the flags in their current state match all of
         // the set flags in the event flag group, with this mask.
         if ((m_u16SetMask & u16Mask_) == u16Mask_) {
@@ -111,7 +111,7 @@ uint16_t EventFlag::Wait_i(uint16_t u16Mask_, EventFlagOperation eMode_, uint32_
                 g_pclCurrent->SetExpired(false);
             }
         }
-    } else if ((eMode_ == EventFlagOperation::Any_Set) || (eMode_ == EventFlagOperation::Any_Clear)) {
+    } else if ((EventFlagOperation::Any_Set == eMode_) || (EventFlagOperation::Any_Clear == eMode_)) {
         // Check to see if the existing flags match any of the set flags in
         // the event flag group  with this mask
         if ((m_u16SetMask & u16Mask_) != 0) {
@@ -131,7 +131,7 @@ uint16_t EventFlag::Wait_i(uint16_t u16Mask_, EventFlagOperation eMode_, uint32_
         g_pclCurrent->SetEventFlagMask(u16Mask_);
         g_pclCurrent->SetEventFlagMode(eMode_);
 
-        if (u32TimeMS_ != 0u) {
+        if (0u != u32TimeMS_) {
             g_pclCurrent->SetExpired(false);
             clEventTimer.Init();
             clEventTimer.Start(false, u32TimeMS_, TimedEventFlag_Callback, this);
@@ -186,38 +186,35 @@ void EventFlag::Set(uint16_t u16Mask_)
 {
     KERNEL_ASSERT(IsInitialized());
 
-    Thread*  pclPrev;
-    Thread*  pclCurrent;
-    auto     bReschedule = false;
-    uint16_t u16NewMask;
+    auto bReschedule = false;
 
     CS_ENTER();
-
     // Walk through the whole block list, checking to see whether or not
     // the current flag set now matches any/all of the masks and modes of
     // the threads involved.
 
     m_u16SetMask |= u16Mask_;
-    u16NewMask = m_u16SetMask;
+    auto u16NewMask = m_u16SetMask;
 
     // Start at the head of the list, and iterate through until we hit the
     // "head" element in the list again.  Ensure that we handle the case where
     // we remove the first or last elements in the list, or if there's only
     // one element in the list.
-    pclCurrent = static_cast<Thread*>(m_clBlockList.GetHead());
 
+    auto* pclCurrent = m_clBlockList.GetHead();
     // Do nothing when there are no objects blocking.
-    if (pclCurrent != nullptr) {
+    if (nullptr != pclCurrent) {
         // First loop - process every thread in the block-list and check to
         // see whether or not the current flags match the event-flag conditions
         // on the thread.
+        auto* pclPrev = (Thread*){};
         do {
             pclPrev    = pclCurrent;
-            pclCurrent = static_cast<Thread*>(pclCurrent->GetNext());
+            pclCurrent = pclCurrent->GetNext();
 
             // Read the thread's event mask/mode
-            uint16_t u16ThreadMask = pclPrev->GetEventFlagMask();
-            auto     eThreadMode   = pclPrev->GetEventFlagMode();
+            auto u16ThreadMask = pclPrev->GetEventFlagMask();
+            auto eThreadMode   = pclPrev->GetEventFlagMode();
 
             // For the "any" mode - unblock the blocked threads if one or more bits
             // in the thread's bitmask match the object's bitmask
@@ -256,11 +253,11 @@ void EventFlag::Set(uint16_t u16Mask_)
 
         // Second loop - go through and unblock all of the threads that
         // were tagged for unblocking.
-        pclCurrent   = static_cast<Thread*>(m_clBlockList.GetHead());
+        pclCurrent   = m_clBlockList.GetHead();
         auto bIsTail = false;
         do {
             pclPrev    = pclCurrent;
-            pclCurrent = static_cast<Thread*>(pclCurrent->GetNext());
+            pclCurrent = pclCurrent->GetNext();
 
             // Check to see if this is the condition to terminate the loop
             if (pclPrev == m_clBlockList.GetTail()) {

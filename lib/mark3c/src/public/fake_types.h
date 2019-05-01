@@ -48,6 +48,7 @@ typedef struct {
 
 //---------------------------------------------------------------------------
 typedef struct {
+    Fake_LinkedListNode fake_node;
     Fake_LinkedList fake_list;
     PORT_PRIO_TYPE  m_uXPriority;
     void*           m_pclMap;

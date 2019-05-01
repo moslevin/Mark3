@@ -21,8 +21,8 @@ See license.txt for more information
 
 #include "mark3.h"
 
-volatile Mark3::Thread* g_pclNext;
-Mark3::Thread*          g_pclCurrent;
+Mark3::Thread* g_pclNext;
+Mark3::Thread* g_pclCurrent;
 
 namespace Mark3
 {
@@ -35,7 +35,7 @@ PriorityMap Scheduler::m_clPrioMap;
 //---------------------------------------------------------------------------
 void Scheduler::Init()
 {
-    for (int i = 0; i < KERNEL_NUM_PRIORITIES; i++) {
+    for (size_t i = 0; i < m_uNumPriorities; i++) {
         m_aclPriorities[i].SetPriority(i);
         m_aclPriorities[i].SetMapPointer(&m_clPrioMap);
     }
@@ -45,14 +45,14 @@ void Scheduler::Init()
 void Scheduler::Schedule()
 {
     auto uXPrio = m_clPrioMap.HighestPriority();
-    if (uXPrio == 0) {
+    if (0 == uXPrio) {
         Kernel::Panic(PANIC_NO_READY_THREADS);
     }
     // Priorities are one-indexed
     uXPrio--;
 
     // Get the thread node at this priority.
-    g_pclNext = static_cast<Thread*>(m_aclPriorities[uXPrio].GetHead());
+    g_pclNext = m_aclPriorities[uXPrio].GetHead();
 }
 
 //---------------------------------------------------------------------------
@@ -74,7 +74,7 @@ void Scheduler::Remove(Thread* pclThread_)
 //---------------------------------------------------------------------------
 bool Scheduler::SetScheduler(bool bEnable_)
 {
-    bool bRet;
+    auto bRet = bool { false };
     CS_ENTER();
     bRet       = m_bEnabled;
     m_bEnabled = bEnable_;

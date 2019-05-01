@@ -32,7 +32,7 @@ namespace Mark3
  *
  * This utility module provides primatives for atomic operations - that is,
  * operations that are guaranteed to execute uninterrupted.  Basic atomic
- * primatives provided here include Set/Add/Subtract, as well as an atomic 
+ * primatives provided here include Set/Add/Subtract, as well as an atomic
  * test-and-set.
  *
  */
@@ -44,12 +44,11 @@ namespace Atomic
      * @param val_ New value to set in the variable
      * @return Previously-set value
      */
-    template<typename T>
-    T Set(T* pSource_, T val_)
+    template <typename T> T Set(T* pSource_, T val_)
     {
-        KERNEL_ASSERT(pSource_ != nullptr);
+        KERNEL_ASSERT(nullptr != pSource_);
 
-        T ret;
+        auto ret = T {};
         CS_ENTER();
         ret       = *pSource_;
         *pSource_ = val_;
@@ -63,12 +62,11 @@ namespace Atomic
      * @param val_ Value to add to the variable
      * @return Previously-held value in pSource_
      */
-    template<typename T>
-    T Add(T* pSource_, T val_)
+    template <typename T> T Add(T* pSource_, T val_)
     {
-        KERNEL_ASSERT(pSource_ != nullptr);
+        KERNEL_ASSERT(nullptr != pSource_);
 
-        T ret;
+        auto ret = T {};
         CS_ENTER();
         ret = *pSource_;
         *pSource_ += val_;
@@ -82,12 +80,11 @@ namespace Atomic
      * @param val_ Value to subtract from the variable
      * @return Previously-held value in pSource_
      */
-    template<typename T>
-    T Sub(T* pSource_, T val_)
+    template <typename T> T Sub(T* pSource_, T val_)
     {
-        KERNEL_ASSERT(pSource_ != nullptr);
+        KERNEL_ASSERT(nullptr != pSource_);
 
-        T ret;
+        auto ret = T {};
         CS_ENTER();
         ret = *pSource_;
         *pSource_ -= val_;

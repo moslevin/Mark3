@@ -34,52 +34,51 @@ void TimerList::Init(void)
 //---------------------------------------------------------------------------
 void TimerList::Add(Timer* pclListNode_)
 {
-    KERNEL_ASSERT(pclListNode_ != nullptr);
-    auto lock = LockGuard{ &m_clMutex };
+    KERNEL_ASSERT(nullptr != pclListNode_);
+    auto lock = LockGuard { &m_clMutex };
 
     pclListNode_->ClearNode();
-    DoubleLinkList::Add(pclListNode_);
+    TypedDoubleLinkList<Timer>::Add(pclListNode_);
 
     // Set the initial timer value
     pclListNode_->m_u32TimeLeft = pclListNode_->m_u32Interval;
 
     // Set the timer as active.
-    pclListNode_->m_u8Flags |= TIMERLIST_FLAG_ACTIVE;
+    pclListNode_->m_u8Flags |= uTimerFlagActive;
 }
 
 //---------------------------------------------------------------------------
 void TimerList::Remove(Timer* pclLinkListNode_)
 {
-    KERNEL_ASSERT(pclLinkListNode_ != nullptr);
-    auto lock = LockGuard{ &m_clMutex };
+    KERNEL_ASSERT(nullptr != pclLinkListNode_);
+    auto lock = LockGuard { &m_clMutex };
 
-    DoubleLinkList::Remove(pclLinkListNode_);
-    pclLinkListNode_->m_u8Flags &= ~TIMERLIST_FLAG_ACTIVE;
+    TypedDoubleLinkList<Timer>::Remove(pclLinkListNode_);
+    pclLinkListNode_->m_u8Flags &= ~uTimerFlagActive;
 }
 
 //---------------------------------------------------------------------------
 void TimerList::Process(void)
 {
-    auto lock = LockGuard{ &m_clMutex };
+    auto lock = LockGuard { &m_clMutex };
 
-    auto* pclCurr = static_cast<Timer*>(GetHead());
+    auto* pclCurr = GetHead();
     // Subtract the elapsed time interval from each active timer.
-    while (pclCurr != 0) {
-        auto* pclNext = static_cast<Timer*>(pclCurr->GetNext());
+    while (nullptr != pclCurr) {
+        auto* pclNext = pclCurr->GetNext();
 
         // Active timers only...
-        if ((pclCurr->m_u8Flags & TIMERLIST_FLAG_ACTIVE) != 0) {
+        if ((pclCurr->m_u8Flags & uTimerFlagActive) != 0) {
             pclCurr->m_u32TimeLeft--;
             if (0 == pclCurr->m_u32TimeLeft) {
                 // Expired -- run the callback. these callbacks must be very fast...
-                if (pclCurr->m_pfCallback != nullptr) {
+                if (nullptr != pclCurr->m_pfCallback) {
                     pclCurr->m_pfCallback(pclCurr->m_pclOwner, pclCurr->m_pvData);
                 }
-
-                if ((pclCurr->m_u8Flags & TIMERLIST_FLAG_ONE_SHOT) != 0) {
+                if ((pclCurr->m_u8Flags & uTimerFlagOneShot) != 0) {
                     // If this was a one-shot timer, deactivate the timer + remove
-                    pclCurr->m_u8Flags |= TIMERLIST_FLAG_EXPIRED;
-                    pclCurr->m_u8Flags &= ~TIMERLIST_FLAG_ACTIVE;
+                    pclCurr->m_u8Flags |= uTimerFlagExpired;
+                    pclCurr->m_u8Flags &= ~uTimerFlagActive;
                     Remove(pclCurr);
                 } else {
                     // Reset the interval timer.

@@ -43,12 +43,12 @@ void MessagePool::Push(Message* pclMessage_)
 //---------------------------------------------------------------------------
 Message* MessagePool::Pop()
 {
-    Message* pclRet;
+    auto* pclRet = (Message*){};
     CS_ENTER();
 
-    pclRet = static_cast<Message*>(m_clList.GetHead());
-    if (0 != pclRet) {
-        m_clList.Remove(static_cast<LinkListNode*>(pclRet));
+    pclRet = m_clList.GetHead();
+    if (nullptr != pclRet) {
+        m_clList.Remove(pclRet);
     }
 
     CS_EXIT();
@@ -58,7 +58,7 @@ Message* MessagePool::Pop()
 //------------------------------------------------------------------------
 Message* MessagePool::GetHead()
 {
-    return static_cast<Message*>(m_clList.GetHead());
+    return m_clList.GetHead();
 }
 
 //---------------------------------------------------------------------------
@@ -82,7 +82,7 @@ Message* MessageQueue::Receive(uint32_t u32TimeWaitMS_)
 //---------------------------------------------------------------------------
 Message* MessageQueue::Receive_i(uint32_t u32TimeWaitMS_)
 {
-    Message* pclRet;
+    auto* pclRet = (Message*){};
 
     // Block the current thread on the counting semaphore
     if (!m_clSemaphore.Pend(u32TimeWaitMS_)) {
@@ -92,8 +92,8 @@ Message* MessageQueue::Receive_i(uint32_t u32TimeWaitMS_)
     CS_ENTER();
 
     // Pop the head of the message queue and return it
-    pclRet = static_cast<Message*>(m_clLinkList.GetHead());
-    m_clLinkList.Remove(static_cast<Message*>(pclRet));
+    pclRet = m_clLinkList.GetHead();
+    m_clLinkList.Remove(pclRet);
 
     CS_EXIT();
 

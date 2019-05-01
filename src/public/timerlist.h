@@ -36,7 +36,7 @@ class Timer;
 /**
  *   TimerList class - a doubly-linked-list of timer objects.
  */
-class TimerList : public DoubleLinkList
+class TimerList : public TypedDoubleLinkList<Timer>
 {
 public:
     /**

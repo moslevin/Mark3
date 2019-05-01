@@ -34,14 +34,14 @@ Thread::~Thread()
     // If the thread is stopped, move it to the exit state.
     // If not in the exit state, kernel panic -- it's catastrophic to have
     // running threads on stack suddenly disappear.
-    if (m_eState == ThreadState::Stop) {
+    if (ThreadState::Stop == m_eState) {
         CS_ENTER();
         m_pclCurrent->Remove(this);
-        m_pclCurrent = 0;
-        m_pclOwner   = 0;
+        m_pclCurrent = nullptr;
+        m_pclOwner   = nullptr;
         m_eState     = ThreadState::Exit;
         CS_EXIT();
-    } else if (m_eState != ThreadState::Exit) {
+    } else if (ThreadState::Exit != m_eState) {
         Kernel::Panic(PANIC_RUNNING_THREAD_DESCOPED);
     }
 }
@@ -50,7 +50,7 @@ Thread::~Thread()
 void Thread::Init(
     K_WORD* pwStack_, uint16_t u16StackSize_, PORT_PRIO_TYPE uXPriority_, ThreadEntryFunc pfEntryPoint_, void* pvArg_)
 {
-    static uint8_t u8ThreadID = 0;
+    static auto u8ThreadID = uint8_t { 0 };
 
     KERNEL_ASSERT(pwStack_);
     KERNEL_ASSERT(pfEntryPoint_);
@@ -91,7 +91,7 @@ void Thread::Init(
 
 #if KERNEL_THREAD_CREATE_CALLOUT
     ThreadCreateCallout pfCallout = Kernel::GetThreadCreateCallout();
-    if (pfCallout != nullptr) {
+    if (nullptr != pfCallout) {
         pfCallout(this);
     }
 #endif
@@ -144,7 +144,7 @@ void Thread::Stop()
     KERNEL_ASSERT(IsInitialized());
 
     auto bReschedule = false;
-    if (m_eState == ThreadState::Stop) {
+    if (ThreadState::Stop == m_eState) {
         return;
     }
 
@@ -161,9 +161,9 @@ void Thread::Stop()
 
     // Add this thread to the stop-list (removing it from active scheduling)
     // Remove the thread from scheduling
-    if (m_eState == ThreadState::Ready) {
+    if (ThreadState::Ready == m_eState) {
         Scheduler::Remove(this);
-    } else if (m_eState == ThreadState::Blocked) {
+    } else if (ThreadState::Blocked == m_eState) {
         m_pclCurrent->Remove(this);
     }
 
@@ -189,9 +189,9 @@ void Thread::Exit()
 {
     KERNEL_ASSERT(IsInitialized());
 
-    bool bReschedule = false;
+    auto bReschedule = false;
 
-    if (m_eState == ThreadState::Exit) {
+    if (ThreadState::Exit == m_eState) {
         return;
     }
 
@@ -208,14 +208,14 @@ void Thread::Exit()
     }
 
     // Remove the thread from scheduling
-    if (m_eState == ThreadState::Ready) {
+    if (ThreadState::Ready == m_eState) {
         Scheduler::Remove(this);
-    } else if ((m_eState == ThreadState::Blocked) || (m_eState == ThreadState::Stop)) {
+    } else if ((ThreadState::Blocked == m_eState) || (ThreadState::Stop == m_eState)) {
         m_pclCurrent->Remove(this);
     }
 
-    m_pclCurrent = 0;
-    m_pclOwner   = 0;
+    m_pclCurrent = nullptr;
+    m_pclOwner   = nullptr;
     m_eState     = ThreadState::Exit;
 
     // We've removed the thread from scheduling, but interrupts might
@@ -234,7 +234,7 @@ void Thread::Exit()
 
 #if KERNEL_THREAD_EXIT_CALLOUT
     ThreadExitCallout pfCallout = Kernel::GetThreadExitCallout();
-    if (pfCallout != nullptr) {
+    if (nullptr != pfCallout) {
         pfCallout(this);
     }
 #endif
@@ -248,9 +248,9 @@ void Thread::Exit()
 //---------------------------------------------------------------------------
 void Thread::Sleep(uint32_t u32TimeMs_)
 {
-    Semaphore clSemaphore;
-    auto*     pclTimer       = g_pclCurrent->GetTimer();
-    auto      lTimerCallback = [](Thread* /*pclOwner*/, void* pvData_) {
+    auto  clSemaphore    = Semaphore {};
+    auto* pclTimer       = g_pclCurrent->GetTimer();
+    auto  lTimerCallback = [](Thread* /*pclOwner*/, void* pvData_) {
         auto* pclSemaphore = static_cast<Semaphore*>(pvData_);
         pclSemaphore->Post();
     };
@@ -272,9 +272,9 @@ uint16_t Thread::GetStackSlack()
 {
     KERNEL_ASSERT(IsInitialized());
 
-    K_ADDR wBottom = 0;
-    auto   wTop    = static_cast<K_ADDR>(m_u16StackSize - 1) / sizeof(K_ADDR);
-    auto   wMid    = ((wTop + wBottom) + 1) / 2;
+    auto wBottom = uint16_t { 0 };
+    auto wTop    = static_cast<uint16_t>((m_u16StackSize - 1) / sizeof(K_ADDR));
+    auto wMid    = static_cast<uint16_t>(((wTop + wBottom) + 1) / 2);
 
     CS_ENTER();
 
@@ -282,9 +282,9 @@ uint16_t Thread::GetStackSlack()
     // stack go from 0xFF's to non 0xFF.  Not Definitive, but accurate enough
     while ((wTop - wBottom) > 1) {
 #if STACK_GROWS_DOWN
-        if (m_pwStack[wMid] != (K_WORD)(-1))
+        if (m_pwStack[wMid] != static_cast<K_WORD>(-1))
 #else
-        if (m_pwStack[wMid] == (K_WORD)(-1))
+        if (m_pwStack[wMid] == static_cast<K_WORD>(-1))
 #endif
         {
             //! ToDo : Reverse the logic for MCUs where stack grows UP instead of down
@@ -312,7 +312,7 @@ void Thread::Yield()
         // Only switch contexts if the new task is different than the old task
         if (g_pclCurrent != g_pclNext) {
 #if KERNEL_ROUND_ROBIN
-            Quantum::Update((Thread*)g_pclNext);
+            Quantum::Update(g_pclNext);
 #endif
             Thread::ContextSwitchSWI();
         }
@@ -349,19 +349,17 @@ void Thread::SetPriority(PORT_PRIO_TYPE uXPriority_)
 
     // If this is the currently running thread, it's a good idea to reschedule
     // Or, if the new priority is a higher priority than the current thread's.
-    if ((g_pclCurrent == this) || (uXPriority_ > g_pclCurrent->GetPriority())) {
+    if ((this == g_pclCurrent) || (uXPriority_ > g_pclCurrent->GetPriority())) {
         bSchedule = true;
 #if KERNEL_ROUND_ROBIN
         Quantum::Cancel();
 #endif
     }
     Scheduler::Remove(this);
-    CS_EXIT();
 
     m_uXCurPriority = uXPriority_;
     m_uXPriority    = uXPriority_;
 
-    CS_ENTER();
     Scheduler::Add(this);
     CS_EXIT();
 
@@ -370,7 +368,7 @@ void Thread::SetPriority(PORT_PRIO_TYPE uXPriority_)
             CS_ENTER();
             Scheduler::Schedule();
 #if KERNEL_ROUND_ROBIN
-            Quantum::Update((Thread*)g_pclNext);
+            Quantum::Update(g_pclNext);
 #endif
             CS_EXIT();
             Thread::ContextSwitchSWI();
@@ -401,7 +399,7 @@ void Thread::ContextSwitchSWI()
 #endif
 #if KERNEL_CONTEXT_SWITCH_CALLOUT
         auto pfCallout = Kernel::GetThreadContextSwitchCallout();
-        if (pfCallout != nullptr) {
+        if (nullptr != pfCallout) {
             pfCallout(g_pclCurrent);
         }
 #endif

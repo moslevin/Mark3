@@ -35,8 +35,8 @@ namespace
      */
     void TimedMutex_Callback(Thread* pclOwner_, void* pvData_)
     {
-        KERNEL_ASSERT(pclOwner_ != nullptr);
-        KERNEL_ASSERT(pvData_ != nullptr);
+        KERNEL_ASSERT(nullptr != pclOwner_);
+        KERNEL_ASSERT(nullptr != pvData_);
 
         auto* pclMutex = static_cast<Mutex*>(pvData_);
 
@@ -57,7 +57,7 @@ Mutex::~Mutex()
 {
     // If there are any threads waiting on this object when it goes out
     // of scope, set a kernel panic.
-    if (m_clBlockList.GetHead() != nullptr) {
+    if (nullptr != m_clBlockList.GetHead()) {
         Kernel::Panic(PANIC_ACTIVE_MUTEX_DESCOPED);
     }
 }
@@ -65,7 +65,7 @@ Mutex::~Mutex()
 //---------------------------------------------------------------------------
 void Mutex::WakeMe(Thread* pclOwner_)
 {
-    KERNEL_ASSERT(pclOwner_ != nullptr);
+    KERNEL_ASSERT(nullptr != pclOwner_);
     // Remove from the semaphore waitlist and back to its ready list.
     UnBlock(pclOwner_);
 }
@@ -98,7 +98,7 @@ void Mutex::Init(bool bRecursive_)
 
     // Reset the data in the mutex
     m_bReady     = true;    // The mutex is free.
-    m_u8MaxPri   = 0;       // Set the maximum priority inheritence state
+    m_uMaxPri    = 0;       // Set the maximum priority inheritence state
     m_pclOwner   = nullptr; // Clear the mutex owner
     m_u8Recurse  = 0;       // Reset recurse count
     m_bRecursive = bRecursive_;
@@ -110,8 +110,8 @@ bool Mutex::Claim_i(uint32_t u32WaitTimeMS_)
 {
     KERNEL_ASSERT(IsInitialized());
 
-    Timer clTimer;
-    auto  bUseTimer = false;
+    auto clTimer   = Timer {};
+    auto bUseTimer = false;
 
     // Disable the scheduler while claiming the mutex - we're dealing with all
     // sorts of private thread data, can't have a thread switch while messing
@@ -119,11 +119,11 @@ bool Mutex::Claim_i(uint32_t u32WaitTimeMS_)
     Scheduler::SetScheduler(false);
 
     // Check to see if the mutex is claimed or not
-    if (static_cast<int>(m_bReady) != 0) {
+    if (false != m_bReady) {
         // Mutex isn't claimed, claim it.
         m_bReady    = false;
         m_u8Recurse = 0;
-        m_u8MaxPri  = g_pclCurrent->GetPriority();
+        m_uMaxPri   = g_pclCurrent->GetPriority();
         m_pclOwner  = g_pclCurrent;
 
         Scheduler::SetScheduler(true);
@@ -144,10 +144,10 @@ bool Mutex::Claim_i(uint32_t u32WaitTimeMS_)
 
     // The mutex is claimed already - we have to block now.  Move the
     // current thread to the list of threads waiting on the mutex.
-    if (u32WaitTimeMS_ != 0u) {
+    if (0u != u32WaitTimeMS_) {
         g_pclCurrent->SetExpired(false);
         clTimer.Init();
-        clTimer.Start(false, u32WaitTimeMS_, (TimerCallback)TimedMutex_Callback, this);
+        clTimer.Start(false, u32WaitTimeMS_, TimedMutex_Callback, this);
         bUseTimer = true;
     }
     BlockPriority(g_pclCurrent);
@@ -155,18 +155,18 @@ bool Mutex::Claim_i(uint32_t u32WaitTimeMS_)
     // Check if priority inheritence is necessary.  We do this in order
     // to ensure that we don't end up with priority inversions in case
     // multiple threads are waiting on the same resource.
-    if (m_u8MaxPri <= g_pclCurrent->GetPriority()) {
-        m_u8MaxPri = g_pclCurrent->GetPriority();
+    if (m_uMaxPri <= g_pclCurrent->GetPriority()) {
+        m_uMaxPri = g_pclCurrent->GetPriority();
 
-        auto* pclTemp = static_cast<Thread*>(m_clBlockList.GetHead());
-        while (pclTemp != nullptr) {
-            pclTemp->InheritPriority(m_u8MaxPri);
-            if (pclTemp == static_cast<Thread*>(m_clBlockList.GetTail())) {
+        auto* pclTemp = m_clBlockList.GetHead();
+        while (nullptr != pclTemp) {
+            pclTemp->InheritPriority(m_uMaxPri);
+            if (m_clBlockList.GetTail() == pclTemp) {
                 break;
             }
-            pclTemp = static_cast<Thread*>(pclTemp->GetNext());
+            pclTemp = pclTemp->GetNext();
         }
-        m_pclOwner->InheritPriority(m_u8MaxPri);
+        m_pclOwner->InheritPriority(m_uMaxPri);
     }
 
     // Done with thread data -reenable the scheduler
@@ -177,7 +177,7 @@ bool Mutex::Claim_i(uint32_t u32WaitTimeMS_)
 
     if (bUseTimer) {
         clTimer.Stop();
-        return (static_cast<int>(g_pclCurrent->GetExpired()) == 0);
+        return (false == g_pclCurrent->GetExpired());
     }
     return true;
 }
@@ -209,7 +209,7 @@ void Mutex::Release()
 
     // If the owner had claimed the lock multiple times, decrease the lock
     // count and return immediately.
-    if (m_bRecursive && (m_u8Recurse != 0u)) {
+    if (m_bRecursive && (0u != m_u8Recurse)) {
         m_u8Recurse--;
         Scheduler::SetScheduler(true);
         return;
@@ -224,14 +224,14 @@ void Mutex::Release()
     }
 
     // No threads are waiting on this semaphore?
-    if (m_clBlockList.GetHead() == nullptr) {
+    if (nullptr == m_clBlockList.GetHead()) {
         // Re-initialize the mutex to its default values
         m_bReady   = true;
-        m_u8MaxPri = 0;
+        m_uMaxPri  = 0;
         m_pclOwner = nullptr;
     } else {
         // Wake the highest priority Thread pending on the mutex
-        if (WakeNext() != 0u) {
+        if (0u != WakeNext()) {
             // Switch threads if it's higher or equal priority than the current thread
             bSchedule = true;
         }

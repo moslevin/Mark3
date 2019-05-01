@@ -8,26 +8,19 @@
 
 --[Mark3 Realtime Platform]--------------------------------------------------
 
-Copyright (c) 2012 - 2018 m0slevin, all rights reserved.
+Copyright (c) 2012 - 2019 m0slevin, all rights reserved.
 See license.txt for more information
-===========================================================================*/
+=========================================================================== */
 /**
-    @file priomap.h
-    @brief Priority map data structure
-*/
 
-#pragma once
+    @file   threadlistlist.cpp
 
-#include "kerneltypes.h"
-#include "mark3cfg.h"
+    @brief  Class implementing a doubly-linked list of thread lists
 
-#include "priomapl1.h"
-#include "priomapl2.h"
+ */
+#include "mark3.h"
+#include "threadlistlist.h"
 
 namespace Mark3 {
-#if KERNEL_NUM_PRIORITIES <= (PORT_PRIO_MAP_WORD_SIZE * 8u)
-using PriorityMap = PriorityMapL1<PORT_PRIO_TYPE, KERNEL_NUM_PRIORITIES>;
-#else
-using PriorityMap = PriorityMapL2<PORT_PRIO_TYPE, KERNEL_NUM_PRIORITIES>;
-#endif
+DoubleLinkList ThreadListList::m_clThreadListList;
 } // namespace Mark3
