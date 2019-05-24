@@ -19,50 +19,78 @@ See license.txt for more information
  */
 #pragma once
 
+#include "portcfg.h"
 #include "kerneltypes.h"
-#include "thread.h"
-#include "ithreadport.h"
 
+namespace Mark3
+{
 // clang-format off
-
 //---------------------------------------------------------------------------
 //! ASM Macro - simplify the use of ASM directive in C
 #define ASM      asm volatile
 
 //---------------------------------------------------------------------------
 //! Macro to find the top of a stack given its size and top address
-#define TOP_OF_STACK(x, y)        (K_WORD*) ( ((uint32_t)x) + (y - sizeof(K_WORD)) )
+#define PORT_TOP_OF_STACK(x, y)         (reinterpret_cast<K_WORD*>(reinterpret_cast<K_ADDR>(x) + (static_cast<K_ADDR>(y) - sizeof(K_WORD))))
 //! Push a value y to the stack pointer x and decrement the stack pointer
-#define PUSH_TO_STACK(x, y)        *x = y; x--;
-#define STACK_GROWS_DOWN           (1)
+#define PORT_PUSH_TO_STACK(x, y)        *x = y; x--;
+
+#define PORT_CLZ(x)      __builtin_clz((x))
 
 //------------------------------------------------------------------------
 #ifndef xDMB
     #define xDMB()                    ASM(" dmb \n");
 #endif
-#ifndef xdisable_irq
-    #define xdisable_irq()            ASM(" cpsid i \n");
-#endif
-#ifndef xenable_irq
-    #define xenable_irq()            ASM(" cpsie i \n");
-#endif
-
-#define ENABLE_INTS()        { xDMB(); xenable_irq(); }
-#define DISABLE_INTS()        { xdisable_irq(); xDMB(); }
 
 //------------------------------------------------------------------------
-//! Enter critical section (copy current PRIMASK register value, disable interrupts)
-#define CS_ENTER()    \
-{ \
-    DISABLE_INTS(); \
-    Mark3::g_ulCriticalCount++;\
+extern "C" {
+   extern uint8_t g_u8SR;
+   extern K_WORD g_kwCriticalCount;
 }
+
 //------------------------------------------------------------------------
-//! Exit critical section (restore previous PRIMASK status register value)
-#define CS_EXIT() \
-{ \
-    Mark3::g_ulCriticalCount--; \
-    if( 0 == Mark3::g_ulCriticalCount ) { \
-        ENABLE_INTS(); \
-    } \
+inline void PORT_IRQ_ENABLE()
+{
+    ASM(" cpsie i \n");
 }
+
+//------------------------------------------------------------------------
+inline void PORT_IRQ_DISABLE()
+{
+    ASM(" cpsid i \n");
+}
+
+//------------------------------------------------------------------------
+inline void PORT_CS_ENTER()
+{
+    volatile uint8_t __sr;
+    ASM (
+    " mrs   r0, PRIMASK\n "
+    " cpsid i \n"
+    " strb r0, %[output] \n"
+    : [output] "=m" (__sr) :: "r0");
+
+    if (!g_kwCriticalCount) {
+        g_u8SR = __sr;
+    }
+    g_kwCriticalCount++;
+}
+
+//------------------------------------------------------------------------
+inline void PORT_CS_EXIT()
+{
+    g_kwCriticalCount--;
+    if (!g_kwCriticalCount) {
+        ASM (
+        " ldrb r0, %[input]\n "
+        " msr PRIMASK, r0 \n "
+        ::[input] "m" (g_u8SR) : "r0");
+    }
+}
+
+//---------------------------------------------------------------------------
+inline K_WORD PORT_CS_NESTING()
+{
+    return g_kwCriticalCount;
+}
+} // namespace Mark3

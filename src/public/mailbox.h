@@ -178,11 +178,8 @@ public:
 
     uint16_t GetFreeSlots(void)
     {
-        auto rc = uint16_t {};
-        CS_ENTER();
-        rc = m_u16Free;
-        CS_EXIT();
-        return rc;
+        const auto cs = CriticalGuard{};
+        return m_u16Free;
     }
 
     bool IsFull(void) { return (GetFreeSlots() == 0); }

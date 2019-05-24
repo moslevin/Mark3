@@ -21,6 +21,7 @@ See license.txt for more information
 
 #include "kerneltypes.h"
 #include "mark3cfg.h"
+#include "threadport.h"
 
 namespace Mark3
 {
@@ -85,9 +86,9 @@ private:
 
     static inline T PriorityFromBitmap(T uXPrio_)
     {
-#if HW_CLZ
+#if PORT_USE_HW_CLZ
         // Support hardware-accelerated Count-leading-zeros instruction
-        return m_uXPrioMapBits - CLZ(uXPrio_);
+        return m_uXPrioMapBits - PORT_CLZ(uXPrio_);
 #else
         // Default un-optimized count-leading zeros operation
         T uXMask  = 1 << (m_uXPrioMapBits - 1);

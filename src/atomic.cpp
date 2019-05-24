@@ -27,13 +27,11 @@ bool Atomic::TestAndSet(bool* pbLock_)
 {
     KERNEL_ASSERT(nullptr != pbLock_);
 
-    auto bRet = bool {};
-    CS_ENTER();
-    bRet = *pbLock_;
+    auto cs = CriticalGuard{};
+    auto bRet = *pbLock_;
     if (!bRet) {
         *pbLock_ = 1;
     }
-    CS_EXIT();
     return bRet;
 }
 } // namespace Mark3

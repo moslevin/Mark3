@@ -39,7 +39,8 @@ bool Streamer::Read(uint8_t* pu8Data_)
 {
     auto rc = true;
 
-    CS_ENTER();
+    const auto cs = CriticalGuard{};
+
     if (m_u16Avail == m_u16Size) {
         rc = false;
     } else {
@@ -55,7 +56,6 @@ bool Streamer::Read(uint8_t* pu8Data_)
             m_u16Avail++;
         }
     }
-    CS_EXIT();
 
     return rc;
 }
@@ -74,24 +74,23 @@ uint16_t Streamer::Read(uint8_t* pu8Data_, uint16_t u16Len_)
     uint8_t* pu8Src;
     uint8_t* pu8Dst;
 
-    CS_ENTER();
+    { // Begin critical section
+        const auto cs = CriticalGuard{};
+        u16Allocated = m_u16Size - m_u16Avail;
 
-    u16Allocated = m_u16Size - m_u16Avail;
+        if (u16Allocated > u16Len_) {
+            u16ToRead = u16Len_;
+        } else {
+            u16ToRead = u16Allocated;
+        }
 
-    if (u16Allocated > u16Len_) {
-        u16ToRead = u16Len_;
-    } else {
-        u16ToRead = u16Allocated;
-    }
+        u16PreWrap = m_u16Size - m_u16Tail;
 
-    u16PreWrap = m_u16Size - m_u16Tail;
+        pu8Src = &m_pau8Buffer[m_u16Tail];
+        pu8Dst = pu8Data_;
 
-    pu8Src = &m_pau8Buffer[m_u16Tail];
-    pu8Dst = pu8Data_;
-
-    Lock(pu8Src);
-
-    CS_EXIT();
+        Lock(pu8Src);
+    } // end critical section
 
     if (u16Allocated != 0u) {
         if (u16PreWrap >= u16ToRead) {
@@ -103,18 +102,17 @@ uint16_t Streamer::Read(uint8_t* pu8Data_, uint16_t u16Len_)
         }
     }
 
-    CS_ENTER();
+    { // Begin critical section
+        const auto cs = CriticalGuard{};
+        m_u16Avail += u16ToRead;
+        if (u16PreWrap >= u16ToRead) {
+            m_u16Tail += u16ToRead;
+        } else {
+            m_u16Tail += u16ToRead - m_u16Size;
+        }
 
-    m_u16Avail += u16ToRead;
-    if (u16PreWrap >= u16ToRead) {
-        m_u16Tail += u16ToRead;
-    } else {
-        m_u16Tail += u16ToRead - m_u16Size;
-    }
-
-    Unlock();
-
-    CS_EXIT();
+        Unlock();
+    } // end critical section
     return u16ToRead;
 }
 
@@ -123,7 +121,7 @@ bool Streamer::Write(uint8_t u8Data_)
 {
     auto rc = true;
 
-    CS_ENTER();
+    const auto cs = CriticalGuard{};
     if (m_u16Avail == 0u) {
         rc = false;
     } else {
@@ -138,7 +136,6 @@ bool Streamer::Write(uint8_t u8Data_)
             m_u16Avail--;
         }
     }
-    CS_EXIT();
 
     return rc;
 }
@@ -160,28 +157,29 @@ uint16_t Streamer::Write(uint8_t* pu8Data_, uint16_t u16Len_)
     uint8_t* pu8Src;
     uint8_t* pu8Dst;
 
-    CS_ENTER();
-    if (m_u16Avail > u16Len_) {
-        u16ToWrite = u16Len_;
-    } else {
-        u16ToWrite = m_u16Avail;
-    }
+    { // Begin critical section
+        const auto cs = CriticalGuard{};
+        if (m_u16Avail > u16Len_) {
+            u16ToWrite = u16Len_;
+        } else {
+            u16ToWrite = m_u16Avail;
+        }
 
-    u16PreWrap = m_u16Size - m_u16Head;
+        u16PreWrap = m_u16Size - m_u16Head;
 
-    pu8Src = pu8Data_;
-    pu8Dst = &m_pau8Buffer[m_u16Head];
+        pu8Src = pu8Data_;
+        pu8Dst = &m_pau8Buffer[m_u16Head];
 
-    m_u16Avail -= u16ToWrite;
+        m_u16Avail -= u16ToWrite;
 
-    if (u16PreWrap >= u16ToWrite) {
-        m_u16Head += u16ToWrite;
-    } else {
-        m_u16Head += u16ToWrite - m_u16Size;
-    }
+        if (u16PreWrap >= u16ToWrite) {
+            m_u16Head += u16ToWrite;
+        } else {
+            m_u16Head += u16ToWrite - m_u16Size;
+        }
 
-    Lock(pu8Dst);
-    CS_EXIT();
+        Lock(pu8Dst);
+    } // End critical section
 
     // Perform the buffer writes with interrupts enabled, buffers locked.
     if (u16ToWrite != 0u) {
@@ -202,11 +200,10 @@ uint16_t Streamer::Write(uint8_t* pu8Data_, uint16_t u16Len_)
 bool Streamer::CanRead(void)
 {
     auto bRc = true;
-    CS_ENTER();
+    const auto cs = CriticalGuard{};
     if (m_u16Avail == m_u16Size) {
         bRc = false;
     }
-    CS_EXIT();
     return bRc;
 }
 
@@ -215,11 +212,10 @@ bool Streamer::CanWrite(void)
 {
     auto bRc = false;
 
-    CS_ENTER();
+    const auto cs = CriticalGuard{};
     if (m_u16Avail != 0u) {
         bRc = true;
     }
-    CS_EXIT();
 
     return bRc;
 }
@@ -229,8 +225,7 @@ bool Streamer::Claim(uint8_t** pu8Addr_)
 {
     auto rc = true;
 
-    CS_ENTER();
-
+    const auto cs = CriticalGuard{};
     if (m_u16Avail == 0u) {
         rc = false;
     } else {
@@ -248,34 +243,29 @@ bool Streamer::Claim(uint8_t** pu8Addr_)
             m_u16Avail--;
         }
     }
-
-    CS_EXIT();
     return rc;
 }
 
 //---------------------------------------------------------------------------
 void Streamer::Lock(uint8_t* pu8LockAddr_)
 {
-    CS_ENTER();
+    const auto cs = CriticalGuard{};
     m_pu8LockAddr = pu8LockAddr_;
-    CS_EXIT();
 }
 
 //---------------------------------------------------------------------------
 void Streamer::Unlock(void)
 {
-    CS_ENTER();
-    m_pu8LockAddr = 0;
-    CS_EXIT();
+    const auto cs = CriticalGuard{};
+    m_pu8LockAddr = 0;    
 }
 
 //---------------------------------------------------------------------------
 bool Streamer::IsEmpty(void)
 {
     bool rc;
-    CS_ENTER();
+    const auto cs = CriticalGuard{};
     rc = m_u16Avail == m_u16Size;
-    CS_EXIT();
     return rc;
 }
 } // namespace Mark3

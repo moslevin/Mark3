@@ -11,6 +11,9 @@ set(LIB_SOURCES
     autoalloc.cpp
     blocking.cpp
     condvar.cpp
+    colist.cpp
+    coroutine.cpp
+    cosched.cpp
     eventflag.cpp
     kernel.cpp
     ksemaphore.cpp
@@ -37,6 +40,9 @@ set(LIB_HEADERS
     public/autoalloc.h
     public/blocking.h
     public/condvar.h
+    public/coroutine.h
+    public/criticalguard.h
+    public/criticalsection.h
     public/eventflag.h
     public/ithreadport.h
     public/ksemaphore.h
@@ -56,6 +62,7 @@ set(LIB_HEADERS
     public/quantum.h
     public/readerwriter.h
     public/scheduler.h
+    public/schedulerguard.h
     public/thread.h
     public/threadlist.h
     public/timer.h

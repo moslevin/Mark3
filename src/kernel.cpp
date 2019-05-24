@@ -89,11 +89,8 @@ void Kernel::DebugPrint(const char* szString_)
 //---------------------------------------------------------------------------
 uint32_t Kernel::GetTicks()
 {
-    uint32_t rc;
-    CS_ENTER();
-    rc = m_u32Ticks;
-    CS_EXIT();
-    return rc;
+    auto cs = CriticalGuard{};
+    return m_u32Ticks;
 }
 
 } // namespace Mark3

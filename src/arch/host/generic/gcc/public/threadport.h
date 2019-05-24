@@ -21,24 +21,45 @@ See license.txt for more information
 
 #include "portcfg.h"
 #include "kerneltypes.h"
-#include "thread.h"
-#include "ithreadport.h"
 
 namespace Mark3
 {
 
 //---------------------------------------------------------------------------
 //! Macro to find the top of a stack given its size and top address
-#define TOP_OF_STACK(x, y)         (reinterpret_cast<K_WORD*>(reinterpret_cast<K_ADDR>(x) + (static_cast<K_ADDR>(y) - 1)))
+#define PORT_TOP_OF_STACK(x, y)         (reinterpret_cast<K_WORD*>(reinterpret_cast<K_ADDR>(x) + (static_cast<K_ADDR>(y) - 1)))
 //! Push a value y to the stack pointer x and decrement the stack pointer
-#define PUSH_TO_STACK(x, y)        *x = y; x--;
-#define STACK_GROWS_DOWN           (1)
+#define PORT_PUSH_TO_STACK(x, y)        *x = y; x--;
 
-#define HW_CLZ   (0)
+//------------------------------------------------------------------------
+extern "C" {
+   extern uint8_t g_u8SR;
+   extern K_WORD g_kwCriticalCount;
+}
 
-#define CS_ENTER()
-#define CS_EXIT()
-#define ENABLE_INTS()
-#define DISABLE_INTS()
+//------------------------------------------------------------------------
+inline void PORT_IRQ_ENABLE()
+{
+}
+
+//------------------------------------------------------------------------
+inline void PORT_IRQ_DISABLE()
+{
+}
+
+//------------------------------------------------------------------------
+inline void PORT_CS_ENTER()
+{
+}
+//------------------------------------------------------------------------
+inline void PORT_CS_EXIT()
+{
+}
+
+//---------------------------------------------------------------------------
+inline K_WORD PORT_CS_NESTING()
+{
+    return 0;
+}
 
 } // namespace Mark3

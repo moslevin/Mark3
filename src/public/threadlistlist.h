@@ -29,37 +29,43 @@ class ThreadList;
 //---------------------------------------------------------------------------
 /**
  * @brief The ThreadListList class
+ *
+ * Class used to track all threadlists active in the OS kernel.  At any point
+ * in time, the list can be traversed to get a complete view of all running,
+ * blocked, or stopped threads in the system.
  */
 class ThreadListList {
 public:
     /**
      * @brief Add
-     * @param pclThreadList_
+     * Add a ThreadList to the list for tracking
+     * @param pclThreadList_ threadlist to add for tracking
      */
     static void Add(ThreadList* pclThreadList_)
     {
-        m_clThreadListList.Add(reinterpret_cast<LinkListNode*>(pclThreadList_));
+        m_clThreadListList.Add(pclThreadList_);
     }
 
     /**
      * @brief Remove
-     * @param pclThreadList_
+     * Remove a threadlist from tracking
+     * @param pclThreadList_ threadlist to remove from tracking
      */
     static void Remove(ThreadList* pclThreadList_)
     {
-        m_clThreadListList.Remove(reinterpret_cast<LinkListNode*>(pclThreadList_));
+        m_clThreadListList.Remove(pclThreadList_);
     }
 
     /**
      * @brief GetHead
-     * @return
+     * @return The threadlist at the beginning of the list
      */
     static ThreadList* GetHead()
     {
-        return reinterpret_cast<ThreadList*>(m_clThreadListList.GetHead());
+        return m_clThreadListList.GetHead();
     }
 
 private:
-    static DoubleLinkList m_clThreadListList;
+    static TypedDoubleLinkList<ThreadList> m_clThreadListList;
 };
 } // namespace Mark3

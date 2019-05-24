@@ -32,6 +32,9 @@ See license.txt for more information
 
 //---------------------------------------------------------------------------
 extern "C" {
+uint8_t g_u8SR;
+K_WORD g_kwCriticalCount;
+
 void SVC_Handler(void) __attribute__((naked));
 void PendSV_Handler(void) __attribute__((naked));
 }
@@ -338,27 +341,27 @@ void ThreadPort::InitStack(Thread* pclThread_)
     for (i = 0; i < pclThread_->m_u16StackSize / sizeof(uint32_t); i++) { pu32Temp[i] = 0xFFFFFFFF; }
 #endif // #if KERNEL_STACK_CHECK
 
-    PUSH_TO_STACK(pu32Stack, 0); // We need one word of padding, apparently...
+    PORT_PUSH_TO_STACK(pu32Stack, 0); // We need one word of padding, apparently...
 
     //-- Simulated Exception Stack Frame --
-    PUSH_TO_STACK(pu32Stack, 0x01000000); // XSPR
-    PUSH_TO_STACK(pu32Stack, u32Addr);    // PC
-    PUSH_TO_STACK(pu32Stack, 0);          // LR
-    PUSH_TO_STACK(pu32Stack, 0x12);
-    PUSH_TO_STACK(pu32Stack, 0x3);
-    PUSH_TO_STACK(pu32Stack, 0x2);
-    PUSH_TO_STACK(pu32Stack, 0x1);
-    PUSH_TO_STACK(pu32Stack, (uint32_t)pclThread_->m_pvArg); // R0 = argument
+    PORT_PUSH_TO_STACK(pu32Stack, 0x01000000); // XSPR
+    PORT_PUSH_TO_STACK(pu32Stack, u32Addr);    // PC
+    PORT_PUSH_TO_STACK(pu32Stack, 0);          // LR
+    PORT_PUSH_TO_STACK(pu32Stack, 0x12);
+    PORT_PUSH_TO_STACK(pu32Stack, 0x3);
+    PORT_PUSH_TO_STACK(pu32Stack, 0x2);
+    PORT_PUSH_TO_STACK(pu32Stack, 0x1);
+    PORT_PUSH_TO_STACK(pu32Stack, (uint32_t)pclThread_->m_pvArg); // R0 = argument
 
     //-- Simulated Manually-Stacked Registers --
-    PUSH_TO_STACK(pu32Stack, 0x11);
-    PUSH_TO_STACK(pu32Stack, 0x10);
-    PUSH_TO_STACK(pu32Stack, 0x09);
-    PUSH_TO_STACK(pu32Stack, 0x08);
-    PUSH_TO_STACK(pu32Stack, 0x07);
-    PUSH_TO_STACK(pu32Stack, 0x06);
-    PUSH_TO_STACK(pu32Stack, 0x05);
-    PUSH_TO_STACK(pu32Stack, 0x04);
+    PORT_PUSH_TO_STACK(pu32Stack, 0x11);
+    PORT_PUSH_TO_STACK(pu32Stack, 0x10);
+    PORT_PUSH_TO_STACK(pu32Stack, 0x09);
+    PORT_PUSH_TO_STACK(pu32Stack, 0x08);
+    PORT_PUSH_TO_STACK(pu32Stack, 0x07);
+    PORT_PUSH_TO_STACK(pu32Stack, 0x06);
+    PORT_PUSH_TO_STACK(pu32Stack, 0x05);
+    PORT_PUSH_TO_STACK(pu32Stack, 0x04);
     pu32Stack++;
 
     pclThread_->m_pwStackTop = pu32Stack;

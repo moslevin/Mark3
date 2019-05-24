@@ -22,5 +22,5 @@ See license.txt for more information
 #include "threadlistlist.h"
 
 namespace Mark3 {
-DoubleLinkList ThreadListList::m_clThreadListList;
+TypedDoubleLinkList<ThreadList> ThreadListList::m_clThreadListList;
 } // namespace Mark3

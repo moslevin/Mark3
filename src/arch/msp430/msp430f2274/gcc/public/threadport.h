@@ -19,13 +19,14 @@ See license.txt for more information
  */
 #pragma once
 
+#include "portcfg.h"
 #include "kerneltypes.h"
-#include "thread.h"
-#include "ithreadport.h"
 
 #include <msp430.h>
 #include <in430.h>
 
+namespace Mark3
+{
 // clang-format off
 //---------------------------------------------------------------------------
 //! ASM Macro - simplify the use of ASM directive in C
@@ -33,10 +34,11 @@ See license.txt for more information
 
 //---------------------------------------------------------------------------
 //! Macro to find the top of a stack given its size and top address
-#define TOP_OF_STACK(x, y)        (K_ADDR*) ( ((uint16_t)x) + (y - sizeof(K_WORD)) )
+#define PORT_TOP_OF_STACK(x, y)         (reinterpret_cast<K_WORD*>(reinterpret_cast<K_ADDR>(x) + (static_cast<K_ADDR>(y) - sizeof(K_WORD))))
+
 //! Push a value y to the stack pointer x and decrement the stack pointer
-#define PUSH_TO_STACK(x, y)        *x = y; x--;
-#define STACK_GROWS_DOWN           (1)
+#define PORT_PUSH_TO_STACK(x, y)        *x = y; x--;
+
 //---------------------------------------------------------------------------
 //! Save the context of the Thread
 #define Thread_SaveContext()\
@@ -76,42 +78,51 @@ See license.txt for more information
     ASM("pop    r4"); \
     ASM("bic.w    #0x00F0, 0(r1)");
 
+//---------------------------------------------------------------------------
+extern uint8_t g_u8CSCount;
+extern uint16_t g_u16SR;
+
 //------------------------------------------------------------------------
-//! These macros *must* be used in pairs !
+inline void PORT_IRQ_ENABLE()
+{
+    __eint();
+}
+
 //------------------------------------------------------------------------
-//! Enter critical section (cache GIE bit in the status register, disable interrupts)
-#define CS_ENTER() \
-do { \
-    uint16_t u16IntState = __get_interrupt_state(); \
-    __dint(); \
-    if (0 == Mark3::g_u8CSCount) \
-    { \
-        Mark3::g_u16SR = u16IntState; \
-    } \
-    Mark3::g_u8CSCount++; \
-} while(0);
+inline void PORT_IRQ_DISABLE()
+{
+    __dint();
+}
+//------------------------------------------------------------------------
+inline void PORT_CS_ENTER()
+{
+    uint16_t u16IntState = __get_interrupt_state();
+    __dint();
+    if (0 == Mark3::g_u8CSCount)
+    {
+        Mark3::g_u16SR = u16IntState;
+    }
+    Mark3::g_u8CSCount++;
+}
 
 //------------------------------------------------------------------------
 //! Exit critical section (restore GIE bit in
-#define CS_EXIT() \
-do { \
-    if (1 == Mark3::g_u8CSCount) \
-    { \
-        if((Mark3::g_u16SR & 0x0008) == 0x0008) \
-        { \
-            __nop(); \
-            __eint(); \
-        } \
-    } \
-    Mark3::g_u8CSCount--; \
-} while(0);
+inline void PORT_CS_EXIT()
+{
+    Mark3::g_u8CSCount--;
+    if (1 == Mark3::g_u8CSCount)
+    {
+        if((Mark3::g_u16SR & 0x0008) == 0x0008)
+        {
+            __nop();
+            __eint();
+        }
+    }
+}
 
-//------------------------------------------------------------------------
-#define ENABLE_INTS()   __eint();
-#define DISABLE_INTS()  __dint();
-
-namespace Mark3 {
 //---------------------------------------------------------------------------
-extern volatile uint8_t g_u8CSCount;
-extern volatile uint16_t g_u16SR;
+inline uint8_t PORT_CS_NESTING()
+{
+    return Mark3::g_u8CSCount;
+}
 } // namespace Mark3

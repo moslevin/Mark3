@@ -33,20 +33,19 @@ bool     Quantum::m_bInTimer;
 //---------------------------------------------------------------------------
 void Quantum::SetInTimer()
 {
-    CS_ENTER();
+    const auto cs = CriticalGuard{};
     m_bInTimer = true;
 
     // Timer is active
     if (m_u16TicksRemain) {
         m_u16TicksRemain--;
     }
-    CS_EXIT();
 }
 
 //---------------------------------------------------------------------------
 void Quantum::ClearInTimer()
 {
-    CS_ENTER();
+    const auto cs = CriticalGuard{};
     m_bInTimer = false;
 
     // Timer expired - Pivot the thread list.
@@ -56,8 +55,7 @@ void Quantum::ClearInTimer()
             pclThreadList->PivotForward();
         }
         m_pclActiveThread = nullptr;
-    }
-    CS_EXIT();
+    }    
 }
 
 //---------------------------------------------------------------------------

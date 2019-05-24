@@ -156,27 +156,27 @@ bool Mailbox::Send_i(const void* pvData_, bool bTail_, uint32_t u32TimeoutMS_)
             Scheduler::SetScheduler(false);
         }
 
-        CS_ENTER();
-        // Ensure we have a free slot before we attempt to write data
-        if (0u != m_u16Free) {
-            m_u16Free--;
+        { // Begin critical section
+            const auto cs = CriticalGuard{};
+            // Ensure we have a free slot before we attempt to write data
+            if (0u != m_u16Free) {
+                m_u16Free--;
 
-            if (bTail_) {
-                pvDst = GetTailPointer();
-                MoveTailBackward();
+                if (bTail_) {
+                    pvDst = GetTailPointer();
+                    MoveTailBackward();
+                } else {
+                    MoveHeadForward();
+                    pvDst = GetHeadPointer();
+                }
+                bRet  = true;
+                bDone = true;
+            } else if (0u != u32TimeoutMS_) {
+                bBlock = true;
             } else {
-                MoveHeadForward();
-                pvDst = GetHeadPointer();
+                bDone = true;
             }
-            bRet  = true;
-            bDone = true;
-        } else if (0u != u32TimeoutMS_) {
-            bBlock = true;
-        } else {
-            bDone = true;
-        }
-
-        CS_EXIT();
+        } // End critical section
     }
 
     // Copy data to the claimed slot, and post the counting semaphore
@@ -212,18 +212,18 @@ bool Mailbox::Receive_i(void* pvData_, bool bTail_, uint32_t u32WaitTimeMS_)
 
     // Update the head/tail indexes, and get the associated data pointer for
     // the read operation.
-    CS_ENTER();
 
-    m_u16Free++;
-    if (bTail_) {
-        MoveTailForward();
-        pvSrc = GetTailPointer();
-    } else {
-        pvSrc = GetHeadPointer();
-        MoveHeadBackward();
-    }
-
-    CS_EXIT();
+    { // Begin critical section
+        const auto cs = CriticalGuard{};
+        m_u16Free++;
+        if (bTail_) {
+            MoveTailForward();
+            pvSrc = GetTailPointer();
+        } else {
+            pvSrc = GetHeadPointer();
+            MoveHeadBackward();
+        }
+    } // end critical section
 
     KERNEL_ASSERT(pvSrc);
     CopyData(pvSrc, pvData_, m_u16ElementSize);

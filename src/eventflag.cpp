@@ -93,71 +93,71 @@ uint16_t EventFlag::Wait_i(uint16_t u16Mask_, EventFlagOperation eMode_, uint32_
 
     // Ensure we're operating in a critical section while we determine
     // whether or not we need to block the current thread on this object.
-    CS_ENTER();
 
-    // Check to see whether or not the current mask matches any of the
-    // desired bits.
-    g_pclCurrent->SetEventFlagMask(u16Mask_);
+    { // Begin critical section
+        const auto cs = CriticalGuard{};
 
-    if ((EventFlagOperation::All_Set == eMode_) || (EventFlagOperation::All_Clear == eMode_)) {
-        // Check to see if the flags in their current state match all of
-        // the set flags in the event flag group, with this mask.
-        if ((m_u16SetMask & u16Mask_) == u16Mask_) {
-            bMatch = true;
-            g_pclCurrent->SetEventFlagMask(u16Mask_);
-
-            if (EventFlagOperation::All_Clear == eMode_) {
-                m_u16SetMask &= ~u16Mask_;
-                g_pclCurrent->SetExpired(false);
-            }
-        }
-    } else if ((EventFlagOperation::Any_Set == eMode_) || (EventFlagOperation::Any_Clear == eMode_)) {
-        // Check to see if the existing flags match any of the set flags in
-        // the event flag group  with this mask
-        if ((m_u16SetMask & u16Mask_) != 0) {
-            bMatch = true;
-            g_pclCurrent->SetEventFlagMask(m_u16SetMask & u16Mask_);
-
-            if (EventFlagOperation::Any_Clear == eMode_) {
-                m_u16SetMask &= ~u16Mask_;
-                g_pclCurrent->SetExpired(false);
-            }
-        }
-    }
-
-    // We're unable to match this pattern as-is, so we must block.
-    if (!bMatch) {
-        // Reset the current thread's event flag mask & mode
+        // Check to see whether or not the current mask matches any of the
+        // desired bits.
         g_pclCurrent->SetEventFlagMask(u16Mask_);
-        g_pclCurrent->SetEventFlagMode(eMode_);
 
-        if (0u != u32TimeMS_) {
-            g_pclCurrent->SetExpired(false);
-            clEventTimer.Init();
-            clEventTimer.Start(false, u32TimeMS_, TimedEventFlag_Callback, this);
-            bUseTimer = true;
+        if ((EventFlagOperation::All_Set == eMode_) || (EventFlagOperation::All_Clear == eMode_)) {
+            // Check to see if the flags in their current state match all of
+            // the set flags in the event flag group, with this mask.
+            if ((m_u16SetMask & u16Mask_) == u16Mask_) {
+                bMatch = true;
+                g_pclCurrent->SetEventFlagMask(u16Mask_);
+
+                if (EventFlagOperation::All_Clear == eMode_) {
+                    m_u16SetMask &= ~u16Mask_;
+                    g_pclCurrent->SetExpired(false);
+                }
+            }
+        } else if ((EventFlagOperation::Any_Set == eMode_) || (EventFlagOperation::Any_Clear == eMode_)) {
+            // Check to see if the existing flags match any of the set flags in
+            // the event flag group  with this mask
+            if ((m_u16SetMask & u16Mask_) != 0) {
+                bMatch = true;
+                g_pclCurrent->SetEventFlagMask(m_u16SetMask & u16Mask_);
+
+                if (EventFlagOperation::Any_Clear == eMode_) {
+                    m_u16SetMask &= ~u16Mask_;
+                    g_pclCurrent->SetExpired(false);
+                }
+            }
         }
 
-        // Add the thread to the object's block-list.
-        BlockPriority(g_pclCurrent);
+        // We're unable to match this pattern as-is, so we must block.
+        if (!bMatch) {
+            // Reset the current thread's event flag mask & mode
+            g_pclCurrent->SetEventFlagMask(u16Mask_);
+            g_pclCurrent->SetEventFlagMode(eMode_);
 
-        // Trigger that
-        bThreadYield = true;
-    }
+            if (0u != u32TimeMS_) {
+                g_pclCurrent->SetExpired(false);
+                clEventTimer.Init();
+                clEventTimer.Start(false, u32TimeMS_, TimedEventFlag_Callback, this);
+                bUseTimer = true;
+            }
 
-    // If bThreadYield is set, it means that we've blocked the current thread,
-    // and must therefore rerun the scheduler to determine what thread to
-    // switch to.
-    if (bThreadYield) {
-        // Switch threads immediately
-        Thread::Yield();
-    }
+            // Add the thread to the object's block-list.
+            BlockPriority(g_pclCurrent);
 
-    // Exit the critical section and return back to normal execution
-    CS_EXIT();
+            // Trigger that
+            bThreadYield = true;
+        }
+
+        // If bThreadYield is set, it means that we've blocked the current thread,
+        // and must therefore rerun the scheduler to determine what thread to
+        // switch to.
+        if (bThreadYield) {
+            // Switch threads immediately
+            Thread::Yield();
+        }
+    } // end critical section
 
     //!! If the Yield operation causes a new thread to be chosen, there will
-    //!! Be a context switch at the above CS_EXIT().  The original calling
+    //!! Be a context switch at the above CriticalSection::Exit().  The original calling
     //!! thread will not return back until a matching SetFlags call is made
     //!! or a timeout occurs.
     if (bUseTimer && bThreadYield) {
@@ -188,7 +188,7 @@ void EventFlag::Set(uint16_t u16Mask_)
 
     auto bReschedule = false;
 
-    CS_ENTER();
+    const auto cs = CriticalGuard{};
     // Walk through the whole block list, checking to see whether or not
     // the current flag set now matches any/all of the masks and modes of
     // the threads involved.
@@ -280,10 +280,6 @@ void EventFlag::Set(uint16_t u16Mask_)
     // Update the bitmask based on any "clear" operations performed along
     // the way
     m_u16SetMask = u16NewMask;
-
-    // Restore interrupts - will potentially cause a context switch if a
-    // thread is unblocked.
-    CS_EXIT();
 }
 
 //---------------------------------------------------------------------------
@@ -292,9 +288,8 @@ void EventFlag::Clear(uint16_t u16Mask_)
     KERNEL_ASSERT(IsInitialized());
 
     // Just clear the bitfields in the local object.
-    CS_ENTER();
+    const auto cs = CriticalGuard{};
     m_u16SetMask &= ~u16Mask_;
-    CS_EXIT();
 }
 
 //---------------------------------------------------------------------------
@@ -304,10 +299,8 @@ uint16_t EventFlag::GetMask()
 
     // Return the presently held event flag values in this object.  Ensure
     // we get this within a critical section to guarantee atomicity.
-    uint16_t u16Return;
-    CS_ENTER();
-    u16Return = m_u16SetMask;
-    CS_EXIT();
+    const auto cs = CriticalGuard{};
+    auto u16Return = m_u16SetMask;
     return u16Return;
 }
 } // namespace Mark3

@@ -41,6 +41,12 @@ See license.txt for more information
 #define KERNEL_STACK_GUARD_DEFAULT (32) // words
 
 /**
+    Set the number of priorities supported by the coroutine scheduler.  The
+    number of coroutine priorities is limited by the memory of the host CPU.
+*/
+#define PORT_COROUTINE_PRIORITIES (8)
+
+/**
     Define a macro indicating the CPU architecture for which this port belongs.
 
     This may also be set by the toolchain, but that's not guaranteed.
@@ -111,3 +117,14 @@ See license.txt for more information
     backed with real memory in order to use dynamic object creation.
 */
 #define PORT_OVERLOAD_NEW (1)
+/**
+    Set this to 1 if the stack grows down in the target architecture, or 0 if the stack grows up
+*/
+#define PORT_STACK_GROWS_DOWN (1)
+
+/**
+    Set this to 1 if the target CPU/toolchain supports an optimized Count-leading-zeros instruction,
+    or count-leading-zeros intrinsic.  If such functionality is not available, a general-purpose
+    implementation will be used.
+*/
+#define PORT_USE_HW_CLZ   (1)

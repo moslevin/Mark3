@@ -21,8 +21,6 @@ See license.txt for more information
 
 #include "portcfg.h"
 #include "kerneltypes.h"
-#include "thread.h"
-#include "ithreadport.h"
 
 #include <avr/io.h>
 #include <avr/interrupt.h>
@@ -31,36 +29,13 @@ namespace Mark3
 {
 // clang-format off
 //---------------------------------------------------------------------------
-//! ASM Macro - simplify the use of ASM directive in C
 #define ASM(x)      asm volatile(x);
-//! Status register define - map to 0x003F
-#define SR_         0x3F
-//! Stack pointer define
-#define SPH_        0x3E
-#define SPL_        0x3D
 
 //---------------------------------------------------------------------------
 //! Macro to find the top of a stack given its size and top address
-#define TOP_OF_STACK(x, y)         (reinterpret_cast<K_WORD*>(reinterpret_cast<K_ADDR>(x) + (static_cast<K_ADDR>(y) - 1)))
+#define PORT_TOP_OF_STACK(x, y)    (reinterpret_cast<K_WORD*>(reinterpret_cast<K_ADDR>(x) + (static_cast<K_ADDR>(y) - 1)))
 //! Push a value y to the stack pointer x and decrement the stack pointer
-#define PUSH_TO_STACK(x, y)        *x = y; x--;
-#define STACK_GROWS_DOWN           (1)
-
-//---------------------------------------------------------------------------
-// Lookup table based count-leading zeros implementation.
-inline uint8_t __mark3_clz8(uint8_t in_)
-{
-    static const uint8_t u8Lookup[] = {4, 3, 2, 2, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0};
-    uint8_t hi = __builtin_avr_swap(in_) & 0x0F;
-    if (hi) {
-        return u8Lookup[hi];
-    }
-    return 4 + u8Lookup[in_];
-}
-
-//---------------------------------------------------------------------------
-#define HW_CLZ   (1)
-#define CLZ(x)  __mark3_clz8(x)
+#define PORT_PUSH_TO_STACK(x, y)        *x = y; x--;
 
 //---------------------------------------------------------------------------
 //! Save the context of the Thread
@@ -158,23 +133,59 @@ ASM("pop r0"); \
 ASM("out __SREG__, r0"); \
 ASM("pop r0");
 
-//------------------------------------------------------------------------
-//! These macros *must* be used in pairs !
-//------------------------------------------------------------------------
-//! Enter critical section (copy status register, disable interrupts)
-#define CS_ENTER()    \
-{ \
-uint8_t __x = _SFR_IO8(SR_); \
-ASM("cli");
-//------------------------------------------------------------------------
-//! Exit critical section (restore status register)
-#define CS_EXIT() \
-_SFR_IO8(SR_) = __x;\
+//---------------------------------------------------------------------------
+static constexpr auto SR_ = uint8_t{0x3F};
+extern "C" {
+   extern K_WORD g_kwSFR;
+   extern K_WORD g_kwCriticalCount;
 }
 
-//------------------------------------------------------------------------
-//! Initiate a contex switch without using the SWI
-#define ENABLE_INTS()        ASM("sei");
-#define DISABLE_INTS()       ASM("cli");
+//---------------------------------------------------------------------------
+inline uint8_t PORT_CLZ(uint8_t in_)
+{
+    static const uint8_t u8Lookup[] = {4, 3, 2, 2, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0};
+    uint8_t hi = __builtin_avr_swap(in_) & 0x0F;
+    if (hi) {
+        return u8Lookup[hi];
+    }
+    return 4 + u8Lookup[in_];
+}
 
+//---------------------------------------------------------------------------
+inline void PORT_IRQ_ENABLE()
+{
+    ASM("sei");
+}
+
+//---------------------------------------------------------------------------
+inline void PORT_IRQ_DISABLE()
+{
+    ASM("cli");
+}
+
+//---------------------------------------------------------------------------
+inline void PORT_CS_ENTER()
+{
+    auto u8SFR = _SFR_IO8(SR_);
+    ASM("cli");
+    if (!g_kwCriticalCount) {
+        g_kwSFR = u8SFR;
+    }
+    g_kwCriticalCount++;
+}
+
+//---------------------------------------------------------------------------
+inline void PORT_CS_EXIT()
+{
+    g_kwCriticalCount--;
+    if (!g_kwCriticalCount) {
+        _SFR_IO8(SR_) = g_kwSFR;
+    }
+}
+
+//---------------------------------------------------------------------------
+inline K_WORD PORT_CS_NESTING()
+{
+    return g_kwCriticalCount;
+}
 } // namespace Mark3

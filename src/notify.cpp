@@ -69,21 +69,22 @@ void Notify::Signal(void)
 
     auto bReschedule = false;
 
-    CS_ENTER();
-    auto* pclCurrent = m_clBlockList.GetHead();
-    if (nullptr == pclCurrent) {
-        m_bPending = true;
-    } else {
-        while (nullptr != pclCurrent) {
-            UnBlock(pclCurrent);
-            if (!bReschedule && (pclCurrent->GetCurPriority() >= Scheduler::GetCurrentThread()->GetCurPriority())) {
-                bReschedule = true;
+    { // Begin critical section
+        const auto cs = CriticalGuard{};
+        auto* pclCurrent = m_clBlockList.GetHead();
+        if (nullptr == pclCurrent) {
+            m_bPending = true;
+        } else {
+            while (nullptr != pclCurrent) {
+                UnBlock(pclCurrent);
+                if (!bReschedule && (pclCurrent->GetCurPriority() >= Scheduler::GetCurrentThread()->GetCurPriority())) {
+                    bReschedule = true;
+                }
+                pclCurrent = m_clBlockList.GetHead();
             }
-            pclCurrent = m_clBlockList.GetHead();
+            m_bPending = false;
         }
-        m_bPending = false;
-    }
-    CS_EXIT();
+    } // end critical section
 
     if (bReschedule) {
         Thread::Yield();
@@ -97,17 +98,18 @@ void Notify::Wait(bool* pbFlag_)
     KERNEL_ASSERT(IsInitialized());
 
     auto bEarlyExit = false;
-    CS_ENTER();
-    if (!m_bPending) {
-        Block(g_pclCurrent);
-        if (nullptr != pbFlag_) {
-            *pbFlag_ = false;
+    { // Begin critical section
+        const auto cs = CriticalGuard{};
+        if (!m_bPending) {
+            Block(g_pclCurrent);
+            if (nullptr != pbFlag_) {
+                *pbFlag_ = false;
+            }
+        } else {
+            m_bPending = false;
+            bEarlyExit = true;
         }
-    } else {
-        m_bPending = false;
-        bEarlyExit = true;
-    }
-    CS_EXIT();
+    } // End critical section
 
     if (bEarlyExit) {
         return;
@@ -129,26 +131,27 @@ bool Notify::Wait(uint32_t u32WaitTimeMS_, bool* pbFlag_)
     auto bEarlyExit    = false;
     auto clNotifyTimer = Timer {};
 
-    CS_ENTER();
-    if (!m_bPending) {
-        if (0u != u32WaitTimeMS_) {
-            bUseTimer = true;
-            g_pclCurrent->SetExpired(false);
+    { // Begin critical section
+        const auto cs = CriticalGuard{};
+        if (!m_bPending) {
+            if (0u != u32WaitTimeMS_) {
+                bUseTimer = true;
+                g_pclCurrent->SetExpired(false);
 
-            clNotifyTimer.Init();
-            clNotifyTimer.Start(false, u32WaitTimeMS_, TimedNotify_Callback, this);
+                clNotifyTimer.Init();
+                clNotifyTimer.Start(false, u32WaitTimeMS_, TimedNotify_Callback, this);
+            }
+
+            Block(g_pclCurrent);
+
+            if (nullptr != pbFlag_) {
+                *pbFlag_ = false;
+            }
+        } else {
+            m_bPending = false;
+            bEarlyExit = true;
         }
-
-        Block(g_pclCurrent);
-
-        if (nullptr != pbFlag_) {
-            *pbFlag_ = false;
-        }
-    } else {
-        m_bPending = false;
-        bEarlyExit = true;
-    }
-    CS_EXIT();
+    } // end critical section
 
     if (bEarlyExit) {
         return true;

@@ -34,9 +34,10 @@ void ProfileTimer::Init()
 void ProfileTimer::Start()
 {
     if (!m_bActive) {
-        CS_ENTER();
-        m_u32StartTicks = Kernel::GetTicks();
-        CS_EXIT();
+        { // Begin critical section
+            const auto cs = CriticalGuard{};
+            m_u32StartTicks = Kernel::GetTicks();
+        } // End Critical Section
         m_bActive = true;
     }
 }
@@ -46,13 +47,14 @@ void ProfileTimer::Stop()
 {
     if (m_bActive) {
         uint32_t u32Final;
-        CS_ENTER();
-        u32Final = Kernel::GetTicks();
-        // Compute total for current iteration...
-        m_u32CurrentIteration = u32Final - m_u32StartTicks;
-        m_u32Cumulative += m_u32CurrentIteration;
-        m_u16Iterations++;
-        CS_EXIT();
+        { // Begin critical section
+            const auto cs = CriticalGuard{};
+            u32Final = Kernel::GetTicks();
+            // Compute total for current iteration...
+            m_u32CurrentIteration = u32Final - m_u32StartTicks;
+            m_u32Cumulative += m_u32CurrentIteration;
+            m_u16Iterations++;
+        } // End critical section
         m_bActive = false;
     }
 }
@@ -71,9 +73,10 @@ uint32_t ProfileTimer::GetCurrent()
 {
     if (m_bActive) {
         uint32_t u32Current;
-        CS_ENTER();
-        u32Current = Kernel::GetTicks() - m_u32StartTicks;
-        CS_EXIT();
+        { // Begin critical section
+            const auto cs = CriticalGuard{};
+            u32Current = Kernel::GetTicks() - m_u32StartTicks;
+        } // End critical section
         return u32Current;
     }
     return m_u32CurrentIteration;

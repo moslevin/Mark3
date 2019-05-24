@@ -97,14 +97,14 @@ void PrintCPUUsage(void)
 void ThreadCreate(Thread* pclThread_)
 {
     Kernel::DebugPrint("TC\n");
-    CS_ENTER();
+    CriticalSection::Enter();
     for (uint8_t i = 0; i < MAX_THREADS; i++) {
         if (apclActiveThreads[i] == 0) {
             apclActiveThreads[i] = pclThread_;
             break;
         }
     }
-    CS_EXIT();
+    CriticalSection::Exit();
 
     PrintThreadSlack();
     PrintCPUUsage();
@@ -113,7 +113,7 @@ void ThreadCreate(Thread* pclThread_)
 void ThreadExit(Thread* pclThread_)
 {
     Kernel::DebugPrint("TX\n");
-    CS_ENTER();
+    CriticalSection::Enter();
     for (uint8_t i = 0; i < MAX_THREADS; i++) {
         if (apclActiveThreads[i] == pclThread_) {
             apclActiveThreads[i] = 0;
@@ -121,7 +121,7 @@ void ThreadExit(Thread* pclThread_)
             break;
         }
     }
-    CS_EXIT();
+    CriticalSection::Exit();
 
     PrintThreadSlack();
     PrintCPUUsage();
@@ -133,14 +133,14 @@ void ThreadContextSwitch(Thread* pclThread_)
     static uint32_t u32LastTicks = 0;
     auto            u32Ticks     = Kernel::GetTicks();
 
-    CS_ENTER();
+    CriticalSection::Enter();
     for (uint8_t i = 0; i < MAX_THREADS; i++) {
         if (apclActiveThreads[i] == pclThread_) {
             au32ActiveTime[i] += u32Ticks - u32LastTicks;
             break;
         }
     }
-    CS_EXIT();
+    CriticalSection::Exit();
 
     u32LastTicks = u32Ticks;
 }

@@ -35,12 +35,11 @@ Thread::~Thread()
     // If not in the exit state, kernel panic -- it's catastrophic to have
     // running threads on stack suddenly disappear.
     if (ThreadState::Stop == m_eState) {
-        CS_ENTER();
+        const auto cs = CriticalGuard{};
         m_pclCurrent->Remove(this);
         m_pclCurrent = nullptr;
         m_pclOwner   = nullptr;
-        m_eState     = ThreadState::Exit;
-        CS_EXIT();
+        m_eState     = ThreadState::Exit;        
     } else if (ThreadState::Exit != m_eState) {
         Kernel::Panic(PANIC_RUNNING_THREAD_DESCOPED);
     }
@@ -61,7 +60,7 @@ void Thread::Init(
 
     // Initialize the thread parameters to their initial values.
     m_pwStack    = pwStack_;
-    m_pwStackTop = TOP_OF_STACK(pwStack_, u16StackSize_);
+    m_pwStackTop = PORT_TOP_OF_STACK(pwStack_, u16StackSize_);
 
     m_u16StackSize  = u16StackSize_;
     m_uXPriority    = uXPriority_;
@@ -82,12 +81,13 @@ void Thread::Init(
     ThreadPort::InitStack(this);
 
     // Add to the global "stop" list.
-    CS_ENTER();
-    m_pclOwner   = Scheduler::GetThreadList(m_uXPriority);
-    m_pclCurrent = Scheduler::GetStopList();
-    m_eState     = ThreadState::Stop;
-    m_pclCurrent->Add(this);
-    CS_EXIT();
+    { // Begin critical section
+        const auto cs = CriticalGuard{};
+        m_pclOwner   = Scheduler::GetThreadList(m_uXPriority);
+        m_pclCurrent = Scheduler::GetStopList();
+        m_eState     = ThreadState::Stop;
+        m_pclCurrent->Add(this);
+    } // End critical section
 
 #if KERNEL_THREAD_CREATE_CALLOUT
     ThreadCreateCallout pfCallout = Kernel::GetThreadCreateCallout();
@@ -114,7 +114,7 @@ void Thread::Start(void)
     // Remove the thread from the scheduler's "stopped" list, and add it
     // to the scheduler's ready list at the proper priority.
 
-    CS_ENTER();
+    const auto cs = CriticalGuard{};
     Scheduler::GetStopList()->Remove(this);
     Scheduler::Add(this);
     m_pclOwner   = Scheduler::GetThreadList(m_uXPriority);
@@ -134,8 +134,7 @@ void Thread::Start(void)
         if (GetCurPriority() >= Scheduler::GetCurrentThread()->GetCurPriority()) {
             Thread::Yield();
         }
-    }
-    CS_EXIT();
+    }    
 }
 
 //---------------------------------------------------------------------------
@@ -148,36 +147,36 @@ void Thread::Stop()
         return;
     }
 
-    CS_ENTER();
+    { // Begin critical section
+        const auto cs = CriticalGuard{};
 
-    // If a thread is attempting to stop itself, ensure we call the scheduler
-    if (this == Scheduler::GetCurrentThread()) {
-        bReschedule = true;
-#if KERNEL_ROUND_ROBIN
-        // Cancel RR scheduling
-        Quantum::Cancel();
-#endif
-    }
+        // If a thread is attempting to stop itself, ensure we call the scheduler
+        if (this == Scheduler::GetCurrentThread()) {
+            bReschedule = true;
+    #if KERNEL_ROUND_ROBIN
+            // Cancel RR scheduling
+            Quantum::Cancel();
+    #endif
+        }
 
-    // Add this thread to the stop-list (removing it from active scheduling)
-    // Remove the thread from scheduling
-    if (ThreadState::Ready == m_eState) {
-        Scheduler::Remove(this);
-    } else if (ThreadState::Blocked == m_eState) {
-        m_pclCurrent->Remove(this);
-    }
+        // Add this thread to the stop-list (removing it from active scheduling)
+        // Remove the thread from scheduling
+        if (ThreadState::Ready == m_eState) {
+            Scheduler::Remove(this);
+        } else if (ThreadState::Blocked == m_eState) {
+            m_pclCurrent->Remove(this);
+        }
 
-    m_pclOwner   = Scheduler::GetStopList();
-    m_pclCurrent = m_pclOwner;
-    m_pclOwner->Add(this);
-    m_eState = ThreadState::Stop;
+        m_pclOwner   = Scheduler::GetStopList();
+        m_pclCurrent = m_pclOwner;
+        m_pclOwner->Add(this);
+        m_eState = ThreadState::Stop;
 
-    // Just to be safe - attempt to remove the thread's timer
-    // from the timer-scheduler (does no harm if it isn't
-    // in the timer-list)
-    TimerScheduler::Remove(&m_clTimer);
-
-    CS_EXIT();
+        // Just to be safe - attempt to remove the thread's timer
+        // from the timer-scheduler (does no harm if it isn't
+        // in the timer-list)
+        TimerScheduler::Remove(&m_clTimer);
+    } // End Critical Section
 
     if (bReschedule) {
         Thread::Yield();
@@ -195,42 +194,43 @@ void Thread::Exit()
         return;
     }
 
-    CS_ENTER();
+    { // Begin critical section
+        const auto cs = CriticalGuard{};
 
-    // If this thread is the actively-running thread, make sure we run the
-    // scheduler again.
-    if (this == Scheduler::GetCurrentThread()) {
-        bReschedule = true;
+        // If this thread is the actively-running thread, make sure we run the
+        // scheduler again.
+        if (this == Scheduler::GetCurrentThread()) {
+            bReschedule = true;
 #if KERNEL_ROUND_ROBIN
-        // Cancel RR scheduling
-        Quantum::Cancel();
+            // Cancel RR scheduling
+            Quantum::Cancel();
 #endif
-    }
+        }
 
-    // Remove the thread from scheduling
-    if (ThreadState::Ready == m_eState) {
-        Scheduler::Remove(this);
-    } else if ((ThreadState::Blocked == m_eState) || (ThreadState::Stop == m_eState)) {
-        m_pclCurrent->Remove(this);
-    }
+        // Remove the thread from scheduling
+        if (ThreadState::Ready == m_eState) {
+            Scheduler::Remove(this);
+        } else if ((ThreadState::Blocked == m_eState) || (ThreadState::Stop == m_eState)) {
+            m_pclCurrent->Remove(this);
+        }
 
-    m_pclCurrent = nullptr;
-    m_pclOwner   = nullptr;
-    m_eState     = ThreadState::Exit;
+        m_pclCurrent = nullptr;
+        m_pclOwner   = nullptr;
+        m_eState     = ThreadState::Exit;
 
-    // We've removed the thread from scheduling, but interrupts might
-    // trigger checks against this thread's currently priority before
-    // we get around to scheduling new threads.  As a result, set the
-    // priority to idle to ensure that we always wind up scheduling
-    // new threads.
-    m_uXCurPriority = 0;
-    m_uXPriority    = 0;
+        // We've removed the thread from scheduling, but interrupts might
+        // trigger checks against this thread's currently priority before
+        // we get around to scheduling new threads.  As a result, set the
+        // priority to idle to ensure that we always wind up scheduling
+        // new threads.
+        m_uXCurPriority = 0;
+        m_uXPriority    = 0;
 
-    // Just to be safe - attempt to remove the thread's timer
-    // from the timer-scheduler (does no harm if it isn't
-    // in the timer-list)
-    TimerScheduler::Remove(&m_clTimer);
-    CS_EXIT();
+        // Just to be safe - attempt to remove the thread's timer
+        // from the timer-scheduler (does no harm if it isn't
+        // in the timer-list)
+        TimerScheduler::Remove(&m_clTimer);
+    } // End Critical Section
 
 #if KERNEL_THREAD_EXIT_CALLOUT
     ThreadExitCallout pfCallout = Kernel::GetThreadExitCallout();
@@ -276,26 +276,26 @@ uint16_t Thread::GetStackSlack()
     auto wTop    = static_cast<uint16_t>((m_u16StackSize - 1) / sizeof(K_ADDR));
     auto wMid    = static_cast<uint16_t>(((wTop + wBottom) + 1) / 2);
 
-    CS_ENTER();
+    { // Begin critical section
+        const auto cs = CriticalGuard{};
 
-    // Logarithmic bisection - find the point where the contents of the
-    // stack go from 0xFF's to non 0xFF.  Not Definitive, but accurate enough
-    while ((wTop - wBottom) > 1) {
-#if STACK_GROWS_DOWN
-        if (m_pwStack[wMid] != static_cast<K_WORD>(-1))
+        // Logarithmic bisection - find the point where the contents of the
+        // stack go from 0xFF's to non 0xFF.  Not Definitive, but accurate enough
+        while ((wTop - wBottom) > 1) {
+#if PORT_STACK_GROWS_DOWN
+            if (m_pwStack[wMid] != static_cast<K_WORD>(-1))
 #else
-        if (m_pwStack[wMid] == static_cast<K_WORD>(-1))
+            if (m_pwStack[wMid] == static_cast<K_WORD>(-1))
 #endif
-        {
-            //! ToDo : Reverse the logic for MCUs where stack grows UP instead of down
-            wTop = wMid;
-        } else {
-            wBottom = wMid;
+            {
+                //! ToDo : Reverse the logic for MCUs where stack grows UP instead of down
+                wTop = wMid;
+            } else {
+                wBottom = wMid;
+            }
+            wMid = (wTop + wBottom + 1) / 2;
         }
-        wMid = (wTop + wBottom + 1) / 2;
-    }
-
-    CS_EXIT();
+    } // End Critical Section
 
     return wMid * sizeof(K_ADDR);
 }
@@ -304,7 +304,7 @@ uint16_t Thread::GetStackSlack()
 //---------------------------------------------------------------------------
 void Thread::Yield()
 {
-    CS_ENTER();
+    const auto cs = CriticalGuard{};
     // Run the scheduler
     if (Scheduler::IsEnabled()) {
         Scheduler::Schedule();
@@ -319,7 +319,6 @@ void Thread::Yield()
     } else {
         Scheduler::QueueScheduler();
     }
-    CS_EXIT();
 }
 
 //---------------------------------------------------------------------------
@@ -345,32 +344,34 @@ void Thread::SetPriority(PORT_PRIO_TYPE uXPriority_)
     KERNEL_ASSERT(IsInitialized());
     auto bSchedule = false;
 
-    CS_ENTER();
+    { // Begin critical section
+        const auto cs = CriticalGuard{};
 
-    // If this is the currently running thread, it's a good idea to reschedule
-    // Or, if the new priority is a higher priority than the current thread's.
-    if ((this == g_pclCurrent) || (uXPriority_ > g_pclCurrent->GetPriority())) {
-        bSchedule = true;
-#if KERNEL_ROUND_ROBIN
-        Quantum::Cancel();
-#endif
-    }
-    Scheduler::Remove(this);
+        // If this is the currently running thread, it's a good idea to reschedule
+        // Or, if the new priority is a higher priority than the current thread's.
+        if ((this == g_pclCurrent) || (uXPriority_ > g_pclCurrent->GetPriority())) {
+            bSchedule = true;
+    #if KERNEL_ROUND_ROBIN
+            Quantum::Cancel();
+    #endif
+        }
+        Scheduler::Remove(this);
 
-    m_uXCurPriority = uXPriority_;
-    m_uXPriority    = uXPriority_;
+        m_uXCurPriority = uXPriority_;
+        m_uXPriority    = uXPriority_;
 
-    Scheduler::Add(this);
-    CS_EXIT();
+        Scheduler::Add(this);
+    } // End critical section
 
     if (bSchedule) {
         if (Scheduler::IsEnabled()) {
-            CS_ENTER();
-            Scheduler::Schedule();
+            { // Begin critical section
+                const auto cs = CriticalGuard{};
+                Scheduler::Schedule();
 #if KERNEL_ROUND_ROBIN
-            Quantum::Update(g_pclNext);
+                Quantum::Update(g_pclNext);
 #endif
-            CS_EXIT();
+            } // End critical sectin
             Thread::ContextSwitchSWI();
         } else {
             Scheduler::QueueScheduler();

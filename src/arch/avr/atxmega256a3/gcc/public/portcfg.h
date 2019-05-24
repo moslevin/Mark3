@@ -98,3 +98,15 @@ See license.txt for more information
     backed with real memory in order to use dynamic object creation.
 */
 #define PORT_OVERLOAD_NEW (1)
+
+/**
+    Set this to 1 if the stack grows down in the target architecture, or 0 if the stack grows up
+*/
+#define PORT_STACK_GROWS_DOWN (1)
+
+/**
+    Set this to 1 if the target CPU/toolchain supports an optimized Count-leading-zeros instruction,
+    or count-leading-zeros intrinsic.  If such functionality is not available, a general-purpose
+    implementation will be used.
+*/
+#define PORT_USE_HW_CLZ   (1)

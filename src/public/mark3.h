@@ -21,6 +21,8 @@ See license.txt for more information
 
 #include "mark3cfg.h"
 #include "threadport.h"
+#include "criticalsection.h"
+#include "criticalguard.h"
 
 #include "kerneltypes.h"
 #include "kerneldebug.h"
@@ -48,3 +50,13 @@ See license.txt for more information
 #include "profile.h"
 #include "autoalloc.h"
 #include "priomap.h"
+
+#include "threadlist.h"
+#include "threadlistlist.h"
+
+#include "schedulerguard.h"
+
+#include "coroutine.h"
+#include "colist.h"
+#include "cosched.h"
+

@@ -58,23 +58,23 @@ void ThreadPort::InitStack(Thread* pclThread_)
 #endif // #if KERNEL_STACK_CHECK
 
     // 1st - push start address... (R0/PC)
-    PUSH_TO_STACK(pu16Stack, u16Addr);
+    PORT_PUSH_TO_STACK(pu16Stack, u16Addr);
 
     //!! Note - R1 is the dedicted stack pointer (not in context)
 
     // 2nd - Interrupts enabled status register (R2/SR)
-    PUSH_TO_STACK(pu16Stack, 0x08);
+    PORT_PUSH_TO_STACK(pu16Stack, 0x08);
 
     //!! Note - R3 is a zero register (not in context)
 
     // Push other registers  (R4-R11)
-    for (i = 4; i < 12; i++) { PUSH_TO_STACK(pu16Stack, i); }
+    for (i = 4; i < 12; i++) { PORT_PUSH_TO_STACK(pu16Stack, i); }
 
     // Function parameter (R12)
-    PUSH_TO_STACK(pu16Stack, (uint16_t)pclThread_->m_pvArg);
+    PORT_PUSH_TO_STACK(pu16Stack, (uint16_t)pclThread_->m_pvArg);
 
     // Push other registers (R13-R15)
-    for (i = 13; i < 16; i++) { PUSH_TO_STACK(pu16Stack, i); }
+    for (i = 13; i < 16; i++) { PORT_PUSH_TO_STACK(pu16Stack, i); }
 
     // Set the top o' the stack.
     pclThread_->m_pwStackTop = (uint16_t*)(pu16Stack + 1);

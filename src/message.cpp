@@ -33,25 +33,18 @@ void MessagePool::Push(Message* pclMessage_)
 {
     KERNEL_ASSERT(pclMessage_);
 
-    CS_ENTER();
-
+    const auto cs = CriticalGuard{};
     m_clList.Add(pclMessage_);
-
-    CS_EXIT();
 }
 
 //---------------------------------------------------------------------------
 Message* MessagePool::Pop()
 {
-    auto* pclRet = (Message*){};
-    CS_ENTER();
-
-    pclRet = m_clList.GetHead();
+    const auto cs = CriticalGuard{};
+    auto* pclRet = m_clList.GetHead();
     if (nullptr != pclRet) {
         m_clList.Remove(pclRet);
     }
-
-    CS_EXIT();
     return pclRet;
 }
 
@@ -82,20 +75,15 @@ Message* MessageQueue::Receive(uint32_t u32TimeWaitMS_)
 //---------------------------------------------------------------------------
 Message* MessageQueue::Receive_i(uint32_t u32TimeWaitMS_)
 {
-    auto* pclRet = (Message*){};
-
     // Block the current thread on the counting semaphore
     if (!m_clSemaphore.Pend(u32TimeWaitMS_)) {
         return nullptr;
     }
 
-    CS_ENTER();
-
+    const auto cs = CriticalGuard{};
     // Pop the head of the message queue and return it
-    pclRet = m_clLinkList.GetHead();
+    auto* pclRet = m_clLinkList.GetHead();
     m_clLinkList.Remove(pclRet);
-
-    CS_EXIT();
 
     return pclRet;
 }
@@ -105,12 +93,12 @@ void MessageQueue::Send(Message* pclSrc_)
 {
     KERNEL_ASSERT(pclSrc_);
 
-    CS_ENTER();
+    CriticalSection::Enter();
 
     // Add the message to the head of the linked list
     m_clLinkList.Add(pclSrc_);
 
-    CS_EXIT();
+    CriticalSection::Exit();
 
     // Post the semaphore, waking the blocking thread for the queue.
     m_clSemaphore.Post();

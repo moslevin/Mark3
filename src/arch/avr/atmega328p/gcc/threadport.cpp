@@ -30,6 +30,11 @@ See license.txt for more information
 #include <avr/io.h>
 #include <avr/interrupt.h>
 
+extern "C" {
+K_WORD g_kwSFR = 0;
+K_WORD g_kwCriticalCount = 0;
+} // extern "C"
+
 //---------------------------------------------------------------------------
 namespace Mark3
 {
@@ -53,29 +58,29 @@ void ThreadPort::InitStack(Thread* pclThread_)
 #endif // #if KERNEL_STACK_CHECK
 
     // Our context starts with the entry function
-    PUSH_TO_STACK(pu8Stack, static_cast<uint8_t>(u16Addr & 0x00FF));
-    PUSH_TO_STACK(pu8Stack, static_cast<uint8_t>((u16Addr >> 8) & 0x00FF));
+    PORT_PUSH_TO_STACK(pu8Stack, static_cast<uint8_t>(u16Addr & 0x00FF));
+    PORT_PUSH_TO_STACK(pu8Stack, static_cast<uint8_t>((u16Addr >> 8) & 0x00FF));
 
     // R0
-    PUSH_TO_STACK(pu8Stack, 0x00); // R0
+    PORT_PUSH_TO_STACK(pu8Stack, 0x00); // R0
 
     // Push status register and R1 (which is used as a constant zero)
-    PUSH_TO_STACK(pu8Stack, 0x80); // SR
-    PUSH_TO_STACK(pu8Stack, 0x00); // R1
+    PORT_PUSH_TO_STACK(pu8Stack, 0x80); // SR
+    PORT_PUSH_TO_STACK(pu8Stack, 0x00); // R1
 
     // Push other registers
     for (i = 2; i <= 23; i++) // R2-R23
     {
-        PUSH_TO_STACK(pu8Stack, i);
+        PORT_PUSH_TO_STACK(pu8Stack, i);
     }
 
     // Assume that the argument is the only stack variable
-    PUSH_TO_STACK(pu8Stack, static_cast<uint8_t>((reinterpret_cast<K_ADDR>(pclThread_->m_pvArg)) & 0x00FF)); // R24
-    PUSH_TO_STACK(pu8Stack,
+    PORT_PUSH_TO_STACK(pu8Stack, static_cast<uint8_t>((reinterpret_cast<K_ADDR>(pclThread_->m_pvArg)) & 0x00FF)); // R24
+    PORT_PUSH_TO_STACK(pu8Stack,
                   static_cast<uint8_t>(((reinterpret_cast<K_ADDR>(pclThread_->m_pvArg)) >> 8) & 0x00FF)); // R25
 
     // Push the rest of the registers in the context
-    for (i = 26; i <= 31; i++) { PUSH_TO_STACK(pu8Stack, i); }
+    for (i = 26; i <= 31; i++) { PORT_PUSH_TO_STACK(pu8Stack, i); }
 
     // Set the top o' the stack.
     pclThread_->m_pwStackTop = (uint8_t*)pu8Stack;

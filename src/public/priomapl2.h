@@ -21,6 +21,7 @@ See license.txt for more information
 
 #include "kerneltypes.h"
 #include "mark3cfg.h"
+#include "threadport.h"
 
 namespace Mark3
 {
@@ -40,7 +41,7 @@ public:
     PriorityMapL2()
     {
         m_uXPriorityMapL2 = 0;
-        for (PORT_PRIO_TYPE i = 0; i < m_uXPrioMapNumWords; i++) { m_auXPriorityMap[i] = 0; }
+        for (auto i = PORT_PRIO_TYPE{0}; i < m_uXPrioMapNumWords; i++) { m_auXPriorityMap[i] = 0; }
     }
 
     /**
@@ -100,9 +101,9 @@ private:
 
     static inline T PriorityFromBitmap(T uXPrio_)
     {
-#if HW_CLZ
+#if PORT_USE_HW_CLZ
         // Support hardware-accelerated Count-leading-zeros instruction
-        return m_uXPrioMapBits - CLZ(uXPrio_);
+        return m_uXPrioMapBits - PORT_CLZ(uXPrio_);
 #else
         // Default un-optimized count-leading zeros operation
         T uXMask  = 1 << (m_uXPrioMapBits - 1);

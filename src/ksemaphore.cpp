@@ -115,24 +115,25 @@ bool Semaphore::Post()
     // Increment the semaphore count - we can mess with threads so ensure this
     // is in a critical section.  We don't just disable the scheudler since
     // we want to be able to do this from within an interrupt context as well.
-    CS_ENTER();
 
-    // If nothing is waiting for the semaphore
-    if (nullptr == m_clBlockList.GetHead()) {
-        // Check so see if we've reached the maximum value in the semaphore
-        if (m_u16Value < m_u16MaxValue) {
-            // Increment the count value
-            m_u16Value++;
+    { // Begin critical section
+        const auto cs = CriticalGuard{};
+        // If nothing is waiting for the semaphore
+        if (nullptr == m_clBlockList.GetHead()) {
+            // Check so see if we've reached the maximum value in the semaphore
+            if (m_u16Value < m_u16MaxValue) {
+                // Increment the count value
+                m_u16Value++;
+            } else {
+                // Maximum value has been reached, bail out.
+                bBail = true;
+            }
         } else {
-            // Maximum value has been reached, bail out.
-            bBail = true;
+            // Otherwise, there are threads waiting for the semaphore to be
+            // posted, so wake the next one (highest priority goes first).
+            bThreadWake = (WakeNext() != 0u);
         }
-    } else {
-        // Otherwise, there are threads waiting for the semaphore to be
-        // posted, so wake the next one (highest priority goes first).
-        bThreadWake = (WakeNext() != 0u);
-    }
-    CS_EXIT();
+    } // end critical section
 
     // If we weren't able to increment the semaphore count, fail out.
     if (bBail) {
@@ -158,29 +159,29 @@ bool Semaphore::Pend_i(uint32_t u32WaitTimeMS_)
 
     // Once again, messing with thread data - ensure
     // we're doing all of these operations from within a thread-safe context.
-    CS_ENTER();
 
-    // Check to see if we need to take any action based on the semaphore count
-    if (0 != m_u16Value) {
-        // The semaphore count is non-zero, we can just decrement the count
-        // and go along our merry way.
-        m_u16Value--;
-    } else {
-        // The semaphore count is zero - we need to block the current thread
-        // and wait until the semaphore is posted from elsewhere.
-        if (0u != u32WaitTimeMS_) {
-            g_pclCurrent->SetExpired(false);
-            clSemTimer.Init();
-            clSemTimer.Start(false, u32WaitTimeMS_, TimedSemaphore_Callback, this);
-            bUseTimer = true;
+    { // Begin critical section
+        const auto cs = CriticalGuard{};
+        // Check to see if we need to take any action based on the semaphore count
+        if (0 != m_u16Value) {
+            // The semaphore count is non-zero, we can just decrement the count
+            // and go along our merry way.
+            m_u16Value--;
+        } else {
+            // The semaphore count is zero - we need to block the current thread
+            // and wait until the semaphore is posted from elsewhere.
+            if (0u != u32WaitTimeMS_) {
+                g_pclCurrent->SetExpired(false);
+                clSemTimer.Init();
+                clSemTimer.Start(false, u32WaitTimeMS_, TimedSemaphore_Callback, this);
+                bUseTimer = true;
+            }
+            BlockPriority(g_pclCurrent);
+
+            // Switch Threads immediately
+            Thread::Yield();
         }
-        BlockPriority(g_pclCurrent);
-
-        // Switch Threads immediately
-        Thread::Yield();
-    }
-
-    CS_EXIT();
+    } // End critical section
 
     if (bUseTimer) {
         clSemTimer.Stop();
@@ -207,10 +208,7 @@ uint16_t Semaphore::GetCount()
 {
     KERNEL_ASSERT(IsInitialized());
 
-    uint16_t u16Ret;
-    CS_ENTER();
-    u16Ret = m_u16Value;
-    CS_EXIT();
-    return u16Ret;
+    auto cs = CriticalGuard{};
+    return m_u16Value;
 }
 } // namespace Mark3

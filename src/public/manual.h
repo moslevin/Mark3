@@ -2445,13 +2445,13 @@ See license.txt for more information
     than the raw list traversal), but it can also be evaluated using either a
     lookup table, or via a special CPU instruction to count the leading zeros in
     a value.  In Mark3, we use all approaches.  In the event a target architecture
-    or toolchain has intrinsic support for a count-leading-zeroes (CLZ) instruction,
+    or toolchain has intrinsic support for a count-leading-zeroes (PORT_CLZ) instruction,
     that implementation is used.  Otherwise, a software-based implementation is
     provided -- either using a lookup table, or a bitshift-and-compare algorithm.
 
     (As a sidenote - this is actually a very common approach used in OS schedulers.
     It's actually part of the reason why modern ARM cores implement a dedicated
-    count-leading-zeros [CLZ] instruction!)
+    count-leading-zeros [PORT_CLZ] instruction!)
 
     For the lookup-table approach - a 4-bit lookup table can be used with an 8-bit
     priority-level bitmap would look something like this:
@@ -3209,27 +3209,27 @@ See license.txt for more information
             pulTemp[i] = 0xFFFFFFFF;
         }
 
-        PUSH_TO_STACK(pulStack, 0);             // Apply one word of padding
+        PORT_PUSH_TO_STACK(pulStack, 0);             // Apply one word of padding
 
         //-- Simulated Exception Stack Frame --
-        PUSH_TO_STACK(pulStack, 0x01000000);    // XSPR;set "T" bit for thumb-mode
-        PUSH_TO_STACK(pulStack, ulAddr);        // PC
-        PUSH_TO_STACK(pulStack, 0);             // LR
-        PUSH_TO_STACK(pulStack, 0x12);
-        PUSH_TO_STACK(pulStack, 0x3);
-        PUSH_TO_STACK(pulStack, 0x2);
-        PUSH_TO_STACK(pulStack, 0x1);
-        PUSH_TO_STACK(pulStack, (K_ULONG)pclThread_->m_pvArg);    // R0 = argument
+        PORT_PUSH_TO_STACK(pulStack, 0x01000000);    // XSPR;set "T" bit for thumb-mode
+        PORT_PUSH_TO_STACK(pulStack, ulAddr);        // PC
+        PORT_PUSH_TO_STACK(pulStack, 0);             // LR
+        PORT_PUSH_TO_STACK(pulStack, 0x12);
+        PORT_PUSH_TO_STACK(pulStack, 0x3);
+        PORT_PUSH_TO_STACK(pulStack, 0x2);
+        PORT_PUSH_TO_STACK(pulStack, 0x1);
+        PORT_PUSH_TO_STACK(pulStack, (K_ULONG)pclThread_->m_pvArg);    // R0 = argument
 
         //-- Simulated Manually-Stacked Registers --
-        PUSH_TO_STACK(pulStack, 0x11);
-        PUSH_TO_STACK(pulStack, 0x10);
-        PUSH_TO_STACK(pulStack, 0x09);
-        PUSH_TO_STACK(pulStack, 0x08);
-        PUSH_TO_STACK(pulStack, 0x07);
-        PUSH_TO_STACK(pulStack, 0x06);
-        PUSH_TO_STACK(pulStack, 0x05);
-        PUSH_TO_STACK(pulStack, 0x04);
+        PORT_PUSH_TO_STACK(pulStack, 0x11);
+        PORT_PUSH_TO_STACK(pulStack, 0x10);
+        PORT_PUSH_TO_STACK(pulStack, 0x09);
+        PORT_PUSH_TO_STACK(pulStack, 0x08);
+        PORT_PUSH_TO_STACK(pulStack, 0x07);
+        PORT_PUSH_TO_STACK(pulStack, 0x06);
+        PORT_PUSH_TO_STACK(pulStack, 0x05);
+        PORT_PUSH_TO_STACK(pulStack, 0x04);
         pulStack++;
 
         pclThread_->m_pwStackTop = pulStack;
@@ -3522,20 +3522,20 @@ See license.txt for more information
     that every CPU has its own means of disabling/enabling interrupts, the
     implementation of the critical section APIs is also non-portable.
 
-    In the Cortex-M0 port, we implement the two critical section APIs (CS_ENTER()
-    and CS_EXIT()) as function-like macros containing inline assembly.  All uses
+    In the Cortex-M0 port, we implement the two critical section APIs (CriticalSection::Enter()
+    and CriticalSection::Exit()) as function-like macros containing inline assembly.  All uses
     of these calls are called in pairs within a function and must take place at
     the same level-of-scope.  Also, as nesting may occur (critical section within
     a critical section), this must be taken into account in the code.
 
-    In general, CS_ENTER() performs the following tasks:
+    In general, CriticalSection::Enter() performs the following tasks:
 
         - Cache the current interrupt-enabled state within a local variable in the
         thread's state
         - Disable interrupts
         .
 
-    Conversely, CS_EXIT() performs the following tasks:
+    Conversely, CriticalSection::Exit() performs the following tasks:
 
         - Read the original interrupt-enabled state from the cached value
         - Restore interrupts to the original value
@@ -3551,7 +3551,7 @@ See license.txt for more information
     @code{.cpp}
     //------------------------------------------------------------------------
     //! Enter critical section (copy current PRIMASK register value, disable interrupts)
-    #define CS_ENTER()    \
+    #define CriticalSection::Enter()    \
     {    \
         K_ULONG __ulRegState;    \
         asm    ( \
@@ -3563,7 +3563,7 @@ See license.txt for more information
 
     //------------------------------------------------------------------------
     //! Exit critical section (restore previous PRIMASK status register value)
-    #define CS_EXIT() \
+    #define CriticalSection::Exit() \
         asm    ( \
         " mov r0, %[STATUS] \n" \
         " msr primask, r0 \n"    \

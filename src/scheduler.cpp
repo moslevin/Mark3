@@ -74,9 +74,8 @@ void Scheduler::Remove(Thread* pclThread_)
 //---------------------------------------------------------------------------
 bool Scheduler::SetScheduler(bool bEnable_)
 {
-    auto bRet = bool { false };
-    CS_ENTER();
-    bRet       = m_bEnabled;
+    const auto cs = CriticalGuard{};
+    auto bRet       = m_bEnabled;
     m_bEnabled = bEnable_;
     // If there was a queued scheduler evevent, dequeue and trigger an
     // immediate Yield
@@ -84,7 +83,6 @@ bool Scheduler::SetScheduler(bool bEnable_)
         m_bQueuedSchedule = false;
         Thread::Yield();
     }
-    CS_EXIT();
     return bRet;
 }
 } // namespace Mark3

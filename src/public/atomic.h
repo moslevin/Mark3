@@ -48,11 +48,9 @@ namespace Atomic
     {
         KERNEL_ASSERT(nullptr != pSource_);
 
-        auto ret = T {};
-        CS_ENTER();
-        ret       = *pSource_;
+        const auto cs = CriticalGuard{};
+        auto ret       = *pSource_;
         *pSource_ = val_;
-        CS_EXIT();
         return ret;
     }
 
@@ -66,11 +64,9 @@ namespace Atomic
     {
         KERNEL_ASSERT(nullptr != pSource_);
 
-        auto ret = T {};
-        CS_ENTER();
-        ret = *pSource_;
+        const auto cs = CriticalGuard{};
+        auto ret = *pSource_;
         *pSource_ += val_;
-        CS_EXIT();
         return ret;
     }
 
@@ -84,11 +80,9 @@ namespace Atomic
     {
         KERNEL_ASSERT(nullptr != pSource_);
 
-        auto ret = T {};
-        CS_ENTER();
-        ret = *pSource_;
+        const auto cs = CriticalGuard{};
+        auto ret = *pSource_;
         *pSource_ -= val_;
-        CS_EXIT();
         return ret;
     }
 
