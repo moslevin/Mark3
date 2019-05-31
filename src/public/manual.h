@@ -8,7 +8,7 @@
 
 --[Mark3 Realtime Platform]--------------------------------------------------
 
-Copyright (c) 2012 - 2018 m0slevin, all rights reserved.
+Copyright (c) 2012 - 2019 m0slevin, all rights reserved.
 See license.txt for more information
 ===========================================================================*/
 /**
@@ -30,7 +30,7 @@ See license.txt for more information
 
     --[Mark3 Realtime Platform]--------------------------------------------------
 
-    Copyright (c) 2012 - 2018 m0slevin, all rights reserved.
+    Copyright (c) 2012 - 2019 m0slevin, all rights reserved.
     See license for more information
 
     @endverbatim
@@ -72,7 +72,7 @@ See license.txt for more information
 
     @verbatim
 
-    Copyright (c) 2012 - 2018, m0slevin
+    Copyright (c) 2012 - 2019, m0slevin
     All rights reserved.
 
     Redistribution and use in source and binary forms, with or without
@@ -285,6 +285,22 @@ See license.txt for more information
 
     Minimum number of timer ticks for any delay or sleep, required to ensure that a timer cannot
     be initialized to a negative value.
+
+    <b>PORT_OVERLOAD_NEW</b>
+
+    Set this to 1 to overload the system's New/Free functions with the kernel's allocator functions.
+    A user must configure the Kernel's allocator functions to point to a real heap implementation
+    backed with real memory in order to use dynamic object creation.
+
+    <b>PORT_STACK_GROWS_DOWN</b>
+
+    Set this to 1 if the stack grows down in the target architecture, or 0 if the stack grows up
+
+    <b>PORT_USE_HW_CLZ</b>
+
+    Set this to 1 if the target CPU/toolchain supports an optimized Count-leading-zeros instruction,
+    or count-leading-zeros intrinsic.  If such functionality is not available, a general-purpose
+    implementation will be used.
 
     @sa portcfg.h
     @sa mark3cfg.h
@@ -1157,6 +1173,162 @@ See license.txt for more information
 
     This value can be overridden by calling the thread's SetQuantum()
     with a new interval specified in milliseconds.
+
+    @section COROU Coroutines
+
+    Mark3 implements a coroutine scheduler, capable of managing a set
+    of prioritized run-to-completion tasks.  This is a simple and lightweight
+    cooperative scheduling mechanism, that trades the preemption and
+    synchonization capabilities of threads for simplicity.  It is an
+    ideal mechanism to use for background processes in a system, or
+    for performing a coordinating a group of tasks where the relative
+    priority of task execution is important, but the duration of individual
+    tasks is less important.
+
+    Like the Mark3 thread scheduler, the coroutine scheduler supports
+    multiple priorities of tasks.  Multiple coroutines activated at the
+    same priority level are executed in first-in first-out order.
+
+    Coroutines are activated by interrupts, threads, or from within other
+    co-routines.  Once activated, the co-routine is able to be scheuduled.
+
+    The coroutine scheduler is called by the application from a thread
+    priority.  So long as there are activated tasks to be scheduled, the
+    scheduler will return a pointer to the highest priority active coroutine
+    to be run.
+
+    Running a co-routine de-activates the co-routine, meaning that coroutines
+    must be re-activated every time they are run.
+
+    @code
+
+    Coroutine cr1;
+    Coroutine cr2;
+    Coroutine cr3;
+
+    void CoRoutineInit()
+    {
+        CoScheduler::Init();
+
+        cr1.Init(<priority>, <handler function>, <data passed to handler function>);
+        cr2.Init(<priority>, <handler function>, <data passed to handler function>);
+        cr3.Init(<priority>, <handler function>, <data passed to handler function>);
+    }
+
+    void AsyncEvent1()
+    {
+        // Some event occurred requiring us to run cr1.  Activating a task does not
+        // cause the coroutine to be run immediately, but schedules it to be returned by
+        // CoScheduler::Schedule() when there are no higher-priroity active tasks to
+        // run.
+        cr1.Activate();
+    }
+
+    void AsyncEvent2()
+    {
+        // Some event occurred requiring us to run cr2.
+        cr2.Activate();
+    }
+
+    void AsyncEvent3()
+    {
+        // Some event occurred requiring us to run cr3.
+        cr3.Activate();
+    }
+
+    ...
+    void CoRoutineSchedulerTask()
+    {
+        while (1) {
+            auto* coroutineToRun = CoScheduler::Schedule();
+            if (coroutineToRun) {
+                // Scheduled task is removed from the scheduler once run.  It must
+                // be reactivated to be run again
+                coroutineToRun->Run();
+            }
+            // If run from idle thread, could go into sleep mode instead of running in
+            // a tight loop.
+        }
+    }
+
+    @endcode
+
+    @section CRG Critical Guards
+
+    Often times, it is useful in a real-time multi-threaded system to place a
+    critical section around a block of code to protect it against concurrent access,
+    or to protect global data from access from interrupts.  In Mark3 there are a
+    few different ways of implementing critical sections.  Historically, the CS_ENTER()
+    and CS_EXIT() macros were used for this purpose; however, the usage of matching
+    entry/exit macros can often-times be cumbersome and error-prone.
+
+    The CriticalGuard object allows a user to wrap a block of code in a critical
+    section, where the critical section is entered when the critical guard object
+    is declared, and the critical section is exited when the object goes out-of-scope.
+
+    It is essentially an RAII-style critical section object, that provides the benefit
+    of critical sections without the hassle of having to carefully match enter/exit
+    statements.
+
+    @code
+    void MyFunc()
+    {
+        // operations outside of critical section
+        {
+            auto cg = CriticalGuard{};
+            // operations protected by critical section
+            // critical section ends when CriticalGuard object goes out of scope
+        }
+        // Operations outside of critical section
+    }
+    @endcode
+
+    @section LKG Lock Guards
+
+    The modern C++ standard library provides RAII-style mutex locking.  Unfortunately
+    such an implementation is not usable in the context of Mark3, because the STL
+    implementation supplied for an embedded C++ toolchain would not be aware of
+    Mark3's threading model or synchronization primatives.  Mark3 provides its own
+    RAII mutex locking mechanism in the form of LockGuard objects.  When a LockGuard
+    object is declared (referencing a valid and initialized mutex object at construction),
+    the lock is claimed upon declaration, and released when the object goes out-of-scope.
+
+    @code
+    Mutex clMutex;
+    void MyFunc()
+    {
+        // operations outside of mutex-locked context
+        {
+            auto lg = LockGuard{&clMutex};
+            // operations inside mutex-locked context
+            // mutex automatically unlocked when LockGuard goes out of scope
+        }
+        // Operations outside of mutex-locked context
+    }
+    @endcode
+
+    @section SCG Scheduler Guards
+
+    Similar to the LockGuard and CriticalGuard objects, the SchedulerGuard object
+    provides a coped scheduler-disabled blocks.  This essentially gives the executing
+    thread exclusive control of the CPU - except for interrupts - for the duration
+    of the block wrapped in the SchedulerGuard.  The scheduler is disabled when the
+    object is declared, and scheduler state is restored when the SchedulerGuard object
+    goes out-of-scope.  This is yet another form of RAII-based resource locking in Mark3.
+
+    @code
+    void MyFunc()
+    {
+        // thread scheduler enabled
+        {
+            auto sg = SchedulerGuard{};
+            // thread-safety guaranteed - scheduler disabled
+            // thread scheduler re-enabled when SchedulerGuard object goes out of scope
+        }
+        // thread scheduler enabled
+    }
+    @endcode
+
 */
 /**
     @page WHYMARK3 Why Mark3?
@@ -2234,13 +2406,22 @@ See license.txt for more information
 
     | Feature             | Kernel Object         | Source Files                    |
     |:--------------------|:----------------------|:--------------------------------|
-    |Profiling            | ProfileTimer          |  profile.cpp/.h                 |
+    |Atomic Operations    | Atomic                |  atomic.cpp/.h                  |
+    |Memory Allocators    | AutoAlloc             |  autoalloc.cpp/.h               |
+    |CoRoutines           | CoScheduler           |  cosched.cpp/.h                 |
+    |                     | CoList                |  colist.cpp/.h                  |
+    |                     | Coroutine             |  coroutine.cpp/.h               |
+    |Data Structures      | *LinkList             |  ll.cpp/.h                      |
+    |                     | PriorityMapL1         |  priomapl1.h                    |
+    |                     | PriorityMapL2         |  priomapl2.h                    |
     |Threads + Scheduling | Thread                |  thread.cpp/.h                  |
     |                     | Scheduler             |  scheduler.cpp/.h               |
-    |                     | PriorityMap           |  priomap.cpp/.h                 |
     |                     | Quantum               |  quantum.cpp/.h                 |
     |                     | ThreadPort            |  threadport.cpp/.h **           |
     |                     | KernelSWI             |  kernelswi.cpp/.h **            |
+    |                     | ThreadList            |  threadlist.cpp/.h              |
+    |                     | ThreadListList        |  threadlistlist.cpp/.h          |
+    |Profiling            | ProfileTimer          |  profile.cpp/.h                 |
     |Timers               | Timer                 |  timer.h/timer.cpp              |
     |                     | TimerScheduler        |  timerscheduler.h               |
     |                     | TimerList             |  timerlist.h/cpp                |
@@ -2252,10 +2433,13 @@ See license.txt for more information
     |                     | Notify                |  notify.cpp/.h                  |
     |                     | ConditionVariable     |  condvar.cpp/.h                 |
     |                     | ReaderWriterLock      |  readerwriter.cpp/.h            |
+    |                     | CriticalGuard         |  criticalguard.h                |
+    |                     | CriticalSection       |  criticalsection.h              |
+    |                     | LockGuard             |  lockguard.h                    |
+    |                     | SchedGuard            |  schedguard.h                   |
     |IPC/Message-passing  | Mailbox               |  mailbox.cpp/.h                 |
     |                     | MessageQueue          |  message.cpp/.h                 |
     |Debugging            | Miscellaneous Macros  |  kerneldebug.h                  |
-    |Atomic Operations    | Atomic                |  atomic.cpp/.h                  |
     |Kernel               | Kernel                |  kernel.cpp/.h                  |
 
     @verbatim
@@ -3721,6 +3905,15 @@ See license.txt for more information
 /**
     @page RELEASE Release Notes
 
+    @section RELR10 R10 Release
+    - New: Coroutines + Cooperative scheduler
+    - New: Critical section APIs defined in kernel lib
+    - New: RAII critical section (CriticalGuard object)
+    - New: RAII scheduler-disabled context (SchedulerGuard object)
+    - Kernel code updated to use RAII critical sections instead of CS_ENTER/CS_EXIT macros
+    - Updated documentation
+    .
+
     @section RELR9 R9 Release
     - New: templated linked-lists to avoid explicit casting used in list traversal
     - New: ThreadListList class to efficiently track all threads in the system 
@@ -3857,6 +4050,9 @@ See license.txt for more information
 /**
     @example lab1_kernel_setup/main.cpp
     This example demonstrates basic kernel setup with two threads.
+
+    @example lab2_coroutines/main.cpp
+    This example demonstrates usage of the coroutine scheduler run from the idle thread.
 
     @example lab3_round_robin/main.cpp
     This example demonstrates how to use round-robin thread scheduling with
