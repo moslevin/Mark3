@@ -41,4 +41,6 @@ namespace Mark3
 #define ENABLE_INTS()
 #define DISABLE_INTS()
 
+#define CS_FUNCTION_LIKE (1)
+
 } // namespace Mark3
