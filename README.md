@@ -20,7 +20,7 @@ The source is fully-documented with doxygen, and example code is provided to ill
 
 ## Quick Links
 
-[Mark3 Kernel Documentation](https://github.com/moslevin/mark3-doc)
+[Mark3 Kernel Documentation](https://moslevin.github.io/mark3-doc/)
 
 [Mark3 OS Repo](https://github.com/moslevin/mark3-repo)
 
