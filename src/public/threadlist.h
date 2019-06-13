@@ -31,8 +31,9 @@ namespace Mark3
 class Thread;
 
 /**
-    This class is used for building thread-management facilities, such as
-    schedulers, and blocking objects.
+ * @brief The ThreadList Class.
+ * This class is used for building thread-management facilities, such as
+ * schedulers, and blocking objects.
  */
 class ThreadList : public LinkListNode, public TypedCircularLinkList<Thread>
 {
@@ -40,14 +41,12 @@ public:
     void* operator new(size_t sz, void* pv) { return reinterpret_cast<ThreadList*>(pv); };
     /**
      *  @brief ThreadList
-     *
      *  Default constructor - zero-initializes the data.
      */
     ThreadList();
 
     /**
      *  @brief SetPriority
-     *
      *  Set the priority of this threadlist (if used for a scheduler).
      *
      *  @param uXPriority_ Priority level of the thread list
@@ -56,7 +55,6 @@ public:
 
     /**
      *  @brief SetMapPointer
-     *
      *  Set the pointer to a bitmap to use for this threadlist.  Once again,
      *  only needed when the threadlist is being used for scheduling purposes.
      *
@@ -67,7 +65,6 @@ public:
 
     /**
      *  @brief Add
-     *
      *  Add a thread to the threadlist.
      *
      *  @param node_ Pointer to the thread (link list node) to add to the list
@@ -76,7 +73,6 @@ public:
 
     /**
      *  @brief Add
-     *
      *  Add a thread to the threadlist, specifying the flag and priority at
      *  the same time.
      *
@@ -89,7 +85,6 @@ public:
 
     /**
      * @brief AddPriority
-     *
      * Add a thread to the list such that threads are ordered from highest to
      * lowest priority from the head of the list.
      *
@@ -99,7 +94,6 @@ public:
 
     /**
      *  @brief Remove
-     *
      *  Remove the specified thread from the threadlist
      *
      *  @param node_ Pointer to the thread to remove
@@ -108,7 +102,6 @@ public:
 
     /**
      *  @brief HighestWaiter
-     *
      *  Return a pointer to the highest-priority thread in the thread-list.
      *
      *  @return Pointer to the highest-priority thread

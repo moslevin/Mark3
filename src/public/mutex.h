@@ -16,7 +16,6 @@ See license.txt for more information
     @file   mutex.h
 
     @brief  Mutual exclusion class declaration
-
     Resource locks are implemented using mutual exclusion semaphores (Mutex_t).
     Protected blocks can be placed around any resource that may only be accessed
     by one thread at a time.  If additional threads attempt to access the
@@ -58,7 +57,8 @@ namespace Mark3
 {
 //---------------------------------------------------------------------------
 /**
- *  Mutual-exclusion locks, based on BlockingObject.
+ * @brief The Mutex Class.
+ * Class providing Mutual-exclusion locks, based on BlockingObject.
  */
 class Mutex : public BlockingObject
 {
@@ -68,7 +68,6 @@ public:
 
     /**
      *  @brief Init
-     *
      *  Initialize a mutex object for use - must call this function before using
      *  the object.
      *
@@ -78,7 +77,6 @@ public:
 
     /**
      *  @brief Claim
-     *
      *  Claim the mutex.  When the mutex is claimed, no other thread can claim a
      *  region protected by the object.  If another Thread currently holds the
      *  Mutex when the Claim method is called, that Thread will block until the
@@ -97,7 +95,6 @@ public:
 
     /**
      *  @brief Claim
-     *
      *  Claim a mutex, with timeout.
      *
      *  @param u32WaitTimeMS_
@@ -109,7 +106,6 @@ public:
 
     /**
      *  @brief WakeMe
-     *
      *  Wake a thread blocked on the mutex.  This is an
      *  internal function used for implementing timed mutexes
      *  relying on timer callbacks.  Since these do not have
@@ -123,7 +119,6 @@ public:
 
     /**
      *  @brief Release
-     *
      *  Release the mutex.  When the mutex is released, another object can enter
      *  the mutex-protected region.
      *
@@ -153,7 +148,6 @@ private:
 
     /**
      * @brief Claim_i
-     *
      * Abstracts out timed/non-timed mutex claim operations.
      *
      * @param u32WaitTimeMS_ Time in MS to wait, 0 for infinite

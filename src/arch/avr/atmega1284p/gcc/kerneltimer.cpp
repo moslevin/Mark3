@@ -15,7 +15,7 @@ See license.txt for more information
 
     @file   kerneltimer.cpp
 
-    @brief  Kernel Timer Implementation for ATMega328p
+    @brief  Kernel Timer Implementation for ATMega1284p
 */
 
 #include "mark3.h"

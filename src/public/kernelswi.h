@@ -22,18 +22,18 @@ See license.txt for more information
 #include "kerneltypes.h"
 
 //---------------------------------------------------------------------------
-/**
- *  Class providing the software-interrupt required for context-switching in
- *  the kernel.
- */
 namespace Mark3
 {
+/**
+ * @brief The KernelSWI Class provides the software-interrupt used to implement
+ * the context-switching interrupt used by the kernel.  This interface must be
+ * implemented by target-specific code in the porting layer.
+ */
 class KernelSWI
 {
 public:
     /**
      *  @brief Config
-     *
      *  Configure the software interrupt - must be called before any other
      *  software interrupt functions are called.
      */
@@ -41,14 +41,12 @@ public:
 
     /**
      *  @brief Start
-     *
      *  Enable ("Start") the software interrupt functionality
      */
     static void Start(void);
 
     /**
      *  @brief Trigger
-     *
      *  Call the software interrupt
      *
      */

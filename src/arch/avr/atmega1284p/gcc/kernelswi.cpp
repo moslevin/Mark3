@@ -15,7 +15,7 @@ See license.txt for more information
 
     @file   kernelswi.cpp
 
-    @brief  Kernel Software interrupt implementation for ATMega328p
+    @brief  Kernel Software interrupt implementation for ATMega1284p
 
 */
 

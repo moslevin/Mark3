@@ -28,7 +28,6 @@ namespace
     //---------------------------------------------------------------------------
     /**
      * @brief TimedSemaphore_Callback
-     *
      * This function is called from the timer-expired context to trigger a timeout
      * on this semphore.  This results in the waking of the thread that generated
      * the semaphore pend call that was not completed in time.

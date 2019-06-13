@@ -1,14 +1,13 @@
-#ifndef __SIZE_REPORT_H__
-#define __SIZE_REPORT_H__
+#pragma once
 
 /**
 @page SIZEPROFILE  Code Size Profiling
-The following report details the size of each module compiled into the
-kernel. The size of each component is dependent on the flags specified
-in mark3cfg.h at compile time.  Note that these sizes represent the
-maximum size of each module before dead code elimination and any
-additional link-time optimization, and represent the maximum possible
-size that any module can take.
+The following report details the size of each module compiled into the 
+kernel. The size of each component is dependent on the flags specified 
+in mark3cfg.h and portcfg.h at compile time.  Note that these sizes 
+represent the echo maximum size of each module before dead code 
+elimination and any additional link-time optimization, and represent 
+the maximum possible size that any module can take.
 
 The results below are for profiling on Atmel AVR atmega1284p-based targets using gcc. 
 Results are not necessarily indicative of relative or absolute performance
@@ -16,7 +15,7 @@ on other platforms or toolchains.
 @section SIZEPROFILEINFO Information
 
 Date Profiled:
-Thu May 30 22:05:57 EDT 2019
+Wed Jun 12 21:37:23 EDT 2019
 
 @section SIZEPROFILEVER  Compiler Version
 avr-gcc (GCC) 5.4.0 Copyright (C) 2015 Free Software Foundation, Inc. This is free software; see the source for copying conditions. There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
@@ -65,4 +64,3 @@ Mark3 Kernel Size Summary:
     - Total Size               :  11569 Bytes
 @endcode
 */
-#endif // __SIZE_REPORT_H__

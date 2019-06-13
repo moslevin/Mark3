@@ -35,10 +35,10 @@ namespace Mark3
 class Timer;
 
 /**
+ * @brief The Quantum Class.
  *  Static-class used to implement Thread quantum functionality, which is
- *  a key part of round-robin scheduling.
+ *  fundamental to round-robin thread scheduling.
  */
-
 class Quantum
 {
 public:
@@ -46,7 +46,6 @@ public:
 
     /**
      *  @brief SetInTimer
-     *
      *  Set a flag to indicate that the CPU is currently running within the
      *  timer-callback routine.  This prevents the Quantum timer from being
      *  updated in the middle of a callback cycle, potentially resulting in
@@ -56,14 +55,12 @@ public:
 
     /**
      * @brief ClearInTimer
-     *
      *  Clear the flag once the timer callback function has been completed.
      */
     static void ClearInTimer();
 
     /**
      * @brief Update
-     *
      * Update the current thread being tracked for round-robing scheduling.
      * Note - this has no effect if called from the Timer thread, or if
      * the Timer thread is active.
@@ -73,8 +70,7 @@ public:
     static void Update(Thread* pclTargetThread_);
 
     /**
-     * @brief SetTimerThread
-     *
+     * @brief SetTimerThread     
      * Pass the timer thread's Thread pointer to the Quantum module to track
      * against requests to update the round-robin timer.
      *

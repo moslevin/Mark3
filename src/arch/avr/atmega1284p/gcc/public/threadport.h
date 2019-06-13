@@ -15,7 +15,7 @@ See license.txt for more information
 
     @file   threadport.h
 
-    @brief  ATMega328p Multithreading support.
+    @brief  ATMega1284p Multithreading support.
  */
 #pragma once
 

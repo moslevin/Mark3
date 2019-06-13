@@ -57,6 +57,7 @@ class Thread;
 
 //---------------------------------------------------------------------------
 /**
+ * @brief The BlockingObject class.
  *  Class implementing thread-blocking primatives.  used for implementing
  *  things like semaphores, mutexes, message queues, or anything else that
  *  could cause a thread to suspend execution on some external stimulus.
@@ -70,7 +71,6 @@ public:
 protected:
     /**
      *  @brief Block
-     *
      *  Blocks a thread on this object.  This is the fundamental operation
      *  performed by any sort of blocking operation in the operating system.
      *  All semaphores/mutexes/sleeping/messaging/etc ends up going through
@@ -92,7 +92,6 @@ protected:
 
     /**
      * @brief BlockPriority
-     *
      * Same as Block(), but ensures that threads are added to the block-list
      * in priority-order, which optimizes the unblock procedure.
      *
@@ -102,7 +101,6 @@ protected:
 
     /**
      *  @brief UnBlock
-     *
      *  Unblock a thread that is already blocked on this object, returning it
      *  to the "ready" state by performing the following steps:
      *
@@ -120,7 +118,7 @@ protected:
 
     /**
      * @brief IsInitialized
-     * @return
+     * @return true if initialized, false if object uninitialized
      */
     bool IsInitialized(void) { return (m_u8Initialized == m_uBlockingInitCookie); }
 

@@ -34,14 +34,14 @@ class Timer;
 
 //---------------------------------------------------------------------------
 /**
- *   TimerList class - a doubly-linked-list of timer objects.
+ * @brief the TimerList class.
+ * This class implements a doubly-linked-list of timer objects.
  */
 class TimerList : public TypedDoubleLinkList<Timer>
 {
 public:
     /**
      *  @brief Init
-     *
      *  Initialize the TimerList object.  Must be called before
      *  using the object.
      */
@@ -49,7 +49,6 @@ public:
 
     /**
      *  @brief Add
-     *
      *  Add a timer to the TimerList.
      *
      *  @param pclListNode_ Pointer to the Timer to Add
@@ -58,7 +57,6 @@ public:
 
     /**
      *  @brief Remove
-     *
      *  Remove a timer from the TimerList, cancelling its expiry.
      *
      *  @param pclLinkListNode_ Pointer to the Timer to remove
@@ -66,8 +64,7 @@ public:
     void Remove(Timer* pclLinkListNode_);
 
     /**
-     *  @brief Process
-     *
+     *  @brief Process     
      *  Process all timers in the timerlist as a result of the timer expiring.
      *  This will select a new timer epoch based on the next timer to expire.
      */

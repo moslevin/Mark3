@@ -26,7 +26,8 @@ namespace Mark3 {
 
 //---------------------------------------------------------------------------
 /**
- * The CriticalGuard class implements RAII-style critical sections.  Object
+ * @brief The CriticalGuard class.
+ * This class provides an implemention of RAII for critical sections.  Object
  * creation results in a critical section being invoked.  The subsequent
  * destructor call results in the critical section being released.
  *

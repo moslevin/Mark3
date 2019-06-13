@@ -28,10 +28,10 @@ namespace Mark3
 {
 //---------------------------------------------------------------------------
 /**
- * @brief The EventFlag class is a blocking object, similar to a semaphore or
+ * @brief The EventFlag class.
+ * This class implements a blocking object, similar to a semaphore or
  * mutex, commonly used for synchronizing thread execution based on events
  * occurring within the system.
- *
  * Each EventFlag object contains a 16-bit bitmask, which is used to trigger
  * events on associated threads.  Threads wishing to block, waiting for
  * a specific event to occur can wait on any pattern within this 16-bit bitmask
@@ -54,7 +54,8 @@ public:
     void Init();
 
     /**
-     * @brief Wait - Block a thread on the specific flags in this event flag group
+     * @brief Wait
+     * Block a thread on the specific flags in this event flag group
      * @param u16Mask_ - 16-bit bitmask to block on
      * @param eMode_ - EventFlagOperation::Any_Set:  Thread will block on any of the bits in the mask
      *               - EventFlagOperation::All_Set:  Thread will block on all of the bits in the mask
@@ -63,7 +64,8 @@ public:
     uint16_t Wait(uint16_t u16Mask_, EventFlagOperation eMode_);
 
     /**
-     * @brief Wait - Block a thread on the specific flags in this event flag group
+     * @brief Wait
+     * Block a thread on the specific flags in this event flag group
      * @param u16Mask_ - 16-bit bitmask to block on
      * @param eMode_ - EventFlagOperation::Any_Set:  Thread will block on any of the bits in the mask
      *               - EventFlagOperation::All_Set:  Thread will block on all of the bits in the mask
@@ -74,7 +76,6 @@ public:
 
     /**
      * @brief WakeMe
-     *
      * Wake the given thread, currently blocking on this object
      *
      * @param pclChosenOne_ Pointer to the owner thread to unblock.
@@ -82,8 +83,9 @@ public:
     void WakeMe(Thread* pclChosenOne_);
 
     /**
-     * @brief Set - Set additional flags in this object (logical OR).  This API can potentially
-     *              result in threads blocked on Wait() to be unblocked.
+     * @brief Set
+     * Set additional flags in this object (logical OR).  This API can potentially
+     * result in threads blocked on Wait() to be unblocked.
      * @param u16Mask_ - Bitmask of flags to set.
      */
     void Set(uint16_t u16Mask_);
@@ -103,7 +105,6 @@ public:
 private:
     /**
      * @brief Wait_i
-     *
      * Interal abstraction used to manage both timed and untimed wait operations
      *
      * @param u16Mask_ - 16-bit bitmask to block on

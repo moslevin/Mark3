@@ -24,7 +24,8 @@ See license.txt for more information
 
 namespace Mark3 {
 /**
- * The CoScheduler class implements the coroutine scheduler.  Similar to the Mark3
+ * @brief The CoScheduler class.
+ * This class implements the coroutine scheduler.  Similar to the Mark3
  * thread scheduler, the highest-priority active object is scheduled / returned
  * for execution.  If no active co-routines are available to be scheduled, then
  * the scheduler returns nullptr.
@@ -35,7 +36,6 @@ public:
 
     /**
      * @brief Init
-     *
      * Initialize the coroutine scheduler prior to use.  Must be called prior
      * to using any other functions in the coroutine scheduler.
      */
@@ -43,7 +43,6 @@ public:
 
     /**
      * @brief GetPrioMap
-     *
      * Get the pointer to the priority map object used by the scheduler
      *
      * @return Return the priority map object owned by the schedule
@@ -52,7 +51,6 @@ public:
 
     /**
      * @brief GetStopList
-     *
      * Get the pointer to the coroutine list managing initialized coroutines
      * that are not awaiting execution.
      *
@@ -62,7 +60,6 @@ public:
 
     /**
      * @brief GetCoList
-     *
      * Retrieve the coroutine list associated with a given priority.
      *
      * @param uPriority_ Priority to get the coroutine list of.
@@ -72,7 +69,6 @@ public:
 
     /**
      * @brief Schedule
-     *
      * Determine what coroutine (if any) is the next to be executed.
      *
      * @return next coroutine to execute, or nullptr if no coroutines are
