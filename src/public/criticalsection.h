@@ -26,7 +26,8 @@ namespace Mark3 {
 
 //---------------------------------------------------------------------------
 /**
- * The CriticalSection class implements a portable CriticalSection interface
+ * @brief The CriticalSection class.
+ * This class implements a portable CriticalSection interface
  * based on macros/inline functions that are implemented as part of each port.
  *
  * Critical sections *can* be safely nested, that is, multiple calls

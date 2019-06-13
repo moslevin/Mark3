@@ -27,28 +27,27 @@ namespace Mark3
 {
 //---------------------------------------------------------------------------
 /**
-    Hardware timer interface, used by all scheduling/timer subsystems.
+ * @brief The KernelTimer class provides a timer interface used by all time-based
+ * scheduling/timer subsystems in the kernel.  This interface must be implemented
+ * by target-specific code in the porting layer.
  */
 class KernelTimer
 {
 public:
     /**
      *  @brief Config
-     *
      *  Initializes the kernel timer before use
      */
     static void Config(void);
 
     /**
      *  @brief Start
-     *
      *  Starts the kernel time (must be configured first)
      */
     static void Start(void);
 
     /**
      *  @brief Stop
-     *
      *  Shut down the kernel timer, used when no timers are scheduled
      */
     static void Stop(void);

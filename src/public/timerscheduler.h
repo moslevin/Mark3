@@ -31,22 +31,21 @@ namespace Mark3
 {
 //---------------------------------------------------------------------------
 /**
- *  "Static" Class used to interface a global TimerList with the rest of the
- *  kernel.
+ * @brief The TimerScheduler Class.
+ * This implements a "Static" class used to manage a global list of timers used
+ * throughout the system.
  */
 class TimerScheduler
 {
 public:
     /**
      *  @brief Init
-     *
      *  Initialize the timer scheduler.  Must be called before any timer, or
      *  timer-derived functions are used.
      */
     static void Init() { m_clTimerList.Init(); }
     /**
      *  @brief Add
-     *
      *  Add a timer to the timer scheduler.  Adding a timer implicitly starts
      *  the timer as well.
      *
@@ -55,7 +54,6 @@ public:
     static void Add(Timer* pclListNode_) { m_clTimerList.Add(pclListNode_); }
     /**
      *  @brief Remove
-     *
      *  Remove a timer from the timer scheduler.  May implicitly stop the
      *  timer if this is the only active timer scheduled.
      *
@@ -64,7 +62,6 @@ public:
     static void Remove(Timer* pclListNode_) { m_clTimerList.Remove(pclListNode_); }
     /**
      *  @brief Process
-     *
      *  This function must be called on timer expiry (from the timer's ISR
      *  context).  This will result in all timers being updated based on
      *  the epoch that just elapsed.  The next timer epoch is set based on the

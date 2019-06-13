@@ -20,50 +20,38 @@ See license.txt for more information
 /**
     @mainpage The Mark3 Realtime Kernel
 
-    @verbatim
-         _____        _____        _____        _____
-     ___|    _|__  __|_    |__  __|__   |__  __| __  |__  ______
-    |    \  /  | ||    \      ||     |     ||  |/ /     ||___   |
-    |     \/   | ||     \     ||     \     ||     \     ||___   |
-    |__/ __/|__|_||__| __\  __||__| __\  __||__| __\  __||______|
-        |_____|      |_____|      |_____|      |_____|
-
-    --[Mark3 Realtime Platform]--------------------------------------------------
-
-    Copyright (c) 2012 - 2019 m0slevin, all rights reserved.
-    See license for more information
-
-    @endverbatim
+    @image html mark3.png width=480
+    @image latex mark3.png width=10cm
 
     The Mark3 Realtime Kernel is a completely free, open-source, real-time operating
     system aimed at bringing powerful, easy-to-use multitasking to microcontroller
     systems without MMUs.
 
-    It uses modern programming languages and concepts to minimize code duplication,
-    and its object-oriented design enhances readibility. The API is simple – in six
-    function calls, you can set up the kernel, initialize two threads, and start the
-    scheduler.
+    @image html banner2.png width=640
+    @image latex banner2.png width=15cm
 
-    The source is fully-documented with example code provided to illustrate concepts.
-    The result is a performant RTOS, which is easy to read, easy to understand, and
-    easy to extend to fit your needs.
+    The RTOS is written using a super portable design that scales to many common processor
+    architectures, including a variety of 8, 16, 32, and 64-bit targets.  The flexible
+    CMake-based build system facilitates compiling the kernel, tests, examples, and
+    user-application code for any supported target with a consistent interface.
 
-    But Mark3 is bigger than just a real-time kernel, it also contains a number
-    of class-leading features:
+    The API is rich and surprisingly simple – with six function calls, you can set up
+    the kernel, initialize two threads, and start the scheduler.
 
-    - Native implementation in C++, with C-language bindings.
-    - Device driver HAL which provides a meaningful abstraction around device-specific
-      peripherals.
-    - CMake-based build system which can be used to build all libraries, examples, tests,
-      documentation, and user-projects for any number of targets from the command-line.
-    - Graphics and UI code designed to simplify the implementation of systems using
-      displays, keypads, joysticks, and touchscreens
-    - Robust and deterministic dynamic memory management libraries
-    - A Variety of general-purpose libraries to speed up embedded app development
-    - Emulator-aware debugging via the flAVR AVR emulator
-    - A bulletproof, well-documented bootloader for AVR microcontrollers
-      Support for kernel-aware simulators, incluing Funkenstein's own flAVR.
-    .
+    Written in modern C++, Mark3 makes use of modern language features that improve code
+    quality, reduces duplication, and simplifies API usage.  C++ isn't your thing? No
+    problem! there's a complete set of C-language bindings available to facilitate the
+    use of Mark3 in a wider variety of environments.
+
+    The Mark3 kernel releases contain zero compiler warnings, zero compiler errors, and have zero
+    unit test failures.  The build and test process can be automated through
+    the Mark3-docker project, allowing for easy integration with continuous integration
+    environments.  The kernel is also run through static analysis tools, automated profiling
+    and documentation tools.
+
+    The source is fully-documented with doxygen, and example code is provided to illustrate
+    core concepts.  The result is a performant RTOS, which is easy to read, easy to
+    understand, and easy to extend to fit your needs.
 */
 /**
     @page LICENSE License
@@ -82,9 +70,9 @@ See license.txt for more information
         - Redistributions in binary form must reproduce the above copyright
           notice, this list of conditions and the following disclaimer in the
           documentation and/or other materials provided with the distribution.
-        - Neither the name of m0slevin, nor the
-          names of its contributors may be used to endorse or promote products
-          derived from this software without specific prior written permission.
+        - Neither the names m0slevin, Mark Slevinsky, nor the names of its
+          contributors may be used to endorse or promote products derived
+          from this software without specific prior written permission.
         .
 
     THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
@@ -101,7 +89,7 @@ See license.txt for more information
     @endverbatim
 */
 /**
-    @page CONFIG0 Configuring The Mark3 Kernel
+    @page CONFIG0 Configuring The Kernel
 
     @section CONFIG_I Overview
 
@@ -306,10 +294,74 @@ See license.txt for more information
     @sa mark3cfg.h
 */
 /**
-    @page BUILD0 Building Mark3
+    @page BUILD0 Building The Kernel
+
+    Mark3 contains its own build system and support scripts, based on CMake and Ninja.
+
+    @section BUILDPRE Prerequisites
+
+    To build via CMake, a user requires a suitable, supported toolchain (i.e. gcc-avr, arm-none-eabi-gcc),
+    CMake 3.4.2 or higher, and a backend supported by CMake (i.e. Ninja build).
+
+    For example, on debian-based distributions, such as Ubuntu, the avr toolchain can be installed using:
+
+            apt-get install avr-libc gcc-avr cmake ninja-build
+
+    Once a sane build environment has been created, the kernel, libraries, examples and tests can be built
+    by running `ninja` from the target's build directory (/out/<target>/).  By default, Mark3 builds for the
+    atmega328p target, but the target can be selected by manually configuring environment variables, or
+    by running the ./build/set_target.sh script as follows:
+
+            ./build/set_target.sh <architecture> <variant> <toolchain>
+
+        Where:
+             <architecture> is the target CPU architecture(i.e. avr, msp430, cm0, cm3, cm4f)
+             <variant>      is the part name (i.e. atmega328p, msp430f2274, generic)
+             <toolchain>    is the build toolchain (i.e. gcc)
+
+    This script is a thin wrapper for the cmake configuration commands, and clears the output directory before
+    re-initializing cmake for the selected target.
+
+    @section BUILDBuiLD Building
+
+    To build the Mark3 kernel and middleware libraries for a generic ARM Cortex-M0 using a pre-configured
+    arm-none-eabi-gcc toolchain, one would run the following commands:
+
+            ./build/set_target.sh cm0 generic gcc
+            ./build/build.sh
+
+    To perform an incremental build, go into the target's cmake build directory (/out/<target/) and simply run 'ninja'.
+
+    To perform a clean build, go into the target's cmake build directory (/out/<target/) and run 'ninja clean', then 'ninja'.
+
+    Note that not all libraries/tests/examples will build in all kernel configurations.  The default kernel
+    configuration may need adjustment/tweaking to support a specific part.  See the documentation for details.
+
+    @section BUILDTARG Supported Targets
+
+    Currently, Mark3 supports GCC toolchains for the following targets:
+
+            atmega328p
+            atmega644
+            atmega1284p
+            atxmega256a3
+            atmega1280
+            atmega2560
+            msp430f2274
+            ARM Cortex-M0
+            ARM Cortex-M3 (Note: Also supports Cortex-M4)
+            ARM Cortex-M4F (Note: Also supports Cortex-M7)
+
+    @section BUILDMORE More Info
+
+    The Mark3 project also has a ready-made docker image to simplify the process.  Please
+    see the Mark3 Docker project here for more details:
+
+    https://github.com/moslevin/mark3-docker
+
 */
 /**
-    @page START Getting Started With The Mark3 API
+    @page START The Mark3 API
 
     @section START0 Kernel Setup
 
@@ -341,12 +393,12 @@ See license.txt for more information
     static Thread AppThread;
     static Thread IdleThread;
 
-    //2) Allocate stacks for each thread
+    //2) Allocate stacks for each thread - in bytes
     #define STACK_SIZE_APP      (192)
     #define STACK_SIZE_IDLE     (128)
 
-    static K_WORD awAppStack[STACK_SIZE_APP];
-    static K_WORD awIdleStack[STACK_SIZE_IDLE];
+    static K_WORD awAppStack[STACK_SIZE_APP / sizeof(K_WORD)];
+    static K_WORD awIdleStack[STACK_SIZE_IDLE / sizeof(K_WORD)];
 
     //3) Define entry point functions for each thread
     void AppThread(void);
@@ -370,17 +422,17 @@ See license.txt for more information
         Kernel::Init();				// MUST be before other kernel ops
 
         //2) Initialize all of the threads we've defined
-        AppThread.Init(	awAppStack,		// Pointer to the stack
-                        STACK_SIZE_APP,		// Size of the stack
-                        1,			// Thread priority
-                        (void*)AppEntry,	// Entry function
-                        nullptr );         	// Entry function argument
+        AppThread.Init(	awAppStack,             // Pointer to the stack
+                        sizeof(awAppStack),		// Size of the stack
+                        1,                      // Thread priority
+                        (void*)AppEntry,        // Entry function
+                        nullptr );              // Entry function argument
 
-        IdleThread.Init( awIdleStack,		// Pointer to the stack
-                         STACK_SIZE_IDLE,	// Size of the stack
-                         0,			// Thread priority
-                         (void*)IdleEntry,	// Entry function
-                         nullptr );		// Entry function argument
+        IdleThread.Init( awIdleStack,           // Pointer to the stack
+                         sizeof(awIdleStack),	// Size of the stack
+                         0,                     // Thread priority
+                         (void*)IdleEntry,      // Entry function
+                         nullptr );             // Entry function argument
 
         //3) Add the threads to the scheduler
         AppThread.Start();			// Actively schedule the threads
@@ -467,19 +519,18 @@ See license.txt for more information
 
     void AppEntry(void)
     {
-        while(1)
-        {
+        while(1) {
             // Do something!
         }
     }
 
     ...
     {
-        clMyThread.Init(awStack,	 // Pointer to the stack to use by this thread
-                        sizeof(awStack),	      	 // Size of the stack in bytes
-                        1,		 // Thread priority (0 = idle, 7 = max)
-                        (void*)AppEntry, // Function where the thread starts executing
-                        nullptr );          // Argument passed into the entry function
+        clMyThread.Init(awStack,             // Pointer to the stack to use by this thread
+                        sizeof(awStack),	 // Size of the stack in bytes
+                        1,                   // Thread priority (0 = idle, 7 = max)
+                        (void*)AppEntry,     // Function where the thread starts executing
+                        nullptr );           // Argument passed into the entry function
 
     }
 
@@ -508,8 +559,7 @@ See license.txt for more information
 
     void Thread( void *param )
     {
-        while(1)
-        {
+        while(1) {
             // Do Something
         }
     }
@@ -585,8 +635,7 @@ See license.txt for more information
     void Producer()
     {
         clSemaphore.Init(0, 1);  //!< Intialize as a binary semaphore, with an initial value of 0, maximum value of 1.
-        while(1)
-        {
+        while(1) {
             // Do some work, create something to be consumed
 
             // Post a semaphore, allowing another thread to consume the data
@@ -597,8 +646,7 @@ See license.txt for more information
     void Consumer()
     {
         // Assumes semaphore initialized before use...
-        While(1)
-        {
+        While(1) {
             // Wait for new data from the producer thread
             clSemaphore.Pend();
 
@@ -622,8 +670,7 @@ See license.txt for more information
     void MyThread()
     {
         clSemaphore.Init(0, 1); // Ensure this is initialized before the MyISR interrupt is enabled.
-        while(1)
-        {
+        while(1) {
             // Wait until we get notification from the interrupt
             clSemaphore.Pend();
 
@@ -746,8 +793,7 @@ See license.txt for more information
         void MyThreadFunc()
         {
             ...
-            while(1)
-            {
+            while(1) {
                 ...
                 uint16_t u16WakeCondition;
 
@@ -921,8 +967,7 @@ See license.txt for more information
         // envelope.
         uint8_t aucTxBuf[16];
 
-        while(1)
-        {
+        while(1) {
             // Copy some data into aucTxBuf, a 16-byte buffer, the
             // same size as a mailbox envelope.
             ...
@@ -937,8 +982,7 @@ See license.txt for more information
     {
         uint8_t aucRxBuf[16];
 
-        while(1)
-        {
+        while(1) {
             // Wait until there's a message in our mailbox.  Once
             // there is a message, read it into our local buffer.
             cmMbox.Receive((void*)aucRxBuf);
@@ -1441,7 +1485,7 @@ See license.txt for more information
     considered "unsafe" or "advaned" topics in C.
 */
 /**
-    @page WHENRTOS When should you use an RTOS?
+    @page WHENRTOS When to use an RTOS?
 
     @section WHENREAL The reality of system code
 
@@ -2229,14 +2273,14 @@ See license.txt for more information
     threads, dynamic timers, efficient message passing, and multiple types of
     synchronization primatives.
 
-    @subsection INSIDEOVERNED No external dependencies, no new language features
+    @subsection INSIDEOVERNED No external dependencies, no non-language features
 
     To maximize portability and promote adoption to new platforms, Mark3 is
     written in a widely supported subset of C++ that lends itself to embedded
-    applications.  It avoids RTTI, exceptions, templates, and libraries (C
-    standard, STL, etc.), with all fundamental data structures and types
-    implemented completely for use by the kernel.  As a result, the portable
-    parts of Mark3 should compile for any capable C++ toolchain.
+    applications.  It avoids RTTI, exceptions, and libraries (C standard, STL,
+    boost, etc.), with all fundamental data structures and types implemented
+    completely for use by the kernel.  As a result, the portable parts of Mark3
+    should compile for any capable C++ toolchain.
 
     @subsection INSIDEOVERHPA Target the most popular hobbyist platforms available
 
@@ -2404,43 +2448,62 @@ See license.txt for more information
     In the table below, we group each feature by object, referencing the source
     module in which they can be found in the Mark3 source tree.
 
-    | Feature             | Kernel Object         | Source Files                    |
-    |:--------------------|:----------------------|:--------------------------------|
-    |Atomic Operations    | Atomic                |  atomic.cpp/.h                  |
-    |Memory Allocators    | AutoAlloc             |  autoalloc.cpp/.h               |
-    |CoRoutines           | CoScheduler           |  cosched.cpp/.h                 |
-    |                     | CoList                |  colist.cpp/.h                  |
-    |                     | Coroutine             |  coroutine.cpp/.h               |
-    |Data Structures      | *LinkList             |  ll.cpp/.h                      |
-    |                     | PriorityMapL1         |  priomapl1.h                    |
-    |                     | PriorityMapL2         |  priomapl2.h                    |
-    |Threads + Scheduling | Thread                |  thread.cpp/.h                  |
-    |                     | Scheduler             |  scheduler.cpp/.h               |
-    |                     | Quantum               |  quantum.cpp/.h                 |
-    |                     | ThreadPort            |  threadport.cpp/.h **           |
-    |                     | KernelSWI             |  kernelswi.cpp/.h **            |
-    |                     | ThreadList            |  threadlist.cpp/.h              |
-    |                     | ThreadListList        |  threadlistlist.cpp/.h          |
-    |Profiling            | ProfileTimer          |  profile.cpp/.h                 |
-    |Timers               | Timer                 |  timer.h/timer.cpp              |
-    |                     | TimerScheduler        |  timerscheduler.h               |
-    |                     | TimerList             |  timerlist.h/cpp                |
-    |                     | KernelTimer           |  kerneltimer.cpp/.h **          |
-    |Synchronization      | BlockingObject        |  blocking.cpp/.h                |
-    |                     | Semaphore             |  ksemaphore.cpp/.h              |
-    |                     | EventFlag             |  eventflag.cpp/.h               |
-    |                     | Mutex                 |  mutex.cpp/.h                   |
-    |                     | Notify                |  notify.cpp/.h                  |
-    |                     | ConditionVariable     |  condvar.cpp/.h                 |
-    |                     | ReaderWriterLock      |  readerwriter.cpp/.h            |
-    |                     | CriticalGuard         |  criticalguard.h                |
-    |                     | CriticalSection       |  criticalsection.h              |
-    |                     | LockGuard             |  lockguard.h                    |
-    |                     | SchedGuard            |  schedguard.h                   |
-    |IPC/Message-passing  | Mailbox               |  mailbox.cpp/.h                 |
-    |                     | MessageQueue          |  message.cpp/.h                 |
-    |Debugging            | Miscellaneous Macros  |  kerneldebug.h                  |
-    |Kernel               | Kernel                |  kernel.cpp/.h                  |
+    <b>Atomic Operations</b><br>
+    Atomic  - atomic.cpp/.h<br>
+
+    <b>Memory Allocators</b><br>
+    AutoAlloc - autoalloc.cpp/.h<br>
+
+    <b>CoRoutines</b><br>
+    CoScheduler - cosched.cpp/.h<br>
+    CoList - colist.cpp/.h<br>
+    Coroutine - coroutine.cpp/.h<br>
+
+    <b>Data Structures</b><br>
+    LinkList - ll.cpp/.h<br>
+    PriorityMapL1 - priomapl1.h<br>
+    PriorityMapL2 - priomapl2.h<br>
+
+    <b>Threads + Scheduling</b><br>
+    Thread - thread.cpp/.h<br>
+    Scheduler - scheduler.cpp/.h<br>
+    Quantum - quantum.cpp/.h<br>
+    ThreadPort - threadport.cpp/.h **<br>
+    KernelSWI - kernelswi.cpp/.h **<br>
+    ThreadList - threadlist.cpp/.h<br>
+    ThreadListList - threadlistlist.cpp/.h<br>
+
+    <b>Profiling</b><br>
+    ProfileTimer - profile.cpp/.h<br>
+
+    <b>Timers</b><br>
+    Timer - timer.h/timer.cpp<br>
+    TimerScheduler - timerscheduler.h<br>
+    TimerList - timerlist.h/cpp<br>
+    KernelTimer - kerneltimer.cpp/.h **<br>
+
+    <b>Synchronization</b><br>
+    BlockingObject - blocking.cpp/.h<br>
+    Semaphore - ksemaphore.cpp/.h<br>
+    EventFlag - eventflag.cpp/.h<br>
+    Mutex - mutex.cpp/.h<br>
+    Notify - notify.cpp/.h<br>
+    ConditionVariable - condvar.cpp/.h<br>
+    ReaderWriterLock - readerwriter.cpp/.h<br>
+    CriticalGuard - criticalguard.h<br>
+    CriticalSection - criticalsection.h<br>
+    LockGuard - lockguard.h<br>
+    SchedGuard - schedguard.h<br>
+
+    <b>IPC/Message-passing</b><br>
+    Mailbox - mailbox.cpp/.h<br>
+    MessageQueue - message.cpp/.h<br>
+
+    <b>Debugging</b><br>
+    Miscellaneous Macros - kerneldebug.h<br>
+
+    <b>Kernel</b><br>
+    Kernel - kernel.cpp/.h<br>
 
     @verbatim
     ** implementation is platform-dependent, and located under the kernel's
@@ -3780,7 +3843,7 @@ See license.txt for more information
     microcontroller targets.
 */
 /**
-    @page MARK3C Mark3C - C-language API bindings for the Mark3 Kernel.
+    @page MARK3C C-language bindings
 
     Mark3 now includes an optional additional library with C language bindings
     for all core kernel APIs, known as Mark3C.  This library alllows applications

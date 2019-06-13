@@ -24,7 +24,9 @@ namespace Mark3
 {
 //---------------------------------------------------------------------------
 /**
- *  Class used to implement a simple unit-testing framework
+ * @brief The UnitTest Class.
+ * The UnitTest Class is used to implement a simple framework for tracking
+ * the execution of unit test testcases.
  */
 class UnitTest
 {
@@ -33,22 +35,21 @@ public:
 
     /**
      *  @brief SetName
-     *
      *  Set the name of the test object
      *
      *  @param szName_ Name of the tests associated with this object
      *
      */
     void SetName(const char* szName_) { m_szName = szName_; }
+
     /**
      *  @brief Start
-     *
      *  Start a new test iteration.
      */
     void Start() { m_bIsActive = 1; }
+
     /**
      *  @brief Pass
-     *
      *  Stop the current iteration (if started), and register that the test
      *  was successful.
      */
@@ -56,7 +57,6 @@ public:
 
     /**
      *  @brief Fail
-     *
      *  Stop the current iterations (if started), and register that the
      *  current test failed.
      */
@@ -96,14 +96,12 @@ public:
     void ExpectFailLessThanEquals(K_INT lVal_, K_INT lExpression_) { (lVal_ <= lExpression_) ? Fail() : Pass(); }
     /**
      *  @brief Complete
-     *
      *  Complete the test.  Once a test has been completed, no new iterations
      *  can be started (i.e Start()/Pass()/Fail() will have no effect).
      */
     void Complete() { m_bComplete = 1; }
     /**
      *  @brief GetName
-     *
      *  Get the name of the tests associated with this object
      *
      *  @return Name of the test
@@ -111,7 +109,6 @@ public:
     const char* GetName() { return m_szName; }
     /**
      *  @brief GetResult
-     *
      *  Return the result of the last test
      *
      *  @return Status of the last run test (false = fail, true = pass)
@@ -119,7 +116,6 @@ public:
     bool GetResult() { return m_bStatus; }
     /**
      *  @brief GetPassed
-     *
      *  Return the total number of test points/iterations passed
      *
      *  @return Count of all successful test points/iterations
@@ -127,7 +123,6 @@ public:
     uint16_t GetPassed() { return m_u16Passed; }
     /**
      *  @brief GetFailed
-     *
      *  Return the number of failed test points/iterations
      *
      *  @return Failed test point/iteration count
@@ -135,7 +130,6 @@ public:
     uint16_t GetFailed() { return m_u16Iterations - m_u16Passed; }
     /**
      *  @brief GetTotal
-     *
      *  Return the total number of iterations/test-points executed
      *
      *  @return Total number of ierations/test-points executed

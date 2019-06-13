@@ -28,6 +28,18 @@ namespace Mark3
 //---------------------------------------------------------------------------
 /**
  * @brief The PriorityMapL1 class
+ * This class implements a priority bitmap data structure.  Each bit in the
+ * objects internal storage represents a priority.  When a bit is set, it
+ * indicates that something is scheduled at the bit's corresponding priority,
+ * when a bit is clear it indicates that no entities are scheduled at that
+ * priority.  This object provides the fundamental logic required to implement
+ * efficient priority-based scheduling for the thread + coroutine schedulers
+ * in the kernel.
+ *
+ * The L1 version of the datastructure uses a single unsigned integer (specified
+ * by the templated typname "T"), to support "C" priorities.  Thus, the maximum
+ * number of priorities supported in the map is the number of bits in the "T"
+ * parameter.
  */
 template <typename T, size_t C>
 class PriorityMapL1
@@ -35,7 +47,6 @@ class PriorityMapL1
 public:
     /**
      * @brief PriorityMap
-     *
      * Initialize the priority map object, clearing the bitamp data to all 0's.
      */
     PriorityMapL1()
@@ -44,8 +55,8 @@ public:
     }
 
     /**
-     * @brief Set       Set the priority map bitmap data, at all levels, for the
-     *                  given priority
+     * @brief Set
+     * Set the priority map bitmap data, at all levels, for the given priority
      * @param uXPrio_   Priority level to set the bitmap data for.
      */
     void Set(T uXPrio_)
@@ -55,8 +66,8 @@ public:
     }
 
     /**
-     * @brief Clear     Clear the priority map bitmap data, at all levels, for the
-     *                  given priority.
+     * @brief Clear
+     * Clear the priority map bitmap data, at all levels, for the given priority.
      * @param uXPrio_   Priority level to clear the bitmap data for.
      */
     void Clear(T uXPrio_)
@@ -67,7 +78,6 @@ public:
 
     /**
      * @brief HighestPriority
-     *
      * Computes the numeric priority of the highest-priority thread represented in the
      * priority map.
      *

@@ -30,7 +30,8 @@ namespace Mark3
 {
 //---------------------------------------------------------------------------
 /**
- *  Binary & Counting semaphores, based on BlockingObject base class.
+ * @brief the Semaphore class provides Binary & Counting semaphore objects, based
+ * on BlockingObject base class.
  */
 class Semaphore : public BlockingObject
 {
@@ -40,7 +41,6 @@ public:
 
     /**
      *  @brief
-     *
      *  Initialize a semaphore before use.  Must be called before attempting
      *  post/pend operations on the object.
      *
@@ -63,7 +63,6 @@ public:
 
     /**
      *  @brief
-     *
      *  Increment the semaphore count.  If the semaphore count is zero at the
      *  time this is called, and there are threads blocked on the object, this
      *  will immediately unblock the highest-priority blocked Thread.
@@ -79,7 +78,6 @@ public:
 
     /**
      *  @brief
-     *
      *  Decrement the semaphore count.  If the count is zero, the calling
      *  Thread will block until the semaphore is posted, and the Thread's
      *  priority is higher than that of any other Thread blocked on the object.
@@ -88,7 +86,6 @@ public:
 
     /**
      *  @brief
-     *
      *  Return the current semaphore counter. This can be
      *  usedd by a thread to bypass blocking on a semaphore -
      *  allowing it to do other things until a non-zero count
@@ -101,7 +98,6 @@ public:
 
     /**
      *  @brief
-     *
      *  Decrement the semaphore count.  If the count is zero,
      *  the thread will block until the semaphore is pended.
      *  If the specified interval expires before the thread is
@@ -114,7 +110,6 @@ public:
 
     /**
      *  @brief
-     *
      *  Wake a thread blocked on the semaphore.  This is an
      *  internal function used for implementing timed semaphores
      *  relying on timer callbacks.  Since these do not have
@@ -127,7 +122,6 @@ public:
 private:
     /**
      *  @brief
-     *
      *  Wake the next thread waiting on the semaphore.  Used internally.
      */
     uint8_t WakeNext();

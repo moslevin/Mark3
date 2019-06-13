@@ -27,8 +27,9 @@ See license.txt for more information
 namespace Mark3
 {
 /**
- * @brief The Mailbox class implements an IPC mechnism based on envelopes
- * containing data of a fixed size (configured at initialization) that reside
+ * @brief The Mailbox class.
+ * This class implements an IPC mechnism based on sending/receiving envelopes
+ * containing data of a fixed size, configured at initialization) that reside
  * within a buffer of memory provided by the user.
  */
 class Mailbox
@@ -39,7 +40,6 @@ public:
 
     /**
      * @brief Init
-     *
      * Initialize the mailbox object prior to its use.  This must be called before
      * any calls can be made to the object.
      *
@@ -51,7 +51,6 @@ public:
 
     /**
      * @brief Init
-     *
      * Create and initialize the mailbox object prior to its use.  This must be
      * called before any calls can be made to the object.  This version of the API
      * alloctes the buffer space from the kernel's Auto-Allocation heap, which cannot
@@ -66,7 +65,6 @@ public:
 
     /**
      * @brief Send
-     *
      * Send an envelope to the mailbox.  This safely copies the data contents of the
      * datastructure to the previously-initialized mailbox buffer.  If there is a
      * thread already blocking, awaiting delivery to the mailbox, it will be unblocked
@@ -81,7 +79,6 @@ public:
 
     /**
      * @brief SendTail
-     *
      * Send an envelope to the mailbox.  This safely copies the data contents of the
      * datastructure to the previously-initialized mailbox buffer.  If there is a
      * thread already blocking, awaiting delivery to the mailbox, it will be unblocked
@@ -96,7 +93,6 @@ public:
 
     /**
      * @brief Send
-     *
      * Send an envelope to the mailbox.  This safely copies the data contents of the
      * datastructure to the previously-initialized mailbox buffer.  If there is a
      * thread already blocking, awaiting delivery to the mailbox, it will be unblocked
@@ -112,7 +108,6 @@ public:
 
     /**
      * @brief SendTail
-     *
      * Send an envelope to the mailbox.  This safely copies the data contents of the
      * datastructure to the previously-initialized mailbox buffer.  If there is a
      * thread already blocking, awaiting delivery to the mailbox, it will be unblocked
@@ -128,7 +123,6 @@ public:
 
     /**
      * @brief Receive
-     *
      * Read one envelope from the head of the mailbox.  If the mailbox is currently
      * empty, the calling thread will block until an envelope is delivered.
      *
@@ -139,7 +133,6 @@ public:
 
     /**
      * @brief ReceiveTail
-     *
      * Read one envelope from the tail of the mailbox.  If the mailbox is currently
      * empty, the calling thread will block until an envelope is delivered.
      *
@@ -150,7 +143,6 @@ public:
 
     /**
      * @brief Receive
-     *
      * Read one envelope from the head of the mailbox.  If the mailbox is currently
      * empty, the calling thread will block until an envelope is delivered, or the
      * specified time has elapsed without delivery.
@@ -164,7 +156,6 @@ public:
 
     /**
      * @brief ReceiveTail
-     *
      * Read one envelope from the tail of the mailbox.  If the mailbox is currently
      * empty, the calling thread will block until an envelope is delivered, or the
      * specified time has elapsed without delivery.
@@ -188,7 +179,6 @@ public:
 private:
     /**
      * @brief GetHeadPointer
-     *
      * Return a pointer to the current head of the mailbox's internal
      * circular buffer.
      *
@@ -203,7 +193,6 @@ private:
 
     /**
      * @brief GetTailPointer
-     *
      * Return a pointer to the current tail of the mailbox's internal
      * circular buffer.
      *
@@ -218,7 +207,6 @@ private:
 
     /**
      * @brief CopyData
-     *
      * Perform a direct byte-copy from a source to a destination object.
      *
      * @param src_  Pointer to an object to read from
@@ -234,7 +222,6 @@ private:
 
     /**
      * @brief MoveTailForward
-     *
      * Move the tail index forward one element
      */
     void MoveTailForward(void)
@@ -247,7 +234,6 @@ private:
 
     /**
      * @brief MoveHeadForward
-     *
      * Move the head index forward one element
      */
     void MoveHeadForward(void)
@@ -260,7 +246,6 @@ private:
 
     /**
      * @brief MoveTailBackward
-     *
      * Move the tail index backward one element
      */
     void MoveTailBackward(void)
@@ -273,7 +258,6 @@ private:
 
     /**
      * @brief MoveHeadBackward
-     *
      * Move the head index backward one element
      */
     void MoveHeadBackward(void)
@@ -286,7 +270,6 @@ private:
 
     /**
      * @brief Send_i
-     *
      * Internal method which implements all Send() methods in the class.
      *
      * @param pvData_   Pointer to the envelope data
@@ -298,7 +281,6 @@ private:
 
     /**
      * @brief Receive_i
-     *
      * Internal method which implements all Read() methods in the class.
      *
      * @param pvData_       Pointer to the envelope data

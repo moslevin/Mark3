@@ -40,7 +40,8 @@ class Coroutine;
 using CoroutineHandler = void (*)(Coroutine* pclCaller_, void* pvContext_);
 
 /**
- * The Coroutine class implements a lightweight, run-to-completion task that forms
+ * @brief The Coroutine class
+ * implements a lightweight, run-to-completion task that forms
  * the basis for co-operative task scheduling in Mark3.  Coroutines are designed
  * to be run from a singular context, and scheduled as a result of events occurring
  * from threads, timers, interrupt sources, or other co-routines.
@@ -57,7 +58,6 @@ public:
 
     /**
      * @brief Init
-     *
      * Initialize the coroutine object prior to use.  Must be called before using the
      * other methods in the class.
      *
@@ -71,7 +71,6 @@ public:
 
     /**
      * @brief Run
-     *
      * Clear the co-routine's pending execution flag, and execute the coroutine's handler
      * function.
      */
@@ -79,7 +78,6 @@ public:
 
     /**
      * @brief Activate
-     *
      * Tag the co-routine as pending execution.  Has no effect if the co-routine is already
      * pending execution.
      */
@@ -87,7 +85,6 @@ public:
 
     /**
      * @brief SetPriority
-     *
      * Update the scheduling priority of the co-routine.  Can be called from within the
      * co-routine, or from any other context aware of the co-routine object.
      *
@@ -97,7 +94,6 @@ public:
 
     /**
      * @brief GetPriority
-     *
      * Retrieve the current scheduling priority of the co-routine.
      *
      * @return current scheduling priority of the co-routine.

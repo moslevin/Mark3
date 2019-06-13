@@ -29,7 +29,7 @@ See license.txt for more information
 #include "mark3cfg.h"
 
 #pragma once
-
+/// @cond DOCUMENT_FAKE_TYPES
 #if defined(__cplusplus)
 extern "C" {
 #endif
@@ -177,3 +177,4 @@ typedef struct {
 #if defined(__cplusplus)
 }
 #endif
+/// @endcond DOCUMENT_FAKE_TYPES

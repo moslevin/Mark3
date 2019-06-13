@@ -16,7 +16,6 @@ See license.txt for more information
     @file   ll.h
 
     @brief  Core linked-list declarations, used by all kernel list types
-
     At the heart of RTOS data structures are linked lists.  Having a robust
     and efficient set of linked-list types that we can use as a foundation for
     building the rest of our kernel types allows u16 to keep our RTOS code
@@ -56,8 +55,9 @@ class CircularLinkList;
 
 //---------------------------------------------------------------------------
 /**
- *  Basic linked-list node data structure.  This data is managed by the
- *  linked-list class types, and can be used transparently between them.
+ * @brief The LinkListNode Class
+ * Basic linked-list node data structure.  This data is managed by the
+ * linked-list class types, and can be used transparently between them.
  */
 class LinkListNode
 {
@@ -97,6 +97,13 @@ public:
 };
 
 //---------------------------------------------------------------------------
+/**
+ * @brief The TypedLinkListNode class
+ * The TypedLinkListNode class provides a linked-list node type for a specified
+ * object type.  This can be used with typed link-list data structures to
+ * manage lists of objects without having to static-cast between the base type
+ * and the derived class.
+ */
 template <typename T>
 class TypedLinkListNode : public LinkListNode
 {
@@ -106,6 +113,7 @@ public:
 };
 //---------------------------------------------------------------------------
 /**
+ * @brief The LinkList Class
  *  Abstract-data-type from which all other linked-lists are derived
  */
 class LinkList
@@ -165,8 +173,8 @@ public:
 
 //---------------------------------------------------------------------------
 /**
- *  Doubly-linked-list data type, inherited from the base LinkList type, and
-    templated for use with linked-list-node derived data-types.
+ * @brief The DoubleLinkList  Class
+ * Doubly-linked-list data type, inherited from the base LinkList type.
  */
 class DoubleLinkList : public LinkList
 {
@@ -204,7 +212,8 @@ public:
 
 //---------------------------------------------------------------------------
 /**
-    Circular-linked-list data type, inherited from the base LinkList type.
+ * @brief The CircularLinkList class
+ * Circular-linked-list data type, inherited from the base LinkList type.
  */
 class CircularLinkList : public LinkList
 {
@@ -218,7 +227,6 @@ public:
 
     /**
      *  @brief
-     *
      *  Add the linked list node to this linked list
      *
      *  @param node_ Pointer to the node to add
@@ -227,7 +235,6 @@ public:
 
     /**
      *  @brief Remove
-     *
      *  Add the linked list node to this linked list
      *
      *  @param node_ Pointer to the node to remove
@@ -236,7 +243,6 @@ public:
 
     /**
      *  @brief PivotForward
-     *
      *  Pivot the head of the circularly linked list forward
      *  ( Head = Head->next, Tail = Tail->next )
      */
@@ -244,7 +250,6 @@ public:
 
     /**
      *  @brief PivotBackward
-     *
      *  Pivot the head of the circularly linked list backward
      *  ( Head = Head->prev, Tail = Tail->prev )
      */
@@ -252,7 +257,6 @@ public:
 
     /**
      * @brief InsertNodeBefore
-     *
      * Insert a linked-list node into the list before the specified insertion
      * point.
      *
@@ -262,6 +266,12 @@ public:
     void InsertNodeBefore(LinkListNode* node_, LinkListNode* insert_);
 };
 
+//---------------------------------------------------------------------------
+/**
+ * @brief The TypedDoubleLinkList Class
+ * Doubly-linked-list data type, inherited from the base LinkList type, and
+ * templated for use with linked-list-node derived data-types.
+ */
 template <typename T>
 class TypedDoubleLinkList : public DoubleLinkList
 {
@@ -274,7 +284,6 @@ public:
 
     /**
      *  @brief GetHead
-     *
      *  Get the head node in the linked list
      *
      *  @return Pointer to the head node in the list
@@ -283,7 +292,6 @@ public:
 
     /**
      * @brief SetHead
-     *
      * Set the head node of a linked list
      *
      * @param pclNode_ Pointer to node to set as the head of the linked list
@@ -292,7 +300,6 @@ public:
 
     /**
      *  @brief GetTail
-     *
      *  Get the tail node of the linked list
      *
      *  @return Pointer to the tail node in the list
@@ -301,7 +308,6 @@ public:
 
     /**
      * @brief SetTail
-     *
      * Set the tail node of the linked list
      *
      * @param pclNode_ Pointer to the node to set as the tail of the linked list
@@ -310,7 +316,6 @@ public:
 
     /**
      *  @brief Add
-     *
      *  Add the linked list node to this linked list
      *
      *  @param node_ Pointer to the node to add
@@ -322,7 +327,6 @@ public:
 
     /**
      *  @brief Remove
-     *
      *  Add the linked list node to this linked list
      *
      *  @param node_ Pointer to the node to remove
@@ -335,8 +339,9 @@ public:
 
 //---------------------------------------------------------------------------
 /**
-    Circular-linked-list data type, inherited from the base LinkList type, and
-    templated for use with linked-list-node derived data-types.
+ * @brief The TypedCircularLinkList Class
+ * Circular-linked-list data type, inherited from the base LinkList type, and
+ * templated for use with linked-list-node derived data-types.
  */
 template <typename T>
 class TypedCircularLinkList : public CircularLinkList
@@ -350,7 +355,6 @@ public:
 
     /**
      *  @brief GetHead
-     *
      *  Get the head node in the linked list
      *
      *  @return Pointer to the head node in the list
@@ -359,7 +363,6 @@ public:
 
     /**
      * @brief SetHead
-     *
      * Set the head node of a linked list
      *
      * @param pclNode_ Pointer to node to set as the head of the linked list
@@ -368,7 +371,6 @@ public:
 
     /**
      *  @brief GetTail
-     *
      *  Get the tail node of the linked list
      *
      *  @return Pointer to the tail node in the list
@@ -377,7 +379,6 @@ public:
 
     /**
      * @brief SetTail
-     *
      * Set the tail node of the linked list
      *
      * @param pclNode_ Pointer to the node to set as the tail of the linked list
@@ -386,7 +387,6 @@ public:
 
     /**
      *  @brief
-     *
      *  Add the linked list node to this linked list
      *
      *  @param node_ Pointer to the node to add
@@ -398,7 +398,6 @@ public:
 
     /**
      *  @brief Remove
-     *
      *  Add the linked list node to this linked list
      *
      *  @param node_ Pointer to the node to remove
@@ -410,7 +409,6 @@ public:
 
     /**
      * @brief InsertNodeBefore
-     *
      * Insert a linked-list node into the list before the specified insertion
      * point.
      *

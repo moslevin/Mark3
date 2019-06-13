@@ -27,7 +27,7 @@ See license.txt for more information
 namespace Mark3
 {
 /**
- * @brief The ReaderWriterLock class
+ * @brief The ReaderWriterLock class.
  * This class implements an object that marshalls access to a resource based on
  * the intended usage of the resource.  A reader-writer lock permits multiple
  * concurrent read access, or single-writer access to a resource.  If the object

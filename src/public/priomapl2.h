@@ -28,6 +28,23 @@ namespace Mark3
 //---------------------------------------------------------------------------
 /**
  * @brief The PriorityMapL2 class
+ * This class implements a priority bitmap data structure.  Each bit in the
+ * objects internal storage represents a priority.  When a bit is set, it
+ * indicates that something is scheduled at the bit's corresponding priority,
+ * when a bit is clear it indicates that no entities are scheduled at that
+ * priority.  This object provides the fundamental logic required to implement
+ * efficient priority-based scheduling for the thread + coroutine schedulers
+ * in the kernel.
+ *
+ * The L2 version of the datastructure uses a two-layer nested map structure,
+ * where a first layer bitmap contains a single unsigned integer of type "T",
+ * where each bit corresponds to an array entry in the second layer table.  The
+ * second layer consists of an array of unsigned integers of type "T", where each
+ * bit in each element corresponds to a level of priority supported by the map
+ * structure.  As a result, the maximum number of priorities ("C") supported by the
+ * object is n*n, where n is the number of bits in the "T" parameter.  i.e., if
+ * an 8-bit unsigned int is used, this object supports up to 64 priorities; and if
+ * a 32-bit unsigned int is used, the object supports up to 1024 priorities.
  */
 template <typename T, size_t C>
 class PriorityMapL2
@@ -35,7 +52,6 @@ class PriorityMapL2
 public:
     /**
      * @brief PriorityMap
-     *
      * Initialize the priority map object, clearing the bitamp data to all 0's.
      */
     PriorityMapL2()
@@ -45,8 +61,8 @@ public:
     }
 
     /**
-     * @brief Set       Set the priority map bitmap data, at all levels, for the
-     *                  given priority
+     * @brief Set
+     * Set the priority map bitmap data, at all levels, for the given priority
      * @param uXPrio_   Priority level to set the bitmap data for.
      */
     void Set(T uXPrio_)
@@ -59,8 +75,8 @@ public:
     }
 
     /**
-     * @brief Clear     Clear the priority map bitmap data, at all levels, for the
-     *                  given priority.
+     * @brief Clear
+     * Clear the priority map bitmap data, at all levels, for the given priority.
      * @param uXPrio_   Priority level to clear the bitmap data for.
      */
     void Clear(T uXPrio_)
@@ -76,7 +92,6 @@ public:
 
     /**
      * @brief HighestPriority
-     *
      * Computes the numeric priority of the highest-priority thread represented in the
      * priority map.
      *

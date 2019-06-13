@@ -263,9 +263,7 @@ void Streamer::Unlock(void)
 //---------------------------------------------------------------------------
 bool Streamer::IsEmpty(void)
 {
-    bool rc;
     const auto cs = CriticalGuard{};
-    rc = m_u16Avail == m_u16Size;
-    return rc;
+    return m_u16Avail == m_u16Size;
 }
 } // namespace Mark3

@@ -16,7 +16,6 @@ See license.txt for more information
     @file   thread.h
 
     @brief  Platform independent thread class declarations
-
     Threads are an atomic unit of execution, and each instance of the thread
     class represents an instance of a program running of the processor.
     The Thread is the fundmanetal user-facing object in the kernel - it
@@ -56,7 +55,11 @@ using ThreadContextCallout = void (*)(Thread* pclThread_);
 
 //---------------------------------------------------------------------------
 /**
- *  Object providing fundamental multitasking support in the kernel.
+ * @brief The Thread Class.
+ * This object providing the fundamental thread control data structures and
+ * functions that define a single thread of execution in the Mark3 operating
+ * system.  It is the fundamental data type used to provide multitasking
+ * support in the kernel.
  */
 class Thread : public TypedLinkListNode<Thread>
 {
@@ -66,11 +69,15 @@ public:
 
     Thread() { m_eState = ThreadState::Invalid; }
 
+    /**
+     * @brief IsInitialized
+     * Used to check whether or not a thread has been initialized prior to use.
+     * @return return true if the thread object has been initialized, false otherwise.
+     */
     bool IsInitialized() { return (m_eState != ThreadState::Invalid); }
 
     /**
      *  @brief Init
-     *
      *  Initialize a thread prior to its use.  Initialized threads are
      *  placed in the stopped state, and are not scheduled until the
      *  thread's start method has been invoked first.
@@ -91,7 +98,6 @@ public:
 
     /**
      * @brief Init
-     *
      * Create and initialize a new thread, using memory from the auto-allocated
      * heap region to supply both the thread object and its stack.  The thread
      * returned can then be started using the Start() method directly.  Note that
@@ -112,7 +118,6 @@ public:
 
     /**
      *  @brief Start
-     *
      *  Start the thread - remove it from the stopped list, add it to the
      *  scheduler's list of threads (at the thread's set priority), and
      *  continue along.
@@ -121,7 +126,6 @@ public:
 
     /**
      *  @brief Stop
-     *
      *  Stop a thread that's actively scheduled without destroying its
      *  stacks.  Stopped threads can be restarted using the Start() API.
      */
@@ -130,7 +134,6 @@ public:
 #if KERNEL_NAMED_THREADS
     /**
      *  @brief SetName
-     *
      *  Set the name of the thread - this is purely optional, but can be
      *  useful when identifying issues that come along when multiple threads
      *  are at play in a system.
@@ -140,7 +143,6 @@ public:
     void SetName(const char* szName_) { m_szName = szName_; }
     /**
      *  @brief GetName
-     *
      *  @return Pointer to the name of the thread.  If this is not set,
      *          will be nullptr.
      */
@@ -149,7 +151,6 @@ public:
 
     /**
      *  @brief GetOwner
-     *
      *  Return the ThreadList where the thread belongs when it's in the
      *  active/ready state in the scheduler.
      *
@@ -158,7 +159,6 @@ public:
     ThreadList* GetOwner(void) { return m_pclOwner; }
     /**
      *  @brief GetCurrent
-     *
      *  Return the ThreadList where the thread is currently located
      *
      *  @return Pointer to the thread's current list
@@ -166,7 +166,6 @@ public:
     inline ThreadList* GetCurrent(void) { return m_pclCurrent; }
     /**
      *  @brief GetPriority
-     *
      *  Return the priority of the current thread
      *
      *  @return Priority of the current thread
@@ -175,7 +174,6 @@ public:
     PORT_PRIO_TYPE GetPriority(void) { return m_uXPriority; }
     /**
      *  @brief GetCurPriority
-     *
      *  Return the priority of the current thread
      *
      *  @return Priority of the current thread
@@ -185,7 +183,6 @@ public:
 #if KERNEL_ROUND_ROBIN
     /**
      *  @brief SetQuantum
-     *
      *  Set the thread's round-robin execution quantum.
      *
      *  @param u16Quantum_ Thread's execution quantum (in milliseconds)
@@ -193,7 +190,6 @@ public:
     void SetQuantum(uint16_t u16Quantum_) { m_u16Quantum = u16Quantum_; }
     /**
      *  @brief GetQuantum
-     *
      *  Get the thread's round-robin execution quantum.
      *
      *  @return The thread's quantum
@@ -202,24 +198,21 @@ public:
 #endif // #if KERNEL_ROUND_ROBIN
 
     /**
-     *  @brief SetCurrent
-     *
+     *  @brief SetCurrent.
      *  Set the thread's current to the specified thread list
      *
      *  @param pclNewList_ Pointer to the threadlist to apply thread ownership
      */
     void SetCurrent(ThreadList* pclNewList_) { m_pclCurrent = pclNewList_; }
     /**
-     *  @brief SetOwner
-     *
+     *  @brief SetOwner.
      *  Set the thread's owner to the specified thread list
      *
      *  @param pclNewList_ Pointer to the threadlist to apply thread ownership
      */
     void SetOwner(ThreadList* pclNewList_) { m_pclOwner = pclNewList_; }
     /**
-     *  @brief SetPriority
-     *
+     *  @brief SetPriority.
      *  Set the priority of the Thread (running or otherwise) to a different
      *  level.  This activity involves re-scheduling, and must be done so
      *  with due caution, as it may effect the determinism of the system.
@@ -233,7 +226,6 @@ public:
 
     /**
      *  @brief InheritPriority
-     *
      *  Allow the thread to run at a different priority level (temporarily)
      *  for the purpose of avoiding priority inversions.  This should
      *  only be called from within the implementation of blocking-objects.
@@ -243,8 +235,7 @@ public:
     void InheritPriority(PORT_PRIO_TYPE uXPriority_);
 
     /**
-     *  @brief Exit
-     *
+     *  @brief Exit.
      *  Remove the thread from being scheduled again.  The thread is
      *  effectively destroyed when this occurs.  This is extremely
      *  useful for cases where a thread encounters an unrecoverable
@@ -257,7 +248,6 @@ public:
 
     /**
      *  @brief Sleep
-     *
      *  Put the thread to sleep for the specified time (in milliseconds).
      *  Actual time slept may be longer (but not less than) the interval specified.
      *
@@ -267,7 +257,6 @@ public:
 
     /**
      *  @brief Yield
-     *
      *  Yield the thread - this forces the system to call the scheduler and
      *  determine what thread should run next.  This is typically used when
      *  threads are moved in and out of the scheduler.
@@ -276,7 +265,6 @@ public:
 
     /**
      * @brief CoopYield
-     *
      * Cooperative yield - This forces the system to not only call the scheduler,
      * but also move the currently executing thread to the back of the current
      * thread list, allowing other same-priority threads the opportunity to run.
@@ -287,16 +275,17 @@ public:
 
     /**
      *  @brief SetID
-     *
-     *  Set an 8-bit ID to uniquely identify this thread.
+     *  Set an arbitrary 8-bit ID to uniquely identify this thread.
      *
      *  @param u8ID_ 8-bit Thread ID, set by the user
      */
     void SetID(uint8_t u8ID_) { m_u8ThreadID = u8ID_; }
     /**
      *  @brief GetID
-     *
-     *  Return the 8-bit ID corresponding to this thread.
+     *  Return the thread's integer ID.  Note that this ID is not guaranteed
+     *  to be unique when dynamic threading is used in the system, or there
+     *  are more than 255 threads.  Also not guaranteed to be unique if the
+     *  SetID function is called by the user.
      *
      *  @return Thread's 8-bit ID, set by the user
      */
@@ -305,7 +294,6 @@ public:
 #if KERNEL_STACK_CHECK
     /**
      *  @brief GetStackSlack
-     *
      *  Performs a (somewhat lengthy) check on the thread stack to check the
      *  amount of stack margin (or "slack") remaining on the stack. If you're
      *  having problems with blowing your stack, you can run this function
@@ -355,7 +343,6 @@ public:
 
     /**
      * @brief SetExpired
-     *
      * Set the status of the current blocking call on the thread.
      *
      * @param bExpired_ true - call expired, false - call did not expire
@@ -364,7 +351,6 @@ public:
 
     /**
      * @brief GetExpired
-     *
      * Return the status of the most-recent blocking call on the thread.
      * @return true - call expired, false - call did not expire
      */
@@ -373,7 +359,6 @@ public:
 #if KERNEL_EXTENDED_CONTEXT
     /**
      * @brief GetExtendedContext
-     *
      * Return the Thread object's extended-context data pointer.  Used by code
      * implementing a user-defined thread-local storage model.  Pointer exists
      * only for the lifespan of the Thread.
@@ -384,7 +369,6 @@ public:
 
     /**
      * @brief SetExtendedContext
-     *
      * Assign the Thread object's extended-context data pointer.  Used by code
      * implementing a user-defined thread-local storage model.
      *
@@ -429,7 +413,6 @@ public:
 private:
     /**
      *  @brief ContextSwitchSWI
-     *
      *  This code is used to trigger the context switch interrupt.  Called
      *  whenever the kernel decides that it is necessary to swap out the
      *  current thread for the "next" thread.

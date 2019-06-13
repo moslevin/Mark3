@@ -25,6 +25,7 @@ namespace Mark3 {
 class Coroutine;
 
 /**
+ * @brief The CoList class
  * The CoList class implements a circular-linked-listed structure for
  * coroutine objects.  The intent of this object is to maintain a list of
  * active coroutine objects with a specific priority or state, to ensure
@@ -37,7 +38,6 @@ public:
 
     /**
      * @brief SetPrioMap
-     *
      * Assign a priority map object to this co-routine list
      *
      * @param pclPrioMap_ priority map object to assign
@@ -46,7 +46,6 @@ public:
 
     /**
      * @brief SetPriority
-     *
      * Set the scheduling priority of this coroutine liss; has no effect unless
      * a SetPrioMap has been called with a valid coroutine priority map object.
      *
@@ -56,7 +55,6 @@ public:
 
     /**
      * @brief Add
-     *
      * Add a coroutine object to this list.
      *
      * @param pclCoroutine_ Pointer to the coroutine object to add
@@ -65,7 +63,6 @@ public:
 
     /**
      * @brief Remove
-     *
      * Remove a given coroutine object from this list
      *
      * @param pclCoroutine_ Pointer to the coroutine object to remove

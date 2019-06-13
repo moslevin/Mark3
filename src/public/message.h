@@ -16,7 +16,6 @@ See license.txt for more information
     @file   message.h
 
     @brief  Inter-thread communication via message-passing
-
     Embedded systems guru Jack Ganssle once said that without a robust form of
     interprocess communications (IPC), an RTOS is just a toy.  Mark3 implements
     a form of IPC to provide safe and flexible messaging between threads.
@@ -89,7 +88,11 @@ namespace Mark3
 {
 //---------------------------------------------------------------------------
 /**
- *  Class to provide message-based IPC services in the kernel.
+ * @brief the Message class.
+ * This object provides threadsafe message-based IPC services based on exchange
+ * of objects containing a data pointer and minimal application-defined metadata.
+ * Messages are to be allocated/produced by the sender, and deallocated/consumed
+ * by the receiver.
  */
 class Message : public TypedLinkListNode<Message>
 {
@@ -97,7 +100,6 @@ public:
     void* operator new(size_t sz, void* pv) { return reinterpret_cast<Message*>(pv); }
     /**
      *  @brief Init
-     *
      *  Initialize the data and code in the message.
      */
     void Init()
@@ -109,7 +111,6 @@ public:
 
     /**
      *  @brief SetData
-     *
      *  Set the data pointer for the message before transmission.
      *
      *  @param pvData_ Pointer to the data object to send in the message
@@ -117,7 +118,6 @@ public:
     void SetData(void* pvData_) { m_pvData = pvData_; }
     /**
      *  @brief GetData
-     *
      *  Get the data pointer stored in the message upon receipt
      *
      *  @return Pointer to the data set in the message object
@@ -125,7 +125,6 @@ public:
     void* GetData() { return m_pvData; }
     /**
      *  @brief SetCode
-     *
      *  Set the code in the message before transmission
      *
      *  @param u16Code_ Data code to set in the object
@@ -133,7 +132,6 @@ public:
     void SetCode(uint16_t u16Code_) { m_u16Code = u16Code_; }
     /**
      *  @brief GetCode
-     *
      *  Return the code set in the message upon receipt
      *
      *  @return user code set in the object
@@ -150,7 +148,11 @@ private:
 
 //---------------------------------------------------------------------------
 /**
- *  Implements a list of message objects
+ * @brief The MessagePool Class
+ * The MessagePool class implements a simple allocator for message objects
+ * exchanged between threads.  The sender allocates (pop's) messages, then
+ * sends them to the receiver.  Upon receipt, it is the receiver's responsibility
+ * to deallocate (push) the message back to the pool.
  */
 class MessagePool
 {
@@ -201,8 +203,9 @@ private:
 
 //---------------------------------------------------------------------------
 /**
- *  List of messages, used as the channel for sending and receiving messages
- *  between threads.
+ * @brief The MessageQueue class.
+ * Implements a mechanism used to send/receive data between threads.  Allows
+ * threads to block, waiting for messages to be sent from other contexts.
  */
 class MessageQueue
 {

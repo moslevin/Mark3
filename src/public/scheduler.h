@@ -16,7 +16,6 @@ See license.txt for more information
     @file   scheduler.h
 
     @brief  Thread scheduler function declarations
-
     This scheduler implements a very flexible type of scheduling, which has
     become the defacto industry standard when it comes to real-time operating
     systems.  This scheduling mechanism is referred to as priority round-
@@ -57,22 +56,21 @@ namespace Mark3
 {
 //---------------------------------------------------------------------------
 /**
- *  Priority-based round-robin Thread scheduling, using ThreadLists for
- *  housekeeping.
+ * @brief The Scheduler Class.
+ * This class provides priority-based round-robin Thread scheduling for all
+ * active threads managed by the kernel.
  */
 class Scheduler
 {
 public:
     /**
      *  @brief Init
-     *
      *  Intiailize the scheduler, must be called before use.
      */
     static void Init();
 
     /**
      *  @brief Schedule
-     *
      *  Run the scheduler, determines the next thread to run based on the
      *  current state of the threads.  Note that the next-thread chosen
      *  from this function is only valid while in a critical section.
@@ -81,7 +79,6 @@ public:
 
     /**
      *  @brief Add
-     *
      *  Add a thread to the scheduler at its current priority level.
      *
      *  @param pclThread_ Pointer to the thread to add to the scheduler
@@ -90,7 +87,6 @@ public:
 
     /**
      *  @brief Remove
-     *
      *  Remove a thread from the scheduler at its current priority level.
      *
      *  @param pclThread_ Pointer to the thread to be removed from the
@@ -100,7 +96,6 @@ public:
 
     /**
      *  @brief SetScheduler
-     *
      *  Set the active state of the scheduler.  When the scheduler is
      *  disabled, the *next thread* is never set; the currently
      *  running thread will run forever until the scheduler is enabled
@@ -114,7 +109,6 @@ public:
 
     /**
      *  @brief GetCurrentThread
-     *
      *  Return the pointer to the currently-running thread.
      *
      *  @return Pointer to the currently-running thread
@@ -122,7 +116,6 @@ public:
     static Thread* GetCurrentThread() { return g_pclCurrent; }
     /**
      *  @brief GetNextThread
-     *
      *  Return the pointer to the thread that should run next, according
      *  to the last run of the scheduler.
      *
@@ -131,7 +124,6 @@ public:
     static volatile Thread* GetNextThread() { return g_pclNext; }
     /**
      *  @brief GetThreadList
-     *
      *  Return the pointer to the active list of threads that are at the
      *  given priority level in the scheduler.
      *
@@ -142,7 +134,6 @@ public:
     static ThreadList* GetThreadList(PORT_PRIO_TYPE uXPriority_) { return &m_aclPriorities[uXPriority_]; }
     /**
      *  @brief GetStopList
-     *
      *  Return the pointer to the list of threads that are in the
      *  scheduler's stopped state.
      *
@@ -151,7 +142,6 @@ public:
     static ThreadList* GetStopList() { return &m_clStopList; }
     /**
      *  @brief IsEnabled
-     *
      *  Return the current state of the scheduler - whether or not scheudling
      *  is enabled or disabled.
      *
@@ -160,7 +150,6 @@ public:
     static bool IsEnabled() { return m_bEnabled; }
     /**
      *  @brief QueueScheduler
-     *
      *  Tell the kernel to perform a scheduling operation as soon as the
      *  scheduler is re-enabled.
      */

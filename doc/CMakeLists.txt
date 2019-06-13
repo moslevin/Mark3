@@ -1,4 +1,4 @@
-option(BUILD_DOC "Build documentation" OFF)
+option(BUILD_DOC "Build documentation" ON)
 
 if (BUILD_DOC)
     add_custom_target(size_profile ALL

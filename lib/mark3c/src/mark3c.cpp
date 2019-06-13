@@ -13,7 +13,7 @@ See license.txt for more information
 ===========================================================================*/
 /**
 
-    @file   mark3c.h
+    @file   mark3c.cpp
 
     @brief  Implementation of C-language wrappers for the Mark3 kernel.
 */

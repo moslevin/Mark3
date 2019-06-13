@@ -16,7 +16,6 @@ See license.txt for more information
     @file   profile.h
 
     @brief  High-precision profiling timers
-
     Enables the profiling and instrumentation of performance-critical code.
     Multiple timers can be used simultaneously to enable system-wide
     performance metrics to be computed in a lightweight manner.
@@ -70,7 +69,6 @@ class ProfileTimer
 public:
     /**
      *  @brief Init
-     *
      *  Initialize the profiling timer prior to use.  Can also
      *  be used to reset a timer that's been used previously.
      */
@@ -78,7 +76,6 @@ public:
 
     /**
      *  @brief Start
-     *
      *  Start a profiling session, if the timer is not already active.
      *  Has no effect if the timer is already active.
      */
@@ -86,7 +83,6 @@ public:
 
     /**
      *  @brief Stop
-     *
      *  Stop the current profiling session, adding to the
      *  cumulative time for this timer, and the total iteration count.
      */
@@ -94,7 +90,6 @@ public:
 
     /**
      *  @brief GetAverage
-     *
      *  Get the average time associated with this operation.
      *
      *  @return Average tick count normalized over all iterations
@@ -103,7 +98,6 @@ public:
 
     /**
      *  @brief GetCurrent
-     *
      *  Return the current tick count held by the profiler.  Valid
      *  for both active and stopped timers.
      *

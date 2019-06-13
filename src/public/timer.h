@@ -56,13 +56,14 @@ class Quantum;
 
 //---------------------------------------------------------------------------
 /**
- * @brief Kernel-managed software timers.
- *
- * Kernel-managed timers, used to provide high-precision high-resolution
+ * @brief The Timer Class.
+ * This class provides kernel-managed timers, used to provide high-precision
  * delays.  Functionality is useful to both user-code, and is used extensively
  * within the kernel and its blocking objects to implement round-robin
- * scheduling, thread sleep, and timeouts.  Relies on a single hardware timer,
- * which is multiplexed through the kernel.
+ * scheduling, thread sleep, and timeouts.  Provides one-shot and periodic
+ * timers for use by application code.  This object relies on a target-defined
+ * hardware timer implementation, which is multiplexed by the kernel's timer
+ * scheduler.
  */
 class Timer : public TypedLinkListNode<Timer>
 {
@@ -72,7 +73,6 @@ public:
 
     /**
      *  @brief Timer
-     *
      *  Default Constructor - Do nothing.  Allow the init call to perform
      *  the necessary object initialization prior to use.
      */
@@ -80,14 +80,12 @@ public:
 
     /**
      *  @brief Init
-     *
      * Re-initialize the Timer to default values.
      */
     void Init();
 
     /**
      *  @brief Start
-     *
      *  Start a timer using default ownership, using repeats as an option, and
      *  millisecond resolution.
      *
@@ -100,7 +98,6 @@ public:
 
     /**
      * @brief Start
-     *
      * Start or restart a timer using parameters previously configured via
      * calls to Start(<with args>), or via the a-la-carte parameter setter
      * methods.  This is especially useful for retriggering one-shot timers
@@ -110,7 +107,6 @@ public:
 
     /**
      *  @brief Stop
-     *
      *  Stop a timer already in progress.   Has no effect on timers that have
      *  already been stopped.
      */
@@ -126,11 +122,11 @@ private:
 
     /**
      * @brief IsInitialized
-     * @return
+     * @return true if initialized, false if not initialized.
      */
     bool IsInitialized(void) { return (m_u8Initialized == m_uTimerInitCookie); }
 
-    static inline uint32_t SecondsToTicks(uint32_t x) { return (x)*1000; }
+    static inline uint32_t SecondsToTicks(uint32_t x) { return (x) * 1000; }
     static inline uint32_t MSecondsToTicks(uint32_t x) { return (x); }
     static inline uint32_t USecondsToTicks(uint32_t x) { return ((x + 999) / 1000); }
 

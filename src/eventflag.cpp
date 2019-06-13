@@ -27,7 +27,6 @@ namespace
     //---------------------------------------------------------------------------
     /**
      * @brief TimedEventFlag_Callback
-     *
      * This funciton is called whenever a timed event flag wait operation fails
      * in the time provided.  This function wakes the thread for which the timeout
      * was requested on the blocking call, sets the thread's expiry flags, and

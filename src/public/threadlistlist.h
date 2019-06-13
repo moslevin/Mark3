@@ -29,7 +29,6 @@ class ThreadList;
 //---------------------------------------------------------------------------
 /**
  * @brief The ThreadListList class
- *
  * Class used to track all threadlists active in the OS kernel.  At any point
  * in time, the list can be traversed to get a complete view of all running,
  * blocked, or stopped threads in the system.

@@ -25,7 +25,6 @@ namespace
     //---------------------------------------------------------------------------
     /**
      * @brief TimedMutex_Calback
-     *
      * This function is called from the timer-expired context to trigger a timeout
      * on this mutex.  This results in the waking of the thread that generated
      * the mutex claim call that was not completed in time.

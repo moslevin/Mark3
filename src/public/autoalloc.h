@@ -68,12 +68,22 @@ class Timer;
 class ReaderWriterLock;
 class ConditionVariable;
 
+/**
+ * @brief The AutoAlloc class.
+ * This class provides an object-allocation interface for both kernel objects
+ * and user-defined types.  This class supplies callouts for alloc/free that
+ * use object-type metadata to determine how objects may be allocated, allowing
+ * a user to create custom dynamic memory implementations for specific object
+ * types and sizes.  As a result, the user-defined allocators can avoid the
+ * kinds of memory fragmentation and exhaustion issues that occur in typical
+ * embedded systems in which a single heap is used to satisfy all allocations
+ * in the application.
+ */
 class AutoAlloc
 {
 public:
     /**
      * @brief Init
-     *
      * Initialize the AutoAllocator before use.  Called by Kernel::Init().
      *
      */

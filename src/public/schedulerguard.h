@@ -25,14 +25,13 @@ See license.txt for more information
 
 namespace Mark3 {
 /**
- * The SchedulerGuard class implements RAII-based control of the scheduler's
- * global state.  Upon object construction, the state of the scheduler is
- * cached before the scheduler is disabled.
- *
+ * @brief The SchedulerGuard class
+ * This class implements RAII-based control of the scheduler's
+ * global state.  Upon object construction, the scheduler's state is
+ * cached locally and the scheduler is disabled (if not already disabled).
  * Upon object destruction, the scheduler's previous state is restored.
- *
  * This object is interrupt-safe, although it has no effect when called from
- * an interrupt, given that interrupts are inherently higher-priority than
+ * an interrupt given that interrupts are inherently higher-priority than
  * threads.
  */
 class SchedulerGuard {

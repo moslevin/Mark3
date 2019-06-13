@@ -24,9 +24,10 @@ See license.txt for more information
 namespace Mark3
 {
 /**
- * Implement RAII-style locks based on Mark3's kernel Mutex object.  Note that
+ * @brief The LockGuard class.
+ * This class provides RAII locks based on Mark3's kernel Mutex object.  Note that
  * Mark3 does not support exceptions, so care must be taken to ensure that this
- * object is only used where constraint can be met.
+ * object is only used where that constraint can be met.
  */
 class LockGuard
 {

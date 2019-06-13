@@ -26,7 +26,8 @@ See license.txt for more information
 namespace Mark3
 {
 /**
- * @brief The Notify class is a blocking object type, that allows one or more
+ * @brief The Notify class.
+ * This class provides a blocking object type that allows one or more
  * threads to wait for an event to occur before resuming operation.
  */
 class Notify : public BlockingObject
@@ -37,14 +38,12 @@ public:
 
     /**
      *  @brief Init
-     *
      * Initialze the Notification object prior to use.
      */
     void Init(void);
 
     /**
      *  @brief Signal
-     *
      * Signal the notification object.  This will cause the
      * highest priority thread currently blocking on the object
      * to wake.  If no threads are currently blocked on the
@@ -55,7 +54,6 @@ public:
 
     /**
      *  @brief Wait
-     *
      * Block the current thread, waiting for a signal on the
      * object.
      *
@@ -66,7 +64,6 @@ public:
 
     /**
      * @brief Wait
-     *
      *  Block the current thread, waiting for a signal on the
      *  object.
      *
@@ -80,7 +77,6 @@ public:
 
     /**
      * @brief WakeMe
-     *
      * Wake the specified thread from its current blocking queue.
      * Note that this is only public in order to be accessible
      * from a timer callack.

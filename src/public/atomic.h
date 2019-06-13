@@ -29,7 +29,6 @@ namespace Mark3
 {
 /**
  * @brief The Atomic namespace
- *
  * This utility module provides primatives for atomic operations - that is,
  * operations that are guaranteed to execute uninterrupted.  Basic atomic
  * primatives provided here include Set/Add/Subtract, as well as an atomic
@@ -39,7 +38,8 @@ namespace Mark3
 namespace Atomic
 {
     /**
-     * @brief Set Set a variable to a given value in an uninterruptable operation
+     * @brief Set
+     * Set a variable to a given value in an uninterruptable operation
      * @param pSource_ Pointer to a variable to set the value of
      * @param val_ New value to set in the variable
      * @return Previously-set value
@@ -55,7 +55,8 @@ namespace Atomic
     }
 
     /**
-     * @brief Add Add a value to a variable in an uninterruptable operation
+     * @brief Add
+     * Add a value to a variable in an uninterruptable operation
      * @param pSource_ Pointer to a variable
      * @param val_ Value to add to the variable
      * @return Previously-held value in pSource_
@@ -71,7 +72,8 @@ namespace Atomic
     }
 
     /**
-     * @brief Sub Subtract a value from a variable in an uninterruptable operation
+     * @brief Sub
+     * Subtract a value from a variable in an uninterruptable operation
      * @param pSource_ Pointer to a variable
      * @param val_ Value to subtract from the variable
      * @return Previously-held value in pSource_
@@ -87,13 +89,14 @@ namespace Atomic
     }
 
     /**
-     * @brief TestAndSet Test to see if a variable is set, and set it if
-     *        is not already set.  This is an uninterruptable operation.
+     * @brief TestAndSet
+     * Test to see if a variable is set, and set it if
+     * is not already set.  This is an uninterruptable operation.
      *
-     *        If the value is false, set the variable to true, and return
-     *        the previously-held value.
+     * If the value is false, set the variable to true, and return
+     * the previously-held value.
      *
-     *        If the value is already true, return true.
+     * If the value is already true, return true.
      *
      * @param pbLock Pointer to a value to test against.  This will always
      *        be set to "true" at the end of a call to TestAndSet.

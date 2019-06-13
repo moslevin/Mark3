@@ -42,14 +42,14 @@ namespace Mark3
 {
 //---------------------------------------------------------------------------
 /**
- *    Class that encapsulates all of the kernel startup functions.
+ * @brief The Kernel Class encapsulates all of the kernel startup, configuration
+ * and management functions.
  */
 class Kernel
 {
 public:
     /**
      *  @brief
-     *
      *  Kernel Initialization Function, call before any other OS function
      *
      *  Initializes all global resources used by the operating system.  This
@@ -59,7 +59,6 @@ public:
 
     /**
      *  @brief
-     *
      *  Start the operating system kernel - the current execution context is
      *  cancelled, all kernel services are started, and the processor resumes
      *  execution at the entrypoint for the highest-priority thread.
@@ -73,7 +72,6 @@ public:
 
     /**
      * @brief CompleteStart
-     *
      * Call this from the thread initialization code at the point that the
      * scheduler is to be run for the first time.
      */
@@ -108,7 +106,6 @@ public:
 #if KERNEL_THREAD_CREATE_CALLOUT
     /**
      * @brief SetThreadCreateCallout
-     *
      * Set a function to be called on creation of a new thread.  This
      * callout is executed on the successful completion of a Thread::Init()
      * call.  A callout is only executed if this method has been called
@@ -122,7 +119,6 @@ public:
 #if KERNEL_THREAD_EXIT_CALLOUT
     /**
      * @brief SetThreadExitCallout
-     *
      * Set a function to be called on thread exit.  This callout is executed
      * from the beginning of Thread::Exit().
      *
@@ -137,7 +133,6 @@ public:
 #if KERNEL_CONTEXT_SWITCH_CALLOUT
     /**
      * @brief  SetThreadContextSwitchCallout
-     *
      * Set a function to be called on each context switch.
      *
      * A callout is only executed if this method has been called to set a
@@ -153,10 +148,9 @@ public:
 
     /**
      * @brief SetDebugPrintFunction
-     *
      * Set the function to be used when printing kernel debug information
      *
-     * @param pfPrintFunction_
+     * @param pfPrintFunction_ Function used to print kernel debug message strings
      */
     static void SetDebugPrintFunction(DebugPrintFunction pfPrintFunction_)
     {
@@ -165,7 +159,6 @@ public:
 
     /**
      * @brief DebugPrint
-     *
      * Print a string to the configured output interface.  Has no effect
      * if Kernel::SetDebugPrintFunction() has not been called with a valid
      * print handler.
@@ -177,7 +170,6 @@ public:
 #if KERNEL_THREAD_CREATE_CALLOUT
     /**
      * @brief GetThreadCreateCallout
-     *
      * Return the current function called on every Thread::Init();
      *
      * @return Pointer to the currently-installed callout function,
