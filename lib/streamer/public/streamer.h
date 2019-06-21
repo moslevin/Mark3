@@ -84,7 +84,7 @@ public:
      * @param u16Len_ Length of data held in the array
      * @return number of bytes written to the stream
      */
-    uint16_t Write(uint8_t* pu8Data_, uint16_t u16Len_);
+    uint16_t Write(const uint8_t* pu8Data_, uint16_t u16Len_);
 
     /**
      * @brief Claim.

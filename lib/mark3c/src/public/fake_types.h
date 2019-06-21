@@ -93,8 +93,8 @@ typedef struct {
     uint16_t m_u16FlagMask;
     uint8_t  m_eFlagMode;
 #endif // #if KERNEL_EVENT_FLAGS
-    Fake_Timer m_clTimer;
     bool       m_bExpired;
+    Fake_Timer m_clTimer;
 } Fake_Thread;
 
 //---------------------------------------------------------------------------
@@ -173,6 +173,15 @@ typedef struct {
     Fake_Semaphore m_clSemaphore;
     uint8_t        m_u8Waiters;
 } Fake_ConditionVariable;
+
+//---------------------------------------------------------------------------
+typedef struct {
+    Fake_LinkedListNode list_node;
+    void*               m_pclOwner;
+    void*               m_pvContext;
+    PORT_PRIO_TYPE      m_uPriority;
+    bool                m_bQueued;
+} Fake_Coroutine;
 
 #if defined(__cplusplus)
 }
