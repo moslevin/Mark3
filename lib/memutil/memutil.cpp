@@ -25,109 +25,6 @@ See license.txt for more information
 
 namespace Mark3
 {
-//---------------------------------------------------------------------------
-void MemUtil::DecimalToHex(uint8_t u8Data_, char* szText_)
-{
-    uint8_t u8Tmp = u8Data_;
-    uint8_t u8Max;
-
-    KERNEL_ASSERT(szText_);
-
-    if (u8Tmp >= 0x10) {
-        u8Max = 2;
-    } else {
-        u8Max = 1;
-    }
-
-    u8Tmp          = u8Data_;
-    szText_[u8Max] = 0;
-    while ((u8Max--) != 0u) {
-        if ((u8Tmp & 0x0F) <= 9) {
-            szText_[u8Max] = '0' + (u8Tmp & 0x0F);
-        } else {
-            szText_[u8Max] = 'A' + ((u8Tmp & 0x0F) - 10);
-        }
-        u8Tmp >>= 4;
-    }
-}
-
-//---------------------------------------------------------------------------
-void MemUtil::DecimalToHex(uint16_t u16Data_, char* szText_)
-{
-    uint16_t u16Tmp     = u16Data_;
-    uint16_t u16Max     = 1;
-    uint16_t u16Compare = 0x0010;
-
-    KERNEL_ASSERT(szText_);
-
-    while (u16Data_ > u16Compare && u16Max < 4) {
-        u16Max++;
-        u16Compare <<= 4;
-    }
-
-    u16Tmp          = u16Data_;
-    szText_[u16Max] = 0;
-    while ((u16Max--) != 0u) {
-        if ((u16Tmp & 0x0F) <= 9) {
-            szText_[u16Max] = '0' + (u16Tmp & 0x0F);
-        } else {
-            szText_[u16Max] = 'A' + ((u16Tmp & 0x0F) - 10);
-        }
-        u16Tmp >>= 4;
-    }
-}
-
-//---------------------------------------------------------------------------
-void MemUtil::DecimalToHex(uint32_t u32Data_, char* szText_)
-{
-    uint32_t u32Tmp     = u32Data_;
-    uint32_t u32Max     = 1;
-    uint32_t u32Compare = 0x0010;
-
-    KERNEL_ASSERT(szText_);
-
-    while (u32Data_ > u32Compare && u32Max < 8) {
-        u32Max++;
-        u32Compare <<= 4;
-    }
-
-    u32Tmp          = u32Data_;
-    szText_[u32Max] = 0;
-    while ((u32Max--) != 0u) {
-        if ((u32Tmp & 0x0F) <= 9) {
-            szText_[u32Max] = '0' + (u32Tmp & 0x0F);
-        } else {
-            szText_[u32Max] = 'A' + ((u32Tmp & 0x0F) - 10);
-        }
-        u32Tmp >>= 4;
-    }
-}
-
-//---------------------------------------------------------------------------
-void MemUtil::DecimalToHex(uint64_t u64Data_, char* szText_)
-{
-    uint64_t u64Tmp     = u64Data_;
-    uint64_t u64Max     = 1;
-    uint64_t u64Compare = 0x0010;
-
-    KERNEL_ASSERT(szText_);
-
-    while (u64Data_ > u64Compare && u64Max < 8) {
-        u64Max++;
-        u64Compare <<= 4;
-    }
-
-    u64Tmp          = u64Data_;
-    szText_[u64Max] = 0;
-    while ((u64Max--) != 0u) {
-        if ((u64Tmp & 0x0F) <= 9) {
-            szText_[u64Max] = '0' + (u64Tmp & 0x0F);
-        } else {
-            szText_[u64Max] = 'A' + ((u64Tmp & 0x0F) - 10);
-        }
-        u64Tmp >>= 4;
-    }
-}
 
 //---------------------------------------------------------------------------
 void MemUtil::DecimalToString(uint8_t u8Data_, char* szText_)
@@ -204,7 +101,7 @@ void MemUtil::DecimalToString(uint64_t u64Data_, char* szText_)
 
     KERNEL_ASSERT(szText_);
 
-    while (u64Data_ >= u64Compare && u64Max < 12) {
+    while (u64Data_ >= u64Compare && u64Max < 21) {
         u64Compare *= 10;
         u64Max++;
     }
@@ -214,118 +111,6 @@ void MemUtil::DecimalToString(uint64_t u64Data_, char* szText_)
         szText_[u64Max] = '0' + (u64Tmp % 10);
         u64Tmp /= 10;
     }
-}
-
-//---------------------------------------------------------------------------
-bool MemUtil::StringToDecimal8(const char* szText_, uint8_t* pu8Out_)
-{
-    uint8_t u8Tmp = 0;
-    uint8_t u8Len = 0;
-
-    for (uint8_t i = 0; i < 4; i++) {
-        if (szText_[i] == 0) {
-            if (i == 0) {
-                return false;
-            }
-            u8Len = i;
-            break;
-        }
-    }
-
-    for (uint8_t i = 0; i < u8Len; i++) {
-        if ((szText_[i] < '0') || (szText_[i] > '9')) {
-            return false;
-        }
-        u8Tmp *= 10;
-        u8Tmp += szText_[i] - '0';
-    }
-    *pu8Out_ = u8Tmp;
-
-    return true;
-}
-
-//---------------------------------------------------------------------------
-bool MemUtil::StringToDecimal16(const char* szText_, uint16_t* pu16Out_)
-{
-    uint16_t u16Tmp = 0;
-    uint16_t u16Len = 0;
-
-    for (uint8_t i = 0; i < 6; i++) {
-        if (szText_[i] == 0) {
-            if (i == 0) {
-                return false;
-            }
-            u16Len = i;
-            break;
-        }
-    }
-
-    for (uint8_t i = 0; i < u16Len; i++) {
-        if ((szText_[i] < '0') || (szText_[i] > '9')) {
-            return false;
-        }
-        u16Tmp *= 10;
-        u16Tmp += szText_[i] - '0';
-    }
-    *pu16Out_ = u16Tmp;
-
-    return true;
-}
-
-//---------------------------------------------------------------------------
-bool MemUtil::StringToDecimal32(const char* szText_, uint32_t* pu32Out_)
-{
-    uint32_t u32Tmp = 0;
-    uint32_t u32Len = 0;
-
-    for (uint8_t i = 0; i < 11; i++) {
-        if (szText_[i] == 0) {
-            if (i == 0) {
-                return false;
-            }
-            u32Len = i;
-            break;
-        }
-    }
-
-    for (uint8_t i = 0; i < u32Len; i++) {
-        if ((szText_[i] < '0') || (szText_[i] > '9')) {
-            return false;
-        }
-        u32Tmp *= 10;
-        u32Tmp += szText_[i] - '0';
-    }
-    *pu32Out_ = u32Tmp;
-
-    return true;
-}
-
-//---------------------------------------------------------------------------
-bool MemUtil::StringToDecimal64(const char* szText_, uint64_t* pu64Out_)
-{
-    uint64_t u64Tmp = 0;
-    uint64_t u64Len = 0;
-
-    for (uint8_t i = 0; i < 21; i++) {
-        if (szText_[i] == 0) {
-            if (i == 0) {
-                return false;
-            }
-            u64Len = i;
-            break;
-        }
-    }
-
-    for (uint8_t i = 0; i < u64Len; i++) {
-        if ((szText_[i] < '0') || (szText_[i] > '9')) {
-            return false;
-        }
-        u64Tmp *= 10;
-        u64Tmp += szText_[i] - '0';
-    }
-    *pu64Out_ = u64Tmp;
-
-    return true;
 }
 
 //---------------------------------------------------------------------------
@@ -435,7 +220,7 @@ void MemUtil::CopyString(char* szDst_, const char* szSrc_)
 //---------------------------------------------------------------------------
 int16_t MemUtil::StringSearch(const char* szBuffer_, const char* szPattern_)
 {
-    char*   szTmpPat = (char*)szPattern_;
+    auto*   szTmpPat = szPattern_;
     int16_t i16Idx   = 0;
     int16_t i16Start;
     KERNEL_ASSERT(szBuffer_);
@@ -466,8 +251,8 @@ int16_t MemUtil::StringSearch(const char* szBuffer_, const char* szPattern_)
 //---------------------------------------------------------------------------
 bool MemUtil::CompareMemory(const void* pvMem1_, const void* pvMem2_, uint16_t u16Len_)
 {
-    char* szTmp1 = (char*)pvMem1_;
-    char* szTmp2 = (char*)pvMem2_;
+    auto* szTmp1 = static_cast<const char*>(pvMem1_);
+    auto* szTmp2 = static_cast<const char*>(pvMem2_);
 
     KERNEL_ASSERT(pvMem1_);
     KERNEL_ASSERT(pvMem2_);
@@ -485,7 +270,7 @@ bool MemUtil::CompareMemory(const void* pvMem1_, const void* pvMem2_, uint16_t u
 //---------------------------------------------------------------------------
 void MemUtil::SetMemory(void* pvDst_, uint8_t u8Val_, uint16_t u16Len_)
 {
-    char* szDst = (char*)pvDst_;
+    auto* szDst = static_cast<char*>(pvDst_);
 
     KERNEL_ASSERT(pvDst_);
 
@@ -495,11 +280,11 @@ void MemUtil::SetMemory(void* pvDst_, uint8_t u8Val_, uint16_t u16Len_)
 //---------------------------------------------------------------------------
 uint8_t MemUtil::Tokenize(const char* szBuffer_, Token_t* pastTokens_, uint8_t u8MaxTokens_)
 {
-    uint8_t u8CurrArg = 0;
-    uint8_t u8LastArg = 0;
-    uint8_t i         = 0;
+    auto u8CurrArg = uint8_t{0};
+    auto u8LastArg = uint8_t{0};
+    auto i         = uint8_t{0};
 
-    bool bEscape = false;
+    auto bEscape = false;
 
     KERNEL_ASSERT(szBuffer_);
     KERNEL_ASSERT(pastTokens_);
