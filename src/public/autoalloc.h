@@ -43,6 +43,7 @@ enum class AutoAllocType : uint8_t {
     Timer,
     ConditionVariable,
     ReaderWriterLock,
+    Coroutine,
     //-- Allow for users to define their own object types beginning with AutoAllocType_t::User
     User,
     //--
@@ -55,18 +56,7 @@ using AutoAllocFree_t      = void (*)(AutoAllocType eType_, void* pvObj_);
 
 //---------------------------------------------------------------------------
 // Forward declaration of kernel objects that can be auotomatically allocated.
-class EventFlag;
-class Mailbox;
-class Message;
-class MessagePool;
-class MessageQueue;
-class Mutex;
-class Notify;
-class Semaphore;
-class Thread;
-class Timer;
-class ReaderWriterLock;
-class ConditionVariable;
+
 
 /**
  * @brief The AutoAlloc class.

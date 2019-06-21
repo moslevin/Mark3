@@ -53,7 +53,7 @@ using CoroutineHandler = void (*)(Coroutine* pclCaller_, void* pvContext_);
 class Coroutine : public TypedLinkListNode<Coroutine>
 {
 public:
-
+    void* operator new(size_t sz, void* pv) { return reinterpret_cast<Coroutine*>(pv); }
     ~Coroutine();
 
     /**

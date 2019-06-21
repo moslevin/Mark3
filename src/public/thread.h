@@ -482,11 +482,11 @@ private:
     EventFlagOperation m_eFlagMode;
 #endif // #if KERNEL_EVENT_FLAGS
 
-    //! Timer used for blocking-object timeouts
-    Timer m_clTimer;
-
     //! Indicate whether or not a blocking-object timeout has occurred
     bool m_bExpired;
+
+    //! Timer used for blocking-object timeouts
+    Timer m_clTimer;
 };
 
 } // namespace Mark3
