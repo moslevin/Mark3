@@ -68,12 +68,12 @@ void ProfileInit() {}
 //---------------------------------------------------------------------------
 void ProfileOverhead()
 {
-    CriticalSection::Enter();
+    const auto cg = CriticalGuard{};
+
     KernelAware::ProfileInit("Overhead");
     KernelAware::ProfileStart();
     KernelAware::ProfileStop();
-    KernelAware::ProfileReport();
-    CriticalSection::Exit();
+    KernelAware::ProfileReport();    
 }
 
 //---------------------------------------------------------------------------
@@ -95,35 +95,41 @@ void Semaphore_Profiling()
 {
     Semaphore clSem;
 
-    CriticalSection::Enter();
-    KernelAware::ProfileInit("SemInit");
-    KernelAware::ProfileStart();
+    {
+        const auto cg = CriticalGuard{};
 
-    clSem.Init(0, 1000);
+        KernelAware::ProfileInit("SemInit");
+        KernelAware::ProfileStart();
 
-    KernelAware::ProfileStop();
-    KernelAware::ProfileReport();
-    CriticalSection::Exit();
+        clSem.Init(0, 1000);
 
-    CriticalSection::Enter();
-    KernelAware::ProfileInit("SemPost");
-    KernelAware::ProfileStart();
+        KernelAware::ProfileStop();
+        KernelAware::ProfileReport();
+   }
 
-    clSem.Post();
+    {
+        const auto cg = CriticalGuard{};
 
-    KernelAware::ProfileStop();
-    KernelAware::ProfileReport();
-    CriticalSection::Exit();
+        KernelAware::ProfileInit("SemPost");
+        KernelAware::ProfileStart();
 
-    CriticalSection::Enter();
-    KernelAware::ProfileInit("SemPend");
-    KernelAware::ProfileStart();
+        clSem.Post();
 
-    clSem.Pend();
+        KernelAware::ProfileStop();
+        KernelAware::ProfileReport();
+    }
 
-    KernelAware::ProfileStop();
-    KernelAware::ProfileReport();
-    CriticalSection::Exit();
+    {
+        const auto cg = CriticalGuard{};
+
+        KernelAware::ProfileInit("SemPend");
+        KernelAware::ProfileStart();
+
+        clSem.Pend();
+
+        KernelAware::ProfileStop();
+        KernelAware::ProfileReport();
+    }
 
     clTestThread1.Init(aucTestStack1, TEST_STACK1_SIZE, 2, (ThreadEntryFunc)Semaphore_Flyback, (void*)&clSem);
     clTestThread1.Start();
@@ -137,35 +143,39 @@ void Mutex_Profiling()
 {
     Mutex clMutex;
 
-    CriticalSection::Enter();
-    KernelAware::ProfileInit("MutexInit");
-    KernelAware::ProfileStart();
+    {
+        const auto cg = CriticalGuard{};
 
-    clMutex.Init();
+        KernelAware::ProfileInit("MutexInit");
+        KernelAware::ProfileStart();
 
-    KernelAware::ProfileStop();
-    KernelAware::ProfileReport();
-    CriticalSection::Exit();
+        clMutex.Init();
 
-    CriticalSection::Enter();
-    KernelAware::ProfileInit("MutexClaim");
-    KernelAware::ProfileStart();
+        KernelAware::ProfileStop();
+        KernelAware::ProfileReport();
+    }
 
-    clMutex.Claim();
+    {
+        const auto cg = CriticalGuard{};
+        KernelAware::ProfileInit("MutexClaim");
+        KernelAware::ProfileStart();
 
-    KernelAware::ProfileStop();
-    KernelAware::ProfileReport();
-    CriticalSection::Exit();
+        clMutex.Claim();
 
-    CriticalSection::Enter();
-    KernelAware::ProfileInit("MutexRelease");
-    KernelAware::ProfileStart();
+        KernelAware::ProfileStop();
+        KernelAware::ProfileReport();
+    }
 
-    clMutex.Release();
+    {
+        const auto cg = CriticalGuard{};
+        KernelAware::ProfileInit("MutexRelease");
+        KernelAware::ProfileStart();
 
-    KernelAware::ProfileStop();
-    KernelAware::ProfileReport();
-    CriticalSection::Exit();
+        clMutex.Release();
+
+        KernelAware::ProfileStop();
+        KernelAware::ProfileReport();
+    }
 }
 
 //---------------------------------------------------------------------------
@@ -191,43 +201,54 @@ void Thread_Profiling()
     // test thread, simulating an "average" system thread.  Create the
     // thread at a higher priority than the current thread.
     KernelAware::ProfileInit("ThreadInit");
-    CriticalSection::Enter();
-    KernelAware::ProfileStart();
-    clTestThread1.Init(aucTestStack1, TEST_STACK1_SIZE, 2, (ThreadEntryFunc)Thread_ProfilingThread, nullptr);
-    KernelAware::ProfileStop();
-    CriticalSection::Exit();
+
+    {
+        const auto cg = CriticalGuard{};
+
+        KernelAware::ProfileStart();
+        clTestThread1.Init(aucTestStack1, TEST_STACK1_SIZE, 2, (ThreadEntryFunc)Thread_ProfilingThread, nullptr);
+        KernelAware::ProfileStop();
+    }
+
     KernelAware::ProfileReport();
 
     // Profile the time it takes from calling "start" to the time when the
     // thread becomes active
     KernelAware::ProfileInit("ThreadStart");
 
-    CriticalSection::Enter();
-    KernelAware::ProfileStart();
-    clTestThread1.Start(); //-- Switch to the test thread --
-    CriticalSection::Exit();
+    {
+        const auto cg = CriticalGuard{};
 
-    CriticalSection::Enter();
-    // Stop the thread-exit profiling timer, which was started from the
-    // test thread
-    KernelAware::ProfileStop();
-    KernelAware::ProfileReport();
-    CriticalSection::Exit();
+        KernelAware::ProfileStart();
+        clTestThread1.Start(); //-- Switch to the test thread --
+    }
+
+    {
+        const auto cg = CriticalGuard{};
+
+        // Stop the thread-exit profiling timer, which was started from the
+        // test thread
+        KernelAware::ProfileStop();
+        KernelAware::ProfileReport();
+    }
 
     Scheduler::SetScheduler(0);
+
     // Context switch profiling - this is equivalent to what's actually
     // done within the AVR-implementation.
-    CriticalSection::Enter();
-    KernelAware::ProfileInit("ContextSwitch");
-    KernelAware::ProfileStart();
     {
-        Thread_SaveContext();
-        g_pclNext = g_pclCurrent;
-        Thread_RestoreContext();
+        const auto cg = CriticalGuard{};
+
+        KernelAware::ProfileInit("ContextSwitch");
+        KernelAware::ProfileStart();
+        {
+            Thread_SaveContext();
+            g_pclNext = g_pclCurrent;
+            Thread_RestoreContext();
+        }
+        KernelAware::ProfileStop();
+        KernelAware::ProfileReport();
     }
-    KernelAware::ProfileStop();
-    KernelAware::ProfileReport();
-    CriticalSection::Exit();
 
     Scheduler::SetScheduler(1);
 }
@@ -238,12 +259,14 @@ void Scheduler_Profiling()
     // Profile the scheduler.  Running at priority 1, we'll get
     // the worst-case scheduling time (not necessarily true of all
     // schedulers, but true of ours).
-    CriticalSection::Enter();
-    KernelAware::ProfileInit("Scheduler");
-    KernelAware::ProfileStart();
-    Scheduler::Schedule();
-    KernelAware::ProfileStop();
-    CriticalSection::Exit();
+    {
+        const auto cg = CriticalGuard{};
+
+        KernelAware::ProfileInit("Scheduler");
+        KernelAware::ProfileStart();
+        Scheduler::Schedule();
+        KernelAware::ProfileStop();
+    }
     KernelAware::ProfileReport();
 }
 

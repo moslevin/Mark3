@@ -63,16 +63,16 @@ bool Streamer::Read(uint8_t* pu8Data_)
 //---------------------------------------------------------------------------
 uint16_t Streamer::Read(uint8_t* pu8Data_, uint16_t u16Len_)
 {
-    uint16_t u16ToRead;
+    auto u16ToRead = uint16_t{};
 
     if (m_pu8LockAddr != 0) {
         return 0;
     }
 
-    uint16_t u16Allocated;
-    uint16_t u16PreWrap;
-    uint8_t* pu8Src;
-    uint8_t* pu8Dst;
+    auto u16Allocated = uint16_t{};
+    auto u16PreWrap = uint16_t{};
+    auto* pu8Src = (uint8_t*){};
+    auto* pu8Dst = (uint8_t*){};
 
     { // Begin critical section
         const auto cs = CriticalGuard{};
@@ -94,11 +94,11 @@ uint16_t Streamer::Read(uint8_t* pu8Data_, uint16_t u16Len_)
 
     if (u16Allocated != 0u) {
         if (u16PreWrap >= u16ToRead) {
-            for (uint16_t i = 0; i < u16ToRead; i++) { *pu8Dst++ = *pu8Src++; }
+            for (auto i = uint16_t{0}; i < u16ToRead; i++) { *pu8Dst++ = *pu8Src++; }
         } else {
-            for (uint16_t i = 0; i < u16PreWrap; i++) { *pu8Dst++ = *pu8Src++; }
+            for (auto i = uint16_t{0}; i < u16PreWrap; i++) { *pu8Dst++ = *pu8Src++; }
             pu8Src = m_pau8Buffer;
-            for (uint16_t i = u16PreWrap; i < u16ToRead; i++) { *pu8Dst++ = *pu8Src++; }
+            for (auto i = u16PreWrap; i < u16ToRead; i++) { *pu8Dst++ = *pu8Src++; }
         }
     }
 
@@ -141,9 +141,9 @@ bool Streamer::Write(uint8_t u8Data_)
 }
 
 //---------------------------------------------------------------------------
-uint16_t Streamer::Write(uint8_t* pu8Data_, uint16_t u16Len_)
+uint16_t Streamer::Write(const uint8_t* pu8Data_, uint16_t u16Len_)
 {
-    uint16_t u16ToWrite;
+    auto u16ToWrite = uint16_t{};
 
     // Bail if the buffer is currently locked.
     if (m_pu8LockAddr != 0) {
@@ -153,9 +153,9 @@ uint16_t Streamer::Write(uint8_t* pu8Data_, uint16_t u16Len_)
     // Update the buffer metadata in a critical section, and lock it so that
     // we can safely write to it with interrupts enabled.
 
-    uint16_t u16PreWrap;
-    uint8_t* pu8Src;
-    uint8_t* pu8Dst;
+    auto u16PreWrap = uint16_t{};
+    auto* pu8Src = (const uint8_t*){};
+    auto* pu8Dst = (uint8_t*){};
 
     { // Begin critical section
         const auto cs = CriticalGuard{};
@@ -184,11 +184,11 @@ uint16_t Streamer::Write(uint8_t* pu8Data_, uint16_t u16Len_)
     // Perform the buffer writes with interrupts enabled, buffers locked.
     if (u16ToWrite != 0u) {
         if (u16PreWrap >= u16ToWrite) {
-            for (uint16_t i = 0; i < u16ToWrite; i++) { *pu8Dst++ = *pu8Src++; }
+            for (auto i = uint16_t{0}; i < u16ToWrite; i++) { *pu8Dst++ = *pu8Src++; }
         } else {
-            for (uint16_t i = 0; i < u16PreWrap; i++) { *pu8Dst++ = *pu8Src++; }
+            for (auto i = uint16_t{0}; i < u16PreWrap; i++) { *pu8Dst++ = *pu8Src++; }
             pu8Dst = m_pau8Buffer;
-            for (uint16_t i = u16PreWrap; i < u16ToWrite; i++) { *pu8Dst++ = *pu8Src++; }
+            for (auto i = u16PreWrap; i < u16ToWrite; i++) { *pu8Dst++ = *pu8Src++; }
         }
     }
 

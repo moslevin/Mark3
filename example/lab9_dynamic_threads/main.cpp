@@ -74,9 +74,6 @@ void PrintThreadSlack(void)
             char szStr[10];
 
             auto u16Slack = apclActiveThreads[i]->GetStackSlack();
-            MemUtil::DecimalToHex((K_ADDR)apclActiveThreads[i], szStr);
-            Kernel::DebugPrint(szStr);
-            Kernel::DebugPrint(" ");
             MemUtil::DecimalToString(u16Slack, szStr);
             Kernel::DebugPrint(szStr);
             Kernel::DebugPrint("\n");
@@ -97,14 +94,15 @@ void PrintCPUUsage(void)
 void ThreadCreate(Thread* pclThread_)
 {
     Kernel::DebugPrint("TC\n");
-    CriticalSection::Enter();
-    for (uint8_t i = 0; i < MAX_THREADS; i++) {
-        if (apclActiveThreads[i] == 0) {
-            apclActiveThreads[i] = pclThread_;
-            break;
+    {
+        const auto cg = CriticalGuard{};
+        for (uint8_t i = 0; i < MAX_THREADS; i++) {
+            if (apclActiveThreads[i] == 0) {
+                apclActiveThreads[i] = pclThread_;
+                break;
+            }
         }
     }
-    CriticalSection::Exit();
 
     PrintThreadSlack();
     PrintCPUUsage();
@@ -113,15 +111,17 @@ void ThreadCreate(Thread* pclThread_)
 void ThreadExit(Thread* pclThread_)
 {
     Kernel::DebugPrint("TX\n");
-    CriticalSection::Enter();
-    for (uint8_t i = 0; i < MAX_THREADS; i++) {
-        if (apclActiveThreads[i] == pclThread_) {
-            apclActiveThreads[i] = 0;
-            au32ActiveTime[i]    = 0;
-            break;
+    {
+        const auto cg = CriticalGuard{};
+
+        for (uint8_t i = 0; i < MAX_THREADS; i++) {
+            if (apclActiveThreads[i] == pclThread_) {
+                apclActiveThreads[i] = 0;
+                au32ActiveTime[i]    = 0;
+                break;
+            }
         }
     }
-    CriticalSection::Exit();
 
     PrintThreadSlack();
     PrintCPUUsage();
@@ -133,15 +133,15 @@ void ThreadContextSwitch(Thread* pclThread_)
     static uint32_t u32LastTicks = 0;
     auto            u32Ticks     = Kernel::GetTicks();
 
-    CriticalSection::Enter();
-    for (uint8_t i = 0; i < MAX_THREADS; i++) {
-        if (apclActiveThreads[i] == pclThread_) {
-            au32ActiveTime[i] += u32Ticks - u32LastTicks;
-            break;
+    {
+        const auto cg = CriticalGuard{};
+        for (uint8_t i = 0; i < MAX_THREADS; i++) {
+            if (apclActiveThreads[i] == pclThread_) {
+                au32ActiveTime[i] += u32Ticks - u32LastTicks;
+                break;
+            }
         }
     }
-    CriticalSection::Exit();
-
     u32LastTicks = u32Ticks;
 }
 

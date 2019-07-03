@@ -153,10 +153,10 @@ void Thread::Stop()
         // If a thread is attempting to stop itself, ensure we call the scheduler
         if (this == Scheduler::GetCurrentThread()) {
             bReschedule = true;
-    #if KERNEL_ROUND_ROBIN
+#if KERNEL_ROUND_ROBIN
             // Cancel RR scheduling
             Quantum::Cancel();
-    #endif
+#endif
         }
 
         // Add this thread to the stop-list (removing it from active scheduling)
@@ -351,9 +351,9 @@ void Thread::SetPriority(PORT_PRIO_TYPE uXPriority_)
         // Or, if the new priority is a higher priority than the current thread's.
         if ((this == g_pclCurrent) || (uXPriority_ > g_pclCurrent->GetPriority())) {
             bSchedule = true;
-    #if KERNEL_ROUND_ROBIN
+#if KERNEL_ROUND_ROBIN
             Quantum::Cancel();
-    #endif
+#endif
         }
         Scheduler::Remove(this);
 

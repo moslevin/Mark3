@@ -92,13 +92,11 @@ Message* MessageQueue::Receive_i(uint32_t u32TimeWaitMS_)
 void MessageQueue::Send(Message* pclSrc_)
 {
     KERNEL_ASSERT(pclSrc_);
-
-    CriticalSection::Enter();
-
-    // Add the message to the head of the linked list
-    m_clLinkList.Add(pclSrc_);
-
-    CriticalSection::Exit();
+    {
+        const auto cg = CriticalGuard{};
+        // Add the message to the head of the linked list
+        m_clLinkList.Add(pclSrc_);
+    }
 
     // Post the semaphore, waking the blocking thread for the queue.
     m_clSemaphore.Post();

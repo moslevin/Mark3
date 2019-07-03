@@ -48,21 +48,6 @@ class MemUtil
 public:
     //-----------------------------------------------------------------------
     /**
-     *  @brief DecimalToHex
-     *
-     *  Convert an 8-bit unsigned binary value as a hexadecimal string.
-     *
-     *
-     *  @param u8Data_ Value to convert into a string
-     *  @param szText_ Destination string buffer (3 bytes minimum)
-     */
-    static void DecimalToHex(uint8_t u8Data_, char* szText_);
-    static void DecimalToHex(uint16_t u16Data_, char* szText_);
-    static void DecimalToHex(uint32_t u32Data_, char* szText_);
-    static void DecimalToHex(uint64_t u64Data_, char* szText_);
-
-    //-----------------------------------------------------------------------
-    /**
      *  @brief DecimalToString
      *
      *  Convert an 8-bit unsigned binary value as a decimal string.
@@ -74,22 +59,6 @@ public:
     static void DecimalToString(uint16_t u16Data_, char* szText_);
     static void DecimalToString(uint32_t u32Data_, char* szText_);
     static void DecimalToString(uint64_t u64Data_, char* szText_);
-
-    //-----------------------------------------------------------------------
-    /**
-     * @brief StringToDecimial8
-     *
-     * Convert a string to an unsigned integer value.
-     *
-     * @param szText_ String to convert
-     * @param pu8Out_ Pointer to a uint8_t that will contain the result
-     * @return true on success, false on invalid parameters or failure to
-     * convert the input string to an unsigned integer value
-     */
-    static bool StringToDecimal8(const char* szText_, uint8_t* pu8Out_);
-    static bool StringToDecimal16(const char* szText_, uint16_t* pu16Out_);
-    static bool StringToDecimal32(const char* szText_, uint32_t* pu32Out_);
-    static bool StringToDecimal64(const char* szText_, uint64_t* pu64Out_);
 
     //-----------------------------------------------------------------------
     /**

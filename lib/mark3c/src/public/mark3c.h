@@ -47,6 +47,7 @@ typedef void* Thread_t;            //!< Thread opaque handle data type
 typedef void* Timer_t;             //!< Timer opaque handle data type
 typedef void* ConditionVariable_t; //!< Condition Variable opaque handle data type
 typedef void* ReaderWriterLock_t;  //!< Reader-writer-lock opaque handle data type
+typedef void* Coroutine_t;         //!< Coroutine opaaque handle data type
 
 //---------------------------------------------------------------------------
 // Function pointer types used by Kernel APIs
@@ -60,6 +61,7 @@ typedef void (*thread_exit_callout_t)(Thread_t hThread_);
 typedef void (*thread_context_callout_t)(Thread_t hThread_);
 #endif // #if KERNEL_CONTEXT_SWITCH_CALLOUT
 typedef void (*kernel_debug_print_t)(const char* szString_);
+typedef void (*coroutine_callback_t)(Coroutine_t caller, void* pvContext);
 
 //---------------------------------------------------------------------------
 // Use the sizes of the structs in fake_types.h to generate opaque object-blobs
@@ -78,7 +80,7 @@ typedef void (*kernel_debug_print_t)(const char* szString_);
 #define MESSAGEPOOL_SIZE (sizeof(Fake_MessagePool))
 #define CONDITIONVARIABLE_SIZE (sizeof(Fake_ConditionVariable))
 #define READERWRITERLOCK_SIZE (sizeof(Fake_ReaderWriterLock))
-
+#define COROUTINE_SIZE (sizeof(Fake_Coroutine))
 #if KERNEL_EVENT_FLAGS
 //---------------------------------------------------------------------------
 /**
@@ -165,6 +167,10 @@ typedef enum {
 #define DECLARE_READERWRITERLOCK(name)                                                                                 \
     K_WORD             TOKEN_2(__readerwriterlock_, name)[WORD_ROUND(EVENTFLAG_SIZE)];                                 \
     ReaderWriterLock_t name = (ReaderWriterLock_t)TOKEN_2(__readerwriterlock_, name);
+
+#define DECLARE_COROUTINE(name) \
+    K_WORD             TOKEN_2(__coroutine_, name)[WORD_ROUND(COROUTINE_SIZE)]; \
+    Coroutine_t name = (Coroutine_t)TOKEN_2(__coroutine_, name);
 
 //---------------------------------------------------------------------------
 // Allocate-once Memory managment APIs
