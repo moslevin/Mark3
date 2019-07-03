@@ -94,6 +94,7 @@ typedef struct {
     uint8_t  m_eFlagMode;
 #endif // #if KERNEL_EVENT_FLAGS
     bool       m_bExpired;
+    int        m_iErrno;
     Fake_Timer m_clTimer;
 } Fake_Thread;
 

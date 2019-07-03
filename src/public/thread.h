@@ -408,6 +408,12 @@ public:
      */
     uint16_t GetStackSize() { return m_u16StackSize; }
 
+    /**
+     * @brief ErrnoStorage
+     * @return Pointer to thread's unique errno storage value
+     */
+    int* ErrnoStorage() { return &m_iErrno; }
+
     friend class ThreadPort;
 
 private:
@@ -484,6 +490,9 @@ private:
 
     //! Indicate whether or not a blocking-object timeout has occurred
     bool m_bExpired;
+
+    //! Storage used to hold a thread-safe errno value
+    int m_iErrno;
 
     //! Timer used for blocking-object timeouts
     Timer m_clTimer;
