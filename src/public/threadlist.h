@@ -35,7 +35,7 @@ class Thread;
  * This class is used for building thread-management facilities, such as
  * schedulers, and blocking objects.
  */
-class ThreadList : public LinkListNode, public TypedCircularLinkList<Thread>
+class ThreadList : public TypedLinkListNode<ThreadList>, public TypedCircularLinkList<Thread>
 {
 public:
     void* operator new(size_t sz, void* pv) { return reinterpret_cast<ThreadList*>(pv); };

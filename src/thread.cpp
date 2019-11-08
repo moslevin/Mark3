@@ -273,7 +273,7 @@ uint16_t Thread::GetStackSlack()
     KERNEL_ASSERT(IsInitialized());
 
     auto wBottom = uint16_t { 0 };
-    auto wTop    = static_cast<uint16_t>((m_u16StackSize - 1) / sizeof(K_ADDR));
+    auto wTop    = static_cast<uint16_t>((m_u16StackSize - 1) / sizeof(K_WORD));
     auto wMid    = static_cast<uint16_t>(((wTop + wBottom) + 1) / 2);
 
     { // Begin critical section
@@ -288,7 +288,6 @@ uint16_t Thread::GetStackSlack()
             if (m_pwStack[wMid] == static_cast<K_WORD>(-1))
 #endif
             {
-                //! ToDo : Reverse the logic for MCUs where stack grows UP instead of down
                 wTop = wMid;
             } else {
                 wBottom = wMid;
@@ -297,7 +296,7 @@ uint16_t Thread::GetStackSlack()
         }
     } // End Critical Section
 
-    return wMid * sizeof(K_ADDR);
+    return wMid * sizeof(K_WORD);
 }
 #endif
 
