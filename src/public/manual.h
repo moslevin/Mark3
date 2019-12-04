@@ -3969,12 +3969,16 @@ See license.txt for more information
     @page RELEASE Release Notes
 
     @section RELR10 R10 Release
-    - New: Coroutines + Cooperative scheduler
+    - New: Coroutines + Cooperative scheduler (with examples + unit tests)
     - New: Critical section APIs defined in kernel lib
     - New: RAII critical section (CriticalGuard object)
     - New: RAII scheduler-disabled context (SchedulerGuard object)
+    - New: Thread::GetStackTop() method, useful for implementing stack-dump features
+    - Support for thread-local "errno", for use with the mark3-libc library
+    - Removed a bunch of functions from memutil that are better-implemented in libc
     - Kernel code updated to use RAII critical sections instead of CS_ENTER/CS_EXIT macros
     - Updated documentation
+    - Minor bugfixes
     .
 
     @section RELR9 R9 Release

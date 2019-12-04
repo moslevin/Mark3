@@ -15,7 +15,7 @@ on other platforms or toolchains.
 @section SIZEPROFILEINFO Information
 
 Date Profiled:
-Thu Jun 20 21:21:17 EDT 2019
+Sat Nov 23 15:28:02 STD 2019
 
 @section SIZEPROFILEVER  Compiler Version
 avr-gcc (GCC) 5.4.0 Copyright (C) 2015 Free Software Foundation, Inc. This is free software; see the source for copying conditions. There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
@@ -43,24 +43,24 @@ Mark3 Module Size Report:
     -  Round-Robin Scheduling Support.................. : 265 Bytes
     -  Reader-writer Locks (Synchronization Object).... : 206 Bytes
     -  Thread Scheduling............................... : 570 Bytes
-    -  Thread Implementation........................... : 1501 Bytes
+    -  Thread Implementation........................... : 1491 Bytes
     -  Fundamental Kernel Thread-list Data Structures.. : 440 Bytes
     -  ThreadListList Data Structures.................. : 20 Bytes
     -  Software Timer Kernel Object.................... : 241 Bytes
     -  Software Timer Management....................... : 412 Bytes
     -  Atmel AVR - Kernel Interrupt Implemenation....... : 28 Bytes
-    -  Atmel AVR - Kernel Timer Implementation.......... : 810 Bytes
+    -  Atmel AVR - Kernel Timer Implementation.......... : 829 Bytes
     -  Atmel AVR - Basic Threading Support.............. : 506 Bytes
 @endcode
 
 Mark3 Kernel Size Summary:
 @code
-    - Kernel                   :  3359 Bytes
+    - Kernel                   :  3349 Bytes
     - Synchronization Objects  :  4630 Bytes
-    - Port                     :  1344 Bytes
+    - Port                     :  1363 Bytes
     - Features                 :  1460 Bytes
     - Coroutines               :  776 Bytes
     - Untracked Objects        :  0 Bytes
-    - Total Size               :  11569 Bytes
+    - Total Size               :  11578 Bytes
 @endcode
 */

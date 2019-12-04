@@ -403,6 +403,15 @@ public:
     K_WORD* GetStack() { return m_pwStack; }
 
     /**
+     * @brief GetStackTop
+     * @return Pointer to the thread object's current top-of-stack address.
+     * Note:  This only returns the top-of-stack address stored in this context object,
+     * which is updated on context-switch.  If this is called by the currently-executing
+     * thread, it will thus not contain the same value as the CPU's hardware stack pointer.
+     */
+    K_WORD* GetStackTop() { return m_pwStackTop; }
+
+    /**
      * @brief GetStackSize
      * @return Size of the thread's stack in bytes
      */
@@ -431,6 +440,10 @@ private:
      *  @param uXPriority_
      */
     void SetPriorityBase(PORT_PRIO_TYPE uXPriority_);
+
+    //!!! NOTE !!! ORDER IS IMPORTANT - DO NOT MOVE THESE MEMBER VARIABLE DECLARATIONS
+    //!!! UNLESS YOU REALLY KNOW WHAT YOU'RE DOING!  IF YOU MUST ADD NEW MEMBERS, ENSURE
+    //!!! TO ADD THEM AT THE *BOTTOM*
 
     //! Pointer to the top of the thread's stack
     K_WORD* m_pwStackTop;
