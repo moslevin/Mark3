@@ -65,7 +65,7 @@ TEST(ut_coroutine_schedule_active)
     auto cr = Coroutine{};
     auto count = 0;
 
-    static constexpr auto callback = [](Coroutine* cr, void* context) {
+    static const auto callback = [](Coroutine* cr, void* context) {
         auto* counter = static_cast<int*>(context);
         (*counter)++;
     };
@@ -95,7 +95,7 @@ TEST(ut_coroutine_schedule_multiple)
     auto crMed = Coroutine{};
     auto crHigh = Coroutine{};
 
-    static constexpr auto callback = [](Coroutine* cr, void* context) {
+    static const auto callback = [](Coroutine* cr, void* context) {
     };
 
     crHigh.Init(3, callback, nullptr);
@@ -129,7 +129,7 @@ TEST(ut_coroutine_activate_in_task)
     auto cr = Coroutine{};
     static auto count = 0;
 
-    static constexpr auto callback = [](Coroutine* cr, void* context) {
+    static const auto callback = [](Coroutine* cr, void* context) {
         static bool first = true;
         if (first) {
             first = false;
